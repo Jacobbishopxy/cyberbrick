@@ -12,7 +12,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: 'Jacob Bishop',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {

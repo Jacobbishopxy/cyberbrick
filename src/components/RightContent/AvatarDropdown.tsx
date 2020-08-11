@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
+// @ts-ignore
 import { history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
 import { outLogin } from '@/services/login';
