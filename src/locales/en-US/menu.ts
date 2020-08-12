@@ -49,4 +49,7 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+
+  'menu.demo': 'Demo',
+  'menu.demo.local-storage': 'Local Storage',
 };

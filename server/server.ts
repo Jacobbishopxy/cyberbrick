@@ -4,16 +4,36 @@
 
 import express from "express";
 import path from "path";
+// import fetch from 'node-fetch';
+// import config from '../resources/config.json';
+// import { JSONType } from './data';
+
+
+// const { backendUrl } = config;
+
+// const commonPostParam = (data: JSONType) => ({
+//   method: 'post',
+//   body: JSON.stringify(data),
+//   headers: { 'Content-Type': 'application/json' }
+// })
+//
+// const fetchGet = (url: string) =>
+//   fetch(url).then(res => res.text());
+//
+// const fetchPost = (url: string, jsonData: JSONType) =>
+//   fetch(url, commonPostParam(jsonData)).then(res => res.text());
+
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 app.post('/api/login/account', (req, res) => {
-  const { type} = req.body;
+  // const {password, userName, type} = req.body;
+  const { type } = req.body;
 
   res.send({
     status: 'ok',
@@ -50,4 +70,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const port = 7999;
-app.listen(port, () => console.log(`App listening on port ${port}`));
+app.listen(port, () => console.log(`App listening on port ${ port }`));
