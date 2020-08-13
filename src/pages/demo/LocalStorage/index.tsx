@@ -3,42 +3,78 @@
  */
 
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import React from 'react';
-import { Button, Input } from "antd";
-// import moment from "moment";
+import React, { useState } from 'react';
+import { Button, Input, Space } from "antd";
 
-import { LocalStorageWorker } from "@/utils/localStorageWorker";
+import { ExpiryType, LocalStorageHelper } from "@/utils/localStorageHelper";
 
 
-const lsIdentifier = "ls-test"
-const ls = new LocalStorageWorker(lsIdentifier)
+const lsIdentifier = "ls-test";
+const expiry = [1, "minute"] as ExpiryType;
+const ls = new LocalStorageHelper(lsIdentifier, { expiry });
+const lsKey = "name"
 
 export default () => {
 
+  const [inputValue, setInputValue] = useState<string>("")
+
   const clearLs = () => ls.clear()
 
-  const inputOnChange = (value: any) => {
-    ls.add("name", value.target.value)
+  const inputOnChange = (value: any) =>
+    setInputValue(value.target.value)
+
+  const submitLS = () =>
+    ls.add(lsKey, inputValue)
+
+  const dataDisplay = () => {
+    const e = ls.get(lsKey)
+    if (e !== null)
+      return `Local storage data: ${ e.data }`;
+    return "No data set"
   }
 
-  // todo: ls with expired time
+  const expiryDisplay = () => {
+    const e = ls.get(lsKey)
+    if (e?.expiry !== undefined)
+      return `Local storage expiry: ${ e.expiry }`;
+    return "No expiry set"
+  }
+
 
   return (
     <PageHeaderWrapper>
-      <h1>identifier: { lsIdentifier }</h1>
-      <Button
-        onClick={ clearLs }
-      >
-        Clear LS
-      </Button>
-      <Input
-        defaultValue={ ls.get("name") || "null" }
-        onBlur={ inputOnChange }
-        style={ { width: 120 } }
-      />
-      <pre>
-        { JSON.stringify(ls.getAllItemsByIdentifier(), null, 2) }
-      </pre>
+      <Space direction="vertical">
+        <h2>identifier: { lsIdentifier }</h2>
+        <div>
+          <Input
+            placeholder="ls input"
+            onBlur={ inputOnChange }
+            style={ { width: 120 } }
+          />
+          <Button
+            onClick={ submitLS }
+            type="primary"
+            style={ { width: 120 } }
+          >
+            Submit LS
+          </Button>
+          <Button
+            onClick={ clearLs }
+            danger
+            style={ { width: 120 } }
+          >
+            Clear LS
+          </Button>
+        </div>
+        <div>
+          <h1>{ dataDisplay() }</h1>
+          <h1>{ expiryDisplay() }</h1>
+          <h1>ls.getAllItemsByIdentifier():</h1>
+          <pre>
+            {JSON.stringify(ls.getAllItemsByIdentifier(), null, 2)}
+          </pre>
+        </div>
+      </Space>
     </PageHeaderWrapper>
   );
 };
