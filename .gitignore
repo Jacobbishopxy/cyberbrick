@@ -38,3 +38,6 @@ screenshot
 .eslintcache
 
 build
+
+cache
+!cache/.gitkeep

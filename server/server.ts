@@ -1,33 +1,46 @@
 /**
- * Created by Jacob Xie on 12/17/2019.
+ * Created by Jacob Xie on 8/12/2020.
  */
 
-import express from "express";
+import "reflect-metadata";
+import express, { Request, Response } from "express";
 import path from "path";
-// import fetch from 'node-fetch';
-// import config from '../resources/config.json';
-// import { JSONType } from './data';
+import bodyParser from "body-parser";
+import { createConnection, ConnectionOptions } from "typeorm";
+import { PostRoutes } from "./routes";
 
 
-// const { backendUrl } = config;
+const connectionOptions: ConnectionOptions = {
+  "type": "sqlite",
+  "database": `./cache/database.sqlite`,
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+    `${ __dirname }/entity/*.ts`
+  ],
+}
 
-// const commonPostParam = (data: JSONType) => ({
-//   method: 'post',
-//   body: JSON.stringify(data),
-//   headers: { 'Content-Type': 'application/json' }
-// })
-//
-// const fetchGet = (url: string) =>
-//   fetch(url).then(res => res.text());
-//
-// const fetchPost = (url: string, jsonData: JSONType) =>
-//   fetch(url, commonPostParam(jsonData)).then(res => res.text());
+const connect = (app: express.Express) =>
+  createConnection(connectionOptions)
+    .then(async conn =>
+      PostRoutes
+        .forEach(route =>
+          app[route.method](route.path, (req: Request, res: Response, next: Function) =>
+            route.action(req, res)
+              .then(() => next)
+              .catch(err => next(err))
+          )
+        )
+    )
 
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -68,6 +81,8 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 }
+
+connect(app)
 
 const port = 7999;
 app.listen(port, () => console.log(`App listening on port ${ port }`));
