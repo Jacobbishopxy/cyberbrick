@@ -30,9 +30,8 @@ export const saveTarget = async (target: Target) =>
   })
 
 export const deleteTarget = async (id: number) =>
-  request<API.TargetType>("/api/tt/target", {
-    method: "DELETE",
-    data: id
+  request<API.TargetType>(`/api/tt/target?id=${ id }`, {
+    method: "DELETE"
   })
 
 export const getTags = async (relationRequire?: boolean) => {
@@ -55,8 +54,7 @@ export const saveTag = async (tag: Tag) =>
   })
 
 export const deleteTag = async (name: string) =>
-  request<API.TagType>("/api/tt/tag", {
-    method: "DELETE",
-    data: name
+  request<API.TagType>(`/api/tt/tag?name=${ name }`, {
+    method: "DELETE"
   })
 
