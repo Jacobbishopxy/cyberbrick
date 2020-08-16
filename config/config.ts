@@ -75,9 +75,13 @@ export default defineConfig({
       routes: [
         {
           name: 'local-storage',
-          icon: 'smile',
           path: '/demo/localstorage',
           component: './demo/LocalStorage',
+        },
+        {
+          name: 'target-tag',
+          path: '/demo/targettag',
+          component: './demo/TargetTag',
         },
       ],
     },

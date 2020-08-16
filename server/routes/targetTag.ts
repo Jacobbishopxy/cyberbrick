@@ -17,42 +17,42 @@ import {
 
 export const targetTagRoutes = [
   {
-    path: "/targets",
+    path: "/api/tt/targets",
     method: "get",
     action: targetGetAllAction
   },
   {
-    path: "/target",
+    path: "/api/tt/target",
     method: "get",
     action: targetGetByIdAction
   },
   {
-    path: "/target",
+    path: "/api/tt/target",
     method: "post",
     action: targetSaveAction
   },
   {
-    path: "/target",
+    path: "/api/tt/target",
     method: "delete",
     action: targetDeleteAction
   },
   {
-    path: "/tags",
+    path: "/api/tt/tags",
     method: "get",
     action: tagGetAllAction,
   },
   {
-    path: "/tag",
+    path: "/api/tt/tag",
     method: "get",
     action: tagGetByName,
   },
   {
-    path: "/tag",
+    path: "/api/tt/tag",
     method: "post",
     action: tagSaveAction
   },
   {
-    path: "/tag",
+    path: "/api/tt/tag",
     method: "delete",
     action: tagDeleteAction
   }

@@ -11,9 +11,14 @@ const tagRelations = { relations: ["targets"] }
 
 export async function tagGetAllAction(req: Request, res: Response) {
   const tagRepo = getRepository(Tag)
-  const cats = await tagRepo.find(tagRelations)
+  const { relationRequire } = req.query
+  let tags: Tag[]
+  if (relationRequire && relationRequire === "true")
+    tags = await tagRepo.find(tagRelations)
+  else
+    tags = await tagRepo.find()
 
-  res.send(cats)
+  res.send(tags)
 }
 
 export async function tagGetByName(req: Request, res: Response) {

@@ -52,4 +52,5 @@ export default {
 
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
+  'menu.demo.target-tag': 'Target Tag',
 };
