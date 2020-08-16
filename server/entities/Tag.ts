@@ -8,10 +8,10 @@ import {
   ManyToMany,
   Column
 } from "typeorm"
-import { Post } from "./Post"
+import { Target } from "./Target"
 
-@Entity({name: "category"})
-export class Category {
+@Entity({name: "tag"})
+export class Tag {
 
   @PrimaryColumn("varchar")
   name!: string
@@ -19,7 +19,7 @@ export class Category {
   @Column("text", {nullable: true})
   description?: string
 
-  @ManyToMany(() => Post, post => post.categories)
-  posts?: Post[]
+  @ManyToMany(() => Target, target => target.tags)
+  targets?: Target[]
 }
 

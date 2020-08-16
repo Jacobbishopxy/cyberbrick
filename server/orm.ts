@@ -6,7 +6,7 @@ import "reflect-metadata"
 import express, { Request, Response } from "express"
 import { createConnection, ConnectionOptions } from "typeorm"
 
-import { postCategoryRoutes } from './routes/postCategory'
+import { targetTagRoutes } from './routes/targetTag'
 
 const connectionOptions: ConnectionOptions = {
   "name": "default",
@@ -22,7 +22,7 @@ const connectionOptions: ConnectionOptions = {
 export async function postCategoryConnect(app: express.Express) {
   await createConnection(connectionOptions)
     .then(async () =>
-      postCategoryRoutes
+      targetTagRoutes
         .forEach(route =>
           app[route.method](route.path, (req: Request, res: Response, next: Function) =>
             route.action(req, res)

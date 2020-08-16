@@ -10,10 +10,10 @@ import {
   ManyToMany,
   JoinTable
 } from "typeorm"
-import { Category } from "./Category"
+import { Tag } from "./Tag"
 
-@Entity({name: "post"})
-export class Post {
+@Entity({name: "target"})
+export class Target {
 
   @PrimaryGeneratedColumn()
   id!: number
@@ -25,8 +25,8 @@ export class Post {
   @Column("text")
   text!: string
 
-  @ManyToMany(() => Category, category => category.posts, { cascade: true })
+  @ManyToMany(() => Tag, tag => tag.targets, { cascade: true })
   @JoinTable()
-  categories?: Category[]
+  tags?: Tag[]
 }
 
