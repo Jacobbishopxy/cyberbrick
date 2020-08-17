@@ -41,15 +41,29 @@ export default () => {
   const triggerTag = () =>
     setTriggerEdit({ ...triggerEdit, tag: triggerEdit.tag + 1 })
 
-  const tagsPanelAddNewTag = (tag: service.Tag) =>
+  const triggerTarget = () =>
+    setTriggerEdit({ tag: triggerEdit.tag + 1, target: triggerEdit.target + 1 })
+
+
+  const tagPanelUpdate = (tag: service.Tag) =>
     service
       .saveTag(tag)
       .then(triggerTag)
 
-  const tagsPanelDeleteTag = (name: string) =>
+  const tagPanelDelete = (name: string) =>
     service
       .deleteTag(name)
       .then(triggerTag)
+
+  const targetPanelUpdate = (target: service.Target) =>
+    service
+      .saveTarget(target)
+      .then(triggerTarget)
+
+  const targetPanelDelete = (id: number) =>
+    service
+      .deleteTarget(id)
+      .then(triggerTarget)
 
   return (
     <PageHeaderWrapper>
@@ -66,7 +80,10 @@ export default () => {
           >
             <TargetsView
               targets={ targets }
-              tagClosable={ editable.target }
+              tags={ tags }
+              editable={ editable.target }
+              targetOnCreate={targetPanelUpdate}
+              targetOnDelete={targetPanelDelete}
             />
           </Card>
         </Col>
@@ -84,8 +101,8 @@ export default () => {
             <TagsView
               tags={ tags }
               editable={ editable.tag }
-              tagOnCreate={ tagsPanelAddNewTag }
-              tagOnRemove={ tagsPanelDeleteTag }
+              tagOnCreate={ tagPanelUpdate }
+              tagOnRemove={ tagPanelDelete }
             />
           </Card>
         </Col>

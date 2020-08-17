@@ -1,31 +1,14 @@
-import * as service from "@/services/targetTag"
 import { Input, Modal, Tag, Tooltip } from "antd"
 import React, { useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
+
+import * as service from "@/services/targetTag"
+import { TagCreateModalProps, TagsViewProps } from "./data"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
  */
 
-interface NewTagInfo {
-  name: string
-  description?: string
-}
-
-interface TagsViewProps {
-  tags: service.Tag[]
-  editable: boolean
-  tagOnCreate?: (value: NewTagInfo) => Promise<void>
-  tagOnRemove?: (value: string) => Promise<void>
-}
-
-interface TagCreateModalProps {
-  visible: boolean
-  onOk: () => void
-  onCancel: () => void
-  inputName: (vale: string) => void
-  inputDescription: (value: string) => void
-}
 
 const TagCreateModal = (props: TagCreateModalProps) =>
   <Modal
@@ -53,7 +36,7 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: TagsViewProps) => {
 
-  const [newTagInfo, setNewTagInfo] = useState<NewTagInfo>()
+  const [newTagInfo, setNewTagInfo] = useState<service.Tag>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 
   const inputNewTagName = (name: string) =>
@@ -96,12 +79,9 @@ export const TagsView = (props: TagsViewProps) => {
       }
       {
         props.editable ?
-          <>
-            <Tag onClick={ () => setModalVisible(true) }>
-              <PlusOutlined/> New Tag
-            </Tag>
-          </> :
-          <></>
+          <Tag onClick={ () => setModalVisible(true) }>
+            <PlusOutlined/> New Tag
+          </Tag> : <></>
       }
       <TagCreateModal
         visible={ modalVisible }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { Button } from "antd"
-import Emoji from "@/components/Emoji"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
@@ -24,7 +23,6 @@ export const Editor = (props: EditorProps) => {
 
   return (
     <div>
-      <span>Edit: </span>
       <Button
         shape="circle"
         size="small"
@@ -32,9 +30,7 @@ export const Editor = (props: EditorProps) => {
         onClick={ editableOnChange }
       >
         {
-          editable ?
-            <Emoji label="edit" symbol="❌️"/> :
-            <Emoji label="edit" symbol="⚙️"/>
+          editable ? "done" : "edit"
         }
       </Button>
     </div>
