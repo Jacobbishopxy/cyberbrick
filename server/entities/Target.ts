@@ -12,6 +12,7 @@ import {
 } from "typeorm"
 import { Tag } from "./Tag"
 
+// todo: Target needs date & category for time sorting and type filtering
 @Entity({name: "target"})
 export class Target {
 

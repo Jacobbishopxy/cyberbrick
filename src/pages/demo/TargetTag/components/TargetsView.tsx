@@ -74,7 +74,6 @@ const SingleTargetView = (props: SingleTargetViewProps) => {
               tagsNameExclude={ getExcludeTags(props.tagsName, props.target.tags!) }
               editable
               tagsOnChange={ targetTagOnChange }
-              // tagOnRemove={} // todo
             />
           </div>
         }

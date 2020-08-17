@@ -87,6 +87,11 @@ export const TagsView = (props: TagsViewProps) => {
   const tagOnRemove = (value: string) => {
     if (props.tagOnRemove)
       props.tagOnRemove(value).then()
+    if (!props.isTagPanel && props.tagsOnChange) {
+      const newTags = tags.filter(t => t.name !== value)
+      setTags(newTags)
+      props.tagsOnChange(newTags)
+    }
   }
 
   const tagCreateModalOnOk = () => {
@@ -117,6 +122,7 @@ export const TagsView = (props: TagsViewProps) => {
                 e.preventDefault()
                 tagDeleteModal(() => tagOnRemove(t.name))
               } }
+              // onClick={ } // todo: isTagPanel -> filter targets
             >
               { t.name }
             </Tag>
