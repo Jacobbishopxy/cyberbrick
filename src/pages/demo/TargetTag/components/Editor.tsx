@@ -30,7 +30,7 @@ export const Editor = (props: EditorProps) => {
         onClick={ editableOnChange }
       >
         {
-          editable ? "done" : "edit"
+          editable ? "Done" : "Edit"
         }
       </Button>
     </div>

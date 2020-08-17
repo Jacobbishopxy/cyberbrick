@@ -1,23 +1,94 @@
 import { List, Button, Form, Input, Select, Divider, Space } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import React, { useEffect, useState } from "react"
+import _ from "lodash"
 
 import * as service from "@/services/targetTag"
 import { TagsView } from "./TagsView"
-import { NewTargetFormProps, TagsSelectorProps, TargetsViewProps } from "./data"
+import { NewTargetFormProps, TagsSelectorProps, SingleTargetViewProps, TargetsViewProps } from "./data"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
  */
 
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 16 },
-}
-const tailLayout = {
-  wrapperCol: { offset: 4, span: 16 },
-}
 
+const getExcludeTags = (all: string[], have: service.Tag[]): string[] =>
+  _.difference(all, have.map(i => i.name))
+
+
+const SingleTargetView = (props: SingleTargetViewProps) => {
+
+  const [targetEditable, setTargetEditable] = useState<boolean>(false)
+  const [modifiedTarget, setModifiedTarget] = useState<service.Target>()
+
+  const doneEdit = () => {
+    if (modifiedTarget && props.targetOnModify)
+      props.targetOnModify(modifiedTarget).then()
+    setTargetEditable(false)
+  }
+
+  const targetTextOnChange = (e: any) => {
+    const text = e.target.value
+    setModifiedTarget({ ...props.target, text })
+  }
+
+  const targetTagOnChange = (tags: service.Tag[]) => {
+    setModifiedTarget({ ...props.target, tags })
+  }
+
+  const displayView = (
+    <>
+      <List.Item.Meta
+        title={ props.target.title }
+        description={
+          <div>
+            <div>{ props.target.text }</div>
+            <br/>
+            <TagsView
+              tags={ props.target.tags! }
+              editable={ false }
+            />
+          </div>
+        }
+      />
+      {
+        props.editable ? <a onClick={ () => setTargetEditable(true) }>Edit</a> : <div/>
+      }
+    </>
+  )
+
+  const editView = (
+    <>
+      <List.Item.Meta
+        title={ props.target.title }
+        description={
+          <div>
+            <Input
+              defaultValue={ props.target.text }
+              onBlur={ targetTextOnChange }
+            />
+            <br/>
+            <TagsView
+              isTagPanel={ false }
+              tags={ props.target.tags! }
+              tagsNameExclude={ getExcludeTags(props.tagsName, props.target.tags!) }
+              editable
+              tagsOnChange={ targetTagOnChange }
+              // tagOnRemove={} // todo
+            />
+          </div>
+        }
+      />
+      <a onClick={ doneEdit }>Done</a>
+    </>
+  )
+
+  return (
+    <List.Item key={ props.target.id } style={ { display: 'flex', justifyContent: 'space-between' } }>
+      { targetEditable && props.editable ? editView : displayView }
+    </List.Item>
+  )
+}
 
 const TagsSelector = (props: TagsSelectorProps) =>
   <Select
@@ -54,6 +125,13 @@ const TagsSelector = (props: TagsSelectorProps) =>
     }
   </Select>
 
+const layout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 16 },
+}
+const tailLayout = {
+  wrapperCol: { offset: 4, span: 16 },
+}
 
 const NewTargetForm = (props: NewTargetFormProps) => {
 
@@ -117,35 +195,21 @@ const NewTargetForm = (props: NewTargetFormProps) => {
 
 export const TargetsView = (props: TargetsViewProps) => {
 
-  // const targetOnEdit = (target: service.Target) =>
+  const tagsName = props.tags.map(i => i.name)
 
   return (
     <>
       <List
         itemLayout="vertical"
         dataSource={ props.targets }
-        renderItem={ item => (
-          <List.Item key={ item.id } style={ { display: 'flex', justifyContent: 'space-between' } }>
-            <List.Item.Meta
-              title={ item.title }
-              description={
-                <div>
-                  <div>{ item.text }</div>
-                  <br/>
-                  <TagsView
-                    tags={ item.tags! }
-                    editable={ props.editable }
-                  />
-                </div>
-              }
-            />
-            {
-              props.editable ?
-                <a>Edit</a> :
-                <></>
-            }
-          </List.Item>
-        ) }
+        renderItem={ item =>
+          <SingleTargetView
+            tagsName={ tagsName }
+            target={ item }
+            editable={ props.editable }
+            targetOnModify={ props.targetOnCreate }
+          />
+        }
       />
       {
         props.editable ?

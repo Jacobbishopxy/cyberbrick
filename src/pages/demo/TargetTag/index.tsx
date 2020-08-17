@@ -45,10 +45,11 @@ export default () => {
     setTriggerEdit({ tag: triggerEdit.tag + 1, target: triggerEdit.target + 1 })
 
 
-  const tagPanelUpdate = (tag: service.Tag) =>
+  const tagPanelUpdate = (ts: service.Tag) =>
     service
-      .saveTag(tag)
+      .saveTag(ts)
       .then(triggerTag)
+
 
   const tagPanelDelete = (name: string) =>
     service
@@ -82,8 +83,8 @@ export default () => {
               targets={ targets }
               tags={ tags }
               editable={ editable.target }
-              targetOnCreate={targetPanelUpdate}
-              targetOnDelete={targetPanelDelete}
+              targetOnCreate={ targetPanelUpdate }
+              targetOnDelete={ targetPanelDelete }
             />
           </Card>
         </Col>

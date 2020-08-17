@@ -1,9 +1,9 @@
-import { Input, Modal, Tag, Tooltip } from "antd"
-import React, { useState } from "react"
+import { Input, Modal, Select, Tag, Tooltip } from "antd"
+import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
 import * as service from "@/services/targetTag"
-import { TagCreateModalProps, TagsViewProps } from "./data"
+import { TagCreateModalProps, TagSelectModalProps, TagsViewProps } from "./data"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
@@ -24,6 +24,29 @@ const TagCreateModal = (props: TagCreateModalProps) =>
     <Input onBlur={ e => props.inputDescription(e.target.value) }/>
   </Modal>
 
+const TagSelectModal = (props: TagSelectModalProps) =>
+  <Modal
+    title="Please select tags from below:"
+    visible={ props.visible }
+    onOk={ props.onOk }
+    onCancel={ props.onCancel }
+    destroyOnClose
+  >
+    <Select
+      mode="multiple"
+      onChange={ props.selectNames }
+      style={ { width: "100%" } }
+    >
+      {
+        props.tagsNameExclude.map(n =>
+          <Select.Option key={ n } value={ n }>
+            { n }
+          </Select.Option>
+        )
+      }
+    </Select>
+  </Modal>
+
 const tagDeleteModal = (onOk: () => void) =>
   Modal.confirm({
     title: "Are you sure to delete this tag?",
@@ -36,8 +59,19 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: TagsViewProps) => {
 
+  const [tags, setTags] = useState<service.Tag[]>(props.tags)
+  const [tagsExclude, setTagsExclude] = useState<string[] | undefined>(props.tagsNameExclude)
+  const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
   const [newTagInfo, setNewTagInfo] = useState<service.Tag>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+
+  useEffect(() => {
+    setTags(props.tags)
+  }, [props.tags])
+
+  useEffect(() => {
+    setTagsExclude(props.tagsNameExclude)
+  }, [props.tagsNameExclude])
 
   const inputNewTagName = (name: string) =>
     setNewTagInfo({ ...newTagInfo, name })
@@ -47,15 +81,27 @@ export const TagsView = (props: TagsViewProps) => {
       setNewTagInfo({ ...newTagInfo, description })
   }
 
+  const selectNewTagName = (names: string[]) =>
+    setTagsToUpdate(names)
+
   const tagOnRemove = (value: string) => {
     if (props.tagOnRemove)
       props.tagOnRemove(value).then()
   }
 
-  const modalOnOk = () => {
+  const tagCreateModalOnOk = () => {
     if (props.tagOnCreate && newTagInfo) {
       props.tagOnCreate(newTagInfo)
         .then(() => setModalVisible(false))
+    }
+  }
+
+  const tagSelectModalOnOk = () => {
+    if (props.tagsOnChange && tagsToUpdate.length !== 0) {
+      const newTags = tags.concat(tagsToUpdate.map(t => ({ name: t })))
+      setTags(newTags)
+      props.tagsOnChange(newTags)
+      setModalVisible(false)
     }
   }
 
@@ -63,7 +109,7 @@ export const TagsView = (props: TagsViewProps) => {
   return (
     <>
       {
-        props.tags.map(t =>
+        tags.map(t =>
           <Tooltip title={ t.description } key={ t.name }>
             <Tag
               closable={ props.editable }
@@ -83,19 +129,34 @@ export const TagsView = (props: TagsViewProps) => {
             <PlusOutlined/> New Tag
           </Tag> : <></>
       }
-      <TagCreateModal
-        visible={ modalVisible }
-        onOk={ modalOnOk }
-        onCancel={ () => setModalVisible(false) }
-        inputName={ inputNewTagName }
-        inputDescription={ inputNewTagDescription }
-      />
+      {
+        props.isTagPanel ?
+          <TagCreateModal
+            visible={ modalVisible }
+            onOk={ tagCreateModalOnOk }
+            onCancel={ () => setModalVisible(false) }
+            inputName={ inputNewTagName }
+            inputDescription={ inputNewTagDescription }
+          /> :
+          <TagSelectModal
+            tagsNameExclude={ tagsExclude! }
+            visible={ modalVisible }
+            onOk={ tagSelectModalOnOk }
+            onCancel={ () => setModalVisible(false) }
+            selectNames={ selectNewTagName }
+          />
+      }
     </>
   )
 }
 
-TagsView.degaultProps = {
-  closable: false,
+TagsView.defaultProps = {
+  tagsNameExclude: [],
+  editable: false,
+  isTagPanel: true,
   tagOnCreate: undefined,
   tagOnRemove: undefined,
-}
+  tagsOnChange: undefined,
+  tagsOnRemove: undefined,
+} as Partial<TagsViewProps>
+

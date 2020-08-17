@@ -6,17 +6,28 @@ import { Tag, Target } from "@/services/targetTag"
 
 interface TagsViewProps {
   tags: Tag[]
+  tagsNameExclude?: string[]
   editable: boolean
-  tagOnCreate?: (value: Tag) => Promise<void>
-  tagOnRemove?: (value: string) => Promise<void>
+  isTagPanel?: boolean
+  tagOnCreate?: (values: Tag) => Promise<void>
+  tagOnRemove?: (values: string) => Promise<void>
+  tagsOnChange?: (values: Tag[]) => void
 }
 
 interface TagCreateModalProps {
   visible: boolean
   onOk: () => void
   onCancel: () => void
-  inputName: (vale: string) => void
+  inputName: (value: string) => void
   inputDescription: (value: string) => void
+}
+
+interface TagSelectModalProps {
+  tagsNameExclude: string[]
+  visible: boolean
+  onOk: () => void
+  onCancel: () => void
+  selectNames: (values: string[]) => void
 }
 
 interface TargetsViewProps {
@@ -25,6 +36,13 @@ interface TargetsViewProps {
   editable: boolean
   targetOnCreate?: (value: Target) => Promise<void>
   targetOnDelete?: (value: number) => Promise<void>
+}
+
+interface SingleTargetViewProps {
+  tagsName: string[]
+  target: Target
+  editable: boolean
+  targetOnModify?: (value: Target) => Promise<void>
 }
 
 interface NewTargetFormProps {
