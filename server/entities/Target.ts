@@ -8,16 +8,26 @@ import {
   Column,
   Index,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  Unique,
+  CreateDateColumn,
+  UpdateDateColumn,
+  VersionColumn
 } from "typeorm"
 import { Tag } from "./Tag"
 
-// todo: Target needs date & category for time sorting and type filtering
-@Entity({name: "target"})
+@Entity({ name: "target" })
+@Unique(["category", "date"])
 export class Target {
 
   @PrimaryGeneratedColumn()
   id!: number
+
+  @Column("varchar")
+  category!: string
+
+  @Column("timestamp")
+  date!: string
 
   @Column("text")
   @Index({ unique: true })
@@ -29,5 +39,14 @@ export class Target {
   @ManyToMany(() => Tag, tag => tag.targets, { cascade: true })
   @JoinTable()
   tags?: Tag[]
+
+  @CreateDateColumn()
+  createdAt!: string
+
+  @UpdateDateColumn()
+  updatedAt!: string
+
+  @VersionColumn()
+  version!: number
 }
 

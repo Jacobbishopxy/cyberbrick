@@ -4,7 +4,7 @@ import { Tag, Target } from "@/services/targetTag"
  * Created by Jacob Xie on 8/17/2020.
  */
 
-interface TagsViewProps {
+export interface TagsViewProps {
   tags: Tag[]
   tagsNameExclude?: string[]
   editable: boolean
@@ -14,7 +14,7 @@ interface TagsViewProps {
   tagsOnChange?: (values: Tag[]) => void
 }
 
-interface TagCreateModalProps {
+export interface TagCreateModalProps {
   visible: boolean
   onOk: () => void
   onCancel: () => void
@@ -22,7 +22,7 @@ interface TagCreateModalProps {
   inputDescription: (value: string) => void
 }
 
-interface TagSelectModalProps {
+export interface TagSelectModalProps {
   tagsNameExclude: string[]
   visible: boolean
   onOk: () => void
@@ -30,7 +30,7 @@ interface TagSelectModalProps {
   selectNames: (values: string[]) => void
 }
 
-interface TargetsViewProps {
+export interface TargetsViewProps {
   targets: Target[]
   tags: Tag[]
   editable: boolean
@@ -38,19 +38,19 @@ interface TargetsViewProps {
   targetOnDelete?: (value: number) => Promise<void>
 }
 
-interface SingleTargetViewProps {
+export interface SingleTargetViewProps {
   tagsName: string[]
   target: Target
   editable: boolean
   targetOnModify?: (value: Target) => Promise<void>
 }
 
-interface NewTargetFormProps {
+export interface NewTargetFormProps {
   tags: Tag[]
   onSubmit: (value: Target) => Promise<void>
 }
 
-interface TagsSelectorProps {
+export interface TagsSelectorProps {
   tags: Tag[]
   onChange: (value: string[]) => void
   onAddNewTagInputChange: (value: string) => void

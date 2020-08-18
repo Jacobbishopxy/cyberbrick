@@ -6,7 +6,7 @@ import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor
 
 import * as service from "@/services/targetTag"
 import { TagsView } from "./TagsView"
-import { NewTargetFormProps, TagsSelectorProps, SingleTargetViewProps, TargetsViewProps } from "./data"
+import * as propsData from "./data"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
@@ -17,7 +17,7 @@ const getExcludeTags = (all: string[], have: service.Tag[]): string[] =>
   _.difference(all, have.map(i => i.name))
 
 
-const SingleTargetView = (props: SingleTargetViewProps) => {
+const SingleTargetView = (props: propsData.SingleTargetViewProps) => {
 
   const [target, setTarget] = useState<service.Target>(props.target)
   const [targetEditable, setTargetEditable] = useState<boolean>(false)
@@ -59,7 +59,7 @@ const SingleTargetView = (props: SingleTargetViewProps) => {
             />
           </div>
         }
-        style={{marginRight: 10}}
+        style={ { marginRight: 10 } }
       />
       {
         props.editable ?
@@ -99,7 +99,7 @@ const SingleTargetView = (props: SingleTargetViewProps) => {
             />
           </div>
         }
-        style={{marginRight: 10}}
+        style={ { marginRight: 10 } }
       />
       <a onClick={ doneEdit }>Done</a>
     </>
@@ -112,7 +112,7 @@ const SingleTargetView = (props: SingleTargetViewProps) => {
   )
 }
 
-const TagsSelector = (props: TagsSelectorProps) =>
+const TagsSelector = (props: propsData.TagsSelectorProps) =>
   <Select
     mode="multiple"
     placeholder="Select tags"
@@ -155,7 +155,7 @@ const tailLayout = {
   wrapperCol: { offset: 4, span: 16 },
 }
 
-const NewTargetForm = (props: NewTargetFormProps) => {
+const NewTargetForm = (props: propsData.NewTargetFormProps) => {
 
   const [tags, setTags] = useState<service.Tag[]>(props.tags)
   const [newTag, setNewTag] = useState<string>()
@@ -215,7 +215,7 @@ const NewTargetForm = (props: NewTargetFormProps) => {
   )
 }
 
-export const TargetsView = (props: TargetsViewProps) => {
+export const TargetsView = (props: propsData.TargetsViewProps) => {
 
   const tagsName = props.tags.map(i => i.name)
 

@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
 import * as service from "@/services/targetTag"
-import { TagCreateModalProps, TagSelectModalProps, TagsViewProps } from "./data"
+import * as propsData from "./data"
 
 /**
  * Created by Jacob Xie on 8/16/2020.
  */
 
 
-const TagCreateModal = (props: TagCreateModalProps) =>
+const TagCreateModal = (props: propsData.TagCreateModalProps) =>
   <Modal
     title="Please enter new tag information below:"
     visible={ props.visible }
@@ -24,7 +24,7 @@ const TagCreateModal = (props: TagCreateModalProps) =>
     <Input onBlur={ e => props.inputDescription(e.target.value) }/>
   </Modal>
 
-const TagSelectModal = (props: TagSelectModalProps) =>
+const TagSelectModal = (props: propsData.TagSelectModalProps) =>
   <Modal
     title="Please select tags from below:"
     visible={ props.visible }
@@ -57,7 +57,7 @@ const tagDeleteModal = (onOk: () => void) =>
   })
 
 
-export const TagsView = (props: TagsViewProps) => {
+export const TagsView = (props: propsData.TagsViewProps) => {
 
   const [tags, setTags] = useState<service.Tag[]>(props.tags)
   const [tagsExclude, setTagsExclude] = useState<string[] | undefined>(props.tagsNameExclude)
@@ -164,5 +164,5 @@ TagsView.defaultProps = {
   tagOnRemove: undefined,
   tagsOnChange: undefined,
   tagsOnRemove: undefined,
-} as Partial<TagsViewProps>
+} as Partial<propsData.TagsViewProps>
 

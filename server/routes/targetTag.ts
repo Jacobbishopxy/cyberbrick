@@ -47,7 +47,7 @@ export const targetTagRoutes = [
     action: tagActions.tagDeleteAction
   },
   {
-    path: "/api/tt/tags-by-names",
+    path: "/api/tt/getTargetIdsByTagNames",
     method: "get",
     action: tagActions.getTargetIdsByTagNames
   }
