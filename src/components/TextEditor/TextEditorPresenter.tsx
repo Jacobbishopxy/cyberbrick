@@ -11,7 +11,7 @@ export interface DisplayPresenterProps {
   content: string
 }
 
-export const TexEditorPresenter = (props: DisplayPresenterProps) =>
+export const TextEditorPresenter = (props: DisplayPresenterProps) =>
   <ReactQuill
     theme="bubble"
     value={ props.content }

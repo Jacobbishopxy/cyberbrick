@@ -4,6 +4,7 @@
 
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
+import _ from "lodash"
 import { Tag } from "../entities/Tag"
 
 
@@ -47,4 +48,23 @@ export async function tagDeleteAction(req: Request, res: Response) {
   const tag = await tagRepo.delete(req.query.name as string)
 
   res.send(tag)
+}
+
+// =====================================================================================================================
+
+export async function getTargetIdsByTagNames(req: Request, res: Response) {
+  const tagRepo = getRepository(Tag)
+  const { names } = req.query
+  const tags = await tagRepo
+    .createQueryBuilder("tag")
+    .leftJoinAndSelect("tag.targets", "target")
+    .select(["tag.name", "target.id"])
+    .where("tag.name IN (:...names)", { names })
+    .getMany()
+
+
+  const idsArr = tags.map(i => i.targets!.map(j => j.id))
+  const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
+
+  res.send(ans)
 }

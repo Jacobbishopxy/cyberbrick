@@ -1,60 +1,55 @@
 /**
  * Created by Jacob Xie on 8/14/2020.
  */
-import {
-  targetGetAllAction,
-  targetGetByIdAction,
-  targetSaveAction,
-  targetDeleteAction
-} from "../controllers/TargetActions"
-import {
-  tagGetAllAction,
-  tagGetByName,
-  tagSaveAction,
-  tagDeleteAction
-} from "../controllers/TagActions"
+import * as targetActions from "../controllers/TargetActions"
+import * as tagActions from "../controllers/TagActions"
 
 
 export const targetTagRoutes = [
   {
     path: "/api/tt/targets",
     method: "get",
-    action: targetGetAllAction
+    action: targetActions.targetGetAllAction
   },
   {
     path: "/api/tt/target",
     method: "get",
-    action: targetGetByIdAction
+    action: targetActions.targetGetByIdAction
   },
   {
     path: "/api/tt/target",
     method: "post",
-    action: targetSaveAction
+    action: targetActions.targetSaveAction
   },
   {
     path: "/api/tt/target",
     method: "delete",
-    action: targetDeleteAction
+    action: targetActions.targetDeleteAction
   },
   {
     path: "/api/tt/tags",
     method: "get",
-    action: tagGetAllAction,
+    action: tagActions.tagGetAllAction,
   },
   {
     path: "/api/tt/tag",
     method: "get",
-    action: tagGetByName,
+    action: tagActions.tagGetByName,
   },
   {
     path: "/api/tt/tag",
     method: "post",
-    action: tagSaveAction
+    action: tagActions.tagSaveAction
   },
   {
     path: "/api/tt/tag",
     method: "delete",
-    action: tagDeleteAction
+    action: tagActions.tagDeleteAction
+  },
+  {
+    path: "/api/tt/tags-by-names",
+    method: "get",
+    action: tagActions.getTargetIdsByTagNames
   }
 ]
 

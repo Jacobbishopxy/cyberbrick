@@ -11,7 +11,7 @@ import 'react-quill/dist/quill.snow.css'
 const CustomToolbar = () => (
   <div id="toolbar">
     <select className="ql-header" aria-label="ql-header"/>
-    <select className="ql-font" defaultValue="arial">
+    <select className="ql-font">
       <option value="arial">Arial</option>
       <option value="comic-sans">Comic Sans</option>
       <option value="courier-new">Courier New</option>
@@ -19,16 +19,14 @@ const CustomToolbar = () => (
       <option value="helvetica">Helvetica</option>
       <option value="lucida">Lucida</option>
     </select>
-    <select className="ql-size" defaultValue="24px">
+    <select className="ql-size">
       <option value="16px">16px</option>
       <option value="24px">24px</option>
+      <option value="32px">32px</option>
       <option value="48px">48px</option>
       <option value="100px">100px</option>
       <option value="150px">150px</option>
       <option value="200px">200px</option>
-      <option value="250px">250px</option>
-      <option value="300px">300px</option>
-      <option value="400px">400px</option>
     </select>
     <button className="ql-align" value='' aria-label="ql-align" type="button"/>
     <button className="ql-align" value='center' aria-label="ql-align" type="button"/>
@@ -39,7 +37,7 @@ const CustomToolbar = () => (
     <button className="ql-underline" aria-label="ql-underline" type="button"/>
     <button className="ql-strike" aria-label="ql-strike" type="button"/>
     <button className="ql-blockquote" aria-label="ql-blockquote" type="button"/>
-    <button className="ql-code-block" aria-label="ql-code" type="button"/>
+    <button className="ql-code-block" aria-label="ql-code-block" type="button"/>
     <button className="ql-list" value='ordered' aria-label="ql-list" type="button"/>
     <button className="ql-list" value='bullet' aria-label="ql-list" type="button"/>
     <button className="ql-indent" value='-1' aria-label="ql-indent" type="button"/>
@@ -52,7 +50,15 @@ const CustomToolbar = () => (
 )
 
 const Size = Quill.import('attributors/style/size')
-Size.whitelist = ['16px', '24px', '48px', '100px', '150px', '200px', '250px', '300px', '400px']
+Size.whitelist = [
+  "16px",
+  "24px",
+  "32px",
+  "48px",
+  "100px",
+  "150px",
+  "200px",
+]
 Quill.register(Size, true)
 
 
@@ -72,6 +78,7 @@ const formats = [
   'underline',
   'strike',
   'blockquote',
+  'code-block',
   'list',
   'bullet',
   'indent',
@@ -104,6 +111,7 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
         onChange={ setContent }
       />
       <Button
+        style={{marginTop: 5}}
         onClick={ () => props.onSave(content) }
         size='small'
         type='primary'
