@@ -6,7 +6,7 @@ import "reflect-metadata"
 import express, { Request, Response } from "express"
 import { createConnection, ConnectionOptions } from "typeorm"
 
-import { targetTagRoutes } from './routes/targetTag'
+import { literature } from './literature/literature'
 
 const connectionOptions: ConnectionOptions = {
   "name": "default",
@@ -15,14 +15,14 @@ const connectionOptions: ConnectionOptions = {
   "synchronize": true,
   "logging": false,
   "entities": [
-    `${ __dirname }/entities/*.ts`
+    `${ __dirname }/literature/entities/*.ts`
   ],
 }
 
 export async function postCategoryConnect(app: express.Express) {
   await createConnection(connectionOptions)
     .then(async () =>
-      targetTagRoutes
+      literature
         .forEach(route =>
           app[route.method](route.path, (req: Request, res: Response, next: Function) =>
             route.action(req, res)

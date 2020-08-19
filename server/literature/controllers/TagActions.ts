@@ -54,17 +54,23 @@ export async function tagDeleteAction(req: Request, res: Response) {
 
 export async function getTargetIdsByTagNames(req: Request, res: Response) {
   const tagRepo = getRepository(Tag)
-  const { names } = req.query
-  const tags = await tagRepo
-    .createQueryBuilder("tag")
-    .leftJoinAndSelect("tag.targets", "target")
-    .select(["tag.name", "target.id"])
-    .where("tag.name IN (:...names)", { names })
-    .getMany()
+  const names = req.query.names as string | undefined
+
+  if (names === undefined) {
+    res.send([])
+  } else {
+    const namesArr = names.split(",")
+    const tags = await tagRepo
+      .createQueryBuilder("tag")
+      .leftJoinAndSelect("tag.targets", "target")
+      .select(["tag.name", "target.id"])
+      .where("tag.name IN (:...names)", { names: namesArr })
+      .getMany()
 
 
-  const idsArr = tags.map(i => i.targets!.map(j => j.id))
-  const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
+    const idsArr = tags.map(i => i.targets!.map(j => j.id))
+    const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
 
-  res.send(ans)
+    res.send(ans)
+  }
 }
