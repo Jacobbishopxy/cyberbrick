@@ -9,26 +9,59 @@ import * as tagActions from "./controllers/TagActions"
 const base = "/api/literature"
 
 
+const categoryRoutes = [
+  {
+    path: `${base}/categories`,
+    method: "get",
+    action: categoryActions.getAllCategories
+  },
+  {
+    path: `${base}/getArticleIdsByCategoryName`,
+    method: "get",
+    action: categoryActions.getArticleIdsByCategoryName
+  },
+  {
+    path: `${base}/getArticleTagsByCategoryName`,
+    method: "get",
+    action: categoryActions.getArticleTagsByCategoryName
+  },
+  {
+    path: `${base}/getArticlesByCategoryName`,
+    method: "get",
+    action: categoryActions.getArticlesByCategoryName
+  },
+  {
+    path: `${base}/saveCategory`,
+    method: "post",
+    action: categoryActions.saveCategory
+  },
+  {
+    path: `${base}/deleteCategory`,
+    method: "delete",
+    action: categoryActions.deleteCategory
+  },
+]
+
 export const literature = [
   {
-    path: `${base}/targets`,
+    path: `${base}/articles`,
     method: "get",
-    action: articleActions.targetGetAllAction
+    action: articleActions.getAllArticles
   },
   {
-    path: `${base}/target`,
+    path: `${base}/article`,
     method: "get",
-    action: articleActions.targetGetByIdAction
+    action: articleActions.getArticlesByIds
   },
   {
-    path: `${base}/target`,
+    path: `${base}/article`,
     method: "post",
-    action: articleActions.targetSaveAction
+    action: articleActions.saveArticle
   },
   {
-    path: `${base}/target`,
+    path: `${base}/article`,
     method: "delete",
-    action: articleActions.targetDeleteAction
+    action: articleActions.deleteArticle
   },
   {
     path: `${base}/tags`,
@@ -50,36 +83,13 @@ export const literature = [
     method: "delete",
     action: tagActions.tagDeleteAction
   },
+
   {
     path: `${base}/getTargetIdsByTagNames`,
     method: "get",
     action: tagActions.getTargetIdsByTagNames
   },
-  {
-    path: `${base}/getTargetsByIds`,
-    method: "get",
-    action: articleActions.getTargetsByIds
-  },
 
-  {
-    path: `${base}/getAllCategories`,
-    method: "get",
-    action: categoryActions.getAllCategories
-  },
-  {
-    path: `${base}/getCategoriesByNames`,
-    method: "get",
-    action: categoryActions.getCategoriesByNames
-  },
-  {
-    path: `${base}/saveCategory`,
-    method: "post",
-    action: categoryActions.saveCategory
-  },
-  {
-    path: `${base}/deleteCategory`,
-    method: "delete",
-    action: categoryActions.deleteCategory
-  },
+  ...categoryRoutes
 
 ]

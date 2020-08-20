@@ -20,6 +20,6 @@ export class Tag {
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToMany(() => Article, target => target.tags)
-  targets?: Article[]
+  @ManyToMany(() => Article, article => article.tags)
+  articles?: Article[]
 }

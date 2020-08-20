@@ -3,72 +3,61 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getRepository, In } from "typeorm"
+
+import * as common from "../common"
 import { Article } from "../entities/Article"
-import { paginationSkip, paginationTake } from "../common"
 
-const targetRelations = { relations: ["tags"] }
 
-export async function targetGetAllAction(req: Request, res: Response) {
-  const targetRepo = getRepository(Article)
-  const targets = await targetRepo.find(targetRelations)
+const repo = () => getRepository(Article)
+const articleRelations = { relations: [common.category, common.author, common.tags] }
+
+export async function getAllArticles(req: Request, res: Response) {
+  const targets = await repo().find(articleRelations)
 
   res.send(targets)
 }
 
-export async function targetGetByIdAction(req: Request, res: Response) {
-  const targetRepo = getRepository(Article)
-  const target = await targetRepo.findOne(req.query.id as string, targetRelations)
-
-  if (!target) {
-    res.status(404)
-    res.send()
+export async function getArticlesByIds(req: Request, res: Response) {
+  const ids = req.query.ids as common.QueryStr
+  const pagination = req.query.pagination as common.QueryStr
+  if (ids === undefined) {
+    res.status(400)
+    res.send("ids is required, `?name=1,2,3`")
     return
   }
+
+  let pg = {}
+  if (pagination) pg = {
+    skip: common.paginationSkip(pagination),
+    take: common.paginationTake(pagination)
+  }
+  const wh = {
+    where: {
+      id: In(ids.split(","))
+    }
+  }
+  const target = await repo()
+    .find({
+      ...articleRelations,
+      ...wh,
+      ...pg
+    })
+
   res.send(target)
 }
 
-export async function targetSaveAction(req: Request, res: Response) {
-  const targetRepo = getRepository(Article)
-  const newTarget = targetRepo.create(req.body)
-  await targetRepo.save(newTarget)
+export async function saveArticle(req: Request, res: Response) {
+  const r = repo()
+  const newTarget = r.create(req.body)
+  await r.save(newTarget)
 
   res.send(newTarget)
 }
 
-export async function targetDeleteAction(req: Request, res: Response) {
-  const targetRepo = getRepository(Article)
-  const target = await targetRepo.delete(req.query.id as string)
+export async function deleteArticle(req: Request, res: Response) {
+  const target = await repo().delete(req.query.id as string)
 
   res.send(target)
-}
-
-// =====================================================================================================================
-
-export async function getTargetsByIds(req: Request, res: Response) {
-  const targetRepo = getRepository(Article)
-  const ids = req.query.ids as string | undefined
-  const pagination = req.query.pagination as string | undefined
-
-  if (ids === undefined) {
-    res.send([])
-  } else {
-    const idsArr = ids.split(",")
-    const targetsSql = targetRepo
-      .createQueryBuilder()
-      .leftJoinAndSelect("target.tags", "tag")
-      .where("target.id IN (:...ids)", { ids: idsArr })
-      .orderBy("target.date", "DESC")
-
-    if (pagination === undefined) {
-      res.send(await targetsSql.getMany())
-    } else {
-      const targets = targetsSql
-        .skip(paginationSkip(pagination))
-        .take(paginationTake(pagination))
-        .getMany()
-      res.send(await targets)
-    }
-  }
 }
 

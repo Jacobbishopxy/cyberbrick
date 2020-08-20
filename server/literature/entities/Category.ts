@@ -8,10 +8,10 @@ import {
   Column,
   OneToMany,
 } from "typeorm"
-import { category } from "../common"
+import * as common from "../common"
 import { Article } from "./Article"
 
-@Entity({ name: category })
+@Entity({ name: common.category })
 export class Category {
 
   @PrimaryColumn("varchar")
@@ -20,6 +20,6 @@ export class Category {
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToMany(() => Article, article => article.author)
+  @OneToMany(() => Article, article => article.category)
   articles!: Article[]
 }

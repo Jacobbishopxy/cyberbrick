@@ -3,12 +3,17 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
-import { QueryStr, category } from "../common"
+import {
+  getRepository,
+  Equal
+} from "typeorm"
+import _ from "lodash"
+import * as common from "../common"
 import { Category } from "../entities/Category"
 
 
 const repo = () => getRepository(Category)
+const categoryRelations = { relations: [common.articles, common.articlesAuthor, common.articlesTags] }
 
 export async function getAllCategories(req: Request, res: Response) {
   const categories = await repo().find()
@@ -16,22 +21,88 @@ export async function getAllCategories(req: Request, res: Response) {
   res.send(categories)
 }
 
-export async function getCategoriesByNames(req: Request, res: Response) {
-  const names = req.query.names as QueryStr
-  if (names === undefined) {
+export async function getArticlesByCategoryName(req: Request, res: Response) {
+  const name = req.query.name as common.QueryStr
+  if (name === undefined) {
     res.status(400)
-    res.send("names is required, `?names=N1,N2,N3`")
+    res.send("name is required, `?name=Nx`")
     return
   }
 
-  const namesArr = names.split(",")
-  const cats = await repo()
-    .createQueryBuilder()
-    .where(`${ category }.name IN (:...names)`, { names: namesArr })
-    .getMany()
+  const wh = {
+    where: {
+      name: Equal(name)
+    }
+  }
+  const cat = await repo()
+    .findOne({
+      ...categoryRelations,
+      ...wh
+    })
 
-  res.send(cats)
+  res.send(cat)
 }
+
+export async function getArticleIdsByCategoryName(req: Request, res: Response) {
+  const name = req.query.name as common.QueryStr
+  if (name === undefined) {
+    res.status(400)
+    res.send("name is required, `?name=Nx`")
+    return
+  }
+
+  const cat = await repo()
+    .createQueryBuilder()
+    .leftJoinAndSelect(common.categoryArticles, common.article)
+    .select([common.categoryName, common.articleId])
+    .where(`${ common.categoryName } = :name`, { name })
+    .getOne()
+
+  const idsArr = cat!.articles.map(i => i.id)
+
+  res.send(idsArr)
+}
+
+export async function getArticleTagsByCategoryName(req: Request, res: Response) {
+  const name = req.query.name as common.QueryStr
+  if (name === undefined) {
+    res.status(400)
+    res.send("name is required, `?name=Nx`")
+    return
+  }
+
+  const cat = await repo()
+    .createQueryBuilder()
+    .leftJoinAndSelect(common.categoryArticles, common.article)
+    .leftJoinAndSelect(common.articleTags, common.tag)
+    .select([common.categoryName, common.tagName])
+    .where(`${ common.categoryName } = :name`, { name })
+    .getOne()
+
+  const tagsNamesArr = cat!.articles.map(i => i.tags!.map(j => j.name))
+  const ans = _.reduce(tagsNamesArr, (acc, arr) => _.union(acc, arr))
+
+  res.send(ans)
+}
+
+// export async function getArticlesByCategoryName(req: Request, res: Response) {
+//   const name = req.query.name as common.QueryStr
+//   if (name === undefined) {
+//     res.status(400)
+//     res.send("name is required, `?name=Nx`")
+//     return
+//   }
+//
+//   const cat = await repo()
+//     .createQueryBuilder(common.category)
+//     .leftJoinAndSelect(common.categoryArticles, common.article)
+//     .leftJoinAndSelect(common.articleTags, common.tags)
+//     .leftJoinAndSelect(common.articleAuthor, common.author)
+//     .where(`${ common.categoryName } = :name`, { name })
+//     .getMany()
+//
+//   res.send(cat)
+// }
 
 export async function saveCategory(req: Request, res: Response) {
   const rp = repo()
@@ -42,7 +113,7 @@ export async function saveCategory(req: Request, res: Response) {
 }
 
 export async function deleteCategory(req: Request, res: Response) {
-  const name = req.query.name as QueryStr
+  const name = req.query.name as common.QueryStr
   if (name === undefined) {
     res.status(400)
     res.send("name is required")
@@ -52,7 +123,7 @@ export async function deleteCategory(req: Request, res: Response) {
   await repo()
     .createQueryBuilder()
     .delete()
-    .where("name = :name", { name })
+    .where(`${ common.name } = :name`, { name })
     .execute()
 
   res.send(name)

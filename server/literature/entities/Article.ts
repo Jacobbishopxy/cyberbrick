@@ -17,19 +17,19 @@ import {
 } from "typeorm"
 import moment from "moment"
 
-import { article } from "../common"
+import * as common from "../common"
 import { Category } from "./Category"
 import { Author } from "./Author"
 import { Tag } from "./Tag"
 
-@Entity({ name: article })
-@Unique(["category", "date"])
+@Entity({ name: common.article })
+@Unique([common.category, common.date])
 export class Article {
 
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne(() => Category, category => category.articles)
+  @ManyToOne(() => Category, category => category.articles, { cascade: true })
   category!: Category
 
   @Column({
@@ -38,10 +38,10 @@ export class Article {
   })
   date!: string
 
-  @ManyToOne(() => Author, author => author.articles)
+  @ManyToOne(() => Author, author => author.articles, { cascade: true })
   author!: Author
 
-  @ManyToMany(() => Tag, tag => tag.targets, { cascade: true })
+  @ManyToMany(() => Tag, tag => tag.articles, { cascade: true })
   @JoinTable()
   tags?: Tag[]
 

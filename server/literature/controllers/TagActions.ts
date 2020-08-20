@@ -5,10 +5,11 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import _ from "lodash"
+import * as common from "../common"
 import { Tag } from "../entities/Tag"
 
 
-const tagRelations = { relations: ["targets"] }
+const tagRelations = { relations: [common.articles] }
 
 export async function tagGetAllAction(req: Request, res: Response) {
   const tagRepo = getRepository(Tag)
@@ -68,7 +69,7 @@ export async function getTargetIdsByTagNames(req: Request, res: Response) {
       .getMany()
 
 
-    const idsArr = tags.map(i => i.targets!.map(j => j.id))
+    const idsArr = tags.map(i => i.articles!.map(j => j.id))
     const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
 
     res.send(ans)
