@@ -6,12 +6,14 @@ import {
   Entity,
   PrimaryColumn,
   ManyToMany,
+  ManyToOne,
   Column,
 } from "typeorm"
-import { tag } from "../common"
+import * as common from "../common"
 import { Article } from "./Article"
+import { Category } from "./Category"
 
-@Entity({ name: tag })
+@Entity({ name: common.tag })
 export class Tag {
 
   @PrimaryColumn("varchar")
@@ -22,4 +24,7 @@ export class Tag {
 
   @ManyToMany(() => Article, article => article.tags)
   articles?: Article[]
+
+  @ManyToOne(() => Category, category => category.tags)
+  category!: Category
 }

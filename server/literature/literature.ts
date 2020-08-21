@@ -1,48 +1,63 @@
 /**
  * Created by Jacob Xie on 8/14/2020.
  */
+
+import { ValidationChain} from "express-validator"
+
 import * as articleActions from "./controllers/ArticleActions"
 import * as categoryActions from "./controllers/CategoryActions"
 // import * as authorActions from "../controllers/AuthorActions"
 import * as tagActions from "./controllers/TagActions"
+import * as common from "./common"
 
 const base = "/api/literature"
 
 
-const categoryRoutes = [
+interface Route {
+  path: string,
+  method: string,
+  check?: ValidationChain[],
+  action: Function
+}
+
+const categoryRoutes: Route[] = [
   {
     path: `${base}/categories`,
     method: "get",
     action: categoryActions.getAllCategories
   },
   {
-    path: `${base}/getArticleIdsByCategoryName`,
+    path: `${base}/category`,
     method: "get",
-    action: categoryActions.getArticleIdsByCategoryName
-  },
-  {
-    path: `${base}/getArticleTagsByCategoryName`,
-    method: "get",
-    action: categoryActions.getArticleTagsByCategoryName
-  },
-  {
-    path: `${base}/getArticlesByCategoryName`,
-    method: "get",
+    check: [common.queryNameCheck, common.queryOptionalPaginationCheck],
     action: categoryActions.getArticlesByCategoryName
   },
   {
-    path: `${base}/saveCategory`,
+    path: `${base}/getArticleIdsByCategoryName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getArticleIdsByCategoryName
+  },
+  {
+    path: `${base}/getTagsByCategoryName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getTagsByCategoryName
+  },
+  {
+    path: `${base}/category`,
     method: "post",
     action: categoryActions.saveCategory
   },
   {
-    path: `${base}/deleteCategory`,
+    path: `${base}/category`,
     method: "delete",
+    check: [common.queryNameCheck],
     action: categoryActions.deleteCategory
   },
 ]
 
-export const literature = [
+const articleRouts: Route[] = [
   {
     path: `${base}/articles`,
     method: "get",
@@ -51,6 +66,7 @@ export const literature = [
   {
     path: `${base}/article`,
     method: "get",
+    check: [common.queryIdsCheck, common.queryOptionalPaginationCheck],
     action: articleActions.getArticlesByIds
   },
   {
@@ -63,15 +79,18 @@ export const literature = [
     method: "delete",
     action: articleActions.deleteArticle
   },
+]
+
+const tagRouts: Route[] = [
   {
     path: `${base}/tags`,
     method: "get",
-    action: tagActions.tagGetAllAction,
+    action: tagActions.getAllTags,
   },
   {
     path: `${base}/tag`,
     method: "get",
-    action: tagActions.tagGetByName,
+    action: tagActions.getTagsByNames,
   },
   {
     path: `${base}/tag`,
@@ -83,12 +102,18 @@ export const literature = [
     method: "delete",
     action: tagActions.tagDeleteAction
   },
-
   {
     path: `${base}/getTargetIdsByTagNames`,
     method: "get",
     action: tagActions.getTargetIdsByTagNames
   },
+]
+
+export const literature: Route[] = [
+
+  ...articleRouts,
+
+  ...tagRouts,
 
   ...categoryRoutes
 

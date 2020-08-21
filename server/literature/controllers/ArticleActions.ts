@@ -3,7 +3,7 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository, In } from "typeorm"
+import { getRepository } from "typeorm"
 
 import * as common from "../common"
 import { Article } from "../entities/Article"
@@ -12,36 +12,30 @@ import { Article } from "../entities/Article"
 const repo = () => getRepository(Article)
 const articleRelations = { relations: [common.category, common.author, common.tags] }
 
+/**
+ * get all articles, with relations
+ */
 export async function getAllArticles(req: Request, res: Response) {
   const targets = await repo().find(articleRelations)
 
   res.send(targets)
 }
 
+/**
+ * get articles by ids, with relations
+ */
 export async function getArticlesByIds(req: Request, res: Response) {
-  const ids = req.query.ids as common.QueryStr
-  const pagination = req.query.pagination as common.QueryStr
-  if (ids === undefined) {
-    res.status(400)
-    res.send("ids is required, `?name=1,2,3`")
-    return
-  }
 
-  let pg = {}
-  if (pagination) pg = {
-    skip: common.paginationSkip(pagination),
-    take: common.paginationTake(pagination)
-  }
-  const wh = {
-    where: {
-      id: In(ids.split(","))
-    }
-  }
+  if (common.expressErrorsBreak(req, res)) return
+
+  const ids = req.query.ids as string
+  const pagination = req.query.pagination as common.QueryStr
+
   const target = await repo()
     .find({
       ...articleRelations,
-      ...wh,
-      ...pg
+      ...common.whereIdsIn(ids),
+      ...common.paginationGet(pagination)
     })
 
   res.send(target)

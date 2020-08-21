@@ -10,6 +10,7 @@ import {
 } from "typeorm"
 import * as common from "../common"
 import { Article } from "./Article"
+import { Tag} from "./Tag"
 
 @Entity({ name: common.category })
 export class Category {
@@ -22,4 +23,7 @@ export class Category {
 
   @OneToMany(() => Article, article => article.category)
   articles!: Article[]
+
+  @OneToMany(() => Tag, tag => tag.category)
+  tags!: Tag[]
 }

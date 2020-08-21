@@ -23,12 +23,18 @@ export async function postCategoryConnect(app: express.Express) {
   await createConnection(connectionOptions)
     .then(async () =>
       literature
-        .forEach(route =>
-          app[route.method](route.path, (req: Request, res: Response, next: Function) =>
-            route.action(req, res)
-              .then(() => next)
-              .catch((err: any) => next(err))
-          )
+        .forEach(route => {
+            if (route.check)
+              app[route.method](route.path, route.check, (req: Request, res: Response, next: Function) =>
+                route.action(req, res)
+                  .then(() => next)
+                  .catch((err: any) => next(err)))
+            else
+              app[route.method](route.path, (req: Request, res: Response, next: Function) =>
+                route.action(req, res)
+                  .then(() => next)
+                  .catch((err: any) => next(err)))
+          }
         )
     )
 }

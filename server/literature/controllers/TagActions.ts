@@ -9,31 +9,38 @@ import * as common from "../common"
 import { Tag } from "../entities/Tag"
 
 
-const tagRelations = { relations: [common.articles] }
+const repo = () => getRepository(Tag)
 
-export async function tagGetAllAction(req: Request, res: Response) {
-  const tagRepo = getRepository(Tag)
-  const { relationRequire } = req.query
-  let tags: Tag[]
-  if (relationRequire && relationRequire === "true")
-    tags = await tagRepo.find(tagRelations)
-  else
-    tags = await tagRepo.find()
-
-  res.send(tags)
+const tagArticleRelations = {
+  relations: [
+    common.articles,
+    common.articlesAuthor,
+    common.articlesCategory,
+    common.articlesTags
+  ]
 }
 
-export async function tagGetByName(req: Request, res: Response) {
-  const tagRepo = getRepository(Tag)
-  const tag = await tagRepo.findOne(req.query.name as string, tagRelations)
 
-  if (!tag) {
-    res.status(404)
-    res.send()
-    return
-  }
+export async function getAllTags(req: Request, res: Response) {
+  const ans = await repo().find()
 
-  res.send(tag)
+  res.send(ans)
+}
+
+// todo: relation articles' pagination
+export async function getTagsByNames(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const names = req.query.names as string
+  const ans = await repo()
+    .find({
+      ...tagArticleRelations,
+      ...common.whereNamesIn(names)
+    })
+
+
+  res.send(ans)
 }
 
 export async function tagSaveAction(req: Request, res: Response) {
@@ -51,7 +58,6 @@ export async function tagDeleteAction(req: Request, res: Response) {
   res.send(tag)
 }
 
-// =====================================================================================================================
 
 export async function getTargetIdsByTagNames(req: Request, res: Response) {
   const tagRepo = getRepository(Tag)

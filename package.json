@@ -52,6 +52,7 @@
     "antd": "^4.5.4",
     "classnames": "^2.2.6",
     "express": "^4.17.1",
+    "express-validator": "^6.6.1",
     "lodash": "^4.17.19",
     "moment": "^2.25.3",
     "node-fetch": "^2.6.0",

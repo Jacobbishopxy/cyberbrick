@@ -3,59 +3,58 @@
  */
 
 import { Request, Response } from "express"
-import {
-  getRepository,
-  Equal
-} from "typeorm"
-import _ from "lodash"
+import { getRepository } from "typeorm"
+
 import * as common from "../common"
 import { Category } from "../entities/Category"
 
 
 const repo = () => getRepository(Category)
-const categoryRelations = { relations: [common.articles, common.articlesAuthor, common.articlesTags] }
 
+const categoryArticlesRelations = { relations: [common.articles, common.articlesAuthor, common.articlesTags] }
+const categoryTagsRelations = { relations: [common.tags] }
+
+
+/**
+ * get all categories, no relations
+ */
 export async function getAllCategories(req: Request, res: Response) {
   const categories = await repo().find()
 
   res.send(categories)
 }
 
+/**
+ * get articles under a category, with full article relations
+ */
 export async function getArticlesByCategoryName(req: Request, res: Response) {
-  const name = req.query.name as common.QueryStr
-  if (name === undefined) {
-    res.status(400)
-    res.send("name is required, `?name=Nx`")
-    return
-  }
 
-  const wh = {
-    where: {
-      name: Equal(name)
-    }
-  }
+  if (common.expressErrorsBreak(req, res)) return
+
+  const pagination = req.query.pagination as common.QueryStr
+
   const cat = await repo()
     .findOne({
-      ...categoryRelations,
-      ...wh
+      ...categoryArticlesRelations,
+      ...common.whereNameEqual(req.query.name as string),
+      ...common.paginationGet(pagination)
     })
 
   res.send(cat)
 }
 
+/**
+ * get article ids under a category
+ */
 export async function getArticleIdsByCategoryName(req: Request, res: Response) {
-  const name = req.query.name as common.QueryStr
-  if (name === undefined) {
-    res.status(400)
-    res.send("name is required, `?name=Nx`")
-    return
-  }
+
+  if (common.expressErrorsBreak(req, res)) return
 
   const cat = await repo()
     .createQueryBuilder()
     .leftJoinAndSelect(common.categoryArticles, common.article)
     .select([common.categoryName, common.articleId])
-    .where(`${ common.categoryName } = :name`, { name })
+    .where(`${ common.categoryName } = :name`, { name: req.query.name as string })
     .getOne()
 
   const idsArr = cat!.articles.map(i => i.id)
@@ -63,47 +62,25 @@ export async function getArticleIdsByCategoryName(req: Request, res: Response) {
   res.send(idsArr)
 }
 
-export async function getArticleTagsByCategoryName(req: Request, res: Response) {
-  const name = req.query.name as common.QueryStr
-  if (name === undefined) {
-    res.status(400)
-    res.send("name is required, `?name=Nx`")
-    return
-  }
+/**
+ * get tags under a category
+ */
+export async function getTagsByCategoryName(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
 
   const cat = await repo()
-    .createQueryBuilder()
-    .leftJoinAndSelect(common.categoryArticles, common.article)
-    .leftJoinAndSelect(common.articleTags, common.tag)
-    .select([common.categoryName, common.tagName])
-    .where(`${ common.categoryName } = :name`, { name })
-    .getOne()
+    .findOne({
+      ...categoryTagsRelations,
+      ...common.whereNameEqual(req.query.name as string)
+    })
 
-  const tagsNamesArr = cat!.articles.map(i => i.tags!.map(j => j.name))
-  const ans = _.reduce(tagsNamesArr, (acc, arr) => _.union(acc, arr))
-
-  res.send(ans)
+  res.send(cat)
 }
 
-// export async function getArticlesByCategoryName(req: Request, res: Response) {
-//   const name = req.query.name as common.QueryStr
-//   if (name === undefined) {
-//     res.status(400)
-//     res.send("name is required, `?name=Nx`")
-//     return
-//   }
-//
-//   const cat = await repo()
-//     .createQueryBuilder(common.category)
-//     .leftJoinAndSelect(common.categoryArticles, common.article)
-//     .leftJoinAndSelect(common.articleTags, common.tags)
-//     .leftJoinAndSelect(common.articleAuthor, common.author)
-//     .where(`${ common.categoryName } = :name`, { name })
-//     .getMany()
-//
-//   res.send(cat)
-// }
-
+/**
+ * save a category
+ */
 export async function saveCategory(req: Request, res: Response) {
   const rp = repo()
   const newCat = rp.create(req.body)
@@ -112,13 +89,14 @@ export async function saveCategory(req: Request, res: Response) {
   res.send(newCat)
 }
 
+/**
+ * delete a category
+ */
 export async function deleteCategory(req: Request, res: Response) {
-  const name = req.query.name as common.QueryStr
-  if (name === undefined) {
-    res.status(400)
-    res.send("name is required")
-    return
-  }
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const name = req.query.name as string
 
   await repo()
     .createQueryBuilder()
