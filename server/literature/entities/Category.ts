@@ -6,11 +6,13 @@ import {
   Entity,
   PrimaryColumn,
   Column,
+  ManyToMany,
   OneToMany,
+  JoinTable
 } from "typeorm"
 import * as common from "../common"
 import { Article } from "./Article"
-import { Tag} from "./Tag"
+import { Tag } from "./Tag"
 
 @Entity({ name: common.category })
 export class Category {
@@ -24,6 +26,7 @@ export class Category {
   @OneToMany(() => Article, article => article.category)
   articles!: Article[]
 
-  @OneToMany(() => Tag, tag => tag.category)
+  @ManyToMany(() => Tag, tag => tag.category, { cascade: true })
+  @JoinTable()
   tags!: Tag[]
 }

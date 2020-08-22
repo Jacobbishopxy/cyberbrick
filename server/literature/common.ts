@@ -42,12 +42,12 @@ export const whereNameEqual = (n: string) =>
 
 export const whereNamesIn = (n: string) => {
   const ns = n.split(",")
-  return { where: { names: In(ns) } }
+  return { where: { name: In(ns) } }
 }
 
 export const whereIdsIn = (ids: string) => {
   const idsArr = ids.split(",").map(i => +i)
-  return { where: { ids: In(idsArr) } }
+  return { where: { id: In(idsArr) } }
 }
 
 // misc
@@ -106,6 +106,10 @@ export const queryIdsCheck =
 
 export const queryNameCheck =
   query(name, `${ name } is required!`)
+    .exists()
+
+export const queryNamesCheck =
+  query("names", "names is required!")
     .exists()
 
 export const queryOptionalPaginationCheck =

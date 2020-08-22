@@ -20,15 +20,23 @@ const tagArticleRelations = {
   ]
 }
 
+const tagCategoryRelations = {
+  relations: [
+    common.category
+  ]
+}
 
+/**
+ * get all tags, without relations
+ */
 export async function getAllTags(req: Request, res: Response) {
-  const ans = await repo().find()
+  const ans = await repo().find(tagCategoryRelations)
 
   res.send(ans)
 }
 
 // todo: relation articles' pagination
-export async function getTagsByNames(req: Request, res: Response) {
+export async function getArticlesByTagNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
@@ -41,6 +49,10 @@ export async function getTagsByNames(req: Request, res: Response) {
 
 
   res.send(ans)
+}
+
+export async function getCategoryByTagNames(req: Request, res: Response) {
+
 }
 
 export async function tagSaveAction(req: Request, res: Response) {

@@ -77,6 +77,7 @@ const articleRouts: Route[] = [
   {
     path: `${base}/article`,
     method: "delete",
+    check: [common.queryIdCheck],
     action: articleActions.deleteArticle
   },
 ]
@@ -90,7 +91,8 @@ const tagRouts: Route[] = [
   {
     path: `${base}/tag`,
     method: "get",
-    action: tagActions.getTagsByNames,
+    check: [common.queryNamesCheck, common.queryOptionalPaginationCheck],
+    action: tagActions.getArticlesByTagNames,
   },
   {
     path: `${base}/tag`,

@@ -16,9 +16,9 @@ const articleRelations = { relations: [common.category, common.author, common.ta
  * get all articles, with relations
  */
 export async function getAllArticles(req: Request, res: Response) {
-  const targets = await repo().find(articleRelations)
+  const ans = await repo().find(articleRelations)
 
-  res.send(targets)
+  res.send(ans)
 }
 
 /**
@@ -31,27 +31,43 @@ export async function getArticlesByIds(req: Request, res: Response) {
   const ids = req.query.ids as string
   const pagination = req.query.pagination as common.QueryStr
 
-  const target = await repo()
+  const ans = await repo()
     .find({
       ...articleRelations,
       ...common.whereIdsIn(ids),
       ...common.paginationGet(pagination)
     })
 
-  res.send(target)
+  res.send(ans)
 }
 
+// todo: express-validator required here for IMPORTANT reasons
+/**
+ * save article.
+ *
+ * IMPORTANT:
+ *
+ * 1. Category is always needed, since no one wants unbounded A-C relationship.
+ *
+ * 2. If tags are provided in article, category needs these tags as well.
+ */
 export async function saveArticle(req: Request, res: Response) {
   const r = repo()
-  const newTarget = r.create(req.body)
-  await r.save(newTarget)
+  const newArticle = r.create(req.body)
+  await r.save(newArticle)
 
-  res.send(newTarget)
+  res.send(newArticle)
 }
 
+/**
+ * delete article by id
+ */
 export async function deleteArticle(req: Request, res: Response) {
-  const target = await repo().delete(req.query.id as string)
 
-  res.send(target)
+  if (common.expressErrorsBreak(req, res)) return
+
+  const ans = await repo().delete(req.query.id as string)
+
+  res.send(ans)
 }
 
