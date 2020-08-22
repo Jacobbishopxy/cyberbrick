@@ -6,10 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Index,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
@@ -20,7 +17,6 @@ import moment from "moment"
 import * as common from "../common"
 import { Category } from "./Category"
 import { Author } from "./Author"
-import { Tag } from "./Tag"
 
 @Entity({ name: common.article })
 @Unique([common.category, common.date])
@@ -41,12 +37,7 @@ export class Article {
   @ManyToOne(() => Author, author => author.articles, { cascade: true })
   author!: Author
 
-  @ManyToMany(() => Tag, tag => tag.articles, { cascade: true })
-  @JoinTable()
-  tags?: Tag[]
-
   @Column("text")
-  @Index({ unique: true })
   title!: string
 
   @Column("text")

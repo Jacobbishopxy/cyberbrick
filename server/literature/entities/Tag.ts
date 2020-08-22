@@ -9,7 +9,6 @@ import {
   Column
 } from "typeorm"
 import * as common from "../common"
-import { Article } from "./Article"
 import { Category } from "./Category"
 
 @Entity({ name: common.tag })
@@ -21,9 +20,7 @@ export class Tag {
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToMany(() => Article, article => article.tags)
-  articles?: Article[]
-
   @ManyToMany(() => Category, category => category.tags)
-  category!: Category
+  categories!: Category[]
+
 }

@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 8/14/2020.
  */
 
-import { ValidationChain} from "express-validator"
+import { ValidationChain } from "express-validator"
 
 import * as articleActions from "./controllers/ArticleActions"
 import * as categoryActions from "./controllers/CategoryActions"
-// import * as authorActions from "../controllers/AuthorActions"
 import * as tagActions from "./controllers/TagActions"
+import * as authorActions from "./controllers/AuthorActions"
 import * as common from "./common"
 
 const base = "/api/literature"
@@ -22,35 +22,45 @@ interface Route {
 
 const categoryRoutes: Route[] = [
   {
-    path: `${base}/categories`,
+    path: `${ base }/categories`,
     method: "get",
     action: categoryActions.getAllCategories
   },
   {
-    path: `${base}/category`,
+    path: `${ base }/category`,
     method: "get",
     check: [common.queryNameCheck, common.queryOptionalPaginationCheck],
     action: categoryActions.getArticlesByCategoryName
   },
+  // {
+  //   path: `${ base }/getArticlesByCategoryAndTagNames`,
+  //   method: "get",
+  //   check: [
+  //     common.queryCategoryCheck,
+  //     common.queryTagsCheck,
+  //     common.queryOptionalPaginationCheck
+  //   ],
+  //   action: categoryActions.getArticlesByCategoryAndTagNames
+  // },
   {
-    path: `${base}/getArticleIdsByCategoryName`,
+    path: `${ base }/getArticleIdsByCategoryName`,
     method: "get",
     check: [common.queryNameCheck],
     action: categoryActions.getArticleIdsByCategoryName
   },
   {
-    path: `${base}/getTagsByCategoryName`,
+    path: `${ base }/getTagsByCategoryName`,
     method: "get",
     check: [common.queryNameCheck],
     action: categoryActions.getTagsByCategoryName
   },
   {
-    path: `${base}/category`,
+    path: `${ base }/category`,
     method: "post",
     action: categoryActions.saveCategory
   },
   {
-    path: `${base}/category`,
+    path: `${ base }/category`,
     method: "delete",
     check: [common.queryNameCheck],
     action: categoryActions.deleteCategory
@@ -59,23 +69,23 @@ const categoryRoutes: Route[] = [
 
 const articleRouts: Route[] = [
   {
-    path: `${base}/articles`,
+    path: `${ base }/articles`,
     method: "get",
     action: articleActions.getAllArticles
   },
   {
-    path: `${base}/article`,
+    path: `${ base }/article`,
     method: "get",
     check: [common.queryIdsCheck, common.queryOptionalPaginationCheck],
     action: articleActions.getArticlesByIds
   },
   {
-    path: `${base}/article`,
+    path: `${ base }/article`,
     method: "post",
     action: articleActions.saveArticle
   },
   {
-    path: `${base}/article`,
+    path: `${ base }/article`,
     method: "delete",
     check: [common.queryIdCheck],
     action: articleActions.deleteArticle
@@ -84,31 +94,51 @@ const articleRouts: Route[] = [
 
 const tagRouts: Route[] = [
   {
-    path: `${base}/tags`,
+    path: `${ base }/tags`,
     method: "get",
     action: tagActions.getAllTags,
   },
   {
-    path: `${base}/tag`,
+    path: `${ base }/tag`,
     method: "get",
-    check: [common.queryNamesCheck, common.queryOptionalPaginationCheck],
-    action: tagActions.getArticlesByTagNames,
+    check: [common.queryNamesCheck],
+    action: tagActions.getTagsByNames,
   },
   {
-    path: `${base}/tag`,
+    path: `${ base }/tag`,
     method: "post",
     action: tagActions.tagSaveAction
   },
   {
-    path: `${base}/tag`,
+    path: `${ base }/tag`,
     method: "delete",
     action: tagActions.tagDeleteAction
   },
   {
-    path: `${base}/getTargetIdsByTagNames`,
+    path: `${ base }/getCommonCategoriesByTagNames`,
     method: "get",
-    action: tagActions.getTargetIdsByTagNames
+    check: [common.queryNamesCheck],
+    action: tagActions.getCommonCategoriesByTagNames,
   },
+  // {
+  //   path: `${ base }/getArticleIdsByTagNames`,
+  //   method: "get",
+  //   action: tagActions.getArticleIdsByTagNames
+  // },
+]
+
+const authorRoutes: Route[] = [
+  {
+    path: `${ base }/authors`,
+    method: "get",
+    action: authorActions.getAllAuthors,
+  },
+  {
+    path: `${ base }/getArticleIdsByAuthorNames`,
+    method: "get",
+    action: authorActions.getArticleIdsByAuthorNames,
+  },
+
 ]
 
 export const literature: Route[] = [
@@ -117,6 +147,8 @@ export const literature: Route[] = [
 
   ...tagRouts,
 
-  ...categoryRoutes
+  ...categoryRoutes,
+
+  ...authorRoutes
 
 ]

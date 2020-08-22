@@ -10,7 +10,7 @@ import { Article } from "../entities/Article"
 
 
 const repo = () => getRepository(Article)
-const articleRelations = { relations: [common.category, common.author, common.tags] }
+const articleRelations = { relations: [common.category, common.categoryTags, common.author] }
 
 /**
  * get all articles, with relations
@@ -47,9 +47,8 @@ export async function getArticlesByIds(req: Request, res: Response) {
  *
  * IMPORTANT:
  *
- * 1. Category is always needed, since no one wants unbounded A-C relationship.
+ * Category is always needed, since no one wants unbounded A-C relationship.
  *
- * 2. If tags are provided in article, category needs these tags as well.
  */
 export async function saveArticle(req: Request, res: Response) {
   const r = repo()

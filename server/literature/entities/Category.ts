@@ -26,7 +26,7 @@ export class Category {
   @OneToMany(() => Article, article => article.category)
   articles!: Article[]
 
-  @ManyToMany(() => Tag, tag => tag.category, { cascade: true })
+  @ManyToMany(() => Tag, tag => tag.categories, { cascade: true })
   @JoinTable()
   tags!: Tag[]
 }

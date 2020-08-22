@@ -5,26 +5,14 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import _ from "lodash"
+
 import * as common from "../common"
 import { Tag } from "../entities/Tag"
 
 
 const repo = () => getRepository(Tag)
 
-const tagArticleRelations = {
-  relations: [
-    common.articles,
-    common.articlesAuthor,
-    common.articlesCategory,
-    common.articlesTags
-  ]
-}
-
-const tagCategoryRelations = {
-  relations: [
-    common.category
-  ]
-}
+const tagCategoryRelations = { relations: [common.categories] }
 
 /**
  * get all tags, without relations
@@ -35,24 +23,18 @@ export async function getAllTags(req: Request, res: Response) {
   res.send(ans)
 }
 
-// todo: relation articles' pagination
-export async function getArticlesByTagNames(req: Request, res: Response) {
+export async function getTagsByNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
   const names = req.query.names as string
-  const ans = await repo()
+  const tags = await repo()
     .find({
-      ...tagArticleRelations,
+      ...tagCategoryRelations,
       ...common.whereNamesIn(names)
     })
 
-
-  res.send(ans)
-}
-
-export async function getCategoryByTagNames(req: Request, res: Response) {
-
+  res.send(tags)
 }
 
 export async function tagSaveAction(req: Request, res: Response) {
@@ -70,26 +52,44 @@ export async function tagDeleteAction(req: Request, res: Response) {
   res.send(tag)
 }
 
+// =====================================================================================================================
 
-export async function getTargetIdsByTagNames(req: Request, res: Response) {
-  const tagRepo = getRepository(Tag)
-  const names = req.query.names as string | undefined
+export async function getCommonCategoriesByTagNames(req: Request, res: Response) {
 
-  if (names === undefined) {
-    res.send([])
-  } else {
-    const namesArr = names.split(",")
-    const tags = await tagRepo
-      .createQueryBuilder("tag")
-      .leftJoinAndSelect("tag.targets", "target")
-      .select(["tag.name", "target.id"])
-      .where("tag.name IN (:...names)", { names: namesArr })
-      .getMany()
+  if (common.expressErrorsBreak(req, res)) return
 
+  const names = req.query.names as string
+  const tags = await repo()
+    .find({
+      ...tagCategoryRelations,
+      ...common.whereNamesIn(names)
+    })
 
-    const idsArr = tags.map(i => i.articles!.map(j => j.id))
-    const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
+  const catNamesArr = tags.map(i => i.categories)
+  const ans = _.reduce(catNamesArr, (acc, arr) => _.intersectionBy(acc, arr, common.name))
 
-    res.send(ans)
-  }
+  res.send(ans)
 }
+
+// export async function getArticleIdsByTagNames(req: Request, res: Response) {
+//   const tagRepo = getRepository(Tag)
+//   const names = req.query.names as string | undefined
+//
+//   if (names === undefined) {
+//     res.send([])
+//   } else {
+//     const namesArr = names.split(",")
+//     const tags = await tagRepo
+//       .createQueryBuilder()
+//       .leftJoinAndSelect(common.tagArticles, common.article)
+//       .select([common.tagName, common.articleId])
+//       .where(`${ common.tagName } IN (:...names)`, { names: namesArr })
+//       .getMany()
+//
+//
+//     const idsArr = tags.map(i => i.articles!.map(j => j.id))
+//     const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
+//
+//     res.send(ans)
+//   }
+// }

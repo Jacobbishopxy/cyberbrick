@@ -19,6 +19,7 @@ export const tag = "tag"
 export const tags = "tags"
 export const name = "name"
 export const articles = "articles"
+export const categories = "categories"
 export const date = "date"
 export const id = "id"
 
@@ -28,11 +29,15 @@ export const articleCategory = `${ article }.${ category }`
 export const articleAuthor = `${ article }.${ author }`
 export const articleTags = `${ article }.${ tags }`
 export const categoryName = `${ category }.${ name }`
+export const categoryTags = `${ category }.${ tags }`
 export const categoryArticles = `${ category }.${ articles }`
 export const tagName = `${ tag }.${ name }`
 export const articlesAuthor = `${ articles }.${ author }`
 export const articlesTags = `${ articles }.${ tags }`
 export const articlesCategory = `${ articles }.${ category }`
+export const articlesCategoryTags = `${ articles }.${ category }.${ tags }`
+export const tagArticles = `${ tag }.${ articles }`
+export const tagCategories = `${ tag }.${ categories }`
 export const tagsArticles = `${ tags }.${ articles }`
 export const tagsAuthor = `${ tags }.${ author }`
 
@@ -111,6 +116,12 @@ export const queryNameCheck =
 export const queryNamesCheck =
   query("names", "names is required!")
     .exists()
+
+export const queryCategoryCheck =
+  query(category, `${ category } is required!`)
+
+export const queryTagsCheck =
+  query(tags, `${ tags } is required!`)
 
 export const queryOptionalPaginationCheck =
   query("pagination", "pagination should like (5,10), meaning skip 5 and take 10")
