@@ -14,14 +14,14 @@ import { Category } from "../entities/Category"
 
 const repo = () => getRepository(Category)
 
-const categoryArticlesRelations = {
-  relations: [
-    common.articles,
-    common.articlesCategory,
-    common.articlesCategoryTags,
-    common.articlesAuthor
-  ]
-}
+// const categoryArticlesRelations = {
+//   relations: [
+//     common.articles,
+//     common.articlesCategory,
+//     common.articlesCategoryTags,
+//     common.articlesAuthor
+//   ]
+// }
 const categoryTagsRelations = {
   relations: [
     common.tags
@@ -35,7 +35,7 @@ const categoryTagsRelations = {
 
 
 /**
- * get all categories, no relations
+ * get all categories, without relations
  */
 export async function getAllCategories(req: Request, res: Response) {
   const categories = await repo().find()
@@ -43,25 +43,7 @@ export async function getAllCategories(req: Request, res: Response) {
   res.send(categories)
 }
 
-// todo: pagination needed, use queryBuilder!
-/**
- * get articles under a category, with full article relations
- */
-export async function getArticlesByCategoryName(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
-
-  const pagination = req.query.pagination as common.QueryStr
-
-  const cat = await repo()
-    .findOne({
-      ...categoryArticlesRelations,
-      ...common.whereNameEqual(req.query.name as string),
-      ...common.paginationGet(pagination)
-    })
-
-  res.send(cat)
-}
 
 /**
  *

@@ -4,11 +4,9 @@
 
 import {
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  OneToMany,
-  JoinTable
+  ManyToOne,
 } from "typeorm"
 import * as common from "../common"
 import { Article } from "./Article"
@@ -17,16 +15,18 @@ import { Tag } from "./Tag"
 @Entity({ name: common.category })
 export class Category {
 
-  @PrimaryColumn("varchar")
+  @PrimaryGeneratedColumn()
+  id!: number
+
+  @Column("varchar")
   name!: string
 
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToMany(() => Article, article => article.category)
-  articles!: Article[]
+  @ManyToOne(() => Article, article => article.category)
+  article!: Article
 
-  @ManyToMany(() => Tag, tag => tag.categories, { cascade: true })
-  @JoinTable()
-  tags!: Tag[]
+  @ManyToOne(() => Tag, tag => tag.category)
+  tag!: Tag
 }

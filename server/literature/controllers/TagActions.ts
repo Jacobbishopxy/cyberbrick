@@ -15,7 +15,7 @@ const repo = () => getRepository(Tag)
 const tagCategoryRelations = { relations: [common.categories] }
 
 /**
- * get all tags, without relations
+ * get all tags, with relations
  */
 export async function getAllTags(req: Request, res: Response) {
   const ans = await repo().find(tagCategoryRelations)
@@ -23,20 +23,30 @@ export async function getAllTags(req: Request, res: Response) {
   res.send(ans)
 }
 
+/**
+ * get tags by names
+ */
 export async function getTagsByNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
-  const names = req.query.names as string
   const tags = await repo()
     .find({
       ...tagCategoryRelations,
-      ...common.whereNamesIn(names)
+      ...common.whereNamesIn(req.query.names as string)
     })
 
   res.send(tags)
 }
 
+// todo: IMPORTANT
+/**
+ * save tag
+ *
+ * IMPORTANT:
+ *
+ * categories is always needed.
+ */
 export async function tagSaveAction(req: Request, res: Response) {
   const tagRepo = getRepository(Tag)
   const newTag = tagRepo.create(req.body)
@@ -45,7 +55,13 @@ export async function tagSaveAction(req: Request, res: Response) {
   res.send(newTag)
 }
 
+/**
+ * delete tag
+ */
 export async function tagDeleteAction(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
   const tagRepo = getRepository(Tag)
   const tag = await tagRepo.delete(req.query.name as string)
 
@@ -54,6 +70,9 @@ export async function tagDeleteAction(req: Request, res: Response) {
 
 // =====================================================================================================================
 
+/**
+ * get common categories by tag names
+ */
 export async function getCommonCategoriesByTagNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
@@ -71,25 +90,3 @@ export async function getCommonCategoriesByTagNames(req: Request, res: Response)
   res.send(ans)
 }
 
-// export async function getArticleIdsByTagNames(req: Request, res: Response) {
-//   const tagRepo = getRepository(Tag)
-//   const names = req.query.names as string | undefined
-//
-//   if (names === undefined) {
-//     res.send([])
-//   } else {
-//     const namesArr = names.split(",")
-//     const tags = await tagRepo
-//       .createQueryBuilder()
-//       .leftJoinAndSelect(common.tagArticles, common.article)
-//       .select([common.tagName, common.articleId])
-//       .where(`${ common.tagName } IN (:...names)`, { names: namesArr })
-//       .getMany()
-//
-//
-//     const idsArr = tags.map(i => i.articles!.map(j => j.id))
-//     const ans = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
-//
-//     res.send(ans)
-//   }
-// }

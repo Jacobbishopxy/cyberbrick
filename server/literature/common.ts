@@ -12,6 +12,7 @@ export type QueryStr = string | undefined
 // db name
 export const article = "article"
 export const category = "category"
+export const gallery = "gallery"
 export const author = "author"
 export const tag = "tag"
 
@@ -55,19 +56,26 @@ export const whereIdsIn = (ids: string) => {
   return { where: { id: In(idsArr) } }
 }
 
+export const whereCategoryEqual = (n: string) =>
+  ({ where: { "category.name": Equal(n) } })
+
 // misc
 const regSkip = new RegExp("^\\((\\d+),")
 const regTake = new RegExp(",(\\d+)\\)$")
 const regPagination = new RegExp("^\\((\\d+),(\\d+)\\)$")
 
-export const paginationSkip = (pagination: string) => {
+export const paginationSkip = (pagination: QueryStr) => {
+  if (!pagination)
+    return undefined
   const s = regSkip.exec(pagination)
   if (s === null)
     return undefined
   return +s[1]
 }
 
-export const paginationTake = (pagination: string) => {
+export const paginationTake = (pagination: QueryStr) => {
+  if (!pagination)
+    return undefined
   const t = regTake.exec(pagination)
   if (t === null)
     return undefined
@@ -117,8 +125,11 @@ export const queryNamesCheck =
   query("names", "names is required!")
     .exists()
 
-export const queryCategoryCheck =
-  query(category, `${ category } is required!`)
+export const queryCategoryNameCheck =
+  query(categoryName, `${ categoryName } is required!`)
+
+export const queryTagNamesCheck =
+  query("tagNames", "tagNames is required!")
 
 export const queryTagsCheck =
   query(tags, `${ tags } is required!`)

@@ -10,7 +10,13 @@ import { Article } from "../entities/Article"
 
 
 const repo = () => getRepository(Article)
-const articleRelations = { relations: [common.category, common.categoryTags, common.author] }
+const articleRelations = {
+  relations: [
+    common.category,
+    common.tags,
+    common.categoryTags,
+    common.author
+  ] }
 
 /**
  * get all articles, with relations
@@ -48,7 +54,6 @@ export async function getArticlesByIds(req: Request, res: Response) {
  * IMPORTANT:
  *
  * Category is always needed, since no one wants unbounded A-C relationship.
- *
  */
 export async function saveArticle(req: Request, res: Response) {
   const r = repo()
@@ -66,6 +71,51 @@ export async function deleteArticle(req: Request, res: Response) {
   if (common.expressErrorsBreak(req, res)) return
 
   const ans = await repo().delete(req.query.id as string)
+
+  res.send(ans)
+}
+
+// =====================================================================================================================
+
+/**
+ * get articles under a category, with full article relations
+ */
+export async function getArticlesByCategoryName(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const categoryName = req.query.categoryName as string
+  const pagination = req.query.pagination as common.QueryStr
+
+  const ans = await repo()
+    .createQueryBuilder(common.article)
+    .leftJoinAndSelect(common.articleCategory, common.category)
+    .where(`${ common.category }.${ common.name } = :categoryName`, { categoryName })
+    .leftJoinAndSelect(common.categoryTags, common.tag)
+    .skip(common.paginationSkip(pagination))
+    .take(common.paginationTake(pagination))
+    .getMany()
+
+  res.send(ans)
+}
+
+export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const categoryName = req.query.categoryName as string
+  const tagNames = (req.query.tagNames as string).split(",")
+  const pagination = req.query.pagination as common.QueryStr
+
+  const ans = await repo()
+    .createQueryBuilder(common.article)
+    .leftJoinAndSelect(common.articleCategory, common.category)
+    .where(`${ common.category }.${ common.name } = :categoryName`, { categoryName })
+    .leftJoinAndSelect(common.categoryTags, common.tag)
+    .where(`${ common.tag }.${ common.name } IN (:...tagNames)`, { tagNames })
+    .skip(common.paginationSkip(pagination))
+    .take(common.paginationTake(pagination))
+    .getMany()
 
   res.send(ans)
 }
