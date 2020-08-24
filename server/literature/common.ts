@@ -129,6 +129,9 @@ export const queryNamesCheck =
 export const queryCategoryNameCheck =
   query(categoryName, `${ categoryName } is required!`)
 
+export const queryTagNameCheck =
+  query("tagName", "tagName is required!")
+
 export const queryTagNamesCheck =
   query("tagNames", "tagNames is required!")
 

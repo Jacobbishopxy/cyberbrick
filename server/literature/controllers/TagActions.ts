@@ -10,7 +10,7 @@ import * as common from "../common"
 import { Tag } from "../entities/Tag"
 
 
-const repo = () => getRepository(Tag)
+const tagRepo = () => getRepository(Tag)
 
 const tagArticlesRelations = { relations: [common.articles] }
 const tagCategoriesRelations = { relations: [common.articles, common.categories] }
@@ -19,7 +19,7 @@ const tagCategoriesRelations = { relations: [common.articles, common.categories]
  * get all tags, with relations
  */
 export async function getAllTags(req: Request, res: Response) {
-  const ans = await repo().find(tagCategoriesRelations)
+  const ans = await tagRepo().find(tagCategoriesRelations)
 
   res.send(ans)
 }
@@ -31,7 +31,7 @@ export async function getTagsByNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
-  const tags = await repo()
+  const tags = await tagRepo()
     .find({
       ...tagArticlesRelations,
       ...common.whereNamesIn(req.query.names as string)
@@ -40,7 +40,7 @@ export async function getTagsByNames(req: Request, res: Response) {
   res.send(tags)
 }
 
-// todo: IMPORTANT
+// todo: unsafe, IMPORTANT
 /**
  * save tag
  *
@@ -49,13 +49,14 @@ export async function getTagsByNames(req: Request, res: Response) {
  * categories is always needed.
  */
 export async function tagSaveAction(req: Request, res: Response) {
-  const tagRepo = getRepository(Tag)
-  const newTag = tagRepo.create(req.body)
-  await tagRepo.save(newTag)
+  const tr = tagRepo()
+  const newTag = tr.create(req.body)
+  await tr.save(newTag)
 
   res.send(newTag)
 }
 
+// todo: unsafe
 /**
  * delete tag
  */
@@ -63,8 +64,7 @@ export async function tagDeleteAction(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
-  const tagRepo = getRepository(Tag)
-  const tag = await tagRepo.delete(req.query.name as string)
+  const tag = await tagRepo().delete(req.query.name as string)
 
   res.send(tag)
 }

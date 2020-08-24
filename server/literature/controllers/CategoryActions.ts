@@ -8,19 +8,18 @@ import _ from "lodash"
 
 import * as common from "../common"
 import { Category } from "../entities/Category"
-// import { Tag } from "../entities/Tag"
+import { Tag } from "../entities/Tag"
 
 
 const categoryRepo = () => getRepository(Category)
-// const tagRepo = () => getRepository(Tag)
+const tagRepo = () => getRepository(Tag)
 
 const categoryArticlesTagsRelations = {
   relations: [
     common.articles,
-    common.tags
+    common.unionTags
   ]
 }
-
 const categoryTagsRelations = {
   relations: [
     common.unionTags
@@ -56,9 +55,9 @@ export async function getCategoriesByNames(req: Request, res: Response) {
  * save a category
  */
 export async function saveCategory(req: Request, res: Response) {
-  const rp = categoryRepo()
-  const newCat = rp.create(req.body)
-  await rp.save(newCat)
+  const cr = categoryRepo()
+  const newCat = cr.create(req.body)
+  await cr.save(newCat)
 
   res.send(newCat)
 }
@@ -101,42 +100,91 @@ export async function getTagsByCategoryName(req: Request, res: Response) {
 }
 
 /**
- *
+ * insert new tag to a existing category, updating tag if already exists
  */
 export async function upsertCategoryTag(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
   const cr = categoryRepo()
-  const prevCategory = await cr.findOne({
+  const catName = req.body.name
+  const prevCat = await cr.findOne({
     ...categoryTagsRelations,
-    ...common.whereNameEqual(req.body.name)
+    ...common.whereNameEqual(catName)
   })
-  const preTags = prevCategory ? prevCategory.unionTags : []
-  console.log(preTags)
 
-  // todo: upsert preTags by `req.body.tag`
+  if (prevCat) {
+    const preTags = prevCat.unionTags
 
-  // upsert if new tag not in category tags
-  // const newCategory = cr.create({
-  //   name: req.body.name,
-  //   tags: updatedTags
-  // })
-  //
-  // await cr.save(newCategory)
+    const newTag = req.body.tag
+    let newTags
 
-  res.send("test")
+    const targetTag = _.find(preTags, i => i.name === newTag.name)
+
+    if (targetTag) {
+      const rawTargetTag = {
+        name: targetTag.name,
+        description: targetTag.description
+      }
+
+      if (_.isEqual(newTag, rawTargetTag)) {
+        res.status(304).send(`Tag ${ newTag.name } not modified!`)
+        return
+      }
+
+      newTags = preTags.map(i => i.name === newTag.name ? newTag : i)
+    } else
+      newTags = [...preTags, newTag]
+
+    const newCat = cr.create({
+      ...prevCat,
+      unionTags: newTags
+    })
+    await cr.save(newCat)
+
+    res.send(newCat)
+    return
+  }
+
+  res.status(400).send(`Category ${ catName } not found!`)
 }
 
 /**
- *
+ * remove a tag from a existing category
  */
-// export async function removeCategoryTag(req: Request, res: Response) {
-//
-//   if (common.expressErrorsBreak(req, res)) return
-//
-//   const cat = await categoryRepo()
-//   const tag = await tagRepo()
-//
-// }
+export async function removeCategoryTag(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const cr = categoryRepo()
+  const catName = req.query.categoryName as string
+  const prevCat = await cr.findOne({
+    ...categoryTagsRelations,
+    ...common.whereNameEqual(catName)
+  })
+
+  if (prevCat) {
+    const tagName = req.query.tagName as string
+    const newTags = prevCat.unionTags.filter(i => i.name !== tagName)
+
+    if (newTags.length === prevCat.unionTags.length) {
+      res.status(400).send(`Tag ${ tagName } not found!`)
+      return
+    }
+
+    const newCat = cr.create({
+      ...prevCat,
+      unionTags: newTags
+    })
+    await cr.save(newCat)
+
+    const tr = tagRepo()
+    tr.delete(tagName)
+
+    res.send(`Tag ${ tagName } deleted from Category ${ catName }`)
+    return
+  }
+
+  res.status(400).send(`Category ${ catName } not found!`)
+}
 

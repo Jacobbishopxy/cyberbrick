@@ -54,6 +54,15 @@ const categoryRoutes: Route[] = [
     method: "post",
     action: categoryActions.upsertCategoryTag
   },
+  {
+    path: `${ base }/removeCategoryTag`,
+    method: "delete",
+    check: [
+      common.queryCategoryNameCheck,
+      common.queryTagNameCheck
+    ],
+    action: categoryActions.removeCategoryTag
+  },
 
 ]
 

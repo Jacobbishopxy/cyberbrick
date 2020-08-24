@@ -24,7 +24,7 @@ const articleRelations = {
 }
 const categoryTagsRelations = {
   relations: [
-    common.tags
+    common.unionTags
   ]
 }
 

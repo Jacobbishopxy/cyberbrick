@@ -24,6 +24,6 @@ export class Tag {
   @ManyToMany(() => Article, article => article.tags)
   articles?: Article[]
 
-  @ManyToMany(() => Category, cat => cat.tags)
+  @ManyToMany(() => Category, cat => cat.unionTags)
   categories!: Category[]
 }
