@@ -4,160 +4,66 @@
 
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-// import _ from "lodash"
+import _ from "lodash"
 
 import * as common from "../common"
 import { Category } from "../entities/Category"
 // import { Tag } from "../entities/Tag"
-// import { Article } from "../entities/Article"
 
 
-const repo = () => getRepository(Category)
+const categoryRepo = () => getRepository(Category)
+// const tagRepo = () => getRepository(Tag)
 
-// const categoryArticlesRelations = {
-//   relations: [
-//     common.articles,
-//     common.articlesCategory,
-//     common.articlesCategoryTags,
-//     common.articlesAuthor
-//   ]
-// }
-const categoryTagsRelations = {
+const categoryArticlesTagsRelations = {
   relations: [
+    common.articles,
     common.tags
   ]
 }
-// const tagArticlesRelations = {
-//   relations: [
-//     common.articles
-//   ]
-// }
+
+const categoryTagsRelations = {
+  relations: [
+    common.unionTags
+  ]
+}
 
 
 /**
  * get all categories, without relations
  */
 export async function getAllCategories(req: Request, res: Response) {
-  const categories = await repo().find()
+  const ans = await categoryRepo().find(categoryArticlesTagsRelations)
 
-  res.send(categories)
+  res.send(ans)
 }
-
-
 
 /**
  *
  */
-// export async function getArticlesByCategoryAndTagNames(req: Request, res: Response) {
-//
-//   if (common.expressErrorsBreak(req, res)) return
-//
-//   const categoryName = req.query.category as string
-//   const tagNames = req.query.tags as string
-//   const pagination = req.query.pagination as common.QueryStr
-//
-//   const cat = await repo()
-//     .findOne({
-//       ...categoryTagsRelations,
-//       ...common.whereNameEqual(categoryName)
-//     })
-//
-//   if (cat === undefined) {
-//     res.send([])
-//     return
-//   }
-//   const realTagsNames = cat.tags.map(i => i.name).filter(i => tagNames.includes(i))
-//
-//   const ts = await getRepository(Tag)
-//     .createQueryBuilder(common.tag)
-//     .leftJoinAndSelect(common.tagArticles, common.article)
-//     .select([common.tagName, common.articleId])
-//     .where(`${ common.tagName } IN (:...names)`, { names: realTagsNames })
-//     .getMany()
-//
-//   const idsArr = ts.map(i => {
-//     if (i.articles)
-//       return i.articles.map(j => j.id)
-//     return []
-//   })
-//   const commonIds = _.reduce(idsArr, (acc, arr) => _.intersection(acc, arr))
-//
-//   if (commonIds === undefined) {
-//     res.send([])
-//     return
-//   }
-//
-//   const at = await getRepository(Article)
-//     .find({
-//       ...common.whereIdsIn(commonIds.join(",")),
-//       ...common.paginationGet(pagination)
-//     })
-//
-//   res.send(at)
-// }
-
-// export async function getArticlesByCategoryAndTagNames2(req: Request, res: Response) {
-//
-//   if (common.expressErrorsBreak(req, res)) return
-//
-//   const categoryName = req.query.category as string
-//   const tagNames = req.query.names as string
-//   const pagination = req.query.pagination as common.QueryStr
-//
-//   const ans = await repo()
-//     .createQueryBuilder()
-//     .leftJoinAndSelect(common.tagCategories, common.category)
-//     .leftJoinAndSelect(common.categoryArticles, common.article)
-//
-// }
-
-
-/**
- * get article ids under a category
- */
-export async function getArticleIdsByCategoryName(req: Request, res: Response) {
+export async function getCategoriesByNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
-  const cat = await repo()
-    .createQueryBuilder()
-    .leftJoinAndSelect(common.categoryArticles, common.article)
-    .select([common.categoryName, common.articleId])
-    .where(`${ common.categoryName } = :name`, { name: req.query.name as string })
-    .getOne()
+  const ans = await categoryRepo().find({
+    ...categoryArticlesTagsRelations,
+    ...common.whereNamesIn(req.query.names as string)
+  })
 
-  const idsArr = cat!.articles.map(i => i.id)
-
-  res.send(idsArr)
-}
-
-/**
- * get tags under a category
- */
-export async function getTagsByCategoryName(req: Request, res: Response) {
-
-  if (common.expressErrorsBreak(req, res)) return
-
-  const cat = await repo()
-    .findOne({
-      ...categoryTagsRelations,
-      ...common.whereNameEqual(req.query.name as string)
-    })
-
-  res.send(cat)
+  res.send(ans)
 }
 
 /**
  * save a category
  */
 export async function saveCategory(req: Request, res: Response) {
-  const rp = repo()
+  const rp = categoryRepo()
   const newCat = rp.create(req.body)
   await rp.save(newCat)
 
   res.send(newCat)
 }
 
+// todo: unsafe, since Article Tags should also unbinding
 /**
  * delete a category
  */
@@ -167,7 +73,7 @@ export async function deleteCategory(req: Request, res: Response) {
 
   const name = req.query.name as string
 
-  await repo()
+  await categoryRepo()
     .createQueryBuilder()
     .delete()
     .where(`${ common.name } = :name`, { name })
@@ -175,3 +81,62 @@ export async function deleteCategory(req: Request, res: Response) {
 
   res.send(name)
 }
+
+// =====================================================================================================================
+
+/**
+ * get tags under a category
+ */
+export async function getTagsByCategoryName(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const ans = await categoryRepo()
+    .findOne({
+      ...categoryTagsRelations,
+      ...common.whereNameEqual(req.query.name as string)
+    })
+
+  res.send(ans)
+}
+
+/**
+ *
+ */
+export async function upsertCategoryTag(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const cr = categoryRepo()
+  const prevCategory = await cr.findOne({
+    ...categoryTagsRelations,
+    ...common.whereNameEqual(req.body.name)
+  })
+  const preTags = prevCategory ? prevCategory.unionTags : []
+  console.log(preTags)
+
+  // todo: upsert preTags by `req.body.tag`
+
+  // upsert if new tag not in category tags
+  // const newCategory = cr.create({
+  //   name: req.body.name,
+  //   tags: updatedTags
+  // })
+  //
+  // await cr.save(newCategory)
+
+  res.send("test")
+}
+
+/**
+ *
+ */
+// export async function removeCategoryTag(req: Request, res: Response) {
+//
+//   if (common.expressErrorsBreak(req, res)) return
+//
+//   const cat = await categoryRepo()
+//   const tag = await tagRepo()
+//
+// }
+

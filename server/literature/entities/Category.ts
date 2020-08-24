@@ -4,29 +4,30 @@
 
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
-  ManyToOne,
+  OneToMany,
+  ManyToMany,
+  JoinTable
 } from "typeorm"
 import * as common from "../common"
-import { Article } from "./Article"
 import { Tag } from "./Tag"
+
+import { Article } from "./Article"
 
 @Entity({ name: common.category })
 export class Category {
 
-  @PrimaryGeneratedColumn()
-  id!: number
-
-  @Column("varchar")
+  @PrimaryColumn("varchar")
   name!: string
 
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToOne(() => Article, article => article.category)
-  article!: Article
+  @OneToMany(() => Article, article => article.category)
+  articles!: Article[]
 
-  @ManyToOne(() => Tag, tag => tag.category)
-  tag!: Tag
+  @ManyToMany(() => Tag, tag => tag.categories, { cascade: true })
+  @JoinTable()
+  unionTags!: Tag[]
 }

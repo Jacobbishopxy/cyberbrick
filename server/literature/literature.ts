@@ -26,33 +26,11 @@ const categoryRoutes: Route[] = [
     method: "get",
     action: categoryActions.getAllCategories
   },
-  // {
-  //   path: `${ base }/category`,
-  //   method: "get",
-  //   check: [common.queryNameCheck, common.queryOptionalPaginationCheck],
-  //   action: categoryActions.getArticlesByCategoryName
-  // },
-  // {
-  //   path: `${ base }/getArticlesByCategoryAndTagNames`,
-  //   method: "get",
-  //   check: [
-  //     common.queryCategoryCheck,
-  //     common.queryTagsCheck,
-  //     common.queryOptionalPaginationCheck
-  //   ],
-  //   action: categoryActions.getArticlesByCategoryAndTagNames
-  // },
   {
-    path: `${ base }/getArticleIdsByCategoryName`,
+    path: `${ base }/category`,
     method: "get",
-    check: [common.queryNameCheck],
-    action: categoryActions.getArticleIdsByCategoryName
-  },
-  {
-    path: `${ base }/getTagsByCategoryName`,
-    method: "get",
-    check: [common.queryNameCheck],
-    action: categoryActions.getTagsByCategoryName
+    check: [common.queryNamesCheck],
+    action: categoryActions.getCategoriesByNames
   },
   {
     path: `${ base }/category`,
@@ -65,6 +43,18 @@ const categoryRoutes: Route[] = [
     check: [common.queryNameCheck],
     action: categoryActions.deleteCategory
   },
+  {
+    path: `${ base }/getTagsByCategoryName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getTagsByCategoryName
+  },
+  {
+    path: `${ base }/upsertCategoryTag`,
+    method: "post",
+    action: categoryActions.upsertCategoryTag
+  },
+
 ]
 
 const articleRouts: Route[] = [
@@ -76,7 +66,10 @@ const articleRouts: Route[] = [
   {
     path: `${ base }/article`,
     method: "get",
-    check: [common.queryIdsCheck, common.queryOptionalPaginationCheck],
+    check: [
+      common.queryIdsCheck,
+      common.queryOptionalPaginationCheck
+    ],
     action: articleActions.getArticlesByIds
   },
   {
@@ -90,14 +83,25 @@ const articleRouts: Route[] = [
     check: [common.queryIdCheck],
     action: articleActions.deleteArticle
   },
-
   {
     path: `${ base }/getArticlesByCategoryName`,
     method: "get",
-    check: [common.queryCategoryNameCheck, common.queryOptionalPaginationCheck],
+    check: [
+      common.queryCategoryNameCheck,
+      common.queryOptionalPaginationCheck
+    ],
     action: articleActions.getArticlesByCategoryName
   },
-
+  {
+    path: `${ base }/getArticlesByCategoryNameAndTagNames`,
+    method: "get",
+    check: [
+      common.queryCategoryNameCheck,
+      common.queryTagNamesCheck,
+      common.queryOptionalPaginationCheck
+    ],
+    action: articleActions.getArticlesByCategoryNameAndTagNames
+  },
 ]
 
 const tagRouts: Route[] = [
@@ -123,12 +127,12 @@ const tagRouts: Route[] = [
     check: [common.queryNameCheck],
     action: tagActions.tagDeleteAction
   },
-  {
-    path: `${ base }/getCommonCategoriesByTagNames`,
-    method: "get",
-    check: [common.queryNamesCheck],
-    action: tagActions.getCommonCategoriesByTagNames,
-  },
+  // {
+  //   path: `${ base }/getCommonCategoriesByTagNames`,
+  //   method: "get",
+  //   check: [common.queryNamesCheck],
+  //   action: tagActions.getCommonCategoriesByTagNames,
+  // },
 ]
 
 const authorRoutes: Route[] = [
@@ -137,13 +141,13 @@ const authorRoutes: Route[] = [
     method: "get",
     action: authorActions.getAllAuthors,
   },
-  {
-    path: `${ base }/getArticleIdsByAuthorNames`,
-    method: "get",
-    action: authorActions.getArticleIdsByAuthorNames,
-  },
-
+  // {
+  //   path: `${ base }/getArticleIdsByAuthorNames`,
+  //   method: "get",
+  //   action: authorActions.getArticleIdsByAuthorNames,
+  // },
 ]
+
 
 export const literature: Route[] = [
 
@@ -156,3 +160,4 @@ export const literature: Route[] = [
   ...authorRoutes
 
 ]
+

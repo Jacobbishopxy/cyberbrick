@@ -6,7 +6,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   ManyToOne,
   ManyToMany,
   JoinTable,
@@ -15,7 +14,6 @@ import {
   UpdateDateColumn,
   VersionColumn
 } from "typeorm"
-import moment from "moment"
 
 import * as common from "../common"
 import { Category } from "./Category"
@@ -29,26 +27,23 @@ export class Article {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @OneToMany(() => Category, category => category.article)
+  @ManyToOne(() => Category, category => category.articles)
   category!: Category
 
   @ManyToMany(() => Tag, tag => tag.articles, { cascade: true })
   @JoinTable()
-  tags!: Tag[]
+  tags?: Tag[]
 
-  @Column({
-    default: () => moment(),
-    type: "datetime"
-  })
+  @Column("datetime")
   date!: string
 
   @ManyToOne(() => Author, author => author.articles, { cascade: true })
   author!: Author
 
-  @Column("text")
+  @Column("text", { nullable: false })
   title!: string
 
-  @Column("text")
+  @Column("text", { nullable: false })
   text!: string
 
   @CreateDateColumn({ select: false })

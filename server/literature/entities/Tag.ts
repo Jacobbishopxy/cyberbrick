@@ -5,9 +5,8 @@
 import {
   Entity,
   PrimaryColumn,
-  OneToMany,
   ManyToMany,
-  Column
+  Column,
 } from "typeorm"
 import * as common from "../common"
 import { Article } from "./Article"
@@ -22,9 +21,9 @@ export class Tag {
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToMany(() => Category, category => category.article)
-  category!: Category
-
   @ManyToMany(() => Article, article => article.tags)
-  articles!: Article[]
+  articles?: Article[]
+
+  @ManyToMany(() => Category, cat => cat.tags)
+  categories!: Category[]
 }

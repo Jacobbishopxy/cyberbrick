@@ -18,6 +18,7 @@ export const tag = "tag"
 
 // column name
 export const tags = "tags"
+export const unionTags = "unionTags"
 export const name = "name"
 export const articles = "articles"
 export const categories = "categories"

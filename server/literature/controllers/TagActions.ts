@@ -4,7 +4,7 @@
 
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
-import _ from "lodash"
+// import _ from "lodash"
 
 import * as common from "../common"
 import { Tag } from "../entities/Tag"
@@ -12,13 +12,14 @@ import { Tag } from "../entities/Tag"
 
 const repo = () => getRepository(Tag)
 
-const tagCategoryRelations = { relations: [common.categories] }
+const tagArticlesRelations = { relations: [common.articles] }
+const tagCategoriesRelations = { relations: [common.articles, common.categories] }
 
 /**
  * get all tags, with relations
  */
 export async function getAllTags(req: Request, res: Response) {
-  const ans = await repo().find(tagCategoryRelations)
+  const ans = await repo().find(tagCategoriesRelations)
 
   res.send(ans)
 }
@@ -32,7 +33,7 @@ export async function getTagsByNames(req: Request, res: Response) {
 
   const tags = await repo()
     .find({
-      ...tagCategoryRelations,
+      ...tagArticlesRelations,
       ...common.whereNamesIn(req.query.names as string)
     })
 
@@ -73,20 +74,20 @@ export async function tagDeleteAction(req: Request, res: Response) {
 /**
  * get common categories by tag names
  */
-export async function getCommonCategoriesByTagNames(req: Request, res: Response) {
-
-  if (common.expressErrorsBreak(req, res)) return
-
-  const names = req.query.names as string
-  const tags = await repo()
-    .find({
-      ...tagCategoryRelations,
-      ...common.whereNamesIn(names)
-    })
-
-  const catNamesArr = tags.map(i => i.categories)
-  const ans = _.reduce(catNamesArr, (acc, arr) => _.intersectionBy(acc, arr, common.name))
-
-  res.send(ans)
-}
+// export async function getCommonCategoriesByTagNames(req: Request, res: Response) {
+//
+//   if (common.expressErrorsBreak(req, res)) return
+//
+//   const names = req.query.names as string
+//   const tags = await repo()
+//     .find({
+//       ...tagCategoryRelations,
+//       ...common.whereNamesIn(names)
+//     })
+//
+//   const catNamesArr = tags.map(i => i.category)
+//   const ans = _.reduce(catNamesArr, (acc, arr) => _.intersectionBy(acc, arr, common.name))
+//
+//   res.send(ans)
+// }
 
