@@ -49,7 +49,7 @@ export async function getTagsByNames(req: Request, res: Response) {
  *
  * categories is always needed.
  */
-export async function tagSaveAction(req: Request, res: Response) {
+export async function saveTag(req: Request, res: Response) {
   const tr = tagRepo()
   const newTag = tr.create(req.body)
   await tr.save(newTag)
@@ -61,7 +61,7 @@ export async function tagSaveAction(req: Request, res: Response) {
 /**
  * delete tag
  */
-export async function tagDeleteAction(req: Request, res: Response) {
+export async function deleteTag(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 

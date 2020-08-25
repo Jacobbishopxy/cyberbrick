@@ -6,10 +6,10 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout'
 import React, { useState, useEffect } from 'react'
 import { Row, Col, Card } from 'antd'
 
-import * as service from '@/services/targetTag'
+import * as service from '@/services/literature'
 
 import { TagsView } from "./components/TagsView"
-import { TargetsView } from "./components/TargetsView"
+import { ArticlesView } from "./components/ArticlesView"
 import { Editor } from "./components/Editor"
 
 
@@ -23,19 +23,21 @@ interface TriggerEdit {
   tag: number
 }
 
+
+// todo: service updated
 export default () => {
 
   const [editable, setEditable] = useState<Editable>({ target: false, tag: false })
   const [triggerEdit, setTriggerEdit] = useState<TriggerEdit>({ target: 0, tag: 0 })
-  const [tags, setTags] = useState<service.Tag[]>([])
-  const [targets, setTargets] = useState<service.Target[]>([])
+  const [tags, setTags] = useState<API.Tag[]>([])
+  const [articles, setArticles] = useState<API.Article[]>([])
 
   useEffect(() => {
     service.getTags(false).then(res => setTags(res))
   }, [triggerEdit.tag])
 
   useEffect(() => {
-    service.getTargets().then(res => setTargets(res))
+    service.getTargets().then(res => setArticles(res))
   }, [triggerEdit.target])
 
   const triggerTag = () =>
@@ -45,7 +47,7 @@ export default () => {
     setTriggerEdit({ tag: triggerEdit.tag + 1, target: triggerEdit.target + 1 })
 
 
-  const tagPanelUpdate = (ts: service.Tag) =>
+  const tagPanelUpdate = (ts: API.Tag) =>
     service
       .saveTag(ts)
       .then(triggerTag)
@@ -56,7 +58,7 @@ export default () => {
       .deleteTag(name)
       .then(triggerTag)
 
-  const targetPanelUpdate = (target: service.Target) =>
+  const targetPanelUpdate = (target: API.Article) =>
     service
       .saveTarget(target)
       .then(triggerTarget)
@@ -79,12 +81,12 @@ export default () => {
               />
             }
           >
-            <TargetsView
-              targets={ targets }
+            <ArticlesView
+              articles={ articles }
               tags={ tags }
               editable={ editable.target }
-              targetOnCreate={ targetPanelUpdate }
-              targetOnDelete={ targetPanelDelete }
+              articleOnCreate={ targetPanelUpdate }
+              articleOnDelete={ targetPanelDelete }
             />
           </Card>
         </Col>

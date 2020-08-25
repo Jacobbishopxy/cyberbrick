@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react"
 import _ from "lodash"
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 
-import * as service from "@/services/targetTag"
 import { TagsView } from "./TagsView"
 import * as propsData from "./data"
 
@@ -13,48 +12,48 @@ import * as propsData from "./data"
  */
 
 
-const getExcludeTags = (all: string[], have: service.Tag[]): string[] =>
+const getExcludeTags = (all: string[], have: API.Tag[]): string[] =>
   _.difference(all, have.map(i => i.name))
 
 
-const SingleTargetView = (props: propsData.SingleTargetViewProps) => {
+const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
 
-  const [target, setTarget] = useState<service.Target>(props.target)
-  const [targetEditable, setTargetEditable] = useState<boolean>(false)
+  const [article, setArticle] = useState<API.Article>(props.article)
+  const [articleEditable, setArticleEditable] = useState<boolean>(false)
 
   useEffect(() => {
-    setTarget(props.target)
-  }, [props.target])
+    setArticle(props.article)
+  }, [props.article])
 
   const doneEdit = () => {
-    if (target && props.targetOnModify)
-      props.targetOnModify(target).then()
-    setTargetEditable(false)
+    if (article && props.targetOnModify)
+      props.targetOnModify(article).then()
+    setArticleEditable(false)
   }
 
-  const targetTextOnChange = (text: string) =>
-    setTarget({ ...target, text })
+  const articleTextOnChange = (text: string) =>
+    setArticle({ ...article, text })
 
-  const targetTagOnChange = (tags: service.Tag[]) =>
-    setTarget({ ...target, tags })
+  const articleTagOnChange = (tags: API.Tag[]) =>
+    setArticle({ ...article, tags })
 
   const displayView = (
     <>
       <List.Item.Meta
         title={
           <div style={ { display: 'flex', justifyContent: 'space-between' } }>
-            <div>{ target.title }</div>
-            <div>{ target.id }</div>
+            <div>{ article.title }</div>
+            <div>{ article.id }</div>
           </div>
         }
         description={
           <div>
             <TextEditorPresenter
-              content={ target.text }
+              content={ article.text }
             />
             <br/>
             <TagsView
-              tags={ target.tags! }
+              tags={ article.tags! }
               editable={ false }
             />
           </div>
@@ -64,7 +63,7 @@ const SingleTargetView = (props: propsData.SingleTargetViewProps) => {
       {
         props.editable ?
           <a
-            onClick={ () => setTargetEditable(true) }
+            onClick={ () => setArticleEditable(true) }
             style={ { height: 20 } }
           >
             Edit
@@ -79,23 +78,23 @@ const SingleTargetView = (props: propsData.SingleTargetViewProps) => {
       <List.Item.Meta
         title={
           <div style={ { display: 'flex', justifyContent: 'space-between' } }>
-            <div>{ target.title }</div>
-            <div>{ target.id }</div>
+            <div>{ article.title }</div>
+            <div>{ article.id }</div>
           </div>
         }
         description={
           <div>
             <TextEditorModifier
-              onSave={ targetTextOnChange }
-              content={ target.text }
+              onSave={ articleTextOnChange }
+              content={ article.text }
             />
             <br/>
             <TagsView
               isTagPanel={ false }
-              tags={ target.tags! }
-              tagsNameExclude={ getExcludeTags(props.tagsName, target.tags!) }
+              tags={ article.tags! }
+              tagsNameExclude={ getExcludeTags(props.tagsName, article.tags!) }
               editable
-              tagsOnChange={ targetTagOnChange }
+              tagsOnChange={ articleTagOnChange }
             />
           </div>
         }
@@ -106,8 +105,8 @@ const SingleTargetView = (props: propsData.SingleTargetViewProps) => {
   )
 
   return (
-    <List.Item key={ target.id } style={ { display: 'flex', justifyContent: 'space-between' } }>
-      { targetEditable && props.editable ? editView : displayView }
+    <List.Item key={ article.id } style={ { display: 'flex', justifyContent: 'space-between' } }>
+      { articleEditable && props.editable ? editView : displayView }
     </List.Item>
   )
 }
@@ -155,9 +154,9 @@ const tailLayout = {
   wrapperCol: { offset: 4, span: 16 },
 }
 
-const NewTargetForm = (props: propsData.NewTargetFormProps) => {
+const NewArticleForm = (props: propsData.NewArticleFormProps) => {
 
-  const [tags, setTags] = useState<service.Tag[]>(props.tags)
+  const [tags, setTags] = useState<API.Tag[]>(props.tags)
   const [newTag, setNewTag] = useState<string>()
 
 
@@ -178,7 +177,7 @@ const NewTargetForm = (props: propsData.NewTargetFormProps) => {
   }
 
   const onFinish = (values: any) =>
-    props.onSubmit(values as service.Target).then()
+    props.onSubmit(values as API.Article).then()
 
 
   const onReset = () => {
@@ -215,7 +214,7 @@ const NewTargetForm = (props: propsData.NewTargetFormProps) => {
   )
 }
 
-export const TargetsView = (props: propsData.TargetsViewProps) => {
+export const ArticlesView = (props: propsData.ArticlesViewProps) => {
 
   const tagsName = props.tags.map(i => i.name)
 
@@ -223,13 +222,13 @@ export const TargetsView = (props: propsData.TargetsViewProps) => {
     <>
       <List
         itemLayout="vertical"
-        dataSource={ props.targets }
+        dataSource={ props.articles }
         renderItem={ item =>
-          <SingleTargetView
+          <SingleArticleView
             tagsName={ tagsName }
-            target={ item }
+            article={ item }
             editable={ props.editable }
-            targetOnModify={ props.targetOnCreate }
+            targetOnModify={ props.articleOnCreate }
           />
         }
       />
@@ -237,9 +236,9 @@ export const TargetsView = (props: propsData.TargetsViewProps) => {
         props.editable ?
           <div>
             <Divider/>
-            <NewTargetForm
+            <NewArticleForm
               tags={ props.tags }
-              onSubmit={ props.targetOnCreate! }
+              onSubmit={ props.articleOnCreate! }
             />
           </div> :
           <></>

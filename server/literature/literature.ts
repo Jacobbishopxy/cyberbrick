@@ -106,7 +106,7 @@ const articleRouts: Route[] = [
     path: `${ base }/getArticlesByAuthorName`,
     method: "get",
     check: [
-      common.queryCategoryNameCheck,
+      common.queryNameCheck,
       common.queryOptionalPaginationCheck
     ],
     action: articleActions.getArticlesByAuthorName
@@ -128,13 +128,13 @@ const tagRouts: Route[] = [
   {
     path: `${ base }/tag`,
     method: "post",
-    action: tagActions.tagSaveAction
+    action: tagActions.saveTag
   },
   {
     path: `${ base }/tag`,
     method: "delete",
     check: [common.queryNameCheck],
-    action: tagActions.tagDeleteAction
+    action: tagActions.deleteTag
   },
   {
     path: `${ base }/getCommonCategoriesByTagNames`,

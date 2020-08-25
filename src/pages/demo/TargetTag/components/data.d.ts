@@ -1,17 +1,15 @@
-import { Tag, Target } from "@/services/targetTag"
-
 /**
  * Created by Jacob Xie on 8/17/2020.
  */
 
 export interface TagsViewProps {
-  tags: Tag[]
+  tags: API.Tag[]
   tagsNameExclude?: string[]
   editable: boolean
   isTagPanel?: boolean
-  tagOnCreate?: (values: Tag) => Promise<void>
+  tagOnCreate?: (values: API.Tag) => Promise<void>
   tagOnRemove?: (values: string) => Promise<void>
-  tagsOnChange?: (values: Tag[]) => void
+  tagsOnChange?: (values: API.Tag[]) => void
 }
 
 export interface TagCreateModalProps {
@@ -30,28 +28,28 @@ export interface TagSelectModalProps {
   selectNames: (values: string[]) => void
 }
 
-export interface TargetsViewProps {
-  targets: Target[]
-  tags: Tag[]
+export interface ArticlesViewProps {
+  articles: API.Article[]
+  tags: API.Tag[]
   editable: boolean
-  targetOnCreate?: (value: Target) => Promise<void>
-  targetOnDelete?: (value: number) => Promise<void>
+  articleOnCreate?: (value: API.Article) => Promise<void>
+  articleOnDelete?: (value: number) => Promise<void>
 }
 
-export interface SingleTargetViewProps {
+export interface SingleArticleViewProps {
   tagsName: string[]
-  target: Target
+  article: API.Article
   editable: boolean
-  targetOnModify?: (value: Target) => Promise<void>
+  targetOnModify?: (value: API.Article) => Promise<void>
 }
 
-export interface NewTargetFormProps {
-  tags: Tag[]
-  onSubmit: (value: Target) => Promise<void>
+export interface NewArticleFormProps {
+  tags: API.Tag[]
+  onSubmit: (value: API.Article) => Promise<void>
 }
 
 export interface TagsSelectorProps {
-  tags: Tag[]
+  tags: API.Tag[]
   onChange: (value: string[]) => void
   onAddNewTagInputChange: (value: string) => void
   onAddNewTag: () => void

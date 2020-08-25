@@ -33,16 +33,40 @@ declare namespace API {
     status: string
   }
 
-  export interface TargetType {
-    id: number
+  export interface Article {
+    id?: number
+    category: Category
+    tags?: Tag[]
+    date: string
+    author: Author
     title: string
     text: string
-    tags?: TagType[]
+    version: number
   }
 
-  export interface TagType {
+  export interface Tag {
     name: string
-    description?: string | null
-    targets?: TargetType[]
+    description?: string
+    articles?: TargetType[]
+    categories?: Category[]
+  }
+
+  export interface Category {
+    name: string
+    description?: string
+    articles?: Article[]
+    unionTags?: Tag[]
+  }
+
+  export interface Author {
+    name: string
+    description?: string
+    articles?: Article[]
+  }
+
+  export interface CategoryU {
+    name: string
+    description?: string
+    tag: Tag
   }
 }

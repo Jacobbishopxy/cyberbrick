@@ -2,7 +2,6 @@ import { Input, Modal, Select, Tag, Tooltip } from "antd"
 import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
-import * as service from "@/services/targetTag"
 import * as propsData from "./data"
 
 /**
@@ -59,10 +58,10 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: propsData.TagsViewProps) => {
 
-  const [tags, setTags] = useState<service.Tag[]>(props.tags)
+  const [tags, setTags] = useState<API.Tag[]>(props.tags)
   const [tagsExclude, setTagsExclude] = useState<string[] | undefined>(props.tagsNameExclude)
   const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
-  const [newTagInfo, setNewTagInfo] = useState<service.Tag>()
+  const [newTagInfo, setNewTagInfo] = useState<API.Tag>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 
   useEffect(() => {

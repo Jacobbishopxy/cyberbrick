@@ -14,24 +14,13 @@ import { Tag } from "../entities/Tag"
 const categoryRepo = () => getRepository(Category)
 const tagRepo = () => getRepository(Tag)
 
-const categoryArticlesTagsRelations = {
-  relations: [
-    common.articles,
-    common.unionTags
-  ]
-}
-const categoryTagsRelations = {
-  relations: [
-    common.unionTags
-  ]
-}
-
+const categoryTagsRelations = { relations: [common.unionTags] }
 
 /**
  * get all categories, without relations
  */
 export async function getAllCategories(req: Request, res: Response) {
-  const ans = await categoryRepo().find(categoryArticlesTagsRelations)
+  const ans = await categoryRepo().find(categoryTagsRelations)
 
   res.send(ans)
 }
@@ -44,7 +33,7 @@ export async function getCategoriesByNames(req: Request, res: Response) {
   if (common.expressErrorsBreak(req, res)) return
 
   const ans = await categoryRepo().find({
-    ...categoryArticlesTagsRelations,
+    ...categoryTagsRelations,
     ...common.whereNamesIn(req.query.names as string)
   })
 
