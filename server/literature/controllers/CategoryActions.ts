@@ -51,6 +51,7 @@ export async function getCategoriesByNames(req: Request, res: Response) {
   res.send(ans)
 }
 
+// todo: unsafe, articles & tags should not occur in `req.body`
 /**
  * save a category
  */

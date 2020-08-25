@@ -93,20 +93,11 @@ const articleRouts: Route[] = [
     action: articleActions.deleteArticle
   },
   {
-    path: `${ base }/getArticlesByCategoryName`,
-    method: "get",
-    check: [
-      common.queryCategoryNameCheck,
-      common.queryOptionalPaginationCheck
-    ],
-    action: articleActions.getArticlesByCategoryName
-  },
-  {
     path: `${ base }/getArticlesByCategoryNameAndTagNames`,
     method: "get",
     check: [
       common.queryCategoryNameCheck,
-      common.queryTagNamesCheck,
+      common.queryOptionalTagNamesCheck,
       common.queryOptionalPaginationCheck
     ],
     action: articleActions.getArticlesByCategoryNameAndTagNames
@@ -136,12 +127,12 @@ const tagRouts: Route[] = [
     check: [common.queryNameCheck],
     action: tagActions.tagDeleteAction
   },
-  // {
-  //   path: `${ base }/getCommonCategoriesByTagNames`,
-  //   method: "get",
-  //   check: [common.queryNamesCheck],
-  //   action: tagActions.getCommonCategoriesByTagNames,
-  // },
+  {
+    path: `${ base }/getCommonCategoriesByTagNames`,
+    method: "get",
+    check: [common.queryNamesCheck],
+    action: tagActions.getCommonCategoriesByTagNames,
+  },
 ]
 
 const authorRoutes: Route[] = [

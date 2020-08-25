@@ -51,7 +51,7 @@ export async function getArticlesByIds(req: Request, res: Response) {
   const ans = await articleRepo()
     .find({
       ...articleRelations,
-      ...common.whereIdsIn(ids),
+      ...common.whereStringIdsIn(ids),
       ...common.paginationGet(pagination)
     })
 
@@ -69,45 +69,57 @@ export async function getArticlesByIds(req: Request, res: Response) {
 export async function saveArticle(req: Request, res: Response) {
   const ar = articleRepo()
 
+  const reqId = req.body.id
+  const reqTags = req.body.tags
+  const reqAuthor = req.body.author
+  const reqDate = req.body.date
+  const reqCategory = req.body.category
+  const reqTitle = req.body.title
+  const reqText = req.body.text
+
   let reqBodyArticle = {}
-  if (req.body.id)
-    reqBodyArticle = { id: req.body.id }
-  if (req.body.tags)
-    reqBodyArticle = { ...reqBodyArticle, tags: req.body.tags }
-  if (req.body.author)
-    reqBodyArticle = { ...reqBodyArticle, author: req.body.author }
-  if (req.body.date)
-    reqBodyArticle = { ...reqBodyArticle, date: moment(req.body.date).utc(true) }
+  if (reqId)
+    reqBodyArticle = { id: reqId }
+  if (reqTags)
+    reqBodyArticle = { ...reqBodyArticle, tags: reqTags }
+  if (reqAuthor)
+    reqBodyArticle = { ...reqBodyArticle, author: reqAuthor }
+  if (reqDate)
+    reqBodyArticle = { ...reqBodyArticle, date: moment(reqDate).utc(true) }
   else
     reqBodyArticle = { ...reqBodyArticle, date: moment().utc(true) }
 
   reqBodyArticle = {
     ...reqBodyArticle,
-    category: req.body.category,
-    title: req.body.title,
-    text: req.body.text
+    category: reqCategory,
+    title: reqTitle,
+    text: reqText
   }
 
   const newArticle = ar.create(reqBodyArticle)
   await ar.save(newArticle)
 
-  if (req.body.tags) {
+  if (reqTags) {
     const cr = categoryRepo()
 
     const prevCategory = await cr.findOne({
       ...categoryTagsRelations,
-      ...common.whereNameEqual(req.body.category.name)
+      ...common.whereNameEqual(reqCategory.name)
     })
     const preTags = prevCategory ? prevCategory.unionTags : []
 
-    // todo: description changed is not concerned
     // if new tags provided by article, update category's tags
-    if (preTags.length !== req.body.tags.length) {
-      const newCategory = cr.create({
-        name: req.body.category.name,
-        unionTags: _.unionWith(preTags, req.body.tags, _.isEqual)
+    if (_.difference(reqTags, preTags).length === 0) {
+      const newUnionTags = _.mergeWith(preTags, reqTags, (preTag, curTag) => {
+        if (preTag.name === curTag.name)
+          return curTag
+        return preTag
       })
 
+      const newCategory = cr.create({
+        name: reqCategory.name,
+        unionTags: newUnionTags
+      })
       await cr.save(newCategory)
     }
   }
@@ -130,47 +142,48 @@ export async function deleteArticle(req: Request, res: Response) {
 // =====================================================================================================================
 
 /**
- * get articles under a category, with full article relations
- */
-export async function getArticlesByCategoryName(req: Request, res: Response) {
-
-  if (common.expressErrorsBreak(req, res)) return
-
-  const categoryName = req.query.categoryName as string
-  const pagination = req.query.pagination as common.QueryStr
-
-  const ans = await articleRepo()
-    .createQueryBuilder(common.article)
-    .leftJoinAndSelect(common.articleCategory, common.category)
-    .where(`${ common.category }.${ common.name } = :categoryName`, { categoryName })
-    .leftJoinAndSelect(common.articleTags, common.tag)
-    .skip(common.paginationSkip(pagination))
-    .take(common.paginationTake(pagination))
-    .getMany()
-
-  res.send(ans)
-}
-
-/**
- * get articles under a category with tags filtering
+ * get articles under a category with tags filtering.
+ * If tagNames not defined, query all articles under requested category.
  */
 export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Response) {
 
   if (common.expressErrorsBreak(req, res)) return
 
   const categoryName = req.query.categoryName as string
-  const tagNames = (req.query.tagNames as string).split(",")
+  const tagNames = req.query.tagNames as common.QueryStr
   const pagination = req.query.pagination as common.QueryStr
 
-  const ans = await articleRepo()
+
+  let ans
+  const que = articleRepo()
     .createQueryBuilder(common.article)
     .leftJoinAndSelect(common.articleCategory, common.category)
-    .where(`${ common.category }.${ common.name } = :categoryName`, { categoryName })
-    .leftJoinAndSelect(common.articleTags, common.tag)
-    .where(`${ common.tag }.${ common.name } IN (:...tagNames)`, { tagNames })
-    .skip(common.paginationSkip(pagination))
-    .take(common.paginationTake(pagination))
-    .getMany()
+
+  if (tagNames) {
+    const tags = tagNames.split(",")
+    const articlesSimple = await que
+      .leftJoinAndSelect(common.articleTags, common.tag)
+      .select([common.tagName, common.categoryName, common.articleId])
+      .where(`${ common.categoryName } = :categoryName`, { categoryName })
+      .getMany()
+
+    const ids = articlesSimple
+      .filter(i => _.difference(tags, i.tags!.map(j => j.name)).length === 0)
+      .map(i => i.id)
+
+    ans = await articleRepo()
+      .find({
+        ...articleRelations,
+        ...common.whereIdsIn(ids),
+        ...common.paginationGet(pagination)
+      })
+
+  } else
+    ans = await que
+      .where(`${ common.categoryName } = :categoryName`, { categoryName })
+      .skip(common.paginationSkip(pagination))
+      .take(common.paginationTake(pagination))
+      .getMany()
 
   res.send(ans)
 }

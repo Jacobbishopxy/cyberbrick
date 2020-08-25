@@ -31,8 +31,7 @@ export const articleCategory = `${ article }.${ category }`
 export const articleAuthor = `${ article }.${ author }`
 export const articleTags = `${ article }.${ tags }`
 export const categoryName = `${ category }.${ name }`
-export const categoryTags = `${ category }.${ tags }`
-export const categoryArticles = `${ category }.${ articles }`
+export const categoriesUnionTags = `${ categories }.${ unionTags }`
 export const tagName = `${ tag }.${ name }`
 export const articlesAuthor = `${ articles }.${ author }`
 export const articlesTags = `${ articles }.${ tags }`
@@ -52,18 +51,19 @@ export const whereNamesIn = (n: string) => {
   return { where: { name: In(ns) } }
 }
 
-export const whereIdsIn = (ids: string) => {
+export const whereStringIdsIn = (ids: string) => {
   const idsArr = ids.split(",").map(i => +i)
   return { where: { id: In(idsArr) } }
 }
 
-export const whereCategoryEqual = (n: string) =>
-  ({ where: { "category.name": Equal(n) } })
+export const whereIdsIn = (ids: number[]) =>
+  ({ where: { id: In(ids) } })
 
 // misc
 const regSkip = new RegExp("^\\((\\d+),")
 const regTake = new RegExp(",(\\d+)\\)$")
 const regPagination = new RegExp("^\\((\\d+),(\\d+)\\)$")
+const regArrayLike = new RegExp("^(\\w+(,\\w+)*)|(\\w+)")
 
 export const paginationSkip = (pagination: QueryStr) => {
   if (!pagination)
@@ -94,6 +94,14 @@ export const paginationGet = (pagination: QueryStr) => {
   return pg
 }
 
+export const arrayLikeGet = (arr: QueryStr) => {
+  if (arr) return regArrayLike.exec(arr)
+  return undefined
+}
+
+/**
+ * request error validator
+ */
 export function expressErrorsBreak(req: Request, res: Response) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -101,11 +109,6 @@ export function expressErrorsBreak(req: Request, res: Response) {
     return true
   }
   return false
-}
-
-export const arrayGet = (arr: QueryStr) => {
-  if (arr) return arr.split(",")
-  return undefined
 }
 
 
@@ -132,11 +135,10 @@ export const queryCategoryNameCheck =
 export const queryTagNameCheck =
   query("tagName", "tagName is required!")
 
-export const queryTagNamesCheck =
-  query("tagNames", "tagNames is required!")
-
-export const queryTagsCheck =
-  query(tags, `${ tags } is required!`)
+export const queryOptionalTagNamesCheck =
+  query("tagNames", "tagNames should like `?tagNames=Scala,Typescript`!")
+    .optional()
+    .custom((p: string) => regArrayLike.exec(p) !== null)
 
 export const queryOptionalPaginationCheck =
   query("pagination", "pagination should like (5,10), meaning skip 5 and take 10")
