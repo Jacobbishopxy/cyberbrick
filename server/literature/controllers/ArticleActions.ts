@@ -10,10 +10,12 @@ import moment from "moment"
 import * as common from "../common"
 import { Article } from "../entities/Article"
 import { Category } from "../entities/Category"
+import { Author } from "../entities/Author"
 
 
 const articleRepo = () => getRepository(Article)
 const categoryRepo = () => getRepository(Category)
+const authorRepo = () => getRepository(Author)
 
 const articleRelations = {
   relations: [
@@ -33,7 +35,10 @@ const categoryTagsRelations = {
  * get all articles, with relations
  */
 export async function getAllArticles(req: Request, res: Response) {
-  const ans = await articleRepo().find(articleRelations)
+  const ans = await articleRepo().find({
+    ...articleRelations,
+    ...common.orderByDate("DESC")
+  })
 
   res.send(ans)
 }
@@ -52,7 +57,8 @@ export async function getArticlesByIds(req: Request, res: Response) {
     .find({
       ...articleRelations,
       ...common.whereStringIdsIn(ids),
-      ...common.paginationGet(pagination)
+      ...common.paginationGet(pagination),
+      ...common.orderByDate("DESC")
     })
 
   res.send(ans)
@@ -84,9 +90,16 @@ export async function saveArticle(req: Request, res: Response) {
     reqBodyArticle = { ...reqBodyArticle, tags: reqTags }
   if (reqAuthor)
     reqBodyArticle = { ...reqBodyArticle, author: reqAuthor }
-  if (reqDate)
-    reqBodyArticle = { ...reqBodyArticle, date: moment(reqDate).utc(true) }
-  else
+  if (reqDate) {
+    const date = moment(reqDate, "YYYYMMDDHHmmss").utc(true)
+
+    if (date.isValid())
+      reqBodyArticle = { ...reqBodyArticle, date }
+    else {
+      res.status(422).send(`invalid date input: ${ reqDate }`)
+      return
+    }
+  } else
     reqBodyArticle = { ...reqBodyArticle, date: moment().utc(true) }
 
   reqBodyArticle = {
@@ -110,7 +123,10 @@ export async function saveArticle(req: Request, res: Response) {
 
     // if new tags provided by article, update category's tags
     if (_.difference(reqTags, preTags).length === 0) {
-      const newUnionTags = _.mergeWith(preTags, reqTags, (preTag, curTag) => {
+      const rawUnionTags = _.unionWith(preTags, reqTags, (preTag, curTag) =>
+        preTag.name === curTag.name
+      )
+      const newUnionTags = _.mergeWith(rawUnionTags, reqTags, (preTag, curTag) => {
         if (preTag.name === curTag.name)
           return curTag
         return preTag
@@ -165,6 +181,7 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
       .leftJoinAndSelect(common.articleTags, common.tag)
       .select([common.tagName, common.categoryName, common.articleId])
       .where(`${ common.categoryName } = :categoryName`, { categoryName })
+      .orderBy({ "article.id": "DESC" })
       .getMany()
 
     const ids = articlesSimple
@@ -175,12 +192,14 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
       .find({
         ...articleRelations,
         ...common.whereIdsIn(ids),
-        ...common.paginationGet(pagination)
+        ...common.paginationGet(pagination),
+        ...common.orderByDate("DESC")
       })
 
   } else
     ans = await que
       .where(`${ common.categoryName } = :categoryName`, { categoryName })
+      .orderBy({ date: "DESC" })
       .skip(common.paginationSkip(pagination))
       .take(common.paginationTake(pagination))
       .getMany()
@@ -188,3 +207,33 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
   res.send(ans)
 }
 
+export async function getArticlesByAuthorName(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
+  const name = req.query.name as string
+  const pagination = req.query.pagination as common.QueryStr
+
+  const articleIds = await authorRepo()
+    .createQueryBuilder(common.author)
+    .leftJoinAndSelect(common.authorArticles, common.article)
+    .select([common.authorName, common.articleId])
+    .where(`${ common.authorName } = :name`, { name })
+    .getOne()
+
+  if (articleIds) {
+    const ids = articleIds.articles.map(i => i.id)
+
+    const ans = await articleRepo()
+      .find({
+        ...articleRelations,
+        ...common.whereIdsIn(ids),
+        ...common.paginationGet(pagination),
+        ...common.orderByDate("DESC")
+      })
+    res.send(ans)
+  } else {
+    res.status(400).send(`Author ${ name } not found!`)
+  }
+
+}

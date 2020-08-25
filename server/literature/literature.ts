@@ -102,6 +102,15 @@ const articleRouts: Route[] = [
     ],
     action: articleActions.getArticlesByCategoryNameAndTagNames
   },
+  {
+    path: `${ base }/getArticlesByAuthorName`,
+    method: "get",
+    check: [
+      common.queryCategoryNameCheck,
+      common.queryOptionalPaginationCheck
+    ],
+    action: articleActions.getArticlesByAuthorName
+  },
 ]
 
 const tagRouts: Route[] = [
@@ -141,11 +150,23 @@ const authorRoutes: Route[] = [
     method: "get",
     action: authorActions.getAllAuthors,
   },
-  // {
-  //   path: `${ base }/getArticleIdsByAuthorNames`,
-  //   method: "get",
-  //   action: authorActions.getArticleIdsByAuthorNames,
-  // },
+  {
+    path: `${ base }/author`,
+    method: "get",
+    check: [common.queryNamesCheck],
+    action: authorActions.getAuthorsByNames,
+  },
+  {
+    path: `${ base }/author`,
+    method: "post",
+    action: authorActions.saveAuthor,
+  },
+  {
+    path: `${ base }/author`,
+    method: "delete",
+    check: [common.queryNamesCheck],
+    action: authorActions.deleteAuthor,
+  },
 ]
 
 

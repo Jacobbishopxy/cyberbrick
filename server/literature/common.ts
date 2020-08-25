@@ -24,6 +24,7 @@ export const articles = "articles"
 export const categories = "categories"
 export const date = "date"
 export const id = "id"
+export const description = "description"
 
 // joint column name
 export const articleId = `${ article }.${ id }`
@@ -41,6 +42,9 @@ export const tagArticles = `${ tag }.${ articles }`
 export const tagCategories = `${ tag }.${ categories }`
 export const tagsArticles = `${ tags }.${ articles }`
 export const tagsAuthor = `${ tags }.${ author }`
+export const authorName = `${ author }.${ name }`
+export const authorDescription = `${ author }.${ description }`
+export const authorArticles = `${ author }.${ articles }`
 
 // query filters
 export const whereNameEqual = (n: string) =>
@@ -58,6 +62,15 @@ export const whereStringIdsIn = (ids: string) => {
 
 export const whereIdsIn = (ids: number[]) =>
   ({ where: { id: In(ids) } })
+
+// query orders
+type OrderType = "ASC" | "DESC"
+
+export const orderByDate = (orderType: OrderType) =>
+  ({ order: { date: orderType } })
+
+export const orderByName = (orderType: OrderType) =>
+  ({ order: { name: orderType } })
 
 // misc
 const regSkip = new RegExp("^\\((\\d+),")
