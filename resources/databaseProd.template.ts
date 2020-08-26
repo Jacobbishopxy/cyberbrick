@@ -1,4 +1,6 @@
-{
+import {ConnectionOptions} from "typeorm"
+
+export default {
   "name": "default",
   "type": "postgres",
   "host": "localhost",
@@ -7,5 +9,8 @@
   "password": "admin",
   "database": "dev",
   "synchronize": true,
-  "logging": false
-}
+  "logging": false,
+  "entities": [
+    `./server/literature/entities/*.ts`
+  ]
+} as ConnectionOptions

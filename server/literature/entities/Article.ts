@@ -20,6 +20,8 @@ import { Category } from "./Category"
 import { Tag } from "./Tag"
 import { Author } from "./Author"
 
+const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
+
 @Entity({ name: common.article })
 @Unique([common.category, common.date])
 export class Article {
@@ -34,7 +36,7 @@ export class Article {
   @JoinTable()
   tags?: Tag[]
 
-  @Column("datetime")
+  @Column(dateType)
   date!: string
 
   @ManyToOne(() => Author, author => author.articles, { cascade: true })
