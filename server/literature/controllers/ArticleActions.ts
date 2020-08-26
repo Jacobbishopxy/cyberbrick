@@ -174,11 +174,11 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
   const que = articleRepo()
     .createQueryBuilder(common.article)
     .leftJoinAndSelect(common.articleCategory, common.category)
+    .leftJoinAndSelect(common.articleTags, common.tag)
 
   if (tagNames) {
     const tags = tagNames.split(",")
     const articlesSimple = await que
-      .leftJoinAndSelect(common.articleTags, common.tag)
       .select([common.tagName, common.categoryName, common.articleId])
       .where(`${ common.categoryName } = :categoryName`, { categoryName })
       .orderBy({ "article.id": "DESC" })

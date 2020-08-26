@@ -52,7 +52,7 @@ export const getArticlesByIds = async (ids: number[]): Promise<API.Article[]> =>
 
 export const saveArticle = async (d: API.Article): Promise<API.Article> =>
   request(`${ base }/article`, {
-    method: "post",
+    method: "POST",
     data: d
   })
 

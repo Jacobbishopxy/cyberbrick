@@ -2,13 +2,19 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
+export interface ControllerProps {
+  categoryNames: string[]
+  onSelect: (value: string) => void
+}
+
 export interface TagsViewProps {
+  category?: API.Category
   tags: API.Tag[]
-  tagsNameExclude?: string[]
+  tagsExcluded?: API.Tag[]
   editable: boolean
   isTagPanel?: boolean
-  tagOnCreate?: (values: API.Tag) => Promise<void>
-  tagOnRemove?: (values: string) => Promise<void>
+  tagOnCreate?: (values: API.Tag) => void
+  tagOnRemove?: (values: string) => void
   tagsOnChange?: (values: API.Tag[]) => void
 }
 
@@ -21,7 +27,7 @@ export interface TagCreateModalProps {
 }
 
 export interface TagSelectModalProps {
-  tagsNameExclude: string[]
+  tagsExcluded: API.Tag[]
   visible: boolean
   onOk: () => void
   onCancel: () => void
@@ -29,23 +35,26 @@ export interface TagSelectModalProps {
 }
 
 export interface ArticlesViewProps {
+  categoryName: string
   articles: API.Article[]
-  tags: API.Tag[]
+  unionTags: API.Tag[]
   editable: boolean
-  articleOnCreate?: (value: API.Article) => Promise<void>
-  articleOnDelete?: (value: number) => Promise<void>
+  articleOnCreate?: (value: API.Article) => void
+  articleOnDelete?: (value: number) => void
 }
 
 export interface SingleArticleViewProps {
-  tagsName: string[]
+  unionTags: API.Tag[]
   article: API.Article
   editable: boolean
-  targetOnModify?: (value: API.Article) => Promise<void>
+  articleOnModify?: (value: API.Article) => void
+  articleOnDelete?: (value: number) => void
 }
 
 export interface NewArticleFormProps {
+  categoryName: string
   tags: API.Tag[]
-  onSubmit: (value: API.Article) => Promise<void>
+  onSubmit: (value: API.Article) => void
 }
 
 export interface TagsSelectorProps {
@@ -54,3 +63,19 @@ export interface TagsSelectorProps {
   onAddNewTagInputChange: (value: string) => void
   onAddNewTag: () => void
 }
+
+
+export interface ContentProps {
+  category: API.Category
+  articles: API.Article[]
+  tagPanelUpdate: (value: API.Tag) => void
+  tagPanelDelete: (value: string) => void
+  articlePanelUpdate: (value: API.Article) => void
+  articlePanelDelete: (value: number) => void
+}
+
+export interface Editable {
+  article: boolean
+  tag: boolean
+}
+

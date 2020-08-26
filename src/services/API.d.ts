@@ -67,6 +67,12 @@ declare namespace API {
   export interface CategoryU {
     name: string
     description?: string
-    tag: Tag
+    tag?: Tag
+  }
+
+  export interface TagU {
+    name: string
+    description?: string
+    category: Category
   }
 }

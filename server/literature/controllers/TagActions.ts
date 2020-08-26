@@ -8,9 +8,11 @@ import _ from "lodash"
 
 import * as common from "../common"
 import { Tag } from "../entities/Tag"
+// import { Category } from "../entities/Category"
 
 
 const tagRepo = () => getRepository(Tag)
+// const categoryRepo = () => getRepository(Category)
 
 const tagRelations = { relations: [common.articles, common.categories] }
 const tagArticlesRelations = { relations: [common.articles] }
@@ -41,7 +43,6 @@ export async function getTagsByNames(req: Request, res: Response) {
   res.send(tags)
 }
 
-// todo: unsafe, IMPORTANT
 /**
  * save tag
  *
@@ -50,6 +51,9 @@ export async function getTagsByNames(req: Request, res: Response) {
  * categories is always needed.
  */
 export async function saveTag(req: Request, res: Response) {
+
+  if (common.expressErrorsBreak(req, res)) return
+
   const tr = tagRepo()
   const newTag = tr.create(req.body)
   await tr.save(newTag)

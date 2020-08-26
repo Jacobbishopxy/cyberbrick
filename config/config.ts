@@ -79,9 +79,9 @@ export default defineConfig({
           component: './demo/LocalStorage',
         },
         {
-          name: 'target-tag',
-          path: '/demo/targettag',
-          component: './demo/TargetTag',
+          name: 'literature',
+          path: '/demo/literature',
+          component: './demo/Literature',
         },
       ],
     },

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import { Button } from 'antd'
 
@@ -90,14 +90,24 @@ const formats = [
 
 
 export interface TextEditorModifierProps {
-  onSave: (value: string) => void
-  content: string
+  onSave?: (value: string) => void
+  onChange?: (value: string) => void
+  content?: string
+  saveButton?: boolean
 }
 
 
 export const TextEditorModifier = (props: TextEditorModifierProps) => {
 
-  const [content, setContent] = useState(props.content)
+  const [content, setContent] = useState<string | undefined>(props.content)
+
+  const saveContent = () => {
+    if (content && props.onSave) props.onSave(content)
+  }
+
+  useEffect(() => {
+    if (content && props.onChange) props.onChange(content)
+  }, [content])
 
   return (
     <div>
@@ -110,14 +120,22 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
         value={ content }
         onChange={ setContent }
       />
-      <Button
-        style={{marginTop: 5}}
-        onClick={ () => props.onSave(content) }
-        size='small'
-        type='primary'
-      >
-        Save
-      </Button>
+      {
+        props.saveButton ?
+          <Button
+            style={ { marginTop: 5 } }
+            onClick={ saveContent }
+            size='small'
+            type='primary'
+          >
+            Save
+          </Button> :
+          <></>
+      }
     </div>
   )
+}
+
+TextEditorModifier.defaultProps = {
+  saveButton: false
 }

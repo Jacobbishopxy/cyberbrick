@@ -3,7 +3,7 @@
  */
 
 import { Request, Response } from "express"
-import { query, validationResult } from "express-validator"
+import { body, query, validationResult } from "express-validator"
 import { Equal, In } from "typeorm"
 
 
@@ -126,27 +126,26 @@ export function expressErrorsBreak(req: Request, res: Response) {
 
 
 // express request checkers
+const messageRequestQuery = (d: string) => `${ d } is required in request query!`
+const messageRequestBody = (d: string) => `${ d } is required in request body!`
+
 export const queryIdCheck =
-  query(id, `${ id } is required!`)
-    .exists()
+  query(id, messageRequestQuery(id)).exists()
 
 export const queryIdsCheck =
-  query("ids", "ids is required!")
-    .exists()
+  query("ids", messageRequestQuery("ids")).exists()
 
 export const queryNameCheck =
-  query(name, `${ name } is required!`)
-    .exists()
+  query(name, messageRequestQuery(name)).exists()
 
 export const queryNamesCheck =
-  query("names", "names is required!")
-    .exists()
+  query("names", messageRequestQuery("names")).exists()
 
 export const queryCategoryNameCheck =
-  query(categoryName, `${ categoryName } is required!`)
+  query("categoryName", messageRequestQuery("categoryName")).exists()
 
 export const queryTagNameCheck =
-  query("tagName", "tagName is required!")
+  query("tagName", messageRequestQuery("tagName")).exists()
 
 export const queryOptionalTagNamesCheck =
   query("tagNames", "tagNames should like `?tagNames=Scala,Typescript`!")
@@ -157,3 +156,16 @@ export const queryOptionalPaginationCheck =
   query("pagination", "pagination should like (5,10), meaning skip 5 and take 10")
     .optional()
     .custom((p: string) => regPagination.exec(p) !== null)
+
+export const bodyNameCheck =
+  body(name, messageRequestBody(name)).isLength({min: 1}).exists()
+
+export const bodyTagNameCheck =
+  body(tagName, messageRequestBody(tagName)).isLength({min: 1}).exists()
+
+export const bodyCategoryCheck =
+  body(category, messageRequestBody(category)).isLength({min: 1}).exists()
+
+export const bodyCategoriesCheck =
+  body(categories, messageRequestBody(categories)).exists()
+

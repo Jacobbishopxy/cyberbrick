@@ -3110,7 +3110,7 @@
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
 
-"@umijs/fabric@^2.0.0", "@umijs/fabric@^2.2.0":
+"@umijs/fabric@^2.0.0", "@umijs/fabric@^2.2.2":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@umijs/fabric/-/fabric-2.2.2.tgz#2ca7884aaab23e121b53202959a6060b221c82db"
   integrity sha512-REZpreqQ7UrJNj5JLK67txgUkJLrLqkn6DMeaXtCwqGvcp6KhNsDeyr5KD3uV1qQM03A1s8lBszefBON6YG2Mw==
@@ -3194,7 +3194,7 @@
   dependencies:
     uppercamelcase "^3.0.0"
 
-"@umijs/plugin-blocks@^2.0.5":
+"@umijs/plugin-blocks@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@umijs/plugin-blocks/-/plugin-blocks-2.2.1.tgz#2b4984bcd613bcc9cd117774c02a1f66518c5fea"
   integrity sha512-VL76eKMbsKshYx2Ihc1D0CHnevqZuA8CRFq0hgTm1EEcPf77lK/Saa6ro/GcViGrUQkmSl0xXfc5ntG58h2A0g==
@@ -3216,7 +3216,7 @@
     dva-immer "^0.4.19"
     dva-loading "^3.0.20"
 
-"@umijs/plugin-esbuild@^1.0.0-beta.2":
+"@umijs/plugin-esbuild@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@umijs/plugin-esbuild/-/plugin-esbuild-1.0.1.tgz#7162a31d686340bd70dfe001bfb70e7d25afa192"
   integrity sha512-YyxO33GFzy0s6HifHOjNqLkNxxxNJDaQ4tHKmYm5jO60LZ6A65R7O/ei1+EDKanudmpwU5Y+jevvVzzYbqmV4g==
@@ -3304,7 +3304,7 @@
     binary-mirror-config "1.20.3"
     umi-webpack-bundle-analyzer "^3.5.0"
 
-"@umijs/preset-ant-design-pro@^1.2.0":
+"@umijs/preset-ant-design-pro@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@umijs/preset-ant-design-pro/-/preset-ant-design-pro-1.2.2.tgz#2477386abe64ad498487f098570c7c572ce335db"
   integrity sha512-cO40AmVSm6RY5bO8or78Q4r/qLcABl0VlmsCbHGOytvjzf+9s3o+RBvrB8KU75anbKqr4qKhGRA/O8CKRw9tkA==
@@ -3349,7 +3349,7 @@
     umi-webpack-bundle-analyzer "3.6.0"
     zlib "1.0.5"
 
-"@umijs/preset-react@^1.4.8":
+"@umijs/preset-react@^1.6.2":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@umijs/preset-react/-/preset-react-1.6.2.tgz#fd166a11a267124b3d8f1374dc5a8507c49a28e8"
   integrity sha512-JVjEubThsRa4MNpM3o4MzPp+ivNiYFtxnR5ulAfeuNoD0tko8dPtr5rNZzBrgOqg5H0hy++1c3RgqfG3OCLa8Q==
@@ -3367,7 +3367,7 @@
     "@umijs/plugin-request" "2.5.0"
     "@umijs/plugin-test" "1.0.0"
 
-"@umijs/preset-ui@^2.0.9":
+"@umijs/preset-ui@^2.2.7":
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/@umijs/preset-ui/-/preset-ui-2.2.7.tgz#5e25b3e16c4c7bb0be5a424a039fad8922987d9a"
   integrity sha512-FIA8vVbGDtSrukHEwUnLS4Sf3yAYUQNC081ak5zU3pCCS81Zok3oduWxEXRPNguVFh4/wS60T6d+3ZPAWjiuCA==
@@ -3639,7 +3639,7 @@
     yargs "15.4.1"
     yargs-parser "18.1.3"
 
-"@umijs/yorkie@^2.0.3":
+"@umijs/yorkie@^2.0.5":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@umijs/yorkie/-/yorkie-2.0.5.tgz#9ab9d7767ded7b596cc3ad5fb79965920d820905"
   integrity sha512-vgu4U7/pvG73vY0GGQftXht2t6YAecS8P1cUHIj9VfUHzXIKuRXiaewxxasYgr3gBNrY3GpGiVnmJsHDG6Q3+g==

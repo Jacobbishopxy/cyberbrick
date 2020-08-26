@@ -1,12 +1,12 @@
+/**
+ * Created by Jacob Xie on 8/16/2020.
+ */
+
 import { Input, Modal, Select, Tag, Tooltip } from "antd"
 import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
 import * as propsData from "./data"
-
-/**
- * Created by Jacob Xie on 8/16/2020.
- */
 
 
 const TagCreateModal = (props: propsData.TagCreateModalProps) =>
@@ -37,9 +37,9 @@ const TagSelectModal = (props: propsData.TagSelectModalProps) =>
       style={ { width: "100%" } }
     >
       {
-        props.tagsNameExclude.map(n =>
-          <Select.Option key={ n } value={ n }>
-            { n }
+        props.tagsExcluded.map(n =>
+          <Select.Option key={ n.name } value={ n.name }>
+            { n.name }
           </Select.Option>
         )
       }
@@ -58,10 +58,20 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: propsData.TagsViewProps) => {
 
+  const genInitCategoryU = () => {
+    if (props.category) {
+      return {
+        name: props.category.name,
+        description: props.category.description
+      }
+    }
+    return undefined
+  }
+
   const [tags, setTags] = useState<API.Tag[]>(props.tags)
-  const [tagsExclude, setTagsExclude] = useState<string[] | undefined>(props.tagsNameExclude)
+  const [tagsExcluded, setTagsExcluded] = useState<API.Tag[] | undefined>(props.tagsExcluded)
   const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
-  const [newTagInfo, setNewTagInfo] = useState<API.Tag>()
+  const [newCategoryInfo, setNewCategoryInfo] = useState<API.CategoryU | undefined>(genInitCategoryU())
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 
   useEffect(() => {
@@ -69,15 +79,33 @@ export const TagsView = (props: propsData.TagsViewProps) => {
   }, [props.tags])
 
   useEffect(() => {
-    setTagsExclude(props.tagsNameExclude)
-  }, [props.tagsNameExclude])
+    setTagsExcluded(props.tagsExcluded)
+  }, [props.tagsExcluded])
 
-  const inputNewTagName = (name: string) =>
-    setNewTagInfo({ ...newTagInfo, name })
+  const inputNewTagName = (name: string) => {
+    if (newCategoryInfo) {
+      const newCat = {
+        ...newCategoryInfo,
+        tag: {
+          ...newCategoryInfo.tag,
+          name
+        }
+      }
+      setNewCategoryInfo(newCat)
+    }
+  }
 
   const inputNewTagDescription = (description: string) => {
-    if (newTagInfo !== undefined)
-      setNewTagInfo({ ...newTagInfo, description })
+    if (newCategoryInfo && newCategoryInfo.tag?.name) {
+      const newCat = {
+        ...newCategoryInfo,
+        tag: {
+          ...newCategoryInfo.tag,
+          description
+        }
+      }
+      setNewCategoryInfo(newCat)
+    }
   }
 
   const selectNewTagName = (names: string[]) =>
@@ -85,7 +113,8 @@ export const TagsView = (props: propsData.TagsViewProps) => {
 
   const tagOnRemove = (value: string) => {
     if (props.tagOnRemove)
-      props.tagOnRemove(value).then()
+      props.tagOnRemove(value)
+
     if (!props.isTagPanel && props.tagsOnChange) {
       const newTags = tags.filter(t => t.name !== value)
       setTags(newTags)
@@ -94,9 +123,9 @@ export const TagsView = (props: propsData.TagsViewProps) => {
   }
 
   const tagCreateModalOnOk = () => {
-    if (props.tagOnCreate && newTagInfo) {
-      props.tagOnCreate(newTagInfo)
-        .then(() => setModalVisible(false))
+    if (props.tagOnCreate && newCategoryInfo) {
+      props.tagOnCreate(newCategoryInfo)
+      setModalVisible(false)
     }
   }
 
@@ -144,7 +173,7 @@ export const TagsView = (props: propsData.TagsViewProps) => {
             inputDescription={ inputNewTagDescription }
           /> :
           <TagSelectModal
-            tagsNameExclude={ tagsExclude! }
+            tagsExcluded={ tagsExcluded! }
             visible={ modalVisible }
             onOk={ tagSelectModalOnOk }
             onCancel={ () => setModalVisible(false) }
@@ -156,7 +185,7 @@ export const TagsView = (props: propsData.TagsViewProps) => {
 }
 
 TagsView.defaultProps = {
-  tagsNameExclude: [],
+  tagsExcluded: [],
   editable: false,
   isTagPanel: true,
   tagOnCreate: undefined,

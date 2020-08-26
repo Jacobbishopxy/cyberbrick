@@ -51,6 +51,10 @@ const categoryRoutes: Route[] = [
   },
   {
     path: `${ base }/upsertCategoryTag`,
+    check: [
+      common.bodyNameCheck,
+      common.bodyTagNameCheck
+    ],
     method: "post",
     action: categoryActions.upsertCategoryTag
   },
@@ -84,6 +88,9 @@ const articleRouts: Route[] = [
   {
     path: `${ base }/article`,
     method: "post",
+    check: [
+      common.bodyCategoryCheck
+    ],
     action: articleActions.saveArticle
   },
   {
@@ -128,6 +135,7 @@ const tagRouts: Route[] = [
   {
     path: `${ base }/tag`,
     method: "post",
+    check: [common.bodyCategoryCheck],
     action: tagActions.saveTag
   },
   {
