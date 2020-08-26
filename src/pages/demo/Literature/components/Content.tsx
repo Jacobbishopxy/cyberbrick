@@ -28,6 +28,7 @@ export const Content = (props: ContentProps) => {
                 setEditable={ (e: boolean) => setEditable({ ...editable, article: e }) }
               />
             }
+            size="small"
           >
             <ArticlesView
               categoryName={ props.category.name }
@@ -49,6 +50,7 @@ export const Content = (props: ContentProps) => {
                 setEditable={ (e: boolean) => setEditable({ ...editable, tag: e }) }
               />
             }
+            size="small"
           >
             <TagsView
               category={ props.category }

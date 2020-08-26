@@ -10,7 +10,9 @@ import { ControllerProps } from "./data"
 
 export const Controller = (props: ControllerProps) => {
   return (
-    <Card>
+    <Card
+      size="small"
+    >
       <Select
         style={ { width: 200 } }
         onChange={props.onSelect}

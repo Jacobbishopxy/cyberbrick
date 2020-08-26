@@ -1,0 +1,7 @@
+{
+  "name": "default",
+  "type": "sqlite",
+  "database": "./cache/database.sqlite",
+  "synchronize": true,
+  "logging": false
+}

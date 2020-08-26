@@ -108,7 +108,6 @@ export const NewArticleForm = (props: propsData.NewArticleFormProps) => {
           { required: true, message: "Text is required" },
           { validator: (r, v, c) => v ? c() : c() }
         ] }
-
       >
         <TextEditorModifier onChange={ onTextChange }/>
       </Form.Item>

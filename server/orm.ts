@@ -8,18 +8,7 @@ import { createConnection, ConnectionOptions } from "typeorm"
 
 import { literature } from './literature/literature'
 
-const connectionOptions: ConnectionOptions = {
-  "name": "default",
-  "type": "sqlite",
-  "database": `./cache/database.sqlite`,
-  "synchronize": true,
-  "logging": false,
-  "entities": [
-    `${ __dirname }/literature/entities/*.ts`
-  ],
-}
-
-export async function postCategoryConnect(app: express.Express) {
+export async function postCategoryConnect(app: express.Express, connectionOptions: ConnectionOptions) {
   await createConnection(connectionOptions)
     .then(async () =>
       literature
