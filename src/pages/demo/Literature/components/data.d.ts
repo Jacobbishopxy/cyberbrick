@@ -4,7 +4,8 @@
 
 export interface ControllerProps {
   categoryNames: string[]
-  onSelect: (value: string) => void
+  onSelectCategory: (value: string) => void
+  onCreateCategory: (value: API.Category) => void
 }
 
 export interface TagsViewProps {
@@ -18,12 +19,16 @@ export interface TagsViewProps {
   tagsOnChange?: (values: API.Tag[]) => void
 }
 
-export interface TagCreateModalProps {
+interface CreationModalValue {
+  name: string
+  description?: string
+}
+
+export interface CreationModalProps {
+  title: string
   visible: boolean
-  onOk: () => void
+  onSubmit: (value: CreationModalValue) => void
   onCancel: () => void
-  inputName: (value: string) => void
-  inputDescription: (value: string) => void
 }
 
 export interface TagSelectModalProps {

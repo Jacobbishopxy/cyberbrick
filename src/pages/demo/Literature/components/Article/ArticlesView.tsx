@@ -8,7 +8,7 @@ import _ from "lodash"
 import moment from "moment"
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 
-import { TagsView } from "../TagsView"
+import { TagsView } from "../Tag/TagsView"
 import { NewArticleForm } from "./NewArticleForm"
 import * as propsData from "../data"
 

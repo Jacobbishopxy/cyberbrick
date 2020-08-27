@@ -2,26 +2,13 @@
  * Created by Jacob Xie on 8/16/2020.
  */
 
-import { Input, Modal, Select, Tag, Tooltip } from "antd"
+import { Modal, Select, Tag, Tooltip } from "antd"
 import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import { CreationModal } from "../CreationModal"
 
-import * as propsData from "./data"
+import * as propsData from "../data"
 
-
-const TagCreateModal = (props: propsData.TagCreateModalProps) =>
-  <Modal
-    title="Please enter new tag information below:"
-    visible={ props.visible }
-    onOk={ props.onOk }
-    onCancel={ props.onCancel }
-    destroyOnClose
-  >
-    <span>Name:</span>
-    <Input onBlur={ e => props.inputName(e.target.value) }/>
-    <span>Description:</span>
-    <Input onBlur={ e => props.inputDescription(e.target.value) }/>
-  </Modal>
 
 const TagSelectModal = (props: propsData.TagSelectModalProps) =>
   <Modal
@@ -58,20 +45,9 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: propsData.TagsViewProps) => {
 
-  const genInitCategoryU = () => {
-    if (props.category) {
-      return {
-        name: props.category.name,
-        description: props.category.description
-      }
-    }
-    return undefined
-  }
-
   const [tags, setTags] = useState<API.Tag[]>(props.tags)
   const [tagsExcluded, setTagsExcluded] = useState<API.Tag[] | undefined>(props.tagsExcluded)
   const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
-  const [newCategoryInfo, setNewCategoryInfo] = useState<API.CategoryU | undefined>(genInitCategoryU())
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 
   useEffect(() => {
@@ -82,31 +58,6 @@ export const TagsView = (props: propsData.TagsViewProps) => {
     setTagsExcluded(props.tagsExcluded)
   }, [props.tagsExcluded])
 
-  const inputNewTagName = (name: string) => {
-    if (newCategoryInfo) {
-      const newCat = {
-        ...newCategoryInfo,
-        tag: {
-          ...newCategoryInfo.tag,
-          name
-        }
-      }
-      setNewCategoryInfo(newCat)
-    }
-  }
-
-  const inputNewTagDescription = (description: string) => {
-    if (newCategoryInfo && newCategoryInfo.tag?.name) {
-      const newCat = {
-        ...newCategoryInfo,
-        tag: {
-          ...newCategoryInfo.tag,
-          description
-        }
-      }
-      setNewCategoryInfo(newCat)
-    }
-  }
 
   const selectNewTagName = (names: string[]) =>
     setTagsToUpdate(names)
@@ -122,9 +73,15 @@ export const TagsView = (props: propsData.TagsViewProps) => {
     }
   }
 
-  const tagCreateModalOnOk = () => {
-    if (props.tagOnCreate && newCategoryInfo) {
-      props.tagOnCreate(newCategoryInfo)
+  const tagCreateModalOnOk = (value: API.Tag) => {
+    if (props.tagOnCreate && props.category) {
+
+      const newTag: API.CategoryU = {
+        name: props.category.name,
+        description: props.category.description,
+        tag: value
+      }
+      props.tagOnCreate(newTag)
       setModalVisible(false)
     }
   }
@@ -165,12 +122,11 @@ export const TagsView = (props: propsData.TagsViewProps) => {
       }
       {
         props.isTagPanel ?
-          <TagCreateModal
+          <CreationModal
+            title="Please enter new tag information below:"
             visible={ modalVisible }
-            onOk={ tagCreateModalOnOk }
+            onSubmit={ tagCreateModalOnOk }
             onCancel={ () => setModalVisible(false) }
-            inputName={ inputNewTagName }
-            inputDescription={ inputNewTagDescription }
           /> :
           <TagSelectModal
             tagsExcluded={ tagsExcluded! }

@@ -63,12 +63,15 @@ export default () => {
   const articlePanelDelete = (id: number) =>
     service.deleteArticle(id).then(triggerArticle)
 
+  const categoryCreate = (cat: API.Category) =>
+    service.saveCategory(cat).then(triggerCategory)
 
   return (
     <PageHeaderWrapper>
       <Controller
         categoryNames={ categories.map(i => i.name) }
-        onSelect={ onSelectCategory }
+        onSelectCategory={ onSelectCategory }
+        onCreateCategory={ categoryCreate }
       />
       {
         selectedCategory && articles ?

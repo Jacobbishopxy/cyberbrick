@@ -40,6 +40,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 postCategoryConnect(app, connectionOptions)
-  .then(() => console.log(`Connected to ${ JSON.stringify(connectionOptions, null, 2) }`))
+  .then(() => {
+    const connInfo = JSON.stringify(connectionOptions, null, 2)
+    console.log(`Connected to ${ connInfo }`)
+  })
 
 export default app

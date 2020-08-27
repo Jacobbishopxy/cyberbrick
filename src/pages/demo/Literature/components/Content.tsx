@@ -6,7 +6,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Card } from 'antd'
 
-import { TagsView } from "./TagsView"
+import { TagsView } from "./Tag/TagsView"
 import { ArticlesView } from "./Article/ArticlesView"
 import { Editor } from "./Editor"
 import { ContentProps, Editable } from "./data"
