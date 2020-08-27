@@ -2,15 +2,17 @@
  * Created by Jacob Xie on 8/26/2020.
  */
 
-import React, { useState } from "react"
-import { Button, Card, Select } from "antd"
+import React, { useContext, useState } from "react"
+import { Button, Card, Select, Space } from "antd"
 
 import { CreationModal } from "./CreationModal"
 import { ControllerProps } from "./data"
+import { EditableContext } from "../Literature"
+import { Editor } from "./Editor"
 
 
 export const Controller = (props: ControllerProps) => {
-
+  const editable = useContext(EditableContext)
   const [visible, setVisible] = useState<boolean>(false)
 
   const categoryCreateModalOnOk = (value: any) => {
@@ -36,6 +38,7 @@ export const Controller = (props: ControllerProps) => {
             )
           }
         </Select>
+        <Space>
         <Button
           type="primary"
           onClick={ () => setVisible(true) }
@@ -43,6 +46,8 @@ export const Controller = (props: ControllerProps) => {
         >
           New Category
         </Button>
+          <Editor editable={editable} setEditable={props.onEdit}/>
+        </Space>
       </div>
 
       <CreationModal

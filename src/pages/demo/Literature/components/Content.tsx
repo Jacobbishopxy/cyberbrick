@@ -3,18 +3,23 @@
  */
 
 
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Row, Col, Card } from 'antd'
 
 import { TagsView } from "./Tag/TagsView"
 import { ArticlesView } from "./Article/ArticlesView"
 import { Editor } from "./Editor"
+import { EditableContext } from "../Literature"
 import { ContentProps, Editable } from "./data"
 
 
 export const Content = (props: ContentProps) => {
-
+  const globalEditable = useContext(EditableContext)
   const [editable, setEditable] = useState<Editable>({ article: false, tag: false })
+
+  useEffect(() => {
+    setEditable({ article: false, tag: false })
+  }, [globalEditable])
 
   return (
     <>
@@ -23,10 +28,11 @@ export const Content = (props: ContentProps) => {
           <Card
             title={ <div style={ { fontSize: 25 } }>Articles</div> }
             extra={
-              <Editor
-                editable={ editable.article }
-                setEditable={ (e: boolean) => setEditable({ ...editable, article: e }) }
-              />
+              globalEditable ?
+                <Editor
+                  editable={ editable.article }
+                  setEditable={ (e: boolean) => setEditable({ ...editable, article: e }) }
+                /> : <></>
             }
             size="small"
           >
@@ -45,10 +51,10 @@ export const Content = (props: ContentProps) => {
           <Card
             title={ <div style={ { fontSize: 25 } }>Tags</div> }
             extra={
-              <Editor
+              globalEditable ? <Editor
                 editable={ editable.tag }
                 setEditable={ (e: boolean) => setEditable({ ...editable, tag: e }) }
-              />
+              /> : <></>
             }
             size="small"
           >

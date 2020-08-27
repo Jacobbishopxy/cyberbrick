@@ -6,6 +6,7 @@ export interface ControllerProps {
   categoryNames: string[]
   onSelectCategory: (value: string) => void
   onCreateCategory: (value: API.Category) => void
+  onEdit: (value: boolean) => void
 }
 
 export interface TagsViewProps {
