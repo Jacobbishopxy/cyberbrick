@@ -11,9 +11,10 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: 'Ant Design Pro',
+    name: 'JacobBishop',
     locale: true,
-    siderWidth: 208,
+    siderWidth: 200,
+    logo: '/api/homeLogo'
   },
   locale: {
     // default zh-CN

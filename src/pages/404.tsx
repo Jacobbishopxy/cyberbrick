@@ -1,5 +1,6 @@
 import { Button, Result } from 'antd';
 import React from 'react';
+// @ts-ignore
 import { history } from 'umi';
 
 const NoFoundPage: React.FC<{}> = () => (

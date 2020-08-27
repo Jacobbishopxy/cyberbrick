@@ -2,8 +2,8 @@ import { Settings as LayoutSettings } from '@ant-design/pro-layout'
 
 export default {
   navTheme: 'light',
-  // 拂晓蓝
   primaryColor: '#1890ff',
+  headerHeight: 40,
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
@@ -12,7 +12,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Jacob Bishop',
+  title: 'JacobBishop',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {

@@ -81,7 +81,6 @@
     "@types/react": "^16.9.47",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^5.0.16",
-    "@types/sqlite3": "^3.1.6",
     "@umijs/fabric": "^2.2.2",
     "@umijs/plugin-blocks": "^2.2.1",
     "@umijs/plugin-esbuild": "^1.0.1",
