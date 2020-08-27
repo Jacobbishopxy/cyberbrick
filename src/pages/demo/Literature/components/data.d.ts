@@ -18,6 +18,7 @@ export interface TagsViewProps {
   tagOnCreate?: (values: API.Tag) => void
   tagOnRemove?: (values: string) => void
   tagsOnChange?: (values: API.Tag[]) => void
+  onSelectTags?: (value: string[]) => void
 }
 
 interface CreationModalValue {
@@ -38,6 +39,11 @@ export interface TagSelectModalProps {
   onOk: () => void
   onCancel: () => void
   selectNames: (values: string[]) => void
+}
+
+export interface SelectableTagsProps {
+  tags: API.Tag[]
+  onSelectTags: (value: string[]) => void
 }
 
 export interface ArticlesViewProps {
@@ -78,6 +84,7 @@ export interface ContentProps {
   tagPanelDelete: (value: string) => void
   articlePanelUpdate: (value: API.Article) => void
   articlePanelDelete: (value: number) => void
+  tagPanelSearch: (value: string[]) => void
 }
 
 export interface Editable {

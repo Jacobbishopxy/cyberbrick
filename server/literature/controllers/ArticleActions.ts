@@ -122,7 +122,7 @@ export async function saveArticle(req: Request, res: Response) {
     const preTags = prevCategory ? prevCategory.unionTags : []
 
     // if new tags provided by article, update category's tags
-    if (_.difference(reqTags, preTags).length === 0) {
+    if (_.difference(reqTags, preTags).length !== 0) {
       const rawUnionTags = _.unionWith(preTags, reqTags, (preTag, curTag) =>
         preTag.name === curTag.name
       )

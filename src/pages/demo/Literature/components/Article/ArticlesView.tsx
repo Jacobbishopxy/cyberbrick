@@ -51,7 +51,7 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
     </div>
   )
 
-  const displayView = (
+  const displayView = () => (
     <>
       <List.Item.Meta
         title={
@@ -90,7 +90,7 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
     </>
   )
 
-  const editView = (
+  const editView = () => (
     <>
       <List.Item.Meta
         title={
@@ -129,7 +129,7 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
 
   return (
     <List.Item key={ article.id } style={ { display: 'flex', justifyContent: 'space-between' } }>
-      { articleEditable && props.editable ? editView : displayView }
+      { articleEditable && props.editable ? editView() : displayView() }
     </List.Item>
   )
 }

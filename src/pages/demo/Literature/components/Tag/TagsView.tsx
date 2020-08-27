@@ -2,11 +2,13 @@
  * Created by Jacob Xie on 8/16/2020.
  */
 
-import { Modal, Select, Tag, Tooltip } from "antd"
-import React, { useEffect, useState } from "react"
+import { Button, Divider, Modal, Select, Space, Tag, Tooltip } from "antd"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
-import { CreationModal } from "../Misc/CreationModal"
 
+import { SelectableTags, SelectableTagsRef } from "./SelectableTags"
+import { SearchableContext } from "../Content"
+import { CreationModal } from "../Misc/CreationModal"
 import * as propsData from "../data"
 
 
@@ -45,10 +47,14 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const TagsView = (props: propsData.TagsViewProps) => {
 
+  const tagSearchable = useContext(SearchableContext)
+  const selectableTagsRef = useRef<SelectableTagsRef>(null)
+
   const [tags, setTags] = useState<API.Tag[]>(props.tags)
   const [tagsExcluded, setTagsExcluded] = useState<API.Tag[] | undefined>(props.tagsExcluded)
   const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [selectedTagNames, setSelectedTagNames] = useState<string[]>([])
 
   useEffect(() => {
     setTags(props.tags)
@@ -57,6 +63,13 @@ export const TagsView = (props: propsData.TagsViewProps) => {
   useEffect(() => {
     setTagsExcluded(props.tagsExcluded)
   }, [props.tagsExcluded])
+
+  useEffect(() => {
+    if (!tagSearchable && props.onSelectTags) {
+      props.onSelectTags([])
+      if (selectableTagsRef.current) selectableTagsRef.current.clearSelected()
+    }
+  }, [tagSearchable])
 
 
   const selectNewTagName = (names: string[]) =>
@@ -95,24 +108,62 @@ export const TagsView = (props: propsData.TagsViewProps) => {
     }
   }
 
+  const clearSelectedTagName = () => {
+    if (props.onSelectTags) {
+      props.onSelectTags([])
+      if (selectableTagsRef.current) selectableTagsRef.current.clearSelected()
+    }
+    setSelectedTagNames([])
+  }
+
+  const nonSearchableTags = () =>
+    tags.map(t =>
+      <Tooltip title={ t.description } key={ t.name }>
+        <Tag
+          closable={ props.editable }
+          onClose={ (e: any) => {
+            e.preventDefault()
+            tagDeleteModal(() => tagOnRemove(t.name))
+          } }
+        >
+          { t.name }
+        </Tag>
+      </Tooltip>
+    )
+
+  const searchableTags = () =>
+    <SelectableTags
+      tags={ tags }
+      onSelectTags={ setSelectedTagNames }
+      ref={ selectableTagsRef }
+    />
+
 
   return (
     <>
       {
-        tags.map(t =>
-          <Tooltip title={ t.description } key={ t.name }>
-            <Tag
-              closable={ props.editable }
-              onClose={ (e: any) => {
-                e.preventDefault()
-                tagDeleteModal(() => tagOnRemove(t.name))
-              } }
-              // onClick={ } // todo: isTagPanel -> filter targets, needs upgrading to `Tag.CheckableTag`!
-            >
-              { t.name }
-            </Tag>
-          </Tooltip>
-        )
+        tagSearchable ? searchableTags() : nonSearchableTags()
+      }
+      {
+        props.isTagPanel && tagSearchable ?
+          <>
+            <Divider/>
+            <Space>
+              <Button
+                onClick={ () => props.onSelectTags!(selectedTagNames) }
+                type="primary"
+                size="small"
+              >
+                Search
+              </Button>
+              <Button
+                onClick={ clearSelectedTagName }
+                size="small"
+              >
+                Reset
+              </Button>
+            </Space>
+          </> : <></>
       }
       {
         props.editable ?

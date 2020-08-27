@@ -4,7 +4,8 @@
 
 
 import React, { useContext, useEffect, useState } from 'react'
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Switch } from 'antd'
+import { CloseOutlined, MonitorOutlined } from '@ant-design/icons'
 
 import { TagsView } from "./Tag/TagsView"
 import { ArticlesView } from "./Article/ArticlesView"
@@ -13,12 +14,16 @@ import { EditableContext } from "../Literature"
 import { ContentProps, Editable } from "./data"
 
 
+export const SearchableContext = React.createContext<boolean>(false)
+
 export const Content = (props: ContentProps) => {
   const globalEditable = useContext(EditableContext)
   const [editable, setEditable] = useState<Editable>({ article: false, tag: false })
+  const [tagSearchable, setTagSearchable] = useState<boolean>(false)
 
   useEffect(() => {
     setEditable({ article: false, tag: false })
+    setTagSearchable(false)
   }, [globalEditable])
 
   return (
@@ -51,20 +56,29 @@ export const Content = (props: ContentProps) => {
           <Card
             title={ <div style={ { fontSize: 25 } }>Tags</div> }
             extra={
-              globalEditable ? <Editor
-                editable={ editable.tag }
-                setEditable={ (e: boolean) => setEditable({ ...editable, tag: e }) }
-              /> : <></>
+              globalEditable ?
+                <Editor
+                  editable={ editable.tag }
+                  setEditable={ (e: boolean) => setEditable({ ...editable, tag: e }) }
+                /> :
+                <Switch
+                  onChange={ setTagSearchable }
+                  checkedChildren={ <MonitorOutlined/> }
+                  unCheckedChildren={ <CloseOutlined/> }
+                />
             }
             size="small"
           >
-            <TagsView
-              category={ props.category }
-              tags={ props.category.unionTags }
-              editable={ editable.tag }
-              tagOnCreate={ props.tagPanelUpdate }
-              tagOnRemove={ props.tagPanelDelete }
-            />
+            <SearchableContext.Provider value={ tagSearchable }>
+              <TagsView
+                category={ props.category }
+                tags={ props.category.unionTags }
+                editable={ editable.tag }
+                tagOnCreate={ props.tagPanelUpdate }
+                tagOnRemove={ props.tagPanelDelete }
+                onSelectTags={ props.tagPanelSearch }
+              />
+            </SearchableContext.Provider>
           </Card>
         </Col>
       </Row>

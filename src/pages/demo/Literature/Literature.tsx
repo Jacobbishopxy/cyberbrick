@@ -46,8 +46,12 @@ export const Literature = () => {
       ...reloadTrigger,
       category: reloadTrigger.category + 1
     })
-
   const triggerArticle = () =>
+    setReloadTrigger({
+      ...reloadTrigger,
+      article: reloadTrigger.article + 1
+    })
+  const triggerCategoryAndArticle = () =>
     setReloadTrigger({
       category: reloadTrigger.category + 1,
       article: reloadTrigger.article + 1
@@ -60,13 +64,24 @@ export const Literature = () => {
     service.deleteTag(name).then(triggerCategory)
 
   const articlePanelUpdate = (target: API.Article) =>
-    service.saveArticle(target).then(triggerArticle)
+    service.saveArticle(target).then(triggerCategoryAndArticle)
 
   const articlePanelDelete = (id: number) =>
-    service.deleteArticle(id).then(triggerArticle)
+    service.deleteArticle(id).then(triggerCategoryAndArticle)
 
   const categoryCreate = (cat: API.Category) =>
     service.saveCategory(cat).then(triggerCategory)
+
+  const articleSearchByTags = (tagNames: string[]) => {
+    if (selectedCategory) {
+      if (tagNames.length !== 0)
+        service.getArticlesByCategoryNameAndTagNames(selectedCategory.name, tagNames)
+          .then(res => setArticles(res))
+      else
+        triggerArticle()
+    }
+
+  }
 
   return (
     <EditableContext.Provider value={ globalEditable }>
@@ -85,6 +100,7 @@ export const Literature = () => {
             tagPanelDelete={ tagPanelDelete }
             articlePanelUpdate={ articlePanelUpdate }
             articlePanelDelete={ articlePanelDelete }
+            tagPanelSearch={ articleSearchByTags }
           /> :
           <></>
       }
