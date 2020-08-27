@@ -8,7 +8,7 @@ import { Row, Col, Card } from 'antd'
 
 import { TagsView } from "./Tag/TagsView"
 import { ArticlesView } from "./Article/ArticlesView"
-import { Editor } from "./Editor"
+import { Editor } from "./Misc/Editor"
 import { EditableContext } from "../Literature"
 import { ContentProps, Editable } from "./data"
 

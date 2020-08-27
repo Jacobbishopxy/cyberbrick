@@ -7,7 +7,7 @@ import _ from "lodash"
 
 import * as service from '@/services/literature'
 import { Content } from "./components/Content"
-import { Controller } from "./components/Controller"
+import { Controller } from "./components/HeadPanel/Controller"
 import { TriggerEdit } from "./data"
 
 export const EditableContext = React.createContext<boolean>(false)

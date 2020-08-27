@@ -5,7 +5,7 @@
 import { Modal, Select, Tag, Tooltip } from "antd"
 import React, { useEffect, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
-import { CreationModal } from "../CreationModal"
+import { CreationModal } from "../Misc/CreationModal"
 
 import * as propsData from "../data"
 
@@ -107,7 +107,7 @@ export const TagsView = (props: propsData.TagsViewProps) => {
                 e.preventDefault()
                 tagDeleteModal(() => tagOnRemove(t.name))
               } }
-              // onClick={ } // todo: isTagPanel -> filter targets
+              // onClick={ } // todo: isTagPanel -> filter targets, needs upgrading to `Tag.CheckableTag`!
             >
               { t.name }
             </Tag>

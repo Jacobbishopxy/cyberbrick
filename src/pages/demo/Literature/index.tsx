@@ -5,7 +5,7 @@
 import React from "react"
 import { PageHeaderWrapper } from '@ant-design/pro-layout'
 
-import {Literature} from "./Literature"
+import { Literature } from "./Literature"
 
 export default () =>
   <PageHeaderWrapper>

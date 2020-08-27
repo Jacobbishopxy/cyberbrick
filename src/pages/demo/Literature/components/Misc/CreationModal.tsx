@@ -4,7 +4,7 @@
 
 import React from "react"
 import { Form, Input, Modal } from "antd"
-import * as propsData from "./data"
+import * as propsData from "../data"
 
 const formItemLayout = {
   labelCol: { offset: 2, span: 4 },
