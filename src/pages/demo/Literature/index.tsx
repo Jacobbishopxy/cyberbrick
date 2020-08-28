@@ -8,7 +8,7 @@ import _ from "lodash"
 
 import * as service from '@/services/literature'
 import LiteratureDataType from "@/components/Literature/data"
-import { EditableContext, LiteratureHeader, LiteratureContent } from "@/components/Literature"
+import Literature from "@/components/Literature"
 
 
 interface TriggerEdit {
@@ -23,7 +23,6 @@ export default () => {
   const [articles, setArticles] = useState<LiteratureDataType.Article[]>()
   const [reloadTrigger, setReloadTrigger] = useState<TriggerEdit>({ article: 0, category: 0 })
 
-  const [globalEditable, setGlobalEditable] = useState<boolean>(false)
 
   useEffect(() => {
     service.getAllCategoriesWithUnionTags()
@@ -61,6 +60,9 @@ export default () => {
       article: reloadTrigger.article + 1
     })
 
+  const onCreateCategory = (cat: LiteratureDataType.Category) =>
+    service.saveCategory(cat).then(triggerCategory)
+
   const tagPanelUpdate = (ts: LiteratureDataType.CategoryU) =>
     service.upsertCategoryTag(ts).then(triggerCategory)
 
@@ -73,10 +75,7 @@ export default () => {
   const articlePanelDelete = (id: number) =>
     service.deleteArticle(id).then(triggerCategoryAndArticle)
 
-  const categoryCreate = (cat: LiteratureDataType.Category) =>
-    service.saveCategory(cat).then(triggerCategory)
-
-  const articleSearchByTags = (tagNames: string[]) => {
+  const tagPanelSearch = (tagNames: string[]) => {
     if (selectedCategory) {
       if (tagNames.length !== 0)
         service.getArticlesByCategoryNameAndTagNames(selectedCategory.name, tagNames)
@@ -84,32 +83,22 @@ export default () => {
       else
         triggerArticle()
     }
-
   }
 
   return (
     <PageHeaderWrapper>
-      <EditableContext.Provider value={ globalEditable }>
-        <LiteratureHeader
-          categoryNames={ categories.map(i => i.name) }
-          onSelectCategory={ onSelectCategory }
-          onCreateCategory={ categoryCreate }
-          onEdit={ setGlobalEditable }
-        />
-        {
-          selectedCategory && articles ?
-            <LiteratureContent
-              category={ selectedCategory }
-              articles={ articles }
-              tagPanelUpdate={ tagPanelUpdate }
-              tagPanelDelete={ tagPanelDelete }
-              articlePanelUpdate={ articlePanelUpdate }
-              articlePanelDelete={ articlePanelDelete }
-              tagPanelSearch={ articleSearchByTags }
-            /> :
-            <></>
-        }
-      </EditableContext.Provider>
+      <Literature
+        categories={ categories }
+        selectedCategory={ selectedCategory }
+        articles={ articles }
+        onSelectCategory={ onSelectCategory }
+        onCreateCategory={ onCreateCategory }
+        tagPanelUpdate={ tagPanelUpdate }
+        tagPanelDelete={ tagPanelDelete }
+        articlePanelUpdate={ articlePanelUpdate }
+        articlePanelDelete={ articlePanelDelete }
+        tagPanelSearch={ tagPanelSearch }
+      />
     </PageHeaderWrapper>
   )
 }
