@@ -3,10 +3,9 @@
  */
 
 import express from "express"
-import path from "path"
 import { ConnectionOptions } from "typeorm"
 
-import { postCategoryConnect } from "./orm"
+import { literatureConnect } from "./orm"
 import * as homeController from "./controllers/home"
 import conProd from "../resources/databaseProd"
 import conDev from "../resources/databaseDev"
@@ -16,6 +15,7 @@ const app = express()
 
 // Express configuration
 app.set("port", process.env.PORT || 7999)
+app.set("env", process.env.NODE_ENV === 'production' ? "prod" : "dev")
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -25,24 +25,15 @@ app.post("/api/login/account", homeController.loginAccount)
 app.get("/api/currentUserAvatar", homeController.getCurrentUserAvatar)
 app.get("/api/currentUser", homeController.getCurrentUser)
 
-// API (Database) routes
-let connectionOptions: ConnectionOptions
+// API (Database) routes, wrapped in async function
+export async function connectionsAwait() {
+  const literatureConnOptions: ConnectionOptions =
+    app.get("env") === "prod" ? conProd : conDev
 
-if (process.env.NODE_ENV === 'production') {
-  connectionOptions = conProd
+  await literatureConnect(app, literatureConnOptions)
 
-  app.use('/', express.static('dist'))
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
-  })
-} else {
-  connectionOptions = conDev
+  const connInfo = JSON.stringify(literatureConnOptions, null, 2)
+  console.log(`Connected to ${ connInfo }`)
 }
-
-postCategoryConnect(app, connectionOptions)
-  .then(() => {
-    const connInfo = JSON.stringify(connectionOptions, null, 2)
-    console.log(`Connected to ${ connInfo }`)
-  })
 
 export default app

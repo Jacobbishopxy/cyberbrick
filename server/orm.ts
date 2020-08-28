@@ -8,7 +8,7 @@ import { createConnection, ConnectionOptions } from "typeorm"
 
 import { literature } from './literature/literature'
 
-export async function postCategoryConnect(app: express.Express, connectionOptions: ConnectionOptions) {
+export async function literatureConnect(app: express.Express, connectionOptions: ConnectionOptions) {
   await createConnection(connectionOptions)
     .then(async () =>
       literature
