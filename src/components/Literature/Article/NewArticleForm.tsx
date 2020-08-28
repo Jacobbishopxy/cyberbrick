@@ -9,6 +9,7 @@ import moment from "moment"
 
 import { TextEditorModifier } from "@/components/TextEditor"
 import { TagsSelectorProps, NewArticleFormProps } from "./data"
+import { Tag, Article } from "../data"
 
 const dateFormat = "YYYY-MM-DD HH:mm:ss"
 
@@ -58,7 +59,7 @@ const TagsSelector = (props: TagsSelectorProps) =>
 export const NewArticleForm = (props: NewArticleFormProps) => {
   const [form] = Form.useForm()
 
-  const [tags, setTags] = useState<API.Tag[]>(props.tags)
+  const [tags, setTags] = useState<Tag[]>(props.tags)
   const [newTag, setNewTag] = useState<string>()
   const [date, setDate] = useState<moment.Moment>(moment())
 
@@ -87,7 +88,7 @@ export const NewArticleForm = (props: NewArticleFormProps) => {
     const d = {
       category: { name: props.categoryName },
       ...values
-    } as API.Article
+    } as Article
     props.onSubmit(d)
     onReset()
   }

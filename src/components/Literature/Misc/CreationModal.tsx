@@ -4,15 +4,25 @@
 
 import React from "react"
 import { Form, Input, Modal } from "antd"
-import * as propsData from "../data"
+
+interface CreationModalValue {
+  name: string
+  description?: string
+}
+
+interface CreationModalProps {
+  title: string
+  visible: boolean
+  onSubmit: (value: CreationModalValue) => void
+  onCancel: () => void
+}
 
 const formItemLayout = {
   labelCol: { offset: 2, span: 4 },
   wrapperCol: { span: 16 },
 }
 
-
-export const CreationModal = (props: propsData.CreationModalProps) => {
+export const CreationModal = (props: CreationModalProps) => {
   const [form] = Form.useForm()
 
   const onCancel = () => {

@@ -10,9 +10,10 @@ import moment from "moment"
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 import { SingleArticleTag } from "./SingleArticleTag"
 import { SingleArticleProps } from "./data"
+import { Tag, Article } from "../data"
 
 
-const getExcludeTags = (all: API.Tag[], have: API.Tag[]): API.Tag[] =>
+const getExcludeTags = (all: Tag[], have: Tag[]): Tag[] =>
   _.differenceWith(all, have, _.isEqual)
 
 const dateFormatter = (d: string) =>
@@ -20,7 +21,7 @@ const dateFormatter = (d: string) =>
 
 export const SingleArticle = (props: SingleArticleProps) => {
 
-  const [article, setArticle] = useState<API.Article>(props.article)
+  const [article, setArticle] = useState<Article>(props.article)
   const [articleEditable, setArticleEditable] = useState<boolean>(false)
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const SingleArticle = (props: SingleArticleProps) => {
   const articleTextOnChange = (text: string) =>
     setArticle({ ...article, text })
 
-  const articleTagOnChange = (tags: API.Tag[]) =>
+  const articleTagOnChange = (tags: Tag[]) =>
     setArticle({ ...article, tags })
 
   const footer = (

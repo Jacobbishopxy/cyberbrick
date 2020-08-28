@@ -10,9 +10,22 @@ import ArticlePanel from "./Article"
 import TagPanel from "./Tag"
 import { Editor } from "./Misc"
 import { EditableContext, SearchableContext } from "./GlobalContext"
-import { ContentProps, Editable } from "./data"
+import { Article, Category, Tag } from "./data"
 
+interface ContentProps {
+  category: Category
+  articles: Article[]
+  tagPanelUpdate: (value: Tag) => void
+  tagPanelDelete: (value: string) => void
+  articlePanelUpdate: (value: Article) => void
+  articlePanelDelete: (value: number) => void
+  tagPanelSearch: (value: string[]) => void
+}
 
+interface Editable {
+  article: boolean
+  tag: boolean
+}
 
 export const LiteratureContent = (props: ContentProps) => {
   const globalEditable = useContext(EditableContext)

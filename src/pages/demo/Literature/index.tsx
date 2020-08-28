@@ -7,15 +7,20 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout'
 import _ from "lodash"
 
 import * as service from '@/services/literature'
+import LiteratureDataType from "@/components/Literature/data"
 import { EditableContext, LiteratureHeader, LiteratureContent } from "@/components/Literature"
-import { TriggerEdit } from "./data"
 
+
+interface TriggerEdit {
+  article: number
+  category: number
+}
 
 export default () => {
 
-  const [categories, setCategories] = useState<API.Category[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<API.Category>()
-  const [articles, setArticles] = useState<API.Article[]>()
+  const [categories, setCategories] = useState<LiteratureDataType.Category[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<LiteratureDataType.Category>()
+  const [articles, setArticles] = useState<LiteratureDataType.Article[]>()
   const [reloadTrigger, setReloadTrigger] = useState<TriggerEdit>({ article: 0, category: 0 })
 
   const [globalEditable, setGlobalEditable] = useState<boolean>(false)
@@ -56,19 +61,19 @@ export default () => {
       article: reloadTrigger.article + 1
     })
 
-  const tagPanelUpdate = (ts: API.CategoryU) =>
+  const tagPanelUpdate = (ts: LiteratureDataType.CategoryU) =>
     service.upsertCategoryTag(ts).then(triggerCategory)
 
   const tagPanelDelete = (name: string) =>
     service.deleteTag(name).then(triggerCategory)
 
-  const articlePanelUpdate = (target: API.Article) =>
+  const articlePanelUpdate = (target: LiteratureDataType.Article) =>
     service.saveArticle(target).then(triggerCategoryAndArticle)
 
   const articlePanelDelete = (id: number) =>
     service.deleteArticle(id).then(triggerCategoryAndArticle)
 
-  const categoryCreate = (cat: API.Category) =>
+  const categoryCreate = (cat: LiteratureDataType.Category) =>
     service.saveCategory(cat).then(triggerCategory)
 
   const articleSearchByTags = (tagNames: string[]) => {

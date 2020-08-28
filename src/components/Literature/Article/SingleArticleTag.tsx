@@ -7,7 +7,7 @@ import { Modal, Select, Tag, Tooltip } from "antd"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
 import { SingleArticleTagProps, TagSelectModalProps } from "./data"
-
+import { Tag as DataTag } from "../data"
 
 const TagSelectModal = (props: TagSelectModalProps) =>
   <Modal
@@ -44,8 +44,8 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const SingleArticleTag = (props: SingleArticleTagProps) => {
 
-  const [tags, setTags] = useState<API.Tag[]>(props.tags)
-  const [tagsExcluded, setTagsExcluded] = useState<API.Tag[] | undefined>(props.tagsExcluded)
+  const [tags, setTags] = useState<DataTag[]>(props.tags)
+  const [tagsExcluded, setTagsExcluded] = useState<DataTag[] | undefined>(props.tagsExcluded)
   const [tagsToUpdate, setTagsToUpdate] = useState<string[]>([])
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 

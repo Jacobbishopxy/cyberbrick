@@ -10,7 +10,7 @@ import { SelectableTags, SelectableTagsRef } from "./SelectableTags"
 import { SearchableContext } from "../GlobalContext"
 import { CreationModal } from "../Misc/CreationModal"
 import { TagPanelProps } from "./data"
-
+import { Tag as DataTag, CategoryU } from "../data"
 
 const tagDeleteModal = (onOk: () => void) =>
   Modal.confirm({
@@ -27,7 +27,7 @@ export const TagPanel = (props: TagPanelProps) => {
   const tagSearchable = useContext(SearchableContext)
   const selectableTagsRef = useRef<SelectableTagsRef>(null)
 
-  const [tags, setTags] = useState<API.Tag[]>(props.tags)
+  const [tags, setTags] = useState<DataTag[]>(props.tags)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [selectedTagNames, setSelectedTagNames] = useState<string[]>([])
 
@@ -49,10 +49,10 @@ export const TagPanel = (props: TagPanelProps) => {
 
   }
 
-  const tagCreateModalOnOk = (value: API.Tag) => {
+  const tagCreateModalOnOk = (value: DataTag) => {
     if (props.tagOnCreate && props.category) {
 
-      const newTag: API.CategoryU = {
+      const newTag: CategoryU = {
         name: props.category.name,
         description: props.category.description,
         tag: value

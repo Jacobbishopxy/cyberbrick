@@ -2,16 +2,18 @@
  * Created by Jacob Xie on 8/28/2020.
  */
 
+import { Category, Tag } from "../data"
+
 export interface TagPanelProps {
-  category: API.Category
-  tags: API.Tag[]
+  category: Category
+  tags: Tag[]
   editable: boolean
-  tagOnCreate: (value: API.Tag) => void
+  tagOnCreate: (value: Tag) => void
   tagOnRemove: (value: string) => void
   tagOnSelect: (value: string[]) => void
 }
 
 export interface SelectableTagsProps {
-  tags: API.Tag[]
+  tags: Tag[]
   onSelectTags: (value: string[]) => void
 }

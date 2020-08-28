@@ -2,45 +2,47 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
-
-
-export interface TagsViewProps {
-  category?: API.Category
-  tags: API.Tag[]
-  tagsExcluded?: API.Tag[]
-  editable: boolean
-  isTagPanel?: boolean
-  tagOnCreate?: (values: API.Tag) => void
-  tagOnRemove?: (values: string) => void
-  tagsOnChange?: (values: API.Tag[]) => void
-  onSelectTags?: (value: string[]) => void
+export interface Article {
+  id?: number
+  category: Category
+  tags?: Tag[]
+  date: string
+  author: Author
+  title: string
+  text: string
+  version: number
 }
 
-interface CreationModalValue {
+export interface Tag {
   name: string
   description?: string
+  articles?: TargetType[]
+  categories?: Category[]
 }
 
-export interface CreationModalProps {
-  title: string
-  visible: boolean
-  onSubmit: (value: CreationModalValue) => void
-  onCancel: () => void
+export interface Category {
+  name: string
+  description?: string
+  articles?: Article[]
+  unionTags?: Tag[]
 }
 
-
-export interface ContentProps {
-  category: API.Category
-  articles: API.Article[]
-  tagPanelUpdate: (value: API.Tag) => void
-  tagPanelDelete: (value: string) => void
-  articlePanelUpdate: (value: API.Article) => void
-  articlePanelDelete: (value: number) => void
-  tagPanelSearch: (value: string[]) => void
+export interface Author {
+  name: string
+  description?: string
+  articles?: Article[]
 }
 
-export interface Editable {
-  article: boolean
-  tag: boolean
+export interface CategoryU {
+  name: string
+  description?: string
+  tag?: Tag
 }
+
+export interface TagU {
+  name: string
+  description?: string
+  category: Category
+}
+
 

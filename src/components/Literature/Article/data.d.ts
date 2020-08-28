@@ -2,8 +2,10 @@
  * Created by Jacob Xie on 8/28/2020.
  */
 
+import { Tag, Article } from "../data"
+
 export interface TagSelectModalProps {
-  tagsExcluded: API.Tag[]
+  tagsExcluded: Tag[]
   visible: boolean
   onOk: () => void
   onCancel: () => void
@@ -11,14 +13,14 @@ export interface TagSelectModalProps {
 }
 
 export interface SingleArticleTagProps {
-  tags: API.Tag[]
-  tagsExcluded?: API.Tag[]
+  tags: Tag[]
+  tagsExcluded?: Tag[]
   editable?: boolean
-  tagsOnChange?: (values: API.Tag[]) => void
+  tagsOnChange?: (values: Tag[]) => void
 }
 
 export interface TagsSelectorProps {
-  tags: API.Tag[]
+  tags: Tag[]
   onChange: (value: string[]) => void
   onAddNewTagInputChange: (value: string) => void
   onAddNewTag: () => void
@@ -26,25 +28,25 @@ export interface TagsSelectorProps {
 
 export interface NewArticleFormProps {
   categoryName: string
-  tags: API.Tag[]
-  onSubmit: (value: API.Article) => void
+  tags: Tag[]
+  onSubmit: (value: Article) => void
 }
 
 
 export interface SingleArticleProps {
-  unionTags: API.Tag[]
-  article: API.Article
+  unionTags: Tag[]
+  article: Article
   editable: boolean
-  articleOnModify: (value: API.Article) => void
+  articleOnModify: (value: Article) => void
   articleOnDelete: (value: number) => void
 }
 
 
 export interface ArticlePanelProps {
   categoryName: string
-  articles: API.Article[]
-  unionTags: API.Tag[]
+  articles: Article[]
+  unionTags: Tag[]
   editable: boolean
-  articleOnCreate: (value: API.Article) => void
+  articleOnCreate: (value: Article) => void
   articleOnDelete: (value: number) => void
 }
