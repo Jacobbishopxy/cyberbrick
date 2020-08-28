@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
 
 import { SelectableTags, SelectableTagsRef } from "./SelectableTags"
-import { SearchableContext } from "../index"
+import { SearchableContext } from "../GlobalContext"
 import { CreationModal } from "../Misc/CreationModal"
 import { TagPanelProps } from "./data"
 

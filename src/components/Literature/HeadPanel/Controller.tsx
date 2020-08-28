@@ -7,7 +7,7 @@ import { Button, Card, Select, Space } from "antd"
 
 import { CreationModal } from "../Misc/CreationModal"
 import { ControllerProps } from "./data"
-import { EditableContext } from "../../Literature"
+import { EditableContext } from "../GlobalContext"
 import { Editor } from "../Misc"
 
 

@@ -1,7 +1,6 @@
 /**
- * Created by Jacob Xie on 8/26/2020.
+ * Created by Jacob Xie on 8/28/2020.
  */
-
 
 import React, { useContext, useEffect, useState } from 'react'
 import { Row, Col, Card, Switch } from 'antd'
@@ -10,13 +9,12 @@ import { CloseOutlined, MonitorOutlined } from '@ant-design/icons'
 import ArticlePanel from "./Article"
 import TagPanel from "./Tag"
 import { Editor } from "./Misc"
-import { EditableContext } from "../Literature"
+import { EditableContext, SearchableContext } from "./GlobalContext"
 import { ContentProps, Editable } from "./data"
 
 
-export const SearchableContext = React.createContext<boolean>(false)
 
-export const Content = (props: ContentProps) => {
+export const LiteratureContent = (props: ContentProps) => {
   const globalEditable = useContext(EditableContext)
   const [editable, setEditable] = useState<Editable>({ article: false, tag: false })
   const [tagSearchable, setTagSearchable] = useState<boolean>(false)
@@ -86,5 +84,5 @@ export const Content = (props: ContentProps) => {
   )
 }
 
-export default Content
+export default LiteratureContent
 
