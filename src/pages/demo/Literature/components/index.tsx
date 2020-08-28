@@ -7,9 +7,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Row, Col, Card, Switch } from 'antd'
 import { CloseOutlined, MonitorOutlined } from '@ant-design/icons'
 
-import { TagsView } from "./Tag/TagsView"
-import { ArticlesView } from "./Article/ArticlesView"
-import { Editor } from "./Misc/Editor"
+import ArticlePanel from "./Article"
+import TagPanel from "./Tag"
+import { Editor } from "./Misc"
 import { EditableContext } from "../Literature"
 import { ContentProps, Editable } from "./data"
 
@@ -41,7 +41,7 @@ export const Content = (props: ContentProps) => {
             }
             size="small"
           >
-            <ArticlesView
+            <ArticlePanel
               categoryName={ props.category.name }
               articles={ props.articles }
               unionTags={ props.category.unionTags! }
@@ -70,13 +70,13 @@ export const Content = (props: ContentProps) => {
             size="small"
           >
             <SearchableContext.Provider value={ tagSearchable }>
-              <TagsView
+              <TagPanel
                 category={ props.category }
                 tags={ props.category.unionTags }
                 editable={ editable.tag }
                 tagOnCreate={ props.tagPanelUpdate }
                 tagOnRemove={ props.tagPanelDelete }
-                onSelectTags={ props.tagPanelSearch }
+                tagOnSelect={ props.tagPanelSearch }
               />
             </SearchableContext.Provider>
           </Card>
@@ -85,3 +85,6 @@ export const Content = (props: ContentProps) => {
     </>
   )
 }
+
+export default Content
+

@@ -1,16 +1,15 @@
 /**
- * Created by Jacob Xie on 8/16/2020.
+ * Created by Jacob Xie on 8/28/2020.
  */
 
-import { List, Divider, Space } from "antd"
 import React, { useEffect, useState } from "react"
+import { List, Space } from "antd"
 import _ from "lodash"
 import moment from "moment"
-import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 
-import { TagsView } from "../Tag/TagsView"
-import { NewArticleForm } from "./NewArticleForm"
-import * as propsData from "../data"
+import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
+import { SingleArticleTag } from "./SingleArticleTag"
+import { SingleArticleProps } from "./data"
 
 
 const getExcludeTags = (all: API.Tag[], have: API.Tag[]): API.Tag[] =>
@@ -19,7 +18,7 @@ const getExcludeTags = (all: API.Tag[], have: API.Tag[]): API.Tag[] =>
 const dateFormatter = (d: string) =>
   moment(d).utc(false).format("YYYY-MM-DD HH:mm:ss")
 
-const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
+export const SingleArticle = (props: SingleArticleProps) => {
 
   const [article, setArticle] = useState<API.Article>(props.article)
   const [articleEditable, setArticleEditable] = useState<boolean>(false)
@@ -66,9 +65,8 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
               content={ article.text }
             />
             <br/>
-            <TagsView
+            <SingleArticleTag
               tags={ article.tags! }
-              editable={ false }
             />
             <br/>
             <br/>
@@ -106,8 +104,7 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
               content={ article.text }
             />
             <br/>
-            <TagsView
-              isTagPanel={ false }
+            <SingleArticleTag
               tags={ article.tags! }
               tagsExcluded={ getExcludeTags(props.unionTags, article.tags!) }
               editable
@@ -122,7 +119,7 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
       />
       <Space direction="vertical">
         <a onClick={ doneEdit }>Done</a>
-        <a style={{color: "red"}} onClick={ doneDelete }>Delete</a>
+        <a style={ { color: "red" } } onClick={ doneDelete }>Delete</a>
       </Space>
     </>
   )
@@ -133,39 +130,3 @@ const SingleArticleView = (props: propsData.SingleArticleViewProps) => {
     </List.Item>
   )
 }
-
-
-export const ArticlesView = (props: propsData.ArticlesViewProps) => {
-
-  return (
-    <>
-      <List
-        itemLayout="vertical"
-        dataSource={ props.articles }
-        renderItem={ item =>
-          <SingleArticleView
-            unionTags={ props.unionTags }
-            article={ item }
-            editable={ props.editable }
-            articleOnModify={ props.articleOnCreate }
-            articleOnDelete={ props.articleOnDelete }
-          />
-        }
-        locale={ { emptyText: "Empty" } }
-      />
-      {
-        props.editable ?
-          <div>
-            <Divider/>
-            <NewArticleForm
-              categoryName={ props.categoryName }
-              tags={ props.unionTags }
-              onSubmit={ props.articleOnCreate! }
-            />
-          </div> :
-          <></>
-      }
-    </>
-  )
-}
-

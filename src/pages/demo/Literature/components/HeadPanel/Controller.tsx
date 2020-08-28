@@ -6,9 +6,9 @@ import React, { useContext, useState } from "react"
 import { Button, Card, Select, Space } from "antd"
 
 import { CreationModal } from "../Misc/CreationModal"
-import { ControllerProps } from "../data"
+import { ControllerProps } from "./data"
 import { EditableContext } from "../../Literature"
-import { Editor } from "../Misc/Editor"
+import { Editor } from "../Misc"
 
 
 export const Controller = (props: ControllerProps) => {

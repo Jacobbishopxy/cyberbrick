@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 import _ from "lodash"
 
 import * as service from '@/services/literature'
-import { Content } from "./components/Content"
+import Content from "./components"
 import { Controller } from "./components/HeadPanel/Controller"
 import { TriggerEdit } from "./data"
 

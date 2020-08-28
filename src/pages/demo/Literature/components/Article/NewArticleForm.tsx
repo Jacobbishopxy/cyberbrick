@@ -8,7 +8,7 @@ import { PlusOutlined } from "@ant-design/icons"
 import moment from "moment"
 
 import { TextEditorModifier } from "@/components/TextEditor"
-import * as propsData from "@/pages/demo/Literature/components/data"
+import { TagsSelectorProps, NewArticleFormProps } from "./data"
 
 const dateFormat = "YYYY-MM-DD HH:mm:ss"
 
@@ -20,7 +20,7 @@ const tailLayout = {
   wrapperCol: { offset: 2, span: 20 },
 }
 
-const TagsSelector = (props: propsData.TagsSelectorProps) =>
+const TagsSelector = (props: TagsSelectorProps) =>
   <Select
     mode="multiple"
     placeholder="Select tags"
@@ -55,7 +55,7 @@ const TagsSelector = (props: propsData.TagsSelectorProps) =>
     }
   </Select>
 
-export const NewArticleForm = (props: propsData.NewArticleFormProps) => {
+export const NewArticleForm = (props: NewArticleFormProps) => {
   const [form] = Form.useForm()
 
   const [tags, setTags] = useState<API.Tag[]>(props.tags)

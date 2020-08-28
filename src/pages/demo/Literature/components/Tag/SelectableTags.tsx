@@ -5,7 +5,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { Tag } from "antd"
 
-import { SelectableTagsProps } from "../data"
+import { SelectableTagsProps } from "./data"
 
 export interface SelectableTagsRef {
   clearSelected: () => void
