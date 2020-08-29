@@ -7,6 +7,7 @@ import { getRepository } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Tag } from "../entities/Tag"
 // import { Category } from "../entities/Category"
 
@@ -32,12 +33,12 @@ export async function getAllTags(req: Request, res: Response) {
  */
 export async function getTagsByNames(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const tags = await tagRepo()
     .find({
       ...tagArticlesRelations,
-      ...common.whereNamesIn(req.query.names as string)
+      ...utils.whereNamesIn(req.query.names as string)
     })
 
   res.send(tags)
@@ -52,7 +53,7 @@ export async function getTagsByNames(req: Request, res: Response) {
  */
 export async function saveTag(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const tr = tagRepo()
   const newTag = tr.create(req.body)
@@ -67,7 +68,7 @@ export async function saveTag(req: Request, res: Response) {
  */
 export async function deleteTag(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const tag = await tagRepo().delete(req.query.name as string)
 
@@ -81,13 +82,13 @@ export async function deleteTag(req: Request, res: Response) {
  */
 export async function getCommonCategoriesByTagNames(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const names = req.query.names as string
   const tags = await tagRepo()
     .find({
       ...tagCategoriesRelations,
-      ...common.whereNamesIn(names)
+      ...utils.whereNamesIn(names)
     })
 
   const catNamesArr = tags.map(i => i.categories)

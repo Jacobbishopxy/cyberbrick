@@ -7,6 +7,7 @@ import { getRepository } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Category } from "../entities/Category"
 import { Tag } from "../entities/Tag"
 
@@ -30,11 +31,11 @@ export async function getAllCategories(req: Request, res: Response) {
  */
 export async function getCategoriesByNames(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await categoryRepo().find({
     ...categoryTagsRelations,
-    ...common.whereNamesIn(req.query.names as string)
+    ...utils.whereNamesIn(req.query.names as string)
   })
 
   res.send(ans)
@@ -58,7 +59,7 @@ export async function saveCategory(req: Request, res: Response) {
  */
 export async function deleteCategory(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const name = req.query.name as string
 
@@ -78,12 +79,12 @@ export async function deleteCategory(req: Request, res: Response) {
  */
 export async function getTagsByCategoryName(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await categoryRepo()
     .findOne({
       ...categoryTagsRelations,
-      ...common.whereNameEqual(req.query.name as string)
+      ...utils.whereNameEqual(req.query.name as string)
     })
 
   res.send(ans)
@@ -94,13 +95,13 @@ export async function getTagsByCategoryName(req: Request, res: Response) {
  */
 export async function upsertCategoryTag(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const cr = categoryRepo()
   const catName = req.body.name
   const prevCat = await cr.findOne({
     ...categoryTagsRelations,
-    ...common.whereNameEqual(catName)
+    ...utils.whereNameEqual(catName)
   })
 
   if (prevCat) {
@@ -144,13 +145,13 @@ export async function upsertCategoryTag(req: Request, res: Response) {
  */
 export async function removeCategoryTag(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const cr = categoryRepo()
   const catName = req.query.categoryName as string
   const prevCat = await cr.findOne({
     ...categoryTagsRelations,
-    ...common.whereNameEqual(catName)
+    ...utils.whereNameEqual(catName)
   })
 
   if (prevCat) {

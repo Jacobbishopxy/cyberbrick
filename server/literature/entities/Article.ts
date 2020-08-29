@@ -18,6 +18,7 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Category } from "./Category"
 import { Tag } from "./Tag"
 import { Author } from "./Author"
@@ -56,7 +57,7 @@ export class Article {
   @ManyToOne(() => Author, author => author.articles, { cascade: true, nullable: true })
   author!: Author
 
-  @Column(common.dateType, { nullable: false })
+  @Column(utils.dateType, { nullable: false })
   date!: string
 
   @Column("text", { nullable: false })

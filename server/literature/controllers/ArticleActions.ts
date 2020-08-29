@@ -8,6 +8,7 @@ import _ from "lodash"
 import moment from "moment"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Article } from "../entities/Article"
 import { Category } from "../entities/Category"
 import { Author } from "../entities/Author"
@@ -37,7 +38,7 @@ const categoryTagsRelations = {
 export async function getAllArticles(req: Request, res: Response) {
   const ans = await articleRepo().find({
     ...articleRelations,
-    ...common.orderByDate("DESC")
+    ...utils.orderByDate("DESC")
   })
 
   res.send(ans)
@@ -48,23 +49,22 @@ export async function getAllArticles(req: Request, res: Response) {
  */
 export async function getArticlesByIds(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ids = req.query.ids as string
-  const pagination = req.query.pagination as common.QueryStr
+  const pagination = req.query.pagination as utils.QueryStr
 
   const ans = await articleRepo()
     .find({
       ...articleRelations,
-      ...common.whereStringIdsIn(ids),
-      ...common.paginationGet(pagination),
-      ...common.orderByDate("DESC")
+      ...utils.whereStringIdsIn(ids),
+      ...utils.paginationGet(pagination),
+      ...utils.orderByDate("DESC")
     })
 
   res.send(ans)
 }
 
-// todo: express-validator required here for IMPORTANT reasons
 /**
  * save article. If id provided and article already exists, update article.
  *
@@ -73,6 +73,9 @@ export async function getArticlesByIds(req: Request, res: Response) {
  * Category is always needed, since no one wants unbounded A-C relationship.
  */
 export async function saveArticle(req: Request, res: Response) {
+
+  if (utils.expressErrorsBreak(req, res)) return
+
   const ar = articleRepo()
 
   const reqId = req.body.id
@@ -117,7 +120,7 @@ export async function saveArticle(req: Request, res: Response) {
 
     const prevCategory = await cr.findOne({
       ...categoryTagsRelations,
-      ...common.whereNameEqual(reqCategory.name)
+      ...utils.whereNameEqual(reqCategory.name)
     })
     const preTags = prevCategory ? prevCategory.unionTags : []
 
@@ -148,7 +151,7 @@ export async function saveArticle(req: Request, res: Response) {
  */
 export async function deleteArticle(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await articleRepo().delete(req.query.id as string)
 
@@ -163,11 +166,11 @@ export async function deleteArticle(req: Request, res: Response) {
  */
 export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const categoryName = req.query.categoryName as string
-  const tagNames = req.query.tagNames as common.QueryStr
-  const pagination = req.query.pagination as common.QueryStr
+  const tagNames = req.query.tagNames as utils.QueryStr
+  const pagination = req.query.pagination as utils.QueryStr
 
 
   let ans
@@ -191,17 +194,17 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
     ans = await articleRepo()
       .find({
         ...articleRelations,
-        ...common.whereIdsIn(ids),
-        ...common.paginationGet(pagination),
-        ...common.orderByDate("DESC")
+        ...utils.whereIdsIn(ids),
+        ...utils.paginationGet(pagination),
+        ...utils.orderByDate("DESC")
       })
 
   } else
     ans = await que
       .where(`${ common.categoryName } = :categoryName`, { categoryName })
       .orderBy({ date: "DESC" })
-      .skip(common.paginationSkip(pagination))
-      .take(common.paginationTake(pagination))
+      .skip(utils.paginationSkip(pagination))
+      .take(utils.paginationTake(pagination))
       .getMany()
 
   res.send(ans)
@@ -209,10 +212,10 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
 
 export async function getArticlesByAuthorName(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const name = req.query.name as string
-  const pagination = req.query.pagination as common.QueryStr
+  const pagination = req.query.pagination as utils.QueryStr
 
   const articleIds = await authorRepo()
     .createQueryBuilder(common.author)
@@ -227,9 +230,9 @@ export async function getArticlesByAuthorName(req: Request, res: Response) {
     const ans = await articleRepo()
       .find({
         ...articleRelations,
-        ...common.whereIdsIn(ids),
-        ...common.paginationGet(pagination),
-        ...common.orderByDate("DESC")
+        ...utils.whereIdsIn(ids),
+        ...utils.paginationGet(pagination),
+        ...utils.orderByDate("DESC")
       })
     res.send(ans)
   } else {

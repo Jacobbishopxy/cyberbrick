@@ -2,12 +2,9 @@
  * Created by Jacob Xie on 8/19/2020.
  */
 
-import { Request, Response } from "express"
-import { body, query, validationResult } from "express-validator"
-import { Equal, In } from "typeorm"
+import { body, query } from "express-validator"
 
-
-export type QueryStr = string | undefined
+import * as utils from "../utils"
 
 // table name
 export const article = "article"
@@ -51,128 +48,44 @@ export const authorName = `${ author }.${ name }`
 export const authorDescription = `${ author }.${ description }`
 export const authorArticles = `${ author }.${ articles }`
 
-export const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
-
-// query filters
-export const whereNameEqual = (n: string) =>
-  ({ where: { name: Equal(n) } })
-
-export const whereNamesIn = (n: string) => {
-  const ns = n.split(",")
-  return { where: { name: In(ns) } }
-}
-
-export const whereStringIdsIn = (ids: string) => {
-  const idsArr = ids.split(",").map(i => +i)
-  return { where: { id: In(idsArr) } }
-}
-
-export const whereIdsIn = (ids: number[]) =>
-  ({ where: { id: In(ids) } })
-
-// query orders
-type OrderType = "ASC" | "DESC"
-
-export const orderByDate = (orderType: OrderType) =>
-  ({ order: { date: orderType } })
-
-export const orderByName = (orderType: OrderType) =>
-  ({ order: { name: orderType } })
-
-// misc
-const regSkip = new RegExp("^\\((\\d+),")
-const regTake = new RegExp(",(\\d+)\\)$")
-const regPagination = new RegExp("^\\((\\d+),(\\d+)\\)$")
-const regArrayLike = new RegExp("^(\\w+(,\\w+)*)|(\\w+)")
-
-export const paginationSkip = (pagination: QueryStr) => {
-  if (!pagination)
-    return undefined
-  const s = regSkip.exec(pagination)
-  if (s === null)
-    return undefined
-  return +s[1]
-}
-
-export const paginationTake = (pagination: QueryStr) => {
-  if (!pagination)
-    return undefined
-  const t = regTake.exec(pagination)
-  if (t === null)
-    return undefined
-  return +t[1]
-}
-
-export const paginationGet = (pagination: QueryStr) => {
-  let pg = {}
-  if (pagination) {
-    const s = paginationSkip(pagination)
-    const t = paginationTake(pagination)
-    if (s) pg = { ...pg, skip: s }
-    if (t) pg = { ...pg, take: t }
-  }
-  return pg
-}
-
-export const arrayLikeGet = (arr: QueryStr) => {
-  if (arr) return regArrayLike.exec(arr)
-  return undefined
-}
-
-/**
- * request error validator
- */
-export function expressErrorsBreak(req: Request, res: Response) {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() })
-    return true
-  }
-  return false
-}
-
-
-// express request checkers
-const messageRequestQuery = (d: string) => `${ d } is required in request query!`
-const messageRequestBody = (d: string) => `${ d } is required in request body!`
 
 export const queryIdCheck =
-  query(id, messageRequestQuery(id)).exists()
+  query(id, utils.messageRequestQuery(id)).exists()
 
 export const queryIdsCheck =
-  query("ids", messageRequestQuery("ids")).exists()
+  query("ids", utils.messageRequestQuery("ids")).exists()
 
 export const queryNameCheck =
-  query(name, messageRequestQuery(name)).exists()
+  query(name, utils.messageRequestQuery(name)).exists()
 
 export const queryNamesCheck =
-  query("names", messageRequestQuery("names")).exists()
+  query("names", utils.messageRequestQuery("names")).exists()
 
 export const queryCategoryNameCheck =
-  query("categoryName", messageRequestQuery("categoryName")).exists()
+  query("categoryName", utils.messageRequestQuery("categoryName")).exists()
 
 export const queryTagNameCheck =
-  query("tagName", messageRequestQuery("tagName")).exists()
+  query("tagName", utils.messageRequestQuery("tagName")).exists()
 
 export const queryOptionalTagNamesCheck =
   query("tagNames", "tagNames should like `?tagNames=Scala,Typescript`!")
     .optional()
-    .custom((p: string) => regArrayLike.exec(p) !== null)
+    .custom((p: string) => utils.regArrayLike.exec(p) !== null)
 
 export const queryOptionalPaginationCheck =
   query("pagination", "pagination should like (5,10), meaning skip 5 and take 10")
     .optional()
-    .custom((p: string) => regPagination.exec(p) !== null)
+    .custom((p: string) => utils.regPagination.exec(p) !== null)
 
 export const bodyNameCheck =
-  body(name, messageRequestBody(name)).isLength({min: 1}).exists()
+  body(name, utils.messageRequestBody(name)).isLength({ min: 1 }).exists()
 
 export const bodyTagNameCheck =
-  body(tagName, messageRequestBody(tagName)).isLength({min: 1}).exists()
+  body(tagName, utils.messageRequestBody(tagName)).isLength({ min: 1 }).exists()
 
 export const bodyCategoryCheck =
-  body(category, messageRequestBody(category)).isLength({min: 1}).exists()
+  body(category, utils.messageRequestBody(category)).isLength({ min: 1 }).exists()
 
 export const bodyCategoriesCheck =
-  body(categories, messageRequestBody(categories)).exists()
+  body(categories, utils.messageRequestBody(categories)).exists()
 

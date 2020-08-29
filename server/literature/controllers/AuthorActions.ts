@@ -6,6 +6,7 @@ import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Author } from "../entities/Author"
 
 
@@ -21,12 +22,12 @@ export async function getAllAuthors(req: Request, res: Response) {
 
 export async function getAuthorsByNames(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await authorRepo()
     .find({
       ...authorRelations,
-      ...common.whereNamesIn(req.query.names as string)
+      ...utils.whereNamesIn(req.query.names as string)
     })
 
   res.send(ans)
@@ -42,7 +43,7 @@ export async function saveAuthor(req: Request, res: Response) {
 
 export async function deleteAuthor(req: Request, res: Response) {
 
-  if (common.expressErrorsBreak(req, res)) return
+  if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await authorRepo().delete(req.query.name as string)
 

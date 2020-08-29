@@ -9,6 +9,7 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 
 @Entity({name: common.config})
 @Unique([common.templateName, common.elementName, common.symbol, common.date])
@@ -26,6 +27,6 @@ export class Config {
   @Column("varchar")
   symbol!: string
 
-  @Column(common.dateType)
+  @Column(utils.dateType)
   date!: string
 }
