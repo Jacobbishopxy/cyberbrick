@@ -26,7 +26,7 @@ app.get("/api/currentUserAvatar", homeController.getCurrentUserAvatar)
 app.get("/api/currentUser", homeController.getCurrentUser)
 
 // API (Database) routes, wrapped in async function
-export async function connectionsAwait() {
+async function connectionsAwait() {
   const literatureConnOptions: ConnectionOptions =
     app.get("env") === "prod" ? conProd : conDev
 
@@ -36,4 +36,4 @@ export async function connectionsAwait() {
   console.log(`Connected to ${ connInfo }`)
 }
 
-export default app
+export { app, connectionsAwait }

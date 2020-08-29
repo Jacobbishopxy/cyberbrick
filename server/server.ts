@@ -5,7 +5,7 @@
 import express from "express"
 import path from "path"
 
-import app, { connectionsAwait } from "./app"
+import { app, connectionsAwait } from "./app"
 
 
 async function start() {

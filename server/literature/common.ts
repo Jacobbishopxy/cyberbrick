@@ -9,12 +9,13 @@ import { Equal, In } from "typeorm"
 
 export type QueryStr = string | undefined
 
-// db name
+// table name
 export const article = "article"
 export const category = "category"
 export const gallery = "gallery"
 export const author = "author"
 export const tag = "tag"
+export const config = "config"
 
 // column name
 export const tags = "tags"
@@ -25,6 +26,10 @@ export const categories = "categories"
 export const date = "date"
 export const id = "id"
 export const description = "description"
+export const dashboardName = "dashboardName"
+export const templateName = "templateName"
+export const elementName = "elementName"
+export const symbol = "symbol"
 
 // joint column name
 export const articleId = `${ article }.${ id }`
@@ -45,6 +50,8 @@ export const tagsAuthor = `${ tags }.${ author }`
 export const authorName = `${ author }.${ name }`
 export const authorDescription = `${ author }.${ description }`
 export const authorArticles = `${ author }.${ articles }`
+
+export const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
 
 // query filters
 export const whereNameEqual = (n: string) =>
