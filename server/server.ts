@@ -5,11 +5,12 @@
 import express from "express"
 import path from "path"
 
-import { app, connectionsAwaitLiterature } from "./app"
+import { app, connectionsAwaitLiterature, connectionsAwaitGallery } from "./app"
 
 
 async function start() {
   await connectionsAwaitLiterature()
+  await connectionsAwaitGallery()
 
   if (process.env.NODE_ENV === "production") {
     app.use("/", express.static(path.join(__dirname, '../dist')))

@@ -2,14 +2,21 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Equal, In } from "typeorm"
 import { Request, Response } from "express"
-import { validationResult } from "express-validator"
+import { validationResult, ValidationChain } from "express-validator"
+import { Equal, In } from "typeorm"
 
-
+// misc
 export type QueryStr = string | undefined
 
 export const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
+
+export interface OrmRoute {
+  path: string,
+  method: string,
+  check?: ValidationChain[],
+  action: Function
+}
 
 // query filters
 export const whereNameEqual = (n: string) =>
@@ -40,7 +47,7 @@ export const orderByDate = (orderType: OrderType) =>
 export const orderByName = (orderType: OrderType) =>
   ({ order: { name: orderType } })
 
-// misc
+// string extract
 export const regSkip = new RegExp("^\\((\\d+),")
 export const regTake = new RegExp(",(\\d+)\\)$")
 export const regPagination = new RegExp("^\\((\\d+),(\\d+)\\)$")

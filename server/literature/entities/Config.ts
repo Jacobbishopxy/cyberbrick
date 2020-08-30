@@ -4,6 +4,7 @@
 
 import {
   Entity,
+  PrimaryGeneratedColumn,
   Column,
   Unique
 } from "typeorm"
@@ -14,6 +15,9 @@ import * as utils from "../../utils"
 @Entity({name: common.config})
 @Unique([common.templateName, common.elementName, common.symbol, common.date])
 export class Config {
+
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
 
   @Column("varchar")
   dashboardName!: string

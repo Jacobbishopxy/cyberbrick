@@ -5,7 +5,7 @@
 import express from "express"
 import { ConnectionOptions } from "typeorm"
 
-import { literatureConnect } from "./orm"
+import { literatureConnect, galleryConnect } from "./orm"
 import * as homeController from "./controllers/home"
 import { connProdLiterature, connProdGallery } from "../resources/databaseProd"
 import { connDevLiterature, connDevGallery } from "../resources/databaseDev"
@@ -40,7 +40,7 @@ async function connectionsAwaitGallery() {
   const galleryConnOptions: ConnectionOptions =
     app.get("ene") === "prod" ? connProdGallery : connDevGallery
 
-  // await galleryConnect(app, galleryConnOptions)
+  await galleryConnect(app, galleryConnOptions)
 
   const connInfo = JSON.stringify(galleryConnOptions, null, 2)
   console.log(`Connected to ${ connInfo }`)

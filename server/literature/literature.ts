@@ -2,25 +2,17 @@
  * Created by Jacob Xie on 8/14/2020.
  */
 
-import { ValidationChain } from "express-validator"
 
 import * as articleActions from "./controllers/ArticleActions"
 import * as categoryActions from "./controllers/CategoryActions"
 import * as tagActions from "./controllers/TagActions"
 import * as authorActions from "./controllers/AuthorActions"
 import * as common from "./common"
+import * as utils from "../utils"
 
 const base = "/api/literature"
 
-
-interface Route {
-  path: string,
-  method: string,
-  check?: ValidationChain[],
-  action: Function
-}
-
-const categoryRoutes: Route[] = [
+const categoryRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/categories`,
     method: "get",
@@ -70,7 +62,7 @@ const categoryRoutes: Route[] = [
 
 ]
 
-const articleRouts: Route[] = [
+const articleRouts: utils.OrmRoute[] = [
   {
     path: `${ base }/articles`,
     method: "get",
@@ -120,7 +112,7 @@ const articleRouts: Route[] = [
   },
 ]
 
-const tagRouts: Route[] = [
+const tagRouts: utils.OrmRoute[] = [
   {
     path: `${ base }/tags`,
     method: "get",
@@ -152,7 +144,7 @@ const tagRouts: Route[] = [
   },
 ]
 
-const authorRoutes: Route[] = [
+const authorRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/authors`,
     method: "get",
@@ -178,7 +170,7 @@ const authorRoutes: Route[] = [
 ]
 
 
-export const literature: Route[] = [
+export const literature: utils.OrmRoute[] = [
 
   ...articleRouts,
 

@@ -7,7 +7,7 @@ import { getRepository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Dashboard} from "../entities/Dashboard"
+import { Dashboard } from "../entities/Dashboard"
 
 
 const dashboardRepo = () => getRepository(Dashboard)
@@ -15,9 +15,9 @@ const dashboardRepo = () => getRepository(Dashboard)
 const templateRelations = {
   relations: [common.templates]
 }
-// const templateAndElementRelations = {
-//   relations: [common.templates, common.templatesElements]
-// }
+const templateAndElementRelations = {
+  relations: [common.templates, common.templatesElements]
+}
 const fullRelations = {
   relations: [
     common.templates,
@@ -33,7 +33,7 @@ export async function getAllDashboards(req: Request, res: Response) {
 }
 
 export async function getDashboardByName(req: Request, res: Response) {
-  const ans = await dashboardRepo().find({
+  const ans = await dashboardRepo().findOne({
     ...templateRelations,
     ...utils.whereNameEqual(req.query.name as string)
   })
@@ -62,3 +62,19 @@ export async function deleteDashboard(req: Request, res: Response) {
 }
 
 // =====================================================================================================================
+
+export async function getDashboardTemplateElementsByName(req: Request, res: Response) {
+
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const dashboardName = req.query.dashboardName as string
+  const templateName = req.query.templateName as string
+
+  const ans = await dashboardRepo().findOne({
+    ...templateAndElementRelations,
+    ...common.whereDashboardAndTemplateNameEqual(dashboardName, templateName)
+  })
+
+  res.send(ans)
+}
+

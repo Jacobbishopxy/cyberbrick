@@ -1,6 +1,9 @@
 /**
  * Created by Jacob Xie on 8/29/2020.
  */
+import { Equal } from "typeorm"
+import { query } from "express-validator"
+import * as utils from "../utils"
 
 
 // table name
@@ -10,6 +13,7 @@ export const element = "element"
 export const content = "content"
 
 // column name
+export const id = "id"
 export const name = "name"
 export const symbol = "symbol"
 export const date = "date"
@@ -24,7 +28,22 @@ export const elementsContents = `${ elements }.${ contents }`
 export const templatesElements = `${ templates }.${ elements }`
 export const templatesElementsContents = `${ templates }.${ elements }.${ contents }`
 
+// query filters
+export const whereDashboardAndTemplateNameEqual = (dn: string, tn: string) =>
+  ({ where: { name: Equal(dn), "templates.name": Equal(tn) } })
 
-export const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
+export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
+  ({ where: { "dashboard.name": Equal(dn), name: Equal(tn) } })
 
+// express validator
+export const queryIdCheck =
+  query(id, utils.messageRequestQuery(id)).exists()
 
+export const queryIdsCheck =
+  query("ids", utils.messageRequestQuery("ids")).exists()
+
+export const queryNameCheck =
+  query(name, utils.messageRequestQuery(name)).exists()
+
+export const queryNamesCheck =
+  query("names", utils.messageRequestQuery("names")).exists()

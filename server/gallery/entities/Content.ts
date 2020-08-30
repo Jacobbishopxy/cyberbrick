@@ -10,6 +10,7 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
+import * as utils from "../../utils"
 import { Element } from "./Element"
 
 @Entity({ name: common.content })
@@ -21,7 +22,7 @@ export class Content {
   @ManyToOne(() => Element, ele => ele.contents, { nullable: false })
   element!: Element
 
-  @Column(common.dateType, { nullable: false })
+  @Column(utils.dateType, { nullable: false })
   date!: string
 
   @Column("varchar")

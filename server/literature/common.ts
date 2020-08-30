@@ -48,7 +48,7 @@ export const authorName = `${ author }.${ name }`
 export const authorDescription = `${ author }.${ description }`
 export const authorArticles = `${ author }.${ articles }`
 
-
+// express validator
 export const queryIdCheck =
   query(id, utils.messageRequestQuery(id)).exists()
 
