@@ -3,7 +3,7 @@
  */
 
 export interface Article {
-  id?: number
+  id?: string
   category: Category
   tags?: Tag[]
   date: string
