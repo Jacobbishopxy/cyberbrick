@@ -47,3 +47,9 @@ export const queryNameCheck =
 
 export const queryNamesCheck =
   query("names", utils.messageRequestQuery("names")).exists()
+
+export const queryDashboardNameCheck =
+  query("dashboardName", utils.messageRequestQuery("dashboardName")).exists()
+
+export const queryTemplateNameCheck =
+  query("templateName", utils.messageRequestQuery("templateName")).exists()

@@ -11,7 +11,7 @@ import { literature } from './literature/literature'
 import { gallery } from "./gallery/gallery"
 
 
-export function createConnectAndGenRoutes(routes: OrmRoute[]) {
+function createConnectAndGenRoutes(routes: OrmRoute[]) {
   return async (app: express.Express, connectionOptions: ConnectionOptions) =>
     createConnection(connectionOptions).then(async () =>
       routes.forEach(route => {

@@ -25,7 +25,7 @@ export async function getAllTemplates(req: Request, res: Response) {
   res.send(ans)
 }
 
-export async function getTemplatesByName(req: Request, res: Response) {
+export async function getTemplatesByNames(req: Request, res: Response) {
 
   if (utils.expressErrorsBreak(req, res)) return
 
