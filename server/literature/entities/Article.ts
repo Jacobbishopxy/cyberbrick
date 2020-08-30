@@ -28,8 +28,8 @@ import { Config } from "./Config"
 @Unique([common.category, common.date])
 export class Article {
 
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
 
   /**
    * bi-directional

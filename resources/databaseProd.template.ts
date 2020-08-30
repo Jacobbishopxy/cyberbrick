@@ -1,7 +1,7 @@
-import {ConnectionOptions} from "typeorm"
+import { ConnectionOptions } from "typeorm"
 
-export default {
-  "name": "default",
+const connProdLiterature = {
+  "name": "literature",
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
@@ -14,3 +14,21 @@ export default {
     `./server/literature/entities/*.ts`
   ]
 } as ConnectionOptions
+
+const connProdGallery = {
+  "name": "gallery",
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "admin",
+  "password": "admin",
+  "database": "dev",
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+    `./server/gallery/entities/*.ts`
+  ]
+} as ConnectionOptions
+
+export { connProdLiterature, connProdGallery }
+

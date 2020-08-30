@@ -7,8 +7,8 @@ import { ConnectionOptions } from "typeorm"
 
 import { literatureConnect } from "./orm"
 import * as homeController from "./controllers/home"
-import conProd from "../resources/databaseProd"
-import conDev from "../resources/databaseDev"
+import { connProdLiterature, connProdGallery } from "../resources/databaseProd"
+import { connDevLiterature, connDevGallery } from "../resources/databaseDev"
 
 // Create Express server
 const app = express()
@@ -26,9 +26,9 @@ app.get("/api/currentUserAvatar", homeController.getCurrentUserAvatar)
 app.get("/api/currentUser", homeController.getCurrentUser)
 
 // API (Database) routes, wrapped in async function
-async function connectionsAwait() {
+async function connectionsAwaitLiterature() {
   const literatureConnOptions: ConnectionOptions =
-    app.get("env") === "prod" ? conProd : conDev
+    app.get("env") === "prod" ? connProdLiterature : connDevLiterature
 
   await literatureConnect(app, literatureConnOptions)
 
@@ -36,4 +36,14 @@ async function connectionsAwait() {
   console.log(`Connected to ${ connInfo }`)
 }
 
-export { app, connectionsAwait }
+async function connectionsAwaitGallery() {
+  const galleryConnOptions: ConnectionOptions =
+    app.get("ene") === "prod" ? connProdGallery : connDevGallery
+
+  // await galleryConnect(app, galleryConnOptions)
+
+  const connInfo = JSON.stringify(galleryConnOptions, null, 2)
+  console.log(`Connected to ${ connInfo }`)
+}
+
+export { app, connectionsAwaitLiterature, connectionsAwaitGallery }

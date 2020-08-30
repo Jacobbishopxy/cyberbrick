@@ -19,8 +19,8 @@ import { Element } from "./Element"
 @Entity({ name: common.template })
 export class Template {
 
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
 
   @ManyToOne(() => Dashboard, dsb => dsb.templates, { nullable: false })
   dashboard!: Dashboard

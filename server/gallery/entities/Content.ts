@@ -15,8 +15,8 @@ import { Element } from "./Element"
 @Entity({ name: common.content })
 export class Content {
 
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
 
   @ManyToOne(() => Element, ele => ele.contents, { nullable: false })
   element!: Element

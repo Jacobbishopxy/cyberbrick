@@ -28,7 +28,7 @@ export const whereStringIdsIn = (ids: string) => {
   return { where: { id: In(idsArr) } }
 }
 
-export const whereIdsIn = (ids: number[]) =>
+export const whereIdsIn = (ids: string[]) =>
   ({ where: { id: In(ids) } })
 
 // query orders
