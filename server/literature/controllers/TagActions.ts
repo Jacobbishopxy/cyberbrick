@@ -3,7 +3,7 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getConnection } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
@@ -12,8 +12,8 @@ import { Tag } from "../entities/Tag"
 // import { Category } from "../entities/Category"
 
 
-const tagRepo = () => getRepository(Tag)
-// const categoryRepo = () => getRepository(Category)
+const tagRepo = () => getConnection(common.db).getRepository(Tag)
+// const categoryRepo = () => getConnection(common.db).getRepository(Category)
 
 const tagRelations = { relations: [common.articles, common.categories] }
 const tagArticlesRelations = { relations: [common.articles] }

@@ -9,8 +9,6 @@ import { Equal, In } from "typeorm"
 // misc
 export type QueryStr = string | undefined
 
-export const dateType = process.env.NODE_ENV === 'production' ? "timestamp" : "datetime"
-
 export interface OrmRoute {
   path: string,
   method: string,

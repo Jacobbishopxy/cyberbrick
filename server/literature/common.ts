@@ -6,6 +6,9 @@ import { body, query } from "express-validator"
 
 import * as utils from "../utils"
 
+// db name
+export const db = "literature"
+
 // table name
 export const article = "article"
 export const category = "category"

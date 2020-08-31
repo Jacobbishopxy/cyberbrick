@@ -9,7 +9,7 @@ import {
   OneToMany,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm"
 
 import * as common from "../common"
@@ -19,7 +19,7 @@ import { Element } from "./Element"
 @Entity({ name: common.template })
 export class Template {
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string
 
   @ManyToOne(() => Dashboard, dsb => dsb.templates, { nullable: false })
@@ -31,7 +31,7 @@ export class Template {
   @Column("varchar", { nullable: false })
   name!: string
 
-  @Column("text")
+  @Column("text", { nullable: true })
   description?: string
 
   @CreateDateColumn({ select: false })

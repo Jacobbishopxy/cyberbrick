@@ -3,14 +3,14 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getConnection } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Author } from "../entities/Author"
 
 
-const authorRepo = () => getRepository(Author)
+const authorRepo = () => getConnection(common.db).getRepository(Author)
 
 const authorRelations = { relations: [common.articles] }
 

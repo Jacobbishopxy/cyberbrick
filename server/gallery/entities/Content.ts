@@ -10,19 +10,18 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import * as utils from "../../utils"
 import { Element } from "./Element"
 
 @Entity({ name: common.content })
 export class Content {
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string
 
   @ManyToOne(() => Element, ele => ele.contents, { nullable: false })
   element!: Element
 
-  @Column(utils.dateType, { nullable: false })
+  @Column("timestamp", { nullable: false })
   date!: string
 
   @Column("varchar")
@@ -33,5 +32,8 @@ export class Content {
 
   @Column("text", { nullable: false })
   text!: string
+
+  @Column("json")
+  config?: Record<string, any>
 }
 

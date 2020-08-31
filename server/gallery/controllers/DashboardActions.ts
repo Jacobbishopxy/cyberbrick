@@ -3,14 +3,14 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getConnection } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Dashboard } from "../entities/Dashboard"
 
 
-const dashboardRepo = () => getRepository(Dashboard)
+const dashboardRepo = () => getConnection(common.db).getRepository(Dashboard)
 
 const templateRelations = {
   relations: [common.templates]

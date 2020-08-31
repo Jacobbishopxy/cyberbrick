@@ -14,11 +14,10 @@ import {
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
-  VersionColumn
+  VersionColumn,
 } from "typeorm"
 
 import * as common from "../common"
-import * as utils from "../../utils"
 import { Category } from "./Category"
 import { Tag } from "./Tag"
 import { Author } from "./Author"
@@ -28,7 +27,7 @@ import { Config } from "./Config"
 @Unique([common.category, common.date])
 export class Article {
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string
 
   /**
@@ -57,7 +56,7 @@ export class Article {
   @ManyToOne(() => Author, author => author.articles, { cascade: true, nullable: true })
   author!: Author
 
-  @Column(utils.dateType, { nullable: false })
+  @Column("timestamp", { nullable: false })
   date!: string
 
   @Column("text", { nullable: false })

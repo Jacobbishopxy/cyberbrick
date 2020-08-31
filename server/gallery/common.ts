@@ -5,6 +5,8 @@ import { Equal } from "typeorm"
 import { query } from "express-validator"
 import * as utils from "../utils"
 
+// db name
+export const db = "gallery"
 
 // table name
 export const dashboard = "dashboard"
@@ -22,6 +24,26 @@ export const title = "title"
 export const contents = "contents"
 export const elements = "elements"
 export const templates = "templates"
+
+// column enum
+export enum Category {
+  EmbedLink = "embedLink",
+  Text = "text",
+  TargetPrice = "targetPrice",
+  Image = "image",
+  FileList = "fileList",
+  FileManager = "fileManager",
+  EditableTable = "editableTable",
+  Table = "table",
+  Lines = "lines",
+  Histogram = "histogram",
+  Pie = "pie",
+  Scatter = "scatter",
+  Heatmap = "heatmap",
+  Box = "box",
+  Tree = "tree",
+  TreeMap = "treeMap",
+}
 
 // joint column name
 export const elementsContents = `${ elements }.${ contents }`

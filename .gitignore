@@ -42,3 +42,4 @@ build
 cache
 !cache/.gitkeep
 resources/databaseProd.ts
+resources/databaseDev.ts

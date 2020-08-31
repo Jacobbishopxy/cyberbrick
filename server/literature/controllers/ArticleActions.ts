@@ -3,7 +3,7 @@
  */
 
 import { Request, Response } from "express"
-import { getRepository } from "typeorm"
+import { getConnection } from "typeorm"
 import _ from "lodash"
 import moment from "moment"
 
@@ -14,9 +14,9 @@ import { Category } from "../entities/Category"
 import { Author } from "../entities/Author"
 
 
-const articleRepo = () => getRepository(Article)
-const categoryRepo = () => getRepository(Category)
-const authorRepo = () => getRepository(Author)
+const articleRepo = () => getConnection(common.db).getRepository(Article)
+const categoryRepo = () => getConnection(common.db).getRepository(Category)
+const authorRepo = () => getConnection(common.db).getRepository(Author)
 
 const articleRelations = {
   relations: [

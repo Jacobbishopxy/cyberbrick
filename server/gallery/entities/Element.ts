@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany
+  OneToMany,
 } from "typeorm"
 
 import * as common from "../common"
@@ -18,7 +18,7 @@ import { Content } from "./Content"
 @Entity({ name: common.element })
 export class Element {
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string
 
   @ManyToOne(() => Template, tmp => tmp.elements, { nullable: false })
@@ -29,6 +29,9 @@ export class Element {
 
   @Column("varchar", { nullable: false })
   name!: string
+
+  @Column("enum", { nullable: false, enum: common.Category })
+  category!: common.Category
 
   @Column("bigint", { nullable: false })
   x!: number

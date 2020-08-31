@@ -21,7 +21,7 @@ export class Dashboard {
   @OneToMany(() => Template, tmp => tmp.dashboard, { cascade: true })
   templates!: Template[]
 
-  @Column("text")
+  @Column("text", { nullable: true })
   description?: string
 }
 

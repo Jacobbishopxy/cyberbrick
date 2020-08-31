@@ -6,17 +6,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Unique
+  Unique,
 } from "typeorm"
-
 import * as common from "../common"
-import * as utils from "../../utils"
 
-@Entity({name: common.config})
+@Entity({ name: common.config })
 @Unique([common.templateName, common.elementName, common.symbol, common.date])
 export class Config {
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string
 
   @Column("varchar")
@@ -31,6 +29,6 @@ export class Config {
   @Column("varchar")
   symbol!: string
 
-  @Column(utils.dateType)
+  @Column("timestamp")
   date!: string
 }
