@@ -15,7 +15,7 @@ import { Element } from "./Element"
 @Entity({ name: common.content })
 export class Content {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string
 
   @ManyToOne(() => Element, ele => ele.contents, { nullable: false })
@@ -24,7 +24,7 @@ export class Content {
   @Column("timestamp", { nullable: false })
   date!: string
 
-  @Column("varchar")
+  @Column("varchar", { nullable: true })
   symbol?: string
 
   @Column("text", { nullable: false })
@@ -33,7 +33,7 @@ export class Content {
   @Column("text", { nullable: false })
   text!: string
 
-  @Column("json")
+  @Column("json", { nullable: true })
   config?: Record<string, any>
 }
 

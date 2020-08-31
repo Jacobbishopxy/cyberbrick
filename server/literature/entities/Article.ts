@@ -6,11 +6,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
   ManyToOne,
   ManyToMany,
   JoinTable,
-  JoinColumn,
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
@@ -21,13 +19,12 @@ import * as common from "../common"
 import { Category } from "./Category"
 import { Tag } from "./Tag"
 import { Author } from "./Author"
-import { Config } from "./Config"
 
 @Entity({ name: common.article })
 @Unique([common.category, common.date])
 export class Article {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string
 
   /**
@@ -42,13 +39,6 @@ export class Article {
   @ManyToMany(() => Tag, tag => tag.articles, { cascade: true, nullable: true })
   @JoinTable()
   tags?: Tag[]
-
-  /**
-   * uni-directional, config creatable, nullable
-   */
-  @OneToOne(() => Config, { cascade: true, nullable: true })
-  @JoinColumn()
-  config?: Config
 
   /**
    * bi-directional, author creatable, nullable

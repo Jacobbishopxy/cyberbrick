@@ -26,13 +26,13 @@ export default () => {
 
   useEffect(() => {
     service.getAllCategoriesWithUnionTags()
-      .then(res => setCategories(res))
+      .then(res => setCategories(res as LiteratureDataType.Category[]))
   }, [reloadTrigger.category])
 
   useEffect(() => {
     if (selectedCategory)
       service.getArticlesByCategoryNameAndTagNames(selectedCategory.name)
-        .then(res => setArticles(res))
+        .then(res => setArticles(res as LiteratureDataType.Article[]))
   }, [selectedCategory, reloadTrigger.article])
 
   const onSelectCategory = (value: string) => {
@@ -61,16 +61,16 @@ export default () => {
     })
 
   const onCreateCategory = (cat: LiteratureDataType.Category) =>
-    service.saveCategory(cat).then(triggerCategory)
+    service.saveCategory(cat as API.Category).then(triggerCategory)
 
   const tagPanelUpdate = (ts: LiteratureDataType.CategoryU) =>
-    service.upsertCategoryTag(ts).then(triggerCategory)
+    service.upsertCategoryTag(ts as API.CategoryU).then(triggerCategory)
 
   const tagPanelDelete = (name: string) =>
     service.deleteTag(name).then(triggerCategory)
 
-  const articlePanelUpdate = (target: LiteratureDataType.Article) =>
-    service.saveArticle(target).then(triggerCategoryAndArticle)
+  const articlePanelUpdate = (article: LiteratureDataType.Article) =>
+    service.saveArticle(article as API.Article).then(triggerCategoryAndArticle)
 
   const articlePanelDelete = (id: number) =>
     service.deleteArticle(id).then(triggerCategoryAndArticle)
@@ -79,7 +79,7 @@ export default () => {
     if (selectedCategory) {
       if (tagNames.length !== 0)
         service.getArticlesByCategoryNameAndTagNames(selectedCategory.name, tagNames)
-          .then(res => setArticles(res))
+          .then(res => setArticles(res as LiteratureDataType.Article[]))
       else
         triggerArticle()
     }

@@ -18,7 +18,7 @@ import { Content } from "./Content"
 @Entity({ name: common.element })
 export class Element {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string
 
   @ManyToOne(() => Template, tmp => tmp.elements, { nullable: false })
