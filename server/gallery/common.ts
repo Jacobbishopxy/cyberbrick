@@ -9,15 +9,17 @@ import * as utils from "../utils"
 export const db = "gallery"
 
 // table name
+export const category = "category"
 export const dashboard = "dashboard"
 export const template = "template"
 export const element = "element"
 export const content = "content"
+export const symbol = "symbol"
+export const tag = "tag"
 
 // column name
 export const id = "id"
 export const name = "name"
-export const symbol = "symbol"
 export const date = "date"
 export const text = "text"
 export const title = "title"
@@ -26,7 +28,7 @@ export const elements = "elements"
 export const templates = "templates"
 
 // column enum
-export enum Category {
+export enum ElementType {
   EmbedLink = "embedLink",
   Text = "text",
   TargetPrice = "targetPrice",

@@ -12,7 +12,6 @@ import {
 } from "typeorm"
 import * as common from "../common"
 import { Tag } from "./Tag"
-
 import { Article } from "./Article"
 
 @Entity({ name: common.category })

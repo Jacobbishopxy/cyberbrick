@@ -30,8 +30,8 @@ export class Element {
   @Column("varchar", { nullable: false })
   name!: string
 
-  @Column("enum", { nullable: false, enum: common.Category })
-  category!: common.Category
+  @Column("enum", { nullable: false, enum: common.ElementType })
+  type!: common.ElementType
 
   @Column("bigint", { nullable: false })
   x!: number

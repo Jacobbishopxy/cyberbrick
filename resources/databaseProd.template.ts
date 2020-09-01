@@ -10,6 +10,7 @@ const connProdLiterature = {
   "database": "dev",
   "synchronize": true,
   "logging": false,
+  "uuidExtension ": "uuid-ossp",
   "entities": [
     `./server/literature/entities/*.ts`
   ]
@@ -25,6 +26,7 @@ const connProdGallery = {
   "database": "dev",
   "synchronize": true,
   "logging": false,
+  "uuidExtension ": "uuid-ossp",
   "entities": [
     `./server/gallery/entities/*.ts`
   ]
