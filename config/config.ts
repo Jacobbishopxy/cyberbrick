@@ -1,9 +1,8 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi'
-import defaultSettings from './defaultSettings'
-import proxy from './proxy'
-
-const { REACT_APP_ENV } = process.env
+import { defineConfig } from 'umi';
+import defaultSettings from './defaultSettings';
+import proxy from './proxy';
+const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
@@ -14,7 +13,7 @@ export default defineConfig({
     name: 'JacobBishop',
     locale: true,
     siderWidth: 200,
-    logo: '/api/homeLogo'
+    logo: '/api/homeLogo',
   },
   locale: {
     default: 'en-US',
@@ -73,9 +72,15 @@ export default defineConfig({
           component: './demo/LocalStorage',
         },
         {
+          access: 'canOnline',
           name: 'literature',
           path: '/demo/literature',
           component: './demo/Literature',
+        },
+        {
+          name: 'kChart',
+          path: '/demo/kChart',
+          component: './demo/KChart',
         },
       ],
     },
@@ -99,4 +104,4 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-})
+});

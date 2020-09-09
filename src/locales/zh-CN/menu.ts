@@ -53,4 +53,5 @@ export default {
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
   'menu.demo.literature': 'Literature',
+  'menu.demo.kChart': 'KChart',
 };

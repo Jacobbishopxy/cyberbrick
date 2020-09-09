@@ -4,9 +4,11 @@
 
 import express from "express"
 import { ConnectionOptions } from "typeorm"
+import path from "path"
 
 import { literatureConnect, galleryConnect } from "./orm"
 import * as homeController from "./controllers/home"
+import * as kcController from "./kChart/kChart"
 import { connProdLiterature, connProdGallery } from "../resources/databaseProd"
 import { connDevLiterature, connDevGallery } from "../resources/databaseDev"
 
@@ -24,6 +26,11 @@ app.get("/api/homeLogo", homeController.getHomeLogo)
 app.post("/api/login/account", homeController.loginAccount)
 app.get("/api/currentUserAvatar", homeController.getCurrentUserAvatar)
 app.get("/api/currentUser", homeController.getCurrentUser)
+
+// kChart routes
+const kChartRoot = path.join(__dirname, "../data/kChart")
+app.get("/api/kChart/tickers", kcController.readDir(kChartRoot))
+app.get("/api/kChart/rkx", kcController.readRkx(kChartRoot))
 
 // API (Database) routes, wrapped in async function
 async function connectionsAwaitLiterature() {
