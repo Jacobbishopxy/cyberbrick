@@ -28,18 +28,18 @@ export class Category {
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToOne(() => Dashboard)
+  @OneToOne(() => Dashboard, { cascade: true, nullable: true })
   @JoinColumn()
   dashboard!: Dashboard
 
-  @ManyToMany(() => Mark, s => s.categories, { cascade: true })
+  @ManyToMany(() => Mark, s => s.categories, { cascade: true, nullable: true })
   @JoinTable()
   unionMarks!: Mark[]
 
-  @ManyToMany(() => Tag, t => t.categories, { cascade: true })
+  @ManyToMany(() => Tag, t => t.categories, { cascade: true, nullable: true })
   @JoinTable()
   unionTags!: Tag[]
 
-  @OneToMany(() => Content, c => c.category)
+  @OneToMany(() => Content, c => c.category, { nullable: true })
   contents!: Content[]
 }

@@ -18,7 +18,7 @@ export class Dashboard {
   @PrimaryColumn("varchar")
   name!: string
 
-  @OneToMany(() => Template, tmp => tmp.dashboard, { cascade: true })
+  @OneToMany(() => Template, t => t.dashboard, { cascade: true, nullable: true })
   templates!: Template[]
 
   @Column("text", { nullable: true })

@@ -16,6 +16,7 @@ export const element = "element"
 export const content = "content"
 export const symbol = "symbol"
 export const tag = "tag"
+export const author = "author"
 
 // column name
 export const id = "id"
@@ -26,6 +27,8 @@ export const title = "title"
 export const contents = "contents"
 export const elements = "elements"
 export const templates = "templates"
+export const unionMarks = "unionMarks"
+export const unionTags = "unionTags"
 
 // column enum
 export enum ElementType {

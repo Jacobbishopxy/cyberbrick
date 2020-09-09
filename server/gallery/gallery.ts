@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 8/30/2020.
  */
 
-import * as contentActions from "./controllers/ContentActions"
-import * as dashboardActions from "./controllers/DashboardActions"
-import * as elementActions from "./controllers/ElementActions"
-import * as templateActions from "./controllers/TemplateActions"
+import * as contentActions from "./controller/ContentActions"
+import * as dashboardActions from "./controller/DashboardActions"
+import * as elementActions from "./controller/ElementActions"
+import * as templateActions from "./controller/TemplateActions"
 import * as common from "./common"
 import * as utils from "../utils"
 

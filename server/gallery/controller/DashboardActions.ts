@@ -7,7 +7,7 @@ import { getConnection } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Dashboard } from "../entities/Dashboard"
+import { Dashboard } from "../entity/Dashboard"
 
 
 const dashboardRepo = () => getConnection(common.db).getRepository(Dashboard)

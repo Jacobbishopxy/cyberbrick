@@ -15,6 +15,7 @@ import { Element } from "./Element"
 import { Category } from "./Category"
 import { Tag } from "./Tag"
 import { Mark } from "./Mark"
+import { Author } from "./Author"
 
 @Entity({ name: common.content })
 export class Content {
@@ -28,11 +29,14 @@ export class Content {
   @ManyToOne(() => Category, c => c.contents, { nullable: true })
   category!: Category
 
-  @ManyToOne(() => Mark, m => m.contents, {cascade: true, nullable: true})
+  @ManyToOne(() => Mark, m => m.contents, { cascade: true, nullable: true })
   mark!: Mark
 
   @ManyToMany(() => Tag, t => t.contents, { cascade: true, nullable: true })
   tags!: Tag[]
+
+  @ManyToOne(() => Author, a => a.contents, { nullable: true })
+  author!: Author
 
   @Column("timestamp", { nullable: false })
   date!: string
@@ -40,8 +44,8 @@ export class Content {
   @Column("text", { nullable: false })
   title!: string
 
-  @Column("text", { nullable: false })
-  text!: string
+  @Column("json", { nullable: false })
+  data!: Record<string, any>
 
   @Column("json", { nullable: true })
   config?: Record<string, any>
