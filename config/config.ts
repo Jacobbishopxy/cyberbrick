@@ -62,9 +62,27 @@ export default defineConfig({
       ],
     },
     {
+      path: "/gallery",
+      name: "gallery",
+      icon: "BankOutlined",
+      access: "canOnline",
+      routes: [
+        {
+          name: "summary",
+          path: "/gallery/summary",
+          component: "./gallery/Summary"
+        },
+        {
+          name: "dashboard",
+          path: "/gallery/dashboard",
+          component: "./gallery/Dashboard"
+        },
+      ]
+    },
+    {
       path: '/demo',
       name: 'demo',
-      icon: 'crown',
+      icon: 'ExperimentOutlined',
       routes: [
         {
           name: 'local-storage',

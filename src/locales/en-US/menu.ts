@@ -50,6 +50,10 @@ export default {
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
 
+  'menu.gallery': 'Gallery',
+  'menu.gallery.summary': 'Summary',
+  'menu.gallery.dashboard': 'Dashboard',
+
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
   'menu.demo.literature': 'Literature',

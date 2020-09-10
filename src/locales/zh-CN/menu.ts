@@ -50,6 +50,10 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
 
+  'menu.gallery': 'Gallery',
+  'menu.gallery.summary': 'Summary',
+  'menu.gallery.dashboard': 'Dashboard',
+
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
   'menu.demo.literature': 'Literature',
