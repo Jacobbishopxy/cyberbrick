@@ -82,6 +82,11 @@ export default defineConfig({
           path: '/demo/kChart',
           component: './demo/KChart',
         },
+        {
+          name: 'rectangleChart',
+          path: '/demo/rectangleChart',
+          component: './demo/RectangleChart',
+        },
       ],
     },
     {

@@ -54,4 +54,5 @@ export default {
   'menu.demo.local-storage': 'Local Storage',
   'menu.demo.literature': 'Literature',
   'menu.demo.kChart': 'KChart',
+  'menu.demo.rectangleChart': 'RectangleChart',
 };

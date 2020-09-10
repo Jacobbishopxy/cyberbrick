@@ -1,3 +1,7 @@
+/**
+ * Created by Jacob Xie on 9/9/2020.
+ */
+
 import { PageContainer } from '@ant-design/pro-layout'
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { Button, Select, Space, Spin } from 'antd'
@@ -32,6 +36,10 @@ const chartOptions = (source: ChartSource): EChartOption => ({
       show: true
     }
   },
+  grid: {
+    left: "5%",
+    right: "5%"
+  },
   dataZoom: [
     {
       type: 'inside',
@@ -41,7 +49,7 @@ const chartOptions = (source: ChartSource): EChartOption => ({
     {
       show: true,
       type: 'slider',
-      top: '95%',
+      top: '97%',
       start: 95,
       end: 100
     }
@@ -155,7 +163,7 @@ export default () => {
         </Button>
       </Space>
       <div
-        style={ { height: "70vh" } }
+        style={ { height: "80vh" } }
         ref={ chartRef }
       >
         {
