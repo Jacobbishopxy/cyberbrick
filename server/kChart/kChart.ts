@@ -4,7 +4,7 @@
 
 import { Request, Response } from "express"
 import fs from "fs"
-import exceljs from "exceljs"
+import Papa from "papaparse"
 
 // import { Rkx } from "./data"
 
@@ -14,27 +14,49 @@ export const readDir = (filepath: string) =>
     res.send(fs.readdirSync(filepath))
 
 const fileNameRkx = "rkx.csv"
+export const fileNameBi = "bi.csv"
+export const fileNameDn = "duan.csv"
 
-const readRkxFromCsv = async (filepath: string) => {
-  const wb = new exceljs.Workbook()
-  const f = await wb.csv.readFile(filepath)
-
-  const ans: any = []
-
-  f.eachRow(row => {
-    const rv = row.values as any[]
-    if (rv.length > 1)
-      ans.push(rv.slice(1))
-  })
-
-  return ans
-}
+type LineDataType = "bi.csv" | "duan.csv"
 
 export const readRkx = (root: string) =>
-  async (req: Request, res: Response) => {
+  (req: Request, res: Response) => {
     const ticker = req.query.ticker as string
 
-    const data = await readRkxFromCsv(`${ root }/${ ticker }/${ fileNameRkx }`)
+    const d = fs.readFileSync(`${ root }/${ ticker }/${ fileNameRkx }`).toString()
 
-    return res.status(200).send(data)
+    Papa.parse(d, {
+      delimiter: ",",
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: results => {
+        res.status(200).send(results.data)
+      }
+    })
   }
+
+
+const extractLine = (row: any[]) => {
+  const startDate = row[2]
+  const price = row[7]
+  return [startDate, price]
+}
+
+export const readLine = (root: string, lineDataType: LineDataType) =>
+  (req: Request, res: Response) => {
+    const ticker = req.query.ticker as string
+
+    const d = fs.readFileSync(`${ root }/${ ticker }/${ lineDataType }`).toString()
+
+    Papa.parse(d, {
+      delimiter: ",",
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: results => {
+        // @ts-ignore
+        const ans = results.data.map(extractLine)
+        res.status(200).send(ans)
+      }
+    })
+  }
+

@@ -9,6 +9,8 @@ import path from "path"
 import { literatureConnect, galleryConnect } from "./orm"
 import * as homeController from "./controllers/home"
 import * as kcController from "./kChart/kChart"
+import { fileNameBi, fileNameDn } from "./kChart/kChart"
+
 import { connProdLiterature, connProdGallery } from "../resources/databaseProd"
 import { connDevLiterature, connDevGallery } from "../resources/databaseDev"
 
@@ -31,6 +33,8 @@ app.get("/api/currentUser", homeController.getCurrentUser)
 const kChartRoot = path.join(__dirname, "../data/kChart")
 app.get("/api/kChart/tickers", kcController.readDir(kChartRoot))
 app.get("/api/kChart/rkx", kcController.readRkx(kChartRoot))
+app.get("/api/kChart/bi", kcController.readLine(kChartRoot, fileNameBi))
+app.get("/api/kChart/dn", kcController.readLine(kChartRoot, fileNameDn))
 
 // API (Database) routes, wrapped in async function
 async function connectionsAwaitLiterature() {

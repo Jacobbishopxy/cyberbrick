@@ -1,16 +1,30 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { Button, Select, Space } from 'antd'
+import { Button, Select, Space, Spin } from 'antd'
 import ReactEcharts from "echarts-for-react"
 import { EChartOption } from "echarts"
 
-import { getAllTickers, getRkx } from "@/services/kChart"
+import { getAllTickers, getBi, getDn, getRkx } from "@/services/kChart"
 
 
-const chartOptions = (data: any[]): EChartOption => ({
-  dataset: {
-    source: data
-  },
+interface ChartSource {
+  rkx?: any[]
+  bi?: any[]
+  dn?: any[]
+}
+
+const chartOptions = (source: ChartSource): EChartOption => ({
+  dataset: [
+    {
+      source: source.rkx
+    },
+    {
+      source: source.bi
+    },
+    {
+      source: source.dn
+    },
+  ],
   xAxis: { type: "category" },
   yAxis: {
     scale: true,
@@ -18,15 +32,54 @@ const chartOptions = (data: any[]): EChartOption => ({
       show: true
     }
   },
+  dataZoom: [
+    {
+      type: 'inside',
+      start: 95,
+      end: 100
+    },
+    {
+      show: true,
+      type: 'slider',
+      top: '95%',
+      start: 95,
+      end: 100
+    }
+  ],
   series: [
     {
+      datasetIndex: 0,
       name: "candlestick",
       type: "candlestick",
       encode: {
         x: "date",
         y: ["open", "close", "low", "high"]
       }
-    }
+    },
+    {
+      datasetIndex: 1,
+      name: "bi",
+      type: "line",
+      encode: {
+        x: "startDate",
+        y: "low"
+      },
+      lineStyle: {
+        color: "green"
+      }
+    },
+    {
+      datasetIndex: 2,
+      name: "dn",
+      type: "line",
+      encode: {
+        x: "startDate",
+        y: "low"
+      },
+      lineStyle: {
+        color: "cyan"
+      }
+    },
   ]
 })
 
@@ -38,7 +91,8 @@ export default () => {
   const [tickers, setTickers] = useState<string[]>([])
   const [selected, setSelected] = useState<string>()
   const [reloadTickers, setReloadTickers] = useState<number>(0)
-  const [rkx, setRkx] = useState<any[]>()
+  const [data, setData] = useState<ChartSource>()
+  const [loading, setLoading] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     if (chartRef.current) {
@@ -51,14 +105,39 @@ export default () => {
   }, [reloadTickers])
 
   useEffect(() => {
+    setLoading(false)
+  }, [data])
+
+  const getAllData = async (ticker: string) => {
+    setLoading(true)
+    return Promise.all([
+      getRkx(ticker),
+      getBi(ticker),
+      getDn(ticker),
+    ])
+  }
+
+  useEffect(() => {
     if (selected) {
-      getRkx(selected).then(res => setRkx(res))
+      getAllData(selected).then(res => {
+        const [rkx, bi, dn] = res
+        setData({
+          rkx, bi, dn
+        })
+      })
     }
   }, [selected])
+
+  const genChart = (d: ChartSource) =>
+    <ReactEcharts
+      option={ chartOptions(d) }
+      opts={ { height: chartHeight } }
+    />
 
   return (
     <PageContainer>
       <Space>
+        <span style={ { fontWeight: "bold" } }>Ticker:</span>
         <Select style={ { width: 120 } } onChange={ (v: string) => setSelected(v) }>
           {
             tickers.map(t => (
@@ -72,16 +151,29 @@ export default () => {
           type="primary"
           onClick={ () => setReloadTickers(reloadTickers + 1) }
         >
-          Reload
+          Tickers Reload
         </Button>
       </Space>
-      <div style={ { height: "70vh" } } ref={ chartRef }>
+      <div
+        style={ { height: "70vh" } }
+        ref={ chartRef }
+      >
         {
-          rkx ?
-            <ReactEcharts
-              option={ chartOptions(rkx) }
-              opts={ { height: chartHeight } }
-            /> : <div/>
+          data ?
+            genChart(data) :
+            <Spin
+              style={ {
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: -50,
+                marginLeft: -50,
+                width: 100,
+                height: 100
+              } }
+              size="large"
+              spinning={ loading }
+            />
         }
       </div>
     </PageContainer>
