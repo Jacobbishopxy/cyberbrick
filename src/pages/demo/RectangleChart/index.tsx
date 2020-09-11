@@ -10,31 +10,94 @@ import ReactEcharts from "echarts-for-react"
 
 const data = [
   ["a", "b", "c", "d", "e"],
-  [10, 16, 3, 5, 'A'],
-  [16, 18, 4, 3, 'B'],
-  [18, 26, 5, 4, 'C'],
-  [26, 32, 6, 7, 'D'],
-  [32, 56, 3, 5, 'E'],
-  [56, 62, 2, 2, 'F'],
-  [58, 55, 1, 4, 'G'],
+  ["No.10", 16, "No.16", 3, 'A'],
+  ["No.18", 26, "No.32", 5, 'B'],
+  ["No.26", 56, "No.35", 3, 'C'],
+  ["No.32", 43, "No.56", 8, 'D'],
+  ["No.58", 35, "No.70", 1, 'E'],
 ]
 
-function rI(params: object, api: any) {
+const dataStyles = [
+  "red",
+  "blue",
+  "green",
+  "cyan",
+  "orange",
+]
+
+const xAxisData = [
+  "No.10",
+  "No.16",
+  "No.18",
+  "No.26",
+  "No.32",
+  "No.35",
+  "No.56",
+  "No.58",
+  "No.70"
+]
+
+function rI(params: any, api: any) {
   const start = api.coord([api.value(0), api.value(1)])
-  const end = api.size([api.value(2), api.value(3)])
+  const end = api.coord([api.value(2)])
+  const size = api.size([api.value(1), api.value(3)])
 
   return {
     type: 'rect',
     shape: {
       x: start[0],
       y: start[1],
-      width: end[0],
-      height: end[1]
+      width: end[0] - start[0],
+      height: size[0] - size[1]
     },
-    style: api.style()
+    style: api.style({stroke: dataStyles[params.dataIndex]})
   }
 }
 
+const chartOption: EChartOption = {
+  title: {
+    text: 'Profit',
+    left: 'left'
+  },
+  tooltip: {},
+  legend: {},
+  dataset: [
+    {
+      source: data
+    }
+  ],
+  xAxis: {
+    scale: true,
+    type: "category",
+    data: xAxisData
+  },
+  yAxis: {},
+  series: [
+    {
+      datasetIndex: 0,
+      name: "custom",
+      type: 'custom',
+      // @ts-ignore
+      renderItem: rI,
+      label: {
+        show: true,
+        position: 'top'
+      },
+      dimensions: ['a', 'b', 'c', 'd', 'e'],
+      encode: {
+        x: "a",
+        y: "b",
+        width: "c",
+        height: "d",
+      },
+      itemStyle: {
+        color: "transparent",
+        borderColor: "blue",
+        borderWidth: 2
+      }
+    }
+  ]
+}
 
 export default () => {
   const chartRef = useRef<HTMLDivElement>(null)
@@ -46,50 +109,6 @@ export default () => {
       setChartHeight(chartRef.current.offsetHeight)
     }
   }, [])
-
-
-  const chartOption: EChartOption = {
-    title: {
-      text: 'Profit',
-      left: 'left'
-    },
-    tooltip: {},
-    legend: {},
-    dataset: [
-      {
-        source: data
-      }
-    ],
-    xAxis: {
-      scale: true
-    },
-    yAxis: {},
-    series: [
-      {
-        datasetIndex: 0,
-        name: "custom",
-        type: 'custom',
-        // @ts-ignore
-        renderItem: rI,
-        label: {
-          show: true,
-          position: 'top'
-        },
-        dimensions: ['a', 'b', 'c', 'd', 'e'],
-        encode: {
-          x: "a",
-          y: "b",
-          width: "c",
-          height: "d",
-        },
-        itemStyle: {
-          color: "transparent",
-          borderColor: "blue",
-          borderWidth: 2
-        }
-      }
-    ]
-  }
 
   return (
     <PageContainer>
