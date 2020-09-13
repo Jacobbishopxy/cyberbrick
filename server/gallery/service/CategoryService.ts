@@ -28,6 +28,10 @@ const categoryMarkTagRelations = {
   ]
 }
 
+const categoryContentRelations = {
+  relations: [common.contents]
+}
+
 /**
  * get all categories, with full relations, test only
  */
@@ -39,7 +43,7 @@ export async function getAllCategories() {
  * get category by name, with full relations, test only
  */
 export async function getCategoryByName(name: string) {
-  return categoryRepo().find({
+  return categoryRepo().findOne({
     ...categoryFullRelations,
     ...utils.whereNameEqual(name)
   })
@@ -66,9 +70,20 @@ export async function deleteCategory(name: string) {
 // =====================================================================================================================
 
 
-export async function getMarkAndTagFromCategory(name: string) {
-  return categoryRepo().find({
+export async function getAllCategoriesWithMarkAndTag() {
+  return categoryRepo().find(categoryMarkTagRelations)
+}
+
+export async function getCategoryMarkAndTagByName(name: string) {
+  return categoryRepo().findOne({
     ...categoryMarkTagRelations,
     ...utils.whereNameEqual(name)
+  })
+}
+
+export async function getCategoryContentByName(name: string) {
+  return categoryRepo().findOne({
+    ...categoryContentRelations,
+    ...utils.whereIdEqual(name)
   })
 }
