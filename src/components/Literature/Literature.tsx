@@ -24,7 +24,7 @@ interface LiteratureProps {
   tagPanelUpdate: (value: Tag) => void
   tagPanelDelete: (value: string) => void
   articlePanelUpdate: (value: Article) => void
-  articlePanelDelete: (value: number) => void
+  articlePanelDelete: (value: string) => void
   tagPanelSearch: (value: string[]) => void
 }
 

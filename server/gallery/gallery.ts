@@ -2,6 +2,7 @@
  * Created by Jacob Xie on 8/30/2020.
  */
 
+import * as categoryActions from "./controller/CategoryActions"
 import * as contentActions from "./controller/ContentActions"
 import * as dashboardActions from "./controller/DashboardActions"
 import * as elementActions from "./controller/ElementActions"
@@ -10,6 +11,67 @@ import * as common from "./common"
 import * as utils from "../utils"
 
 const base = "/api/gallery"
+
+const categoryRoutes: utils.OrmRoute[] = [
+  {
+    path: `${ base }/categories`,
+    method: "get",
+    action: categoryActions.getAllCategories
+  },
+  {
+    path: `${base}/category`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getCategoryByName
+  },
+  {
+    path: `${base}/category`,
+    method: "post",
+    check: [common.bodyNameCheck],
+    action: categoryActions.saveCategory
+  },
+  {
+    path: `${base}/category`,
+    method: "delete",
+    check: [common.queryNameCheck],
+    action: categoryActions.deleteCategory
+  },
+  {
+    path: `${base}/getAllCategoriesWithMarkAndTag`,
+    method: "get",
+    action: categoryActions.getAllCategoriesWithMarkAndTag
+  },
+  {
+    path: `${base}/getCategoryMarkAndTagByName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getCategoryMarkAndTagByName
+  },
+  {
+    path: `${base}/getCategoryContentByName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: categoryActions.getCategoryContentByName
+  },
+  {
+    path: `${base}/saveCategoryMark`,
+    method: "post",
+    check: [
+      common.queryNameCheck,
+      common.bodyNameCheck
+    ],
+    action: categoryActions.saveCategoryMark
+  },
+  {
+    path: `${base}/saveCategoryTag`,
+    method: "post",
+    check: [
+      common.queryNameCheck,
+      common.bodyNameCheck
+    ],
+    action: categoryActions.saveCategoryTag
+  },
+]
 
 const contentRoutes: utils.OrmRoute[] = [
   {
@@ -135,6 +197,8 @@ const templateRoutes: utils.OrmRoute[] = [
 ]
 
 export const gallery: utils.OrmRoute[] = [
+
+  ...categoryRoutes,
 
   ...contentRoutes,
 

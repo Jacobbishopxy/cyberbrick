@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 import { Equal } from "typeorm"
-import { query } from "express-validator"
+import { body, query } from "express-validator"
 import * as utils from "../utils"
 
 // db name
@@ -14,7 +14,7 @@ export const dashboard = "dashboard"
 export const template = "template"
 export const element = "element"
 export const content = "content"
-export const symbol = "symbol"
+export const mark = "mark"
 export const tag = "tag"
 export const author = "author"
 
@@ -27,8 +27,8 @@ export const title = "title"
 export const contents = "contents"
 export const elements = "elements"
 export const templates = "templates"
-export const unionMarks = "unionMarks"
-export const unionTags = "unionTags"
+export const marks = "marks"
+export const tags = "tags"
 
 // column enum
 export enum ElementType {
@@ -80,3 +80,8 @@ export const queryDashboardNameCheck =
 
 export const queryTemplateNameCheck =
   query("templateName", utils.messageRequestQuery("templateName")).exists()
+
+export const bodyNameCheck =
+  body(name, utils.messageRequestBody(name)).isLength({ min: 1 }).exists()
+
+

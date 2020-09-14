@@ -3,10 +3,10 @@
  */
 
 
-import * as articleActions from "./controllers/ArticleActions"
-import * as categoryActions from "./controllers/CategoryActions"
-import * as tagActions from "./controllers/TagActions"
-import * as authorActions from "./controllers/AuthorActions"
+import * as articleActions from "./controller/ArticleActions"
+import * as categoryActions from "./controller/CategoryActions"
+import * as tagActions from "./controller/TagActions"
+import * as authorActions from "./controller/AuthorActions"
 import * as common from "./common"
 import * as utils from "../utils"
 

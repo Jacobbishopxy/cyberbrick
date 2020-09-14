@@ -4,7 +4,8 @@
 
 import {
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  ManyToOne,
   ManyToMany,
   Column,
   JoinTable
@@ -16,14 +17,17 @@ import { Content } from "./Content"
 @Entity({ name: common.tag })
 export class Tag {
 
-  @PrimaryColumn("varchar")
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
+
+  @Column("varchar")
   name!: string
 
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToMany(() => Category, c => c.unionTags)
-  categories!: Category[]
+  @ManyToOne(() => Category, c => c.tags)
+  category!: Category
 
   @ManyToMany(() => Content, c => c.tags)
   @JoinTable()

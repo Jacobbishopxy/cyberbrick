@@ -1,8 +1,12 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-const { REACT_APP_ENV } = process.env;
+import { defineConfig } from 'umi'
+import defaultSettings from './defaultSettings'
+import proxy from './proxy'
+import { onlineRoutesGenerator } from "./dynamicRouting"
+
+const { REACT_APP_ENV } = process.env
+
+
 export default defineConfig({
   hash: true,
   antd: {},
@@ -61,24 +65,7 @@ export default defineConfig({
         },
       ],
     },
-    {
-      path: "/gallery",
-      name: "gallery",
-      icon: "BankOutlined",
-      access: "canOnline",
-      routes: [
-        {
-          name: "summary",
-          path: "/gallery/summary",
-          component: "./gallery/Summary"
-        },
-        {
-          name: "dashboard",
-          path: "/gallery/dashboard",
-          component: "./gallery/Dashboard"
-        },
-      ]
-    },
+    ...onlineRoutesGenerator(),
     {
       path: '/demo',
       name: 'demo',
@@ -88,12 +75,6 @@ export default defineConfig({
           name: 'local-storage',
           path: '/demo/localstorage',
           component: './demo/LocalStorage',
-        },
-        {
-          access: 'canOnline',
-          name: 'literature',
-          path: '/demo/literature',
-          component: './demo/Literature',
         },
         {
           name: 'kChart',
@@ -127,4 +108,4 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-});
+})

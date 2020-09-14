@@ -8,8 +8,8 @@ import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Category } from "../entities/Category"
-import { Tag } from "../entities/Tag"
+import { Category } from "../entity/Category"
+import { Tag } from "../entity/Tag"
 
 
 const categoryRepo = () => getConnection(common.db).getRepository(Category)

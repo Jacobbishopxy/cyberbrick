@@ -56,7 +56,7 @@ export const saveArticle = async (d: API.Article): Promise<API.Article> =>
     data: d
   })
 
-export const deleteArticle = async (id: number) =>
+export const deleteArticle = async (id: string) =>
   request(`${ base }/article?id=${ id }`, {
     method: "delete"
   })

@@ -72,7 +72,7 @@ export default () => {
   const articlePanelUpdate = (article: LiteratureDataType.Article) =>
     service.saveArticle(article as API.Article).then(triggerCategoryAndArticle)
 
-  const articlePanelDelete = (id: number) =>
+  const articlePanelDelete = (id: string) =>
     service.deleteArticle(id).then(triggerCategoryAndArticle)
 
   const tagPanelSearch = (tagNames: string[]) => {

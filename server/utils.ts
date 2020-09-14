@@ -16,6 +16,17 @@ export interface OrmRoute {
   action: Function
 }
 
+// HTML status
+export enum HTMLStatus {
+  SUCCESS_QUERY = 200,
+  SUCCESS_MODIFY = 201,
+  SUCCESS_DELETE = 204,
+  NOT_MODIFY = 304,
+  FAIL_REQUEST = 400,
+  FAIL_OPERATION = 404,
+  FAIL_NOT_ALLOWED = 405,
+}
+
 // query filters
 export const whereNameEqual = (n: string) =>
   ({ where: { name: Equal(n) } })

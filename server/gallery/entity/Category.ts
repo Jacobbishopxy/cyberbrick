@@ -8,8 +8,6 @@ import {
   Column,
   OneToOne,
   OneToMany,
-  ManyToMany,
-  JoinTable,
   JoinColumn
 } from "typeorm"
 import * as common from "../common"
@@ -32,13 +30,11 @@ export class Category {
   @JoinColumn()
   dashboard!: Dashboard
 
-  @ManyToMany(() => Mark, s => s.categories, { cascade: true, nullable: true })
-  @JoinTable()
-  unionMarks!: Mark[]
+  @OneToMany(() => Mark, s => s.category, { cascade: true, nullable: true })
+  marks!: Mark[]
 
-  @ManyToMany(() => Tag, t => t.categories, { cascade: true, nullable: true })
-  @JoinTable()
-  unionTags!: Tag[]
+  @OneToMany(() => Tag, t => t.category, { cascade: true, nullable: true })
+  tags!: Tag[]
 
   @OneToMany(() => Content, c => c.category, { nullable: true })
   contents!: Content[]

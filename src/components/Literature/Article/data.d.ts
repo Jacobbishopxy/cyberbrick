@@ -38,7 +38,7 @@ export interface SingleArticleProps {
   article: Article
   editable: boolean
   articleOnModify: (value: Article) => void
-  articleOnDelete: (value: number) => void
+  articleOnDelete: (value: string) => void
 }
 
 
@@ -48,5 +48,5 @@ export interface ArticlePanelProps {
   unionTags: Tag[]
   editable: boolean
   articleOnCreate: (value: Article) => void
-  articleOnDelete: (value: number) => void
+  articleOnDelete: (value: string) => void
 }

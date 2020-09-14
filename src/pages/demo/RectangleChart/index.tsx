@@ -37,7 +37,7 @@ const xAxisData = [
   "No.70"
 ]
 
-function rI(params: any, api: any) {
+function renderFn(params: any, api: any) {
   const start = api.coord([api.value(0), api.value(1)])
   const end = api.coord([api.value(2)])
   const size = api.size([api.value(1), api.value(3)])
@@ -48,9 +48,9 @@ function rI(params: any, api: any) {
       x: start[0],
       y: start[1],
       width: end[0] - start[0],
-      height: size[0] - size[1]
+      height: size[1]
     },
-    style: api.style({stroke: dataStyles[params.dataIndex]})
+    style: api.style({ stroke: dataStyles[params.dataIndex] })
   }
 }
 
@@ -78,7 +78,7 @@ const chartOption: EChartOption = {
       name: "custom",
       type: 'custom',
       // @ts-ignore
-      renderItem: rI,
+      renderItem: renderFn,
       label: {
         show: true,
         position: 'top'

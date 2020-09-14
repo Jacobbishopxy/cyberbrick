@@ -4,12 +4,12 @@
 
 import React, { useState, useEffect, useReducer } from 'react';
 import { message } from 'antd';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import RGL from 'react-grid-layout';
 
 import { useDidMountEffect } from '@/utilities/utils';
 
 import * as dashboardModel from '@/utilities/dashboardModel';
-import * as dashboardService from '@/services/eiDashboard';
+// import * as dashboardService from '@/services/eiDashboard';
 
 import { DashboardEditor } from '@/components/Gallery/HeadPanel/DashboardEditor';
 import { ModulePanel } from '@/components/Gallery/ModulePanel/ModulePanel';
@@ -19,7 +19,7 @@ import { DashboardProps, ElementGeneratorProps } from './data';
 import styles from './Dashboard.less';
 
 
-const ReactGridLayout = WidthProvider(RGL);
+const ReactGridLayout = RGL.WidthProvider(RGL);
 
 const genEmptyLayout = (tp: dashboardModel.TemplatePanel): dashboardModel.Layout =>
   new dashboardModel.Layout(tp, [])
@@ -65,23 +65,23 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
   const [globalConfig, setGlobalConfig] = useState<Record<string, any> | null>(null);
 
   useEffect(() => {
-    dashboardService
-      .fetchLayout(props.collection, props.templatePanel)
-      .then(data => {if (data !== null) setLayout(data) });
+    // dashboardService
+    //   .fetchLayout(props.collection, props.templatePanel)
+    //   .then(data => {if (data !== null) setLayout(data) });
   }, [props.templatePanel]);
 
   useDidMountEffect(() => {
 
-    const layoutWithStore = new dashboardModel.LayoutWithStore(props.templatePanel, layout.layouts, stores!);
-
-    dashboardService
-      .modifyLayoutStore(props.collection, layoutWithStore)
-      .then(() => message.success('保存成功'))
-      .catch(() => message.warn('保存失败'));
-
-    dashboardService
-      .removeStores(props.collection, storesToDelete)
-      .then(() => setStoresToDelete([]));
+    // const layoutWithStore = new dashboardModel.LayoutWithStore(props.templatePanel, layout.layouts, stores!);
+    //
+    // dashboardService
+    //   .modifyLayoutStore(props.collection, layoutWithStore)
+    //   .then(() => message.success('保存成功'))
+    //   .catch(() => message.warn('保存失败'));
+    //
+    // dashboardService
+    //   .removeStores(props.collection, storesToDelete)
+    //   .then(() => setStoresToDelete([]));
 
   }, [layoutSaveTrigger]);
 

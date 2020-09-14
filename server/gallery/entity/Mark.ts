@@ -4,22 +4,29 @@
 
 import {
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
   OneToMany,
-  ManyToMany,
 } from "typeorm"
 import * as common from "../common"
 import { Category } from "./Category"
 import { Content } from "./Content"
 
-@Entity({ name: common.symbol })
+@Entity({ name: common.mark })
 export class Mark {
 
-  @PrimaryColumn("varchar")
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
+
+  @Column("varchar")
   name!: string
 
-  @ManyToMany(() => Category, c => c.unionMarks)
-  categories!: Category
+  @Column("text", { nullable: true })
+  description?: string
+
+  @ManyToOne(() => Category, c => c.marks)
+  category!: Category
 
   @OneToMany(() => Content, c => c.mark)
   contents!: Content[]

@@ -10,7 +10,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import * as dashboardModel from '@/utilities/dashboardModel';
 import { Emoji } from '@/components/Emoji';
 import { ConvertRefFR } from '@/components/Gallery/Collection/data.d';
-import { fetchStore } from '@/services/eiDashboard';
+// import { fetchStore } from '@/services/eiDashboard';
 import { selectModuleToAdd } from './ModuleList';
 import { ModulePanelProps } from './data';
 
@@ -33,17 +33,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   // Read from sever and update to Dashboard.stores
   useEffect(() => {
-    const fn = async () => {
-      const res = await fetchStore(props.collection, anchor)
-      if (res === null)
-        setContent(res)
-      else {
-        setContent(res.content)
-        props.updateContent(res.content)
-      }
-    }
-
-    fn();
+    // const fn = async () => {
+    //   const res = await fetchStore(props.collection, anchor)
+    //   if (res === null)
+    //     setContent(res)
+    //   else {
+    //     setContent(res.content)
+    //     props.updateContent(res.content)
+    //   }
+    // }
+    //
+    // fn();
   }, []);
 
   // Delete this modulePanel and update to Dashboard.stores

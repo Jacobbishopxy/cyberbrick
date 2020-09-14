@@ -9,9 +9,9 @@ import moment from "moment"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Article } from "../entities/Article"
-import { Category } from "../entities/Category"
-import { Author } from "../entities/Author"
+import { Article } from "../entity/Article"
+import { Category } from "../entity/Category"
+import { Author } from "../entity/Author"
 
 
 const articleRepo = () => getConnection(common.db).getRepository(Article)
