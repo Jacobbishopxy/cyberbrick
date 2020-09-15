@@ -30,6 +30,11 @@ export const templates = "templates"
 export const marks = "marks"
 export const tags = "tags"
 
+// relations column
+export const markCategory = `${ mark }.${ category }`
+export const markName = `${ mark }.${ name }`
+export const categoryName = `${ category }.${ name }`
+
 // column enum
 export enum ElementType {
   EmbedLink = "embedLink",
@@ -63,6 +68,9 @@ export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: { "dashboard.name": Equal(dn), name: Equal(tn) } })
 
 // express validator
+export const queryFieldCheck = (field: string) =>
+  query(field, utils.messageRequestQuery(field)).exists()
+
 export const queryIdCheck =
   query(id, utils.messageRequestQuery(id)).exists()
 

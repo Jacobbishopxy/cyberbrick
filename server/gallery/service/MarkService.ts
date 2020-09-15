@@ -55,6 +55,20 @@ export async function getCategoriesByMarkName(name: string) {
     ...utils.whereNameEqual(name)
   })
 
-  if (raw) return  raw.map(i => i.category)
+  if (raw) return raw.map(i => i.category)
   return []
 }
+
+export async function deleteMarkInCategory(categoryName: string, markName: string) {
+  const raw = await markRepo()
+    .createQueryBuilder(common.mark)
+    .leftJoinAndSelect(common.markCategory, common.category)
+    .select([common.markName, common.categoryName])
+    .where(`${ common.categoryName } = :categoryName AND ${ common.markName } = :markName`, { categoryName, markName })
+    .delete()
+    .execute()
+
+  if (raw) return utils.HTMLStatus.SUCCESS_DELETE
+  return utils.HTMLStatus.FAIL_OPERATION
+}
+

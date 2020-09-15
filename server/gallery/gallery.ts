@@ -3,6 +3,7 @@
  */
 
 import * as categoryActions from "./controller/CategoryActions"
+import * as markActions from "./controller/MarkActions"
 import * as contentActions from "./controller/ContentActions"
 import * as dashboardActions from "./controller/DashboardActions"
 import * as elementActions from "./controller/ElementActions"
@@ -70,6 +71,47 @@ const categoryRoutes: utils.OrmRoute[] = [
       common.bodyNameCheck
     ],
     action: categoryActions.saveCategoryTag
+  },
+]
+
+const markRoutes: utils.OrmRoute[] = [
+  {
+    path: `${base}/marks`,
+    method: "get",
+    action: markActions.getAllMarks
+  },
+  {
+    path: `${base}/mark`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: markActions.getMarksByName
+  },
+  {
+    path: `${base}/mark`,
+    method: "post",
+    check: [common.bodyNameCheck],
+    action: markActions.getMarksByName
+  },
+  {
+    path: `${base}/mark`,
+    method: "delete",
+    check: [common.queryIdCheck],
+    action: markActions.deleteMark
+  },
+  {
+    path: `${base}/getCategoriesByMarkName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: markActions.getCategoriesByMarkName
+  },
+  {
+    path: `${base}/deleteMarkInCategory`,
+    method: "delete",
+    check: [
+      common.queryFieldCheck("categoryName"),
+      common.queryFieldCheck("markName"),
+    ],
+    action: markActions.deleteMarkInCategory
   },
 ]
 
@@ -199,6 +241,8 @@ const templateRoutes: utils.OrmRoute[] = [
 export const gallery: utils.OrmRoute[] = [
 
   ...categoryRoutes,
+
+  ...markRoutes,
 
   ...contentRoutes,
 
