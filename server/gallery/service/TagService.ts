@@ -23,10 +23,6 @@ const tagCategoryRelations = {
   relations: [common.category]
 }
 
-const tagContentRelations = {
-  relations: [common.contents]
-}
-
 export async function getAllTags() {
   return tagRepo().find(tagFullRelations)
 }
@@ -54,3 +50,25 @@ export async function deleteTag(id: string) {
 // =====================================================================================================================
 
 
+export async function getCategoriesByTagName(name: string) {
+  const raw = await tagRepo().find({
+    ...tagCategoryRelations,
+    ...utils.whereNameEqual(name)
+  })
+
+  if (raw) return raw.map(i => i.category)
+  return []
+}
+
+export async function deleteTagInCategory(categoryName: string, tagName: string) {
+  const raw = await tagRepo()
+    .createQueryBuilder(common.tag)
+    .leftJoinAndSelect(common.tagCategory, common.category)
+    .select([common.tagName, common.categoryName])
+    .where(`${common.categoryName} = :categoryName AND ${common.tagName} = :tagName`, {categoryName, tagName})
+    .delete()
+    .execute()
+
+  if (raw) return utils.HTMLStatus.SUCCESS_DELETE
+  return utils.HTMLStatus.FAIL_OPERATION
+}

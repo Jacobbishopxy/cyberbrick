@@ -11,7 +11,7 @@ export type QueryStr = string | undefined
 
 export interface OrmRoute {
   path: string,
-  method: string,
+  method: "get" | "put" | "post" | "delete",
   check?: ValidationChain[],
   action: Function
 }

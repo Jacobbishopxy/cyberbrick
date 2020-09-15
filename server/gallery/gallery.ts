@@ -4,6 +4,7 @@
 
 import * as categoryActions from "./controller/CategoryActions"
 import * as markActions from "./controller/MarkActions"
+import * as tagActions from "./controller/TagActions"
 import * as contentActions from "./controller/ContentActions"
 import * as dashboardActions from "./controller/DashboardActions"
 import * as elementActions from "./controller/ElementActions"
@@ -90,7 +91,7 @@ const markRoutes: utils.OrmRoute[] = [
     path: `${base}/mark`,
     method: "post",
     check: [common.bodyNameCheck],
-    action: markActions.getMarksByName
+    action: markActions.saveMark
   },
   {
     path: `${base}/mark`,
@@ -112,6 +113,47 @@ const markRoutes: utils.OrmRoute[] = [
       common.queryFieldCheck("markName"),
     ],
     action: markActions.deleteMarkInCategory
+  },
+]
+
+const tagRoutes: utils.OrmRoute[] = [
+  {
+    path: `${base}/tags`,
+    method: "get",
+    action: tagActions.getAllTags
+  },
+  {
+    path: `${base}/tag`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: tagActions.getTagsByName
+  },
+  {
+    path: `${base}/tag`,
+    method: "post",
+    check: [common.bodyNameCheck],
+    action: tagActions.saveTag
+  },
+  {
+    path: `${base}/tag`,
+    method: "delete",
+    check: [common.queryIdCheck],
+    action: tagActions.deleteTag
+  },
+  {
+    path: `${base}/getCategoriesByTagName`,
+    method: "get",
+    check: [common.queryNameCheck],
+    action: tagActions.getCategoriesByTagName
+  },
+  {
+    path: `${base}/deleteTagInCategory`,
+    method: "get",
+    check: [
+      common.queryFieldCheck("categoryName"),
+      common.queryFieldCheck("tagName"),
+    ],
+    action: tagActions.deleteTagInCategory
   },
 ]
 
@@ -243,6 +285,8 @@ export const gallery: utils.OrmRoute[] = [
   ...categoryRoutes,
 
   ...markRoutes,
+
+  ...tagRoutes,
 
   ...contentRoutes,
 

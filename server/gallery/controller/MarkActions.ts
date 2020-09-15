@@ -32,8 +32,7 @@ export async function saveMark(req: Request, res: Response) {
 export async function deleteMark(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
-  const id = req.query.id as string
-  const ans = await markService.deleteMark(id)
+  const ans = await markService.deleteMark(req.query.id as string)
   res.status(ans).send()
 }
 

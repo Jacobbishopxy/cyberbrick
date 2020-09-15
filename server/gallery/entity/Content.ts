@@ -26,7 +26,7 @@ export class Content {
   @ManyToOne(() => Element, e => e.contents, { nullable: false })
   element!: Element
 
-  @ManyToOne(() => Category, c => c.contents, { nullable: true })
+  @ManyToOne(() => Category, c => c.contents, { nullable: false })
   category!: Category
 
   @ManyToOne(() => Mark, m => m.contents, { cascade: true, nullable: true })

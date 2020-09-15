@@ -30,10 +30,14 @@ export const templates = "templates"
 export const marks = "marks"
 export const tags = "tags"
 
-// relations column
+// relations column & misc
+export const ids = "ids"
+export const names = "names"
 export const markCategory = `${ mark }.${ category }`
 export const markName = `${ mark }.${ name }`
 export const categoryName = `${ category }.${ name }`
+export const tagCategory = `${ tag }.${ category }`
+export const tagName = `${ tag }.${ name }`
 
 // column enum
 export enum ElementType {
@@ -68,28 +72,24 @@ export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: { "dashboard.name": Equal(dn), name: Equal(tn) } })
 
 // express validator
+/**
+ * general query param check
+ */
 export const queryFieldCheck = (field: string) =>
   query(field, utils.messageRequestQuery(field)).exists()
 
-export const queryIdCheck =
-  query(id, utils.messageRequestQuery(id)).exists()
+/**
+ * general body field check
+ */
+export const bodyFieldCheck = (field: string) =>
+  body(field, utils.messageRequestBody(field)).isLength({ min: 1 }).exists()
 
-export const queryIdsCheck =
-  query("ids", utils.messageRequestQuery("ids")).exists()
+export const queryIdCheck = queryFieldCheck(id)
+export const queryIdsCheck = queryFieldCheck(ids)
+export const queryNameCheck = queryFieldCheck(name)
+export const queryNamesCheck = queryFieldCheck(names)
+export const queryDashboardNameCheck = queryFieldCheck("dashboardName")
+export const queryTemplateNameCheck = queryFieldCheck("templateName")
 
-export const queryNameCheck =
-  query(name, utils.messageRequestQuery(name)).exists()
-
-export const queryNamesCheck =
-  query("names", utils.messageRequestQuery("names")).exists()
-
-export const queryDashboardNameCheck =
-  query("dashboardName", utils.messageRequestQuery("dashboardName")).exists()
-
-export const queryTemplateNameCheck =
-  query("templateName", utils.messageRequestQuery("templateName")).exists()
-
-export const bodyNameCheck =
-  body(name, utils.messageRequestBody(name)).isLength({ min: 1 }).exists()
-
+export const bodyNameCheck = bodyFieldCheck(name)
 
