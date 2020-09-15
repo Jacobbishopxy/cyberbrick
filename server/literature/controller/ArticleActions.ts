@@ -184,7 +184,6 @@ export async function getArticlesByCategoryNameAndTagNames(req: Request, res: Re
     const articlesSimple = await que
       .select([common.tagName, common.categoryName, common.articleId])
       .where(`${ common.categoryName } = :categoryName`, { categoryName })
-      .orderBy({ "article.id": "DESC" })
       .getMany()
 
     const ids = articlesSimple

@@ -23,7 +23,7 @@ export class Content {
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Element, e => e.contents, { nullable: false })
+  @ManyToOne(() => Element, e => e.contents, { nullable: true })
   element!: Element
 
   @ManyToOne(() => Category, c => c.contents, { nullable: false })

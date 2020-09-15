@@ -41,3 +41,25 @@ export async function deleteContent(req: Request, res: Response) {
 // =====================================================================================================================
 
 
+export async function getContentsInCategoryByMarkAndTags(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const categoryName = req.query.categoryName as string
+  const markName = req.query.markName as utils.QueryStr
+  const tagNames = req.query.tagNames as utils.QueryStr
+  const pagination = req.query.pagination as utils.QueryStr
+  const tn = tagNames ? tagNames.split(",") : undefined
+  const pn = utils.paginationExtract(pagination)
+  const ans = await contentService
+    .getContentsInCategoryByMarkAndTags(categoryName, markName, tn, pn)
+
+  res.send(ans)
+}
+
+export async function saveContentInCategory(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const ans = await contentService.saveContentInCategory(req.query.name as string, req.body as Content)
+
+  res.status(ans).send()
+}

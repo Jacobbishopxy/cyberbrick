@@ -3,7 +3,7 @@
  */
 
 import { Request, Response } from "express"
-import { validationResult, ValidationChain } from "express-validator"
+import { validationResult, ValidationChain, query, body } from "express-validator"
 import { Equal, In } from "typeorm"
 
 // misc
@@ -91,6 +91,15 @@ export const paginationGet = (pagination: QueryStr) => {
   return pg
 }
 
+export const paginationExtract = (pagination: QueryStr) => {
+  if (pagination) {
+    const s = paginationSkip(pagination)
+    const t = paginationTake(pagination)
+    if (s && t) return [s, t] as [number, number]
+  }
+  return undefined
+}
+
 export const arrayLikeGet = (arr: QueryStr) => {
   if (arr) return regArrayLike.exec(arr)
   return undefined
@@ -102,7 +111,7 @@ export const arrayLikeGet = (arr: QueryStr) => {
 export function expressErrorsBreak(req: Request, res: Response) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() })
+    res.status(HTMLStatus.FAIL_REQUEST).json({ errors: errors.array() })
     return true
   }
   return false
@@ -111,3 +120,24 @@ export function expressErrorsBreak(req: Request, res: Response) {
 // express request checkers
 export const messageRequestQuery = (d: string) => `${ d } is required in request query!`
 export const messageRequestBody = (d: string) => `${ d } is required in request body!`
+
+/**
+ * general query param check
+ */
+export const queryFieldCheck = (field: string) =>
+  query(field, messageRequestQuery(field)).exists()
+
+/**
+ * general query optional param check
+ */
+export const queryOptionalFieldCheck = (field: string, fn?: (v: string) => boolean) => {
+  const raw = query(field, messageRequestQuery(field)).optional()
+  if (fn) return raw.custom(fn).exists()
+  return raw.exists()
+}
+
+/**
+ * general body field check
+ */
+export const bodyFieldCheck = (field: string) =>
+  body(field, messageRequestBody(field)).isLength({ min: 1 }).exists()

@@ -109,8 +109,8 @@ const markRoutes: utils.OrmRoute[] = [
     path: `${base}/deleteMarkInCategory`,
     method: "delete",
     check: [
-      common.queryFieldCheck("categoryName"),
-      common.queryFieldCheck("markName"),
+      common.queryCategoryNameCheck,
+      common.queryMarkNameCheck,
     ],
     action: markActions.deleteMarkInCategory
   },
@@ -150,8 +150,8 @@ const tagRoutes: utils.OrmRoute[] = [
     path: `${base}/deleteTagInCategory`,
     method: "get",
     check: [
-      common.queryFieldCheck("categoryName"),
-      common.queryFieldCheck("tagName"),
+      common.queryCategoryNameCheck,
+      common.queryTagNameCheck,
     ],
     action: tagActions.deleteTagInCategory
   },
@@ -180,6 +180,25 @@ const contentRoutes: utils.OrmRoute[] = [
     check: [common.queryIdCheck],
     action: contentActions.deleteContent
   },
+  {
+    path: `${base}/getContentsInCategoryByMarkAndTags`,
+    method: "get",
+    check: [
+      common.queryCategoryNameCheck,
+      common.queryOptionalMarkNameCheck,
+      common.queryOptionalTagNamesCheck,
+      common.queryOptionalPaginationCheck
+    ],
+    action: contentActions.getContentsInCategoryByMarkAndTags
+  },
+  {
+    path: `${base}/saveContentInCategory`,
+    method: "post",
+    check: [
+      // todo: body check
+    ],
+    action: contentActions.saveContentInCategory
+  }
 ]
 
 const dashboardRoutes: utils.OrmRoute[] = [

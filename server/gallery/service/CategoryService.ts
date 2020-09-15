@@ -104,8 +104,6 @@ export async function getCategoryContentByName(name: string) {
   })
 }
 
-// todo: get content, filter by mark or filter by tags
-
 const findPrevCat = async (categoryName: string, relations: CategorySingleRelations) => {
   return categoryRepo().findOne({
     ...relations,
