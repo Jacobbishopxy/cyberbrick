@@ -94,6 +94,11 @@ export async function getContentsInCategoryByMarkAndTags(categoryName: string,
   return []
 }
 
+/**
+ * IMPORTANT:
+ *
+ * when updating content, existing mark & tags should have id field
+ */
 export async function saveContentInCategory(name: string, content: Content) {
 
   let ctn = {}

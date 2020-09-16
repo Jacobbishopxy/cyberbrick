@@ -26,14 +26,14 @@ export async function saveMark(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await markService.saveMark(req.body as Mark)
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 export async function deleteMark(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await markService.deleteMark(req.query.id as string)
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 // =====================================================================================================================
@@ -52,5 +52,5 @@ export async function deleteMarkInCategory(req: Request, res: Response) {
   const categoryName = req.query.categoryName as string
   const markName = req.query.markName as string
   const ans = await markService.deleteMarkInCategory(categoryName, markName)
-  res.status(ans).send()
+  res.status(ans).end()
 }

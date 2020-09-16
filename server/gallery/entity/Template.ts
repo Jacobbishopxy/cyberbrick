@@ -22,10 +22,10 @@ export class Template {
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Dashboard, dsb => dsb.templates, { nullable: false })
+  @ManyToOne(() => Dashboard, d => d.templates, {cascade: true,  nullable: false })
   dashboard!: Dashboard
 
-  @OneToMany(() => Element, ele => ele.template, { cascade: true, nullable: true })
+  @OneToMany(() => Element, e => e.template, { cascade: true, nullable: true })
   elements!: Element[]
 
   @Column("varchar", { nullable: false })

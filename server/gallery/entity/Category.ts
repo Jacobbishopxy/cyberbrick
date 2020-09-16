@@ -8,7 +8,8 @@ import {
   Column,
   OneToOne,
   OneToMany,
-  JoinColumn
+  JoinColumn,
+  Unique
 } from "typeorm"
 import * as common from "../common"
 import { Tag } from "./Tag"
@@ -18,6 +19,7 @@ import { Dashboard } from "./Dashboard"
 
 
 @Entity({ name: common.category })
+@Unique([common.name, common.dashboard])
 export class Category {
 
   @PrimaryColumn("varchar")
@@ -26,7 +28,7 @@ export class Category {
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToOne(() => Dashboard, { cascade: true, nullable: true })
+  @OneToOne(() => Dashboard, d => d.category, { cascade: true, nullable: true })
   @JoinColumn()
   dashboard!: Dashboard
 

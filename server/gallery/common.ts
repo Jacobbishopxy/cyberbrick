@@ -82,7 +82,6 @@ export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
 export const queryIdCheck = utils.queryFieldCheck(id)
 export const queryIdsCheck = utils.queryFieldCheck(ids)
 export const queryNameCheck = utils.queryFieldCheck(name)
-export const queryNamesCheck = utils.queryFieldCheck(names)
 export const queryDashboardNameCheck = utils.queryFieldCheck("dashboardName")
 export const queryTemplateNameCheck = utils.queryFieldCheck("templateName")
 export const queryCategoryNameCheck = utils.queryFieldCheck("categoryName")
@@ -99,4 +98,7 @@ export const queryOptionalPaginationCheck = utils.queryOptionalFieldCheck(
 )
 
 export const bodyNameCheck = utils.bodyFieldCheck(name)
-
+export const bodyOriginDashboardNameCheck = utils.bodyFieldCheck("originDashboardName")
+export const bodyOriginTemplateNameCheck = utils.bodyFieldCheck("originTemplateName")
+export const bodyTargetDashboardNameCheck = utils.bodyFieldCheck("targetDashboardName")
+export const bodyTargetTemplateNameCheck = utils.bodyFieldCheck("targetTemplateName")

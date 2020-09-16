@@ -26,14 +26,14 @@ export async function saveTag(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await tagService.saveTag(req.body as Tag)
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 export async function deleteTag(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await tagService.deleteTag(req.query.id as string)
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 // =====================================================================================================================
@@ -52,5 +52,5 @@ export async function deleteTagInCategory(req: Request, res: Response) {
   const categoryName = req.query.categoryName as string
   const tagName = req.query.tagName as string
   const ans = await tagService.deleteTagInCategory(categoryName, tagName)
-  res.status(ans).send()
+  res.status(ans).end()
 }

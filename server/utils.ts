@@ -28,33 +28,15 @@ export enum HTMLStatus {
 }
 
 // query filters
-export const whereNameEqual = (n: string) =>
-  ({ where: { name: Equal(n) } })
-
-export const whereIdEqual = (n: string) =>
-  ({ where: { id: Equal(n) } })
-
-export const whereNamesIn = (n: string) => {
-  const ns = n.split(",")
-  return { where: { name: In(ns) } }
-}
-
-export const whereStringIdsIn = (ids: string) => {
-  const idsArr = ids.split(",").map(i => +i)
-  return { where: { id: In(idsArr) } }
-}
-
-export const whereIdsIn = (ids: string[]) =>
-  ({ where: { id: In(ids) } })
+export const whereNameEqual = (v: string) => ({ where: { name: Equal(v) } })
+export const whereIdEqual = (v: string) => ({ where: { id: Equal(v) } })
+export const whereNamesIn = (v: string[]) => ({ where: { name: In(v) } })
+export const whereIdsIn = (v: string[]) => ({ where: { id: In(v) } })
 
 // query orders
 export type OrderType = "ASC" | "DESC"
-
-export const orderByDate = (orderType: OrderType) =>
-  ({ order: { date: orderType } })
-
-export const orderByName = (orderType: OrderType) =>
-  ({ order: { name: orderType } })
+export const orderByDate = (orderType: OrderType) => ({ order: { date: orderType } })
+export const orderByName = (orderType: OrderType) => ({ order: { name: orderType } })
 
 // string extract
 export const regSkip = new RegExp("^\\((\\d+),")

@@ -6,10 +6,12 @@ import {
   Entity,
   PrimaryColumn,
   Column,
+  OneToOne,
   OneToMany
 } from "typeorm"
 
 import * as common from "../common"
+import { Category } from "./Category"
 import { Template } from "./Template"
 
 @Entity({ name: common.dashboard })
@@ -18,7 +20,10 @@ export class Dashboard {
   @PrimaryColumn("varchar")
   name!: string
 
-  @OneToMany(() => Template, t => t.dashboard, { cascade: true, nullable: true })
+  @OneToOne(() => Category, c => c.dashboard, { nullable: false })
+  category!: Category
+
+  @OneToMany(() => Template, t => t.dashboard, { nullable: true })
   templates!: Template[]
 
   @Column("text", { nullable: true })

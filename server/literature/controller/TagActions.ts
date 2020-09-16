@@ -9,11 +9,9 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Tag } from "../entity/Tag"
-// import { Category } from "../entity/Category"
 
 
 const tagRepo = () => getConnection(common.db).getRepository(Tag)
-// const categoryRepo = () => getConnection(common.db).getRepository(Category)
 
 const tagRelations = { relations: [common.articles, common.categories] }
 const tagArticlesRelations = { relations: [common.articles] }
@@ -38,7 +36,7 @@ export async function getTagsByNames(req: Request, res: Response) {
   const tags = await tagRepo()
     .find({
       ...tagArticlesRelations,
-      ...utils.whereNamesIn(req.query.names as string)
+      ...utils.whereNamesIn((req.query.names as string).split(","))
     })
 
   res.send(tags)
@@ -62,7 +60,6 @@ export async function saveTag(req: Request, res: Response) {
   res.send(newTag)
 }
 
-// todo: unsafe, category's `unionTags` should also be updated
 /**
  * delete tag
  */
@@ -84,7 +81,7 @@ export async function getCommonCategoriesByTagNames(req: Request, res: Response)
 
   if (utils.expressErrorsBreak(req, res)) return
 
-  const names = req.query.names as string
+  const names = (req.query.names as string).split(",")
   const tags = await tagRepo()
     .find({
       ...tagCategoriesRelations,

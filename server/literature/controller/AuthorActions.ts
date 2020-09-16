@@ -27,7 +27,7 @@ export async function getAuthorsByNames(req: Request, res: Response) {
   const ans = await authorRepo()
     .find({
       ...authorRelations,
-      ...utils.whereNamesIn(req.query.names as string)
+      ...utils.whereNamesIn((req.query.names as string).split(","))
     })
 
   res.send(ans)

@@ -35,7 +35,7 @@ export async function getCategoriesByNames(req: Request, res: Response) {
 
   const ans = await categoryRepo().find({
     ...categoryTagsRelations,
-    ...utils.whereNamesIn(req.query.names as string)
+    ...utils.whereNamesIn((req.query.names as string).split(","))
   })
 
   res.send(ans)

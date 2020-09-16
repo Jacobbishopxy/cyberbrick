@@ -8,12 +8,14 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  Unique
 } from "typeorm"
 import * as common from "../common"
 import { Category } from "./Category"
 import { Content } from "./Content"
 
 @Entity({ name: common.mark })
+@Unique([common.name, common.category])
 export class Mark {
 
   @PrimaryGeneratedColumn("uuid")

@@ -51,13 +51,13 @@ export async function getArticlesByIds(req: Request, res: Response) {
 
   if (utils.expressErrorsBreak(req, res)) return
 
-  const ids = req.query.ids as string
+  const ids = (req.query.ids as string).split(",")
   const pagination = req.query.pagination as utils.QueryStr
 
   const ans = await articleRepo()
     .find({
       ...articleRelations,
-      ...utils.whereStringIdsIn(ids),
+      ...utils.whereIdsIn(ids),
       ...utils.paginationGet(pagination),
       ...utils.orderByDate("DESC")
     })

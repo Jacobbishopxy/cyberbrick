@@ -27,7 +27,7 @@ export async function saveContent(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const ans = await contentService.saveContent(req.body as Content)
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 export async function deleteContent(req: Request, res: Response) {
@@ -35,7 +35,7 @@ export async function deleteContent(req: Request, res: Response) {
 
   const ans = await contentService.deleteContent(req.query.id as string)
 
-  res.status(ans).send()
+  res.status(ans).end()
 }
 
 // =====================================================================================================================
@@ -61,5 +61,5 @@ export async function saveContentInCategory(req: Request, res: Response) {
 
   const ans = await contentService.saveContentInCategory(req.query.name as string, req.body as Content)
 
-  res.status(ans).send()
+  res.status(ans).end()
 }

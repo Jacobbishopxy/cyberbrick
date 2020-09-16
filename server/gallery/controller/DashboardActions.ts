@@ -3,78 +3,62 @@
  */
 
 import { Request, Response } from "express"
-import { getConnection } from "typeorm"
 
-import * as common from "../common"
+import * as dashboardService from "../service/DashboardService"
 import * as utils from "../../utils"
 import { Dashboard } from "../entity/Dashboard"
 
 
-const dashboardRepo = () => getConnection(common.db).getRepository(Dashboard)
-
-const templateRelations = {
-  relations: [common.templates]
-}
-const templateAndElementRelations = {
-  relations: [common.templates, common.templatesElements]
-}
-const fullRelations = {
-  relations: [
-    common.templates,
-    common.templatesElements,
-    common.templatesElementsContents
-  ]
-}
-
 export async function getAllDashboards(req: Request, res: Response) {
-  const ans = await dashboardRepo().find(fullRelations)
+  const ans = await dashboardService.getAllDashboards()
 
   res.send(ans)
 }
 
 export async function getDashboardByName(req: Request, res: Response) {
-  const ans = await dashboardRepo().findOne({
-    ...templateRelations,
-    ...utils.whereNameEqual(req.query.name as string)
-  })
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const ans = await dashboardService.getDashboardByName(req.query.name as string)
 
   res.send(ans)
 }
 
 export async function saveDashboard(req: Request, res: Response) {
-
   if (utils.expressErrorsBreak(req, res)) return
 
-  const dr = dashboardRepo()
-  const newDashboard = dr.create(req.body)
-  await dr.save(newDashboard)
+  const ans = await dashboardService.saveDashboard(req.body as Dashboard)
 
-  res.send(newDashboard)
+  res.status(ans).end()
 }
 
 export async function deleteDashboard(req: Request, res: Response) {
-
   if (utils.expressErrorsBreak(req, res)) return
 
-  const ans = dashboardRepo().delete(req.query.name as string)
+  const ans = await dashboardService.deleteDashboard(req.query.name as string)
 
-  res.send(ans)
+  res.status(ans).end()
 }
 
 // =====================================================================================================================
 
 export async function getDashboardTemplateElementsByName(req: Request, res: Response) {
-
   if (utils.expressErrorsBreak(req, res)) return
 
   const dashboardName = req.query.dashboardName as string
   const templateName = req.query.templateName as string
-
-  const ans = await dashboardRepo().findOne({
-    ...templateAndElementRelations,
-    ...common.whereDashboardAndTemplateNameEqual(dashboardName, templateName)
-  })
+  const ans = await dashboardService.getDashboardTemplateElementsByName(dashboardName, templateName)
 
   res.send(ans)
+}
+
+export async function newDashboardAttachToEmptyCategory(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const categoryName = req.query.categoryName as string
+  const dashboard = req.body as Dashboard
+
+  const ans = await dashboardService.newDashboardAttachToEmptyCategory(categoryName, dashboard)
+
+  res.status(ans).end()
 }
 
