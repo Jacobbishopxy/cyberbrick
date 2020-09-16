@@ -91,6 +91,16 @@ export const paginationGet = (pagination: QueryStr) => {
   return pg
 }
 
+export const paginationGet2 = (pagination: [number, number] | undefined) => {
+  if (pagination) {
+    return {
+      skip: pagination[0],
+      take: pagination[1]
+    }
+  }
+  return {}
+}
+
 export const paginationExtract = (pagination: QueryStr) => {
   if (pagination) {
     const s = paginationSkip(pagination)

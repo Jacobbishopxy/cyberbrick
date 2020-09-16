@@ -3,6 +3,7 @@
  */
 
 import { getConnection } from "typeorm"
+import _ from "lodash"
 import moment from "moment"
 
 import * as common from "../common"
@@ -52,7 +53,8 @@ export async function getContentsInCategoryByMarkAndTags(categoryName: string,
                                                          markName?: string,
                                                          tagNames?: string[],
                                                          pagination?: [number, number]) {
-  let que = contentRepo()
+  const cr = contentRepo()
+  let que = cr
     .createQueryBuilder(common.content)
     .leftJoinAndSelect(common.contentElement, common.element)
     .leftJoinAndSelect(common.contentCategory, common.category)
@@ -64,8 +66,22 @@ export async function getContentsInCategoryByMarkAndTags(categoryName: string,
   if (markName)
     que = que.andWhere(`${ common.markName } = :markName`, { markName })
 
-  if (tagNames)
-    que = que.andWhere(`${ common.tagName } IN (:...tagNames)`, { tagNames })
+  if (tagNames) {
+    const contentSimple = await que
+      .select([common.tagName, common.contentId])
+      .getMany()
+
+    const ids = contentSimple
+      .filter(i => _.difference(tagNames, i.tags.map(j => j.name)).length === 0)
+      .map(i => i.id)
+
+    return cr.find({
+      ...contentFullRelations,
+      ...utils.whereIdsIn(ids),
+      ...utils.paginationGet2(pagination),
+      ...utils.orderByDate("DESC")
+    })
+  }
 
   if (pagination)
     que = que.skip(pagination[0]).take(pagination[1])

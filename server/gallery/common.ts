@@ -37,6 +37,7 @@ export const markName = `${ mark }.${ name }`
 export const categoryName = `${ category }.${ name }`
 export const tagCategory = `${ tag }.${ category }`
 export const tagName = `${ tag }.${ name }`
+export const contentId = `${ content }.${ id }`
 export const contentElement = `${ content }.${ element }`
 export const contentCategory = `${ content }.${ category }`
 export const contentMark = `${ content }.${ mark }`

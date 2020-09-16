@@ -25,7 +25,7 @@ export class Mark {
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToOne(() => Category, c => c.marks)
+  @ManyToOne(() => Category, c => c.marks, { nullable: false })
   category!: Category
 
   @OneToMany(() => Content, c => c.mark)

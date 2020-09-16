@@ -26,7 +26,7 @@ export class Tag {
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToOne(() => Category, c => c.tags)
+  @ManyToOne(() => Category, c => c.tags, { nullable: false })
   category!: Category
 
   @ManyToMany(() => Content, c => c.tags)
