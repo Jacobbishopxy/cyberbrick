@@ -1,57 +1,44 @@
-# Ant Design Pro
-
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+# REACT DEMO
 
 ## Environment Prepare
 
-Install `node_modules`:
-
-```bash
-npm install
 ```
-
+npm i
+```
 or
-
-```bash
+```
 yarn
 ```
 
-## Provided Scripts
+## Configuration Prepare
 
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
+In `resources` folder:
 
-Scripts provided in `package.json`. It's safe to modify or add additional script:
+1. new `databaseDev.ts` (see [databaseDev.template.ts](resources/databaseDev.template.ts)) for development.
 
-### Start project
+2. new `databaseProd.ts` (see [databaseProd.template.ts](resources/databaseProd.template.ts)) for production.
 
-```bash
-npm start
-```
+## Start Project
 
-### Build project
+1. development mode: 
 
-```bash
-npm run build
-```
+    *  `yarn serve:dev` for server side then in another terminal `yarn dev` for frontend
+    
+    * if offline mode (no database connection), please use `yarn serve:dev:offline` & `yarn dev:offline`
 
-### Check code style
+2. production:
 
-```bash
-npm run lint
-```
+    * `yarn build` then `yarn serve`
 
-You can also use script to auto fix some lint error:
+## Route
 
-```bash
-npm run lint:fix
-```
+Check [config/config.ts](config/config.ts) for detail.
 
-### Test code
+## Mark
 
-```bash
-npm test
-```
+For some detailed project components.
 
-## More
+### Gallery
 
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+![Data Structure](public/GarlleryDataStructure.svg)
+

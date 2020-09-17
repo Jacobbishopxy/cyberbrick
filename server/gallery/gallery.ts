@@ -315,7 +315,6 @@ const templateRoutes: utils.OrmRoute[] = [
     check: [common.bodyDashboardCheck],
     action: templateActions.updateTemplateElements
   },
-
 ]
 
 const elementRoutes: utils.OrmRoute[] = [
