@@ -7,6 +7,7 @@ import { getConnection } from "typeorm"
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Element } from "../entity/Element"
+import {Content} from "../entity/Content"
 
 
 const elementRepo = () => getConnection(common.db).getRepository(Element)
@@ -44,4 +45,25 @@ export async function deleteElement(id: string) {
 }
 
 // =====================================================================================================================
+
+
+export async function getElementLatestContent(id: string) {
+  const ans = elementRepo()
+    .createQueryBuilder(common.element)
+    .select(common.elementId)
+    .leftJoin(qb => qb
+      .from(Content, common.content)
+      .select(`MAX(${common.date})`, "date")
+      .addSelect(`"elementId"`, "element_id")
+      .groupBy(`"element_id"`),
+      "last_date",
+      `last_date."element_id" = element.id`
+    )
+    .leftJoinAndSelect(common.elementContents, common.content, `${common.contentDate} = last_date.date`)
+    .where(`${ common.elementId } = :id`, { id })
+    .getOne()
+
+  if (ans) return ans
+  return {}
+}
 

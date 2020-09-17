@@ -39,6 +39,13 @@ export async function deleteCategory(req: Request, res: Response) {
 
 // =====================================================================================================================
 
+
+export async function getAllCategoriesName(req: Request, res: Response) {
+  const ans = await categoryService.getAllCategoriesName()
+
+  res.send(ans)
+}
+
 export async function getAllCategoriesWithMarkAndTag(req: Request, res: Response) {
   const ans = await categoryService.getAllCategoriesWithMarkAndTag()
 

@@ -59,6 +59,10 @@ export async function deleteDashboard(name: string) {
 
 // =====================================================================================================================
 
+export async function getAllDashboardsName() {
+  return dashboardRepo().find({ select: [common.name] })
+}
+
 /**
  * for copy & pasting existing template layout
  */

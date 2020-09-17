@@ -86,6 +86,10 @@ export async function deleteCategory(name: string) {
 // =====================================================================================================================
 
 
+export async function getAllCategoriesName() {
+  return categoryRepo().find({ select: [common.name] })
+}
+
 export async function getAllCategoriesWithMarkAndTag() {
   return categoryRepo().find(categoryMarkTagRelations)
 }

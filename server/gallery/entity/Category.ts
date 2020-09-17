@@ -9,7 +9,9 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
-  Unique
+  Unique,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import * as common from "../common"
 import { Tag } from "./Tag"
@@ -40,4 +42,10 @@ export class Category {
 
   @OneToMany(() => Content, c => c.category, { nullable: true })
   contents!: Content[]
+
+  @CreateDateColumn({ select: false })
+  createdAt!: string
+
+  @UpdateDateColumn({ select: false })
+  updatedAt!: string
 }

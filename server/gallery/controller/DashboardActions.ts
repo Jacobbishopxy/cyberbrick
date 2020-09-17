@@ -41,6 +41,13 @@ export async function deleteDashboard(req: Request, res: Response) {
 
 // =====================================================================================================================
 
+
+export async function getAllDashboardsName(req: Request, res: Response) {
+  const ans = await dashboardService.getAllDashboardsName()
+
+  res.send(ans)
+}
+
 export async function getDashboardTemplateElementsByName(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 

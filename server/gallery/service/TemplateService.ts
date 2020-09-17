@@ -8,9 +8,11 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Template } from "../entity/Template"
+import { Element } from "../entity/Element"
 
 
 const templateRepo = () => getConnection(common.db).getRepository(Template)
+const elementRepo = () => getConnection(common.db).getRepository(Element)
 
 const templateFullRelations = {
   relations: [
@@ -53,10 +55,13 @@ export async function deleteTemplate(id: string) {
  * too heavy, since content is a list, usually we only need the latest content (by date)
  */
 export async function getTemplateElementsContents(dashboardName: string, templateName: string) {
-  return templateRepo().findOne({
+  const ans = await templateRepo().findOne({
     ...templateFullRelations,
     ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
   })
+
+  if (ans) return ans
+  return {}
 }
 
 export async function copyTemplateElements(originDashboardName: string,
@@ -89,3 +94,30 @@ export async function copyTemplateElements(originDashboardName: string,
 
   return utils.HTMLStatus.FAIL_REQUEST
 }
+
+/**
+ * IMPORTANT:
+ *
+ * if previous element in template has been removed, we need delete removed element as well
+ */
+export async function updateTemplateElements(template: Template) {
+  const targetTemplateId = template.id
+
+  const er = elementRepo()
+  const originElementsId = await er
+    .createQueryBuilder(common.element)
+    .leftJoinAndSelect(common.elementTemplate, common.template)
+    .select(common.elementId)
+    .where(`${ common.templateId } = :targetTemplateId`, { targetTemplateId })
+    .getMany()
+
+  if (originElementsId) {
+    const targetElementsId = template.elements.map(i => i.id)
+
+    const removedIds = _.difference(originElementsId.map(i => i.id), targetElementsId)
+    await er.delete(removedIds)
+  }
+
+  return saveTemplate(template)
+}
+

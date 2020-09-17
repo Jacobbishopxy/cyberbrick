@@ -43,6 +43,11 @@ export const contentCategory = `${ content }.${ category }`
 export const contentMark = `${ content }.${ mark }`
 export const contentTags = `${ content }.${ tags }`
 export const contentAuthor = `${ content }.${ author }`
+export const contentDate = `${ content }.${ date }`
+export const templateId = `${ template }.${ id }`
+export const elementId = `${ element }.${ id }`
+export const elementTemplate = `${ element }.${ template }`
+export const elementContents = `${ element }.${ contents }`
 
 export const dateFormat = "YYYYMMDDHHmmss"
 
@@ -73,10 +78,10 @@ export const templatesElementsContents = `${ templates }.${ elements }.${ conten
 
 // query filters
 export const whereDashboardAndTemplateNameEqual = (dn: string, tn: string) =>
-  ({ where: { name: Equal(dn), "templates.name": Equal(tn) } })
+  ({ where: [{ name: Equal(dn) }, { "templates.name": Equal(tn) }] })
 
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
-  ({ where: { "dashboard.name": Equal(dn), name: Equal(tn) } })
+  ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 
 // express validator
 export const queryIdCheck = utils.queryFieldCheck(id)
@@ -102,3 +107,6 @@ export const bodyOriginDashboardNameCheck = utils.bodyFieldCheck("originDashboar
 export const bodyOriginTemplateNameCheck = utils.bodyFieldCheck("originTemplateName")
 export const bodyTargetDashboardNameCheck = utils.bodyFieldCheck("targetDashboardName")
 export const bodyTargetTemplateNameCheck = utils.bodyFieldCheck("targetTemplateName")
+export const bodyDashboardCheck = utils.bodyFieldCheck(dashboard)
+export const bodyElementsCheck = utils.bodyFieldCheck(elements)
+

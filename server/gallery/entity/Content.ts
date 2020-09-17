@@ -6,6 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  Unique,
   ManyToOne,
   ManyToMany,
 } from "typeorm"
@@ -18,6 +19,7 @@ import { Mark } from "./Mark"
 import { Author } from "./Author"
 
 @Entity({ name: common.content })
+@Unique([common.category, common.element, common.date])
 export class Content {
 
   @PrimaryGeneratedColumn("uuid")

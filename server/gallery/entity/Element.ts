@@ -8,6 +8,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  Unique
 } from "typeorm"
 
 import * as common from "../common"
@@ -16,12 +17,13 @@ import { Content } from "./Content"
 
 
 @Entity({ name: common.element })
+@Unique([common.template, common.name])
 export class Element {
 
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Template, tmp => tmp.elements, { nullable: false })
+  @ManyToOne(() => Template, tmp => tmp.elements, { nullable: true })
   template!: Template
 
   @OneToMany(() => Content, ct => ct.element, { cascade: true, nullable: true })

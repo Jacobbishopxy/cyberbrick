@@ -39,6 +39,11 @@ const categoryRoutes: utils.OrmRoute[] = [
     action: categoryActions.deleteCategory
   },
   {
+    path: `${ base }/getAllCategoriesName`,
+    method: "get",
+    action: categoryActions.getAllCategoriesName
+  },
+  {
     path: `${ base }/getAllCategoriesWithMarkAndTag`,
     method: "get",
     action: categoryActions.getAllCategoriesWithMarkAndTag
@@ -225,6 +230,11 @@ const dashboardRoutes: utils.OrmRoute[] = [
     action: dashboardActions.deleteDashboard
   },
   {
+    path: `${ base }/getAllDashboardsName`,
+    method: "get",
+    action: dashboardActions.getAllDashboardsName
+  },
+  {
     path: `${ base }/getDashboardTemplateElementsByName`,
     method: "get",
     check: [
@@ -284,6 +294,13 @@ const templateRoutes: utils.OrmRoute[] = [
     ],
     action: templateActions.copyTemplateElements
   },
+  {
+    path: `${ base }/updateTemplateElements`,
+    method: "post",
+    check: [],
+    action: templateActions.updateTemplateElements
+  },
+
 ]
 
 const elementRoutes: utils.OrmRoute[] = [
@@ -308,6 +325,12 @@ const elementRoutes: utils.OrmRoute[] = [
     method: "delete",
     check: [common.queryIdCheck],
     action: elementActions.deleteElement
+  },
+  {
+    path: `${ base }/getElementLatestContent`,
+    method: "get",
+    check: [common.queryIdCheck],
+    action: elementActions.getElementLatestContent
   },
 ]
 

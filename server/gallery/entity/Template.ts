@@ -8,6 +8,7 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  Unique,
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm"
@@ -17,6 +18,7 @@ import { Dashboard } from "./Dashboard"
 import { Element } from "./Element"
 
 @Entity({ name: common.template })
+@Unique([common.dashboard, common.name])
 export class Template {
 
   @PrimaryGeneratedColumn("uuid")

@@ -7,7 +7,9 @@ import {
   PrimaryColumn,
   Column,
   OneToOne,
-  OneToMany
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm"
 
 import * as common from "../common"
@@ -28,5 +30,11 @@ export class Dashboard {
 
   @Column("text", { nullable: true })
   description?: string
+
+  @CreateDateColumn({ select: false })
+  createdAt!: string
+
+  @UpdateDateColumn({ select: false })
+  updatedAt!: string
 }
 

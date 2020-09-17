@@ -69,3 +69,9 @@ export async function copyTemplateElements(req: Request, res: Response) {
   res.status(ans).end()
 }
 
+export async function updateTemplateElements(req: Request, res: Response) {
+
+  const ans = await templateService.updateTemplateElements(req.body as Template)
+  res.status(ans).end()
+}
+
