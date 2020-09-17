@@ -18,7 +18,8 @@ const templateFullRelations = {
   relations: [
     common.dashboard,
     common.elements,
-    common.elementsContents
+    common.elementsContents,
+    common.elementsContentsMark,
   ]
 }
 const dashboardAndElementRelations = {
@@ -52,11 +53,24 @@ export async function deleteTemplate(id: string) {
 // =====================================================================================================================
 
 /**
- * too heavy, since content is a list, usually we only need the latest content (by date)
+ * Heavy. Since content is a list, usually we only need the latest content (by date)
  */
 export async function getTemplateElementsContents(dashboardName: string, templateName: string) {
   const ans = await templateRepo().findOne({
     ...templateFullRelations,
+    ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
+  })
+
+  if (ans) return ans
+  return {}
+}
+
+/**
+ * Light. After result, each element should query its' own content in parallel
+ */
+export async function getTemplateElements(dashboardName: string, templateName: string) {
+  const ans = await templateRepo().findOne({
+    ...dashboardAndElementRelations,
     ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
   })
 
@@ -70,12 +84,9 @@ export async function copyTemplateElements(originDashboardName: string,
                                            targetTemplateName: string) {
   const tr = templateRepo()
 
-  const originTemplate = await tr.findOne({
-    ...dashboardAndElementRelations,
-    ...common.whereDashboardNameAndTemplateEqual(originDashboardName, originTemplateName)
-  })
+  const originTemplate = await getTemplateElements(originDashboardName, originTemplateName) as Template
 
-  if (originTemplate) {
+  if (!_.isEmpty(originTemplate)) {
     const targetTemplate = {
       dashboard: {
         ...originTemplate.dashboard,

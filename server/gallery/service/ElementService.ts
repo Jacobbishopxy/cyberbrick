@@ -7,7 +7,8 @@ import { getConnection } from "typeorm"
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Element } from "../entity/Element"
-import {Content} from "../entity/Content"
+import { Content } from "../entity/Content"
+// import { Mark } from "../entity/Mark"
 
 
 const elementRepo = () => getConnection(common.db).getRepository(Element)
@@ -47,19 +48,29 @@ export async function deleteElement(id: string) {
 // =====================================================================================================================
 
 
-export async function getElementLatestContent(id: string) {
-  const ans = elementRepo()
+export async function getElementLatestContent(id: string, markName?: string) {
+  const ans = await elementRepo()
     .createQueryBuilder(common.element)
     .select(common.elementId)
-    .leftJoin(qb => qb
-      .from(Content, common.content)
-      .select(`MAX(${common.date})`, "date")
-      .addSelect(`"elementId"`, "element_id")
-      .groupBy(`"element_id"`),
+    .leftJoin(qb => {
+        let raw = qb.from(Content, common.content)
+        if (markName)
+          raw = qb
+            .leftJoinAndSelect(common.contentMark, common.mark)
+            .where(`${ common.markName } = :markName`, { markName })
+        return raw
+          .select(`MAX(${ common.date })`, "date")
+          .addSelect(`"elementId"`, "eid")
+          .groupBy("eid")
+      },
       "last_date",
-      `last_date."element_id" = element.id`
+      "last_date.eid = element.id"
     )
-    .leftJoinAndSelect(common.elementContents, common.content, `${common.contentDate} = last_date.date`)
+    .leftJoinAndSelect(
+      common.elementContents,
+      common.content,
+      `${ common.contentDate } = last_date.date`
+    )
     .where(`${ common.elementId } = :id`, { id })
     .getOne()
 

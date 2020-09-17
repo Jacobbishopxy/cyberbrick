@@ -73,6 +73,7 @@ export enum ElementType {
 
 // joint column name
 export const elementsContents = `${ elements }.${ contents }`
+export const elementsContentsMark = `${ elements }.${ contents }.${ mark }`
 export const templatesElements = `${ templates }.${ elements }`
 export const templatesElementsContents = `${ templates }.${ elements }.${ contents }`
 
@@ -108,5 +109,9 @@ export const bodyOriginTemplateNameCheck = utils.bodyFieldCheck("originTemplateN
 export const bodyTargetDashboardNameCheck = utils.bodyFieldCheck("targetDashboardName")
 export const bodyTargetTemplateNameCheck = utils.bodyFieldCheck("targetTemplateName")
 export const bodyDashboardCheck = utils.bodyFieldCheck(dashboard)
+export const bodyCategoryCheck = utils.bodyFieldCheck(category)
+export const bodyDateCheck = utils.bodyFieldCheck(date)
+export const bodyTitleCheck = utils.bodyFieldCheck(title)
+export const bodyDataCheck = utils.bodyFieldCheck("data")
 export const bodyElementsCheck = utils.bodyFieldCheck(elements)
 

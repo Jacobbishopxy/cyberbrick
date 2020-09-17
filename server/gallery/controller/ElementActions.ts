@@ -46,7 +46,10 @@ export async function deleteElement(req: Request, res: Response) {
 export async function getElementLatestContent(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
-  const ans = await elementService.getElementLatestContent(req.query.id as string)
+  const id = req.query.id as string
+  const markName = req.query.markName as utils.QueryStr
+  const ans = await elementService.getElementLatestContent(id, markName)
 
   res.send(ans)
 }
+

@@ -153,7 +153,7 @@ const tagRoutes: utils.OrmRoute[] = [
   },
   {
     path: `${ base }/deleteTagInCategory`,
-    method: "get",
+    method: "delete",
     check: [
       common.queryCategoryNameCheck,
       common.queryTagNameCheck,
@@ -200,7 +200,10 @@ const contentRoutes: utils.OrmRoute[] = [
     path: `${ base }/saveContentInCategory`,
     method: "post",
     check: [
-      // todo: body check
+      common.bodyCategoryCheck,
+      common.bodyDateCheck,
+      common.bodyTitleCheck,
+      common.bodyDataCheck
     ],
     action: contentActions.saveContentInCategory
   }
@@ -245,8 +248,11 @@ const dashboardRoutes: utils.OrmRoute[] = [
   },
   {
     path: `${ base }/newDashboardAttachToEmptyCategory`,
-    method: "get",
-    check: [common.queryCategoryNameCheck],
+    method: "post",
+    check: [
+      common.queryCategoryNameCheck,
+      common.bodyCategoryCheck
+    ],
     action: dashboardActions.newDashboardAttachToEmptyCategory
   },
 ]
@@ -284,6 +290,15 @@ const templateRoutes: utils.OrmRoute[] = [
     action: templateActions.getTemplateElementsContents
   },
   {
+    path: `${ base }/getTemplateElements`,
+    method: "get",
+    check: [
+      common.queryDashboardNameCheck,
+      common.queryTemplateNameCheck
+    ],
+    action: templateActions.getTemplateElements
+  },
+  {
     path: `${ base }/copyTemplateElements`,
     method: "post",
     check: [
@@ -297,7 +312,7 @@ const templateRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/updateTemplateElements`,
     method: "post",
-    check: [],
+    check: [common.bodyDashboardCheck],
     action: templateActions.updateTemplateElements
   },
 
@@ -329,7 +344,10 @@ const elementRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/getElementLatestContent`,
     method: "get",
-    check: [common.queryIdCheck],
+    check: [
+      common.queryIdCheck,
+      common.queryOptionalMarkNameCheck
+    ],
     action: elementActions.getElementLatestContent
   },
 ]

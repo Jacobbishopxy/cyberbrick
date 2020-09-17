@@ -51,6 +51,17 @@ export async function getTemplateElementsContents(req: Request, res: Response) {
   res.send(ans)
 }
 
+export async function getTemplateElements(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const dashboardName = req.query.dashboardName as string
+  const templateName = req.query.templateName as string
+
+  const ans = await templateService.getTemplateElements(dashboardName, templateName)
+
+  res.send(ans)
+}
+
 export async function copyTemplateElements(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
