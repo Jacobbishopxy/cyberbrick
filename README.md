@@ -40,5 +40,5 @@ For some detailed project components.
 
 ### Gallery
 
-![Data Structure](public/GarlleryDataStructure.svg)
+![Data Structure](public/GalleryDataStructure.png)
 

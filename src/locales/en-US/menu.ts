@@ -53,10 +53,14 @@ export default {
   'menu.gallery': 'Gallery',
   'menu.gallery.summary': 'Summary',
   'menu.gallery.dashboard': 'Dashboard',
+  'menu.gallery.literature': 'Literature',
 
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
-  'menu.demo.literature': 'Literature',
   'menu.demo.kChart': 'KChart',
   'menu.demo.rectangleChart': 'RectangleChart',
-};
+
+  'menu.document': 'Document',
+  'menu.document.gallery': 'Gallery',
+
+}

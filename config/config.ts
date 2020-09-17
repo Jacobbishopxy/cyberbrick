@@ -89,6 +89,18 @@ export default defineConfig({
       ],
     },
     {
+      path: '/document',
+      name: 'document',
+      icon: 'BookOutlined',
+      routes: [
+        {
+          name: 'gallery',
+          path: '/document/gallery',
+          component: './document/Gallery'
+        }
+      ]
+    },
+    {
       path: '/',
       redirect: '/welcome',
     },
