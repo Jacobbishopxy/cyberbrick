@@ -44,9 +44,9 @@ const categoryRoutes: utils.OrmRoute[] = [
     action: categoryActions.getAllCategoriesName
   },
   {
-    path: `${ base }/getAllCategoriesWithMarkAndTag`,
+    path: `${ base }/getAllCategoriesWithoutContents`,
     method: "get",
-    action: categoryActions.getAllCategoriesWithMarkAndTag
+    action: categoryActions.getAllCategoriesWithoutContents
   },
   {
     path: `${ base }/getCategoryMarkAndTagByName`,

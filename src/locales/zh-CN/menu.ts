@@ -51,6 +51,7 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
 
   'menu.gallery': 'Gallery',
+  'menu.gallery.configuration': 'Configuration',
   'menu.gallery.summary': 'Summary',
   'menu.gallery.dashboard': 'Dashboard',
   'menu.gallery.literature': 'Literature',

@@ -51,6 +51,7 @@ export default {
   'menu.editor.koni': 'Koni Editor',
 
   'menu.gallery': 'Gallery',
+  'menu.gallery.configuration': 'Configuration',
   'menu.gallery.summary': 'Summary',
   'menu.gallery.dashboard': 'Dashboard',
   'menu.gallery.literature': 'Literature',

@@ -13,8 +13,8 @@ const base = "/api/gallery"
 export const getAllCategoriesName = async (): Promise<string[]> =>
   request(`${ base }/getAllCategoriesName`)
 
-export const getAllCategoriesWithMarkAndTag = async (): Promise<GalleryAPI.Category> =>
-  request(`${ base }/getAllCategoriesWithMarkAndTag`)
+export const getAllCategoriesWithoutContents = async (): Promise<GalleryAPI.Category> =>
+  request(`${ base }/getAllCategoriesWithoutContents`)
 
 export const getCategoryMarkAndTagByName = async (name: string): Promise<GalleryAPI.Category> =>
   request(`${ base }/getCategoryMarkAndTagByName?name=${ name }`)

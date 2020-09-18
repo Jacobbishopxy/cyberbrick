@@ -23,6 +23,14 @@ const categoryFullRelations = {
   ]
 }
 
+const categoryDashboardMarkTagRelations = {
+  relations: [
+    common.dashboard,
+    common.marks,
+    common.tags
+  ]
+}
+
 const categoryMarkTagRelations = {
   relations: [
     common.marks,
@@ -90,8 +98,8 @@ export async function getAllCategoriesName() {
   return categoryRepo().find({ select: [common.name] })
 }
 
-export async function getAllCategoriesWithMarkAndTag() {
-  return categoryRepo().find(categoryMarkTagRelations)
+export async function getAllCategoriesWithoutContents() {
+  return categoryRepo().find(categoryDashboardMarkTagRelations)
 }
 
 export async function getCategoryMarkAndTagByName(name: string) {

@@ -46,8 +46,8 @@ export async function getAllCategoriesName(req: Request, res: Response) {
   res.send(ans)
 }
 
-export async function getAllCategoriesWithMarkAndTag(req: Request, res: Response) {
-  const ans = await categoryService.getAllCategoriesWithMarkAndTag()
+export async function getAllCategoriesWithoutContents(req: Request, res: Response) {
+  const ans = await categoryService.getAllCategoriesWithoutContents()
 
   res.send(ans)
 }

@@ -25,6 +25,9 @@ export class Tag {
   @Column("varchar")
   name!: string
 
+  @Column("varchar", { nullable: true })
+  color?: string
+
   @Column("text", { nullable: true })
   description?: string
 

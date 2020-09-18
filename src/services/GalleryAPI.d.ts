@@ -16,23 +16,25 @@ declare namespace GalleryAPI {
   export interface Mark {
     id: string
     name: string
+    color?: string
     description?: string
-    category: Category
-    contents: Content[]
+    category?: Category
+    contents?: Content[]
   }
 
   export interface Tag {
     id: string
     name: string
+    color?: string
     description?: string
-    category: Category
-    contents: Content[]
+    category?: Category
+    contents?: Content[]
   }
 
   export interface Content {
     id: string
     element?: Element[]
-    category: Category
+    category?: Category
     mark?: Mark
     tags?: Tag[]
     author?: Author
@@ -50,15 +52,15 @@ declare namespace GalleryAPI {
 
   export interface Dashboard {
     name: string
-    category: Category
-    templates: Template[]
+    category?: Category
+    templates?: Template[]
     description?: string
   }
 
   export interface Template {
     id: string
-    dashboard: Dashboard
-    elements: Element[]
+    dashboard?: Dashboard
+    elements?: Element[]
     name: string
     description: string
   }

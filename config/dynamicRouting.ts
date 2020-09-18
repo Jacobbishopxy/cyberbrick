@@ -12,6 +12,11 @@ const onlineRoutes = [
     access: "canOnline",
     routes: [
       {
+        name: "configuration",
+        path: "/gallery/configuration",
+        component: "./gallery/Configuration"
+      },
+      {
         name: "summary",
         path: "/gallery/summary",
         component: "./gallery/Summary"

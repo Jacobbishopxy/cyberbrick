@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <PageContainer>
-      <img src={srcGallery} alt="gallery" width="100%"/>
+      <img src={srcGallery} alt="gallery" width="100%" height="100%"/>
     </PageContainer>
   )
 }
