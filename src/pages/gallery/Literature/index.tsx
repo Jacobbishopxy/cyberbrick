@@ -61,16 +61,16 @@ export default () => {
     })
 
   const onCreateCategory = (cat: LiteratureDataType.Category) =>
-    service.saveCategory(cat as API.Category).then(triggerCategory)
+    service.saveCategory(cat as LiteratureAPI.Category).then(triggerCategory)
 
   const tagPanelUpdate = (ts: LiteratureDataType.CategoryU) =>
-    service.upsertCategoryTag(ts as API.CategoryU).then(triggerCategory)
+    service.upsertCategoryTag(ts as LiteratureAPI.CategoryU).then(triggerCategory)
 
   const tagPanelDelete = (name: string) =>
     service.deleteTag(name).then(triggerCategory)
 
   const articlePanelUpdate = (article: LiteratureDataType.Article) =>
-    service.saveArticle(article as API.Article).then(triggerCategoryAndArticle)
+    service.saveArticle(article as LiteratureAPI.Article).then(triggerCategoryAndArticle)
 
   const articlePanelDelete = (id: string) =>
     service.deleteArticle(id).then(triggerCategoryAndArticle)

@@ -364,8 +364,8 @@ export const gallery: utils.OrmRoute[] = [
 
   ...dashboardRoutes,
 
-  ...elementRoutes,
+  ...templateRoutes,
 
-  ...templateRoutes
+  ...elementRoutes,
 
 ]

@@ -31,7 +31,7 @@ export class Tag {
   @ManyToOne(() => Category, c => c.tags, { nullable: false })
   category!: Category
 
-  @ManyToMany(() => Content, c => c.tags)
+  @ManyToMany(() => Content, c => c.tags, { nullable: true })
   @JoinTable()
   contents!: Content[]
 }

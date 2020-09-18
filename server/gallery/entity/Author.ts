@@ -21,7 +21,7 @@ export class Author {
   @Column("text", { nullable: true })
   description?: string
 
-  @OneToMany(() => Content, c => c.author)
+  @OneToMany(() => Content, c => c.author, { nullable: true })
   contents!: Content[]
 }
 

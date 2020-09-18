@@ -30,6 +30,6 @@ export class Mark {
   @ManyToOne(() => Category, c => c.marks, { nullable: false })
   category!: Category
 
-  @OneToMany(() => Content, c => c.mark)
+  @OneToMany(() => Content, c => c.mark, { nullable: true })
   contents!: Content[]
 }
