@@ -23,7 +23,7 @@ export interface EditableTagPanelProps<T extends GenericDataInput> {
   editable: boolean
   elementOnCreate: (value: T) => void
   elementOnRemove: (value: string) => void
-  elementOnSelect: (value: string[]) => void
+  elementOnSelect?: (value: string[]) => void
 
   dataSearchable?: boolean
 }
@@ -61,8 +61,14 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
     }
   }
 
+  const elementSelect = () => {
+    if (props.elementOnSelect)
+      props.elementOnSelect(selectedDataNames)
+  }
+
   const clearSelectedTagName = () => {
-    props.elementOnSelect([])
+    if (props.elementOnSelect)
+      props.elementOnSelect([])
     if (selectableTagsRef.current) selectableTagsRef.current.clearSelected()
     setSelectedDataNames([])
   }
@@ -99,7 +105,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
             <Divider/>
             <Space>
               <Button
-                onClick={ () => props.elementOnSelect(selectedDataNames) }
+                onClick={ elementSelect }
                 type="primary"
                 size="small"
               >
@@ -116,8 +122,11 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
       }
       {
         props.editable ?
-          <Tag onClick={ () => setModalVisible(true) }>
-            <PlusOutlined/> New Tag
+          <Tag
+            icon={ <PlusOutlined/> }
+            onClick={ () => setModalVisible(true) }
+          >
+            New Tag
           </Tag> : <></>
       }
 

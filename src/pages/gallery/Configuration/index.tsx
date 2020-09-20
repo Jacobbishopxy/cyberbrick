@@ -39,14 +39,31 @@ const data: DataType.Category[] = [
     description: "development",
     marks: [],
     tags: []
+  },
+
+  {
+    name: "Datasource",
+    description: "",
+    marks: [],
+    tags: []
   }
 ]
+
+const testAPI = (name: string, content: any) =>
+  console.log(name, content)
 
 export default () => {
 
   return (
     <>
-      <CategoryTable data={ data }/>
+      <CategoryTable
+        data={ data }
+        saveMark={ testAPI }
+        deleteMark={ testAPI }
+        saveTag={ testAPI }
+        deleteTag={ testAPI }
+        newDashboard={ testAPI }
+      />
     </>
   )
 }
