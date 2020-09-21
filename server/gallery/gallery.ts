@@ -61,6 +61,15 @@ const categoryRoutes: utils.OrmRoute[] = [
     action: categoryActions.getCategoryContentByName
   },
   {
+    path: `${ base }/modifyCategoryDescription`,
+    method: "post",
+    check: [
+      common.bodyNameCheck,
+      common.bodyDescriptionCheck
+    ],
+    action: categoryActions.modifyCategoryDescription
+  },
+  {
     path: `${ base }/saveCategoryMark`,
     method: "post",
     check: [
@@ -245,6 +254,15 @@ const dashboardRoutes: utils.OrmRoute[] = [
       common.queryTemplateNameCheck
     ],
     action: dashboardActions.getDashboardTemplateElementsByName
+  },
+  {
+    path: `${ base }/modifyDashboardDescription`,
+    method: "post",
+    check: [
+      common.bodyNameCheck,
+      common.bodyDescriptionCheck
+    ],
+    action: dashboardActions.modifyDashboardDescription
   },
   {
     path: `${ base }/newDashboardAttachToEmptyCategory`,

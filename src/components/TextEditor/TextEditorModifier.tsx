@@ -138,4 +138,5 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
 
 TextEditorModifier.defaultProps = {
   saveButton: false
-}
+} as Partial<TextEditorModifierProps>
+

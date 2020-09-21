@@ -73,6 +73,24 @@ export async function getDashboardTemplateElementsByName(dashboardName: string, 
   })
 }
 
+export async function modifyDashboardDescription(dashboardName: string, description: string) {
+  const dr = dashboardRepo()
+  const dsb = await dr.findOne({
+    ...utils.whereNameEqual(dashboardName)
+  })
+
+  if (dsb) {
+    const newDsb = dr.create({
+      name: dsb.name,
+      description
+    })
+    await dr.save(newDsb)
+    return utils.HTMLStatus.SUCCESS_MODIFY
+  }
+
+  return utils.HTMLStatus.FAIL_REQUEST
+}
+
 export async function newDashboardAttachToEmptyCategory(categoryName: string, dashboard: Dashboard) {
   const cat = await categoryRepo().findOne({
     ...categoryDashboardRelations,

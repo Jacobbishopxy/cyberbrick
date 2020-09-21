@@ -82,6 +82,7 @@ export const CreationModal = (props: CreationModalProps) => {
                 onChange={ onSelectColor }
                 onChangeComplete={ onSelectColorComplete }
                 triangle="hide"
+                width="100%"
               />
             </Form.Item> :
             <></>

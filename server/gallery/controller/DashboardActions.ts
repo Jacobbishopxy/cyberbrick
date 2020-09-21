@@ -58,6 +58,16 @@ export async function getDashboardTemplateElementsByName(req: Request, res: Resp
   res.send(ans)
 }
 
+export async function modifyDashboardDescription(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const dashboardName = req.body.name as string
+  const description = req.body.description as string
+  const ans = await dashboardService.modifyDashboardDescription(dashboardName, description)
+
+  res.status(ans).end()
+}
+
 export async function newDashboardAttachToEmptyCategory(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 

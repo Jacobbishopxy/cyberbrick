@@ -66,6 +66,17 @@ export async function getCategoryContentByName(req: Request, res: Response) {
   res.send(ans)
 }
 
+export async function modifyCategoryDescription(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const cat = {
+    name: req.body.name as string,
+    description: req.body.description as string
+  } as Category
+  const ans = await categoryService.saveCategory(cat)
+  res.status(ans).end()
+}
+
 export async function saveCategoryMark(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 

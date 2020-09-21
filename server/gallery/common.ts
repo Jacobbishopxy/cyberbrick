@@ -20,6 +20,7 @@ export const author = "author"
 // column name
 export const id = "id"
 export const name = "name"
+export const description = "description"
 export const date = "date"
 export const text = "text"
 export const title = "title"
@@ -104,6 +105,7 @@ export const queryOptionalPaginationCheck = utils.queryOptionalFieldCheck(
 )
 
 export const bodyNameCheck = utils.bodyFieldCheck(name)
+export const bodyDescriptionCheck = utils.bodyFieldCheck(description)
 export const bodyOriginDashboardNameCheck = utils.bodyFieldCheck("originDashboardName")
 export const bodyOriginTemplateNameCheck = utils.bodyFieldCheck("originTemplateName")
 export const bodyTargetDashboardNameCheck = utils.bodyFieldCheck("targetDashboardName")

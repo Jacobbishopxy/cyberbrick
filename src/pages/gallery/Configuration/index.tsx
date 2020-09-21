@@ -49,7 +49,7 @@ const data: DataType.Category[] = [
   }
 ]
 
-const testAPI = (name: string, content: any) =>
+const testAPI = (name: string, content?: any) =>
   console.log(name, content)
 
 export default () => {
@@ -58,6 +58,9 @@ export default () => {
     <>
       <CategoryTable
         data={ data }
+        newCategory={ testAPI }
+        modifyCategoryDescription={ testAPI }
+        modifyDashboardDescription={ testAPI }
         saveMark={ testAPI }
         deleteMark={ testAPI }
         saveTag={ testAPI }
