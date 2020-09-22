@@ -195,15 +195,16 @@ const contentRoutes: utils.OrmRoute[] = [
     action: contentActions.deleteContent
   },
   {
-    path: `${ base }/getContentsInCategoryByMarkAndTags`,
+    path: `${ base }/getContentsInCategoryByElementTypeAndMarkAndTags`,
     method: "get",
     check: [
       common.queryCategoryNameCheck,
+      common.queryOptionalElementTypeCheck,
       common.queryOptionalMarkNameCheck,
       common.queryOptionalTagNamesCheck,
       common.queryOptionalPaginationCheck
     ],
-    action: contentActions.getContentsInCategoryByMarkAndTags
+    action: contentActions.getContentsInCategoryByElementTypeAndMarkAndTags
   },
   {
     path: `${ base }/saveContentInCategory`,

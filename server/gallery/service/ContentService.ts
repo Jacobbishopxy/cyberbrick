@@ -49,10 +49,11 @@ export async function deleteContent(id: string) {
 // =====================================================================================================================
 
 
-export async function getContentsInCategoryByMarkAndTags(categoryName: string,
-                                                         markName?: string,
-                                                         tagNames?: string[],
-                                                         pagination?: [number, number]) {
+export async function getContentsInCategoryByElementTypeAndMarkAndTags(categoryName: string,
+                                                                       elementType?: common.ElementType,
+                                                                       markName?: string,
+                                                                       tagNames?: string[],
+                                                                       pagination?: [number, number]) {
   const cr = contentRepo()
   let que = cr
     .createQueryBuilder(common.content)
@@ -62,6 +63,9 @@ export async function getContentsInCategoryByMarkAndTags(categoryName: string,
     .leftJoinAndSelect(common.contentTags, common.tag)
     .leftJoinAndSelect(common.contentAuthor, common.author)
     .where(`${ common.categoryName } = :categoryName`, { categoryName })
+
+  if (elementType)
+    que = que.andWhere(`${ common.elementType } = :elementType`, { elementType })
 
   if (markName)
     que = que.andWhere(`${ common.markName } = :markName`, { markName })
