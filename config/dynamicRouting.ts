@@ -26,11 +26,12 @@ const onlineRoutes = [
         path: "/gallery/dashboard",
         component: "./gallery/Dashboard"
       },
-      {
-        name: 'literature',
-        path: '/gallery/literature',
-        component: './gallery/Literature',
-      },
+      // unnecessary since it is included in summary
+      // {
+      //   name: 'literature',
+      //   path: '/gallery/literature',
+      //   component: './gallery/Literature',
+      // },
     ]
   }
 ]

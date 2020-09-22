@@ -5,13 +5,17 @@
 import express from "express"
 import path from "path"
 
-import { app, connectionsAwaitLiterature, connectionsAwaitGallery } from "./app"
+import {
+  app,
+  // connectionsAwaitLiterature,
+  connectionsAwaitGallery
+} from "./app"
 
 
 async function start() {
 
   if (process.env.DATA_ENV !== "offline") {
-    await connectionsAwaitLiterature()
+    // await connectionsAwaitLiterature()
     await connectionsAwaitGallery()
   }
 
