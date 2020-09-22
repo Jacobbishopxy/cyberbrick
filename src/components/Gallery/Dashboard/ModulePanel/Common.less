@@ -1,11 +1,27 @@
-.modulePanel {
+.contentPanel {
   width: 100%;
   height: calc(~"100% - 35px");
   padding: 0 5px 5px 5px;
 }
 
-.modulePanelWithOutHead {
-  width: 100%;
+.modulePanelHeader {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  padding: 5px 10px 5px 10px;
+}
+
+.modulePanelFooter {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  padding: 5px 10px 5px 10px;
+}
+
+.modulePanel {
   height: 100%;
-  padding: 5px;
+  //background: linear-gradient(165deg, #d7d7d7, #fff);
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
 }

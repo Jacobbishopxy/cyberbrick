@@ -122,20 +122,17 @@ export const moduleList = [
 export interface ModuleSelectorProps {
   content: DataType.Content
   updateContent: (c: DataType.Content) => void
-  headVisible: boolean
   forwardedRef: React.Ref<ConvertRefFR>
 }
 
 export const moduleSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
   (props: ModuleSelectorProps) => {
 
-    const styling = props.headVisible ? styles.modulePanel : styles.modulePanelWithOutHead
-
     const defaultModule = <EmbedLink
       content={ props.content }
       updateContent={ props.updateContent }
       ref={ props.forwardedRef }
-      styling={ styling }
+      styling={ styles.contentPanel }
     />
 
     switch (moduleType) {
