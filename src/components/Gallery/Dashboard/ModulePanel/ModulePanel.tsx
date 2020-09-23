@@ -15,6 +15,7 @@ import { moduleSelector } from "./moduleSelector"
 import styles from "./Common.less"
 
 export interface ModulePanelProps {
+  timeSeries?: boolean
   elementType: DataType.ElementType
   content: DataType.Content
   updateContent: (c: DataType.Content) => void
@@ -53,14 +54,29 @@ export const ModulePanel = (props: ModulePanelProps) => {
       }
     })
 
+  const footerDate = () => {
+    if (props.timeSeries) return { date: props.content.date }
+    return {}
+  }
+
+  const headerDate = (date: string) => {
+    if (props.timeSeries)
+      props.updateContent({
+        ...content,
+        date
+      })
+  }
+
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader
+        timeSeries={ props.timeSeries }
         editable={ props.editable }
         title={ props.content.title }
         editOn={ editOn }
         editContent={ editContent }
         confirmDelete={ confirmDelete }
+        editDate={ headerDate }
       />
       {
         selectModule({
@@ -70,8 +86,13 @@ export const ModulePanel = (props: ModulePanelProps) => {
         })
       }
       <ModulePanelFooter
+        id={ props.content.id }
+        { ...footerDate() }
       />
     </div>
   )
 }
 
+ModulePanel.defaultProps = {
+  timeSeries: false
+} as Partial<ModulePanelProps>
