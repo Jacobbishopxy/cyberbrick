@@ -13,7 +13,7 @@ export const ModuleGenerator = (mgProps: ModuleGeneratorProps) => {
 
   const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
     const [editable, setEditable] = useState<boolean>(false)
-    const [content, setContent] = useState<DataType.Content>(crProps.content)
+    const [content, setContent] = useState<DataType.Content | undefined>(crProps.content)
 
     const updateContent = (c: DataType.Content) => {
       setContent(c)
@@ -24,7 +24,7 @@ export const ModuleGenerator = (mgProps: ModuleGeneratorProps) => {
       edit: () => setEditable(!editable)
     }))
 
-    return content.data === null || editable ?
+    return !content || editable ?
       <mgProps.EditorField
         content={ content }
         updateContent={ updateContent }

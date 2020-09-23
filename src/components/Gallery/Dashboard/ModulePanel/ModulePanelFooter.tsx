@@ -7,7 +7,7 @@ import React from 'react'
 import styles from "./Common.less"
 
 export interface ModulePanelFooterProps {
-  id: string
+  id?: string
   date?: string
 }
 

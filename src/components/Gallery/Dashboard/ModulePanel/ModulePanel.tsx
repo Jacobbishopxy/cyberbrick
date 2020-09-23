@@ -29,7 +29,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const selectModule = moduleSelector(props.elementType)
 
   const [editOn, setEditOn] = useState<boolean>(false)
-  const [content, setContent] = useState<DataType.Content>(props.content)
+  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   useEffect(() => {
     setContent(props.content)
@@ -54,13 +54,22 @@ export const ModulePanel = (props: ModulePanelProps) => {
       }
     })
 
+  const updateTitle = (title: string) => {
+    if (content)
+      setContent({
+        ...content,
+        title
+      })
+  }
+
   const footerDate = () => {
-    if (props.timeSeries) return { date: props.content.date }
+    if (props.timeSeries && props.content)
+      return { date: props.content.date }
     return {}
   }
 
   const headerDate = (date: string) => {
-    if (props.timeSeries)
+    if (props.timeSeries && content)
       props.updateContent({
         ...content,
         date
@@ -72,7 +81,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
       <ModulePanelHeader
         timeSeries={ props.timeSeries }
         editable={ props.editable }
-        title={ props.content.title }
+        title={ props.content ? props.content.title : undefined }
+        updateTitle={ updateTitle }
         editOn={ editOn }
         editContent={ editContent }
         confirmDelete={ confirmDelete }
@@ -86,7 +96,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         })
       }
       <ModulePanelFooter
-        id={ props.content.id }
+        id={ props.content ? props.content.id : undefined }
         { ...footerDate() }
       />
     </div>

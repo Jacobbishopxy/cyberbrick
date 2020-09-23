@@ -7,13 +7,13 @@ import React from "react"
 import * as DataType from "../../DataType"
 
 export interface ModuleEditorField {
-  content: DataType.Content
+  content?: DataType.Content
   updateContent: (c: DataType.Content) => void
   styling?: string
 }
 
 export interface ModulePresenterField {
-  content: DataType.Content
+  content?: DataType.Content
   styling?: string
 }
 
@@ -27,14 +27,14 @@ export interface ConvertRefFR {
 }
 
 export interface ConvertRefProps {
-  content: DataType.Content
+  content?: DataType.Content
   updateContent: (c: DataType.Content) => void
   styling?: string
   forwardedRef: React.Ref<ConvertRefFR>
 }
 
 export interface ConvertProps {
-  content: DataType.Content
+  content?: DataType.Content
   updateContent: (c: DataType.Content) => void
   styling?: string
 }

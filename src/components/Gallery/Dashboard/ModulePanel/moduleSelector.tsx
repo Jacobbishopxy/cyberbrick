@@ -120,7 +120,7 @@ export const moduleList = [
 
 
 export interface ModuleSelectorProps {
-  content: DataType.Content
+  content?: DataType.Content
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertRefFR>
 }

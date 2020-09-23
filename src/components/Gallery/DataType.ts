@@ -12,7 +12,7 @@ export interface Category {
 }
 
 export interface Mark {
-  id: string
+  id?: string
   name: string
   color?: string
   description?: string
@@ -21,7 +21,7 @@ export interface Mark {
 }
 
 export interface Tag {
-  id: string
+  id?: string
   name: string
   color?: string
   description?: string
@@ -30,14 +30,14 @@ export interface Tag {
 }
 
 export interface Content {
-  id: string
+  id?: string
   element?: Element[]
   category?: Category
   mark?: Mark
   tags?: Tag[]
   author?: Author
   date: string
-  title: string
+  title?: string
   data: Record<string, any>
   config?: Record<string, any>
 }
@@ -56,7 +56,7 @@ export interface Dashboard {
 }
 
 export interface Template {
-  id: string
+  id?: string
   dashboard?: Dashboard
   elements?: Element[]
   name: string
@@ -71,7 +71,7 @@ export interface CopyTemplateElements {
 }
 
 export interface Element {
-  id: string
+  id?: string
   template?: Template
   contents?: Content[]
   name: string

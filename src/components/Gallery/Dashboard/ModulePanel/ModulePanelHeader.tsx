@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from 'react'
-import { Button, DatePicker, Modal, Space, Tooltip } from "antd"
+import { Button, DatePicker, Input, message, Modal, Space, Tooltip } from "antd"
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
@@ -14,6 +14,7 @@ interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
   title: string | undefined
+  updateTitle: (v: string) => void
   editOn: boolean
   editContent: () => void
   confirmDelete: () => void
@@ -22,8 +23,19 @@ interface ModulePanelHeaderProps {
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
+  const [titleVisible, setTitleVisible] = useState<boolean>(true)
   const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<string>()
+
+  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    if (value !== '') {
+      props.updateTitle(value)
+    } else
+      message.warning('标题不可为空')
+
+    setTitleVisible(true)
+  }
 
   const editDate = (date: moment.Moment | null, dateStr: string) =>
     setSelectedDate(dateStr)
@@ -36,7 +48,22 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   return (
     <div className={ styles.modulePanelHeader }>
-      { props.title }
+      {
+        titleVisible ?
+          <Button
+            type="link"
+            size="small"
+            onClick={ () => setTitleVisible(false) }
+          >
+            { props.title ? props.title : "Please enter your title" }
+          </Button> :
+          <Input
+            placeholder="Title"
+            size="small"
+            allowClear
+            onBlur={ changeTitle }
+          />
+      }
       {
         props.editable ?
           <Space>

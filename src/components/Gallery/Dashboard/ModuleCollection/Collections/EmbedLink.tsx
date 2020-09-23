@@ -4,6 +4,7 @@
 
 import React, { useState } from 'react'
 import { Button, Input, Modal } from "antd"
+import moment from "moment"
 
 import { ModuleGenerator } from "../ModuleGenerator"
 import * as DataType from "../../../DataType"
@@ -11,20 +12,24 @@ import { ModuleEditorField, ModulePresenterField } from "../data"
 
 const EditorField = (props: ModuleEditorField) => {
   const [visible, setVisible] = useState<boolean>(false)
-  const [content, setContent] = useState<DataType.Content>(props.content)
+  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const handleOk = () => {
-    props.updateContent(content)
+    if (content)
+      props.updateContent(content)
     setVisible(false)
   }
 
-  const linkOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setContent({
+  const linkOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (content) setContent({
       ...content,
-      data: {
-        link: e.target.value
-      }
+      data: { link: e.target.value }
     })
+    else setContent({
+      date: moment().format(),
+      data: { link: e.target.value }
+    })
+  }
 
   return (
     <div className={ props.styling }>
@@ -54,7 +59,9 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) =>
-  <embed className={ props.styling } src={ props.content.data.link }/>
+  props.content ?
+    <embed className={ props.styling } src={ props.content.data.link }/> :
+    <></>
 
 export const EmbedLink = ModuleGenerator({ EditorField, PresenterField })
 
