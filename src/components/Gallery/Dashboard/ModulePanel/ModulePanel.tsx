@@ -45,11 +45,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const confirmDelete = () =>
     Modal.confirm({
-      title: '是否删除该模块？',
+      title: 'Delete this module?',
       icon: <ExclamationCircleOutlined/>,
-      okText: '是',
+      okText: 'Yes',
       okType: 'danger',
-      cancelText: '否',
+      cancelText: 'No',
       onOk: () => {
         props.onRemove()
       }

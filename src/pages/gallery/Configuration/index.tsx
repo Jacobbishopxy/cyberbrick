@@ -4,7 +4,7 @@
 
 import React from 'react'
 
-import { CategoryTable } from "@/components/Gallery/ConfigPage/ConfigTable"
+import { CategoryConfigTable } from "@/components/Gallery/ConfigPage/CategoryConfigTable"
 import * as DataType from "@/components/Gallery/DataType"
 
 const data: DataType.Category[] = [
@@ -56,7 +56,7 @@ export default () => {
 
   return (
     <>
-      <CategoryTable
+      <CategoryConfigTable
         data={ data }
         newCategory={ testAPI }
         modifyCategoryDescription={ testAPI }

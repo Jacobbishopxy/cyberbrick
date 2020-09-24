@@ -25,7 +25,7 @@ export interface CategoryTableProps {
   newDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
 }
 
-export const CategoryTable = (props: CategoryTableProps) => {
+export const CategoryConfigTable = (props: CategoryTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
   const [newDashboardVisible, setNewDashboardVisible] = useState<boolean>(false)
