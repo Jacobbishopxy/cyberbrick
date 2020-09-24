@@ -31,6 +31,7 @@ app.get("/api/currentUserAvatar", homeController.getCurrentUserAvatar)
 app.get("/api/currentUser", homeController.getCurrentUser)
 
 app.get("/api/misc/document/gallery", miscController.getDocumentPng("GalleryDataStructure.svg"))
+app.get("/api/misc/new-rocket", miscController.getDocumentPng("NewRocket.png"))
 
 // kChart routes
 const kChartRoot = path.join(__dirname, "../data/kChart")

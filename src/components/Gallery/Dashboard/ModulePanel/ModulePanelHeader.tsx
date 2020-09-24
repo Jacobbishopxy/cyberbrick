@@ -13,6 +13,7 @@ import styles from "./Common.less"
 interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
+  headName: string
   title: string | undefined
   updateTitle: (v: string) => void
   editOn: boolean
@@ -32,7 +33,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     if (value !== '') {
       props.updateTitle(value)
     } else
-      message.warning('标题不可为空')
+      message.warning("title cannot be empty!")
 
     setTitleVisible(true)
   }
@@ -48,6 +49,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   return (
     <div className={ styles.modulePanelHeader }>
+      { props.headName }
       {
         titleVisible ?
           <Button

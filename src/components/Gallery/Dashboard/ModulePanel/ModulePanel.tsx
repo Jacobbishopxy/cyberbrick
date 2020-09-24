@@ -15,6 +15,7 @@ import { moduleSelector } from "./moduleSelector"
 import styles from "./Common.less"
 
 export interface ModulePanelProps {
+  headName: string
   timeSeries?: boolean
   elementType: DataType.ElementType
   content: DataType.Content
@@ -79,6 +80,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader
+        headName={ props.headName }
         timeSeries={ props.timeSeries }
         editable={ props.editable }
         title={ props.content ? props.content.title : undefined }
