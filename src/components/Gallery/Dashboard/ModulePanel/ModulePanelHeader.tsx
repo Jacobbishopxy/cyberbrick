@@ -13,7 +13,8 @@ import styles from "./Common.less"
 interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
-  headName: string
+  headName: string | undefined
+  updateHead: (v: string) => void
   title: string | undefined
   updateTitle: (v: string) => void
   editOn: boolean
@@ -24,15 +25,26 @@ interface ModulePanelHeaderProps {
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
+  const [headVisible, setHeadVisible] = useState<boolean>(true)
   const [titleVisible, setTitleVisible] = useState<boolean>(true)
   const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<string>()
 
+  const changeHead = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    if (value !== "")
+      props.updateHead(value)
+    else
+      message.warning("head cannot be empty!")
+
+    setHeadVisible(true)
+  }
+
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value !== '') {
+    if (value !== "")
       props.updateTitle(value)
-    } else
+    else
       message.warning("title cannot be empty!")
 
     setTitleVisible(true)
@@ -49,7 +61,22 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   return (
     <div className={ styles.modulePanelHeader }>
-      { props.headName }
+      {
+        headVisible ?
+          <Button
+            type="link"
+            size="small"
+            onClick={ () => setHeadVisible(false) }
+          >
+            { props.headName ? props.headName : "Please enter your head" }
+          </Button> :
+          <Input
+            placeholder="Head"
+            size="small"
+            allowClear
+            onBlur={ changeHead }
+          />
+      }
       {
         titleVisible ?
           <Button

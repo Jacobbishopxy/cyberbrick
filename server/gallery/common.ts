@@ -36,6 +36,7 @@ export const names = "names"
 export const markCategory = `${ mark }.${ category }`
 export const markName = `${ mark }.${ name }`
 export const categoryName = `${ category }.${ name }`
+export const categoryMarks = `${ category }.${ marks }`
 export const tagCategory = `${ tag }.${ category }`
 export const tagName = `${ tag }.${ name }`
 export const contentId = `${ content }.${ id }`
@@ -121,9 +122,6 @@ export const templatesElements = `${ templates }.${ elements }`
 export const templatesElementsContents = `${ templates }.${ elements }.${ contents }`
 
 // query filters
-export const whereDashboardAndTemplateNameEqual = (dn: string, tn: string) =>
-  ({ where: [{ name: Equal(dn) }, { "templates.name": Equal(tn) }] })
-
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 

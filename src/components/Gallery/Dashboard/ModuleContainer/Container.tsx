@@ -17,16 +17,15 @@ const tabPaneGenerator = (name: string,
 
 
 export interface ContainerProps {
-  dashboardName: string
-  editable: boolean
   templateNames: string[]
-  fetchElements: (dashboardName: string, templateName: string) => Promise<DataType.Template>
+  fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContent: (id: string, markName?: string) => Promise<DataType.Content>
-  updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  updateElementContent: (content: DataType.Content) => Promise<void>
 }
 
 export interface ContainerRef {
-  newElement: (name: string, elementType: DataType.ElementType) => void
+  newElement: (elementType: DataType.ElementType) => void
+  saveTemplate: () => DataType.Template | undefined
 }
 
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
@@ -38,17 +37,22 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   useEffect(() => {
     if (selectedPane)
       props
-        .fetchElements(props.dashboardName, selectedPane)
+        .fetchElements(selectedPane)
         .then(res => setTemplate(res))
   }, [selectedPane])
 
   const tabOnChange = (name: string) => setSelectedPane(name)
 
-  const newElement = (name: string, elementType: DataType.ElementType) => {
-    if (ctRef.current) ctRef.current.newElement(name, elementType)
+  const newElement = (elementType: DataType.ElementType) => {
+    if (ctRef.current) ctRef.current.newElement(elementType)
   }
 
-  useImperativeHandle(ref, () => ({ newElement }))
+  const saveTemplate = () => {
+    if (template) return template
+    return undefined
+  }
+
+  useImperativeHandle(ref, () => ({ newElement, saveTemplate }))
 
   return (
     <Tabs
@@ -64,8 +68,6 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                   p,
                   selectedPane,
                   <ContainerTemplate
-                    categoryName={ template.dashboard!.category!.name }
-                    editable={ props.editable }
                     elements={ template.elements! }
                     elementFetchContent={ props.fetchElementContent }
                     elementUpdateContent={ props.updateElementContent }

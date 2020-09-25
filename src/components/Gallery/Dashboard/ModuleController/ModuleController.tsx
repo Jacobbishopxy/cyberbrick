@@ -3,35 +3,42 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Select, Space } from 'antd'
+import { Button, Modal, Select, Space } from 'antd'
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 import * as DataType from "../../DataType"
 import { AddModuleModal } from "./AddModuleModal"
 
 export interface DashboardControllerProps {
   dashboardNames: string[]
-  dashboardOnSelect: (value: string) => Promise<string[]>
+  fetchDashboardMarks: (value: string) => Promise<DataType.Mark[]>
   markOnSelect: (value: string) => void
   onAddModule: (value: DataType.ElementType) => void
   onEditTemplate: (value: boolean) => void
-  onSaveTemplate: () => void
+  onSaveTemplate: () => Promise<void>
 }
 
 export const ModuleController = (props: DashboardControllerProps) => {
 
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
-  const [markNames, setMarkNames] = useState<string[]>([])
+  const [marks, setMarks] = useState<DataType.Mark[]>([])
 
   useEffect(() => {
     props.onEditTemplate(edit)
   }, [edit])
 
   const dashboardOnSelect = (value: string) =>
-    props.dashboardOnSelect(value).then(res => setMarkNames(res))
+    props.fetchDashboardMarks(value).then(res => setMarks(res))
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 
+  const saveTemplate = () => Modal.confirm({
+    title: "Save current layout?",
+    icon: <ExclamationCircleOutlined/>,
+    onOk: () => props.onSaveTemplate().then(() => setEdit(false)),
+    onCancel: () => setEdit(false)
+  })
 
   const editMode = () => (
     <>
@@ -46,7 +53,7 @@ export const ModuleController = (props: DashboardControllerProps) => {
         <Button
           size="small"
           danger
-          onClick={ () => setAddModuleModalVisible(false) }
+          onClick={ saveTemplate }
         >
           Exit
         </Button>
@@ -86,11 +93,11 @@ export const ModuleController = (props: DashboardControllerProps) => {
         <Select
           style={ { width: 120 } }
           onSelect={ props.markOnSelect }
-          disabled={ markNames.length === 0 }
+          disabled={ marks.length === 0 }
         >
           {
-            markNames.map(n =>
-              <Select.Option key={ n } value={ n }>{ n }</Select.Option>
+            marks.map(n =>
+              <Select.Option key={ n.id } value={ n.name }>{ n.name }</Select.Option>
             )
           }
         </Select>

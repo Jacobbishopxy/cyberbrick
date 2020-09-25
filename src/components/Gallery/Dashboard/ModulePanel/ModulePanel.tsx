@@ -20,6 +20,7 @@ export interface ModulePanelProps {
   elementType: DataType.ElementType
   content: DataType.Content
   updateContent: (c: DataType.Content) => void
+  updateElementName: (n: string) => void
   onRemove: () => void
   editable: boolean
 }
@@ -80,9 +81,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader
-        headName={ props.headName }
-        timeSeries={ props.timeSeries }
         editable={ props.editable }
+        timeSeries={ props.timeSeries }
+        headName={ props.headName }
+        updateHead={ props.updateElementName }
         title={ props.content ? props.content.title : undefined }
         updateTitle={ updateTitle }
         editOn={ editOn }

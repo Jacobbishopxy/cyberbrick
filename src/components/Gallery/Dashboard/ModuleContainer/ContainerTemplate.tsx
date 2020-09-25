@@ -2,12 +2,14 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useContext, useImperativeHandle, useState } from 'react'
+import { message } from "antd"
 import _ from "lodash"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
 import * as DataType from "../../DataType"
 import { ContainerElement } from "./ContainerElement"
+import { EditableContext } from "../Dashboard"
 
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -45,21 +47,20 @@ const removeElementInLayout = (id: string, elements: Elements): Elements =>
 
 
 export interface ContainerTemplateProps {
-  categoryName: string
-  markName?: string
-  editable: boolean
   elements: Elements
-  elementFetchContent: (id: string, markName?: string) => Promise<DataType.Content>
-  elementUpdateContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  elementFetchContent: (id: string) => Promise<DataType.Content>
+  elementUpdateContent: (content: DataType.Content) => Promise<void>
 }
 
 export interface ContainerTemplateRef {
-  newElement: (name: string, elementType: DataType.ElementType) => void
+  newElement: (elementType: DataType.ElementType) => void
 }
 
 export const ContainerTemplate = forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
+  const editable = useContext(EditableContext)
 
   const [elements, setElements] = useState<Elements>(props.elements)
+  const [newElementName, setNewElementName] = useState<string>()
 
   const elementOnRemove = (id: string) => () => {
     const newElements = removeElementInLayout(id, elements)
@@ -69,16 +70,27 @@ export const ContainerTemplate = forwardRef((props: ContainerTemplateProps, ref:
   const onLayoutChange = (layout: Layout[]) =>
     setElements(updateElementInLayout(elements, layout))
 
-  const newElement = (name: string, elementType: DataType.ElementType) => {
-    const newEle = {
-      name,
-      type: elementType,
-      x: 0,
-      y: Infinity,
-      h: 4,
-      w: 12,
-    } as Element
-    setElements(newElementInLayout(elements, newEle))
+  const updateElementName = (name: string) => setNewElementName(name)
+
+  const newElement = (elementType: DataType.ElementType) => {
+    if (newElementName) {
+
+      if (elements.map(e => e.name).includes(newElementName)) {
+        message.warning("Please rename your element name because of duplicated!")
+      } else {
+        // todo: default coordination by element type!
+        const newEle = {
+          name: newElementName,
+          type: elementType,
+          x: 0,
+          y: Infinity,
+          h: 4,
+          w: 12,
+        } as Element
+        setElements(newElementInLayout(elements, newEle))
+      }
+    } else
+      message.warning("Please enter your element name first!")
   }
 
   useImperativeHandle(ref, () => ({ newElement }))
@@ -87,17 +99,17 @@ export const ContainerTemplate = forwardRef((props: ContainerTemplateProps, ref:
     <ReactGridLayout
       { ...reactGridLayoutDefaultProps }
       onLayoutChange={ onLayoutChange }
-      isDraggable={ props.editable }
-      isResizable={ props.editable }
+      isDraggable={ editable }
+      isResizable={ editable }
     >
       {
         elements.map(ele =>
           <ContainerElement
-            categoryName={ props.categoryName }
-            editable={ props.editable }
+            editable={ editable }
             element={ ele }
             fetchContent={ props.elementFetchContent }
             updateContent={ props.elementUpdateContent }
+            updateElementName={ updateElementName }
             onRemove={ elementOnRemove(ele.id!) }
           />
         )

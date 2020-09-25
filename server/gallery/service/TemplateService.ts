@@ -22,12 +22,8 @@ const templateFullRelations = {
     common.elementsContentsMark,
   ]
 }
-const dashboardAndElementRelations = {
-  relations: [
-    common.dashboard,
-    common.dashboardCategory,
-    common.elements
-  ]
+const elementsRelations = {
+  relations: [common.elements]
 }
 
 export async function getAllTemplates() {
@@ -74,7 +70,7 @@ export async function getTemplateElementsContents(dashboardName: string, templat
  */
 export async function getTemplateElements(dashboardName: string, templateName: string) {
   const ans = await templateRepo().findOne({
-    ...dashboardAndElementRelations,
+    ...elementsRelations,
     ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
   })
 

@@ -22,16 +22,18 @@ const dashboardFullRelations = {
   ]
 }
 
+const dashboardAndCategoryMarkAndTemplateRelations = {
+  relations: [
+    common.category,
+    common.categoryMarks,
+    common.templates
+  ]
+}
+
 const categoryDashboardRelations = {
   relations: [common.dashboard]
 }
 
-const templateAndElementRelations = {
-  relations: [
-    common.templates,
-    common.templatesElements
-  ]
-}
 
 export async function getAllDashboards() {
   return dashboardRepo().find(dashboardFullRelations)
@@ -63,13 +65,10 @@ export async function getAllDashboardsName() {
   return dashboardRepo().find({ select: [common.name] })
 }
 
-/**
- * for copy & pasting existing template layout
- */
-export async function getDashboardTemplateElementsByName(dashboardName: string, templateName: string) {
+export async function getDashboardCategoryMarksAndTemplateByName(dashboardName: string) {
   return dashboardRepo().findOne({
-    ...templateAndElementRelations,
-    ...common.whereDashboardAndTemplateNameEqual(dashboardName, templateName)
+    ...dashboardAndCategoryMarkAndTemplateRelations,
+    ...utils.whereNameEqual(dashboardName)
   })
 }
 

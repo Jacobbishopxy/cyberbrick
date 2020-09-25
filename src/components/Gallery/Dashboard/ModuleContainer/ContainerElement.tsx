@@ -9,12 +9,11 @@ import * as DataType from "../../DataType"
 import { ModulePanel } from "../ModulePanel/ModulePanel"
 
 export interface ContainerElementProps {
-  categoryName: string
-  markName?: string
   editable: boolean
   element: DataType.Element
-  fetchContent: (id: string, markName?: string) => Promise<DataType.Content>
-  updateContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  fetchContent: (id: string) => Promise<DataType.Content>
+  updateContent: (content: DataType.Content) => Promise<void>
+  updateElementName: (n: string) => void
   onRemove: () => void
 }
 
@@ -29,13 +28,13 @@ export const ContainerElement = (props: ContainerElementProps) => {
 
   useEffect(() => {
     if (eleId)
-      props.fetchContent(eleId, props.markName).then(res => {
+      props.fetchContent(eleId).then(res => {
         setContent(res)
       })
   }, [])
 
   const updateContent = (ctt: DataType.Content) => {
-    return props.updateContent(props.categoryName, ctt)
+    return props.updateContent(ctt)
   }
 
   return (
@@ -45,6 +44,7 @@ export const ContainerElement = (props: ContainerElementProps) => {
         elementType={ props.element.type }
         content={ content }
         updateContent={ updateContent }
+        updateElementName={ props.updateElementName }
         onRemove={ props.onRemove }
         editable={ props.editable }
       />
