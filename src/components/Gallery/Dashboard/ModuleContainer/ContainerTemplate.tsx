@@ -6,8 +6,8 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import _ from "lodash"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
-import * as DataType from "../DataType"
-import { DashboardElement } from "./DashboardElement"
+import * as DataType from "../../DataType"
+import { ContainerElement } from "./ContainerElement"
 
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -44,21 +44,20 @@ const removeElementInLayout = (id: string, elements: Elements): Elements =>
   _.reject(elements, ele => (ele.id === id))
 
 
-export interface DashboardTemplateProps {
+export interface ContainerTemplateProps {
   categoryName: string
   markName?: string
   editable: boolean
   elements: Elements
   elementFetchContent: (id: string, markName?: string) => Promise<DataType.Content>
   elementUpdateContent: (categoryName: string, content: DataType.Content) => Promise<void>
-  onNewElement: (elementType: DataType.ElementType) => void
 }
 
-export interface DashboardTemplateRef {
+export interface ContainerTemplateRef {
   newElement: (name: string, elementType: DataType.ElementType) => void
 }
 
-export const DashboardTemplate = forwardRef((props: DashboardTemplateProps, ref: React.Ref<DashboardTemplateRef>) => {
+export const ContainerTemplate = forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
 
   const [elements, setElements] = useState<Elements>(props.elements)
 
@@ -93,7 +92,7 @@ export const DashboardTemplate = forwardRef((props: DashboardTemplateProps, ref:
     >
       {
         elements.map(ele =>
-          <DashboardElement
+          <ContainerElement
             categoryName={ props.categoryName }
             editable={ props.editable }
             element={ ele }

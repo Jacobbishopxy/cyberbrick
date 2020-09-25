@@ -50,6 +50,7 @@ export const elementId = `${ element }.${ id }`
 export const elementType = `${ element }.type`
 export const elementTemplate = `${ element }.${ template }`
 export const elementContents = `${ element }.${ contents }`
+export const dashboardCategory = `${ dashboard }.${ category }`
 
 export const dateFormat = "YYYYMMDDHHmmss"
 

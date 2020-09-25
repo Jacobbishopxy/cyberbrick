@@ -17,7 +17,7 @@ export interface DashboardControllerProps {
   onSaveTemplate: () => void
 }
 
-export const DashboardController = (props: DashboardControllerProps) => {
+export const ModuleController = (props: DashboardControllerProps) => {
 
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)

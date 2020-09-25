@@ -23,7 +23,11 @@ const templateFullRelations = {
   ]
 }
 const dashboardAndElementRelations = {
-  relations: [common.dashboard, common.elements]
+  relations: [
+    common.dashboard,
+    common.dashboardCategory,
+    common.elements
+  ]
 }
 
 export async function getAllTemplates() {

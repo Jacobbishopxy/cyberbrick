@@ -5,10 +5,10 @@
 import React, { useEffect, useState } from 'react'
 import moment from "moment"
 
-import * as DataType from "../DataType"
-import { ModulePanel } from "./ModulePanel/ModulePanel"
+import * as DataType from "../../DataType"
+import { ModulePanel } from "../ModulePanel/ModulePanel"
 
-export interface DashboardElementProps {
+export interface ContainerElementProps {
   categoryName: string
   markName?: string
   editable: boolean
@@ -21,7 +21,7 @@ export interface DashboardElementProps {
 const genDataGrid = (ele: DataType.Element) =>
   ({ x: ele.x, y: ele.y, h: ele.h, w: ele.w })
 
-export const DashboardElement = (props: DashboardElementProps) => {
+export const ContainerElement = (props: ContainerElementProps) => {
 
   const [content, setContent] = useState<DataType.Content>()
   const eleId = props.element.id as string | undefined
@@ -52,7 +52,7 @@ export const DashboardElement = (props: DashboardElementProps) => {
   )
 }
 
-DashboardElement.defaultProps = {
+ContainerElement.defaultProps = {
   editable: false
-} as Partial<DashboardElementProps>
+} as Partial<ContainerElementProps>
 
