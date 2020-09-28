@@ -18,9 +18,8 @@ export interface ModulePanelProps {
   headName: string
   timeSeries?: boolean
   elementType: DataType.ElementType
-  content: DataType.Content
+  content?: DataType.Content
   updateContent: (c: DataType.Content) => void
-  updateElementName: (n: string) => void
   onRemove: () => void
   editable: boolean
 }
@@ -57,11 +56,14 @@ export const ModulePanel = (props: ModulePanelProps) => {
     })
 
   const updateTitle = (title: string) => {
-    if (content)
-      setContent({
+    if (content) {
+      const newContent = {
         ...content,
         title
-      })
+      }
+      setContent(newContent)
+      props.updateContent(newContent)
+    }
   }
 
   const footerDate = () => {
@@ -71,11 +73,22 @@ export const ModulePanel = (props: ModulePanelProps) => {
   }
 
   const headerDate = (date: string) => {
-    if (props.timeSeries && content)
-      props.updateContent({
+    if (props.timeSeries && content) {
+      const newContent = {
         ...content,
         date
-      })
+      }
+      setContent(newContent)
+      props.updateContent(newContent)
+    }
+  }
+
+  const updateModuleContent = (ctt: DataType.Content) => {
+    const newContent = {
+      ...content,
+      ...ctt
+    }
+    props.updateContent(newContent)
   }
 
   return (
@@ -84,7 +97,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
         editable={ props.editable }
         timeSeries={ props.timeSeries }
         headName={ props.headName }
-        updateHead={ props.updateElementName }
         title={ props.content ? props.content.title : undefined }
         updateTitle={ updateTitle }
         editOn={ editOn }
@@ -95,7 +107,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       {
         selectModule({
           content,
-          updateContent: props.updateContent,
+          updateContent: updateModuleContent,
           forwardedRef: moduleRef
         })
       }

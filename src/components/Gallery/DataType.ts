@@ -101,3 +101,42 @@ export enum ElementType {
   TreeMap = "treeMap",
 }
 
+export const getElementType = (v: string) => {
+  switch (v) {
+    case "embedLink":
+      return ElementType.EmbedLink
+    case "text":
+      return ElementType.Text
+    case "targetPrice":
+      return ElementType.TargetPrice
+    case "image":
+      return ElementType.Image
+    case "fileList":
+      return ElementType.FileList
+    case "fileManager":
+      return ElementType.FileManager
+    case "editableTable":
+      return ElementType.EditableTable
+    case "table":
+      return ElementType.Table
+    case "lines":
+      return ElementType.Lines
+    case "histogram":
+      return ElementType.Histogram
+    case "pie":
+      return ElementType.Pie
+    case "scatter":
+      return ElementType.Scatter
+    case "heatmap":
+      return ElementType.Heatmap
+    case "box":
+      return ElementType.Box
+    case "tree":
+      return ElementType.Tree
+    case "treeMap":
+      return ElementType.TreeMap
+    default:
+      return ElementType.EmbedLink
+  }
+}
+

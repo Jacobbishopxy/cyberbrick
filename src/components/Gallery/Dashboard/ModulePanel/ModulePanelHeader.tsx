@@ -2,19 +2,16 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useState } from 'react'
-import { Button, DatePicker, Input, message, Modal, Space, Tooltip } from "antd"
+import React, { useEffect, useState } from 'react'
+import { Button, Col, DatePicker, Input, message, Modal, Row, Space, Tooltip } from "antd"
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
 
-import styles from "./Common.less"
-
 interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
-  headName: string | undefined
-  updateHead: (v: string) => void
+  headName: string
   title: string | undefined
   updateTitle: (v: string) => void
   editOn: boolean
@@ -25,29 +22,25 @@ interface ModulePanelHeaderProps {
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
-  const [headVisible, setHeadVisible] = useState<boolean>(true)
-  const [titleVisible, setTitleVisible] = useState<boolean>(true)
+  const [titleEditable, setTitleEditable] = useState<boolean>(false)
+  const [title, setTitle] = useState<string | undefined>(props.title)
   const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<string>()
 
-  const changeHead = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    if (value !== "")
-      props.updateHead(value)
-    else
-      message.warning("head cannot be empty!")
-
-    setHeadVisible(true)
-  }
+  useEffect(() => {
+    setTitle(props.title)
+  }, [props.title])
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value !== "")
+    if (value !== "") {
+      setTitle(value)
       props.updateTitle(value)
+    }
     else
       message.warning("title cannot be empty!")
 
-    setTitleVisible(true)
+    setTitleEditable(false)
   }
 
   const editDate = (date: moment.Moment | null, dateStr: string) =>
@@ -58,95 +51,94 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     setDateModalVisible(false)
   }
 
+  const genTitle = () => {
+    if (titleEditable)
+      return <Input
+        placeholder="Title"
+        size="small"
+        allowClear
+        style={ { width: 200 } }
+        onBlur={ changeTitle }
+        defaultValue={ title }
+      />
+    if (props.editable)
+      return <Button
+        type="link"
+        size="small"
+        onClick={ () => setTitleEditable(true) }
+      >
+        { title || "Please enter your title" }
+      </Button>
+    return title
+  }
+
+  const genEditor = () => {
+    if (props.editable)
+      return <Space>
+        <Tooltip title='Drag'>
+          <Button
+            shape='circle'
+            size='small'
+            type='link'
+            className='draggableHandler'
+          >
+            <Emoji label="drag" symbol="🧲️️️️️"/>
+          </Button>
+        </Tooltip>
+        {
+          props.timeSeries ?
+            <Tooltip title="Date">
+              <Button
+                shape='circle'
+                size='small'
+                type='link'
+                onClick={ () => setDateModalVisible(true) }
+              >
+                <Emoji label="date" symbol="🗓️"/>
+              </Button>
+            </Tooltip> :
+            <></>
+        }
+        <Tooltip title="Edit">
+          <Button
+            shape='circle'
+            size='small'
+            type='link'
+            onClick={ props.editContent }
+          >
+            {
+              props.editOn ?
+                <Emoji label="edit" symbol="❌️"/> :
+                <Emoji label="edit" symbol="⚙️"/>
+            }
+          </Button>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <Button
+            shape='circle'
+            size='small'
+            type='link'
+            onClick={ props.confirmDelete }
+          >
+            <Emoji label="delete" symbol="🗑️️️"/>
+          </Button>
+        </Tooltip>
+      </Space>
+    return <></>
+  }
 
   return (
-    <div className={ styles.modulePanelHeader }>
-      {
-        headVisible ?
-          <Button
-            type="link"
-            size="small"
-            onClick={ () => setHeadVisible(false) }
-          >
-            { props.headName ? props.headName : "Please enter your head" }
-          </Button> :
-          <Input
-            placeholder="Head"
-            size="small"
-            allowClear
-            onBlur={ changeHead }
-          />
-      }
-      {
-        titleVisible ?
-          <Button
-            type="link"
-            size="small"
-            onClick={ () => setTitleVisible(false) }
-          >
-            { props.title ? props.title : "Please enter your title" }
-          </Button> :
-          <Input
-            placeholder="Title"
-            size="small"
-            allowClear
-            onBlur={ changeTitle }
-          />
-      }
-      {
-        props.editable ?
-          <Space>
-            <Tooltip title='Drag'>
-              <Button
-                shape='circle'
-                size='small'
-                type='link'
-                className='draggableHandler'
-              >
-                <Emoji label="drag" symbol="🧲️️️️️"/>
-              </Button>
-            </Tooltip>
-            {
-              props.timeSeries ?
-                <Tooltip title="Date">
-                  <Button
-                    shape='circle'
-                    size='small'
-                    type='link'
-                    onClick={ () => setDateModalVisible(true) }
-                  >
-                    <Emoji label="date" symbol="🗓️"/>
-                  </Button>
-                </Tooltip> :
-                <></>
-            }
-            <Tooltip title="Edit">
-              <Button
-                shape='circle'
-                size='small'
-                type='link'
-                onClick={ props.editContent }
-              >
-                {
-                  props.editOn ?
-                    <Emoji label="edit" symbol="❌️"/> :
-                    <Emoji label="edit" symbol="⚙️"/>
-                }
-              </Button>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <Button
-                shape='circle'
-                size='small'
-                type='link'
-                onClick={ props.confirmDelete }
-              >
-                <Emoji label="delete" symbol="🗑️️️"/>
-              </Button>
-            </Tooltip>
-          </Space> :
-          <></>
-      }
+    <div>
+      <Row style={ { paddingLeft: 10, paddingRight: 10 } }>
+        <Col span={ 8 }>{ props.headName }</Col>
+        <Col span={ 8 } style={ { textAlign: "center" } }>
+          { genTitle() }
+        </Col>
+        <Col span={ 8 } style={ { textAlign: "right" } }>
+          { genEditor() }
+        </Col>
+      </Row>
+
       {
         props.timeSeries ?
           <Modal

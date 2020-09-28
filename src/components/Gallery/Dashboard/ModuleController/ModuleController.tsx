@@ -13,7 +13,7 @@ export interface DashboardControllerProps {
   dashboardNames: string[]
   fetchDashboardMarks: (value: string) => Promise<DataType.Mark[]>
   markOnSelect: (value: string) => void
-  onAddModule: (value: DataType.ElementType) => void
+  onAddModule: (name: string, value: DataType.ElementType) => void
   onEditTemplate: (value: boolean) => void
   onSaveTemplate: () => Promise<void>
 }
@@ -79,7 +79,7 @@ export const ModuleController = (props: DashboardControllerProps) => {
 
   return (
     <div style={ { display: 'flex', justifyContent: 'space-between' } }>
-      <div>
+      <Space>
         <Select
           style={ { width: 120 } }
           onSelect={ dashboardOnSelect }
@@ -101,7 +101,7 @@ export const ModuleController = (props: DashboardControllerProps) => {
             )
           }
         </Select>
-      </div>
+      </Space>
       <div>
         { edit ? editMode() : idleMode() }
       </div>

@@ -66,10 +66,13 @@ export async function getAllDashboardsName() {
 }
 
 export async function getDashboardCategoryMarksAndTemplateByName(dashboardName: string) {
-  return dashboardRepo().findOne({
+  const ans = await dashboardRepo().findOne({
     ...dashboardAndCategoryMarkAndTemplateRelations,
     ...utils.whereNameEqual(dashboardName)
   })
+
+  if (ans) return ans
+  return []
 }
 
 export async function modifyDashboardDescription(dashboardName: string, description: string) {

@@ -22,6 +22,12 @@ export const getCategoryMarkAndTagByName = async (name: string): Promise<Gallery
 export const getCategoryContentByName = async (name: string): Promise<GalleryAPI.Category> =>
   request(`${ base }/getCategoryContentByName?name=${ name }`)
 
+export const modifyCategoryDescription = async (category: GalleryAPI.Category) =>
+  request(`${ base }/modifyCategoryDescription`, {
+    method: "post",
+    data: category
+  })
+
 export const saveCategoryMark = async (categoryName: string, mark: GalleryAPI.Mark) =>
   request(`${ base }/saveCategoryMark?name=${ categoryName }`, {
     method: "post",
@@ -59,12 +65,15 @@ export const deleteTagInCategory = async (categoryName: string, tagName: string)
 
 // Content
 
-export const getContentsInCategoryByMarkAndTags =
+export const getContentsInCategoryByElementTypeAndMarkAndTags =
   async (categoryName: string,
+         elementType?: string,
          markName?: string,
          tagNames?: string[],
          pagination?: [number, number]): Promise<GalleryAPI.Content> => {
-    let path = `${ base }/getContentsInCategoryByMarkAndTags?categoryName=${ categoryName }`
+    let path = `${ base }/getContentsInCategoryByElementTypeAndMarkAndTags?categoryName=${ categoryName }`
+    if (elementType)
+      path += `&elementType=${ elementType }`
     if (markName)
       path += `&markName=${ markName }`
     if (tagNames)
@@ -87,11 +96,17 @@ export const saveContentInCategory = async (categoryName: string, content: Galle
 export const getAllDashboardsName = async () =>
   request(`${ base }/getAllDashboardsName`)
 
-export const getDashboardTemplateElementsByName = async (dashboardName: string, templateName: string) =>
-  request(`getDashboardTemplateElementsByName?dashboardName=${ dashboardName }&templateName=${ templateName }`)
+export const getDashboardCategoryMarksAndTemplateByName = async (dashboardName: string) =>
+  request(`${ base }/getDashboardCategoryMarksAndTemplateByName?dashboardName=${ dashboardName }`)
+
+export const modifyDashboardDescription = async (dashboard: GalleryAPI.Dashboard) =>
+  request(`${ base }/modifyDashboardDescription`, {
+    method: "post",
+    data: dashboard
+  })
 
 export const newDashboardAttachToEmptyCategory = async (categoryName: string, dashboard: GalleryAPI.Dashboard) =>
-  request(`newDashboardAttachToEmptyCategory?categoryName=${ categoryName }`, {
+  request(`${ base }/newDashboardAttachToEmptyCategory?categoryName=${ categoryName }`, {
     method: "post",
     data: dashboard
   })
@@ -105,13 +120,13 @@ export const getTemplateElementsContents = async (dashboardName: string, templat
 export const getTemplateElements = async (dashboardName: string, templateName: string) =>
   request(`${ base }/getTemplateElements?dashboardName=${ dashboardName }&templateName=${ templateName }`)
 
-export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements) =>
+export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements): Promise<void> =>
   request(`${ base }/copyTemplateElements`, {
     method: "post",
     data: copyTE
   })
 
-export const updateTemplateElements = async (template: GalleryAPI.Template) =>
+export const updateTemplateElements = async (template: GalleryAPI.Template): Promise<void> =>
   request(`${ base }/updateTemplateElements`, {
     method: "post",
     data: template
@@ -120,7 +135,7 @@ export const updateTemplateElements = async (template: GalleryAPI.Template) =>
 
 // Element
 
-export const getElementLatestContent = async (id: string, markName?: string) => {
+export const getElementLatestContent = async (id: string, markName?: string): Promise<GalleryAPI.Element> => {
   let path = `${ base }/getElementLatestContent?id=${ id }`
   if (markName)
     path += `&markName=${ markName }`

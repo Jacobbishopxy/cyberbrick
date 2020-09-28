@@ -250,7 +250,7 @@ const dashboardRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/getDashboardCategoryMarksAndTemplateByName`,
     method: "get",
-    check: [common.queryNameCheck],
+    check: [common.queryDashboardNameCheck],
     action: dashboardActions.getDashboardCategoryMarksAndTemplateByName
   },
   {

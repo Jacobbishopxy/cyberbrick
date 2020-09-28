@@ -126,7 +126,8 @@ export async function updateTemplateElements(template: Template) {
     const targetElementsId = template.elements.map(i => i.id)
 
     const removedIds = _.difference(originElementsId.map(i => i.id), targetElementsId)
-    await er.delete(removedIds)
+    if (removedIds.length !== 0)
+      await er.delete(removedIds)
   }
 
   return saveTemplate(template)

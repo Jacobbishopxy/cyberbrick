@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from 'react'
-import { Card, Divider, List, Modal, Tabs } from "antd"
+import { Card, Divider, Input, List, message, Modal, Space, Tabs } from "antd"
 
 import * as DataType from "../../DataType"
 import { moduleList } from "../ModulePanel/moduleSelector"
@@ -11,7 +11,7 @@ import { moduleList } from "../ModulePanel/moduleSelector"
 import styles from "./Common.less"
 
 interface ModuleSelectionViewProps {
-  onSelect: (value: DataType.ElementType) => void
+  onSelect: (value: string) => void
 }
 
 const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
@@ -47,7 +47,7 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
   </>
 
 export interface AddModuleModalProps {
-  onAddModule: (value: DataType.ElementType) => void
+  onAddModule: (name: string, value: DataType.ElementType) => void
   visible: boolean
   onQuit: () => void
 }
@@ -55,12 +55,17 @@ export interface AddModuleModalProps {
 export const AddModuleModal = (props: AddModuleModalProps) => {
 
   const [selected, setSelected] = useState<string>()
+  const [moduleName, setModuleName] = useState<string>()
+
+  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setModuleName(e.target.value)
 
   const onSetOk = () => {
-    if (selected) {
+    if (selected && moduleName) {
       props.onQuit()
-      props.onAddModule(DataType.ElementType[selected])
-    }
+      props.onAddModule(moduleName, DataType.getElementType(selected))
+    } else
+      message.warn("Please enter your element name and select one module!")
   }
 
 
@@ -75,6 +80,10 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     >
       <Tabs defaultActiveKey="0">
         <Tabs.TabPane tab="Module" key="0">
+          <Space>
+            Please enter your module name:
+            <Input size="small" style={{width: 200}} onChange={ inputOnChange }/>
+          </Space>
           <ModuleSelectionView onSelect={ setSelected }/>
         </Tabs.TabPane>
         <Tabs.TabPane tab="Template" key="1">

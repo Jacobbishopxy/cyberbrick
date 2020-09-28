@@ -45,76 +45,79 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
 const removeElementInLayout = (id: string, elements: Elements): Elements =>
   _.reject(elements, ele => (ele.id === id))
 
+const genDataGrid = (ele: DataType.Element) =>
+  ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
+
 
 export interface ContainerTemplateProps {
   elements: Elements
-  elementFetchContent: (id: string) => Promise<DataType.Content>
-  elementUpdateContent: (content: DataType.Content) => Promise<void>
+  elementFetchContent: (id: string) => Promise<DataType.Content | undefined>
+  elementUpdateContent: (content: DataType.Content) => void
 }
 
 export interface ContainerTemplateRef {
-  newElement: (elementType: DataType.ElementType) => void
+  newElement: (name: string, elementType: DataType.ElementType) => void
+  saveElements: () => DataType.Element[]
 }
 
-export const ContainerTemplate = forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
-  const editable = useContext(EditableContext)
+export const ContainerTemplate =
+  forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
+    const editable = useContext(EditableContext)
 
-  const [elements, setElements] = useState<Elements>(props.elements)
-  const [newElementName, setNewElementName] = useState<string>()
+    const [elements, setElements] = useState<Elements>(props.elements)
 
-  const elementOnRemove = (id: string) => () => {
-    const newElements = removeElementInLayout(id, elements)
-    setElements(newElements)
-  }
+    const elementOnRemove = (id: string) => () => {
+      const newElements = removeElementInLayout(id, elements)
+      setElements(newElements)
+    }
 
-  const onLayoutChange = (layout: Layout[]) =>
-    setElements(updateElementInLayout(elements, layout))
+    const onLayoutChange = (layout: Layout[]) => {
+      setElements(updateElementInLayout(elements, layout))
+    }
 
-  const updateElementName = (name: string) => setNewElementName(name)
-
-  const newElement = (elementType: DataType.ElementType) => {
-    if (newElementName) {
-
-      if (elements.map(e => e.name).includes(newElementName)) {
+    const newElement = (name: string, elementType: DataType.ElementType) => {
+      if (elements.map(e => e.name).includes(name)) {
         message.warning("Please rename your element name because of duplicated!")
       } else {
         // todo: default coordination by element type!
         const newEle = {
-          name: newElementName,
+          name,
           type: elementType,
           x: 0,
           y: Infinity,
-          h: 4,
+          h: 8,
           w: 12,
         } as Element
         setElements(newElementInLayout(elements, newEle))
       }
-    } else
-      message.warning("Please enter your element name first!")
-  }
+    }
 
-  useImperativeHandle(ref, () => ({ newElement }))
+    const saveElements = () => elements
 
-  return (
-    <ReactGridLayout
-      { ...reactGridLayoutDefaultProps }
-      onLayoutChange={ onLayoutChange }
-      isDraggable={ editable }
-      isResizable={ editable }
-    >
-      {
-        elements.map(ele =>
-          <ContainerElement
-            editable={ editable }
-            element={ ele }
-            fetchContent={ props.elementFetchContent }
-            updateContent={ props.elementUpdateContent }
-            updateElementName={ updateElementName }
-            onRemove={ elementOnRemove(ele.id!) }
-          />
-        )
-      }
-    </ReactGridLayout>
-  )
-})
+    useImperativeHandle(ref, () => ({ newElement, saveElements }))
+
+    return (
+      <ReactGridLayout
+        { ...reactGridLayoutDefaultProps }
+        onLayoutChange={ onLayoutChange }
+        isDraggable={ editable }
+        isResizable={ editable }
+      >
+        {
+          elements.map(ele =>
+            <div key={ ele.name } data-grid={ genDataGrid(ele) }>
+              <ContainerElement
+                key={ ele.name }
+                editable={ editable }
+                element={ ele }
+                fetchContent={ props.elementFetchContent }
+                updateContent={ props.elementUpdateContent }
+                onRemove={ elementOnRemove(ele.id!) }
+              />
+            </div>
+          )
+        }
+      </ReactGridLayout>
+    )
+  })
 

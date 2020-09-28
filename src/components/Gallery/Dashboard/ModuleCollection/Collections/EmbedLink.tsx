@@ -51,7 +51,7 @@ const EditorField = (props: ModuleEditorField) => {
           placeholder='Link'
           allowClear
           onBlur={ linkOnChange }
-          defaultValue={ content!.data.link }
+          defaultValue={ content ? content.data.link: null }
         />
       </Modal>
     </div>

@@ -19,19 +19,19 @@ const tabPaneGenerator = (name: string,
 export interface ContainerProps {
   templateNames: string[]
   fetchElements: (templateName: string) => Promise<DataType.Template>
-  fetchElementContent: (id: string, markName?: string) => Promise<DataType.Content>
-  updateElementContent: (content: DataType.Content) => Promise<void>
+  fetchElementContent: (id: string, markName?: string) => Promise<DataType.Content | undefined>
+  updateElementContent: (content: DataType.Content) => void
 }
 
 export interface ContainerRef {
-  newElement: (elementType: DataType.ElementType) => void
+  newElement: (name: string, elementType: DataType.ElementType) => void
   saveTemplate: () => DataType.Template | undefined
 }
 
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
   const ctRef = useRef<ContainerTemplateRef>(null)
 
-  const [selectedPane, setSelectedPane] = useState<string>()
+  const [selectedPane, setSelectedPane] = useState<string | undefined>(props.templateNames[0])
   const [template, setTemplate] = useState<DataType.Template>()
 
   useEffect(() => {
@@ -43,13 +43,19 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const tabOnChange = (name: string) => setSelectedPane(name)
 
-  const newElement = (elementType: DataType.ElementType) => {
-    if (ctRef.current) ctRef.current.newElement(elementType)
+  const newElement = (name: string, elementType: DataType.ElementType) => {
+    if (ctRef.current) ctRef.current.newElement(name, elementType)
   }
 
   const saveTemplate = () => {
-    if (template) return template
-    return undefined
+    if (ctRef.current && template) {
+      const e = ctRef.current.saveElements()
+      return {
+        ...template,
+        elements: e
+      }
+    }
+    return template
   }
 
   useImperativeHandle(ref, () => ({ newElement, saveTemplate }))
