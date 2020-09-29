@@ -8,6 +8,7 @@ import { Tabs } from 'antd'
 import * as DataType from "../../DataType"
 import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
 
+
 const tabPaneGenerator = (name: string,
                           activateName: string | undefined,
                           pane: React.ReactElement<typeof ContainerTemplate>) => {
@@ -15,15 +16,16 @@ const tabPaneGenerator = (name: string,
   return <></>
 }
 
-
 export interface ContainerProps {
+  markAvailable?: boolean
   templateNames: string[]
   fetchElements: (templateName: string) => Promise<DataType.Template>
-  fetchElementContent: (id: string, markName?: string) => Promise<DataType.Content | undefined>
-  updateElementContent: (content: DataType.Content) => void
+  fetchElementContentFn: (id: string, markName?: string) => Promise<DataType.Content | undefined>
+  updateElementContentFn: (content: DataType.Content) => void
 }
 
 export interface ContainerRef {
+  startFetchContent: () => void
   newElement: (name: string, elementType: DataType.ElementType) => void
   saveTemplate: () => DataType.Template | undefined
 }
@@ -36,12 +38,15 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   useEffect(() => {
     if (selectedPane)
-      props
-        .fetchElements(selectedPane)
-        .then(res => setTemplate(res))
+      props.fetchElements(selectedPane).then(res => setTemplate(res))
   }, [selectedPane])
 
   const tabOnChange = (name: string) => setSelectedPane(name)
+
+  const startFetchContent = () => {
+    if (props.markAvailable && ctRef.current)
+      ctRef.current.startFetchContent()
+  }
 
   const newElement = (name: string, elementType: DataType.ElementType) => {
     if (ctRef.current) ctRef.current.newElement(name, elementType)
@@ -50,15 +55,12 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const saveTemplate = () => {
     if (ctRef.current && template) {
       const e = ctRef.current.saveElements()
-      return {
-        ...template,
-        elements: e
-      }
+      return { ...template, elements: e }
     }
     return template
   }
 
-  useImperativeHandle(ref, () => ({ newElement, saveTemplate }))
+  useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveTemplate }))
 
   return (
     <Tabs
@@ -74,9 +76,10 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                   p,
                   selectedPane,
                   <ContainerTemplate
+                    markAvailable={ props.markAvailable }
                     elements={ template.elements! }
-                    elementFetchContent={ props.fetchElementContent }
-                    elementUpdateContent={ props.updateElementContent }
+                    elementFetchContentFn={ props.fetchElementContentFn }
+                    elementUpdateContentFn={ props.updateElementContentFn }
                     ref={ ctRef }
                   />
                 ) :
@@ -88,4 +91,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     </Tabs>
   )
 })
+
+Container.defaultProps = {
+  markAvailable: false
+} as Partial<ContainerProps>
 

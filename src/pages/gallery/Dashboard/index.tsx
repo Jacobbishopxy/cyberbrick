@@ -18,6 +18,7 @@ export default () => {
 
   return (
     <Dashboard
+      markAvailable
       fetchDashboardNames={ GalleryService.getAllDashboardsName }
       fetchDashboard={ GalleryService.getDashboardCategoryMarksAndTemplateByName }
       fetchTemplate={ GalleryService.getTemplateElements }

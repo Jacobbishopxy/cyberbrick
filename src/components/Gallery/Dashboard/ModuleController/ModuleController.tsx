@@ -9,8 +9,11 @@ import { ExclamationCircleOutlined } from "@ant-design/icons"
 import * as DataType from "../../DataType"
 import { AddModuleModal } from "./AddModuleModal"
 
-export interface DashboardControllerProps {
+export interface ModuleControllerProps {
+  markAvailable?: boolean
+  canEdit: boolean
   dashboardNames: string[]
+  dashboardOnSelect: () => void
   fetchDashboardMarks: (value: string) => Promise<DataType.Mark[]>
   markOnSelect: (value: string) => void
   onAddModule: (name: string, value: DataType.ElementType) => void
@@ -18,7 +21,7 @@ export interface DashboardControllerProps {
   onSaveTemplate: () => Promise<void>
 }
 
-export const ModuleController = (props: DashboardControllerProps) => {
+export const ModuleController = (props: ModuleControllerProps) => {
 
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
@@ -29,7 +32,10 @@ export const ModuleController = (props: DashboardControllerProps) => {
   }, [edit])
 
   const dashboardOnSelect = (value: string) =>
-    props.fetchDashboardMarks(value).then(res => setMarks(res))
+    props.fetchDashboardMarks(value).then(res => {
+      props.dashboardOnSelect()
+      setMarks(res)
+    })
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 
@@ -37,7 +43,9 @@ export const ModuleController = (props: DashboardControllerProps) => {
     title: "Save current layout?",
     icon: <ExclamationCircleOutlined/>,
     onOk: () => props.onSaveTemplate().then(() => setEdit(false)),
-    onCancel: () => setEdit(false)
+    onCancel: () => setEdit(false),
+    okText: "Confirm",
+    cancelText: "Discard"
   })
 
   const editMode = () => (
@@ -72,6 +80,7 @@ export const ModuleController = (props: DashboardControllerProps) => {
       type="primary"
       size="small"
       onClick={ () => setEdit(true) }
+      disabled={ !props.canEdit }
     >
       Edit
     </Button>
@@ -83,6 +92,8 @@ export const ModuleController = (props: DashboardControllerProps) => {
         <Select
           style={ { width: 120 } }
           onSelect={ dashboardOnSelect }
+          size="small"
+          placeholder="Dashboard"
         >
           {
             props.dashboardNames.map(n =>
@@ -90,17 +101,23 @@ export const ModuleController = (props: DashboardControllerProps) => {
             )
           }
         </Select>
-        <Select
-          style={ { width: 120 } }
-          onSelect={ props.markOnSelect }
-          disabled={ marks.length === 0 }
-        >
-          {
-            marks.map(n =>
-              <Select.Option key={ n.id } value={ n.name }>{ n.name }</Select.Option>
-            )
-          }
-        </Select>
+        {
+          props.markAvailable ?
+            <Select
+              style={ { width: 120 } }
+              onSelect={ props.markOnSelect }
+              disabled={ marks.length === 0 }
+              size="small"
+              placeholder="Mark"
+            >
+              {
+                marks.map(n =>
+                  <Select.Option key={ n.id } value={ n.name }>{ n.name }</Select.Option>
+                )
+              }
+            </Select> :
+            <></>
+        }
       </Space>
       <div>
         { edit ? editMode() : idleMode() }
@@ -108,4 +125,8 @@ export const ModuleController = (props: DashboardControllerProps) => {
     </div>
   )
 }
+
+ModuleController.defaultProps = {
+  markAvailable: false
+} as Partial<ModuleControllerProps>
 

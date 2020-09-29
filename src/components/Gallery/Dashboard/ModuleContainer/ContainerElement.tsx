@@ -8,13 +8,14 @@ import * as DataType from "../../DataType"
 import { ModulePanel } from "../ModulePanel/ModulePanel"
 
 export interface ContainerElementProps {
+  markAvailable?: boolean
+  startFetchContent?: number
   editable: boolean
   element: DataType.Element
-  fetchContent: (id: string) => Promise<DataType.Content | undefined>
-  updateContent: (content: DataType.Content) => void
+  fetchContentFn: (id: string) => Promise<DataType.Content | undefined>
+  updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
 }
-
 
 export const ContainerElement = (props: ContainerElementProps) => {
 
@@ -22,12 +23,17 @@ export const ContainerElement = (props: ContainerElementProps) => {
   const eleId = props.element.id as string | undefined
 
   useEffect(() => {
-    if (eleId) props.fetchContent(eleId).then(res => setContent(res))
+    if (!props.markAvailable && eleId)
+      props.fetchContentFn(eleId).then(res => setContent(res))
   }, [])
 
-  const updateContent = (ctt: DataType.Content) => {
-    return props.updateContent(ctt)
-  }
+  useEffect(() => {
+    if (props.markAvailable && props.startFetchContent! > 0 && eleId)
+      props.fetchContentFn(eleId).then(res => setContent(res))
+  }, [props.startFetchContent])
+
+  const updateContent = (ctt: DataType.Content) =>
+    props.updateContentFn(ctt)
 
   return (
     <ModulePanel
@@ -40,4 +46,9 @@ export const ContainerElement = (props: ContainerElementProps) => {
     />
   )
 }
+
+ContainerElement.defaultProps = {
+  markAvailable: false,
+  startFetchContent: 0
+} as Partial<ContainerElementProps>
 

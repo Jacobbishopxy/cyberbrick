@@ -50,12 +50,14 @@ const genDataGrid = (ele: DataType.Element) =>
 
 
 export interface ContainerTemplateProps {
+  markAvailable?: boolean
   elements: Elements
-  elementFetchContent: (id: string) => Promise<DataType.Content | undefined>
-  elementUpdateContent: (content: DataType.Content) => void
+  elementFetchContentFn: (id: string) => Promise<DataType.Content | undefined>
+  elementUpdateContentFn: (content: DataType.Content) => void
 }
 
 export interface ContainerTemplateRef {
+  startFetchContent: () => void
   newElement: (name: string, elementType: DataType.ElementType) => void
   saveElements: () => DataType.Element[]
 }
@@ -65,14 +67,19 @@ export const ContainerTemplate =
     const editable = useContext(EditableContext)
 
     const [elements, setElements] = useState<Elements>(props.elements)
+    const [startFetch, setStartFetch] = useState<number>(0)
 
     const elementOnRemove = (id: string) => () => {
       const newElements = removeElementInLayout(id, elements)
       setElements(newElements)
     }
 
-    const onLayoutChange = (layout: Layout[]) => {
+    const onLayoutChange = (layout: Layout[]) =>
       setElements(updateElementInLayout(elements, layout))
+
+    const startFetchContent = () => {
+      if (props.markAvailable)
+        setStartFetch(startFetch + 1)
     }
 
     const newElement = (name: string, elementType: DataType.ElementType) => {
@@ -94,7 +101,7 @@ export const ContainerTemplate =
 
     const saveElements = () => elements
 
-    useImperativeHandle(ref, () => ({ newElement, saveElements }))
+    useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
 
     return (
       <ReactGridLayout
@@ -107,11 +114,12 @@ export const ContainerTemplate =
           elements.map(ele =>
             <div key={ ele.name } data-grid={ genDataGrid(ele) }>
               <ContainerElement
-                key={ ele.name }
+                markAvailable={ props.markAvailable }
+                startFetchContent={ startFetch }
                 editable={ editable }
                 element={ ele }
-                fetchContent={ props.elementFetchContent }
-                updateContent={ props.elementUpdateContent }
+                fetchContentFn={ props.elementFetchContentFn }
+                updateContentFn={ props.elementUpdateContentFn }
                 onRemove={ elementOnRemove(ele.id!) }
               />
             </div>
@@ -120,4 +128,8 @@ export const ContainerTemplate =
       </ReactGridLayout>
     )
   })
+
+ContainerTemplate.defaultProps = {
+  markAvailable: false
+} as Partial<ContainerTemplateProps>
 

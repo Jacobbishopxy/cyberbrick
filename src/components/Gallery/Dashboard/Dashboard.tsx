@@ -13,6 +13,7 @@ export const EditableContext = React.createContext<boolean>(false)
 
 
 export interface DashboardProps {
+  markAvailable?: boolean
   fetchDashboardNames: () => Promise<DataType.Dashboard[]>
   fetchDashboard: (dashboardName: string) => Promise<DataType.Dashboard>
   fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
@@ -27,6 +28,7 @@ export const Dashboard = (props: DashboardProps) => {
   const [dashboardNames, setDashboardNames] = useState<string[]>([])
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedMark, setSelectedMark] = useState<string>()
+  const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
 
@@ -34,7 +36,12 @@ export const Dashboard = (props: DashboardProps) => {
     props.fetchDashboardNames().then(res => setDashboardNames(res.map(i => i.name)))
   }, [])
 
-  const markOnSelect = (value: string) => setSelectedMark(value)
+  const dashboardOnSelect = () => setCanEdit(true)
+  const markOnSelect = (value: string) => {
+    setSelectedMark(value)
+    if (props.markAvailable && cRef.current)
+      cRef.current.startFetchContent()
+  }
 
   const fetchDashboardMarks = async (value: string) => {
     const dsb = await props.fetchDashboard(value)
@@ -48,10 +55,23 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
+  const updateAllContents = async () => {
+    if (selectedDashboard && updatedContents.length > 0)
+      return Promise.all(
+        updatedContents
+          .map(c => props.updateElementContent(selectedDashboard.category!.name, c))
+      )
+    return Promise.reject(new Error("No dashboard selected!"))
+  }
+
   const onSaveTemplateAndContents = async () => {
     if (cRef.current) {
       const t = cRef.current.saveTemplate()
-      if (t) return props.saveTemplate(t)
+      if (t) {
+        if (updatedContents.length > 0) await updateAllContents()
+        await props.saveTemplate(t)
+        return Promise.resolve()
+      }
     }
     return Promise.reject(new Error("Invalid template!"))
   }
@@ -62,41 +82,36 @@ export const Dashboard = (props: DashboardProps) => {
     return undefined
   }
 
+  // todo: action mode
   const updateElementContent = (ctt: DataType.Content) => {
-    // todo
-  }
-
-
-  const updateContent = (ctt: DataType.Content) => {
-    if (selectedDashboard)
-      return props.updateElementContent(selectedDashboard.category!.name, ctt)
-    return Promise.reject(new Error("No dashboard selected!"))
+    // ...
   }
 
   const onAddModule = (n: string, et: DataType.ElementType) => {
     if (cRef.current) cRef.current.newElement(n, et)
   }
 
-  const onEditTemplate = (e: boolean) => setEdit(e)
-
-
   return (
     <EditableContext.Provider value={ edit }>
       <ModuleController
+        markAvailable={ props.markAvailable }
+        canEdit={ canEdit }
         dashboardNames={ dashboardNames }
+        dashboardOnSelect={ dashboardOnSelect }
         fetchDashboardMarks={ fetchDashboardMarks }
         markOnSelect={ markOnSelect }
         onAddModule={ onAddModule }
-        onEditTemplate={ onEditTemplate }
+        onEditTemplate={ setEdit }
         onSaveTemplate={ onSaveTemplateAndContents }
       />
       {
         selectedDashboard ?
           <Container
+            markAvailable={ props.markAvailable }
             templateNames={ selectedDashboard.templates!.map(t => t.name) }
             fetchElements={ fetchElements }
-            fetchElementContent={ fetchElementContent }
-            updateElementContent={ updateElementContent }
+            fetchElementContentFn={ fetchElementContent }
+            updateElementContentFn={ updateElementContent }
             ref={ cRef }
           /> :
           <></>
@@ -104,4 +119,8 @@ export const Dashboard = (props: DashboardProps) => {
     </EditableContext.Provider>
   )
 }
+
+Dashboard.defaultProps = {
+  markAvailable: false
+} as Partial<DashboardProps>
 

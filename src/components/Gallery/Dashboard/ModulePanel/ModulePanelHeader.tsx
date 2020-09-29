@@ -27,17 +27,14 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
   const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<string>()
 
-  useEffect(() => {
-    setTitle(props.title)
-  }, [props.title])
+  useEffect(() => setTitle(props.title), [props.title])
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value !== "") {
       setTitle(value)
       props.updateTitle(value)
-    }
-    else
+    } else
       message.warning("title cannot be empty!")
 
     setTitleEditable(false)
