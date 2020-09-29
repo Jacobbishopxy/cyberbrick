@@ -51,7 +51,7 @@ const EditorField = (props: ModuleEditorField) => {
           placeholder='Link'
           allowClear
           onBlur={ linkOnChange }
-          defaultValue={ content ? content.data.link: null }
+          defaultValue={ content ? content.data.link : null }
         />
       </Modal>
     </div>
@@ -63,5 +63,5 @@ const PresenterField = (props: ModulePresenterField) =>
     <embed className={ props.styling } src={ props.content.data.link }/> :
     <></>
 
-export const EmbedLink = ModuleGenerator({ EditorField, PresenterField })
+export const EmbedLink = new ModuleGenerator(EditorField, PresenterField).generate()
 

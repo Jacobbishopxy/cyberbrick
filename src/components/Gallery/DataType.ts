@@ -31,7 +31,7 @@ export interface Tag {
 
 export interface Content {
   id?: string
-  element?: Element[]
+  element?: Element
   category?: Category
   mark?: Mark
   tags?: Tag[]

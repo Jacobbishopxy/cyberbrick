@@ -83,8 +83,10 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   // todo: action mode
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateElementContent = (ctt: DataType.Content) => {
     // ...
+    setUpdatedContents([])
   }
 
   const onAddModule = (n: string, et: DataType.ElementType) => {

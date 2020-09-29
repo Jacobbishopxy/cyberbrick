@@ -103,6 +103,11 @@ export const ContainerTemplate =
 
     useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
 
+    const updateContent = (ele: DataType.Element) =>
+      (value: DataType.Content) => {
+        return props.elementUpdateContentFn({...value, element: ele})
+      }
+
     return (
       <ReactGridLayout
         { ...reactGridLayoutDefaultProps }
@@ -119,7 +124,7 @@ export const ContainerTemplate =
                 editable={ editable }
                 element={ ele }
                 fetchContentFn={ props.elementFetchContentFn }
-                updateContentFn={ props.elementUpdateContentFn }
+                updateContentFn={ updateContent(ele) }
                 onRemove={ elementOnRemove(ele.id!) }
               />
             </div>

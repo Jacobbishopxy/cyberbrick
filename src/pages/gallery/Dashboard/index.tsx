@@ -7,14 +7,19 @@ import React from 'react'
 import { Dashboard } from "@/components/Gallery/Dashboard"
 import { GalleryDataType } from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
+import * as DataType from "@/components/Gallery/DataType"
 
 export default () => {
 
-  const saveTemplate = async (template: GalleryDataType.Template) =>
+  const saveTemplate = (template: GalleryDataType.Template) =>
     GalleryService.updateTemplateElements(template as GalleryAPI.Template)
 
-  const updateElementContent = async (categoryName: string, content: GalleryDataType.Content) =>
+  const fetchElementContent = (id: string, markName?: string) =>
+    GalleryService.getElementLatestContent(id, markName) as Promise<DataType.Element>
+
+  const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
     GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
+
 
   return (
     <Dashboard
@@ -23,7 +28,7 @@ export default () => {
       fetchDashboard={ GalleryService.getDashboardCategoryMarksAndTemplateByName }
       fetchTemplate={ GalleryService.getTemplateElements }
       saveTemplate={ saveTemplate }
-      fetchElementContent={ GalleryService.getElementLatestContent }
+      fetchElementContent={ fetchElementContent }
       updateElementContent={ updateElementContent }
     />
   )

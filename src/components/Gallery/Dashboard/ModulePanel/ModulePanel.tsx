@@ -32,9 +32,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
-  useEffect(() => {
-    setContent(props.content)
-  }, [props.content])
+  useEffect(() => setContent(props.content), [props.content])
 
   const editContent = () => {
     if (props.editable) {
