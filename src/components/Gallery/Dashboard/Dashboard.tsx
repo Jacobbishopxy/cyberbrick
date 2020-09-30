@@ -3,6 +3,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react'
+import _ from "lodash"
 
 import * as DataType from "../DataType"
 import { ModuleController } from "./ModuleController/ModuleController"
@@ -11,6 +12,17 @@ import { Container, ContainerRef } from "./ModuleContainer/Container"
 
 export const EditableContext = React.createContext<boolean>(false)
 
+const dashboardContentUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
+  const targetContent = _.find(contents, i => i.element?.name === content.element?.name)
+
+  let newContents
+  if (targetContent)
+    newContents = contents.map(i => i.element?.name === content.element?.name ? content : i)
+  else
+    newContents = [...contents, content]
+
+  return newContents
+}
 
 export interface DashboardProps {
   markAvailable?: boolean
@@ -68,7 +80,10 @@ export const Dashboard = (props: DashboardProps) => {
     if (cRef.current) {
       const t = cRef.current.saveTemplate()
       if (t) {
-        if (updatedContents.length > 0) await updateAllContents()
+        if (updatedContents.length > 0) {
+          await updateAllContents()
+          setUpdatedContents([])
+        }
         await props.saveTemplate(t)
         return Promise.resolve()
       }
@@ -82,11 +97,9 @@ export const Dashboard = (props: DashboardProps) => {
     return undefined
   }
 
-  // todo: action mode
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateElementContent = (ctt: DataType.Content) => {
-    // ...
-    setUpdatedContents([])
+    const newContents = dashboardContentUpdate(ctt, updatedContents)
+    setUpdatedContents(newContents)
   }
 
   const onAddModule = (n: string, et: DataType.ElementType) => {
@@ -110,7 +123,7 @@ export const Dashboard = (props: DashboardProps) => {
         selectedDashboard ?
           <Container
             markAvailable={ props.markAvailable }
-            templateNames={ selectedDashboard.templates!.map(t => t.name) }
+            dashboardInfo={ selectedDashboard }
             fetchElements={ fetchElements }
             fetchElementContentFn={ fetchElementContent }
             updateElementContentFn={ updateElementContent }

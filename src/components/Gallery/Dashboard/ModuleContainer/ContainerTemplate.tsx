@@ -92,7 +92,7 @@ export const ContainerTemplate =
           type: elementType,
           x: 0,
           y: Infinity,
-          h: 8,
+          h: 4,
           w: 12,
         } as Element
         setElements(newElementInLayout(elements, newEle))
@@ -103,10 +103,10 @@ export const ContainerTemplate =
 
     useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
 
+    // todo: if markAvailable, content should have `Mark`!
     const updateContent = (ele: DataType.Element) =>
-      (value: DataType.Content) => {
-        return props.elementUpdateContentFn({...value, element: ele})
-      }
+      (value: DataType.Content) => props.elementUpdateContentFn({ ...value, element: ele })
+
 
     return (
       <ReactGridLayout

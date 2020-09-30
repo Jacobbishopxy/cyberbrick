@@ -18,7 +18,7 @@ const tabPaneGenerator = (name: string,
 
 export interface ContainerProps {
   markAvailable?: boolean
-  templateNames: string[]
+  dashboardInfo: DataType.Dashboard
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, markName?: string) => Promise<DataType.Content | undefined>
   updateElementContentFn: (content: DataType.Content) => void
@@ -33,7 +33,7 @@ export interface ContainerRef {
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
   const ctRef = useRef<ContainerTemplateRef>(null)
 
-  const [selectedPane, setSelectedPane] = useState<string | undefined>(props.templateNames[0])
+  const [selectedPane, setSelectedPane] = useState<string | undefined>(props.dashboardInfo.templates![0].name)
   const [template, setTemplate] = useState<DataType.Template>()
 
   useEffect(() => {
@@ -62,24 +62,31 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveTemplate }))
 
+  const elementUpdateContentFn = (ctt: DataType.Content) => {
+    const category = {
+      name: props.dashboardInfo.category!.name
+    } as DataType.Category
+    props.updateElementContentFn({ ...ctt, category })
+  }
+
   return (
     <Tabs
-      defaultActiveKey={ props.templateNames[0] }
+      defaultActiveKey={ props.dashboardInfo[0] }
       onChange={ tabOnChange }
     >
       {
-        props.templateNames.map(p =>
-          <Tabs.TabPane tab={ p } key={ p }>
+        props.dashboardInfo.templates!.map(t =>
+          <Tabs.TabPane tab={ t.name } key={ t.name }>
             {
               template ?
                 tabPaneGenerator(
-                  p,
+                  t.name,
                   selectedPane,
                   <ContainerTemplate
                     markAvailable={ props.markAvailable }
                     elements={ template.elements! }
                     elementFetchContentFn={ props.fetchElementContentFn }
-                    elementUpdateContentFn={ props.updateElementContentFn }
+                    elementUpdateContentFn={ elementUpdateContentFn }
                     ref={ ctRef }
                   />
                 ) :

@@ -126,7 +126,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   return (
     <div>
-      <Row style={ { paddingLeft: 10, paddingRight: 10 } }>
+      <Row style={ { paddingLeft: 10, paddingRight: 10, height: 25 } }>
         <Col span={ 8 }>{ props.headName }</Col>
         <Col span={ 8 } style={ { textAlign: "center" } }>
           { genTitle() }

@@ -5,6 +5,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import moment from "moment"
 
 import { ModulePanelHeader } from "./ModulePanelHeader"
 import { ModulePanelFooter } from "./ModulePanelFooter"
@@ -48,9 +49,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      onOk: () => {
-        props.onRemove()
-      }
+      onOk: () => props.onRemove()
     })
 
   const updateTitle = (title: string) => {
@@ -59,6 +58,14 @@ export const ModulePanel = (props: ModulePanelProps) => {
         ...content,
         title
       }
+      setContent(newContent)
+      props.updateContent(newContent)
+    } else {
+      const newContent = {
+        title,
+        data: {},
+        date: moment().format()
+      } as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }

@@ -6,19 +6,15 @@ import React from 'react'
 
 import styles from "./Common.less"
 
+
 export interface ModulePanelFooterProps {
   id?: string
   date?: string
 }
 
-
-export const ModulePanelFooter = (props: ModulePanelFooterProps) => {
-
-  return (
-    <div className={ styles.modulePanelFooter }>
-      <span>ID: { props.id }</span>
-      { props.date ? <span>Date: { props.date }</span> : <></> }
-    </div>
-  )
-}
+export const ModulePanelFooter = (props: ModulePanelFooterProps) =>
+  <div className={ styles.modulePanelFooter }>
+    <span>ID: { props.id }</span>
+    { props.date ? <span>Date: { props.date }</span> : <></> }
+  </div>
 
