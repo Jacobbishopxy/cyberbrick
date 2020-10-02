@@ -103,7 +103,6 @@ export const ContainerTemplate =
 
     useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
 
-    // todo: if markAvailable, content should have `Mark`!
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({ ...value, element: ele })
 

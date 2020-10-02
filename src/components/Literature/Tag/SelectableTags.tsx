@@ -13,7 +13,7 @@ export interface SelectableTagsRef {
 
 export const SelectableTags = forwardRef((props: SelectableTagsProps, ref: React.Ref<SelectableTagsRef>) => {
 
-  const [selectedTagNames, setSelectedTagNames] = useState<string[]>([]) // todo: parent clear fn
+  const [selectedTagNames, setSelectedTagNames] = useState<string[]>([])
 
   useEffect(() => {
     props.onSelectTags(selectedTagNames)

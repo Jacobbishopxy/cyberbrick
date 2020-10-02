@@ -41,7 +41,6 @@ export async function getCategoriesByNames(req: Request, res: Response) {
   res.send(ans)
 }
 
-// todo: unsafe, articles & tags should not occur in `req.body`
 /**
  * save a category
  */
@@ -53,7 +52,6 @@ export async function saveCategory(req: Request, res: Response) {
   res.send(newCat)
 }
 
-// todo: unsafe, since Article Tags should also unbinding
 /**
  * delete a category
  */

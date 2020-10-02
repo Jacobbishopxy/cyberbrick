@@ -25,7 +25,10 @@ export class Content {
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Element, e => e.contents, { nullable: true })
+  /**
+   * if an element is deleted, its' content would not be destroyed but unbind from element
+   */
+  @ManyToOne(() => Element, e => e.contents, { nullable: true , onDelete: "SET NULL"})
   element!: Element
 
   @ManyToOne(() => Category, c => c.contents, { nullable: false })

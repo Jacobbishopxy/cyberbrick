@@ -76,6 +76,7 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
+  // todo: if new element with content, initialized element has no ID, so that content saving will fail
   const onSaveTemplateAndContents = async () => {
     if (cRef.current) {
       const t = cRef.current.saveTemplate()
@@ -84,7 +85,7 @@ export const Dashboard = (props: DashboardProps) => {
           await updateAllContents()
           setUpdatedContents([])
         }
-        await props.saveTemplate(t)
+        await props.saveTemplate(t) // save template first that return elements' ids, then save new contents
         return Promise.resolve()
       }
     }
@@ -98,7 +99,13 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const updateElementContent = (ctt: DataType.Content) => {
-    const newContents = dashboardContentUpdate(ctt, updatedContents)
+    let markValue = {}
+    if (props.markAvailable && selectedMark) {
+      const mId = _.find(selectedDashboard!.category!.marks, m => m.name === selectedMark)
+      if (mId) markValue = { mark: { id: mId.id } }
+    }
+    const newContent = { ...ctt, ...markValue } as DataType.Content
+    const newContents = dashboardContentUpdate(newContent, updatedContents)
     setUpdatedContents(newContents)
   }
 

@@ -41,7 +41,7 @@ export class ModuleGenerator {
         edit: () => setEditable(!editable)
       }))
 
-      return !content || editable ?
+      return !content && editable ?
         <this.editor
           content={ content }
           updateContent={ updateContent }

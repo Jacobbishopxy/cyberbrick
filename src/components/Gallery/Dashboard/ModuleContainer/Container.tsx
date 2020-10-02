@@ -37,8 +37,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const [template, setTemplate] = useState<DataType.Template>()
 
   useEffect(() => {
-    if (selectedPane)
-      props.fetchElements(selectedPane).then(res => setTemplate(res))
+    if (selectedPane) props.fetchElements(selectedPane).then(res => setTemplate(res))
   }, [selectedPane])
 
   const tabOnChange = (name: string) => setSelectedPane(name)
