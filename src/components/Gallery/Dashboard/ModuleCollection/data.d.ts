@@ -17,11 +17,6 @@ export interface ModulePresenterField {
   styling?: string
 }
 
-export interface ModuleGeneratorProps {
-  EditorField: React.FC<ModuleEditorField>
-  PresenterField: React.FC<ModulePresenterField>
-}
-
 export interface ConvertRefFR {
   edit: () => void
 }

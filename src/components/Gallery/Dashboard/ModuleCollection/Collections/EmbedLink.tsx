@@ -15,8 +15,7 @@ const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const handleOk = () => {
-    if (content)
-      props.updateContent(content)
+    if (content) props.updateContent(content)
     setVisible(false)
   }
 
