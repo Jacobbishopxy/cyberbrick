@@ -4,10 +4,12 @@
 
 import React from 'react'
 
-import { CategoryConfigTable } from "@/components/Gallery/ConfigPage/CategoryConfigTable"
 import * as DataType from "@/components/Gallery/DataType"
+import { CategoryConfigTable } from "@/components/Gallery/ConfigPage/CategoryConfigTable"
+import { DashboardConfigTable } from "@/components/Gallery/ConfigPage/DashboardConfigTable"
+import { Divider } from "antd"
 
-const data: DataType.Category[] = [
+const dataCategory: DataType.Category[] = [
   {
     name: "DevOps",
     description: "development",
@@ -49,6 +51,30 @@ const data: DataType.Category[] = [
   }
 ]
 
+const dataDashboard: DataType.Dashboard[] = [
+  {
+    name: "DevOps",
+    description: "Mock",
+    templates: [
+      {
+        name: "Language",
+      },
+      {
+        name: "Development"
+      }
+    ]
+  },
+  {
+    name: "Prod",
+    description: "fake prod",
+    templates: [
+      {
+        name: "Workflow",
+      }
+    ]
+  },
+]
+
 const testAPI = (name: string, content?: any) =>
   console.log(name, content)
 
@@ -57,7 +83,7 @@ export default () => {
   return (
     <>
       <CategoryConfigTable
-        data={ data }
+        data={ dataCategory }
         newCategory={ testAPI }
         modifyCategoryDescription={ testAPI }
         modifyDashboardDescription={ testAPI }
@@ -66,6 +92,12 @@ export default () => {
         saveTag={ testAPI }
         deleteTag={ testAPI }
         newDashboard={ testAPI }
+      />
+      <Divider/>
+      <DashboardConfigTable
+        data={ dataDashboard }
+        saveTemplate={ testAPI }
+        deleteTemplate={ testAPI }
       />
     </>
   )

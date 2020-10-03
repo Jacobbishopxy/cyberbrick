@@ -96,6 +96,9 @@ export const saveContentInCategory = async (categoryName: string, content: Galle
 export const getAllDashboardsName = async () =>
   request(`${ base }/getAllDashboardsName`)
 
+export const getAllDashboardsTemplate = async () =>
+  request(`${ base }/getAllDashboardsTemplate`)
+
 export const getDashboardCategoryMarksAndTemplateByName = async (dashboardName: string) =>
   request(`${ base }/getDashboardCategoryMarksAndTemplateByName?dashboardName=${ dashboardName }`)
 
@@ -119,6 +122,17 @@ export const getTemplateElementsContents = async (dashboardName: string, templat
 
 export const getTemplateElements = async (dashboardName: string, templateName: string) =>
   request(`${ base }/getTemplateElements?dashboardName=${ dashboardName }&templateName=${ templateName }`)
+
+export const saveTemplateInDashboard = async (dashboardName: string, template: GalleryAPI.Template) =>
+  request(`${base}/saveTemplateInDashboard?dashboardName=${dashboardName}`, {
+    method: "post",
+    data: template
+  })
+
+export const deleteTemplateInDashboard = async (dashboardName: string, templateName: string) =>
+  request(`${base}/deleteTemplateInDashboard?dashboardName=${ dashboardName }&templateName=${ templateName }`, {
+    method: "delete"
+  })
 
 export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements): Promise<void> =>
   request(`${ base }/copyTemplateElements`, {

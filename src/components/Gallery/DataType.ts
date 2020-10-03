@@ -60,7 +60,7 @@ export interface Template {
   dashboard?: Dashboard
   elements?: Element[]
   name: string
-  description: string
+  description?: string
 }
 
 export interface CopyTemplateElements {

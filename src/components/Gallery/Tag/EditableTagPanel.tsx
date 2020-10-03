@@ -25,6 +25,7 @@ export interface EditableTagPanelProps<T extends GenericDataInput> {
   elementOnRemove: (value: string) => void
   elementOnSelect?: (value: string[]) => void
 
+  colorSelector?: boolean
   dataSearchable?: boolean
 }
 
@@ -37,10 +38,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
   const [selectedDataNames, setSelectedDataNames] = useState<string[]>([])
   const [tagSearchable,] = useState(props.dataSearchable)
 
-  useEffect(() => {
-    setData(props.data)
-  }, [props.data])
-
+  useEffect(() => setData(props.data), [props.data])
 
   useEffect(() => {
     if (!tagSearchable && props.elementOnSelect) {
@@ -135,7 +133,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
         visible={ modalVisible }
         onSubmit={ tagCreateModalOnOk }
         onCancel={ () => setModalVisible(false) }
-        colorSelector
+        colorSelector={ props.colorSelector }
       />
     </>
   )
@@ -143,5 +141,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
 
 EditableTagPanel.defaultProps = {
-  editable: false
+  editable: false,
+  colorSelector: false,
+  dataSearchable: false
 } as Partial<EditableTagPanelProps<GenericDataInput>>

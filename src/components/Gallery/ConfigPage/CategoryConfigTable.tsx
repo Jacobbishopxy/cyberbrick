@@ -13,7 +13,7 @@ import { TextBuilder } from "../Misc/TextBuilder"
 import { EditableTagPanel } from "../Tag/EditableTagPanel"
 
 
-export interface CategoryTableProps {
+export interface CategoryConfigTableProps {
   data: DataType.Category[]
   newCategory: (name: string) => void
   modifyCategoryDescription: (categoryName: string, description: string) => void
@@ -25,7 +25,7 @@ export interface CategoryTableProps {
   newDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
 }
 
-export const CategoryConfigTable = (props: CategoryTableProps) => {
+export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
   const [newDashboardVisible, setNewDashboardVisible] = useState<boolean>(false)
@@ -60,27 +60,28 @@ export const CategoryConfigTable = (props: CategoryTableProps) => {
     setNewDashboardVisible(true)
   }
 
-  const tableFooter = () => {
-    if (editable)
-      return {
+  const tableFooter = () =>
+    editable ?
+      {
         footer: () =>
           <TextBuilder
             create
             text="New category"
             saveNewText={ props.newCategory }
           />
-      }
-    return {}
-  }
+      } : {}
 
 
   return (
     <div>
-      <div style={ { display: "flex", justifyContent: "flex-end" } }>
-        <Editor editable={ editable } setEditable={ setEditable }/>
-      </div>
       <Table
         dataSource={ props.data.map(i => ({ ...i, key: i.name })) }
+        title={ () =>
+          <div style={ { display: "flex", justifyContent: "space-between" } }>
+            <span style={ { fontWeight: "bold" } }>Category configuration</span>
+            <Editor editable={ editable } setEditable={ setEditable }/>
+          </div>
+        }
         size="small"
         bordered
         pagination={ false }
@@ -146,6 +147,7 @@ export const CategoryConfigTable = (props: CategoryTableProps) => {
               editable={ editable }
               elementOnCreate={ saveMark(record.name) }
               elementOnRemove={ deleteMark(record.name) }
+              colorSelector
             />
           }
         />
@@ -159,6 +161,7 @@ export const CategoryConfigTable = (props: CategoryTableProps) => {
               editable={ editable }
               elementOnCreate={ saveTag(record.name) }
               elementOnRemove={ deleteTag(record.name) }
+              colorSelector
             />
           }
         />
