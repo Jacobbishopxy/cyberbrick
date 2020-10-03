@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Modal, Select, Space } from 'antd'
+import { Button, message, Modal, Select, Space } from 'antd'
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 import * as DataType from "../../DataType"
@@ -42,7 +42,16 @@ export const ModuleController = (props: ModuleControllerProps) => {
   const saveTemplate = () => Modal.confirm({
     title: "Save current layout?",
     icon: <ExclamationCircleOutlined/>,
-    onOk: () => props.onSaveTemplate().then(() => setEdit(false)),
+    onOk: () => props.onSaveTemplate()
+      .then(() => {
+        message.success("Template & contents saving successfully!")
+        setEdit(false)
+      })
+      .catch(err => {
+        message.error(`Error: ${err}`)
+        setEdit(false)
+      })
+    ,
     onCancel: () => setEdit(false),
     okText: "Confirm",
     cancelText: "Discard"

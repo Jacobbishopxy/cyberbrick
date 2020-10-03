@@ -104,7 +104,10 @@ export const ContainerTemplate =
     useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
 
     const updateContent = (ele: DataType.Element) =>
-      (value: DataType.Content) => props.elementUpdateContentFn({ ...value, element: ele })
+      (value: DataType.Content) => props.elementUpdateContentFn({
+        ...value,
+        element: { id: ele.id, name: ele.name } as DataType.Element
+      })
 
 
     return (

@@ -12,7 +12,25 @@ import { Container, ContainerRef } from "./ModuleContainer/Container"
 
 export const EditableContext = React.createContext<boolean>(false)
 
-const dashboardContentUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
+const dashboardContentUpdate = (contents: DataType.Content[], template: DataType.Template) => {
+
+  const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
+
+  return contents.map(c => {
+    if (c.element!.id === undefined) {
+      return {
+        ...c,
+        element: {
+          ...c.element!,
+          id: elementNameIdMap[c.element!.name]
+        }
+      }
+    }
+    return c
+  })
+}
+
+const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
   const targetContent = _.find(contents, i => i.element?.name === content.element?.name)
 
   let newContents
@@ -67,25 +85,25 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
-  const updateAllContents = async () => {
-    if (selectedDashboard && updatedContents.length > 0)
+  const updateAllContents = async (contents: DataType.Content[]) => {
+    if (selectedDashboard)
       return Promise.all(
-        updatedContents
-          .map(c => props.updateElementContent(selectedDashboard.category!.name, c))
+        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c))
       )
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
-  // todo: if new element with content, initialized element has no ID, so that content saving will fail
   const onSaveTemplateAndContents = async () => {
     if (cRef.current) {
       const t = cRef.current.saveTemplate()
       if (t) {
+        await props.saveTemplate(t)
         if (updatedContents.length > 0) {
-          await updateAllContents()
+          const updatedTemplate = await props.fetchTemplate(selectedDashboard!.name, t.name)
+          const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
+          await updateAllContents(contents)
           setUpdatedContents([])
         }
-        await props.saveTemplate(t) // save template first that return elements' ids, then save new contents
         return Promise.resolve()
       }
     }
@@ -105,7 +123,7 @@ export const Dashboard = (props: DashboardProps) => {
       if (mId) markValue = { mark: { id: mId.id } }
     }
     const newContent = { ...ctt, ...markValue } as DataType.Content
-    const newContents = dashboardContentUpdate(newContent, updatedContents)
+    const newContents = dashboardContentsUpdate(newContent, updatedContents)
     setUpdatedContents(newContents)
   }
 

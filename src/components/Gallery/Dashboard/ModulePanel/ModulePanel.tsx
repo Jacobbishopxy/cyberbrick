@@ -53,22 +53,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
     })
 
   const updateTitle = (title: string) => {
-    if (content) {
-      const newContent = {
-        ...content,
-        title
-      }
-      setContent(newContent)
-      props.updateContent(newContent)
-    } else {
-      const newContent = {
-        title,
-        data: {},
-        date: moment().format()
-      } as DataType.Content
-      setContent(newContent)
-      props.updateContent(newContent)
-    }
+    const newContent = content ?
+      { ...content, title } :
+      { title, data: {}, date: moment().format() }
+    setContent(newContent)
+    props.updateContent(newContent)
   }
 
   const footerDate = () => {
@@ -79,20 +68,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const headerDate = (date: string) => {
     if (props.timeSeries && content) {
-      const newContent = {
-        ...content,
-        date
-      }
+      const newContent = { ...content, date }
       setContent(newContent)
       props.updateContent(newContent)
     }
   }
 
   const updateModuleContent = (ctt: DataType.Content) => {
-    const newContent = {
-      ...content,
-      ...ctt
-    }
+    const newContent = { ...content, ...ctt }
+    setContent(newContent)
     props.updateContent(newContent)
   }
 
