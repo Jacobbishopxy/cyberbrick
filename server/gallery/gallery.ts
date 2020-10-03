@@ -248,6 +248,11 @@ const dashboardRoutes: utils.OrmRoute[] = [
     action: dashboardActions.getAllDashboardsName
   },
   {
+    path: `${ base }/getAllDashboardsTemplate`,
+    method: "get",
+    action: dashboardActions.getAllDashboardsTemplate
+  },
+  {
     path: `${ base }/getDashboardCategoryMarksAndTemplateByName`,
     method: "get",
     check: [common.queryDashboardNameCheck],
@@ -313,6 +318,24 @@ const templateRoutes: utils.OrmRoute[] = [
       common.queryTemplateNameCheck
     ],
     action: templateActions.getTemplateElements
+  },
+  {
+    path: `${ base }/saveTemplateInDashboard`,
+    method: "post",
+    check: [
+      common.queryDashboardNameCheck,
+      common.bodyNameCheck
+    ],
+    action: templateActions.saveTemplateInDashboard
+  },
+  {
+    path: `${ base }/deleteTemplateInDashboard`,
+    method: "delete",
+    check: [
+      common.queryDashboardNameCheck,
+      common.queryTemplateNameCheck
+    ],
+    action: templateActions.deleteTemplateInDashboard
   },
   {
     path: `${ base }/copyTemplateElements`,

@@ -47,10 +47,13 @@ export const contentTags = `${ content }.${ tags }`
 export const contentAuthor = `${ content }.${ author }`
 export const contentDate = `${ content }.${ date }`
 export const templateId = `${ template }.${ id }`
+export const templateName = `${ template }.${ name }`
+export const templateDashboard = `${ template }.${ dashboard }`
 export const elementId = `${ element }.${ id }`
 export const elementType = `${ element }.type`
 export const elementTemplate = `${ element }.${ template }`
 export const elementContents = `${ element }.${ contents }`
+export const dashboardName = `${ dashboard }.${ name }`
 export const dashboardCategory = `${ dashboard }.${ category }`
 
 export const dateFormat = "YYYYMMDDHHmmss"

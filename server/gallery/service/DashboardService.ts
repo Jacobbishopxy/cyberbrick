@@ -22,6 +22,10 @@ const dashboardFullRelations = {
   ]
 }
 
+const dashboardTemplateRelations = {
+  relations: [common.templates]
+}
+
 const dashboardAndCategoryMarkAndTemplateRelations = {
   relations: [
     common.category,
@@ -73,6 +77,10 @@ export async function getDashboardCategoryMarksAndTemplateByName(dashboardName: 
 
   if (ans) return ans
   return []
+}
+
+export async function getAllDashboardsTemplate() {
+  return dashboardRepo().find(dashboardTemplateRelations)
 }
 
 export async function modifyDashboardDescription(dashboardName: string, description: string) {

@@ -48,6 +48,12 @@ export async function getAllDashboardsName(req: Request, res: Response) {
   res.send(ans)
 }
 
+export async function getAllDashboardsTemplate(req: Request, res: Response) {
+  const ans = await dashboardService.getAllDashboardsTemplate()
+
+  res.send(ans)
+}
+
 export async function getDashboardCategoryMarksAndTemplateByName(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 

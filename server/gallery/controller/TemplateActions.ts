@@ -62,6 +62,28 @@ export async function getTemplateElements(req: Request, res: Response) {
   res.send(ans)
 }
 
+export async function saveTemplateInDashboard(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const dashboardName = req.query.dashboardName as string
+  const template = req.body as Template
+
+  const ans = await templateService.saveTemplateInDashboard(dashboardName, template)
+
+  res.status(ans).end()
+}
+
+export async function deleteTemplateInDashboard(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const dashboardName = req.query.dashboardName as string
+  const templateName = req.query.templateName as string
+
+  const ans = await templateService.deleteTemplateInDashboard(dashboardName, templateName)
+
+  res.status(ans).end()
+}
+
 export async function copyTemplateElements(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 

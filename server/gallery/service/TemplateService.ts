@@ -78,6 +78,33 @@ export async function getTemplateElements(dashboardName: string, templateName: s
   return {}
 }
 
+export async function saveTemplateInDashboard(dashboardName: string, template: Template) {
+  const tr = templateRepo()
+  const newTmp = tr.create({
+    dashboard: {
+      name: dashboardName
+    },
+    name: template.name,
+    description: template.description
+  })
+  await tr.save(newTmp)
+
+  return utils.HTMLStatus.SUCCESS_MODIFY
+}
+
+export async function deleteTemplateInDashboard(dashboardName: string, templateName: string) {
+  const raw = await templateRepo()
+    .createQueryBuilder(common.template)
+    .leftJoinAndSelect(common.templateDashboard, common.dashboard)
+    .select([common.templateName, common.dashboardName])
+    .where(`${common.dashboardName} = :dashboardName AND ${common.templateName} = :templateName`, {dashboardName, templateName})
+    .delete()
+    .execute()
+
+  if (raw) return utils.HTMLStatus.SUCCESS_DELETE
+  return utils.HTMLStatus.FAIL_OPERATION
+}
+
 export async function copyTemplateElements(originDashboardName: string,
                                            originTemplateName: string,
                                            targetDashboardName: string,

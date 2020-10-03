@@ -114,7 +114,7 @@ export async function saveContentInCategory(name: string, content: Content) {
   if (content.config) ctn = { ...ctn, config: content.config }
   ctn = {
     ...ctn,
-    category: content.category,
+    category: { name },
     date: moment(content.date, common.dateFormat),
     title: content.title,
     data: content.data,
