@@ -89,11 +89,14 @@ const EditorField = (props: ModuleEditorField) => {
     form.resetFields()
   }
 
-  const onFinish = (v: any) => {
-    const fo = v.fileOptions ? v.fileOptions : []
-    onUploadFile(fo)
-    onReset()
-    setVisible(false)
+  const onFinish = () => {
+    form.validateFields()
+      .then(values => {
+        const fo = values.fileOptions ? values.fileOptions : []
+        onUploadFile(fo)
+        onReset()
+        setVisible(false)
+      })
   }
 
   return (
@@ -103,6 +106,7 @@ const EditorField = (props: ModuleEditorField) => {
         shape='round'
         size='small'
         onClick={ () => setVisible(true) }
+        style={ { position: "relative", top: "40%" } }
       >
         Click here to modify
       </Button>
@@ -112,6 +116,8 @@ const EditorField = (props: ModuleEditorField) => {
         onOk={ onFinish }
         onCancel={ () => setVisible(false) }
         confirmLoading={ uploading }
+        okText="Confirm"
+        cancelText="Discard"
       >
         <Form { ...formItemLayout } form={ form }>
           <Form.Item name="fileUpload" label="File">
@@ -130,17 +136,14 @@ const EditorField = (props: ModuleEditorField) => {
       </Modal>
     </div>
   )
-
-
 }
-
 
 const licenseKey = "non-commercial-and-evaluation"
 
 const hotTableProps = {
   settings: {
     width: "100%",
-    height: "100%"
+    height: "50vh"  // todo: reactive height
   },
   colHeaders: true,
   rowHeaders: true,
@@ -183,7 +186,7 @@ const PresenterField = (props: ModulePresenterField) => {
     return multiS(d)
   }
 
-  return props.content ? view(props.content) : <></>
+  return props.content ? <div className={ props.styling }>{ view(props.content) }</div> : <></>
 }
 
 export const EditableTable = new ModuleGenerator(EditorField, PresenterField).generate()

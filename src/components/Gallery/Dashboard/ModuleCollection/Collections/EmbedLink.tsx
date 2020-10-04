@@ -37,6 +37,7 @@ const EditorField = (props: ModuleEditorField) => {
         shape='round'
         size='small'
         onClick={ () => setVisible(true) }
+        style={ { position: "relative", top: "40%" } }
       >
         Click here to modify
       </Button>
@@ -59,8 +60,7 @@ const EditorField = (props: ModuleEditorField) => {
 
 const PresenterField = (props: ModulePresenterField) =>
   props.content ?
-    <embed className={ props.styling } src={ props.content.data.link }/> :
-    <></>
+    <embed className={ props.styling } src={ props.content.data.link }/> : <></>
 
 export const EmbedLink = new ModuleGenerator(EditorField, PresenterField).generate()
 

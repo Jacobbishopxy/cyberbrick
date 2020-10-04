@@ -9,11 +9,17 @@ import 'react-quill/dist/quill.bubble.css'
 
 export interface DisplayPresenterProps {
   content: string
+  styling?: string
 }
 
-export const TextEditorPresenter = (props: DisplayPresenterProps) =>
-  <ReactQuill
+export const TextEditorPresenter = (props: DisplayPresenterProps) => {
+
+  const style = props.styling ? props.styling : undefined
+
+  return <ReactQuill
+    className={ style }
     theme="bubble"
     value={ props.content }
     readOnly
   />
+}

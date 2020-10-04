@@ -34,14 +34,17 @@ const EditorField = (props: ModuleEditorField) => {
       content={ content ? content.data.text : null }
       onSave={ onSaveContent }
       saveButton
+      styling={ props.styling }
     />
   )
 }
 
 const PresenterField = (props: ModulePresenterField) =>
   props.content ?
-    <TextEditorPresenter content={ props.content.data.text }/> :
-    <></>
+    <TextEditorPresenter
+      content={ props.content.data.text }
+      styling={ props.styling }
+    /> : <></>
 
-export const Text = new ModuleGenerator(EditorField, PresenterField).generate()
+export const Text = new ModuleGenerator(EditorField, PresenterField, true).generate()
 

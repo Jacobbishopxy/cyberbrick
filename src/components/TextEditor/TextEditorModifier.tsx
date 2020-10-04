@@ -94,10 +94,13 @@ export interface TextEditorModifierProps {
   onChange?: (value: string) => void
   content?: string
   saveButton?: boolean
+  styling?: string
 }
 
 
 export const TextEditorModifier = (props: TextEditorModifierProps) => {
+
+  const style = props.styling ? props.styling : undefined
 
   const [content, setContent] = useState<string | undefined>(props.content)
 
@@ -110,10 +113,9 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
   }, [content])
 
   return (
-    <div>
+    <div className={ style }>
       <CustomToolbar/>
       <ReactQuill
-        className="text-editor"
         theme="snow"
         modules={ modules }
         formats={ formats }

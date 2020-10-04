@@ -4,13 +4,7 @@
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
-import {
-  ConvertRefProps,
-  ConvertProps,
-  ConvertRefFR,
-  ModuleEditorField,
-  ModulePresenterField
-} from "./data"
+import { ConvertProps, ConvertRefFR, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
 import * as DataType from "../../DataType"
 import styles from "./Common.less"
 
@@ -19,10 +13,14 @@ export class ModuleGenerator {
 
   private presenter: React.FC<ModulePresenterField>
 
+  private forceStyle: boolean
+
   constructor(editor: React.FC<ModuleEditorField>,
-              presenter: React.FC<ModulePresenterField>) {
+              presenter: React.FC<ModulePresenterField>,
+              forceStyle: boolean = false) {
     this.editor = editor
     this.presenter = presenter
+    this.forceStyle = forceStyle
   }
 
   public generate = () => {
@@ -41,11 +39,12 @@ export class ModuleGenerator {
         edit: () => setEditable(!editable)
       }))
 
-      return (!content && editable) || editable ?
+      const { forceStyle } = this
+      return editable ?
         <this.editor
           content={ content }
           updateContent={ updateContent }
-          styling={ styles.editorField }
+          styling={ forceStyle ? crProps.styling : styles.editorField }
         /> :
         <this.presenter
           content={ content }
