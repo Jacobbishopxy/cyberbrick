@@ -5,9 +5,10 @@
 import React from 'react'
 
 import * as DataType from "../../DataType"
+import { ConvertRefFR } from "../ModuleCollection/data"
 import { EmbedLink } from "../ModuleCollection/Collections/EmbedLink"
 import { Text } from "../ModuleCollection/Collections/Text"
-import { ConvertRefFR } from "../ModuleCollection/data"
+import { EditableTable } from "../ModuleCollection/Collections/EditableTable"
 
 import styles from "./Common.less"
 
@@ -143,11 +144,20 @@ export const moduleSelector = (moduleType: DataType.ElementType): React.FC<Modul
       ref={ props.forwardedRef }
     />
 
+    const editableTable = <EditableTable
+      content={ props.content }
+      updateContent={ props.updateContent }
+      styling={ styles.contentPanel }
+      ref={ props.forwardedRef }
+    />
+
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
       case DataType.ElementType.Text:
         return textModule
+      case DataType.ElementType.EditableTable:
+        return editableTable
       default:
         return defaultModule
     }

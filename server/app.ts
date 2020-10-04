@@ -9,6 +9,7 @@ import path from "path"
 import { literatureConnect, galleryConnect } from "./orm"
 import * as homeController from "./controllers/home"
 import * as miscController from "./controllers/misc"
+import * as fmController from "./controllers/fileManagement"
 import * as kcController from "./kChart/kChart"
 import { fileNameBi, fileNameDn } from "./kChart/kChart"
 
@@ -32,6 +33,8 @@ app.get("/api/currentUser", homeController.getCurrentUser)
 
 app.get("/api/misc/document/gallery", miscController.getDocumentPng("GalleryDataStructure.svg"))
 app.get("/api/misc/new-rocket", miscController.getDocumentPng("NewRocket.png"))
+
+app.post("/api/fm/extractXlsxFile", fmController.extractXlsxFile)
 
 // kChart routes
 const kChartRoot = path.join(__dirname, "../data/kChart")

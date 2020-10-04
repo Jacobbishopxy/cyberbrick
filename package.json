@@ -50,7 +50,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@ant-design/pro-layout": "^6.4.19",
+    "@handsontable/react": "^4.0.0",
     "antd": "^4.6.6",
+    "axios": "^0.20.0",
     "classnames": "^2.2.6",
     "echarts": "^4.9.0",
     "echarts-for-react": "^2.0.16",
@@ -58,6 +60,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "formidable": "^1.2.2",
+    "handsontable": "^8.1.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
     "omit.js": "^2.0.2",
