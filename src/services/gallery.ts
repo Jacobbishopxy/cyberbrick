@@ -124,13 +124,13 @@ export const getTemplateElements = async (dashboardName: string, templateName: s
   request(`${ base }/getTemplateElements?dashboardName=${ dashboardName }&templateName=${ templateName }`)
 
 export const saveTemplateInDashboard = async (dashboardName: string, template: GalleryAPI.Template) =>
-  request(`${base}/saveTemplateInDashboard?dashboardName=${dashboardName}`, {
+  request(`${ base }/saveTemplateInDashboard?dashboardName=${ dashboardName }`, {
     method: "post",
     data: template
   })
 
 export const deleteTemplateInDashboard = async (dashboardName: string, templateName: string) =>
-  request(`${base}/deleteTemplateInDashboard?dashboardName=${ dashboardName }&templateName=${ templateName }`, {
+  request(`${ base }/deleteTemplateInDashboard?dashboardName=${ dashboardName }&templateName=${ templateName }`, {
     method: "delete"
   })
 
@@ -151,6 +151,17 @@ export const updateTemplateElements = async (template: GalleryAPI.Template): Pro
 
 export const getElementLatestContent = async (id: string, markName?: string): Promise<GalleryAPI.Element> => {
   let path = `${ base }/getElementLatestContent?id=${ id }`
+  if (markName)
+    path += `&markName=${ markName }`
+
+  return request(path)
+}
+
+export const getElementContentDates = async (id: string): Promise<GalleryAPI.Element> =>
+  request(`${ base }/getElementContentDates?id=${ id }`)
+
+export const getElementContentByDate = async (id: string, date: string, markName?: string): Promise<GalleryAPI.Element> => {
+  let path = `${ base }/getElementContentByDate?id=${ id }&date=${ date }`
   if (markName)
     path += `&markName=${ markName }`
 

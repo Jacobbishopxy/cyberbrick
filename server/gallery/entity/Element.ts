@@ -35,6 +35,9 @@ export class Element {
   @Column("enum", { nullable: false, enum: common.ElementType })
   type!: common.ElementType
 
+  @Column("bool", { nullable: true })
+  timeSeries!: boolean
+
   @Column("bigint", { nullable: false })
   x!: number
 

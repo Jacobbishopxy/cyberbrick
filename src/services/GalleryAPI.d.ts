@@ -78,6 +78,7 @@ declare namespace GalleryAPI {
     contents?: Content[]
     name: string
     type: ElementType
+    timeSeries: boolean
     x: number
     y: number
     h: number
