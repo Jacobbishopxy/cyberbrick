@@ -210,7 +210,7 @@ const contentRoutes: utils.OrmRoute[] = [
     path: `${ base }/saveContentInCategory`,
     method: "post",
     check: [
-      common.bodyCategoryCheck,
+      common.queryNameCheck,
       common.bodyDateCheck,
       common.bodyTitleCheck,
       common.bodyDataCheck
@@ -387,6 +387,22 @@ const elementRoutes: utils.OrmRoute[] = [
       common.queryOptionalMarkNameCheck
     ],
     action: elementActions.getElementLatestContent
+  },
+  {
+    path: `${ base }/getElementContentDates`,
+    method: "get",
+    check: [common.queryIdCheck],
+    action: elementActions.getElementContentDates
+  },
+  {
+    path: `${ base }/getElementContentByDate`,
+    method: "get",
+    check: [
+      common.queryIdCheck,
+      common.queryDateCheck,
+      common.queryOptionalMarkNameCheck
+    ],
+    action: elementActions.getElementContentByDate
   },
 ]
 

@@ -46,6 +46,7 @@ export const contentMark = `${ content }.${ mark }`
 export const contentTags = `${ content }.${ tags }`
 export const contentAuthor = `${ content }.${ author }`
 export const contentDate = `${ content }.${ date }`
+export const contentsDate = `${ contents }.${ date }`
 export const templateId = `${ template }.${ id }`
 export const templateName = `${ template }.${ name }`
 export const templateDashboard = `${ template }.${ dashboard }`
@@ -131,6 +132,7 @@ export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
 // express validator
 export const queryIdCheck = utils.queryFieldCheck(id)
 export const queryIdsCheck = utils.queryFieldCheck(ids)
+export const queryDateCheck = utils.queryFieldCheck(date)
 export const queryNameCheck = utils.queryFieldCheck(name)
 export const queryDashboardNameCheck = utils.queryFieldCheck("dashboardName")
 export const queryTemplateNameCheck = utils.queryFieldCheck("templateName")

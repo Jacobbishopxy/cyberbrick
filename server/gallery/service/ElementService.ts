@@ -8,7 +8,6 @@ import * as common from "../common"
 import * as utils from "../../utils"
 import { Element } from "../entity/Element"
 import { Content } from "../entity/Content"
-// import { Mark } from "../entity/Mark"
 
 
 const elementRepo = () => getConnection(common.db).getRepository(Element)
@@ -59,7 +58,7 @@ export async function getElementLatestContent(id: string, markName?: string) {
             .leftJoinAndSelect(common.contentMark, common.mark)
             .where(`${ common.markName } = :markName`, { markName })
         return raw
-          .select(`MAX(${ common.date })`, "date")
+          .select(`MAX(${ common.date })`, common.date)
           .addSelect(`"elementId"`, "eid")
           .groupBy("eid")
       },
@@ -73,6 +72,37 @@ export async function getElementLatestContent(id: string, markName?: string) {
     )
     .where(`${ common.elementId } = :id`, { id })
     .getOne()
+
+  if (ans) return ans
+  return {}
+}
+
+export async function getElementContentDates(id: string) {
+  const ans = await elementRepo()
+    .createQueryBuilder(common.element)
+    .select(common.elementId)
+    .where(`${ common.elementId } = :id`, { id })
+    .leftJoinAndSelect(common.content, common.content)
+    .addSelect(common.contentDate)
+    .getOne()
+
+  if (ans) return ans
+  return {}
+}
+
+export async function getElementContentByDate(id: string, date: string, markName?: string) {
+  const que = elementRepo()
+    .createQueryBuilder(common.element)
+    .select(common.elementId)
+    .leftJoinAndSelect(common.content, common.content)
+    .where(`${ common.id } = :id AND ${ common.contentDate } = :date`, { id, date })
+
+  const ans = markName ?
+    await que
+      .leftJoinAndSelect(common.elementsContentsMark, common.mark)
+      .where(`${ common.markName } = :markName`, { markName })
+      .getOne() :
+    await que.getOne()
 
   if (ans) return ans
   return {}
