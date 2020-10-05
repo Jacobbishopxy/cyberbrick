@@ -14,8 +14,11 @@ export default () => {
   const saveTemplate = (template: GalleryDataType.Template) =>
     GalleryService.updateTemplateElements(template as GalleryAPI.Template)
 
-  const fetchElementContent = (id: string, markName?: string) =>
-    GalleryService.getElementLatestContent(id, markName) as Promise<DataType.Element>
+  const fetchElementContent = (id: string, date?: string, markName?: string) =>
+    GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
+
+  const fetchElementContentDates = (id: string) =>
+    GalleryService.getElementContentDates(id) as Promise<DataType.Element>
 
   const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
     GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
@@ -29,6 +32,7 @@ export default () => {
       fetchTemplate={ GalleryService.getTemplateElements }
       saveTemplate={ saveTemplate }
       fetchElementContent={ fetchElementContent }
+      fetchElementContentDates={ fetchElementContentDates }
       updateElementContent={ updateElementContent }
     />
   )

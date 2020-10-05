@@ -139,6 +139,7 @@ export const queryTemplateNameCheck = utils.queryFieldCheck("templateName")
 export const queryCategoryNameCheck = utils.queryFieldCheck("categoryName")
 export const queryMarkNameCheck = utils.queryFieldCheck("markName")
 export const queryTagNameCheck = utils.queryFieldCheck("tagName")
+export const queryOptionalDateCheck = utils.queryOptionalFieldCheck(date)
 export const queryOptionalElementTypeCheck = utils.queryOptionalFieldCheck("elementType")
 export const queryOptionalMarkNameCheck = utils.queryOptionalFieldCheck("markName")
 export const queryOptionalTagNamesCheck = utils.queryOptionalFieldCheck(

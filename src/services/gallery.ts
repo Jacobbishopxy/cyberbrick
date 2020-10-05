@@ -149,19 +149,13 @@ export const updateTemplateElements = async (template: GalleryAPI.Template): Pro
 
 // Element
 
-export const getElementLatestContent = async (id: string, markName?: string): Promise<GalleryAPI.Element> => {
-  let path = `${ base }/getElementLatestContent?id=${ id }`
-  if (markName)
-    path += `&markName=${ markName }`
-
-  return request(path)
-}
-
 export const getElementContentDates = async (id: string): Promise<GalleryAPI.Element> =>
   request(`${ base }/getElementContentDates?id=${ id }`)
 
-export const getElementContentByDate = async (id: string, date: string, markName?: string): Promise<GalleryAPI.Element> => {
-  let path = `${ base }/getElementContentByDate?id=${ id }&date=${ date }`
+export const getElementContent = async (id: string, date?: string, markName?: string): Promise<GalleryAPI.Element> => {
+  let path = `${ base }/getElementContent?id=${ id }`
+  if (date)
+    path += `&date=${ date }`
   if (markName)
     path += `&markName=${ markName }`
 

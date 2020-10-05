@@ -380,29 +380,20 @@ const elementRoutes: utils.OrmRoute[] = [
     action: elementActions.deleteElement
   },
   {
-    path: `${ base }/getElementLatestContent`,
-    method: "get",
-    check: [
-      common.queryIdCheck,
-      common.queryOptionalMarkNameCheck
-    ],
-    action: elementActions.getElementLatestContent
-  },
-  {
     path: `${ base }/getElementContentDates`,
     method: "get",
     check: [common.queryIdCheck],
     action: elementActions.getElementContentDates
   },
   {
-    path: `${ base }/getElementContentByDate`,
+    path: `${ base }/getElementContent`,
     method: "get",
     check: [
       common.queryIdCheck,
-      common.queryDateCheck,
+      common.queryOptionalDateCheck,
       common.queryOptionalMarkNameCheck
     ],
-    action: elementActions.getElementContentByDate
+    action: elementActions.getElementContent
   },
 ]
 

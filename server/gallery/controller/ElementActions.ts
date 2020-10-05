@@ -43,16 +43,6 @@ export async function deleteElement(req: Request, res: Response) {
 // =====================================================================================================================
 
 
-export async function getElementLatestContent(req: Request, res: Response) {
-  if (utils.expressErrorsBreak(req, res)) return
-
-  const id = req.query.id as string
-  const markName = req.query.markName as utils.QueryStr
-  const ans = await elementService.getElementLatestContent(id, markName)
-
-  res.send(ans)
-}
-
 export async function getElementContentDates(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
@@ -62,15 +52,14 @@ export async function getElementContentDates(req: Request, res: Response) {
   res.send(ans)
 }
 
-export async function getElementContentByDate(req: Request, res: Response) {
+export async function getElementContent(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const id = req.query.id as string
-  const date = req.query.date as string
+  const date = req.query.date as utils.QueryStr
   const markName = req.query.markName as utils.QueryStr
 
-  const ans = await elementService. getElementContentByDate(id, date, markName)
+  const ans = await elementService. getElementContent(id, date, markName)
 
   res.send(ans)
 }
-

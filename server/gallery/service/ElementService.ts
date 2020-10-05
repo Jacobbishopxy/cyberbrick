@@ -46,8 +46,38 @@ export async function deleteElement(id: string) {
 
 // =====================================================================================================================
 
+export async function getElementContentDates(id: string) {
+  const ans = await elementRepo()
+    .createQueryBuilder(common.element)
+    .select(common.elementId)
+    .where(`${ common.elementId } = :id`, { id })
+    .leftJoinAndSelect(common.content, common.content)
+    .addSelect(common.contentDate)
+    .getOne()
 
-export async function getElementLatestContent(id: string, markName?: string) {
+  if (ans) return ans
+  return {}
+}
+
+async function getElementContentByDate(id: string, date: string, markName?: string) {
+  const que = elementRepo()
+    .createQueryBuilder(common.element)
+    .select(common.elementId)
+    .leftJoinAndSelect(common.content, common.content)
+    .where(`${ common.id } = :id AND ${ common.contentDate } = :date`, { id, date })
+
+  const ans = markName ?
+    await que
+      .leftJoinAndSelect(common.elementsContentsMark, common.mark)
+      .where(`${ common.markName } = :markName`, { markName })
+      .getOne() :
+    await que.getOne()
+
+  if (ans) return ans
+  return {}
+}
+
+async function getElementLatestContent(id: string, markName?: string) {
   const ans = await elementRepo()
     .createQueryBuilder(common.element)
     .select(common.elementId)
@@ -77,34 +107,10 @@ export async function getElementLatestContent(id: string, markName?: string) {
   return {}
 }
 
-export async function getElementContentDates(id: string) {
-  const ans = await elementRepo()
-    .createQueryBuilder(common.element)
-    .select(common.elementId)
-    .where(`${ common.elementId } = :id`, { id })
-    .leftJoinAndSelect(common.content, common.content)
-    .addSelect(common.contentDate)
-    .getOne()
-
-  if (ans) return ans
-  return {}
+/**
+ * if date is not provided, get latest content
+ */
+export async function getElementContent(id: string, date?: string, markName?: string) {
+  if (date) return  getElementContentByDate(id, date, markName)
+  return getElementLatestContent(id, markName)
 }
-
-export async function getElementContentByDate(id: string, date: string, markName?: string) {
-  const que = elementRepo()
-    .createQueryBuilder(common.element)
-    .select(common.elementId)
-    .leftJoinAndSelect(common.content, common.content)
-    .where(`${ common.id } = :id AND ${ common.contentDate } = :date`, { id, date })
-
-  const ans = markName ?
-    await que
-      .leftJoinAndSelect(common.elementsContentsMark, common.mark)
-      .where(`${ common.markName } = :markName`, { markName })
-      .getOne() :
-    await que.getOne()
-
-  if (ans) return ans
-  return {}
-}
-
