@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useContext, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { message } from "antd"
 import _ from "lodash"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
 import * as DataType from "../../DataType"
-import { ContainerElement } from "./ContainerElement"
+import { ContainerElement, ContainerElementRef } from "./ContainerElement"
 import { EditableContext } from "../Dashboard"
 
 
@@ -52,22 +52,24 @@ const genDataGrid = (ele: DataType.Element) =>
 export interface ContainerTemplateProps {
   markAvailable?: boolean
   elements: Elements
-  elementFetchContentFn: (id: string) => Promise<DataType.Content | undefined>
+  elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementUpdateContentFn: (content: DataType.Content) => void
 }
 
 export interface ContainerTemplateRef {
-  startFetchContent: () => void
-  newElement: (name: string, elementType: DataType.ElementType) => void
+  startFetchAllContents: () => void
+  newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
   saveElements: () => DataType.Element[]
 }
 
 export const ContainerTemplate =
   forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
+    const ceRefs = useRef<ContainerElementRef[]>([])
     const editable = useContext(EditableContext)
 
     const [elements, setElements] = useState<Elements>(props.elements)
-    const [startFetch, setStartFetch] = useState<number>(0)
+
+    useEffect(() => setElements(props.elements), [props.elements])
 
     const elementOnRemove = (id: string) => () => {
       const newElements = removeElementInLayout(id, elements)
@@ -77,19 +79,19 @@ export const ContainerTemplate =
     const onLayoutChange = (layout: Layout[]) =>
       setElements(updateElementInLayout(elements, layout))
 
-    const startFetchContent = () => {
-      if (props.markAvailable)
-        setStartFetch(startFetch + 1)
+    const startFetchAllContents = () => {
+      const rf = ceRefs.current
+      if (props.markAvailable && rf) rf.forEach(e => e.fetchContent())
     }
 
-    const newElement = (name: string, elementType: DataType.ElementType) => {
+    const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
       if (elements.map(e => e.name).includes(name)) {
         message.warning("Please rename your element name because of duplicated!")
       } else {
-        // todo: default coordination by element type!
         const newEle = {
           name,
           type: elementType,
+          timeSeries,
           x: 0,
           y: Infinity,
           h: 4,
@@ -101,7 +103,7 @@ export const ContainerTemplate =
 
     const saveElements = () => elements
 
-    useImperativeHandle(ref, () => ({ startFetchContent, newElement, saveElements }))
+    useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveElements }))
 
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
@@ -109,6 +111,9 @@ export const ContainerTemplate =
         element: { id: ele.id, name: ele.name } as DataType.Element
       })
 
+    const genRef = (i: number) => (el: ContainerElementRef) => {
+      if (el) ceRefs.current[i] = el
+    }
 
     return (
       <ReactGridLayout
@@ -118,16 +123,17 @@ export const ContainerTemplate =
         isResizable={ editable }
       >
         {
-          elements.map(ele =>
+          elements.map((ele, i) =>
             <div key={ ele.name } data-grid={ genDataGrid(ele) }>
               <ContainerElement
                 markAvailable={ props.markAvailable }
-                startFetchContent={ startFetch }
+                timeSeries={ ele.timeSeries }
                 editable={ editable }
                 element={ ele }
                 fetchContentFn={ props.elementFetchContentFn }
                 updateContentFn={ updateContent(ele) }
                 onRemove={ elementOnRemove(ele.id!) }
+                ref={ genRef(i) }
               />
             </div>
           )

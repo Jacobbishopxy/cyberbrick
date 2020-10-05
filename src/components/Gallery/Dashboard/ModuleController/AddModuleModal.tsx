@@ -3,7 +3,8 @@
  */
 
 import React, { useState } from 'react'
-import { Card, Divider, Input, List, message, Modal, Space, Tabs } from "antd"
+import { Card, Checkbox, Divider, Input, List, message, Modal, Space, Tabs } from "antd"
+import { StarTwoTone } from "@ant-design/icons"
 
 import * as DataType from "../../DataType"
 import { moduleList } from "../ModulePanel/moduleSelector"
@@ -47,7 +48,7 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
   </>
 
 export interface AddModuleModalProps {
-  onAddModule: (name: string, value: DataType.ElementType) => void
+  onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
   visible: boolean
   onQuit: () => void
 }
@@ -56,6 +57,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
   const [selected, setSelected] = useState<string>()
   const [moduleName, setModuleName] = useState<string>()
+  const [timeSeries, setTimeSeries] = useState<boolean>(false)
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setModuleName(e.target.value)
@@ -63,7 +65,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
   const onSetOk = () => {
     if (selected && moduleName) {
       props.onQuit()
-      props.onAddModule(moduleName, DataType.getElementType(selected))
+      props.onAddModule(moduleName, timeSeries, DataType.getElementType(selected))
     } else
       message.warn("Please enter your element name and select one module!")
   }
@@ -81,8 +83,14 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
       <Tabs defaultActiveKey="0">
         <Tabs.TabPane tab="Module" key="0">
           <Space>
+            <StarTwoTone/>
             Please enter your module name:
-            <Input size="small" style={{width: 200}} onChange={ inputOnChange }/>
+            <Input size="small" style={ { width: 200 } } onChange={ inputOnChange }/>
+          </Space>
+          <br/>
+          <Space>
+            <StarTwoTone/>
+            <Checkbox onChange={ e => setTimeSeries(e.target.checked) }>Time series</Checkbox>
           </Space>
           <ModuleSelectionView onSelect={ setSelected }/>
         </Tabs.TabPane>

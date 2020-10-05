@@ -16,7 +16,7 @@ export interface ModuleControllerProps {
   dashboardOnSelect: () => void
   fetchDashboardMarks: (value: string) => Promise<DataType.Mark[]>
   markOnSelect: (value: string) => void
-  onAddModule: (name: string, value: DataType.ElementType) => void
+  onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
   onEditTemplate: (value: boolean) => void
   onSaveTemplate: () => Promise<void>
 }

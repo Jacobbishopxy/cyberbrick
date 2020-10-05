@@ -20,6 +20,7 @@ export interface ModulePanelProps {
   timeSeries?: boolean
   elementType: DataType.ElementType
   content?: DataType.Content
+  fetchContent: () => void
   updateContent: (c: DataType.Content) => void
   onRemove: () => void
   editable: boolean
@@ -67,8 +68,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
   }
 
   const headerDate = (date: string) => {
-    if (props.timeSeries && content) {
-      const newContent = { ...content, date }
+    if (props.timeSeries) {
+      const newContent = content ?
+        { ...content, date } :
+        { date } as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }
@@ -91,7 +94,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
         editOn={ editOn }
         editContent={ editContent }
         confirmDelete={ confirmDelete }
+        // dateList={}
         editDate={ headerDate }
+        // onSelectDate={}
       />
       {
         selectModule({

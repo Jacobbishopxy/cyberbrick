@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Col, DatePicker, Input, message, Modal, Row, Space, Tooltip } from "antd"
+import { Button, Col, DatePicker, Input, message, Modal, Row, Select, Space, Tooltip } from "antd"
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
@@ -17,7 +17,9 @@ interface ModulePanelHeaderProps {
   editOn: boolean
   editContent: () => void
   confirmDelete: () => void
+  dateList?: string[]
   editDate?: (date: string) => void
+  onSelectDate?: (date: string) => void
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
@@ -42,6 +44,10 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const editDate = (date: moment.Moment | null, dateStr: string) =>
     setSelectedDate(dateStr)
+
+  const onSelectDate = (date: string) => {
+    if (props.onSelectDate) props.onSelectDate(date)
+  }
 
   const dateModalOnOk = () => {
     if (props.editDate && selectedDate) props.editDate(selectedDate)
@@ -121,7 +127,44 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
           </Button>
         </Tooltip>
       </Space>
-    return <></>
+
+    return props.timeSeries && props.dateList ?
+      <>
+        <Tooltip title="Date">
+          <Button
+            shape='circle'
+            size='small'
+            type='link'
+            onClick={ () => setDateModalVisible(true) }
+          >
+            <Emoji label="date" symbol="🗓️"/>
+          </Button>
+        </Tooltip>
+        <Modal
+          title="Select a date"
+          visible={ dateModalVisible }
+          onOk={ dateModalOnOk }
+          onCancel={ () => setDateModalVisible(false) }
+        >
+          <Select
+            showSearch
+            style={ { width: 200 } }
+            placeholder="Select a date"
+            optionFilterProp="children"
+            onChange={ onSelectDate }
+            filterOption={ (input, option) => {
+              if (option) return option.children.indexOf(input) >= 0
+              return false
+            } }
+          >
+            {
+              props.dateList.map(d =>
+                <Select.Option value={ d } key={ d }>{ d }</Select.Option>
+              )
+            }
+          </Select>
+        </Modal>
+      </> : <></>
   }
 
   return (

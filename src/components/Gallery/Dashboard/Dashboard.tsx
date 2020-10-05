@@ -48,7 +48,9 @@ export interface DashboardProps {
   fetchDashboard: (dashboardName: string) => Promise<DataType.Dashboard>
   fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
-  fetchElementContent: (id: string, markName?: string) => Promise<DataType.Element>
+  fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
+  // todo: pass `fetchElementContentDates` to modulePanelHeader
+  fetchElementContentDates: (id: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
 }
 
@@ -70,7 +72,7 @@ export const Dashboard = (props: DashboardProps) => {
   const markOnSelect = (value: string) => {
     setSelectedMark(value)
     if (props.markAvailable && cRef.current)
-      cRef.current.startFetchContent()
+      cRef.current.startFetchAllContents()
   }
 
   const fetchDashboardMarks = async (value: string) => {
@@ -110,8 +112,9 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("Invalid template!"))
   }
 
-  const fetchElementContent = async (id: string) => {
-    const ele = await props.fetchElementContent(id, selectedMark)
+  // todo: when mark has been updated, `fetchElementContent` doesn't pass to child component
+  const fetchElementContent = async (id: string, date?: string) => {
+    const ele = await props.fetchElementContent(id, date, selectedMark)
     if (ele && ele.contents) return ele.contents[0]
     return undefined
   }
@@ -127,8 +130,8 @@ export const Dashboard = (props: DashboardProps) => {
     setUpdatedContents(newContents)
   }
 
-  const onAddModule = (n: string, et: DataType.ElementType) => {
-    if (cRef.current) cRef.current.newElement(n, et)
+  const onAddModule = (n: string, ts: boolean, et: DataType.ElementType) => {
+    if (cRef.current) cRef.current.newElement(n, ts, et)
   }
 
   return (
@@ -153,8 +156,7 @@ export const Dashboard = (props: DashboardProps) => {
             fetchElementContentFn={ fetchElementContent }
             updateElementContentFn={ updateElementContent }
             ref={ cRef }
-          /> :
-          <></>
+          /> : <></>
       }
     </EditableContext.Provider>
   )
