@@ -27,9 +27,7 @@ export const ModuleController = (props: ModuleControllerProps) => {
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
   const [marks, setMarks] = useState<DataType.Mark[]>([])
 
-  useEffect(() => {
-    props.onEditTemplate(edit)
-  }, [edit])
+  useEffect(() => props.onEditTemplate(edit), [edit])
 
   const dashboardOnSelect = (value: string) =>
     props.fetchDashboardMarks(value).then(res => {
@@ -48,7 +46,7 @@ export const ModuleController = (props: ModuleControllerProps) => {
         setEdit(false)
       })
       .catch(err => {
-        message.error(`Error: ${err}`)
+        message.error(`Error: ${ err }`)
         setEdit(false)
       })
     ,

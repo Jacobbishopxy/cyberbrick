@@ -12,20 +12,21 @@ export interface ContainerElementProps {
   timeSeries?: boolean
   editable: boolean
   element: DataType.Element
-  // todo: `fetchContentFn` param `date` is not used
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn: (id: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
 }
 
 export interface ContainerElementRef {
-  fetchContent: () => void
+  fetchContent: (date?: string) => void
 }
 
 export const ContainerElement =
   forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
 
     const [content, setContent] = useState<DataType.Content>()
+    const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
 
     useEffect(() => {
@@ -33,9 +34,18 @@ export const ContainerElement =
         props.fetchContentFn(eleId).then(res => setContent(res))
     }, [])
 
-    const fetchContent = () => {
-      if (props.markAvailable && eleId)
-        props.fetchContentFn(eleId).then(res => setContent(res))
+    const fetchContent = (date?: string) => {
+      if (props.markAvailable && eleId) {
+        if (date)
+          props.fetchContentFn(eleId, date).then(res => setContent(res))
+        else
+          props.fetchContentFn(eleId).then(res => setContent(res))
+      }
+    }
+
+    const fetchContentDates = () => {
+      if (eleId && props.element.timeSeries)
+        props.fetchContentDatesFn(eleId).then(res => setDates(res.contents!.map(c => c.date)))
     }
 
     useImperativeHandle(ref, () => ({ fetchContent }))
@@ -50,6 +60,8 @@ export const ContainerElement =
         elementType={ props.element.type }
         content={ content }
         fetchContent={ fetchContent }
+        dates={ dates }
+        fetchContentDates={ fetchContentDates }
         updateContent={ updateContent }
         onRemove={ props.onRemove }
         editable={ props.editable }

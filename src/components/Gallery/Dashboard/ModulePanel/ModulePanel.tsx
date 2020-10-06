@@ -7,20 +7,23 @@ import { Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from "moment"
 
-import { ModulePanelHeader } from "./ModulePanelHeader"
-import { ModulePanelFooter } from "./ModulePanelFooter"
 import * as DataType from "../../DataType"
 import { ConvertRefFR } from "../ModuleCollection/data"
+import { ModulePanelHeader } from "./ModulePanelHeader"
+import { ModulePanelFooter } from "./ModulePanelFooter"
 import { moduleSelector } from "./moduleSelector"
 
 import styles from "./Common.less"
+
 
 export interface ModulePanelProps {
   headName: string
   timeSeries?: boolean
   elementType: DataType.ElementType
   content?: DataType.Content
-  fetchContent: () => void
+  fetchContent: (date?: string) => void
+  dates?: string[]
+  fetchContentDates?: () => void
   updateContent: (c: DataType.Content) => void
   onRemove: () => void
   editable: boolean
@@ -33,8 +36,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
+  const [dateList, setDateList] = useState<string[] | undefined>(props.dates)
 
   useEffect(() => setContent(props.content), [props.content])
+
+  useEffect(() => setDateList(props.dates), [props.dates])
+
+  useEffect(() => {
+    if (props.timeSeries && props.fetchContentDates)
+      props.fetchContentDates()
+  }, [])
+
 
   const editContent = () => {
     if (props.editable) {
@@ -83,6 +95,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.updateContent(newContent)
   }
 
+  const selectDate = (date: string) => props.fetchContent(date)
+
+
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader
@@ -94,9 +109,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
         editOn={ editOn }
         editContent={ editContent }
         confirmDelete={ confirmDelete }
-        // dateList={}
+        dateList={ dateList }
         editDate={ headerDate }
-        // onSelectDate={}
+        onSelectDate={ selectDate }
       />
       {
         selectModule({

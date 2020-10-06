@@ -53,6 +53,7 @@ export interface ContainerTemplateProps {
   markAvailable?: boolean
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  elementFetchContentDatesFn: (id: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
 }
 
@@ -131,6 +132,7 @@ export const ContainerTemplate =
                 editable={ editable }
                 element={ ele }
                 fetchContentFn={ props.elementFetchContentFn }
+                fetchContentDatesFn={ props.elementFetchContentDatesFn }
                 updateContentFn={ updateContent(ele) }
                 onRemove={ elementOnRemove(ele.id!) }
                 ref={ genRef(i) }

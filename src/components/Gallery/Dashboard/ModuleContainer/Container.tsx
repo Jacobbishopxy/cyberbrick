@@ -15,6 +15,7 @@ export interface ContainerProps {
   dashboardInfo: DataType.Dashboard
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
+  fetchElementContentDatesFn: (id: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
 }
 
@@ -97,6 +98,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                   markAvailable={ props.markAvailable }
                   elements={ template.elements! }
                   elementFetchContentFn={ props.fetchElementContentFn }
+                  elementFetchContentDatesFn={ props.fetchElementContentDatesFn }
                   elementUpdateContentFn={ elementUpdateContentFn }
                   ref={ genRef(i) }
                 /> : <></>

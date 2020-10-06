@@ -22,6 +22,7 @@ interface ModulePanelHeaderProps {
   onSelectDate?: (date: string) => void
 }
 
+// todo: 1. error when creating new content with new date, 2. date list is not called
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
