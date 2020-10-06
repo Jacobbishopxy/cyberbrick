@@ -25,7 +25,7 @@ const EditorField = (props: ModuleEditorField) => {
       data: { link: e.target.value }
     })
     else setContent({
-      date: moment().format(),
+      date: moment().format(DataType.dateFormat),
       data: { link: e.target.value }
     })
   }

@@ -13,7 +13,7 @@ import { ModuleGenerator } from "../ModuleGenerator"
 import * as DataType from "../../../DataType"
 import { ModuleEditorField, ModulePresenterField } from "../data"
 
-import "./EditableTable.less"
+import "handsontable/dist/handsontable.full.css"
 
 const postingUrl = "/api/fm/extractXlsxFile"
 
@@ -44,7 +44,7 @@ const EditorField = (props: ModuleEditorField) => {
       ...content,
       data: { data: d }
     } : {
-      date: moment().format(),
+      date: moment().format(DataType.dateFormat),
       data: { data: d }
     }
     setContent(ctt)

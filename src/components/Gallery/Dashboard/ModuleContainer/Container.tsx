@@ -44,6 +44,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const tabOnChange = (name: string) => setSelectedPane(name)
 
+  // todo: when mark selected, switch pane doesn't fetch all contents
   const startFetchAllContents = (idx: number) =>
     () => {
       const rf = ctRefs.current[idx]

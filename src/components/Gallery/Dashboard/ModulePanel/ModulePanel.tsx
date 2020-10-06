@@ -43,9 +43,14 @@ export const ModulePanel = (props: ModulePanelProps) => {
   useEffect(() => setDateList(props.dates), [props.dates])
 
   useEffect(() => {
-    if (props.timeSeries && props.fetchContentDates)
-      props.fetchContentDates()
-  }, [])
+    let isSubscribed = true
+    if (props.timeSeries && props.fetchContentDates && content) {
+      if (isSubscribed) props.fetchContentDates()
+    }
+    return () => {
+      isSubscribed = false
+    }
+  }, [content])
 
 
   const editContent = () => {
@@ -95,6 +100,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.updateContent(newContent)
   }
 
+  // todo: use panel header's modal `onOk` to trigger `fetchContent`
   const selectDate = (date: string) => props.fetchContent(date)
 
 

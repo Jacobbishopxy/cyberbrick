@@ -3,6 +3,7 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import moment from "moment"
 
 import * as DataType from "../../DataType"
 import { ModulePanel } from "../ModulePanel/ModulePanel"
@@ -29,9 +30,16 @@ export const ContainerElement =
     const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
 
+    // todo: memory lick?
     useEffect(() => {
+      let isSubscribed = true
       if (!props.markAvailable && eleId)
-        props.fetchContentFn(eleId).then(res => setContent(res))
+        props.fetchContentFn(eleId).then(res => {
+          if (isSubscribed) setContent(res)
+        })
+      return () => {
+        isSubscribed = false
+      }
     }, [])
 
     const fetchContent = (date?: string) => {
@@ -45,7 +53,10 @@ export const ContainerElement =
 
     const fetchContentDates = () => {
       if (eleId && props.element.timeSeries)
-        props.fetchContentDatesFn(eleId).then(res => setDates(res.contents!.map(c => c.date)))
+        props.fetchContentDatesFn(eleId)
+          .then(res =>
+            setDates(res.contents!.map(c => moment(c.date).format(DataType.dateFormat)))
+          )
     }
 
     useImperativeHandle(ref, () => ({ fetchContent }))

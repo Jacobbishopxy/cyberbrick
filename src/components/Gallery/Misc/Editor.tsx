@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react"
-import { Button } from "antd"
-
 /**
  * Created by Jacob Xie on 9/18/2020.
  */
 
+import React, { useEffect, useState } from "react"
+import { Button } from "antd"
+
+import { Emoji } from "@/components/Emoji"
+
 interface EditorProps {
+  useIcon?: boolean
   editable: boolean
   setEditable: (value: boolean) => void
 }
@@ -13,13 +16,16 @@ interface EditorProps {
 export const Editor = (props: EditorProps) => {
   const [editable, setEditable] = useState<boolean>(props.editable)
 
-  useEffect(() => {
-    props.setEditable(editable)
-  }, [editable])
+  useEffect(() => props.setEditable(editable), [editable])
 
-  const editableOnChange = () => {
-    setEditable(!editable)
-  }
+  const editableOnChange = () => setEditable(!editable)
+
+  const iconC = () => editable ?
+    <Emoji label="edit" symbol="❌️"/> :
+    <Emoji label="edit" symbol="⚙️"/>
+
+  const wordC = () => editable ?
+    "Done" : "Edit"
 
   return (
     <div>
@@ -29,10 +35,12 @@ export const Editor = (props: EditorProps) => {
         type="link"
         onClick={ editableOnChange }
       >
-        {
-          editable ? "Done" : "Edit"
-        }
+        { props.useIcon ? iconC() : wordC() }
       </Button>
     </div>
   )
 }
+
+Editor.defaultProps = {
+  useIcon: false
+} as Partial<EditorProps>

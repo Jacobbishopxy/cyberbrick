@@ -2,6 +2,8 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
+export const dateFormat = "YYYY-MM-DD HH:mm:ss"
+
 export interface Category {
   name: string
   description?: string

@@ -8,6 +8,7 @@ import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
 
+
 interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
@@ -22,12 +23,17 @@ interface ModulePanelHeaderProps {
   onSelectDate?: (date: string) => void
 }
 
-// todo: 1. error when creating new content with new date, 2. date list is not called
+interface DateModalVisible {
+  set: boolean
+  pick: boolean
+}
+
+// todo: error when creating new content with new date
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
   const [title, setTitle] = useState<string | undefined>(props.title)
-  const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
+  const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({ set: false, pick: false })
   const [selectedDate, setSelectedDate] = useState<string>()
 
   useEffect(() => setTitle(props.title), [props.title])
@@ -52,7 +58,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const dateModalOnOk = () => {
     if (props.editDate && selectedDate) props.editDate(selectedDate)
-    setDateModalVisible(false)
+    setDateModalVisible({ ...dateModalVisible, set: false })
   }
 
   const genTitle = () => {
@@ -96,7 +102,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
                 shape='circle'
                 size='small'
                 type='link'
-                onClick={ () => setDateModalVisible(true) }
+                onClick={ () => setDateModalVisible({ ...dateModalVisible, set: true }) }
               >
                 <Emoji label="date" symbol="🗓️"/>
               </Button>
@@ -136,16 +142,16 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             shape='circle'
             size='small'
             type='link'
-            onClick={ () => setDateModalVisible(true) }
+            onClick={ () => setDateModalVisible({ ...dateModalVisible, pick: true }) }
           >
             <Emoji label="date" symbol="🗓️"/>
           </Button>
         </Tooltip>
         <Modal
           title="Select a date"
-          visible={ dateModalVisible }
+          visible={ dateModalVisible.pick }
           onOk={ dateModalOnOk }
-          onCancel={ () => setDateModalVisible(false) }
+          onCancel={ () => setDateModalVisible({ ...dateModalVisible, pick: false }) }
         >
           <Select
             showSearch
@@ -184,16 +190,18 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         props.timeSeries ?
           <Modal
             title="Select a date"
-            visible={ dateModalVisible }
+            visible={ dateModalVisible.set }
             onOk={ dateModalOnOk }
-            onCancel={ () => setDateModalVisible(false) }
+            onCancel={ () => setDateModalVisible({ ...dateModalVisible, set: false }) }
           >
-            <DatePicker
-              onChange={ editDate }
-              defaultValue={ moment() }
-            />
-          </Modal> :
-          <></>
+            <Space>
+              Select a record date:
+              <DatePicker
+                onChange={ editDate }
+                defaultValue={ moment() }
+              />
+            </Space>
+          </Modal> : <></>
       }
     </div>
   )

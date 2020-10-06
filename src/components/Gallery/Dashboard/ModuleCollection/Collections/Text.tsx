@@ -17,7 +17,7 @@ const EditorField = (props: ModuleEditorField) => {
   const onChangeContent = (value: string) => {
     const ctt = content ?
       { ...content, data: { text: value } } :
-      { date: moment().format(), data: { text: value } }
+      { date: moment().format(DataType.dateFormat), data: { text: value } }
     setContent(ctt)
   }
 
