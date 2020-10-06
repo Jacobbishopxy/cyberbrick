@@ -150,6 +150,7 @@ export const Dashboard = (props: DashboardProps) => {
         selectedDashboard ?
           <Container
             markAvailable={ props.markAvailable }
+            selectedMark={ selectedMark }
             dashboardInfo={ selectedDashboard }
             fetchElements={ fetchElements }
             fetchElementContentFn={ fetchElementContent }

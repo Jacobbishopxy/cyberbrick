@@ -12,6 +12,7 @@ import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
 
 export interface ContainerProps {
   markAvailable?: boolean
+  selectedMark?: string
   dashboardInfo: DataType.Dashboard
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
@@ -25,54 +26,71 @@ export interface ContainerRef {
   saveTemplate: () => DataType.Template | undefined
 }
 
+interface SelectedPane {
+  index: number
+  name: string
+}
+
+const initSelectedPane = (templates: DataType.Template[]) => {
+  if (templates && templates.length > 0)
+    return { index: 0, name: templates[0].name }
+  return undefined
+}
+
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
   const ctRefs = useRef<ContainerTemplateRef[]>([])
 
   const templates = props.dashboardInfo.templates!
 
-  const [selectedPane, setSelectedPane] = useState<string | undefined>(templates[0].name)
-  const [selectedIndex, setSelectedIndex] = useState<number | undefined>()
+  const [selectedPane, setSelectedPane] = useState<SelectedPane | undefined>(initSelectedPane(templates))
   const [template, setTemplate] = useState<DataType.Template>()
+  const [startFetchAllTrigger, setStartFetchAllTrigger] = useState<number>(0)
 
   useEffect(() => {
-    if (selectedPane) {
-      props.fetchElements(selectedPane).then(res => setTemplate(res))
-      const si = _.findIndex(templates, t => t.name === selectedPane)
-      setSelectedIndex(si)
-    }
+    if (selectedPane)
+      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
   }, [selectedPane])
 
-  const tabOnChange = (name: string) => setSelectedPane(name)
-
-  // todo: when mark selected, switch pane doesn't fetch all contents
-  const startFetchAllContents = (idx: number) =>
-    () => {
-      const rf = ctRefs.current[idx]
-      if (props.markAvailable && rf) rf.startFetchAllContents()
+  useEffect(() => {
+    if (template) {
+      if (props.markAvailable && props.selectedMark)
+        setStartFetchAllTrigger(startFetchAllTrigger + 1)
+      if (!props.markAvailable)
+        setStartFetchAllTrigger(startFetchAllTrigger + 1)
     }
+  }, [template])
 
-  const newElement = (idx: number) =>
-    (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
-      const rf = ctRefs.current[idx]
+  const tabOnChange = (name: string) => {
+    setSelectedPane({ name, index: _.findIndex(templates, t => t.name === name) })
+  }
+
+  const startFetchAllContents = () => {
+    if (selectedPane) {
+      const rf = ctRefs.current[selectedPane.index]
+      if (rf) rf.startFetchAllContents()
+    }
+  }
+
+  const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+    if (selectedPane) {
+      const rf = ctRefs.current[selectedPane.index]
       if (rf) rf.newElement(name, timeSeries, elementType)
     }
+  }
 
-  const saveTemplate = (idx: number) =>
-    () => {
-      const rf = ctRefs.current[idx]
+  const saveTemplate = () => {
+    if (selectedPane) {
+      const rf = ctRefs.current[selectedPane.index]
 
       if (rf && template) {
         const e = rf.saveElements()
         return { ...template, elements: e }
       }
-      return template
     }
+    return template
+  }
 
-  useImperativeHandle(ref, () => ({
-    startFetchAllContents: startFetchAllContents(selectedIndex!),
-    newElement: newElement(selectedIndex!),
-    saveTemplate: saveTemplate(selectedIndex!)
-  }))
+  useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveTemplate }))
 
   const elementUpdateContentFn = (ctt: DataType.Content) => {
     const category = {
@@ -97,6 +115,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
               template ?
                 <ContainerTemplate
                   markAvailable={ props.markAvailable }
+                  startFetchAllTrigger={ startFetchAllTrigger }
                   elements={ template.elements! }
                   elementFetchContentFn={ props.fetchElementContentFn }
                   elementFetchContentDatesFn={ props.fetchElementContentDatesFn }

@@ -30,7 +30,7 @@ export const ContainerElement =
     const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
 
-    // todo: memory lick?
+    // todo: WARN!!! memory lick? 1. fetchContent, 2. fetchContentDates
     useEffect(() => {
       let isSubscribed = true
       if (!props.markAvailable && eleId)
