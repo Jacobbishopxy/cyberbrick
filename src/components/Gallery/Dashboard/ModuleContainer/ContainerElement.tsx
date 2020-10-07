@@ -35,6 +35,7 @@ export const ContainerElement =
         props.fetchContentFn(eleId).then(res => setContent(res))
     }, [])
 
+    // todo: if (!props.markAvailable && eleId)
     const fetchContent = (date?: string) => {
       if (props.markAvailable && eleId) {
         if (date)

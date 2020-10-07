@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Col, DatePicker, Input, message, Modal, Row, Select, Space, Tooltip } from "antd"
+import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row, Select, Space, Tooltip } from "antd"
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
@@ -78,39 +78,61 @@ const TimePickButton = (props: { onClick: () => void }) =>
 interface TimeSetModalProps {
   show: boolean | undefined,
   visible: boolean,
-  onOk: () => void,
+  onOk: (isNew: boolean) => void,
   onCancel: () => void,
-  editDate: ((date: moment.Moment | null) => void)
+  editDate: (date: string) => void
 }
 
-// todo: create new content with new date (default modify current content's date)
-const TimeSetModal = (props: TimeSetModalProps) =>
-  props.show ?
+const TimeSetModal = (props: TimeSetModalProps) => {
+
+  const [isNew, setIsNew] = useState<boolean>(false)
+
+  const dateOnChange = (date: moment.Moment | null) => {
+    if (date !== null)
+      props.editDate(date.format(DataType.dateFormat))
+  }
+
+  const onOk = () => props.onOk(isNew)
+
+  return props.show ?
     <Modal
       title="Select a date"
       visible={ props.visible }
-      onOk={ props.onOk }
+      onOk={ onOk }
       onCancel={ props.onCancel }
     >
       <DatePicker
-        onChange={ props.editDate }
+        onChange={ dateOnChange }
         defaultValue={ moment() }
       />
+      <br/>
+      <Checkbox onChange={ e => setIsNew(e.target.checked) }>
+        Create new content
+      </Checkbox>
     </Modal> : <></>
+}
 
 interface TimePickModalProps {
   visible: boolean
-  onOk: () => void
+  onOk: (date: string) => void
   onCancel: () => void
-  onSelectDate: (d: string) => void
   dateList: string[]
 }
 
-const TimePickModal = (props: TimePickModalProps) =>
-  <Modal
+const TimePickModal = (props: TimePickModalProps) => {
+
+  const [selectedDate, setSelectedDate] = useState<string>()
+
+  const onChange = (d: string) => setSelectedDate(d)
+
+  const onOk = () => {
+    if (selectedDate) props.onOk(selectedDate)
+  }
+
+  return <Modal
     title="Select a date"
     visible={ props.visible }
-    onOk={ props.onOk }
+    onOk={ onOk }
     onCancel={ props.onCancel }
   >
     <Select
@@ -118,7 +140,7 @@ const TimePickModal = (props: TimePickModalProps) =>
       style={ { width: 200 } }
       placeholder="Select a date"
       optionFilterProp="children"
-      onChange={ props.onSelectDate }
+      onChange={ onChange }
       filterOption={ (input, option) => {
         if (option) return option.children.indexOf(input) >= 0
         return false
@@ -131,6 +153,7 @@ const TimePickModal = (props: TimePickModalProps) =>
       }
     </Select>
   </Modal>
+}
 
 interface ModulePanelHeaderProps {
   editable: boolean
@@ -140,6 +163,7 @@ interface ModulePanelHeaderProps {
   updateTitle: (v: string) => void
   editOn: boolean
   editContent: () => void
+  newContent: (date: string) => void
   confirmDelete: () => void
   dateList?: string[]
   editDate?: (date: string) => void
@@ -171,16 +195,19 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     setTitleEditable(false)
   }
 
-  const editDate = (date: moment.Moment | null) =>
-    setSelectedDate(date?.format(DataType.dateFormat))
+  const editDate = (date: string) => setSelectedDate(date)
 
-  const onSelectDate = (date: string) => {
-    if (props.onSelectDate) props.onSelectDate(date)
+  const timeSetModalOnOk = (isNew: boolean) => {
+    if (props.editDate && selectedDate) {
+      if (isNew) props.newContent(selectedDate)
+      else props.editDate(selectedDate)
+    }
+    setDateModalVisible({ ...dateModalVisible, set: false })
   }
 
-  const dateModalOnOk = () => {
-    if (props.editDate && selectedDate) props.editDate(selectedDate)
-    setDateModalVisible({ ...dateModalVisible, set: false })
+  const timePickModalOnOk = (date: string) => {
+    if (props.onSelectDate) props.onSelectDate(date)
+    setDateModalVisible({ ...dateModalVisible, pick: false })
   }
 
   const genTitle = () => {
@@ -228,9 +255,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         />
         <TimePickModal
           visible={ dateModalVisible.pick }
-          onOk={ dateModalOnOk }
+          onOk={ timePickModalOnOk }
           onCancel={ () => setDateModalVisible({ ...dateModalVisible, pick: false }) }
-          onSelectDate={ onSelectDate }
           dateList={ props.dateList }
         />
       </> : <></>
@@ -255,7 +281,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       <TimeSetModal
         show={ props.timeSeries }
         visible={ dateModalVisible.set }
-        onOk={ dateModalOnOk }
+        onOk={ timeSetModalOnOk }
         onCancel={ () => setDateModalVisible({ ...dateModalVisible, set: false }) }
         editDate={ editDate }
       />

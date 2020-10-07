@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from "moment"
+import _ from "lodash"
 
 import * as DataType from "../../DataType"
 import { ConvertRefFR } from "../ModuleCollection/data"
@@ -95,8 +96,20 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.updateContent(newContent)
   }
 
-  // todo: use panel header's modal `onOk` to trigger `fetchContent`
-  const selectDate = (date: string) => props.fetchContent(date)
+  const newDateWithContent = (d: string) => {
+    const prevContentWithoutId = _.omit(content, "id")
+    const newContent = {
+      ...prevContentWithoutId,
+      date: d
+    } as DataType.Content
+    setContent(newContent)
+    props.updateContent(newContent)
+  }
+
+  const selectDate = (date: string) => {
+    setContent(undefined)
+    props.fetchContent(date)
+  }
 
 
   return (
@@ -109,6 +122,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         updateTitle={ updateTitle }
         editOn={ editOn }
         editContent={ editContent }
+        newContent={ newDateWithContent }
         confirmDelete={ confirmDelete }
         dateList={ dateList }
         editDate={ headerDate }
