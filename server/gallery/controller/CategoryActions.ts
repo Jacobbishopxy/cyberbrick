@@ -66,7 +66,7 @@ export async function getCategoryContentByName(req: Request, res: Response) {
   res.send(ans)
 }
 
-export async function modifyCategoryDescription(req: Request, res: Response) {
+export async function savePureCategory(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const cat = {

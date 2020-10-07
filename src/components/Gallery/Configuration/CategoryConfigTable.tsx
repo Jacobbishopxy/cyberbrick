@@ -15,8 +15,7 @@ import { EditableTagPanel } from "../Tag/EditableTagPanel"
 
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
-  newCategory: (name: string) => void
-  modifyCategoryDescription: (categoryName: string, description: string) => void
+  saveCategory: (categoryName: string, description?: string) => void
   modifyDashboardDescription: (dashboardName: string, description: string) => void
   saveMark: (categoryName: string, mark: DataType.Mark) => void
   deleteMark: (categoryName: string, mark: string) => void
@@ -32,7 +31,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>()
 
   const modifyCategoryDescription = (categoryName: string) =>
-    (description: string) => props.modifyCategoryDescription(categoryName, description)
+    (description: string) => props.saveCategory(categoryName, description)
 
   const modifyDashboardDescription = (dashboardName: string) =>
     (description: string) => props.modifyDashboardDescription(dashboardName, description)
@@ -67,7 +66,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           <TextBuilder
             create
             text="New category"
-            saveNewText={ props.newCategory }
+            saveNewText={ props.saveCategory }
           />
       } : {}
 

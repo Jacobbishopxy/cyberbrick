@@ -109,7 +109,12 @@ export async function newDashboardAttachToEmptyCategory(categoryName: string, da
 
   if (cat && cat.dashboard === null) {
     const dr = dashboardRepo()
-    const newDb = dr.create(dashboard)
+    const newDb = dr.create({
+      ...dashboard,
+      category: {
+        name: categoryName
+      },
+    })
     await dr.save(newDb)
 
     return utils.HTMLStatus.SUCCESS_MODIFY

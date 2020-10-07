@@ -2,54 +2,14 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React from 'react'
-
-import * as DataType from "@/components/Gallery/DataType"
-import { CategoryConfigTable } from "@/components/Gallery/ConfigPage/CategoryConfigTable"
-import { DashboardConfigTable } from "@/components/Gallery/ConfigPage/DashboardConfigTable"
+import React, { useEffect, useState } from 'react'
 import { Divider } from "antd"
 
-const dataCategory: DataType.Category[] = [
-  {
-    name: "DevOps",
-    description: "development",
-    dashboard: {
-      name: "DevOps"
-    },
-    marks: [
-      {
-        id: "1",
-        name: "000001.SZ",
-        color: "volcano"
-      }
-    ],
-    tags: [
-      {
-        id: "1",
-        name: "Bank",
-        color: "magenta"
-      },
-      {
-        id: "2",
-        name: "File",
-        color: "lime"
-      },
-    ]
-  },
-  {
-    name: "Language",
-    description: "development",
-    marks: [],
-    tags: []
-  },
+import * as DataType from "@/components/Gallery/DataType"
+import * as GalleryService from "@/services/gallery"
+import { CategoryConfigTable } from "@/components/Gallery/Configuration/CategoryConfigTable"
+import { DashboardConfigTable } from "@/components/Gallery/Configuration/DashboardConfigTable"
 
-  {
-    name: "Datasource",
-    description: "",
-    marks: [],
-    tags: []
-  }
-]
 
 const dataDashboard: DataType.Dashboard[] = [
   {
@@ -80,18 +40,64 @@ const testAPI = (name: string, content?: any) =>
 
 export default () => {
 
+  const [dataCategory, setDataCategory] = useState<DataType.Category[]>([])
+  const [categoryRefresh, setCategoryRefresh] = useState<number>(0)
+
+  const getAllCategories = () =>
+    GalleryService.getAllCategoriesWithoutContents()
+
+  useEffect(() => {
+    getAllCategories().then(res => setDataCategory(res as DataType.Category[]))
+  }, [categoryRefresh])
+
+  const refreshCat = () => setCategoryRefresh(categoryRefresh + 1)
+
+  const saveCategory = (name: string, description?: string) =>
+    GalleryService
+      .saveCategory({ name, description })
+      .then(refreshCat)
+
+  const modifyDashboardDescription = (name: string, description: string) =>
+    GalleryService
+      .modifyDashboardDescription({ name, description })
+      .then(refreshCat)
+
+  const saveMark = (categoryName: string, mark: DataType.Mark) =>
+    GalleryService
+      .saveCategoryMark(categoryName, mark as GalleryAPI.Mark)
+      .then(refreshCat)
+
+  const deleteMark = (categoryName: string, markName: string) =>
+    GalleryService
+      .deleteMarkInCategory(categoryName, markName)
+      .then(refreshCat)
+
+  const saveTag = (categoryName: string, tag: DataType.Tag) =>
+    GalleryService
+      .saveCategoryTag(categoryName, tag as GalleryAPI.Tag)
+      .then(refreshCat)
+
+  const deleteTag = (categoryName: string, tagName: string) =>
+    GalleryService
+      .deleteTagInCategory(categoryName, tagName)
+      .then(refreshCat)
+
+  const newDashboard = (categoryName: string, dashboard: DataType.Dashboard) =>
+    GalleryService
+      .newDashboardAttachToEmptyCategory(categoryName, dashboard as GalleryAPI.Dashboard)
+      .then(refreshCat)
+
   return (
     <>
       <CategoryConfigTable
         data={ dataCategory }
-        newCategory={ testAPI }
-        modifyCategoryDescription={ testAPI }
-        modifyDashboardDescription={ testAPI }
-        saveMark={ testAPI }
-        deleteMark={ testAPI }
-        saveTag={ testAPI }
-        deleteTag={ testAPI }
-        newDashboard={ testAPI }
+        saveCategory={ saveCategory }
+        modifyDashboardDescription={ modifyDashboardDescription }
+        saveMark={ saveMark }
+        deleteMark={ deleteMark }
+        saveTag={ saveTag }
+        deleteTag={ deleteTag }
+        newDashboard={ newDashboard }
       />
       <Divider/>
       <DashboardConfigTable

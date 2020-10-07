@@ -61,13 +61,13 @@ const categoryRoutes: utils.OrmRoute[] = [
     action: categoryActions.getCategoryContentByName
   },
   {
-    path: `${ base }/modifyCategoryDescription`,
+    path: `${ base }/saveCategory`,
     method: "post",
     check: [
       common.bodyNameCheck,
       common.bodyDescriptionCheck
     ],
-    action: categoryActions.modifyCategoryDescription
+    action: categoryActions.savePureCategory
   },
   {
     path: `${ base }/saveCategoryMark`,
@@ -270,10 +270,7 @@ const dashboardRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/newDashboardAttachToEmptyCategory`,
     method: "post",
-    check: [
-      common.queryCategoryNameCheck,
-      common.bodyCategoryCheck
-    ],
+    check: [common.queryCategoryNameCheck],
     action: dashboardActions.newDashboardAttachToEmptyCategory
   },
 ]

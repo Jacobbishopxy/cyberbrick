@@ -13,7 +13,7 @@ const base = "/api/gallery"
 export const getAllCategoriesName = async (): Promise<string[]> =>
   request(`${ base }/getAllCategoriesName`)
 
-export const getAllCategoriesWithoutContents = async (): Promise<GalleryAPI.Category> =>
+export const getAllCategoriesWithoutContents = async (): Promise<GalleryAPI.Category[]> =>
   request(`${ base }/getAllCategoriesWithoutContents`)
 
 export const getCategoryMarkAndTagByName = async (name: string): Promise<GalleryAPI.Category> =>
@@ -22,8 +22,8 @@ export const getCategoryMarkAndTagByName = async (name: string): Promise<Gallery
 export const getCategoryContentByName = async (name: string): Promise<GalleryAPI.Category> =>
   request(`${ base }/getCategoryContentByName?name=${ name }`)
 
-export const modifyCategoryDescription = async (category: GalleryAPI.Category) =>
-  request(`${ base }/modifyCategoryDescription`, {
+export const saveCategory = async (category: GalleryAPI.Category) =>
+  request(`${ base }/saveCategory`, {
     method: "post",
     data: category
   })
