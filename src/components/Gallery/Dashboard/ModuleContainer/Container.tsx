@@ -46,11 +46,17 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const [template, setTemplate] = useState<DataType.Template>()
   const [startFetchAllTrigger, setStartFetchAllTrigger] = useState<number>(0)
 
+  /**
+   * fetch template (with elements) when switching tabs
+   */
   useEffect(() => {
     if (selectedPane)
       props.fetchElements(selectedPane.name).then(res => setTemplate(res))
   }, [selectedPane])
 
+  /**
+   * template's changing triggers `startFetchAllContents`
+   */
   useEffect(() => {
     if (template) {
       if (props.markAvailable && props.selectedMark)
@@ -104,10 +110,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   }
 
   return (
-    <Tabs
-      defaultActiveKey={ props.dashboardInfo[0] }
-      onChange={ tabOnChange }
-    >
+    <Tabs onChange={ tabOnChange }>
       {
         props.dashboardInfo.templates!.map((t, i) =>
           <Tabs.TabPane tab={ t.name } key={ t.name }>

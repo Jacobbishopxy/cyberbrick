@@ -7,7 +7,130 @@ import { Button, Col, DatePicker, Input, message, Modal, Row, Select, Space, Too
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
+import * as DataType from "@/components/Gallery/DataType"
 
+
+const DragButton = () =>
+  <Tooltip title='Drag'>
+    <Button
+      shape='circle'
+      size='small'
+      type='link'
+      className='draggableHandler'
+    >
+      <Emoji label="drag" symbol="🧲️️️️️"/>
+    </Button>
+  </Tooltip>
+
+const TimeSetButton = (props: { show: boolean | undefined, onClick: () => void }) =>
+  props.show ?
+    <Tooltip title="Date">
+      <Button
+        shape='circle'
+        size='small'
+        type='link'
+        onClick={ props.onClick }
+      >
+        <Emoji label="date" symbol="🗓️"/>
+      </Button>
+    </Tooltip> : <></>
+
+const EditButton = (props: { editOn: boolean, editContent: () => void }) =>
+  <Tooltip title="Edit">
+    <Button
+      shape='circle'
+      size='small'
+      type='link'
+      onClick={ props.editContent }
+    >
+      {
+        props.editOn ?
+          <Emoji label="edit" symbol="❌️"/> :
+          <Emoji label="edit" symbol="⚙️"/>
+      }
+    </Button>
+  </Tooltip>
+
+const DeleteButton = (props: { confirmDelete: () => void }) =>
+  <Tooltip title="Delete">
+    <Button
+      shape='circle'
+      size='small'
+      type='link'
+      onClick={ props.confirmDelete }
+    >
+      <Emoji label="delete" symbol="🗑️️️"/>
+    </Button>
+  </Tooltip>
+
+const TimePickButton = (props: { onClick: () => void }) =>
+  <Tooltip title="Date">
+    <Button
+      shape='circle'
+      size='small'
+      type='link'
+      onClick={ props.onClick }
+    >
+      <Emoji label="date" symbol="🗓️"/>
+    </Button>
+  </Tooltip>
+
+interface TimeSetModalProps {
+  show: boolean | undefined,
+  visible: boolean,
+  onOk: () => void,
+  onCancel: () => void,
+  editDate: ((date: moment.Moment | null) => void)
+}
+
+// todo: create new content with new date (default modify current content's date)
+const TimeSetModal = (props: TimeSetModalProps) =>
+  props.show ?
+    <Modal
+      title="Select a date"
+      visible={ props.visible }
+      onOk={ props.onOk }
+      onCancel={ props.onCancel }
+    >
+      <DatePicker
+        onChange={ props.editDate }
+        defaultValue={ moment() }
+      />
+    </Modal> : <></>
+
+interface TimePickModalProps {
+  visible: boolean
+  onOk: () => void
+  onCancel: () => void
+  onSelectDate: (d: string) => void
+  dateList: string[]
+}
+
+const TimePickModal = (props: TimePickModalProps) =>
+  <Modal
+    title="Select a date"
+    visible={ props.visible }
+    onOk={ props.onOk }
+    onCancel={ props.onCancel }
+  >
+    <Select
+      showSearch
+      style={ { width: 200 } }
+      placeholder="Select a date"
+      optionFilterProp="children"
+      onChange={ props.onSelectDate }
+      filterOption={ (input, option) => {
+        if (option) return option.children.indexOf(input) >= 0
+        return false
+      } }
+    >
+      {
+        props.dateList.map(d =>
+          <Select.Option value={ d } key={ d }>{ d }</Select.Option>
+        )
+      }
+    </Select>
+  </Modal>
 
 interface ModulePanelHeaderProps {
   editable: boolean
@@ -28,7 +151,6 @@ interface DateModalVisible {
   pick: boolean
 }
 
-// todo: error when creating new content with new date
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
@@ -49,8 +171,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     setTitleEditable(false)
   }
 
-  const editDate = (date: moment.Moment | null, dateStr: string) =>
-    setSelectedDate(dateStr)
+  const editDate = (date: moment.Moment | null) =>
+    setSelectedDate(date?.format(DataType.dateFormat))
 
   const onSelectDate = (date: string) => {
     if (props.onSelectDate) props.onSelectDate(date)
@@ -82,96 +204,40 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     return title
   }
 
-  const genEditor = () => {
-    if (props.editable)
-      return <Space>
-        <Tooltip title='Drag'>
-          <Button
-            shape='circle'
-            size='small'
-            type='link'
-            className='draggableHandler'
-          >
-            <Emoji label="drag" symbol="🧲️️️️️"/>
-          </Button>
-        </Tooltip>
-        {
-          props.timeSeries ?
-            <Tooltip title="Date">
-              <Button
-                shape='circle'
-                size='small'
-                type='link'
-                onClick={ () => setDateModalVisible({ ...dateModalVisible, set: true }) }
-              >
-                <Emoji label="date" symbol="🗓️"/>
-              </Button>
-            </Tooltip> :
-            <></>
-        }
-        <Tooltip title="Edit">
-          <Button
-            shape='circle'
-            size='small'
-            type='link'
-            onClick={ props.editContent }
-          >
-            {
-              props.editOn ?
-                <Emoji label="edit" symbol="❌️"/> :
-                <Emoji label="edit" symbol="⚙️"/>
-            }
-          </Button>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <Button
-            shape='circle'
-            size='small'
-            type='link'
-            onClick={ props.confirmDelete }
-          >
-            <Emoji label="delete" symbol="🗑️️️"/>
-          </Button>
-        </Tooltip>
-      </Space>
+  const editableController = () =>
+    <Space>
+      <DragButton/>
+      <TimeSetButton
+        show={ props.timeSeries }
+        onClick={ () => setDateModalVisible({ ...dateModalVisible, set: true }) }
+      />
+      <EditButton
+        editOn={ props.editOn }
+        editContent={ props.editContent }
+      />
+      <DeleteButton
+        confirmDelete={ props.confirmDelete }
+      />
+    </Space>
 
-    return props.timeSeries && props.dateList ?
+  const nonEditableController = () =>
+    props.timeSeries && props.dateList ?
       <>
-        <Tooltip title="Date">
-          <Button
-            shape='circle'
-            size='small'
-            type='link'
-            onClick={ () => setDateModalVisible({ ...dateModalVisible, pick: true }) }
-          >
-            <Emoji label="date" symbol="🗓️"/>
-          </Button>
-        </Tooltip>
-        <Modal
-          title="Select a date"
+        <TimePickButton
+          onClick={ () => setDateModalVisible({ ...dateModalVisible, pick: true }) }
+        />
+        <TimePickModal
           visible={ dateModalVisible.pick }
           onOk={ dateModalOnOk }
           onCancel={ () => setDateModalVisible({ ...dateModalVisible, pick: false }) }
-        >
-          <Select
-            showSearch
-            style={ { width: 200 } }
-            placeholder="Select a date"
-            optionFilterProp="children"
-            onChange={ onSelectDate }
-            filterOption={ (input, option) => {
-              if (option) return option.children.indexOf(input) >= 0
-              return false
-            } }
-          >
-            {
-              props.dateList.map(d =>
-                <Select.Option value={ d } key={ d }>{ d }</Select.Option>
-              )
-            }
-          </Select>
-        </Modal>
+          onSelectDate={ onSelectDate }
+          dateList={ props.dateList }
+        />
       </> : <></>
+
+  const genController = () => {
+    if (props.editable) return editableController()
+    return props.timeSeries && props.dateList ? nonEditableController() : <></>
   }
 
   return (
@@ -182,27 +248,17 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
           { genTitle() }
         </Col>
         <Col span={ 8 } style={ { textAlign: "right" } }>
-          { genEditor() }
+          { genController() }
         </Col>
       </Row>
 
-      {
-        props.timeSeries ?
-          <Modal
-            title="Select a date"
-            visible={ dateModalVisible.set }
-            onOk={ dateModalOnOk }
-            onCancel={ () => setDateModalVisible({ ...dateModalVisible, set: false }) }
-          >
-            <Space>
-              Select a record date:
-              <DatePicker
-                onChange={ editDate }
-                defaultValue={ moment() }
-              />
-            </Space>
-          </Modal> : <></>
-      }
+      <TimeSetModal
+        show={ props.timeSeries }
+        visible={ dateModalVisible.set }
+        onOk={ dateModalOnOk }
+        onCancel={ () => setDateModalVisible({ ...dateModalVisible, set: false }) }
+        editDate={ editDate }
+      />
     </div>
   )
 }

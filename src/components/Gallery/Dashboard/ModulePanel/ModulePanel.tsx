@@ -73,7 +73,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const updateTitle = (title: string) => {
     const newContent = content ?
       { ...content, title } :
-      { title, data: {}, date: moment().format() }
+      { title, data: {}, date: moment().format(DataType.dateFormat) }
     setContent(newContent)
     props.updateContent(newContent)
   }
