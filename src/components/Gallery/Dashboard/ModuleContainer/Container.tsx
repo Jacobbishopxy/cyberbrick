@@ -38,7 +38,7 @@ const initSelectedPane = (templates: DataType.Template[]) => {
 }
 
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
-  const ctRefs = useRef<ContainerTemplateRef[]>([])
+  const ctRef = useRef<ContainerTemplateRef>(null)
 
   const templates = props.dashboardInfo.templates!
 
@@ -68,25 +68,26 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const tabOnChange = (name: string) => {
     setSelectedPane({ name, index: _.findIndex(templates, t => t.name === name) })
+    setTemplate(undefined)
   }
 
   const startFetchAllContents = () => {
     if (selectedPane) {
-      const rf = ctRefs.current[selectedPane.index]
+      const rf = ctRef.current
       if (rf) rf.startFetchAllContents()
     }
   }
 
   const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
     if (selectedPane) {
-      const rf = ctRefs.current[selectedPane.index]
+      const rf = ctRef.current
       if (rf) rf.newElement(name, timeSeries, elementType)
     }
   }
 
   const saveTemplate = () => {
     if (selectedPane) {
-      const rf = ctRefs.current[selectedPane.index]
+      const rf = ctRef.current
 
       if (rf && template) {
         const e = rf.saveElements()
@@ -105,17 +106,14 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     props.updateElementContentFn({ ...ctt, category })
   }
 
-  const genRef = (i: number) => (el: ContainerTemplateRef) => {
-    if (el) ctRefs.current[i] = el
-  }
 
   return (
-    <Tabs onChange={ tabOnChange }>
+    <Tabs onChange={ tabOnChange } destroyInactiveTabPane>
       {
-        props.dashboardInfo.templates!.map((t, i) =>
-          <Tabs.TabPane tab={ t.name } key={ t.name }>
+        props.dashboardInfo.templates!.map(t =>
+          <Tabs.TabPane tab={ t.name } key={ t.name } destroyInactiveTabPane>
             {
-              template ?
+              t.name === selectedPane?.name && template ?
                 <ContainerTemplate
                   markAvailable={ props.markAvailable }
                   startFetchAllTrigger={ startFetchAllTrigger }
@@ -123,7 +121,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                   elementFetchContentFn={ props.fetchElementContentFn }
                   elementFetchContentDatesFn={ props.fetchElementContentDatesFn }
                   elementUpdateContentFn={ elementUpdateContentFn }
-                  ref={ genRef(i) }
+                  ref={ ctRef }
                 /> : <></>
             }
           </Tabs.TabPane>

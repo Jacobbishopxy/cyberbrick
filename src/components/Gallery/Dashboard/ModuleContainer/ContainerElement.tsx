@@ -30,16 +30,9 @@ export const ContainerElement =
     const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
 
-    // todo: WARN!!! memory lick? 1. fetchContent, 2. fetchContentDates
     useEffect(() => {
-      let isSubscribed = true
       if (!props.markAvailable && eleId)
-        props.fetchContentFn(eleId).then(res => {
-          if (isSubscribed) setContent(res)
-        })
-      return () => {
-        isSubscribed = false
-      }
+        props.fetchContentFn(eleId).then(res => setContent(res))
     }, [])
 
     const fetchContent = (date?: string) => {

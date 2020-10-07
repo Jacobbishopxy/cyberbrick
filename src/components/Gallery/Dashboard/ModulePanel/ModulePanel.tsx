@@ -43,13 +43,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
   useEffect(() => setDateList(props.dates), [props.dates])
 
   useEffect(() => {
-    let isSubscribed = true
-    if (props.timeSeries && props.fetchContentDates && content) {
-      if (isSubscribed) props.fetchContentDates()
-    }
-    return () => {
-      isSubscribed = false
-    }
+    if (props.timeSeries && props.fetchContentDates && content)
+      props.fetchContentDates()
   }, [content])
 
 
