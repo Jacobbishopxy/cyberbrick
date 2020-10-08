@@ -22,19 +22,19 @@ export const getCategoryMarkAndTagByName = async (name: string): Promise<Gallery
 export const getCategoryContentByName = async (name: string): Promise<GalleryAPI.Category> =>
   request(`${ base }/getCategoryContentByName?name=${ name }`)
 
-export const saveCategory = async (category: GalleryAPI.Category) =>
+export const saveCategory = async (category: GalleryAPI.Category): Promise<void> =>
   request(`${ base }/saveCategory`, {
     method: "post",
     data: category
   })
 
-export const saveCategoryMark = async (categoryName: string, mark: GalleryAPI.Mark) =>
+export const saveCategoryMark = async (categoryName: string, mark: GalleryAPI.Mark): Promise<void> =>
   request(`${ base }/saveCategoryMark?name=${ categoryName }`, {
     method: "post",
     data: mark
   })
 
-export const saveCategoryTag = async (categoryName: string, tag: GalleryAPI.Tag) =>
+export const saveCategoryTag = async (categoryName: string, tag: GalleryAPI.Tag): Promise<void> =>
   request(`${ base }/saveCategoryTag?name=${ categoryName }`, {
     method: "post",
     data: tag
@@ -43,10 +43,10 @@ export const saveCategoryTag = async (categoryName: string, tag: GalleryAPI.Tag)
 
 // Mark
 
-export const getCategoriesByMarkName = async (name: string) =>
+export const getCategoriesByMarkName = async (name: string): Promise<GalleryAPI.Category[]> =>
   request(`${ base }/getCategoriesByMarkName?name=${ name }`)
 
-export const deleteMarkInCategory = async (categoryName: string, markName: string) =>
+export const deleteMarkInCategory = async (categoryName: string, markName: string): Promise<void> =>
   request(`${ base }/deleteMarkInCategory?categoryName=${ categoryName }&markName=${ markName }`, {
     method: "delete"
   })
@@ -54,10 +54,10 @@ export const deleteMarkInCategory = async (categoryName: string, markName: strin
 
 // Tag
 
-export const getCategoriesByTagName = async (name: string) =>
+export const getCategoriesByTagName = async (name: string): Promise<GalleryAPI.Category[]> =>
   request(`${ base }/getCategoriesByTagName?name=${ name }`)
 
-export const deleteTagInCategory = async (categoryName: string, tagName: string) =>
+export const deleteTagInCategory = async (categoryName: string, tagName: string): Promise<void> =>
   request(`${ base }/deleteTagInCategory?categoryName=${ categoryName }&tagName=${ tagName }`, {
     method: "delete"
   })
@@ -84,7 +84,7 @@ export const getContentsInCategoryByElementTypeAndMarkAndTags =
     return request(path)
   }
 
-export const saveContentInCategory = async (categoryName: string, content: GalleryAPI.Content) =>
+export const saveContentInCategory = async (categoryName: string, content: GalleryAPI.Content): Promise<void> =>
   request(`${ base }/saveContentInCategory?name=${ categoryName }`, {
     method: "post",
     data: content
@@ -93,46 +93,48 @@ export const saveContentInCategory = async (categoryName: string, content: Galle
 
 // Dashboard
 
-export const getAllDashboardsName = async () =>
+export const getAllDashboardsName = async (): Promise<string[]> =>
   request(`${ base }/getAllDashboardsName`)
 
-export const getAllDashboardsTemplate = async () =>
+export const getAllDashboardsTemplate = async (): Promise<GalleryAPI.Dashboard[]> =>
   request(`${ base }/getAllDashboardsTemplate`)
 
-export const getDashboardCategoryMarksAndTemplateByName = async (dashboardName: string) =>
-  request(`${ base }/getDashboardCategoryMarksAndTemplateByName?dashboardName=${ dashboardName }`)
+export const getDashboardCategoryMarksAndTemplateByName =
+  async (dashboardName: string): Promise<GalleryAPI.Dashboard> =>
+    request(`${ base }/getDashboardCategoryMarksAndTemplateByName?dashboardName=${ dashboardName }`)
 
-export const modifyDashboardDescription = async (dashboard: GalleryAPI.Dashboard) =>
+export const modifyDashboardDescription = async (dashboard: GalleryAPI.Dashboard): Promise<void> =>
   request(`${ base }/modifyDashboardDescription`, {
     method: "post",
     data: dashboard
   })
 
-export const newDashboardAttachToEmptyCategory = async (categoryName: string, dashboard: GalleryAPI.Dashboard) =>
-  request(`${ base }/newDashboardAttachToEmptyCategory?categoryName=${ categoryName }`, {
-    method: "post",
-    data: dashboard
-  })
+export const newDashboardAttachToEmptyCategory =
+  async (categoryName: string, dashboard: GalleryAPI.Dashboard): Promise<void> =>
+    request(`${ base }/newDashboardAttachToEmptyCategory?categoryName=${ categoryName }`, {
+      method: "post",
+      data: dashboard
+    })
 
 
 // Template
 
-export const getTemplateElementsContents = async (dashboardName: string, templateName: string) =>
-  request(`${ base }/getTemplateElementsContents?dashboardName=${ dashboardName }&templateName=${ templateName }`)
+export const getTemplateElements =
+  async (dashboardName: string, templateName: string): Promise<GalleryAPI.Template> =>
+    request(`${ base }/getTemplateElements?dashboardName=${ dashboardName }&templateName=${ templateName }`)
 
-export const getTemplateElements = async (dashboardName: string, templateName: string) =>
-  request(`${ base }/getTemplateElements?dashboardName=${ dashboardName }&templateName=${ templateName }`)
+export const saveTemplateInDashboard =
+  async (dashboardName: string, template: GalleryAPI.Template): Promise<void> =>
+    request(`${ base }/saveTemplateInDashboard?dashboardName=${ dashboardName }`, {
+      method: "post",
+      data: template
+    })
 
-export const saveTemplateInDashboard = async (dashboardName: string, template: GalleryAPI.Template) =>
-  request(`${ base }/saveTemplateInDashboard?dashboardName=${ dashboardName }`, {
-    method: "post",
-    data: template
-  })
-
-export const deleteTemplateInDashboard = async (dashboardName: string, templateName: string) =>
-  request(`${ base }/deleteTemplateInDashboard?dashboardName=${ dashboardName }&templateName=${ templateName }`, {
-    method: "delete"
-  })
+export const deleteTemplateInDashboard =
+  async (dashboardName: string, templateName: string): Promise<void> =>
+    request(`${ base }/deleteTemplateInDashboard?dashboardName=${ dashboardName }&templateName=${ templateName }`, {
+      method: "delete"
+    })
 
 export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements): Promise<void> =>
   request(`${ base }/copyTemplateElements`, {

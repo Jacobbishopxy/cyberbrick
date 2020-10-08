@@ -23,7 +23,7 @@ export class Element {
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Template, tmp => tmp.elements, { nullable: true })
+  @ManyToOne(() => Template, tmp => tmp.elements, { nullable: true, onDelete: "CASCADE" })
   template!: Template
 
   @OneToMany(() => Content, ct => ct.element, { cascade: true, nullable: true })

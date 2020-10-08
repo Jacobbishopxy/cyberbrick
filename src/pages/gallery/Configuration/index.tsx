@@ -11,46 +11,29 @@ import { CategoryConfigTable } from "@/components/Gallery/Configuration/Category
 import { DashboardConfigTable } from "@/components/Gallery/Configuration/DashboardConfigTable"
 
 
-const dataDashboard: DataType.Dashboard[] = [
-  {
-    name: "DevOps",
-    description: "Mock",
-    templates: [
-      {
-        name: "Language",
-      },
-      {
-        name: "Development"
-      }
-    ]
-  },
-  {
-    name: "Prod",
-    description: "fake prod",
-    templates: [
-      {
-        name: "Workflow",
-      }
-    ]
-  },
-]
-
-const testAPI = (name: string, content?: any) =>
-  console.log(name, content)
-
 export default () => {
 
   const [dataCategory, setDataCategory] = useState<DataType.Category[]>([])
+  const [dataDashboard, setDataDashboard] = useState<DataType.Dashboard[]>([])
   const [categoryRefresh, setCategoryRefresh] = useState<number>(0)
+  const [dashboardRefresh, setDashboardRefresh] = useState<number>(0)
 
   const getAllCategories = () =>
     GalleryService.getAllCategoriesWithoutContents()
+
+  const getAllDashboards = () =>
+    GalleryService.getAllDashboardsTemplate()
 
   useEffect(() => {
     getAllCategories().then(res => setDataCategory(res as DataType.Category[]))
   }, [categoryRefresh])
 
+  useEffect(() => {
+    getAllDashboards().then(res => setDataDashboard(res as DataType.Dashboard[]))
+  }, [dashboardRefresh])
+
   const refreshCat = () => setCategoryRefresh(categoryRefresh + 1)
+  const refreshDsb = () => setDashboardRefresh(dashboardRefresh + 1)
 
   const saveCategory = (name: string, description?: string) =>
     GalleryService
@@ -87,6 +70,16 @@ export default () => {
       .newDashboardAttachToEmptyCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
+  const saveTemplate = (dashboardName: string, template: DataType.Template) =>
+    GalleryService
+      .saveTemplateInDashboard(dashboardName, template as GalleryAPI.Template)
+      .then(refreshDsb)
+
+  const deleteTemplate = (dashboardName: string, templateName: string) =>
+    GalleryService
+      .deleteTemplateInDashboard(dashboardName, templateName)
+      .then(refreshDsb)
+
   return (
     <>
       <CategoryConfigTable
@@ -102,8 +95,8 @@ export default () => {
       <Divider/>
       <DashboardConfigTable
         data={ dataDashboard }
-        saveTemplate={ testAPI }
-        deleteTemplate={ testAPI }
+        saveTemplate={ saveTemplate }
+        deleteTemplate={ deleteTemplate }
       />
     </>
   )
