@@ -54,7 +54,7 @@ export interface ContainerTemplateProps {
   startFetchAllTrigger: number
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
-  elementFetchContentDatesFn: (id: string) => Promise<DataType.Element>
+  elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
 }
 

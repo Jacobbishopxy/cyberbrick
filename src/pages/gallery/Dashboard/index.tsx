@@ -26,8 +26,8 @@ export default () => {
   const fetchElementContent = (id: string, date?: string, markName?: string) =>
     GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
 
-  const fetchElementContentDates = (id: string) =>
-    GalleryService.getElementContentDates(id) as Promise<DataType.Element>
+  const fetchElementContentDates = (id: string, markName?: string) =>
+    GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>
 
   const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
     GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)

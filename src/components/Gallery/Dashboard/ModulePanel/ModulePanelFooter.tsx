@@ -14,7 +14,7 @@ export interface ModulePanelFooterProps {
 
 export const ModulePanelFooter = (props: ModulePanelFooterProps) =>
   <div className={ styles.modulePanelFooter }>
-    <span>ID: { props.id }</span>
+    { props.id ? <span>ID: { props.id }</span> : <></> }
     { props.date ? <span>Date: { props.date }</span> : <></> }
   </div>
 

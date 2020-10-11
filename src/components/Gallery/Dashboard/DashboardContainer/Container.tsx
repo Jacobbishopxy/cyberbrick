@@ -16,7 +16,7 @@ export interface ContainerProps {
   dashboardInfo: DataType.Dashboard
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
-  fetchElementContentDatesFn: (id: string) => Promise<DataType.Element>
+  fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
 }
 

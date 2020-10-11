@@ -46,12 +46,18 @@ export async function deleteElement(id: string) {
 
 // =====================================================================================================================
 
-// todo: optional param markName is required!
-export async function getElementContentDates(id: string) {
-  const ans = await elementRepo()
+export async function getElementContentDates(id: string, markName?: string) {
+  let que = elementRepo()
     .createQueryBuilder(common.element)
     .where(`${ common.elementId } = :id`, { id })
     .leftJoinAndSelect(common.elementContents, common.content)
+
+  if (markName)
+    que = que
+      .leftJoinAndSelect(common.contentMark, common.mark)
+      .andWhere(`${ common.markName } = :markName`, { markName })
+
+  const ans = await que
     .select([common.elementId, common.contentDate])
     .getOne()
 

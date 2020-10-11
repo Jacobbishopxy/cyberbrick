@@ -47,7 +47,8 @@ export async function getElementContentDates(req: Request, res: Response) {
   if (utils.expressErrorsBreak(req, res)) return
 
   const id = req.query.id as string
-  const ans = await elementService.getElementContentDates(id)
+  const markName = req.query.markName as utils.QueryStr
+  const ans = await elementService.getElementContentDates(id, markName)
 
   res.send(ans)
 }

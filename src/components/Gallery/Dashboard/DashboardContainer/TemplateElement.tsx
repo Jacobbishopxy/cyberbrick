@@ -14,7 +14,7 @@ export interface ContainerElementProps {
   editable: boolean
   element: DataType.Element
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
-  fetchContentDatesFn: (id: string) => Promise<DataType.Element>
+  fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
 }

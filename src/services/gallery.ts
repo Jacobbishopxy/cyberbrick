@@ -151,8 +151,13 @@ export const updateTemplateElements = async (template: GalleryAPI.Template): Pro
 
 // Element
 
-export const getElementContentDates = async (id: string): Promise<GalleryAPI.Element> =>
-  request(`${ base }/getElementContentDates?id=${ id }`)
+export const getElementContentDates = async (id: string, markName?: string): Promise<GalleryAPI.Element> => {
+  let path = `${ base }/getElementContentDates?id=${ id }`
+  if (markName)
+    path += `&markName=${ markName }`
+
+  return request(path)
+}
 
 export const getElementContent = async (id: string, date?: string, markName?: string): Promise<GalleryAPI.Element> => {
   let path = `${ base }/getElementContent?id=${ id }`

@@ -49,7 +49,7 @@ export interface DashboardProps {
   fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
-  fetchElementContentDates: (id: string) => Promise<DataType.Element>
+  fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
 }
 
@@ -118,6 +118,9 @@ export const Dashboard = (props: DashboardProps) => {
     return undefined
   }
 
+  const fetchElementContentDates = async (id: string) =>
+    props.fetchElementContentDates(id, selectedMark)
+
   const updateElementContent = (ctt: DataType.Content) => {
     let markValue = {}
     if (props.markAvailable && selectedMark) {
@@ -154,7 +157,7 @@ export const Dashboard = (props: DashboardProps) => {
             dashboardInfo={ selectedDashboard }
             fetchElements={ fetchElements }
             fetchElementContentFn={ fetchElementContent }
-            fetchElementContentDatesFn={ props.fetchElementContentDates }
+            fetchElementContentDatesFn={ fetchElementContentDates }
             updateElementContentFn={ updateElementContent }
             ref={ cRef }
           /> : <></>
