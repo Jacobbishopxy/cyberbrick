@@ -5,7 +5,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
 import { ConvertProps, ConvertRefFR, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import styles from "./Common.less"
 
 export class ModuleGenerator {

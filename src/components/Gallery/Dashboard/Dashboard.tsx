@@ -5,9 +5,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import _ from "lodash"
 
-import * as DataType from "../DataType"
-import { ModuleController } from "./ModuleController/ModuleController"
-import { Container, ContainerRef } from "./ModuleContainer/Container"
+import * as DataType from "../GalleryDataType"
+import { Controller } from "./DashboardController/Controller"
+import { Container, ContainerRef } from "./DashboardContainer/Container"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -44,7 +44,7 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 
 export interface DashboardProps {
   markAvailable?: boolean
-  fetchDashboardNames: () => Promise<DataType.Dashboard[]>
+  fetchDashboardNames: () => Promise<GalleryAPI.Dashboard[]>
   fetchDashboard: (dashboardName: string) => Promise<DataType.Dashboard>
   fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
@@ -135,7 +135,7 @@ export const Dashboard = (props: DashboardProps) => {
 
   return (
     <EditableContext.Provider value={ edit }>
-      <ModuleController
+      <Controller
         markAvailable={ props.markAvailable }
         canEdit={ canEdit }
         dashboardNames={ dashboardNames }

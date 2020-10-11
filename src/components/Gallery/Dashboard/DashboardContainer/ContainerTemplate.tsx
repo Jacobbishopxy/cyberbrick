@@ -7,8 +7,8 @@ import { message } from "antd"
 import _ from "lodash"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
-import * as DataType from "../../DataType"
-import { ContainerElement, ContainerElementRef } from "./ContainerElement"
+import * as DataType from "../../GalleryDataType"
+import { TemplateElement, ContainerElementRef } from "./TemplateElement"
 import { EditableContext } from "../Dashboard"
 
 
@@ -64,6 +64,9 @@ export interface ContainerTemplateRef {
   saveElements: () => DataType.Element[]
 }
 
+/**
+ * container's template
+ */
 export const ContainerTemplate =
   forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
     const ceRefs = useRef<ContainerElementRef[]>([])
@@ -131,7 +134,7 @@ export const ContainerTemplate =
         {
           elements.map((ele, i) =>
             <div key={ ele.name } data-grid={ genDataGrid(ele) }>
-              <ContainerElement
+              <TemplateElement
                 markAvailable={ props.markAvailable }
                 timeSeries={ ele.timeSeries }
                 editable={ editable }

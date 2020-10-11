@@ -46,6 +46,7 @@ export async function deleteElement(id: string) {
 
 // =====================================================================================================================
 
+// todo: optional param markName is required!
 export async function getElementContentDates(id: string) {
   const ans = await elementRepo()
     .createQueryBuilder(common.element)

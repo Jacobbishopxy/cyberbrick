@@ -5,7 +5,7 @@
 import React, { useState } from 'react'
 import { Table } from "antd"
 
-import * as DataType from "../DataType"
+import * as DataType from "../GalleryDataType"
 import { Editor } from "../Misc/Editor"
 import { EditableTagPanel } from "../Tag/EditableTagPanel"
 
@@ -16,6 +16,9 @@ export interface DashboardConfigTableProps {
   deleteTemplate: (dashboardName: string, templateName: string) => void
 }
 
+/**
+ * dealing with dashboard creating & modifying
+ */
 export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)

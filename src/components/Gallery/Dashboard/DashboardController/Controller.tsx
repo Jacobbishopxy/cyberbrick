@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, message, Modal, Select, Space } from 'antd'
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import { AddModuleModal } from "./AddModuleModal"
 
 export interface ModuleControllerProps {
@@ -21,7 +21,7 @@ export interface ModuleControllerProps {
   onSaveTemplate: () => Promise<void>
 }
 
-export const ModuleController = (props: ModuleControllerProps) => {
+export const Controller = (props: ModuleControllerProps) => {
 
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
@@ -133,7 +133,7 @@ export const ModuleController = (props: ModuleControllerProps) => {
   )
 }
 
-ModuleController.defaultProps = {
+Controller.defaultProps = {
   markAvailable: false
 } as Partial<ModuleControllerProps>
 

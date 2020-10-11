@@ -7,7 +7,7 @@ import { Button, Input, Modal } from "antd"
 import moment from "moment"
 
 import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../DataType"
+import * as DataType from "../../../GalleryDataType"
 import { ModuleEditorField, ModulePresenterField } from "../data"
 
 const EditorField = (props: ModuleEditorField) => {

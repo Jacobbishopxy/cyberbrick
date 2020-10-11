@@ -7,7 +7,7 @@ import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row, Select, 
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
-import * as DataType from "@/components/Gallery/DataType"
+import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
 const DragButton = () =>

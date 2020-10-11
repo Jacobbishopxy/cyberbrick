@@ -93,7 +93,7 @@ export const saveContentInCategory = async (categoryName: string, content: Galle
 
 // Dashboard
 
-export const getAllDashboardsName = async (): Promise<string[]> =>
+export const getAllDashboardsName = async (): Promise<GalleryAPI.Dashboard[]> =>
   request(`${ base }/getAllDashboardsName`)
 
 export const getAllDashboardsTemplate = async (): Promise<GalleryAPI.Dashboard[]> =>

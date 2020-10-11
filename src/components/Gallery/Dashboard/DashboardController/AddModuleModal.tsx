@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { Card, Checkbox, Divider, Input, List, message, Modal, Space, Tabs } from "antd"
 import { StarTwoTone } from "@ant-design/icons"
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import { moduleList } from "../ModulePanel/moduleSelector"
 
 import styles from "./Common.less"

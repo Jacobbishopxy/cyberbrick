@@ -4,11 +4,13 @@
 
 import React from 'react'
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import { ConvertRefFR } from "../ModuleCollection/data"
-import { EmbedLink } from "../ModuleCollection/Collections/EmbedLink"
-import { Text } from "../ModuleCollection/Collections/Text"
-import { EditableTable } from "../ModuleCollection/Collections/EditableTable"
+import {
+  EmbedLink,
+  Text,
+  EditableTable,
+} from "../ModuleCollection"
 
 import styles from "./Common.less"
 

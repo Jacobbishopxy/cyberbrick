@@ -5,8 +5,8 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import moment from "moment"
 
-import * as DataType from "../../DataType"
-import { ModulePanel } from "../ModulePanel/ModulePanel"
+import * as DataType from "../../GalleryDataType"
+import { ModulePanel } from "../ModulePanel"
 
 export interface ContainerElementProps {
   markAvailable?: boolean
@@ -23,7 +23,10 @@ export interface ContainerElementRef {
   fetchContent: (date?: string) => void
 }
 
-export const ContainerElement =
+/**
+ * Template's elements
+ */
+export const TemplateElement =
   forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
 
     const [content, setContent] = useState<DataType.Content>()
@@ -74,7 +77,7 @@ export const ContainerElement =
     )
   })
 
-ContainerElement.defaultProps = {
+TemplateElement.defaultProps = {
   markAvailable: false,
   timeSeries: false
 } as Partial<ContainerElementProps>

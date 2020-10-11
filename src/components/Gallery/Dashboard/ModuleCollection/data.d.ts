@@ -4,7 +4,7 @@
 
 import React from "react"
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 
 export interface ModuleEditorField {
   content?: DataType.Content

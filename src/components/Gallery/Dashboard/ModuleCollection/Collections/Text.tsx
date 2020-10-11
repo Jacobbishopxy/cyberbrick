@@ -8,7 +8,7 @@ import moment from "moment"
 
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../DataType"
+import * as DataType from "../../../GalleryDataType"
 import { ModuleEditorField, ModulePresenterField } from "../data"
 
 const EditorField = (props: ModuleEditorField) => {

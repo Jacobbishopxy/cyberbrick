@@ -80,7 +80,9 @@ export async function getDashboardCategoryMarksAndTemplateByName(dashboardName: 
 }
 
 export async function getAllDashboardsTemplate() {
-  return dashboardRepo().find(dashboardTemplateRelations)
+  const ans = await dashboardRepo().find(dashboardTemplateRelations)
+  if (ans) return ans
+  return []
 }
 
 export async function modifyDashboardDescription(dashboardName: string, description: string) {

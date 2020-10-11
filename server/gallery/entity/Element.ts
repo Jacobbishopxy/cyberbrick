@@ -23,6 +23,9 @@ export class Element {
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
+  /**
+   * if a template is deleted, its' element would be deleted as well (element's contents still remain, see `Content.ts`)
+   */
   @ManyToOne(() => Template, tmp => tmp.elements, { nullable: true, onDelete: "CASCADE" })
   template!: Template
 

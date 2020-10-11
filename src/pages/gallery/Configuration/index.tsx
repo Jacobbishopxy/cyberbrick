@@ -5,10 +5,9 @@
 import React, { useEffect, useState } from 'react'
 import { Divider } from "antd"
 
-import * as DataType from "@/components/Gallery/DataType"
+import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import { CategoryConfigTable } from "@/components/Gallery/Configuration/CategoryConfigTable"
-import { DashboardConfigTable } from "@/components/Gallery/Configuration/DashboardConfigTable"
+import { CategoryConfigTable, DashboardConfigTable } from "@/components/Gallery/Configuration"
 
 
 export default () => {

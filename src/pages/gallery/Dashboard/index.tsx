@@ -7,9 +7,18 @@ import React from 'react'
 import { Dashboard } from "@/components/Gallery/Dashboard"
 import { GalleryDataType } from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
-import * as DataType from "@/components/Gallery/DataType"
+import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export default () => {
+
+  const fetchDashboardNames = () =>
+    GalleryService.getAllDashboardsName()
+
+  const fetchDashboard = (dashboardName: string) =>
+    GalleryService.getDashboardCategoryMarksAndTemplateByName(dashboardName) as Promise<DataType.Dashboard>
+
+  const fetchTemplate = (dashboardName: string, templateName: string) =>
+    GalleryService.getTemplateElements(dashboardName, templateName) as Promise<DataType.Template>
 
   const saveTemplate = (template: GalleryDataType.Template) =>
     GalleryService.updateTemplateElements(template as GalleryAPI.Template)
@@ -27,9 +36,9 @@ export default () => {
   return (
     <Dashboard
       markAvailable
-      fetchDashboardNames={ GalleryService.getAllDashboardsName }
-      fetchDashboard={ GalleryService.getDashboardCategoryMarksAndTemplateByName }
-      fetchTemplate={ GalleryService.getTemplateElements }
+      fetchDashboardNames={ fetchDashboardNames }
+      fetchDashboard={ fetchDashboard }
+      fetchTemplate={ fetchTemplate }
       saveTemplate={ saveTemplate }
       fetchElementContent={ fetchElementContent }
       fetchElementContentDates={ fetchElementContentDates }

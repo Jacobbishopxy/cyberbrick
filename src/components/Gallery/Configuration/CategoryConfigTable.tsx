@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { Table, Tag } from "antd"
 import { PlusOutlined } from '@ant-design/icons'
 
-import * as DataType from "../DataType"
+import * as DataType from "../GalleryDataType"
 import { Editor } from "../Misc/Editor"
 import { CreationModal } from "../Misc/CreationModal"
 import { TextBuilder } from "../Misc/TextBuilder"
@@ -24,6 +24,9 @@ export interface CategoryConfigTableProps {
   newDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
 }
 
+/**
+ * dealing with category creating & modifying
+ */
 export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
@@ -101,8 +104,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
                 <TextBuilder
                   text={ text }
                   saveNewText={ modifyCategoryDescription(record.name) }
-                /> :
-                text
+                /> : text
             }
           />
         </Table.ColumnGroup>
@@ -118,8 +120,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
                   onClick={ () => openNewDashboardModal(record.name) }
                 >
                   New Dashboard
-                </Tag> :
-                text
+                </Tag> : text
             }
           />
           <Table.Column
@@ -131,8 +132,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
                 <TextBuilder
                   text={ text }
                   saveNewText={ modifyDashboardDescription(record.dashboard.name) }
-                /> :
-                text
+                /> : text
             }
           />
         </Table.ColumnGroup>

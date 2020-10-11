@@ -10,7 +10,7 @@ import moment from "moment"
 import axios from "axios"
 
 import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../DataType"
+import * as DataType from "../../../GalleryDataType"
 import { ModuleEditorField, ModulePresenterField } from "../data"
 
 import "handsontable/dist/handsontable.full.css"

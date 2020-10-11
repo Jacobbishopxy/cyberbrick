@@ -6,7 +6,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { Tabs } from 'antd'
 import _ from "lodash"
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
 
 
@@ -37,6 +37,11 @@ const initSelectedPane = (templates: DataType.Template[]) => {
   return undefined
 }
 
+/**
+ * dashboard's container, containing custom modules
+ *
+ * container: [...template[]]; template: [...element[]]; element: module
+ */
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
   const ctRef = useRef<ContainerTemplateRef>(null)
 

@@ -8,7 +8,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from "moment"
 import _ from "lodash"
 
-import * as DataType from "../../DataType"
+import * as DataType from "../../GalleryDataType"
 import { ConvertRefFR } from "../ModuleCollection/data"
 import { ModulePanelHeader } from "./ModulePanelHeader"
 import { ModulePanelFooter } from "./ModulePanelFooter"
@@ -111,7 +111,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.fetchContent(date)
   }
 
-
+  // todo: BUG! when mark is changed `selectModule` does not re-render!
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader
