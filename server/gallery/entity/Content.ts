@@ -43,7 +43,7 @@ export class Content {
   @ManyToOne(() => Author, a => a.contents, { nullable: true })
   author!: Author
 
-  @Column("timestamp", { nullable: false })
+  @Column("timestamp with time zone", { nullable: false })
   date!: string
 
   @Column("text", { nullable: false })

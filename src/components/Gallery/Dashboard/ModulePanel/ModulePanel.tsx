@@ -5,7 +5,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import moment from "moment"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
@@ -44,7 +43,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   useEffect(() => setDateList(props.dates), [props.dates])
 
   useEffect(() => {
-    if (props.timeSeries && props.fetchContentDates && content)
+    if (props.timeSeries && props.fetchContentDates && content && !props.editable)
       props.fetchContentDates()
   }, [content])
 
@@ -69,7 +68,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const updateTitle = (title: string) => {
     const newContent = content ?
       { ...content, title } :
-      { title, data: {}, date: moment().format(DataType.dateFormat) }
+      { title, data: {}, date: DataType.today() }
     setContent(newContent)
     props.updateContent(newContent)
   }
@@ -84,7 +83,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     if (props.timeSeries) {
       const newContent = content ?
         { ...content, date } :
-        { date } as DataType.Content
+        { date, data: {} } as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }
@@ -111,7 +110,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.fetchContent(date)
   }
 
-  // todo: BUG! when mark is changed `selectModule` does not re-render!
   return (
     <div className={ styles.modulePanel }>
       <ModulePanelHeader

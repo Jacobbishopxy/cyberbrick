@@ -3,7 +3,6 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import moment from "moment"
 
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../ModulePanel"
@@ -34,13 +33,17 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     useEffect(() => {
-      if (!props.markAvailable && eleId)
+      if (!props.markAvailable && eleId) {
+        setContent(undefined)
+        setDates(undefined)
         props.fetchContentFn(eleId).then(res => setContent(res))
+      }
     }, [])
 
-    // todo: if (!props.markAvailable && eleId)
     const fetchContent = (date?: string) => {
       if (props.markAvailable && eleId) {
+        setContent(undefined)
+        setDates(undefined)
         if (date)
           props.fetchContentFn(eleId, date).then(res => setContent(res))
         else
@@ -52,7 +55,7 @@ export const TemplateElement =
       if (eleId && props.element.timeSeries)
         props.fetchContentDatesFn(eleId)
           .then(res =>
-            setDates(res.contents!.map(c => moment(c.date).format(DataType.dateFormat)))
+            setDates(res.contents!.map(c => DataType.timeToString(c.date)))
           )
     }
 
@@ -61,6 +64,7 @@ export const TemplateElement =
     const updateContent = (ctt: DataType.Content) =>
       props.updateContentFn(ctt)
 
+    // todo: check out why ModulePanel rerender too many times
     return (
       <ModulePanel
         headName={ props.element.name }

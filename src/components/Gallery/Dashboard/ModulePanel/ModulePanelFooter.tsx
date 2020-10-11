@@ -4,6 +4,8 @@
 
 import React from 'react'
 
+import * as DataType from "@/components/Gallery/GalleryDataType"
+
 import styles from "./Common.less"
 
 
@@ -15,6 +17,6 @@ export interface ModulePanelFooterProps {
 export const ModulePanelFooter = (props: ModulePanelFooterProps) =>
   <div className={ styles.modulePanelFooter }>
     { props.id ? <span>ID: { props.id }</span> : <></> }
-    { props.date ? <span>Date: { props.date }</span> : <></> }
+    { props.date ? <span>Date: { DataType.timeToString(props.date) }</span> : <></> }
   </div>
 

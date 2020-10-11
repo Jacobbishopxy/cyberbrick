@@ -7,7 +7,6 @@ import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row, Select, 
 import moment from "moment"
 
 import { Emoji } from "@/components/Emoji"
-import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
 const DragButton = () =>
@@ -87,9 +86,8 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 
   const [isNew, setIsNew] = useState<boolean>(false)
 
-  const dateOnChange = (date: moment.Moment | null) => {
-    if (date !== null)
-      props.editDate(date.format(DataType.dateFormat))
+  const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
+    if (date !== null) props.editDate(dateStr)
   }
 
   const onOk = () => props.onOk(isNew)

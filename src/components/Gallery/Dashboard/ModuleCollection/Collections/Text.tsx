@@ -4,7 +4,6 @@
 
 import React, { useState } from 'react'
 import { message } from "antd"
-import moment from "moment"
 
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
 import { ModuleGenerator } from "../ModuleGenerator"
@@ -17,7 +16,7 @@ const EditorField = (props: ModuleEditorField) => {
   const onChangeContent = (value: string) => {
     const ctt = content ?
       { ...content, data: { text: value } } :
-      { date: moment().format(DataType.dateFormat), data: { text: value } }
+      { date: DataType.today(), data: { text: value } }
     setContent(ctt)
   }
 

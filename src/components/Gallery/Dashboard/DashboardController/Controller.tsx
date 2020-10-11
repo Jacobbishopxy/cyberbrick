@@ -13,8 +13,7 @@ export interface ModuleControllerProps {
   markAvailable?: boolean
   canEdit: boolean
   dashboardNames: string[]
-  dashboardOnSelect: () => void
-  fetchDashboardMarks: (value: string) => Promise<DataType.Mark[]>
+  dashboardOnSelect: (dashboardName: string) => Promise<DataType.Mark[] | undefined>
   markOnSelect: (value: string) => void
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
   onEditTemplate: (value: boolean) => void
@@ -30,9 +29,8 @@ export const Controller = (props: ModuleControllerProps) => {
   useEffect(() => props.onEditTemplate(edit), [edit])
 
   const dashboardOnSelect = (value: string) =>
-    props.fetchDashboardMarks(value).then(res => {
-      props.dashboardOnSelect()
-      setMarks(res)
+    props.dashboardOnSelect(value).then(res => {
+      if (res) setMarks(res)
     })
 
   const quitAddModule = () => setAddModuleModalVisible(false)

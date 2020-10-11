@@ -47,12 +47,17 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const templates = props.dashboardInfo.templates!
 
-  const [selectedPane, setSelectedPane] = useState<SelectedPane | undefined>(initSelectedPane(templates))
+  const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
   const [startFetchAllTrigger, setStartFetchAllTrigger] = useState<number>(0)
 
+  useEffect(() => {
+    setTemplate(undefined)
+    setSelectedPane(initSelectedPane(templates))
+  }, [props.dashboardInfo])
+
   /**
-   * fetch template (with elements) when switching tabs
+   * fetch template (with elements) when switching dashboard or it's tabs
    */
   useEffect(() => {
     if (selectedPane)

@@ -2,7 +2,12 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-export const dateFormat = "YYYY-MM-DD HH:mm:ss"
+import moment from "moment"
+
+// export const dateFormat = "YYYY-MM-DD HH:mm:ss"
+export const dateFormat = "YYYY-MM-DD"
+export const today = () => moment().format(dateFormat)
+export const timeToString = (v: string) => moment(v).format(dateFormat)
 
 export interface Category {
   name: string

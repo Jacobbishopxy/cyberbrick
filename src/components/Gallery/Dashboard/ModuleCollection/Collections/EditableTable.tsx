@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 import { Button, Checkbox, Form, message, Modal, Tabs, Upload } from "antd"
 import { UploadOutlined } from '@ant-design/icons'
 import { HotTable } from "@handsontable/react"
-import moment from "moment"
 import axios from "axios"
 
 import { ModuleGenerator } from "../ModuleGenerator"
@@ -44,7 +43,7 @@ const EditorField = (props: ModuleEditorField) => {
       ...content,
       data: { data: d }
     } : {
-      date: moment().format(DataType.dateFormat),
+      date: DataType.today(),
       data: { data: d }
     }
     setContent(ctt)

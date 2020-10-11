@@ -67,18 +67,24 @@ export const Dashboard = (props: DashboardProps) => {
     props.fetchDashboardNames().then(res => setDashboardNames(res.map(i => i.name)))
   }, [])
 
+  useEffect(() => setSelectedMark(undefined), [selectedDashboard])
+
   useEffect(() => {
-    if (selectedMark && props.markAvailable && cRef.current)
-      cRef.current.startFetchAllContents()
+    if (selectedMark && cRef.current) cRef.current.startFetchAllContents()
   }, [selectedMark])
 
-  const dashboardOnSelect = () => setCanEdit(true)
-  const markOnSelect = (value: string) => setSelectedMark(value)
-
-  const fetchDashboardMarks = async (value: string) => {
-    const dsb = await props.fetchDashboard(value)
-    await setSelectedDashboard(dsb)
+  const dashboardOnSelect = async (dashboardName: string) => {
+    const dsb = await props.fetchDashboard(dashboardName)
+    setSelectedDashboard(dsb)
+    if (!props.markAvailable) {
+      setCanEdit(true)
+      return undefined
+    }
     return dsb.category?.marks!
+  }
+  const markOnSelect = (value: string) => {
+    if (props.markAvailable) setCanEdit(true)
+    setSelectedMark(value)
   }
 
   const fetchElements = async (value: string) => {
@@ -143,7 +149,6 @@ export const Dashboard = (props: DashboardProps) => {
         canEdit={ canEdit }
         dashboardNames={ dashboardNames }
         dashboardOnSelect={ dashboardOnSelect }
-        fetchDashboardMarks={ fetchDashboardMarks }
         markOnSelect={ markOnSelect }
         onAddModule={ onAddModule }
         onEditTemplate={ setEdit }

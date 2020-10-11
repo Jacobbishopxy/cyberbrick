@@ -4,7 +4,6 @@
 
 import React, { useState } from 'react'
 import { Button, Input, Modal } from "antd"
-import moment from "moment"
 
 import { ModuleGenerator } from "../ModuleGenerator"
 import * as DataType from "../../../GalleryDataType"
@@ -25,7 +24,7 @@ const EditorField = (props: ModuleEditorField) => {
       data: { link: e.target.value }
     })
     else setContent({
-      date: moment().format(DataType.dateFormat),
+      date: DataType.today(),
       data: { link: e.target.value }
     })
   }
