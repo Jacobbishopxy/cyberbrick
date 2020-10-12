@@ -1,19 +1,15 @@
 /**
- * Created by Jacob Xie on 9/22/2020.
+ * Created by Jacob Xie on 10/11/2020.
  */
 
-import React from 'react'
-
+import { collectionSelector } from "./collectionSelector"
 import * as DataType from "../../GalleryDataType"
-import { ConvertRefFR } from "../ModuleCollection/data"
-import {
-  EmbedLink,
-  Text,
-  EditableTable,
-} from "../ModuleCollection"
 
-import styles from "./Common.less"
+import { EditableTable } from "./EditableTable"
+import { EmbedLink } from "./EmbedLink"
+import { Text } from "./Text"
 
+export { collectionSelector }
 
 export const moduleList = [
   {
@@ -122,46 +118,9 @@ export const moduleList = [
   },
 ]
 
-
-export interface ModuleSelectorProps {
-  content?: DataType.Content
-  updateContent: (c: DataType.Content) => void
-  forwardedRef: React.Ref<ConvertRefFR>
+export {
+  EditableTable,
+  EmbedLink,
+  Text,
 }
-
-export const moduleSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
-  (props: ModuleSelectorProps) => {
-
-    const defaultModule = <EmbedLink
-      content={ props.content }
-      updateContent={ props.updateContent }
-      styling={ styles.contentPanel }
-      ref={ props.forwardedRef }
-    />
-
-    const textModule = <Text
-      content={ props.content }
-      updateContent={ props.updateContent }
-      styling={ styles.contentPanel }
-      ref={ props.forwardedRef }
-    />
-
-    const editableTable = <EditableTable
-      content={ props.content }
-      updateContent={ props.updateContent }
-      styling={ styles.contentPanel }
-      ref={ props.forwardedRef }
-    />
-
-    switch (moduleType) {
-      case DataType.ElementType.EmbedLink:
-        return defaultModule
-      case DataType.ElementType.Text:
-        return textModule
-      case DataType.ElementType.EditableTable:
-        return editableTable
-      default:
-        return defaultModule
-    }
-  }
 

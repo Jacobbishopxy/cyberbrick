@@ -8,9 +8,9 @@ import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
 import { HotTable } from "@handsontable/react"
 import axios from "axios"
 
-import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../GalleryDataType"
-import { ModuleEditorField, ModulePresenterField } from "../data"
+import { ModuleGenerator } from "../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
+import * as DataType from "../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
 

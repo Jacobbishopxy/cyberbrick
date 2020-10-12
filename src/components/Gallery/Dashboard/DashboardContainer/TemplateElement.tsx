@@ -5,7 +5,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
 import * as DataType from "../../GalleryDataType"
-import { ModulePanel } from "../ModulePanel"
+import { ModulePanel } from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
   markAvailable?: boolean
@@ -22,6 +22,7 @@ export interface ContainerElementRef {
   fetchContent: (date?: string) => void
 }
 
+// todo: add Tags presenting
 /**
  * Template's elements
  */

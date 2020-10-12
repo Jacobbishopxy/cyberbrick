@@ -6,9 +6,9 @@ import React, { useState } from 'react'
 import { message } from "antd"
 
 import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
-import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../GalleryDataType"
-import { ModuleEditorField, ModulePresenterField } from "../data"
+import { ModuleGenerator } from "../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
+import * as DataType from "../../GalleryDataType"
 
 const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)

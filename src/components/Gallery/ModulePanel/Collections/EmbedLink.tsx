@@ -5,9 +5,9 @@
 import React, { useState } from 'react'
 import { Button, Input, Modal } from "antd"
 
-import { ModuleGenerator } from "../ModuleGenerator"
-import * as DataType from "../../../GalleryDataType"
-import { ModuleEditorField, ModulePresenterField } from "../data"
+import { ModuleGenerator } from "../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
+import * as DataType from "../../GalleryDataType"
 
 const EditorField = (props: ModuleEditorField) => {
   const [visible, setVisible] = useState<boolean>(false)

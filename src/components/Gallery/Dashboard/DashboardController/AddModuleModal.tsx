@@ -7,7 +7,7 @@ import { Card, Checkbox, Divider, Input, List, message, Modal, Space, Tabs } fro
 import { StarTwoTone } from "@ant-design/icons"
 
 import * as DataType from "../../GalleryDataType"
-import { moduleList } from "../ModulePanel/moduleSelector"
+import { moduleList } from "../../ModulePanel/Collections"
 
 import styles from "./Common.less"
 

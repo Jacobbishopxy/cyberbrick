@@ -8,10 +8,10 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import { ConvertRefFR } from "../ModuleCollection/data"
+import { ConvertRefFR } from "../Generator/data"
 import { ModulePanelHeader } from "./ModulePanelHeader"
 import { ModulePanelFooter } from "./ModulePanelFooter"
-import { moduleSelector } from "./moduleSelector"
+import { collectionSelector } from "../Collections"
 
 import styles from "./Common.less"
 
@@ -32,7 +32,7 @@ export interface ModulePanelProps {
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<ConvertRefFR>(null)
-  const selectModule = moduleSelector(props.elementType)
+  const selectedModule = collectionSelector(props.elementType)
 
   const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
@@ -127,7 +127,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         onSelectDate={ selectDate }
       />
       {
-        selectModule({
+        selectedModule({
           content,
           updateContent: updateModuleContent,
           forwardedRef: moduleRef
