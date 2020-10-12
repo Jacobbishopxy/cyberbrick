@@ -116,8 +116,8 @@ export const Controller = (props: ModuleControllerProps) => {
               placeholder="Mark"
             >
               {
-                marks.map(n =>
-                  <Select.Option key={ n.id } value={ n.name }>{ n.name }</Select.Option>
+                marks.map(m =>
+                  <Select.Option key={ m.id } value={ m.name }>{ m.name }</Select.Option>
                 )
               }
             </Select> :

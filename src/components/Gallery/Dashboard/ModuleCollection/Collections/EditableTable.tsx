@@ -3,8 +3,8 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Checkbox, Form, message, Modal, Tabs, Upload } from "antd"
-import { UploadOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Form, message, Modal, Space, Tabs, Tooltip, Upload } from "antd"
+import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
 import { HotTable } from "@handsontable/react"
 import axios from "axios"
 
@@ -120,9 +120,14 @@ const EditorField = (props: ModuleEditorField) => {
       >
         <Form { ...formItemLayout } form={ form }>
           <Form.Item name="fileUpload" label="File">
-            <Upload { ...uploadProps }>
-              <Button icon={ <UploadOutlined/> }>Click to upload</Button>
-            </Upload>
+            <Space>
+              <Upload { ...uploadProps }>
+                <Button icon={ <UploadOutlined/> }>Click to upload</Button>
+              </Upload>
+              <Tooltip title="Please use pure Excel file!">
+                <ExclamationCircleTwoTone twoToneColor="red"/>
+              </Tooltip>
+            </Space>
           </Form.Item>
 
           <Form.Item name="fileOptions" label="Options">
@@ -142,7 +147,7 @@ const licenseKey = "non-commercial-and-evaluation"
 const hotTableProps = {
   settings: {
     width: "100%",
-    height: "50vh"  // todo: reactive height
+    height: "50vh"  // todo: reactive height, based on module panel height
   },
   colHeaders: true,
   rowHeaders: true,

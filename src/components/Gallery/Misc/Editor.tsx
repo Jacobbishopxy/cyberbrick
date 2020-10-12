@@ -8,7 +8,7 @@ import { Button } from "antd"
 import { Emoji } from "@/components/Emoji"
 
 interface EditorProps {
-  useIcon?: boolean
+  icons?: { open: string | React.ReactNode, close: string | React.ReactNode } | boolean
   editable: boolean
   setEditable: (value: boolean) => void
 }
@@ -20,12 +20,25 @@ export const Editor = (props: EditorProps) => {
 
   const editableOnChange = () => setEditable(!editable)
 
-  const iconC = () => editable ?
-    <Emoji label="edit" symbol="❌️"/> :
-    <Emoji label="edit" symbol="⚙️"/>
+  const show = () => {
+    let closeIcon
+    let openIcon
 
-  const wordC = () => editable ?
-    "Done" : "Edit"
+    if (props.icons && typeof props.icons !== "boolean") {
+      if (typeof props.icons.close === "string")
+        closeIcon = <Emoji label="edit" symbol={ props.icons.close }/>
+      else
+        closeIcon = props.icons.close
+      if (typeof props.icons.open === "string")
+        openIcon = <Emoji label="edit" symbol={ props.icons.open }/>
+      else
+        openIcon = props.icons.open
+    } else {
+      closeIcon = "Done"
+      openIcon = "Edit"
+    }
+    return editable ? closeIcon : openIcon
+  }
 
   return (
     <div>
@@ -35,12 +48,13 @@ export const Editor = (props: EditorProps) => {
         type="link"
         onClick={ editableOnChange }
       >
-        { props.useIcon ? iconC() : wordC() }
+        { show() }
       </Button>
     </div>
   )
 }
 
 Editor.defaultProps = {
-  useIcon: false
+  useIcon: false,
+  icons: false,
 } as Partial<EditorProps>
