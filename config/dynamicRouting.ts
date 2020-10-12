@@ -17,9 +17,9 @@ const onlineRoutes = [
         component: "./gallery/Configuration"
       },
       {
-        name: "summary",
-        path: "/gallery/summary",
-        component: "./gallery/Summary"
+        name: "overview",
+        path: "/gallery/overview",
+        component: "./gallery/Overview"
       },
       {
         name: "dashboard",

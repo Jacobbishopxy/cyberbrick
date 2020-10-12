@@ -2,6 +2,25 @@
 @import "~react-grid-layout/css/styles.css";
 @import "~react-resizable/css/styles.css";
 
+html {
+  // html scroll bar redesign
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
 html,
 body,
 #root {
@@ -35,11 +54,13 @@ ol {
   .ant-table {
     width: 100%;
     overflow-x: auto;
+
     &-thead > tr,
     &-tbody > tr {
       > th,
       > td {
         white-space: pre;
+
         > span {
           display: block;
         }
