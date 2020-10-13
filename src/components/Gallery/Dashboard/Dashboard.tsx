@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
@@ -142,31 +142,33 @@ export const Dashboard = (props: DashboardProps) => {
     if (cRef.current) cRef.current.newElement(n, ts, et)
   }
 
+  const genController = useMemo(() => <Controller
+    markAvailable={ props.markAvailable }
+    canEdit={ canEdit }
+    dashboardNames={ dashboardNames }
+    dashboardOnSelect={ dashboardOnSelect }
+    markOnSelect={ markOnSelect }
+    onAddModule={ onAddModule }
+    onEditTemplate={ setEdit }
+    onSaveTemplate={ onSaveTemplateAndContents }
+  />, [canEdit, dashboardNames])
+
+  const genContainer = useMemo(() => selectedDashboard ?
+    <Container
+      markAvailable={ props.markAvailable }
+      selectedMark={ selectedMark }
+      dashboardInfo={ selectedDashboard }
+      fetchElements={ fetchElements }
+      fetchElementContentFn={ fetchElementContent }
+      fetchElementContentDatesFn={ fetchElementContentDates }
+      updateElementContentFn={ updateElementContent }
+      ref={ cRef }
+    /> : <></>, [selectedDashboard, selectedMark])
+
   return (
     <EditableContext.Provider value={ edit }>
-      <Controller
-        markAvailable={ props.markAvailable }
-        canEdit={ canEdit }
-        dashboardNames={ dashboardNames }
-        dashboardOnSelect={ dashboardOnSelect }
-        markOnSelect={ markOnSelect }
-        onAddModule={ onAddModule }
-        onEditTemplate={ setEdit }
-        onSaveTemplate={ onSaveTemplateAndContents }
-      />
-      {
-        selectedDashboard ?
-          <Container
-            markAvailable={ props.markAvailable }
-            selectedMark={ selectedMark }
-            dashboardInfo={ selectedDashboard }
-            fetchElements={ fetchElements }
-            fetchElementContentFn={ fetchElementContent }
-            fetchElementContentDatesFn={ fetchElementContentDates }
-            updateElementContentFn={ updateElementContent }
-            ref={ cRef }
-          /> : <></>
-      }
+      { genController }
+      { genContainer }
     </EditableContext.Provider>
   )
 }

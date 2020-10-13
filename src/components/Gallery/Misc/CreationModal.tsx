@@ -13,6 +13,7 @@ export interface CreationModalValue {
 }
 
 export interface CreationModalProps {
+  name?: string
   title: string
   visible: boolean
   onSubmit: (value: CreationModalValue) => void
@@ -57,7 +58,7 @@ export const CreationModal = (props: CreationModalProps) => {
       destroyOnClose
       forceRender
     >
-      <Form { ...formItemLayout } form={ form }>
+      <Form { ...formItemLayout } form={ form } name={ props.name }>
         <Form.Item
           name="name"
           label="Name"

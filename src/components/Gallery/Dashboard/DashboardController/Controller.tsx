@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button, message, Modal, Select, Space } from 'antd'
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 
@@ -53,7 +53,7 @@ export const Controller = (props: ModuleControllerProps) => {
     cancelText: "Discard"
   })
 
-  const editMode = () => (
+  const editMode = useMemo(() => (
     <>
       <Space>
         <Button
@@ -78,9 +78,9 @@ export const Controller = (props: ModuleControllerProps) => {
         onQuit={ quitAddModule }
       />
     </>
-  )
+  ), [addModuleModalVisible])
 
-  const idleMode = () => (
+  const idleMode = useMemo(() => (
     <Button
       type="primary"
       size="small"
@@ -89,7 +89,7 @@ export const Controller = (props: ModuleControllerProps) => {
     >
       Edit
     </Button>
-  )
+  ), [props.canEdit])
 
   return (
     <div style={ { display: 'flex', justifyContent: 'space-between' } }>
@@ -125,7 +125,7 @@ export const Controller = (props: ModuleControllerProps) => {
         }
       </Space>
       <div>
-        { edit ? editMode() : idleMode() }
+        { edit ? editMode : idleMode }
       </div>
     </div>
   )

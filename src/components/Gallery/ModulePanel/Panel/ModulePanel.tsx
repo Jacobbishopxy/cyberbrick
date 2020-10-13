@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import _ from "lodash"
@@ -12,6 +12,7 @@ import { ConvertRefFR } from "../Generator/data"
 import { ModulePanelHeader } from "./ModulePanelHeader"
 import { ModulePanelFooter } from "./ModulePanelFooter"
 import { collectionSelector } from "../Collections"
+import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 
@@ -31,12 +32,16 @@ export interface ModulePanelProps {
 
 export const ModulePanel = (props: ModulePanelProps) => {
 
-  const moduleRef = useRef<ConvertRefFR>(null)
-  const selectedModule = collectionSelector(props.elementType)
+  const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
+  const moduleFRef = useRef<ConvertRefFR>(null)
 
   const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
   const [dateList, setDateList] = useState<string[] | undefined>(props.dates)
+
+  useEffect(() => {
+    moduleRef.current = collectionSelector(props.elementType)
+  }, [])
 
   useEffect(() => setContent(props.content), [props.content])
 
@@ -51,7 +56,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const editContent = () => {
     if (props.editable) {
       setEditOn(!editOn)
-      if (moduleRef.current) moduleRef.current.edit()
+      if (moduleFRef.current) moduleFRef.current.edit()
     }
   }
 
@@ -110,33 +115,43 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.fetchContent(date)
   }
 
+  const genHeader = useMemo(() =>
+    <ModulePanelHeader
+      editable={ props.editable }
+      timeSeries={ props.timeSeries }
+      headName={ props.headName }
+      title={ props.content ? props.content.title : undefined }
+      updateTitle={ updateTitle }
+      editOn={ editOn }
+      editContent={ editContent }
+      newContent={ newDateWithContent }
+      confirmDelete={ confirmDelete }
+      dateList={ dateList }
+      editDate={ headerDate }
+      onSelectDate={ selectDate }
+    />, [props.editable, props.content, dateList])
+
+  const genContext = useMemo(() => {
+    const rf = moduleRef.current
+    if (rf) return rf({
+      content,
+      updateContent: updateModuleContent,
+      forwardedRef: moduleFRef
+    })
+    return <></>
+  }, [content])
+
+  const genFooter = useMemo(() =>
+    <ModulePanelFooter
+      id={ props.content ? props.content.id : undefined }
+      { ...footerDate() }
+    />, [props.content])
+
   return (
     <div className={ styles.modulePanel }>
-      <ModulePanelHeader
-        editable={ props.editable }
-        timeSeries={ props.timeSeries }
-        headName={ props.headName }
-        title={ props.content ? props.content.title : undefined }
-        updateTitle={ updateTitle }
-        editOn={ editOn }
-        editContent={ editContent }
-        newContent={ newDateWithContent }
-        confirmDelete={ confirmDelete }
-        dateList={ dateList }
-        editDate={ headerDate }
-        onSelectDate={ selectDate }
-      />
-      {
-        selectedModule({
-          content,
-          updateContent: updateModuleContent,
-          forwardedRef: moduleRef
-        })
-      }
-      <ModulePanelFooter
-        id={ props.content ? props.content.id : undefined }
-        { ...footerDate() }
-      />
+      { genHeader }
+      { genContext }
+      { genFooter }
     </div>
   )
 }

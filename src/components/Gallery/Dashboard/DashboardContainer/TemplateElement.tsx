@@ -65,7 +65,6 @@ export const TemplateElement =
     const updateContent = (ctt: DataType.Content) =>
       props.updateContentFn(ctt)
 
-    // todo: check out why ModulePanel rerender too many times
     return (
       <ModulePanel
         headName={ props.element.name }

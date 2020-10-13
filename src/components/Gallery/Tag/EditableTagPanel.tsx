@@ -19,6 +19,7 @@ const tagDeleteModal = (onOk: () => void) =>
   })
 
 export interface EditableTagPanelProps<T extends GenericDataInput> {
+  name?: string
   data: T[]
   editable: boolean
   elementOnCreate: (value: T) => void
@@ -48,8 +49,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
   }, [tagSearchable])
 
   const elementOnRemove = (value: string) => {
-    if (props.elementOnRemove)
-      props.elementOnRemove(value)
+    if (props.elementOnRemove) props.elementOnRemove(value)
   }
 
   const tagCreateModalOnOk = (value: CreationModalValue) => {
@@ -60,13 +60,11 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
   }
 
   const elementSelect = () => {
-    if (props.elementOnSelect)
-      props.elementOnSelect(selectedDataNames)
+    if (props.elementOnSelect) props.elementOnSelect(selectedDataNames)
   }
 
   const clearSelectedTagName = () => {
-    if (props.elementOnSelect)
-      props.elementOnSelect([])
+    if (props.elementOnSelect) props.elementOnSelect([])
     if (selectableTagsRef.current) selectableTagsRef.current.clearSelected()
     setSelectedDataNames([])
   }
@@ -76,11 +74,11 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
       <Tooltip title={ t.description } key={ t.name }>
         <Tag
           closable={ props.editable }
-          onClose={ (e: any) => {
+          onClose={ e => {
             e.preventDefault()
             tagDeleteModal(() => elementOnRemove(t.name))
           } }
-          color={ t.color ? t.color : "blue" }
+          color={ t.color }
         >
           { t.name }
         </Tag>
@@ -129,6 +127,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
       }
 
       <CreationModal
+        name={ props.name }
         title="Please enter new tag information below:"
         visible={ modalVisible }
         onSubmit={ tagCreateModalOnOk }

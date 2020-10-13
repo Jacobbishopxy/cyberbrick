@@ -142,6 +142,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           key="marks"
           render={ (marks: DataType.Mark[], record: DataType.Category) =>
             <EditableTagPanel
+              name={ `cm-${ record.name }` }
               data={ marks }
               editable={ editable }
               elementOnCreate={ saveMark(record.name) }
@@ -156,6 +157,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           key="tags"
           render={ (tags: DataType.Tag[], record: DataType.Category) =>
             <EditableTagPanel
+              name={ `ct-${ record.name }` }
               data={ tags }
               editable={ editable }
               elementOnCreate={ saveTag(record.name) }

@@ -61,6 +61,7 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
           key="templates"
           render={ (templates: DataType.Template[], record: DataType.Dashboard) =>
             <EditableTagPanel
+              name={ `dt-${ record.name }` }
               data={ templates }
               editable={ editable }
               elementOnCreate={ saveTemplate(record.name) }
