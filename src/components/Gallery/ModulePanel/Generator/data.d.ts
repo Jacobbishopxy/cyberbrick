@@ -17,7 +17,7 @@ export interface ModulePresenterField {
   styling?: string
 }
 
-export interface ConvertRefFR {
+export interface ConvertFwRef {
   edit: () => void
 }
 
@@ -25,7 +25,7 @@ export interface ConvertRefProps {
   content?: DataType.Content
   updateContent: (c: DataType.Content) => void
   styling?: string
-  forwardedRef: React.Ref<ConvertRefFR>
+  forwardedRef: React.Ref<ConvertFwRef>
 }
 
 export interface ConvertProps {

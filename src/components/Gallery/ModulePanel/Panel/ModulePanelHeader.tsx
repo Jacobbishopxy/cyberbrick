@@ -3,76 +3,10 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row, Select, Space, Tooltip } from "antd"
+import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row } from "antd"
 import moment from "moment"
 
-import { Emoji } from "@/components/Emoji"
-
-
-const DragButton = () =>
-  <Tooltip title='Drag'>
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      className='draggableHandler'
-    >
-      <Emoji label="drag" symbol="🧲️️️️️"/>
-    </Button>
-  </Tooltip>
-
-const TimeSetButton = (props: { show: boolean | undefined, onClick: () => void }) =>
-  props.show ?
-    <Tooltip title="Date">
-      <Button
-        shape='circle'
-        size='small'
-        type='link'
-        onClick={ props.onClick }
-      >
-        <Emoji label="date" symbol="🗓️"/>
-      </Button>
-    </Tooltip> : <></>
-
-const EditButton = (props: { editOn: boolean, editContent: () => void }) =>
-  <Tooltip title="Edit">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.editContent }
-    >
-      {
-        props.editOn ?
-          <Emoji label="edit" symbol="❌️"/> :
-          <Emoji label="edit" symbol="⚙️"/>
-      }
-    </Button>
-  </Tooltip>
-
-const DeleteButton = (props: { confirmDelete: () => void }) =>
-  <Tooltip title="Delete">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.confirmDelete }
-    >
-      <Emoji label="delete" symbol="🗑️️️"/>
-    </Button>
-  </Tooltip>
-
-const TimePickButton = (props: { onClick: () => void }) =>
-  <Tooltip title="Date">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.onClick }
-    >
-      <Emoji label="date" symbol="🗓️"/>
-    </Button>
-  </Tooltip>
+import { HeaderController } from "./HeaderController"
 
 interface TimeSetModalProps {
   show: boolean | undefined,
@@ -110,53 +44,11 @@ const TimeSetModal = (props: TimeSetModalProps) => {
     </Modal> : <></>
 }
 
-interface TimePickModalProps {
-  visible: boolean
-  onOk: (date: string) => void
-  onCancel: () => void
-  dateList: string[]
-}
-
-const TimePickModal = (props: TimePickModalProps) => {
-
-  const [selectedDate, setSelectedDate] = useState<string>()
-
-  const onChange = (d: string) => setSelectedDate(d)
-
-  const onOk = () => {
-    if (selectedDate) props.onOk(selectedDate)
-  }
-
-  return <Modal
-    title="Select a date"
-    visible={ props.visible }
-    onOk={ onOk }
-    onCancel={ props.onCancel }
-  >
-    <Select
-      showSearch
-      style={ { width: 200 } }
-      placeholder="Select a date"
-      optionFilterProp="children"
-      onChange={ onChange }
-      filterOption={ (input, option) => {
-        if (option) return option.children.indexOf(input) >= 0
-        return false
-      } }
-    >
-      {
-        props.dateList.map(d =>
-          <Select.Option value={ d } key={ d }>{ d }</Select.Option>
-        )
-      }
-    </Select>
-  </Modal>
-}
 
 interface ModulePanelHeaderProps {
   editable: boolean
   timeSeries?: boolean
-  headName: string
+  headName?: string
   title: string | undefined
   updateTitle: (v: string) => void
   editOn: boolean
@@ -168,16 +60,11 @@ interface ModulePanelHeaderProps {
   onSelectDate?: (date: string) => void
 }
 
-interface DateModalVisible {
-  set: boolean
-  pick: boolean
-}
-
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
   const [title, setTitle] = useState<string | undefined>(props.title)
-  const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({ set: false, pick: false })
+  const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<string>()
 
   useEffect(() => setTitle(props.title), [props.title])
@@ -200,12 +87,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       if (isNew) props.newContent(selectedDate)
       else props.editDate(selectedDate)
     }
-    setDateModalVisible({ ...dateModalVisible, set: false })
-  }
-
-  const timePickModalOnOk = (date: string) => {
-    if (props.onSelectDate) props.onSelectDate(date)
-    setDateModalVisible({ ...dateModalVisible, pick: false })
+    setDateModalVisible(false)
   }
 
   const genTitle = () => {
@@ -229,58 +111,50 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     return title
   }
 
-  const editableController = () =>
-    <Space>
-      <DragButton/>
-      <TimeSetButton
-        show={ props.timeSeries }
-        onClick={ () => setDateModalVisible({ ...dateModalVisible, set: true }) }
-      />
-      <EditButton
-        editOn={ props.editOn }
-        editContent={ props.editContent }
-      />
-      <DeleteButton
-        confirmDelete={ props.confirmDelete }
-      />
-    </Space>
+  const genController = () =>
+    <HeaderController
+      editable={ props.editable }
+      timeSeries={ props.timeSeries }
+      editOn={ props.editOn }
+      editContent={ props.editContent }
+      confirmDelete={ props.confirmDelete }
+      dateList={ props.dateList }
+      onSelectDate={ props.onSelectDate }
+    />
 
-  const nonEditableController = () =>
-    props.timeSeries && props.dateList ?
-      <>
-        <TimePickButton
-          onClick={ () => setDateModalVisible({ ...dateModalVisible, pick: true }) }
-        />
-        <TimePickModal
-          visible={ dateModalVisible.pick }
-          onOk={ timePickModalOnOk }
-          onCancel={ () => setDateModalVisible({ ...dateModalVisible, pick: false }) }
-          dateList={ props.dateList }
-        />
-      </> : <></>
-
-  const genController = () => {
-    if (props.editable) return editableController()
-    return props.timeSeries && props.dateList ? nonEditableController() : <></>
-  }
+  const genHead = () =>
+    <Row style={ { paddingLeft: 10, paddingRight: 10, height: 25 } }>
+      {
+        props.headName ?
+          <>
+            <Col span={ 8 }>{ props.headName }</Col>
+            <Col span={ 8 } style={ { textAlign: "center" } }>
+              { genTitle() }
+            </Col>
+            <Col span={ 8 } style={ { textAlign: "right" } }>
+              { genController() }
+            </Col>
+          </> :
+          <>
+            <Col span={ 12 } style={ { textAlign: "left" } }>
+              { genTitle() }
+            </Col>
+            <Col span={ 12 } style={ { textAlign: "right" } }>
+              { genController() }
+            </Col>
+          </>
+      }
+    </Row>
 
   return (
     <div>
-      <Row style={ { paddingLeft: 10, paddingRight: 10, height: 25 } }>
-        <Col span={ 8 }>{ props.headName }</Col>
-        <Col span={ 8 } style={ { textAlign: "center" } }>
-          { genTitle() }
-        </Col>
-        <Col span={ 8 } style={ { textAlign: "right" } }>
-          { genController() }
-        </Col>
-      </Row>
+      { genHead() }
 
       <TimeSetModal
         show={ props.timeSeries }
-        visible={ dateModalVisible.set }
+        visible={ dateModalVisible }
         onOk={ timeSetModalOnOk }
-        onCancel={ () => setDateModalVisible({ ...dateModalVisible, set: false }) }
+        onCancel={ () => setDateModalVisible(false) }
         editDate={ editDate }
       />
     </div>

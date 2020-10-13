@@ -8,7 +8,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import { ConvertRefFR } from "../Generator/data"
+import { ConvertFwRef } from "../Generator/data"
 import { ModulePanelHeader } from "./ModulePanelHeader"
 import { ModulePanelFooter } from "./ModulePanelFooter"
 import { collectionSelector } from "../Collections"
@@ -30,10 +30,11 @@ export interface ModulePanelProps {
   editable: boolean
 }
 
+// todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
-  const moduleFRef = useRef<ConvertRefFR>(null)
+  const moduleFwRef = useRef<ConvertFwRef>(null)
 
   const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
@@ -56,7 +57,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const editContent = () => {
     if (props.editable) {
       setEditOn(!editOn)
-      if (moduleFRef.current) moduleFRef.current.edit()
+      if (moduleFwRef.current) moduleFwRef.current.edit()
     }
   }
 
@@ -136,7 +137,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     if (rf) return rf({
       content,
       updateContent: updateModuleContent,
-      forwardedRef: moduleFRef
+      forwardedRef: moduleFwRef
     })
     return <></>
   }, [content])

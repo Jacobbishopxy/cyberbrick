@@ -5,7 +5,7 @@
 import React from 'react'
 
 import * as DataType from "../../GalleryDataType"
-import { ConvertRefFR } from "../Generator/data"
+import { ConvertFwRef } from "../Generator/data"
 import {
   EmbedLink,
   Text,
@@ -18,7 +18,7 @@ import styles from "../Panel/Common.less"
 export interface ModuleSelectorProps {
   content?: DataType.Content
   updateContent: (c: DataType.Content) => void
-  forwardedRef: React.Ref<ConvertRefFR>
+  forwardedRef: React.Ref<ConvertFwRef>
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>

@@ -4,7 +4,7 @@
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
-import { ConvertProps, ConvertRefFR, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
+import { ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
 import * as DataType from "../../GalleryDataType"
 import styles from "./Common.less"
 
@@ -52,7 +52,7 @@ export class ModuleGenerator {
         />
     }
 
-    return forwardRef((props: ConvertProps, ref: React.Ref<ConvertRefFR>) =>
+    return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={ props.content }
         updateContent={ props.updateContent }
