@@ -5,7 +5,7 @@
 import { collectionSelector } from "./collectionSelector"
 import * as DataType from "../../GalleryDataType"
 
-import { EditableTable } from "./EditableTable"
+import { XlsxTable } from "./XlsxTable"
 import { EmbedLink } from "./EmbedLink"
 import { Text } from "./Text"
 
@@ -59,7 +59,7 @@ export const moduleList = [
     name: 'Table',
     children: [
       {
-        key: DataType.ElementType.EditableTable,
+        key: DataType.ElementType.XlsxTable,
         name: 'Xlsx table',
         disabled: false,
       },
@@ -119,7 +119,7 @@ export const moduleList = [
 ]
 
 export {
-  EditableTable,
+  XlsxTable,
   EmbedLink,
   Text,
 }

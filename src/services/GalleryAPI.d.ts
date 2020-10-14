@@ -92,7 +92,7 @@ declare namespace GalleryAPI {
     Image = "image",
     FileList = "fileList",
     FileManager = "fileManager",
-    EditableTable = "editableTable",
+    XlsxTable = "xlsxTable",
     Table = "table",
     Lines = "lines",
     Histogram = "histogram",

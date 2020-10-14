@@ -20,7 +20,7 @@ export const Container = (props: ContainerProps) => {
   useEffect(() => setContents(props.contents), [props.contents])
 
   return (
-    <></>
+    <>{ contents }</>
   )
 }
 

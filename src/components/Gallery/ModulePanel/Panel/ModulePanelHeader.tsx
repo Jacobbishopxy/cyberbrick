@@ -51,7 +51,6 @@ interface ModulePanelHeaderProps {
   headName?: string
   title: string | undefined
   updateTitle: (v: string) => void
-  editOn: boolean
   editContent: () => void
   newContent: (date: string) => void
   confirmDelete: () => void
@@ -115,7 +114,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     <HeaderController
       editable={ props.editable }
       timeSeries={ props.timeSeries }
-      editOn={ props.editOn }
       editContent={ props.editContent }
       confirmDelete={ props.confirmDelete }
       dateList={ props.dateList }

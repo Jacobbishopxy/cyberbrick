@@ -2,23 +2,24 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Button } from "antd"
 
 import { Emoji } from "@/components/Emoji"
 
 interface EditorProps {
   icons?: { open: string | React.ReactNode, close: string | React.ReactNode } | boolean
-  editable: boolean
-  setEditable: (value: boolean) => void
+  defaultOpen?: boolean
+  onChange: (value: boolean) => void
 }
 
 export const Editor = (props: EditorProps) => {
-  const [editable, setEditable] = useState<boolean>(props.editable)
+  const [editable, setEditable] = useState<boolean>(props.defaultOpen || false)
 
-  useEffect(() => props.setEditable(editable), [editable])
-
-  const editableOnChange = () => setEditable(!editable)
+  const editableOnChange = () => {
+    setEditable(!editable)
+    props.onChange(!editable)
+  }
 
   const show = () => {
     let closeIcon
@@ -55,6 +56,6 @@ export const Editor = (props: EditorProps) => {
 }
 
 Editor.defaultProps = {
-  useIcon: false,
   icons: false,
+  defaultOpen: false
 } as Partial<EditorProps>

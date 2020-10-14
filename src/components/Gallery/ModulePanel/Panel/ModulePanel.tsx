@@ -36,7 +36,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
   const moduleFwRef = useRef<ConvertFwRef>(null)
 
-  const [editOn, setEditOn] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
   const [dateList, setDateList] = useState<string[] | undefined>(props.dates)
 
@@ -56,7 +55,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const editContent = () => {
     if (props.editable) {
-      setEditOn(!editOn)
       if (moduleFwRef.current) moduleFwRef.current.edit()
     }
   }
@@ -123,7 +121,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
       headName={ props.headName }
       title={ props.content ? props.content.title : undefined }
       updateTitle={ updateTitle }
-      editOn={ editOn }
       editContent={ editContent }
       newContent={ newDateWithContent }
       confirmDelete={ confirmDelete }

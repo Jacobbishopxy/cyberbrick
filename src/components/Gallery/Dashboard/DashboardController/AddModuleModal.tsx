@@ -125,11 +125,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           placeholder="Dashboard"
           size="small"
         >
-          {
-            props.dashboards.map(d =>
-              <Select.Option key={ d.name } value={ d.name }>{ d.name }</Select.Option>
-            )
-          }
+          { props.dashboards.map(d => <Select.Option key={ d.name } value={ d.name }>{ d.name }</Select.Option>) }
         </Select>
         <Select
           style={ { width: 120 } }
@@ -137,11 +133,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           placeholder="Template"
           size="small"
         >
-          {
-            templates.map(t =>
-              <Select.Option key={ t } value={ t }>{ t }</Select.Option>
-            )
-          }
+          { templates.map(t => <Select.Option key={ t } value={ t }>{ t }</Select.Option>) }
         </Select>
         <Tooltip title="Copy elements to non-empty template is forbidden!">
           <ExclamationCircleTwoTone twoToneColor="red"/>

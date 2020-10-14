@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/12/2020.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Select, Space } from "antd"
 import { SaveTwoTone, SettingTwoTone } from '@ant-design/icons'
 
@@ -19,10 +19,7 @@ export interface ControllerProps {
 
 export const Controller = (props: ControllerProps) => {
 
-  const [edit, setEdit] = useState<boolean>(false)
   const [marks, setMarks] = useState<DataType.Mark[]>([])
-
-  useEffect(() => props.onEdit(edit), [edit])
 
   const categoryOnSelect = (value: string) =>
     props.categoryOnSelect(value).then(res => {
@@ -65,8 +62,7 @@ export const Controller = (props: ControllerProps) => {
             open: <SettingTwoTone style={ { fontSize: 20 } }/>,
             close: <SaveTwoTone style={ { fontSize: 20 } }/>
           } }
-          editable={ edit }
-          setEditable={ () => setEdit(!edit) }
+          onChange={ props.onEdit }
         />
       </div>
     </div>

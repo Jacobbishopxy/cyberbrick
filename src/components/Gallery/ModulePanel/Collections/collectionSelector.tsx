@@ -9,7 +9,7 @@ import { ConvertFwRef } from "../Generator/data"
 import {
   EmbedLink,
   Text,
-  EditableTable,
+  XlsxTable,
 } from "./index"
 
 import styles from "../Panel/Common.less"
@@ -38,7 +38,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={ props.forwardedRef }
     />
 
-    const editableTable = <EditableTable
+    const xlsxTable = <XlsxTable
       content={ props.content }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
@@ -50,8 +50,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return defaultModule
       case DataType.ElementType.Text:
         return textModule
-      case DataType.ElementType.EditableTable:
-        return editableTable
+      case DataType.ElementType.XlsxTable:
+        return xlsxTable
       default:
         return defaultModule
     }

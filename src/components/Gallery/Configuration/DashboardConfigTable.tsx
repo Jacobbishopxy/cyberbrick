@@ -36,7 +36,7 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
         title={ () =>
           <div style={ { display: "flex", justifyContent: "space-between" } }>
             <span style={ { fontWeight: "bold" } }>Dashboard configuration</span>
-            <Editor editable={ editable } setEditable={ setEditable }/>
+            <Editor onChange={ setEditable }/>
           </div>
         }
         size="small"

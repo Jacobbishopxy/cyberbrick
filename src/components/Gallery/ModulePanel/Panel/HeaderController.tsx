@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { Button, Modal, Select, Space, Tooltip } from "antd"
 
 import { Emoji } from "@/components/Emoji"
-
+import { Editor } from "@/components/Gallery/Misc/Editor"
 
 const DragButton = () =>
   <Tooltip title='Drag'>
@@ -33,20 +33,12 @@ const TimeSetButton = (props: { show: boolean | undefined, onClick: () => void }
       </Button>
     </Tooltip> : <></>
 
-const EditButton = (props: { editOn: boolean, editContent: () => void }) =>
+const EditButton = (props: { editContent: () => void }) =>
   <Tooltip title="Edit">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.editContent }
-    >
-      {
-        props.editOn ?
-          <Emoji label="edit" symbol="❌️"/> :
-          <Emoji label="edit" symbol="⚙️"/>
-      }
-    </Button>
+    <Editor
+      icons={{open: "⚙️", close: "❌️"}}
+      onChange={props.editContent}
+    />
   </Tooltip>
 
 const DeleteButton = (props: { confirmDelete: () => void }) =>
@@ -120,7 +112,6 @@ export interface HeaderController {
   editable: boolean
   timeSeries?: boolean
   dateList?: string[]
-  editOn: boolean
   editContent: () => void
   confirmDelete: () => void
   onSelectDate?: (date: string) => void
@@ -144,7 +135,6 @@ export const HeaderController = (props: HeaderController) => {
         onClick={ () => setDateModalVisible(true) }
       />
       <EditButton
-        editOn={ props.editOn }
         editContent={ props.editContent }
       />
       <DeleteButton

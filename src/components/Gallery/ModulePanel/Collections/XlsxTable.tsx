@@ -193,5 +193,5 @@ const PresenterField = (props: ModulePresenterField) => {
   return props.content ? <div className={ props.styling }>{ view(props.content) }</div> : <></>
 }
 
-export const EditableTable = new ModuleGenerator(EditorField, PresenterField).generate()
+export const XlsxTable = new ModuleGenerator(EditorField, PresenterField).generate()
 

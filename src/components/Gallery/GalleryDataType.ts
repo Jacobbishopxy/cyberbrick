@@ -97,7 +97,7 @@ export enum ElementType {
   Image = "image",
   FileList = "fileList",
   FileManager = "fileManager",
-  EditableTable = "editableTable",
+  XlsxTable = "xlsxTable",
   Table = "table",
   Lines = "lines",
   Histogram = "histogram",
@@ -123,8 +123,8 @@ export const getElementType = (v: string) => {
       return ElementType.FileList
     case "fileManager":
       return ElementType.FileManager
-    case "editableTable":
-      return ElementType.EditableTable
+    case "xlsxTable":
+      return ElementType.XlsxTable
     case "table":
       return ElementType.Table
     case "lines":

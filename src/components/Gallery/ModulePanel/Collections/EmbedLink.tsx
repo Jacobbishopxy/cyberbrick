@@ -3,19 +3,17 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Input, Modal } from "antd"
+import { Button, Input, Space } from "antd"
 
 import { ModuleGenerator } from "../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
 import * as DataType from "../../GalleryDataType"
 
 const EditorField = (props: ModuleEditorField) => {
-  const [visible, setVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const handleOk = () => {
     if (content) props.updateContent(content)
-    setVisible(false)
   }
 
   const linkOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,28 +29,23 @@ const EditorField = (props: ModuleEditorField) => {
 
   return (
     <div className={ props.styling }>
-      <Button
-        type='primary'
-        shape='round'
-        size='small'
-        onClick={ () => setVisible(true) }
-        style={ { position: "relative", top: "40%" } }
-      >
-        Click here to modify
-      </Button>
-      <Modal
-        title='Please enter link below:'
-        visible={ visible }
-        onOk={ handleOk }
-        onCancel={ () => setVisible(false) }
-      >
+      <Space style={ { position: "relative", top: "40%" } }>
+        Please enter the link:
         <Input
           placeholder='Link'
           allowClear
           onBlur={ linkOnChange }
           defaultValue={ content ? content.data.link : null }
         />
-      </Modal>
+        <Button
+          type='primary'
+          shape='round'
+          size='small'
+          onClick={ handleOk }
+        >
+          Click here to modify
+        </Button>
+      </Space>
     </div>
   )
 }
