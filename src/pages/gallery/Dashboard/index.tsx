@@ -11,8 +11,8 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export default () => {
 
-  const fetchDashboardNames = () =>
-    GalleryService.getAllDashboardsName()
+  const fetchDashboards = () =>
+    GalleryService.getAllDashboardsTemplate()
 
   const fetchDashboard = (dashboardName: string) =>
     GalleryService.getDashboardCategoryMarksAndTemplateByName(dashboardName) as Promise<DataType.Dashboard>
@@ -22,6 +22,9 @@ export default () => {
 
   const saveTemplate = (template: GalleryDataType.Template) =>
     GalleryService.updateTemplateElements(template as GalleryAPI.Template)
+
+  const copyTemplate = (copy: GalleryDataType.CopyTemplateElements) =>
+    GalleryService.copyTemplateElements(copy)
 
   const fetchElementContent = (id: string, date?: string, markName?: string) =>
     GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
@@ -36,10 +39,11 @@ export default () => {
   return (
     <Dashboard
       markAvailable
-      fetchDashboardNames={ fetchDashboardNames }
+      fetchDashboards={ fetchDashboards }
       fetchDashboard={ fetchDashboard }
       fetchTemplate={ fetchTemplate }
       saveTemplate={ saveTemplate }
+      copyTemplate={ copyTemplate }
       fetchElementContent={ fetchElementContent }
       fetchElementContentDates={ fetchElementContentDates }
       updateElementContent={ updateElementContent }

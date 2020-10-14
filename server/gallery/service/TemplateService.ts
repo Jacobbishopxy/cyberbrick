@@ -97,7 +97,10 @@ export async function deleteTemplateInDashboard(dashboardName: string, templateN
     .createQueryBuilder(common.template)
     .leftJoinAndSelect(common.templateDashboard, common.dashboard)
     .select([common.templateName, common.dashboardName])
-    .where(`${common.dashboardName} = :dashboardName AND ${common.templateName} = :templateName`, {dashboardName, templateName})
+    .where(`${ common.dashboardName } = :dashboardName AND ${ common.templateName } = :templateName`, {
+      dashboardName,
+      templateName
+    })
     .delete()
     .execute()
 
@@ -114,20 +117,25 @@ export async function copyTemplateElements(originDashboardName: string,
   const originTemplate = await getTemplateElements(originDashboardName, originTemplateName) as Template
 
   if (!_.isEmpty(originTemplate)) {
-    const targetTemplate = {
-      dashboard: {
-        ...originTemplate.dashboard,
-        name: targetTemplateName
-      },
-      name: targetTemplateName,
-      elements: originTemplate.elements.map(i => _.omit(i, "id")),
-      description: originTemplate.description
-    } as Template
+    const targetTemplate = await getTemplateElements(targetDashboardName, targetTemplateName)
+    if (targetTemplate) {
+      const tt = targetTemplate as Template
 
-    const newTemplate = tr.create(targetTemplate)
-    await tr.save(newTemplate)
+      // if target template is not empty, fail request
+      if (tt.elements.length !== 0)
+        return utils.HTMLStatus.FAIL_REQUEST
 
-    return utils.HTMLStatus.SUCCESS_MODIFY
+      const nt = {
+        id: tt.id,
+        dashboard: { name: targetDashboardName },
+        elements: originTemplate.elements.map(i => _.omit(i, "id")),
+      } as Template
+
+      const newTemplate = tr.create(nt)
+      await tr.save(newTemplate)
+
+      return utils.HTMLStatus.SUCCESS_MODIFY
+    }
   }
 
   return utils.HTMLStatus.FAIL_REQUEST

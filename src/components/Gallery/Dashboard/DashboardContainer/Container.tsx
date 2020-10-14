@@ -14,6 +14,7 @@ export interface ContainerProps {
   markAvailable?: boolean
   selectedMark?: string
   dashboardInfo: DataType.Dashboard
+  onSelectPane: (templateName: string) => void
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -21,6 +22,7 @@ export interface ContainerProps {
 }
 
 export interface ContainerRef {
+  startFetchElements: () => void
   startFetchAllContents: () => void
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
   saveTemplate: () => DataType.Template | undefined
@@ -60,8 +62,10 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
    * fetch template (with elements) when switching dashboard or it's tabs
    */
   useEffect(() => {
-    if (selectedPane)
+    if (selectedPane) {
       props.fetchElements(selectedPane.name).then(res => setTemplate(res))
+      props.onSelectPane(selectedPane.name)
+    }
   }, [selectedPane])
 
   /**
@@ -79,6 +83,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const tabOnChange = (name: string) => {
     setSelectedPane({ name, index: _.findIndex(templates, t => t.name === name) })
     setTemplate(undefined)
+  }
+
+  const startFetchElements = () => {
+    if (selectedPane)
+      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
   }
 
   const startFetchAllContents = () => {
@@ -107,7 +116,12 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     return template
   }
 
-  useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveTemplate }))
+  useImperativeHandle(ref, () => ({
+    startFetchElements,
+    startFetchAllContents,
+    newElement,
+    saveTemplate
+  }))
 
   const elementUpdateContentFn = (ctt: DataType.Content) => {
     const category = {

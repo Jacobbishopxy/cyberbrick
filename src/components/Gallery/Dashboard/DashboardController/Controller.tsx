@@ -12,10 +12,11 @@ import { AddModuleModal } from "./AddModuleModal"
 export interface ModuleControllerProps {
   markAvailable?: boolean
   canEdit: boolean
-  dashboardNames: string[]
+  dashboards: GalleryAPI.Dashboard[]
   dashboardOnSelect: (dashboardName: string) => Promise<DataType.Mark[] | undefined>
   markOnSelect: (value: string) => void
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
+  onCopyTemplate: (dashboardName: string, templateName: string) => void
   onEditTemplate: (value: boolean) => void
   onSaveTemplate: () => Promise<void>
 }
@@ -73,7 +74,9 @@ export const Controller = (props: ModuleControllerProps) => {
 
       </Space>
       <AddModuleModal
+        dashboards={ props.dashboards }
         onAddModule={ props.onAddModule }
+        copyTemplate={ props.onCopyTemplate }
         visible={ addModuleModalVisible }
         onQuit={ quitAddModule }
       />
@@ -101,8 +104,8 @@ export const Controller = (props: ModuleControllerProps) => {
           placeholder="Dashboard"
         >
           {
-            props.dashboardNames.map(n =>
-              <Select.Option key={ n } value={ n }>{ n }</Select.Option>
+            props.dashboards.map(d =>
+              <Select.Option key={ d.name } value={ d.name }>{ d.name }</Select.Option>
             )
           }
         </Select>

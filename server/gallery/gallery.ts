@@ -63,10 +63,7 @@ const categoryRoutes: utils.OrmRoute[] = [
   {
     path: `${ base }/saveCategory`,
     method: "post",
-    check: [
-      common.bodyNameCheck,
-      common.bodyDescriptionCheck
-    ],
+    check: [common.bodyNameCheck],
     action: categoryActions.savePureCategory
   },
   {

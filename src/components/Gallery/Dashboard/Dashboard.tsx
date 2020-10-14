@@ -8,6 +8,7 @@ import _ from "lodash"
 import * as DataType from "../GalleryDataType"
 import { Controller } from "./DashboardController/Controller"
 import { Container, ContainerRef } from "./DashboardContainer/Container"
+import { message } from "antd"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -44,10 +45,11 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 
 export interface DashboardProps {
   markAvailable?: boolean
-  fetchDashboardNames: () => Promise<GalleryAPI.Dashboard[]>
+  fetchDashboards: () => Promise<GalleryAPI.Dashboard[]>
   fetchDashboard: (dashboardName: string) => Promise<DataType.Dashboard>
   fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
+  copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
@@ -56,15 +58,16 @@ export interface DashboardProps {
 export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
 
-  const [dashboardNames, setDashboardNames] = useState<string[]>([])
+  const [dashboards, setDashboards] = useState<GalleryAPI.Dashboard[]>([])
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
+  const [selectedTemplate, setSelectedTemplate] = useState<string>()
   const [selectedMark, setSelectedMark] = useState<string>()
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
 
   useEffect(() => {
-    props.fetchDashboardNames().then(res => setDashboardNames(res.map(i => i.name)))
+    props.fetchDashboards().then(res => setDashboards(res))
   }, [])
 
   useEffect(() => setSelectedMark(undefined), [selectedDashboard])
@@ -99,6 +102,23 @@ export const Dashboard = (props: DashboardProps) => {
         contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c))
       )
     return Promise.reject(new Error("No dashboard selected!"))
+  }
+
+  const onCopyTemplate = async (originDashboardName: string, originTemplateName: string) => {
+    if (selectedDashboard && selectedTemplate) {
+      const targetDashboardName = selectedDashboard.name
+      const targetTemplateName = selectedTemplate
+      props.copyTemplate({
+        originDashboardName,
+        originTemplateName,
+        targetDashboardName,
+        targetTemplateName
+      }).then(() => {
+        message.success("Copy template succeeded!")
+        if (cRef.current) cRef.current.startFetchElements()
+      })
+    } else
+      message.warn("Copy template failed!")
   }
 
   const onSaveTemplateAndContents = async () => {
@@ -145,19 +165,21 @@ export const Dashboard = (props: DashboardProps) => {
   const genController = useMemo(() => <Controller
     markAvailable={ props.markAvailable }
     canEdit={ canEdit }
-    dashboardNames={ dashboardNames }
+    dashboards={ dashboards }
     dashboardOnSelect={ dashboardOnSelect }
     markOnSelect={ markOnSelect }
     onAddModule={ onAddModule }
+    onCopyTemplate={ onCopyTemplate }
     onEditTemplate={ setEdit }
     onSaveTemplate={ onSaveTemplateAndContents }
-  />, [canEdit, dashboardNames])
+  />, [canEdit, dashboards])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
       markAvailable={ props.markAvailable }
       selectedMark={ selectedMark }
       dashboardInfo={ selectedDashboard }
+      onSelectPane={ setSelectedTemplate }
       fetchElements={ fetchElements }
       fetchElementContentFn={ fetchElementContent }
       fetchElementContentDatesFn={ fetchElementContentDates }
