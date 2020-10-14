@@ -3,12 +3,12 @@
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { message } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
 import { Controller } from "./DashboardController/Controller"
 import { Container, ContainerRef } from "./DashboardContainer/Container"
-import { message } from "antd"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -172,7 +172,7 @@ export const Dashboard = (props: DashboardProps) => {
     onCopyTemplate={ onCopyTemplate }
     onEditTemplate={ setEdit }
     onSaveTemplate={ onSaveTemplateAndContents }
-  />, [canEdit, dashboards])
+  />, [canEdit, dashboards, onSaveTemplateAndContents])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

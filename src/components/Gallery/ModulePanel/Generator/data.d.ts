@@ -18,7 +18,7 @@ export interface ModulePresenterField {
 }
 
 export interface ConvertFwRef {
-  edit: () => void
+  edit: (value: boolean) => void
 }
 
 export interface ConvertRefProps {

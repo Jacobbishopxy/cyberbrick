@@ -33,11 +33,11 @@ const TimeSetButton = (props: { show: boolean | undefined, onClick: () => void }
       </Button>
     </Tooltip> : <></>
 
-const EditButton = (props: { editContent: () => void }) =>
+const EditButton = (props: { editContent: (value: boolean) => void }) =>
   <Tooltip title="Edit">
     <Editor
-      icons={{open: "⚙️", close: "❌️"}}
-      onChange={props.editContent}
+      icons={ { open: "⚙️", close: "❌️" } }
+      onChange={ props.editContent }
     />
   </Tooltip>
 
@@ -112,7 +112,7 @@ export interface HeaderController {
   editable: boolean
   timeSeries?: boolean
   dateList?: string[]
-  editContent: () => void
+  editContent: (value: boolean) => void
   confirmDelete: () => void
   onSelectDate?: (date: string) => void
 }

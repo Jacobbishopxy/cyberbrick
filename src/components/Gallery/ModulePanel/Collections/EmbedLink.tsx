@@ -29,9 +29,10 @@ const EditorField = (props: ModuleEditorField) => {
 
   return (
     <div className={ props.styling }>
-      <Space style={ { position: "relative", top: "40%" } }>
-        Please enter the link:
+      <Space direction="vertical" style={ { position: "relative", top: "40%" } }>
+        Please enter the link below:
         <Input
+          style={ { width: 400 } }
           placeholder='Link'
           allowClear
           onBlur={ linkOnChange }
@@ -43,7 +44,7 @@ const EditorField = (props: ModuleEditorField) => {
           size='small'
           onClick={ handleOk }
         >
-          Click here to modify
+          Save
         </Button>
       </Space>
     </div>

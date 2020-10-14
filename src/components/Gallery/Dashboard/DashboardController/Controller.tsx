@@ -81,7 +81,7 @@ export const Controller = (props: ModuleControllerProps) => {
         onQuit={ quitAddModule }
       />
     </>
-  ), [addModuleModalVisible])
+  ), [addModuleModalVisible, props.onSaveTemplate])
 
   const idleMode = useMemo(() => (
     <Button

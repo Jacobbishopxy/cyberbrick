@@ -62,8 +62,7 @@ export const TemplateElement =
 
     useImperativeHandle(ref, () => ({ fetchContent }))
 
-    const updateContent = (ctt: DataType.Content) =>
-      props.updateContentFn(ctt)
+    const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
     return (
       <ModulePanel

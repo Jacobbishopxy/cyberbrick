@@ -31,6 +31,7 @@ export interface ModulePanelProps {
 }
 
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
+// todo: fix `setContent(undefined)` and parent component's `setX(undefined)`
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
@@ -53,10 +54,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
   }, [content])
 
 
-  const editContent = () => {
-    if (props.editable) {
-      if (moduleFwRef.current) moduleFwRef.current.edit()
-    }
+  const editContent = (value: boolean) => {
+    if (props.editable && moduleFwRef.current) moduleFwRef.current.edit(value)
   }
 
   const confirmDelete = () =>
@@ -129,7 +128,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
       onSelectDate={ selectDate }
     />, [props.editable, props.content, dateList])
 
-  const genContext = useMemo(() => {
+  // todo: memo depending `content` would cause new element not editable, since `moduleFwRef` is not generated
+  const genContext = () => {
     const rf = moduleRef.current
     if (rf) return rf({
       content,
@@ -137,7 +137,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       forwardedRef: moduleFwRef
     })
     return <></>
-  }, [content])
+  }
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
@@ -148,7 +148,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   return (
     <div className={ styles.modulePanel }>
       { genHeader }
-      { genContext }
+      { genContext() }
       { genFooter }
     </div>
   )

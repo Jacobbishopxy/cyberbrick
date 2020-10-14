@@ -25,7 +25,7 @@ export class ModuleGenerator {
 
   public generate = () => {
     const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
-      const [editable, setEditable] = useState<boolean>(false)
+      const [editable, setEditable] = useState<boolean>()
       const [content, setContent] = useState<DataType.Content | undefined>(crProps.content)
 
       useEffect(() => setContent(crProps.content), [crProps.content])
@@ -36,7 +36,7 @@ export class ModuleGenerator {
       }
 
       useImperativeHandle(crProps.forwardedRef, () => ({
-        edit: () => setEditable(!editable)
+        edit: setEditable
       }))
 
       const { forceStyle } = this

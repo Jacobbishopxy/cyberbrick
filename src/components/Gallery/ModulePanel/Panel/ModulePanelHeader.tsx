@@ -51,7 +51,7 @@ interface ModulePanelHeaderProps {
   headName?: string
   title: string | undefined
   updateTitle: (v: string) => void
-  editContent: () => void
+  editContent: (value: boolean) => void
   newContent: (date: string) => void
   confirmDelete: () => void
   dateList?: string[]
