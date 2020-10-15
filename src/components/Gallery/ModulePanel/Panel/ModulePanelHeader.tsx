@@ -3,46 +3,9 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Button, Checkbox, Col, DatePicker, Input, message, Modal, Row } from "antd"
-import moment from "moment"
+import { Button, Col, Input, message, Row } from "antd"
 
 import { HeaderController } from "./HeaderController"
-
-interface TimeSetModalProps {
-  show: boolean | undefined,
-  visible: boolean,
-  onOk: (isNew: boolean) => void,
-  onCancel: () => void,
-  editDate: (date: string) => void
-}
-
-const TimeSetModal = (props: TimeSetModalProps) => {
-
-  const [isNew, setIsNew] = useState<boolean>(false)
-
-  const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
-    if (date !== null) props.editDate(dateStr)
-  }
-
-  const onOk = () => props.onOk(isNew)
-
-  return props.show ?
-    <Modal
-      title="Select a date"
-      visible={ props.visible }
-      onOk={ onOk }
-      onCancel={ props.onCancel }
-    >
-      <DatePicker
-        onChange={ dateOnChange }
-        defaultValue={ moment() }
-      />
-      <br/>
-      <Checkbox onChange={ e => setIsNew(e.target.checked) }>
-        Create new content
-      </Checkbox>
-    </Modal> : <></>
-}
 
 
 interface ModulePanelHeaderProps {
@@ -63,8 +26,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
   const [title, setTitle] = useState<string | undefined>(props.title)
-  const [dateModalVisible, setDateModalVisible] = useState<boolean>(false)
-  const [selectedDate, setSelectedDate] = useState<string>()
 
   useEffect(() => setTitle(props.title), [props.title])
 
@@ -77,16 +38,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       message.warning("title cannot be empty!")
 
     setTitleEditable(false)
-  }
-
-  const editDate = (date: string) => setSelectedDate(date)
-
-  const timeSetModalOnOk = (isNew: boolean) => {
-    if (props.editDate && selectedDate) {
-      if (isNew) props.newContent(selectedDate)
-      else props.editDate(selectedDate)
-    }
-    setDateModalVisible(false)
   }
 
   const genTitle = () => {
@@ -114,13 +65,15 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     <HeaderController
       editable={ props.editable }
       timeSeries={ props.timeSeries }
-      editContent={ props.editContent }
-      confirmDelete={ props.confirmDelete }
       dateList={ props.dateList }
+      editDate={ props.editDate }
+      editContent={ props.editContent }
+      newContent={ props.newContent }
+      confirmDelete={ props.confirmDelete }
       onSelectDate={ props.onSelectDate }
     />
 
-  const genHead = () =>
+  return (
     <Row style={ { paddingLeft: 10, paddingRight: 10, height: 25 } }>
       {
         props.headName ?
@@ -143,19 +96,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
           </>
       }
     </Row>
-
-  return (
-    <div>
-      { genHead() }
-
-      <TimeSetModal
-        show={ props.timeSeries }
-        visible={ dateModalVisible }
-        onOk={ timeSetModalOnOk }
-        onCancel={ () => setDateModalVisible(false) }
-        editDate={ editDate }
-      />
-    </div>
   )
 }
 

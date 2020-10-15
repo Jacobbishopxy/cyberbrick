@@ -30,6 +30,7 @@ export interface ModulePanelProps {
   editable: boolean
 }
 
+// todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
 // todo: fix `setContent(undefined)` and parent component's `setX(undefined)`
 export const ModulePanel = (props: ModulePanelProps) => {

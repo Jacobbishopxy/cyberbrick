@@ -22,7 +22,6 @@ export interface ContainerElementRef {
   fetchContent: (date?: string) => void
 }
 
-// todo: add Tags presenting
 /**
  * Template's elements
  */
