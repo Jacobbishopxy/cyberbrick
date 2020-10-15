@@ -25,14 +25,12 @@ export class ModuleGenerator {
   public generate = () => {
     const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
       const [editable, setEditable] = useState<boolean>()
+      const { forceStyle } = this
 
       useImperativeHandle(crProps.forwardedRef, () => ({
         edit: setEditable
       }))
 
-      // todo: BUG! content changed caused by mark switching or date switching does not re-render presenter
-
-      const { forceStyle } = this
       return editable ?
         <this.editor
           content={ crProps.content }
