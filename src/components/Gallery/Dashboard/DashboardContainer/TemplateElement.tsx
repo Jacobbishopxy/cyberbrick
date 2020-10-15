@@ -34,16 +34,12 @@ export const TemplateElement =
 
     useEffect(() => {
       if (!props.markAvailable && eleId) {
-        setContent(undefined)
-        setDates(undefined)
         props.fetchContentFn(eleId).then(res => setContent(res))
       }
     }, [])
 
     const fetchContent = (date?: string) => {
       if (props.markAvailable && eleId) {
-        setContent(undefined)
-        setDates(undefined)
         if (date)
           props.fetchContentFn(eleId, date).then(res => setContent(res))
         else

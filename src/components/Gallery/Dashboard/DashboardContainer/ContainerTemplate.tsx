@@ -51,7 +51,6 @@ const genDataGrid = (ele: DataType.Element) =>
 
 export interface ContainerTemplateProps {
   markAvailable?: boolean
-  startFetchAllTrigger: number
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -109,10 +108,6 @@ export const ContainerTemplate =
     const saveElements = () => elements
 
     useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveElements }))
-
-    useEffect(() => {
-      if (props.startFetchAllTrigger > 0) startFetchAllContents()
-    }, [props.startFetchAllTrigger])
 
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({

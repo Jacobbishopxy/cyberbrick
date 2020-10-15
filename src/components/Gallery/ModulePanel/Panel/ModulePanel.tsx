@@ -32,22 +32,18 @@ export interface ModulePanelProps {
 
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
-// todo: fix `setContent(undefined)` and parent component's `setX(undefined)`
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
   const moduleFwRef = useRef<ConvertFwRef>(null)
 
-  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [dateList, setDateList] = useState<string[] | undefined>(props.dates)
+  const [content, setContent] = useState<DataType.Content>()
 
   useEffect(() => {
     moduleRef.current = collectionSelector(props.elementType)
   }, [])
 
   useEffect(() => setContent(props.content), [props.content])
-
-  useEffect(() => setDateList(props.dates), [props.dates])
 
   useEffect(() => {
     if (props.timeSeries && props.fetchContentDates && content && !props.editable)
@@ -78,8 +74,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
   }
 
   const footerDate = () => {
-    if (props.timeSeries && props.content)
-      return { date: props.content.date }
+    if (props.timeSeries && content)
+      return { date: content.date }
     return {}
   }
 
@@ -109,28 +105,22 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.updateContent(newContent)
   }
 
-  const selectDate = (date: string) => {
-    setContent(undefined)
-    props.fetchContent(date)
-  }
-
   const genHeader = useMemo(() =>
     <ModulePanelHeader
       editable={ props.editable }
       timeSeries={ props.timeSeries }
       headName={ props.headName }
-      title={ props.content ? props.content.title : undefined }
+      title={ content ? content.title : undefined }
       updateTitle={ updateTitle }
       editContent={ editContent }
       newContent={ newDateWithContent }
       confirmDelete={ confirmDelete }
-      dateList={ dateList }
+      dateList={ props.dates }
       editDate={ headerDate }
-      onSelectDate={ selectDate }
-    />, [props.editable, props.content, dateList])
+      onSelectDate={ props.fetchContent }
+    />, [props.editable, content, props.dates])
 
-  // todo: memo depending `content` would cause new element not editable, since `moduleFwRef` is not generated
-  const genContext = () => {
+  const genContext = useMemo(() => {
     const rf = moduleRef.current
     if (rf) return rf({
       content,
@@ -138,18 +128,18 @@ export const ModulePanel = (props: ModulePanelProps) => {
       forwardedRef: moduleFwRef
     })
     return <></>
-  }
+  }, [content])
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
-      id={ props.content ? props.content.id : undefined }
+      id={ content ? content.id : undefined }
       { ...footerDate() }
-    />, [props.content])
+    />, [content])
 
   return (
     <div className={ styles.modulePanel }>
       { genHeader }
-      { genContext() }
+      { genContext }
       { genFooter }
     </div>
   )

@@ -70,8 +70,6 @@ export const Dashboard = (props: DashboardProps) => {
     props.fetchDashboards().then(res => setDashboards(res))
   }, [])
 
-  useEffect(() => setSelectedMark(undefined), [selectedDashboard])
-
   useEffect(() => {
     if (selectedMark && cRef.current) cRef.current.startFetchAllContents()
   }, [selectedMark])

@@ -2,10 +2,9 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
 import { ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
-import * as DataType from "../../GalleryDataType"
 import styles from "./Common.less"
 
 export class ModuleGenerator {
@@ -26,28 +25,22 @@ export class ModuleGenerator {
   public generate = () => {
     const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
       const [editable, setEditable] = useState<boolean>()
-      const [content, setContent] = useState<DataType.Content | undefined>(crProps.content)
-
-      useEffect(() => setContent(crProps.content), [crProps.content])
-
-      const updateContent = (c: DataType.Content) => {
-        setContent(c)
-        crProps.updateContent(c)
-      }
 
       useImperativeHandle(crProps.forwardedRef, () => ({
         edit: setEditable
       }))
 
+      // todo: BUG! content changed caused by mark switching or date switching does not re-render presenter
+
       const { forceStyle } = this
       return editable ?
         <this.editor
-          content={ content }
-          updateContent={ updateContent }
+          content={ crProps.content }
+          updateContent={ crProps.updateContent }
           styling={ forceStyle ? crProps.styling : styles.editorField }
         /> :
         <this.presenter
-          content={ content }
+          content={ crProps.content }
           styling={ crProps.styling }
         />
     }

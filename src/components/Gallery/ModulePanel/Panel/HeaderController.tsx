@@ -3,69 +3,10 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Checkbox, DatePicker, Modal, Select, Space, Tooltip } from "antd"
+import { Checkbox, DatePicker, Modal, Select, Space } from "antd"
 import moment from "moment"
 
-import { Emoji } from "@/components/Emoji"
-import { Editor } from "@/components/Gallery/Misc/Editor"
-
-
-const DragButton = () =>
-  <Tooltip title='Drag'>
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      className='draggableHandler'
-    >
-      <Emoji label="drag" symbol="🧲️️️️️"/>
-    </Button>
-  </Tooltip>
-
-const TimeSetButton = (props: { show: boolean | undefined, onClick: () => void }) =>
-  props.show ?
-    <Tooltip title="Date">
-      <Button
-        shape='circle'
-        size='small'
-        type='link'
-        onClick={ props.onClick }
-      >
-        <Emoji label="date" symbol="🗓️"/>
-      </Button>
-    </Tooltip> : <></>
-
-const EditButton = (props: { editContent: (value: boolean) => void }) =>
-  <Tooltip title="Edit">
-    <Editor
-      icons={ { open: "⚙️", close: "❌️" } }
-      onChange={ props.editContent }
-    />
-  </Tooltip>
-
-const DeleteButton = (props: { confirmDelete: () => void }) =>
-  <Tooltip title="Delete">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.confirmDelete }
-    >
-      <Emoji label="delete" symbol="🗑️️️"/>
-    </Button>
-  </Tooltip>
-
-const TimePickButton = (props: { onClick: () => void }) =>
-  <Tooltip title="Date">
-    <Button
-      shape='circle'
-      size='small'
-      type='link'
-      onClick={ props.onClick }
-    >
-      <Emoji label="date" symbol="🗓️"/>
-    </Button>
-  </Tooltip>
+import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
 
 interface TimeSetModalProps {
   show: boolean | undefined,
@@ -92,14 +33,15 @@ const TimeSetModal = (props: TimeSetModalProps) => {
       onOk={ onOk }
       onCancel={ props.onCancel }
     >
-      <DatePicker
-        onChange={ dateOnChange }
-        defaultValue={ moment() }
-      />
-      <br/>
-      <Checkbox onChange={ e => setIsNew(e.target.checked) }>
-        Create new content
-      </Checkbox>
+      <Space direction="vertical">
+        <DatePicker
+          onChange={ dateOnChange }
+          defaultValue={ moment() }
+        />
+        <Checkbox onChange={ e => setIsNew(e.target.checked) }>
+          Create new content
+        </Checkbox>
+      </Space>
     </Modal> : <></>
 }
 

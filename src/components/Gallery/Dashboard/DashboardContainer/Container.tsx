@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { Tabs } from 'antd'
 import _ from "lodash"
 
@@ -51,12 +51,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
-  const [startFetchAllTrigger, setStartFetchAllTrigger] = useState<number>(0)
 
-  useEffect(() => {
-    setTemplate(undefined)
-    setSelectedPane(initSelectedPane(templates))
-  }, [props.dashboardInfo])
+  useEffect(() => setSelectedPane(initSelectedPane(templates)), [props.dashboardInfo])
 
   /**
    * fetch template (with elements) when switching dashboard or it's tabs
@@ -68,22 +64,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     }
   }, [selectedPane])
 
-  /**
-   * template's changing triggers `startFetchAllContents`
-   */
-  useEffect(() => {
-    if (template) {
-      if (props.markAvailable && props.selectedMark)
-        setStartFetchAllTrigger(startFetchAllTrigger + 1)
-      if (!props.markAvailable)
-        setStartFetchAllTrigger(startFetchAllTrigger + 1)
-    }
-  }, [template])
 
-  const tabOnChange = (name: string) => {
-    setSelectedPane({ name, index: _.findIndex(templates, t => t.name === name) })
-    setTemplate(undefined)
-  }
+  const tabOnChange = (name: string) => setSelectedPane({
+    name,
+    index: _.findIndex(templates, t => t.name === name)
+  })
 
   const startFetchElements = () => {
     if (selectedPane)
@@ -123,6 +108,18 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     saveTemplate
   }))
 
+  /**
+   * template's changing triggers `startFetchAllContents`
+   */
+  useEffect(() => {
+    if (ctRef.current && template) {
+      if (props.markAvailable && props.selectedMark)
+        startFetchAllContents()
+      if (!props.markAvailable)
+        startFetchAllContents()
+    }
+  }, [template])
+
   const elementUpdateContentFn = (ctt: DataType.Content) => {
     const category = {
       name: props.dashboardInfo.category!.name
@@ -130,29 +127,32 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     props.updateElementContentFn({ ...ctt, category })
   }
 
+  const genPane = (t: DataType.Template) => {
+    if (ctRef && t.name === selectedPane?.name && template)
+      return <ContainerTemplate
+        markAvailable={ props.markAvailable }
+        elements={ template.elements! }
+        elementFetchContentFn={ props.fetchElementContentFn }
+        elementFetchContentDatesFn={ props.fetchElementContentDatesFn }
+        elementUpdateContentFn={ elementUpdateContentFn }
+        ref={ ctRef }
+      />
+    return <></>
+  }
 
-  return (
-    <Tabs onChange={ tabOnChange } destroyInactiveTabPane>
-      {
-        props.dashboardInfo.templates!.map(t =>
-          <Tabs.TabPane tab={ t.name } key={ t.name } destroyInactiveTabPane>
-            {
-              t.name === selectedPane?.name && template ?
-                <ContainerTemplate
-                  markAvailable={ props.markAvailable }
-                  startFetchAllTrigger={ startFetchAllTrigger }
-                  elements={ template.elements! }
-                  elementFetchContentFn={ props.fetchElementContentFn }
-                  elementFetchContentDatesFn={ props.fetchElementContentDatesFn }
-                  elementUpdateContentFn={ elementUpdateContentFn }
-                  ref={ ctRef }
-                /> : <></>
-            }
-          </Tabs.TabPane>
-        )
-      }
-    </Tabs>
-  )
+  return useMemo(() => {
+    return (
+      <Tabs onChange={ tabOnChange } destroyInactiveTabPane>
+        {
+          props.dashboardInfo.templates!.map(t =>
+            <Tabs.TabPane tab={ t.name } key={ t.name }>
+              { genPane(t) }
+            </Tabs.TabPane>
+          )
+        }
+      </Tabs>
+    )
+  }, [props.dashboardInfo, props.selectedMark, template])
 })
 
 Container.defaultProps = {
