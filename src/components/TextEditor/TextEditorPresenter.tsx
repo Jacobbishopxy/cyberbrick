@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import ReactQuill from "react-quill"
 
 import 'react-quill/dist/quill.bubble.css'
@@ -19,14 +19,18 @@ export const TextEditorPresenter = (props: DisplayPresenterProps) => {
   const style = props.styling ? props.styling : undefined
 
   const [value, setValue] = useState<string>(props.content)
+  const [update, setUpdate] = useState<boolean>(false)
 
-  useEffect(() => setValue(props.content), [props.content])
+  useEffect(() => {
+    setValue(props.content)
+    setUpdate(!update)
+  }, [props.content])
 
-  return <ReactQuill
+  return useMemo(() => <ReactQuill
     className={ style }
     theme="bubble"
     value={ value }
-    onChange={e => setValue(e)}
+    onChange={ e => setValue(e) }
     readOnly
-  />
+  />, [update])
 }

@@ -74,7 +74,7 @@ async function getElementContentByDate(id: string, date: string, markName?: stri
 
   const ans = markName ?
     await que
-      .leftJoinAndSelect(common.contentMark, common.mark)
+      .leftJoin(common.contentMark, common.mark)
       .andWhere(`${ common.markName } = :markName`, { markName })
       .getOne() :
     await que.getOne()
@@ -84,14 +84,14 @@ async function getElementContentByDate(id: string, date: string, markName?: stri
 }
 
 async function getElementLatestContent(id: string, markName?: string) {
-  const ans = await elementRepo()
+  const que = elementRepo()
     .createQueryBuilder(common.element)
     .select(common.elementId)
     .leftJoin(qb => {
         let raw = qb.from(Content, common.content)
         if (markName)
           raw = qb
-            .leftJoinAndSelect(common.contentMark, common.mark)
+            .leftJoin(common.contentMark, common.mark)
             .where(`${ common.markName } = :markName`, { markName })
         return raw
           .select(`MAX(${ common.date })`, common.date)
@@ -107,7 +107,14 @@ async function getElementLatestContent(id: string, markName?: string) {
       `${ common.contentDate } = last_date.date`
     )
     .where(`${ common.elementId } = :id`, { id })
-    .getOne()
+
+  const ans = markName ?
+    await que
+      .leftJoin(common.contentMark, common.mark)
+      .andWhere(`${ common.markName } = :markName`, { markName })
+      .getOne() :
+    await que.getOne()
+
 
   if (ans) return ans
   return {}
