@@ -5,8 +5,8 @@
 import React, { useState } from 'react'
 import { Table } from "antd"
 
+import { Editor } from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { Editor } from "../Misc/Editor"
 import { EditableTagPanel } from "../Tag/EditableTagPanel"
 
 

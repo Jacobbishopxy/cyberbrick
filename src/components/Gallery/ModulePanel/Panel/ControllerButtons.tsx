@@ -6,7 +6,7 @@ import React from 'react'
 import { Button, Tooltip } from "antd"
 
 import { Emoji } from "@/components/Emoji"
-import { Editor } from "@/components/Gallery/Misc/Editor"
+import { Editor } from "@/components/Editor"
 
 
 export const DragButton = () =>

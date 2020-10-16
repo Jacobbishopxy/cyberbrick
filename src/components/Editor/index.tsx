@@ -1,5 +1,5 @@
 /**
- * Created by Jacob Xie on 9/18/2020.
+ * Created by Jacob Xie on 10/16/2020.
  */
 
 import React, { useState } from "react"
@@ -59,3 +59,4 @@ Editor.defaultProps = {
   icons: false,
   defaultOpen: false
 } as Partial<EditorProps>
+

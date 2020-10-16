@@ -3,10 +3,10 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Checkbox, Form, message, Modal, Space, Tabs, Tooltip, Upload } from "antd"
-import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
+import { Button, Tabs } from "antd"
 import { HotTable } from "@handsontable/react"
-import axios from "axios"
+
+import { FileUploadModal } from "@/components/FileUploadModal"
 
 import { ModuleGenerator } from "../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
@@ -16,27 +16,11 @@ import "handsontable/dist/handsontable.full.css"
 
 const postingUrl = "/api/fm/extractXlsxFile"
 
-const genAxiosUrl = (d: string[]) => {
-  if (d.length === 0) return postingUrl
-  let r = `${ postingUrl }?`
-  if (d.includes("head")) r += "head=true"
-  if (d.includes("multiSheets")) r += "multiSheets=true"
-  return r
-}
-const inputFileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 14 },
-}
-
-
+// todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
-  const [form] = Form.useForm()
 
   const [visible, setVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [uploading, setUploading] = useState<boolean>(false)
-  const [uploadFiles, setUploadFiles] = useState<File[]>([])
 
   const saveContent = (d: object[]) => {
     const ctt = content ? {
@@ -50,54 +34,6 @@ const EditorField = (props: ModuleEditorField) => {
     props.updateContent(ctt)
   }
 
-  const uploadProps = {
-    accept: inputFileType,
-    multiple: false,
-    beforeUpload: (file: File) => {
-      setUploadFiles([file])
-      return false
-    },
-    onRemove: () => setUploadFiles([]),
-    fileList: uploadFiles.map((i, j) => ({ ...i, name: i.name, uid: String(j) }))
-  }
-
-  const onUploadFile = (params: string[]) => {
-    if (uploadFiles.length !== 0) {
-      const data = new FormData()
-      data.append("xlsx_file", uploadFiles[0])
-      setUploading(true)
-
-      axios
-        .post(genAxiosUrl(params), data)
-        .then(res => {
-          message.success(res.statusText)
-          setUploading(false)
-          setUploadFiles([])
-          saveContent(res.data)
-        })
-        .catch(err => {
-          setUploading(false)
-          message.error(JSON.stringify(err, null, 2))
-        })
-    }
-  }
-
-  const onReset = () => {
-    setUploading(false)
-    setUploadFiles([])
-    form.resetFields()
-  }
-
-  const onFinish = () => {
-    form.validateFields()
-      .then(values => {
-        const fo = values.fileOptions ? values.fileOptions : []
-        onUploadFile(fo)
-        onReset()
-        setVisible(false)
-      })
-  }
-
   return (
     <div className={ props.styling }>
       <Button
@@ -109,45 +45,25 @@ const EditorField = (props: ModuleEditorField) => {
       >
         Click here to modify
       </Button>
-      <Modal
-        title='Please enter link below:'
+      <FileUploadModal
+        postingUrl={ postingUrl }
+        setVisible={ setVisible }
         visible={ visible }
-        onOk={ onFinish }
-        onCancel={ () => setVisible(false) }
-        confirmLoading={ uploading }
-        okText="Confirm"
-        cancelText="Discard"
-      >
-        <Form { ...formItemLayout } form={ form }>
-          <Form.Item name="fileUpload" label="File">
-            <Space>
-              <Upload { ...uploadProps }>
-                <Button icon={ <UploadOutlined/> }>Click to upload</Button>
-              </Upload>
-              <Tooltip title="Please use pure Excel file!">
-                <ExclamationCircleTwoTone twoToneColor="red"/>
-              </Tooltip>
-            </Space>
-          </Form.Item>
-
-          <Form.Item name="fileOptions" label="Options">
-            <Checkbox.Group>
-              <Checkbox value="head">Has head</Checkbox>
-              <Checkbox value="multiSheets">Multiple sheets</Checkbox>
-            </Checkbox.Group>
-          </Form.Item>
-        </Form>
-      </Modal>
+        upload={ saveContent }
+      />
     </div>
   )
 }
 
 const licenseKey = "non-commercial-and-evaluation"
 
+// todo: reactive height, based on module panel height
+// todo: save colHeaders & rowHeaders in `content.config`
 const hotTableProps = {
+  readOnly: true,
   settings: {
     width: "100%",
-    height: "50vh"  // todo: reactive height, based on module panel height
+    height: "50vh"
   },
   colHeaders: true,
   rowHeaders: true,
@@ -186,8 +102,12 @@ const PresenterField = (props: ModulePresenterField) => {
 
   const view = (content: DataType.Content) => {
     const d = content.data.data
-    if (d.length === 1) return singleS(d)
-    return multiS(d)
+    if (d) {
+      if (d.length === 1)
+        return singleS(d)
+      return multiS(d)
+    }
+    return <></>
   }
 
   return props.content ? <div className={ props.styling }>{ view(props.content) }</div> : <></>

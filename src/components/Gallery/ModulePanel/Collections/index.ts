@@ -76,7 +76,7 @@ export const moduleList = [
     name: 'Graph',
     children: [
       {
-        key: DataType.ElementType.Lines,
+        key: DataType.ElementType.Line,
         name: 'Line',
         disabled: true,
       },

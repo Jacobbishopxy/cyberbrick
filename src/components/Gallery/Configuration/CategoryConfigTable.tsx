@@ -6,8 +6,8 @@ import React, { useState } from 'react'
 import { Table, Tag } from "antd"
 import { PlusOutlined } from '@ant-design/icons'
 
+import { Editor } from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { Editor } from "../Misc/Editor"
 import { CreationModal } from "../Misc/CreationModal"
 import { TextBuilder } from "../Misc/TextBuilder"
 import { EditableTagPanel } from "../Tag/EditableTagPanel"

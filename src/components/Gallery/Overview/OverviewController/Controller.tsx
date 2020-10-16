@@ -6,8 +6,8 @@ import React, { useState } from 'react'
 import { Select, Space } from "antd"
 import { SaveTwoTone, SettingTwoTone } from '@ant-design/icons'
 
+import { Editor } from "@/components/Editor"
 import * as DataType from "../../GalleryDataType"
-import { Editor } from "../../Misc/Editor"
 
 
 export interface ControllerProps {
