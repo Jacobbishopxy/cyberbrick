@@ -9,6 +9,7 @@ import { ModuleGenerator } from "../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
 import * as DataType from "../../GalleryDataType"
 
+
 const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 

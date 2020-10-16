@@ -8,6 +8,7 @@ import * as DataType from "../../GalleryDataType"
 import { XlsxTable } from "./XlsxTable"
 import { EmbedLink } from "./EmbedLink"
 import { Text } from "./Text"
+import { TargetPrice } from "./TargetPrice"
 
 export { collectionSelector }
 
@@ -122,5 +123,6 @@ export {
   XlsxTable,
   EmbedLink,
   Text,
+  TargetPrice,
 }
 
