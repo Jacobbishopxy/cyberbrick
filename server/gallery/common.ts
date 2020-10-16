@@ -69,7 +69,7 @@ export enum ElementType {
   FileManager = "fileManager",
   XlsxTable = "xlsxTable",
   Table = "table",
-  Lines = "lines",
+  Line = "line",
   Histogram = "histogram",
   Pie = "pie",
   Scatter = "scatter",
@@ -97,8 +97,8 @@ export const getElementType = (v: string) => {
       return ElementType.XlsxTable
     case "table":
       return ElementType.Table
-    case "lines":
-      return ElementType.Lines
+    case "line":
+      return ElementType.Line
     case "histogram":
       return ElementType.Histogram
     case "pie":
