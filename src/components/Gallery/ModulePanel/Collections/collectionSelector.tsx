@@ -11,6 +11,7 @@ import {
   Text,
   XlsxTable,
   TargetPrice,
+  Line
 } from "./index"
 
 import styles from "../Panel/Common.less"
@@ -53,6 +54,13 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={ props.forwardedRef }
     />
 
+    const line = <Line
+      content={ props.content }
+      updateContent={ props.updateContent }
+      styling={ styles.contentPanel }
+      ref={ props.forwardedRef }
+    />
+
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
@@ -62,6 +70,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return xlsxTable
       case DataType.ElementType.TargetPrice:
         return targetPrice
+      case DataType.ElementType.Line:
+        return line
       default:
         return defaultModule
     }

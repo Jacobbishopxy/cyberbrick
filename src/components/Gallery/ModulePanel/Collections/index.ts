@@ -9,6 +9,7 @@ import { XlsxTable } from "./XlsxTable"
 import { EmbedLink } from "./EmbedLink"
 import { Text } from "./Text"
 import { TargetPrice } from "./TargetPrice"
+import { Line } from "./Line"
 
 export { collectionSelector }
 
@@ -78,7 +79,7 @@ export const moduleList = [
       {
         key: DataType.ElementType.Line,
         name: 'Line',
-        disabled: true,
+        disabled: false,
       },
       {
         key: DataType.ElementType.Histogram,
@@ -124,5 +125,6 @@ export {
   EmbedLink,
   Text,
   TargetPrice,
+  Line
 }
 

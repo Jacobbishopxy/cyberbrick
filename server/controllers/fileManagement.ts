@@ -39,7 +39,7 @@ const readFromXlsx = async (filepath: string, options: ReadXlsxOptions) => {
   if (options.multiSheets)
     f.eachSheet(ws => recordXlsxRows(book, ws))
   else
-    recordXlsxRows(book, f.getWorksheet(1))
+    recordXlsxRows(book, f.worksheets[0])
 
   return book
 }
