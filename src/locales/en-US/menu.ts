@@ -60,6 +60,7 @@ export default {
   'menu.demo.local-storage': 'Local Storage',
   'menu.demo.kChart': 'KChart',
   'menu.demo.rectangleChart': 'RectangleChart',
+  'menu.demo.charts': 'Charts',
 
   'menu.document': 'Document',
   'menu.document.gallery': 'Gallery',

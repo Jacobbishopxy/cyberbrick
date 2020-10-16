@@ -86,6 +86,11 @@ export default defineConfig({
           path: '/demo/rectangleChart',
           component: './demo/RectangleChart',
         },
+        {
+          name: 'charts',
+          path: '/demo/charts',
+          component: './demo/Charts',
+        },
       ],
     },
     {
