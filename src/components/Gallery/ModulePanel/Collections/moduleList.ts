@@ -81,7 +81,7 @@ export const moduleList = [
       {
         key: DataType.ElementType.Pie,
         name: 'Pie',
-        disabled: true,
+        disabled: false,
       },
       {
         key: DataType.ElementType.Scatter,

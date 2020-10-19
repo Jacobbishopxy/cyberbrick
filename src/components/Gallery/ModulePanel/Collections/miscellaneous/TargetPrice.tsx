@@ -6,9 +6,9 @@ import React, { useState } from 'react'
 import { Button, Col, Input, InputNumber, message, Radio, Row, Space } from "antd"
 import { RadioChangeEvent } from "antd/lib/radio"
 
-import { ModuleGenerator } from "../Generator/ModuleGenerator"
-import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
-import * as DataType from "../../GalleryDataType"
+import { ModuleGenerator } from "../../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import * as DataType from "../../../GalleryDataType"
 
 
 const EditorField = (props: ModuleEditorField) => {

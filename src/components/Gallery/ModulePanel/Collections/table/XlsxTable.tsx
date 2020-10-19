@@ -8,9 +8,9 @@ import { HotTable } from "@handsontable/react"
 
 import { FileUploadModal } from "@/components/FileUploadModal"
 
-import { ModuleGenerator } from "../Generator/ModuleGenerator"
-import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
-import * as DataType from "../../GalleryDataType"
+import { ModuleGenerator } from "../../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import * as DataType from "../../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
 

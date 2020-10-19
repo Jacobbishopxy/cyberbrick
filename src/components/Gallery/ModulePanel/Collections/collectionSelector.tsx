@@ -6,13 +6,13 @@ import React from 'react'
 
 import * as DataType from "../../GalleryDataType"
 import { ConvertFwRef } from "../Generator/data"
-import {
-  EmbedLink,
-  Text,
-  XlsxTable,
-  TargetPrice,
-  Line
-} from "./index"
+import { XlsxTable } from "./table/XlsxTable"
+import { EmbedLink } from "./miscellaneous/EmbedLink"
+import { Text } from "./miscellaneous/Text"
+import { TargetPrice } from "./miscellaneous/TargetPrice"
+import { Line } from "./graph/Line"
+import { Bar } from "./graph/Bar"
+import { Pie } from "./graph/Pie"
 
 import styles from "../Panel/Common.less"
 
@@ -67,6 +67,22 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={ props.forwardedRef }
     />
 
+    const bar = <Bar
+      content={ props.content }
+      contentHeight={ props.contentHeight }
+      updateContent={ props.updateContent }
+      styling={ styles.contentPanel }
+      ref={ props.forwardedRef }
+    />
+
+    const pie = <Pie
+      content={ props.content }
+      contentHeight={ props.contentHeight }
+      updateContent={ props.updateContent }
+      styling={ styles.contentPanel }
+      ref={ props.forwardedRef }
+    />
+
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
@@ -78,6 +94,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return targetPrice
       case DataType.ElementType.Line:
         return line
+      case DataType.ElementType.Bar:
+        return bar
+      case DataType.ElementType.Pie:
+        return pie
       default:
         return defaultModule
     }
