@@ -69,7 +69,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const updateTitle = (title: string) => {
     const newContent = content ?
       { ...content, title } :
-      { title, data: {}, date: DataType.today() }
+      { title, date: DataType.today() } as DataType.Content
     setContent(newContent)
     props.updateContent(newContent)
   }

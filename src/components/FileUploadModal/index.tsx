@@ -5,17 +5,25 @@
 import React, { useState } from 'react'
 import { Button, Checkbox, Form, message, Modal, Space, Tooltip, Upload } from "antd"
 import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 
 
 const inputFileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
 const genAxiosUrl = (url: string, d: string[]) => {
   if (d.length === 0) return url
   let r = `${ url }?`
-  if (d.includes("head")) r += "head=true"
   if (d.includes("multiSheets")) r += "multiSheets=true"
   return r
 }
+
+export interface SheetStyle {
+  name: string
+  data: [][]
+}
+
+const axiosPost = (url: string, params: string[], data: any): Promise<AxiosResponse<SheetStyle[]>> =>
+  axios.post(genAxiosUrl(url, params), data)
+
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
@@ -25,7 +33,8 @@ export interface FileUploadModalProps {
   postingUrl: string
   setVisible: (value: boolean) => void
   visible: boolean
-  upload: (value: any) => void
+  upload: (value: SheetStyle[]) => void
+  multiSheetDisable?: boolean
 }
 
 // todo: support CSV file, API should be modified as well
@@ -52,8 +61,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       data.append("xlsx_file", uploadFiles[0])
       setUploading(true)
 
-      axios
-        .post(genAxiosUrl(props.postingUrl, params), data)
+      axiosPost(props.postingUrl, params, data)
         .then(res => {
           message.success(res.statusText)
           setUploading(false)
@@ -107,12 +115,20 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
 
         <Form.Item name="fileOptions" label="Options">
           <Checkbox.Group>
-            <Checkbox value="head">Has head</Checkbox>
-            <Checkbox value="multiSheets">Multiple sheets</Checkbox>
+            <Checkbox
+              value="multiSheets"
+              disabled={ props.multiSheetDisable }
+            >
+              Multiple sheets
+            </Checkbox>
           </Checkbox.Group>
         </Form.Item>
       </Form>
     </Modal>
   )
 }
+
+FileUploadModal.defaultProps = {
+  multiSheetDisable: false
+} as Partial<FileUploadModalProps>
 

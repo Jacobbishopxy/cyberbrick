@@ -2,39 +2,39 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useState } from 'react'
-import { Button, Radio, Space } from "antd"
-import { EChartOption } from "echarts"
+import React, { useEffect, useState } from 'react'
+import { Button, message, Radio, Space } from "antd"
 import ReactEcharts from "echarts-for-react"
-import _ from "lodash"
 
-import { FileUploadModal } from "@/components/FileUploadModal"
+import { FileUploadModal, SheetStyle } from "@/components/FileUploadModal"
 
 import { ModuleGenerator } from "../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../Generator/data"
 import * as DataType from "../../GalleryDataType"
+import { genLineChartOption } from "./chartUtils"
 
 
 const postingUrl = "/api/fm/extractXlsxFile"
 
-interface ContentCfg {
-  dataIndexDir: "vertical" | "horizontal"
-}
-
 const EditorField = (props: ModuleEditorField) => {
   const [visible, setVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
+  const [savingDisable, setSavingDisable] = useState<boolean>(true)
 
-  const saveContent = (d: object[]) => {
+  useEffect(() => {
+    if (content && content.data && content.config) setSavingDisable(false)
+  }, [content])
+
+  const saveContentData = (d: SheetStyle[]) => {
+    const dataSource = d.map(i => i.data)[0]
     const ctt = content ? {
       ...content,
-      data: { data: d }
+      data: { data: dataSource }
     } : {
       date: DataType.today(),
-      data: { data: d }
+      data: { data: dataSource }
     }
     setContent(ctt)
-    props.updateContent(ctt)
   }
 
   const saveContentConfig = (dataIndexDir: string) => {
@@ -43,10 +43,18 @@ const EditorField = (props: ModuleEditorField) => {
       config: { dataIndexDir }
     } : {
       date: DataType.today(),
-      data: { data: [] },
       config: { dataIndexDir }
     }
-    setContent(ctt)
+    setContent(ctt as DataType.Content)
+  }
+
+  const saveContent = () => {
+    if (content && content.data && content.config) {
+      props.updateContent(content)
+      message.success("Saving succeeded!")
+    } else {
+      message.warn("Saving failed! File and options are required!")
+    }
   }
 
   return (
@@ -61,77 +69,45 @@ const EditorField = (props: ModuleEditorField) => {
           size='small'
           onClick={ () => setVisible(true) }
         >
-          Click here to modify
+          Click here to upload file
         </Button>
         <Space>
           Index direction:
           <Radio.Group
             onChange={ e => saveContentConfig(e.target.value) }
-            defaultValue="horizontal"
+            defaultValue={ props.content?.config?.dataIndexDir }
           >
             <Radio value="horizontal">Horizontal</Radio>
             <Radio value="vertical">Vertical</Radio>
           </Radio.Group>
         </Space>
+        <Button
+          type='primary'
+          size='small'
+          onClick={ saveContent }
+          disabled={ savingDisable }
+        >
+          Save
+        </Button>
       </Space>
 
       <FileUploadModal
         postingUrl={ postingUrl }
         setVisible={ setVisible }
         visible={ visible }
-        upload={ saveContent }
+        upload={ saveContentData }
+        multiSheetDisable
       />
     </div>
   )
 }
 
-interface SheetType {
-  name: string
-  data: [][]
-}
-
-/**
- * default direction: horizontal
- */
-const genSeries = (data: [][], direction?: "vertical" | "horizontal") => {
-  if (direction === "vertical")
-    return _.range(data[0].length - 1).map(() => ({
-      type: "line",
-      smooth: true,
-    }))
-  return _.range(data.length - 1).map(() => ({
-    type: "line",
-    smooth: true,
-    seriesLayoutBy: "row"
-  }))
-}
-
-const genChartOption = (data: [][], cfg?: ContentCfg): EChartOption => {
-
-  return {
-    title: { text: "Profit" },
-    tooltip: {},
-    legend: {},
-    dataset: [{ source: data }],
-    xAxis: {
-      type: "category"
-    },
-    yAxis: {},
-    series: genSeries(data, cfg?.dataIndexDir)
-  }
-}
-
 const PresenterField = (props: ModulePresenterField) => {
-  if (props.content && props.content.data.data) {
-    const d: SheetType[] = props.content.data.data
-    const data = d.map(i => i.data)[0]
-    const c = props.content.config ? props.content.config as ContentCfg : undefined
-
+  if (props.content && props.content.data.data)
     return <ReactEcharts
-      option={ genChartOption(data, c) }
+      option={ genLineChartOption(props.content) }
       style={ { height: props.contentHeight } }
     />
-  }
   return <></>
 }
 

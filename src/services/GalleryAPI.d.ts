@@ -95,7 +95,7 @@ declare namespace GalleryAPI {
     XlsxTable = "xlsxTable",
     Table = "table",
     Lines = "lines",
-    Histogram = "histogram",
+    Bar = "bar",
     Pie = "pie",
     Scatter = "scatter",
     Heatmap = "heatmap",
