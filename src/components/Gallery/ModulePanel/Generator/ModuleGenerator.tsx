@@ -34,11 +34,13 @@ export class ModuleGenerator {
       return editable ?
         <this.editor
           content={ crProps.content }
+          contentHeight={ crProps.contentHeight }
           updateContent={ crProps.updateContent }
           styling={ forceStyle ? crProps.styling : styles.editorField }
         /> :
         <this.presenter
           content={ crProps.content }
+          contentHeight={ crProps.contentHeight }
           styling={ crProps.styling }
         />
     }
@@ -46,6 +48,7 @@ export class ModuleGenerator {
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={ props.content }
+        contentHeight={ props.contentHeight }
         updateContent={ props.updateContent }
         styling={ props.styling }
         forwardedRef={ ref }

@@ -68,7 +68,7 @@ export interface ContainerTemplateRef {
  */
 export const ContainerTemplate =
   forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
-    const ceRefs = useRef<ContainerElementRef[]>([])
+    const teRefs = useRef<ContainerElementRef[]>([])
     const editable = useContext(EditableContext)
 
     const [elements, setElements] = useState<Elements>(props.elements)
@@ -84,7 +84,7 @@ export const ContainerTemplate =
       setElements(updateElementInLayout(elements, layout))
 
     const startFetchAllContents = () => {
-      const rf = ceRefs.current
+      const rf = teRefs.current
       if (props.markAvailable && rf) rf.forEach(e => e.fetchContent())
     }
 
@@ -116,7 +116,7 @@ export const ContainerTemplate =
       })
 
     const genRef = (i: number) => (el: ContainerElementRef) => {
-      if (el) ceRefs.current[i] = el
+      if (el) teRefs.current[i] = el
     }
 
     return (

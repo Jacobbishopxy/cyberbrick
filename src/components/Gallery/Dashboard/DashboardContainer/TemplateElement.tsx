@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
@@ -27,10 +27,16 @@ export interface ContainerElementRef {
  */
 export const TemplateElement =
   forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
+    const mpRef = useRef<HTMLDivElement>(null)
 
+    const [mpHeight, setMpHeight] = useState<number>(0)
     const [content, setContent] = useState<DataType.Content>()
     const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
+
+    useLayoutEffect(() => {
+      if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
+    })
 
     useEffect(() => {
       if (!props.markAvailable && eleId) {
@@ -60,18 +66,21 @@ export const TemplateElement =
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
     return (
-      <ModulePanel
-        headName={ props.element.name }
-        timeSeries={ props.timeSeries }
-        elementType={ props.element.type }
-        content={ content }
-        fetchContent={ fetchContent }
-        dates={ dates }
-        fetchContentDates={ fetchContentDates }
-        updateContent={ updateContent }
-        onRemove={ props.onRemove }
-        editable={ props.editable }
-      />
+      <div style={ { height: "100%" } } ref={ mpRef }>
+        <ModulePanel
+          headName={ props.element.name }
+          timeSeries={ props.timeSeries }
+          elementType={ props.element.type }
+          content={ content }
+          contentHeight={ mpHeight }
+          fetchContent={ fetchContent }
+          dates={ dates }
+          fetchContentDates={ fetchContentDates }
+          updateContent={ updateContent }
+          onRemove={ props.onRemove }
+          editable={ props.editable }
+        />
+      </div>
     )
   })
 

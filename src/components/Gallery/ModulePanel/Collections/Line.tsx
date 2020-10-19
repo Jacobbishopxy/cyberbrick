@@ -2,10 +2,11 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useLayoutEffect, useRef, useState } from 'react'
-import { Button } from "antd"
+import React, { useState } from 'react'
+import { Button, Radio, Space } from "antd"
 import { EChartOption } from "echarts"
 import ReactEcharts from "echarts-for-react"
+import _ from "lodash"
 
 import { FileUploadModal } from "@/components/FileUploadModal"
 
@@ -15,6 +16,10 @@ import * as DataType from "../../GalleryDataType"
 
 
 const postingUrl = "/api/fm/extractXlsxFile"
+
+interface ContentCfg {
+  dataIndexDir: "vertical" | "horizontal"
+}
 
 const EditorField = (props: ModuleEditorField) => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -28,22 +33,48 @@ const EditorField = (props: ModuleEditorField) => {
       date: DataType.today(),
       data: { data: d }
     }
-    console.log("saving", ctt)
     setContent(ctt)
     props.updateContent(ctt)
   }
 
+  const saveContentConfig = (dataIndexDir: string) => {
+    const ctt = content ? {
+      ...content,
+      config: { dataIndexDir }
+    } : {
+      date: DataType.today(),
+      data: { data: [] },
+      config: { dataIndexDir }
+    }
+    setContent(ctt)
+  }
+
   return (
     <div className={ props.styling }>
-      <Button
-        type='primary'
-        shape='round'
-        size='small'
-        onClick={ () => setVisible(true) }
+      <Space
+        direction="vertical"
         style={ { position: "relative", top: "40%" } }
       >
-        Click here to modify
-      </Button>
+        <Button
+          type='primary'
+          shape='round'
+          size='small'
+          onClick={ () => setVisible(true) }
+        >
+          Click here to modify
+        </Button>
+        <Space>
+          Index direction:
+          <Radio.Group
+            onChange={ e => saveContentConfig(e.target.value) }
+            defaultValue="horizontal"
+          >
+            <Radio value="horizontal">Horizontal</Radio>
+            <Radio value="vertical">Vertical</Radio>
+          </Radio.Group>
+        </Space>
+      </Space>
+
       <FileUploadModal
         postingUrl={ postingUrl }
         setVisible={ setVisible }
@@ -56,41 +87,52 @@ const EditorField = (props: ModuleEditorField) => {
 
 interface SheetType {
   name: string
-  data: object[]
+  data: [][]
+}
+
+/**
+ * default direction: horizontal
+ */
+const genSeries = (data: [][], direction?: "vertical" | "horizontal") => {
+  if (direction === "vertical")
+    return _.range(data[0].length - 1).map(() => ({
+      type: "line",
+      smooth: true,
+    }))
+  return _.range(data.length - 1).map(() => ({
+    type: "line",
+    smooth: true,
+    seriesLayoutBy: "row"
+  }))
+}
+
+const genChartOption = (data: [][], cfg?: ContentCfg): EChartOption => {
+
+  return {
+    title: { text: "Profit" },
+    tooltip: {},
+    legend: {},
+    dataset: [{ source: data }],
+    xAxis: {
+      type: "category"
+    },
+    yAxis: {},
+    series: genSeries(data, cfg?.dataIndexDir)
+  }
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-  const chartRef = useRef<HTMLDivElement>(null)
+  if (props.content && props.content.data.data) {
+    const d: SheetType[] = props.content.data.data
+    const data = d.map(i => i.data)[0]
+    const c = props.content.config ? props.content.config as ContentCfg : undefined
 
-  const [chartHeight, setChartHeight] = useState<number>(0)
-
-  useLayoutEffect(() => {
-    if (chartRef.current) setChartHeight(chartRef.current.offsetHeight)
-  })
-
-  const genChartOption = (data: SheetType[]): EChartOption => {
-    const d = data.map(i => i.data)[0]
-    return {
-      title: { text: "Profit" },
-      tooltip: {},
-      legend: {},
-      dataset: [{ source: d }],
-      xAxis: {
-        type: "category"
-      },
-      yAxis: {},
-      series: [
-        { type: "line", smooth: true, seriesLayoutBy: "row" },
-        { type: "line", smooth: true, seriesLayoutBy: "row" },
-      ]
-    }
+    return <ReactEcharts
+      option={ genChartOption(data, c) }
+      style={ { height: props.contentHeight } }
+    />
   }
-
-  // todo: `style={ { height: "50vh" } }` needs to get height from `TemplateElement` then pass it to `ModulePanel`
-  return props.content && props.content.data.data ?
-    <div style={ { height: "50vh" } } ref={ chartRef }>
-      <ReactEcharts option={ genChartOption(props.content.data.data) } opts={ { height: chartHeight } }/>
-    </div> : <></>
+  return <></>
 }
 
 export const Line = new ModuleGenerator(EditorField, PresenterField).generate()

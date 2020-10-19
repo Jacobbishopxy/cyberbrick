@@ -57,18 +57,17 @@ const EditorField = (props: ModuleEditorField) => {
 
 const licenseKey = "non-commercial-and-evaluation"
 
-// todo: reactive height, based on module panel height
 // todo: save colHeaders & rowHeaders in `content.config`
-const hotTableProps = {
+const genHotTableProps = (height: number | undefined) => ({
   readOnly: true,
   settings: {
     width: "100%",
-    height: "50vh"
+    height: height ? height - 50 : undefined
   },
   colHeaders: true,
   rowHeaders: true,
   licenseKey,
-}
+})
 
 interface SpreadsheetData {
   name: string
@@ -80,7 +79,7 @@ const PresenterField = (props: ModulePresenterField) => {
 
   const singleS = (data: SpreadsheetData) => (
     <HotTable
-      { ...hotTableProps }
+      { ...genHotTableProps(props.contentHeight) }
       data={ data.data }
     />
   )
@@ -91,7 +90,7 @@ const PresenterField = (props: ModulePresenterField) => {
         data.map((i: SpreadsheetData) =>
           <Tabs.TabPane tab={ i.name } key={ i.name }>
             <HotTable
-              { ...hotTableProps }
+              { ...genHotTableProps(props.contentHeight) }
               data={ i.data }
             />
           </Tabs.TabPane>

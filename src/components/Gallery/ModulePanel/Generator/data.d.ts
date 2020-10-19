@@ -8,12 +8,14 @@ import * as DataType from "../../GalleryDataType"
 
 export interface ModuleEditorField {
   content?: DataType.Content
+  contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
 }
 
 export interface ModulePresenterField {
   content?: DataType.Content
+  contentHeight?: number
   styling?: string
 }
 
@@ -23,6 +25,7 @@ export interface ConvertFwRef {
 
 export interface ConvertRefProps {
   content?: DataType.Content
+  contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
   forwardedRef: React.Ref<ConvertFwRef>
@@ -30,6 +33,7 @@ export interface ConvertRefProps {
 
 export interface ConvertProps {
   content?: DataType.Content
+  contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
 }

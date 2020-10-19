@@ -22,6 +22,7 @@ export interface ModulePanelProps {
   timeSeries?: boolean
   elementType: DataType.ElementType
   content?: DataType.Content
+  contentHeight?: number
   fetchContent: (date?: string) => void
   dates?: string[]
   fetchContentDates?: () => void
@@ -122,13 +123,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const genContext = useMemo(() => {
     const rf = moduleRef.current
-    if (rf) return rf({
-      content,
-      updateContent: updateModuleContent,
-      forwardedRef: moduleFwRef
-    })
+    if (rf) {
+      const h = props.contentHeight ? props.contentHeight - 50 : undefined
+      return rf({
+        content,
+        contentHeight: h,
+        updateContent: updateModuleContent,
+        forwardedRef: moduleFwRef
+      })
+    }
     return <></>
-  }, [content])
+  }, [content, props.contentHeight])
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter

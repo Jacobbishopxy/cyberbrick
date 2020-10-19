@@ -19,6 +19,7 @@ import styles from "../Panel/Common.less"
 
 export interface ModuleSelectorProps {
   content?: DataType.Content
+  contentHeight?: number
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertFwRef>
 }
@@ -28,6 +29,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const defaultModule = <EmbedLink
       content={ props.content }
+      contentHeight={ props.contentHeight }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
       ref={ props.forwardedRef }
@@ -35,6 +37,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const text = <Text
       content={ props.content }
+      contentHeight={ props.contentHeight }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
       ref={ props.forwardedRef }
@@ -42,6 +45,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const xlsxTable = <XlsxTable
       content={ props.content }
+      contentHeight={ props.contentHeight }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
       ref={ props.forwardedRef }
@@ -49,6 +53,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const targetPrice = <TargetPrice
       content={ props.content }
+      contentHeight={ props.contentHeight }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
       ref={ props.forwardedRef }
@@ -56,6 +61,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const line = <Line
       content={ props.content }
+      contentHeight={ props.contentHeight }
       updateContent={ props.updateContent }
       styling={ styles.contentPanel }
       ref={ props.forwardedRef }

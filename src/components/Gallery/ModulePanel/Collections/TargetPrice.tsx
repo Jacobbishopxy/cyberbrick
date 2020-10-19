@@ -57,7 +57,11 @@ const EditorField = (props: ModuleEditorField) => {
 
   return (
     <div className={ props.styling }>
-      <Space align="center" direction="vertical">
+      <Space
+        align="center"
+        direction="vertical"
+        style={ { position: "relative", top: "25%" } }
+      >
         <Radio.Group
           onChange={ radioOnChange }
           defaultValue={ content?.data.direction }
@@ -84,7 +88,6 @@ const EditorField = (props: ModuleEditorField) => {
           Save
         </Button>
       </Space>
-
     </div>
   )
 }
