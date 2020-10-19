@@ -4,7 +4,13 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import { Button, message, Modal, Select, Space } from 'antd'
-import { ExclamationCircleOutlined } from "@ant-design/icons"
+import {
+  CheckCircleOutlined,
+  ExclamationCircleOutlined,
+  PlusCircleOutlined,
+  PoweroffOutlined,
+  SettingOutlined
+} from "@ant-design/icons"
 
 import * as DataType from "../../GalleryDataType"
 import { AddModuleModal } from "./AddModuleModal"
@@ -36,23 +42,28 @@ export const Controller = (props: ModuleControllerProps) => {
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 
-  const saveTemplate = () => Modal.confirm({
-    title: "Save current layout?",
-    icon: <ExclamationCircleOutlined/>,
-    onOk: () => props.onSaveTemplate()
-      .then(() => {
-        message.success("Template & contents saving successfully!")
-        setEdit(false)
+  const saveTemplate = (exist: boolean) =>
+    () => {
+      const quit = () => exist ? setEdit(false) : undefined
+      return Modal.confirm({
+        title: "Save current layout and contents?",
+        icon: <ExclamationCircleOutlined/>,
+        onOk: () => props.onSaveTemplate()
+          .then(() => {
+            message.success("Template & contents saving successfully!")
+            quit()
+          })
+          .catch(err => {
+            message.error(`Error: ${ err }`)
+            quit()
+
+          })
+        ,
+        onCancel: quit,
+        okText: "Confirm",
+        cancelText: "Discard"
       })
-      .catch(err => {
-        message.error(`Error: ${ err }`)
-        setEdit(false)
-      })
-    ,
-    onCancel: () => setEdit(false),
-    okText: "Confirm",
-    cancelText: "Discard"
-  })
+    }
 
   const editMode = useMemo(() => (
     <>
@@ -62,14 +73,21 @@ export const Controller = (props: ModuleControllerProps) => {
           size="small"
           onClick={ () => setAddModuleModalVisible(true) }
         >
-          New module
+          <PlusCircleOutlined/> New
+        </Button>
+        <Button
+          type="primary"
+          size="small"
+          onClick={ saveTemplate(false) }
+        >
+          <CheckCircleOutlined/> Save
         </Button>
         <Button
           size="small"
           danger
-          onClick={ saveTemplate }
+          onClick={ saveTemplate(true) }
         >
-          Exit
+          <PoweroffOutlined/> Exit
         </Button>
 
       </Space>
@@ -90,7 +108,7 @@ export const Controller = (props: ModuleControllerProps) => {
       onClick={ () => setEdit(true) }
       disabled={ !props.canEdit }
     >
-      Edit
+      <SettingOutlined/> Edit
     </Button>
   ), [props.canEdit])
 

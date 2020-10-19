@@ -58,7 +58,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       >
         { title || "Please enter your title" }
       </Button>
-    return title
+    return <span style={ { fontWeight: "bold" } }>{ title }</span>
   }
 
   const genController = () =>
@@ -78,7 +78,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       {
         props.headName ?
           <>
-            <Col span={ 8 }>{ props.headName }</Col>
+            <Col span={ 8 } style={ { fontWeight: "bold" } }>{ props.headName }</Col>
             <Col span={ 8 } style={ { textAlign: "center" } }>
               { genTitle() }
             </Col>
