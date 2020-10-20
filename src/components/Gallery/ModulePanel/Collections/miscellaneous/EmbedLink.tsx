@@ -45,7 +45,7 @@ const EditorField = (props: ModuleEditorField) => {
           size='small'
           onClick={ handleOk }
         >
-          Save
+          Update
         </Button>
       </Space>
     </div>

@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Card, Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip } from "antd"
+import { Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import _ from "lodash"
 
@@ -23,21 +23,20 @@ const ModuleSelectionList = (props: ModuleSelectionListProps) =>
       <div key={ chunk.key }>
         <Divider orientation="left">{ chunk.name }</Divider>
         <List
-          grid={ { gutter: 24, column: 4 } }
-          size="large"
+          grid={ { column: 6 } }
+          size="small"
           dataSource={ chunk.children }
           renderItem={ item => (
             <List.Item>
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
               <label className={ styles.moduleSelectionLabel }>
                 <input type="radio" name="radio-name" disabled={ item.disabled } id={ item.key }/>
-                <div id={ item.key }>
-                  <Card
-                    onClick={ () => props.onSelect(item.key) }
-                    className={ item.disabled ? styles.selectionCardDisabled : styles.selectionCard }
-                  >
-                    { item.name }
-                  </Card>
+                <div
+                  id={ item.key }
+                  onClick={ () => props.onSelect(item.key) }
+                  className={ item.disabled ? styles.selectionCardDisabled : styles.selectionCard }
+                >
+                  { item.name }
                 </div>
               </label>
             </List.Item>
@@ -182,6 +181,10 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
       onOk={ onSetOk }
       onCancel={ props.onQuit }
       width="60%"
+      okText="Confirm"
+      cancelText="Discard"
+      bodyStyle={ { paddingTop: 0, paddingBottom: 0 } }
+      style={ { top: 40 } }
     >
       <Tabs
         defaultActiveKey={ selectedPane }

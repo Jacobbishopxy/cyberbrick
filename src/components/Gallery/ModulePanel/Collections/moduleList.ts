@@ -39,12 +39,12 @@ export const moduleList = [
       {
         key: DataType.ElementType.FileList,
         name: 'File overview',
-        disabled: false,
+        disabled: true,
       },
       {
         key: DataType.ElementType.FileManager,
         name: 'File manager',
-        disabled: false,
+        disabled: true,
       },
     ]
   },

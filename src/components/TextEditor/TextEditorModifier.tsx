@@ -130,7 +130,7 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
             size='small'
             type='primary'
           >
-            Save
+            Update
           </Button> :
           <></>
       }

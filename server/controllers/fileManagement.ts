@@ -15,6 +15,7 @@ interface ReadXlsxOptions {
   multiSheets?: boolean
 }
 
+// todo: provide round numbers option
 const recordXlsxRows = (book: Spreadsheet[], sheet: exceljs.Worksheet) => {
   const s: object[] = []
 

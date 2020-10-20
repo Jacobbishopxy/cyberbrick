@@ -85,7 +85,7 @@ const EditorField = (props: ModuleEditorField) => {
           type="primary"
           onClick={ buttonOnSave }
         >
-          Save
+          Update
         </Button>
       </Space>
     </div>
