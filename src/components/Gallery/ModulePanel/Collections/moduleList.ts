@@ -79,6 +79,11 @@ export const moduleList = [
         disabled: false,
       },
       {
+        key: DataType.ElementType.LineBar,
+        name: 'Line & bar',
+        disabled: false,
+      },
+      {
         key: DataType.ElementType.Pie,
         name: 'Pie',
         disabled: false,

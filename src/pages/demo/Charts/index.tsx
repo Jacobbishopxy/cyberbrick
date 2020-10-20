@@ -9,27 +9,72 @@ import ReactEcharts from "echarts-for-react"
 
 
 const data = [
-  ["year", 2015, 2016, 2017, 2018, 2019, 2020, 2021],
-  ["income", 2014.71, 2090.25, 2208.97, 2485.55, 2697.03, 2946.574091, 3302.282939],
-  ["profit", 1367.29, 1345.95, 1448.52, 1603.84, 1730.9, 1905.278991, 2144.523651],
+  ['product', '2012', '2013', '2014', '2015'],
+  ['alpha', 41.1, 30.4, 65.1, 53.3],
+  ['beta', 86.5, 92.1, 85.7, 83.1],
+  ['trend', 24.1, 67.2, 79.5, 86.4]
 ]
 
 const chartOption: EChartOption = {
-  title: { text: "Profit" },
   tooltip: {},
-  legend: {},
+  legend: {
+    data: ['alpha', 'beta', 'trend']
+  },
   dataset: [
     {
       source: data
     }
   ],
-  xAxis: {
-    type: "category"
-  },
-  yAxis: {},
+  xAxis: [
+    { type: 'category' },
+  ],
+  yAxis: [
+    {
+      type: "value",
+      name: "Bar",
+      position: "left",
+    },
+    {
+      type: "value",
+      name: "Line",
+      position: "right",
+      splitLine: { show: false }
+    },
+  ],
   series: [
-    { type: "line", smooth: true, seriesLayoutBy: "row" },
-    { type: "line", smooth: true, seriesLayoutBy: "row" },
+    {
+      type: 'bar',
+      seriesLayoutBy: 'row',
+      yAxisIndex: 0,
+      name: "alpha",
+      encode: {
+        x: "product",
+        y: "alpha",
+        tooltip: ["product", "alpha"]
+      }
+    },
+    {
+      type: 'bar',
+      seriesLayoutBy: 'row',
+      yAxisIndex: 0,
+      name: "beta",
+      encode: {
+        x: "product",
+        y: "beta",
+        tooltip: ["product", "beta"]
+      }
+    },
+    {
+      type: 'line',
+      seriesLayoutBy: "row",
+      yAxisIndex: 1,
+      name: 'trend',
+      encode: {
+        x: "product",
+        y: "trend",
+        tooltip: ["product", "trend"],
+      }
+    }
   ]
 }
 

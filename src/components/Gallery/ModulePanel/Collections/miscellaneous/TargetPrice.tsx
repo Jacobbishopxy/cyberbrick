@@ -97,10 +97,10 @@ const showDirection = (dir: string, pr: number) => {
     case "B":
       return (
         <Row>
-          <Col span={ 6 } offset={ 4 }>
+          <Col span={ 9 } offset={ 2 }>
             <span style={ { color: "white", background: "red", fontSize: 100 } }>Buy</span>
           </Col>
-          <Col span={ 6 } offset={ 6 }>
+          <Col span={ 9 } offset={ 4 }>
             <span style={ { color: "red", fontSize: 100 } }>{ pr }</span>
           </Col>
         </Row>
@@ -108,10 +108,10 @@ const showDirection = (dir: string, pr: number) => {
     case "S":
       return (
         <Row>
-          <Col span={ 6 } offset={ 4 }>
+          <Col span={ 9 } offset={ 2 }>
             <span style={ { color: "white", background: "green", fontSize: 100 } }>Sell</span>
           </Col>
-          <Col span={ 6 } offset={ 6 }>
+          <Col span={ 9 } offset={ 4 }>
             <span style={ { color: "green", fontSize: 100 } }>{ pr }</span>
           </Col>
         </Row>
@@ -119,10 +119,10 @@ const showDirection = (dir: string, pr: number) => {
     default:
       return (
         <Row>
-          <Col span={ 6 } offset={ 4 }>
+          <Col span={ 9 } offset={ 2 }>
             <span style={ { color: "white", background: "gray", fontSize: 100 } }>Neutral</span>
           </Col>
-          <Col span={ 6 } offset={ 6 }>
+          <Col span={ 9 } offset={ 4 }>
             <span style={ { color: "gray", fontSize: 100 } }>{ pr }</span>
           </Col>
         </Row>
@@ -134,10 +134,10 @@ const PresenterField = (props: ModulePresenterField) =>
   props.content ?
     <Space direction="vertical" style={ { width: "100%" } } className={ props.styling }>
       <Row>
-        <Col span={ 6 } offset={ 4 }>
+        <Col span={ 9 } offset={ 2 }>
           <span style={ { fontWeight: "bold", fontSize: 25 } }>Investment advice</span>
         </Col>
-        <Col span={ 6 } offset={ 6 }>
+        <Col span={ 9 } offset={ 4 }>
           <span style={ { fontWeight: "bold", fontSize: 25 } }>Target price</span>
         </Col>
       </Row>
