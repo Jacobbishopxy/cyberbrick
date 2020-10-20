@@ -7,14 +7,6 @@ import { EChartOption } from "echarts"
 
 import * as DataType from "../../../GalleryDataType"
 
-
-type DataIndexDirection = "vertical" | "horizontal"
-
-const convertChartData = (d: any[][], dataIndexDirection: DataIndexDirection) => {
-  if (dataIndexDirection === "vertical") return _.zip(...d)
-  return d
-}
-
 const genSeries = (chartType: string, data: any[][]) => {
   return _.range(data.length - 1).map(() => ({
     type: chartType,
@@ -23,11 +15,13 @@ const genSeries = (chartType: string, data: any[][]) => {
   }))
 }
 
+/**
+ * generate line or bar chart option
+ */
 export const generateChartOption = (chartType: string) =>
   (content: DataType.Content): EChartOption => {
 
-    const c = content.config!
-    const d = convertChartData(content.data.data, c.dataIndexDir)
+    const d = content.data.data
 
     return {
       tooltip: {},
@@ -41,45 +35,101 @@ export const generateChartOption = (chartType: string) =>
     }
   }
 
-const genPctRadius = (len: number) => `${ 1 / len * 100 }%`
-const genPctArr = (d: any[]) => {
-  const end = d.length + 2
+const genPctRadius = (num: number) => `${ 1 / num * 100 }%`
+const genPctArr = (num: number) => {
+  const end = num + 3
   const arr = _.range(1, end)
 
   return arr.map((i: number) => `${ i / end * 100 }%`).slice(1, -1)
 }
-
-
 const genPieSeries = (data: any[][]) => {
   const encodeName = data[0][0]
   const encodeArr = data[0].slice(1)
-  const radius = genPctRadius(encodeArr.length)
-  const pctArr = genPctArr(data[0])
+  const encodeArrLen = encodeArr.length
+  const radius = genPctRadius(encodeArrLen)
+  const pctArr = genPctArr(encodeArrLen)
 
-  return _.range(encodeArr.length).map(i => ({
+  return encodeArr.map((value, idx) => ({
     type: "pie",
     radius,
-    center: [pctArr[i], "50%"],
+    center: [pctArr[idx], "50%"],
     label: { alignTo: 'labelLine' },
     encode: {
       itemName: encodeName,
-      value: encodeArr[i]
+      value
     },
   }))
 }
 
+/**
+ * generate pie chart option
+ */
 export const generatePieOption = () =>
   (content: DataType.Content): EChartOption => {
 
-    const c = content.config!
-    const d = convertChartData(content.data.data, c.dataIndexDir)
-    const data = _.concat([d[0].map((i: any) => i.toString())], d.slice(1))
+    const d = content.data.data
 
     return {
       tooltip: {},
       legend: {},
-      dataset: [{ source: data }],
-      series: genPieSeries(data)
+      dataset: [{ source: d }],
+      series: genPieSeries(d)
     }
   }
+
+const genLineBarSeries = (data: any[][], lineArr: string[]) => {
+  const x = data[0][0]
+
+  return data.slice(1).map((arr: any[]) => {
+    const name = arr[0] as string
+    if (lineArr.includes(name))
+      return {
+        type: "line",
+        seriesLayoutBy: "row",
+        yAxisIndex: 1,
+        name,
+        encode: {
+          x,
+          y: name,
+          tooltip: [x, name]
+        }
+      }
+    return {
+      type: "bar",
+      seriesLayoutBy: "row",
+      yAxisIndex: 0,
+      name,
+      encode: {
+        x,
+        y: name,
+        tooltip: [x, name]
+      }
+    }
+  })
+}
+
+/**
+ * generate line + bar chart option
+ */
+export const generateLineBarOption = () =>
+  (content: DataType.Content): EChartOption => {
+
+    const c = content.config!
+    const d = content.data.data
+    const legendData = d.map((arr: any[]) => arr[0])
+
+    return {
+      tooltip: {},
+      legend: { data: legendData },
+      dataset: [{ source: d }],
+      xAxis: [{ type: "category" }],
+      yAxis: [
+        { position: "left" },
+        { position: "right", splitLine: { show: false } }
+      ],
+      series: genLineBarSeries(d, c.lineArr)
+    }
+  }
+
+
 
