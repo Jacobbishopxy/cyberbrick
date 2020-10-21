@@ -3,16 +3,22 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Checkbox, Form, message, Modal, Space, Tooltip, Upload } from "antd"
+import { Button, Checkbox, Divider, Form, InputNumber, message, Modal, Space, Tooltip, Upload } from "antd"
 import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
 import axios, { AxiosResponse } from "axios"
 
 
 const inputFileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-const genAxiosUrl = (url: string, d: string[]) => {
-  if (d.length === 0) return url
+
+interface FileOptions {
+  multiSheets?: boolean
+  numberRounding?: number
+}
+
+const genAxiosUrl = (url: string, options: FileOptions) => {
   let r = `${ url }?`
-  if (d.includes("multiSheets")) r += "multiSheets=true"
+  if (options.multiSheets) r += "multiSheets=true"
+  if (options.numberRounding) r += `numberRounding=${ options.numberRounding }`
   return r
 }
 
@@ -21,8 +27,8 @@ export interface SheetStyle {
   data: [][]
 }
 
-const axiosPost = (url: string, params: string[], data: any): Promise<AxiosResponse<SheetStyle[]>> =>
-  axios.post(genAxiosUrl(url, params), data)
+const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> =>
+  axios.post(genAxiosUrl(url, options), data)
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -55,13 +61,13 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
     fileList: uploadFiles.map((i, j) => ({ ...i, name: i.name, uid: String(j) }))
   }
 
-  const onUploadFile = (params: string[]) => {
+  const onUploadFile = (options: FileOptions) => {
     if (uploadFiles.length !== 0) {
       const data = new FormData()
       data.append("xlsx_file", uploadFiles[0])
       setUploading(true)
 
-      axiosPost(props.postingUrl, params, data)
+      axiosPost(props.postingUrl, options, data)
         .then(res => {
           message.success(res.statusText)
           setUploading(false)
@@ -84,8 +90,15 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
   const onFinish = () => {
     form.validateFields()
       .then(values => {
-        const fo = values.fileOptions ? values.fileOptions : []
-        onUploadFile(fo)
+        let options = {}
+        if (values.fileOptions) {
+          options = { ...options, multiSheets: values.fileOptions.includes("multiSheets") }
+        }
+        if (values.numberRounding) {
+          options = { ...options, numberRounding: values.numberRounding }
+        }
+
+        onUploadFile(options)
         onReset()
         props.setVisible(false)
       })
@@ -101,7 +114,13 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       okText="Confirm"
       cancelText="Discard"
     >
-      <Form { ...formItemLayout } form={ form }>
+      <Form
+        { ...formItemLayout }
+        form={ form }
+        initialValues={ { numberRounding: 2 } }
+      >
+        <Divider plain orientation="left" style={ { color: "lightgray" } }>File</Divider>
+
         <Form.Item name="fileUpload" label="File">
           <Space>
             <Upload { ...uploadProps }>
@@ -113,7 +132,9 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
           </Space>
         </Form.Item>
 
-        <Form.Item name="fileOptions" label="Options">
+        <Divider plain orientation="left" style={ { color: "lightgray" } }>File options</Divider>
+
+        <Form.Item name="fileOptions" label="File options">
           <Checkbox.Group>
             <Checkbox
               value="multiSheets"
@@ -123,6 +144,17 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
             </Checkbox>
           </Checkbox.Group>
         </Form.Item>
+
+        <Divider plain orientation="left" style={ { color: "lightgray" } }>Cell options</Divider>
+
+        <Form.Item name="numberRounding" label="Rounding">
+          <InputNumber
+            min={ 0 }
+            max={ 10 }
+            precision={ 0 }
+          />
+        </Form.Item>
+
       </Form>
     </Modal>
   )

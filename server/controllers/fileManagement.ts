@@ -4,7 +4,7 @@
 
 import { Request, Response } from "express"
 import formidable from "formidable"
-import exceljs from "exceljs"
+import exceljs, { CellValue } from "exceljs"
 
 interface Spreadsheet {
   name: string
@@ -13,14 +13,20 @@ interface Spreadsheet {
 
 interface ReadXlsxOptions {
   multiSheets?: boolean
+  numberRounding?: number
 }
 
-// todo: provide round numbers option
-const recordXlsxRows = (book: Spreadsheet[], sheet: exceljs.Worksheet) => {
+const recordXlsxRows = (book: Spreadsheet[], sheet: exceljs.Worksheet, option?: ReadXlsxOptions) => {
   const s: object[] = []
 
   sheet.eachRow({ includeEmpty: true }, row => {
-    const rv = row.values as any[]
+    let rv = row.values as CellValue[]
+    if (option && option.numberRounding) {
+      rv = rv.map((i: CellValue) =>
+        typeof i === "number" ? +i.toFixed(option.numberRounding) : i
+      )
+    }
+
     if (rv.length > 1) s.push(rv.slice(1))
     else s.push(rv)
   })
@@ -38,9 +44,9 @@ const readFromXlsx = async (filepath: string, options: ReadXlsxOptions) => {
   const book: Spreadsheet[] = []
 
   if (options.multiSheets)
-    f.eachSheet(ws => recordXlsxRows(book, ws))
+    f.eachSheet(ws => recordXlsxRows(book, ws, options))
   else
-    recordXlsxRows(book, f.worksheets[0])
+    recordXlsxRows(book, f.worksheets[0], options)
 
   return book
 }
@@ -52,9 +58,12 @@ export const extractXlsxFile = (req: Request, res: Response) => {
     if (err) return res.status(500).json(err)
 
     let options = {}
-    const { multiSheets } = req.query
+    const { multiSheets, numberRounding } = req.query
     if (multiSheets && multiSheets === "true")
       options = { ...options, multiSheets: true }
+    if (numberRounding)
+      options = { ...options, numberRounding }
+
     if (files.xlsx_file) {
       const ans = await readFromXlsx(files.xlsx_file.path, options)
       return res.status(200).send(ans)
