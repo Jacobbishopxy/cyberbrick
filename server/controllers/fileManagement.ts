@@ -4,7 +4,8 @@
 
 import { Request, Response } from "express"
 import formidable from "formidable"
-import exceljs, { CellValue } from "exceljs"
+import exceljs from "exceljs"
+import moment from "moment"
 
 interface Spreadsheet {
   name: string
@@ -14,21 +15,33 @@ interface Spreadsheet {
 interface ReadXlsxOptions {
   multiSheets?: boolean
   numberRounding?: number
+  dateFormat?: string
 }
 
 const recordXlsxRows = (book: Spreadsheet[], sheet: exceljs.Worksheet, option?: ReadXlsxOptions) => {
-  const s: object[] = []
+  const s: any[][] = []
 
   sheet.eachRow({ includeEmpty: true }, row => {
-    let rv = row.values as CellValue[]
-    if (option && option.numberRounding) {
-      rv = rv.map((i: CellValue) =>
-        typeof i === "number" ? +i.toFixed(option.numberRounding) : i
-      )
-    }
-
-    if (rv.length > 1) s.push(rv.slice(1))
-    else s.push(rv)
+    const r: any[] = []
+    row.eachCell({ includeEmpty: true }, (cell) => {
+      switch (cell.type) {
+        case 2:
+          if (option && option.numberRounding && cell.value !== null)
+            r.push(+(cell.value as number).toFixed(option.numberRounding))
+          else
+            r.push(cell.value)
+          break
+        case 4:
+          if (option && option.dateFormat)
+            r.push(moment(cell.value as string).format(option.dateFormat))
+          else
+            r.push(cell.value)
+          break
+        default:
+          r.push(cell.value)
+      }
+    })
+    s.push(r)
   })
 
   book.push({
@@ -58,11 +71,13 @@ export const extractXlsxFile = (req: Request, res: Response) => {
     if (err) return res.status(500).json(err)
 
     let options = {}
-    const { multiSheets, numberRounding } = req.query
+    const { multiSheets, numberRounding, dateFormat } = req.query
     if (multiSheets && multiSheets === "true")
       options = { ...options, multiSheets: true }
     if (numberRounding)
       options = { ...options, numberRounding }
+    if (dateFormat)
+      options = { ...options, dateFormat }
 
     if (files.xlsx_file) {
       const ans = await readFromXlsx(files.xlsx_file.path, options)

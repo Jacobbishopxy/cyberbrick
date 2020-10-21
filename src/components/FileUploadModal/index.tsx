@@ -3,7 +3,19 @@
  */
 
 import React, { useState } from 'react'
-import { Button, Checkbox, Divider, Form, InputNumber, message, Modal, Space, Tooltip, Upload } from "antd"
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  InputNumber,
+  message,
+  Modal,
+  Select,
+  Space,
+  Tooltip,
+  Upload
+} from "antd"
 import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
 import axios, { AxiosResponse } from "axios"
 
@@ -13,13 +25,7 @@ const inputFileType = "application/vnd.openxmlformats-officedocument.spreadsheet
 interface FileOptions {
   multiSheets?: boolean
   numberRounding?: number
-}
-
-const genAxiosUrl = (url: string, options: FileOptions) => {
-  let r = `${ url }?`
-  if (options.multiSheets) r += "multiSheets=true"
-  if (options.numberRounding) r += `numberRounding=${ options.numberRounding }`
-  return r
+  dateFormat?: string
 }
 
 export interface SheetStyle {
@@ -27,8 +33,14 @@ export interface SheetStyle {
   data: [][]
 }
 
-const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> =>
-  axios.post(genAxiosUrl(url, options), data)
+const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> => {
+  let u = `${ url }?`
+  if (options.multiSheets) u += "multiSheets=true&"
+  if (options.numberRounding) u += `numberRounding=${ options.numberRounding }&`
+  if (options.dateFormat) u += `dateFormat=${ options.dateFormat }&`
+
+  return axios.post(u, data)
+}
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -97,6 +109,9 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
         if (values.numberRounding) {
           options = { ...options, numberRounding: values.numberRounding }
         }
+        if (values.dateFormat) {
+          options = { ...options, dateFormat: values.dateFormat }
+        }
 
         onUploadFile(options)
         onReset()
@@ -117,7 +132,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       <Form
         { ...formItemLayout }
         form={ form }
-        initialValues={ { numberRounding: 2 } }
+        initialValues={ { numberRounding: 2, dateFormat: "YYYY-MM-DD" } }
       >
         <Divider plain orientation="left" style={ { color: "lightgray" } }>File</Divider>
 
@@ -132,18 +147,22 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
           </Space>
         </Form.Item>
 
-        <Divider plain orientation="left" style={ { color: "lightgray" } }>File options</Divider>
+        {
+          props.multiSheetDisable ? <></> :
+            <>
+              <Divider plain orientation="left" style={ { color: "lightgray" } }>File options</Divider>
 
-        <Form.Item name="fileOptions" label="File options">
-          <Checkbox.Group>
-            <Checkbox
-              value="multiSheets"
-              disabled={ props.multiSheetDisable }
-            >
-              Multiple sheets
-            </Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
+              <Form.Item name="fileOptions" label="File options">
+                <Checkbox.Group>
+                  <Checkbox
+                    value="multiSheets"
+                  >
+                    Multiple sheets
+                  </Checkbox>
+                </Checkbox.Group>
+              </Form.Item>
+            </>
+        }
 
         <Divider plain orientation="left" style={ { color: "lightgray" } }>Cell options</Divider>
 
@@ -154,7 +173,22 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
             precision={ 0 }
           />
         </Form.Item>
-
+        <Form.Item name="dateFormat" label="Date format">
+          <Select>
+            <Select.Option value="YYYY">
+              YYYY
+            </Select.Option>
+            <Select.Option value="YYYY-MM">
+              YYYY-MM
+            </Select.Option>
+            <Select.Option value="YYYY-MM-DD">
+              YYYY-MM-DD
+            </Select.Option>
+            <Select.Option value="YYYY-MM-DD HH:mm:ss">
+              YYYY-MM-DD HH:mm:ss
+            </Select.Option>
+          </Select>
+        </Form.Item>
       </Form>
     </Modal>
   )
