@@ -64,6 +64,7 @@ export const Dashboard = (props: DashboardProps) => {
   const [selectedMark, setSelectedMark] = useState<string>()
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
+  const [newestContent, setNewestContent] = useState<DataType.Content>()
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
 
   useEffect(() => {
@@ -73,6 +74,13 @@ export const Dashboard = (props: DashboardProps) => {
   useEffect(() => {
     if (selectedMark && cRef.current) cRef.current.startFetchAllContents()
   }, [selectedMark])
+
+  useEffect(() => {
+    if (newestContent) {
+      const newContents = dashboardContentsUpdate(newestContent, updatedContents)
+      setUpdatedContents(newContents)
+    }
+  }, [newestContent])
 
   const dashboardOnSelect = async (dashboardName: string) => {
     const dsb = await props.fetchDashboard(dashboardName)
@@ -128,6 +136,7 @@ export const Dashboard = (props: DashboardProps) => {
           const updatedTemplate = await props.fetchTemplate(selectedDashboard!.name, t.name)
           const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
           await updateAllContents(contents)
+          setNewestContent(undefined)
           setUpdatedContents([])
         }
         return Promise.resolve()
@@ -152,8 +161,8 @@ export const Dashboard = (props: DashboardProps) => {
       if (mId) markValue = { mark: { id: mId.id } }
     }
     const newContent = { ...ctt, ...markValue } as DataType.Content
-    const newContents = dashboardContentsUpdate(newContent, updatedContents)
-    setUpdatedContents(newContents)
+
+    setNewestContent(newContent)
   }
 
   const onAddModule = (n: string, ts: boolean, et: DataType.ElementType) => {
