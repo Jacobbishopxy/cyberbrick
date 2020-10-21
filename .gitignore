@@ -43,7 +43,6 @@ cache
 !cache/.gitkeep
 data
 !data/.gitkeep
-resources/databaseProd.ts
-resources/databaseDev.ts
+resources/config.json
 test
 

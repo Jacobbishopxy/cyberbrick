@@ -3,7 +3,6 @@
  */
 
 import express from "express"
-import { ConnectionOptions } from "typeorm"
 import path from "path"
 
 import { literatureConnect, galleryConnect } from "./orm"
@@ -13,8 +12,12 @@ import * as fmController from "./controllers/fileManagement"
 import * as kcController from "./kChart/kChart"
 import { fileNameBi, fileNameDn } from "./kChart/kChart"
 
-import { connProdLiterature, connProdGallery } from "../resources/databaseProd"
-import { connDevLiterature, connDevGallery } from "../resources/databaseDev"
+import {
+  connDevLiterature,
+  connDevGallery,
+  connProdLiterature,
+  connProdGallery
+} from "../resources/config"
 
 // Create Express server
 const app = express()
@@ -45,8 +48,8 @@ app.get("/api/kChart/dn", kcController.readLine(kChartRoot, fileNameDn))
 
 // API (Database) routes, wrapped in async function
 async function connectionsAwaitLiterature() {
-  const literatureConnOptions: ConnectionOptions =
-    app.get("env") === "prod" ? connProdLiterature : connDevLiterature
+  const literatureConnOptions = app.get("env") === "prod" ?
+    connProdLiterature : connDevLiterature
 
   await literatureConnect(app, literatureConnOptions)
 
@@ -55,8 +58,8 @@ async function connectionsAwaitLiterature() {
 }
 
 async function connectionsAwaitGallery() {
-  const galleryConnOptions: ConnectionOptions =
-    app.get("ene") === "prod" ? connProdGallery : connDevGallery
+  const galleryConnOptions = app.get("ene") === "prod" ?
+    connProdGallery : connDevGallery
 
   await galleryConnect(app, galleryConnOptions)
 

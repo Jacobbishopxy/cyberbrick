@@ -1,0 +1,64 @@
+{
+  "backendUrl": "http://localhost:8080",
+  "kChartFileRoot": "data/kChart",
+  "connDevLiterature": {
+    "name": "literature",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "admin",
+    "database": "dev",
+    "synchronize": true,
+    "logging": false,
+    "uuidExtension ": "uuid-ossp",
+    "entities": [
+      "./server/literature/entity/*.ts"
+    ]
+  },
+  "connProdLiterature": {
+    "name": "literature",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "admin",
+    "database": "dev",
+    "synchronize": true,
+    "logging": false,
+    "uuidExtension ": "uuid-ossp",
+    "entities": [
+      "./server/literature/entities/*.ts"
+    ]
+  },
+  "connDevGallery": {
+    "name": "gallery",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "admin",
+    "database": "dev",
+    "synchronize": true,
+    "logging": false,
+    "uuidExtension ": "uuid-ossp",
+    "entities": [
+      "./server/gallery/entity/*.ts"
+    ]
+  },
+  "connProdGallery": {
+    "name": "gallery",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "admin",
+    "database": "dev",
+    "synchronize": true,
+    "logging": false,
+    "uuidExtension ": "uuid-ossp",
+    "entities": [
+      "./server/gallery/entities/*.ts"
+    ]
+  }
+}

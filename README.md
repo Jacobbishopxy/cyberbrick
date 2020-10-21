@@ -14,9 +14,8 @@ yarn
 
 In `resources` folder:
 
-1. new `databaseDev.ts` (see [databaseDev.template.ts](resources/databaseDev.template.ts)) for development.
-
-2. new `databaseProd.ts` (see [databaseProd.template.ts](resources/databaseProd.template.ts)) for production.
+1. new `config.json` (see [config.template.json](resources/config.template.json)). 
+If file not supplied, system would automatically read `config.template.json`.
 
 ## Start Project
 
