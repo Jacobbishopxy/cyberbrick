@@ -29,8 +29,14 @@ export class Storage {
   @Column("varchar", { nullable: false })
   host!: string
 
+  @Column("int", { nullable: false })
+  port!: number
+
   @Column("varchar", { nullable: false })
-  user!: string
+  database!: string
+
+  @Column("varchar", { nullable: false })
+  username!: string
 
   @Column("varchar", { nullable: false })
   password!: string

@@ -123,12 +123,12 @@ export const getElementType = (v: string) => {
 }
 
 export enum StorageType {
-  PG = "pg"
+  PG = "postgres"
 }
 
 export const getStorageType = (v: string) => {
   switch (v) {
-    case "pg":
+    case "postgres":
       return StorageType.PG
     default:
       return undefined

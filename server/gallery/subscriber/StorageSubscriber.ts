@@ -12,39 +12,32 @@ import {
 } from "typeorm"
 
 import { Storage } from "../entity/Storage"
+import { DynamicConnections } from "./DynamicConnections"
 
+
+// todo: inject service by `@nestjs/typeorm`
 @EventSubscriber()
 export class StorageSubscriber implements EntitySubscriberInterface<Storage> {
 
-  listenTo() {
-    return Storage
+  dynamicConnections: DynamicConnections
+
+  constructor() {
+    this.dynamicConnections = new DynamicConnections()
   }
 
-  beforeInsert(event: InsertEvent<Storage>) {
-    console.log(`BEFORE ENTITY INSERTED: `, event.entity)
-  }
+  listenTo = () => Storage
 
-  beforeUpdate(event: UpdateEvent<Storage>) {
-    console.log(`BEFORE ENTITY UPDATED: `, event.entity)
-  }
+  afterInsert = (event: InsertEvent<Storage>) =>
+    this.dynamicConnections.newConnection(event.entity).finally()
 
-  beforeRemove(event: RemoveEvent<Storage>) {
-    console.log(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity)
-  }
+  afterUpdate = (event: UpdateEvent<Storage>) =>
+    this.dynamicConnections.updateConnection(event.entity).finally()
 
-  afterInsert(event: InsertEvent<Storage>) {
-    console.log(`AFTER ENTITY INSERTED: `, event.entity)
-  }
+  afterRemove = (event: RemoveEvent<Storage>) =>
+    this.dynamicConnections.removeConnection(event.entityId).finally()
 
-  afterUpdate(event: UpdateEvent<Storage>) {
-    console.log(`AFTER ENTITY UPDATED: `, event.entity)
-  }
+  afterLoad = (entity: Storage) =>
+    this.dynamicConnections.loadConnection(entity).finally()
 
-  afterRemove(event: RemoveEvent<Storage>) {
-    console.log(`AFTER ENTITY WITH ID ${event.entityId} REMOVED: `, event.entity)
-  }
-
-  afterLoad(entity: Storage) {
-    console.log(`AFTER ENTITY LOADED: `, entity)
-  }
 }
+

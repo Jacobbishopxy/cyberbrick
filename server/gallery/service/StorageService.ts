@@ -6,7 +6,7 @@ import { getConnection } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Storage} from "../entity/Storage"
+import { Storage } from "../entity/Storage"
 
 const storageRepo = () => getConnection(common.db).getRepository(Storage)
 
@@ -29,7 +29,15 @@ export async function saveStorage(storage: Storage) {
 }
 
 export async function deleteStorage(id: string) {
-  await storageRepo().delete(id)
-  return utils.HTMLStatus.SUCCESS_DELETE
+  const sr = storageRepo()
+  const s = await getStorageById(id)
+  if (s) {
+    await sr.remove(s, { listeners: true })
+    return utils.HTMLStatus.SUCCESS_DELETE
+  }
+
+  return utils.HTMLStatus.FAIL_OPERATION
 }
+
+// =====================================================================================================================
 
