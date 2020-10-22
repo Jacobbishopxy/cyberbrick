@@ -26,6 +26,7 @@ export class DynamicConnections {
 
     createConnection(co)
       .then(res => {
+        console.log("databaseConnect:", res)
         this.connections.push(res)
       })
       .catch(err => {
@@ -77,6 +78,7 @@ export class DynamicConnections {
     return Promise.reject()
   }
 
+  // todo: create connection when initialize subscriber
   async loadConnection(conn: Storage) {
     const targetConn = this.findConn(conn.id)
     if (!targetConn)

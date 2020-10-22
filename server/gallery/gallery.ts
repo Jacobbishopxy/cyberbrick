@@ -415,6 +415,12 @@ const storageRoutes: utils.OrmRoute[] = [
     check: [common.queryIdCheck],
     action: storageActions.deleteStorage
   },
+  {
+    path: `${ base }/executeSql`,
+    method: "get",
+    check: [common.queryIdCheck],
+    action: storageActions.executeSql
+  },
 ]
 
 

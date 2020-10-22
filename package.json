@@ -51,6 +51,8 @@
     "@ant-design/icons": "^4.2.2",
     "@ant-design/pro-layout": "^6.4.19",
     "@handsontable/react": "^4.0.0",
+    "@nestjs/common": "^7.4.4",
+    "@nestjs/typeorm": "^7.1.4",
     "antd": "^4.7.0",
     "axios": "^0.20.0",
     "classnames": "^2.2.6",

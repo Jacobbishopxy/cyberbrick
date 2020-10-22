@@ -39,3 +39,16 @@ export async function deleteStorage(req: Request, res: Response) {
 
   res.sendStatus(ans)
 }
+
+// =====================================================================================================================
+
+export async function executeSql(req: Request, res: Response) {
+  if (utils.expressErrorsBreak(req, res)) return
+
+  const id = req.query.id as string
+  const sqlString = req.query.sqlString as string
+  const ans = await storageService.executeSql(id, sqlString)
+
+  res.send(ans)
+}
+
