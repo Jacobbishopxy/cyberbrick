@@ -9,6 +9,7 @@ import * as contentActions from "./controller/ContentActions"
 import * as dashboardActions from "./controller/DashboardActions"
 import * as elementActions from "./controller/ElementActions"
 import * as templateActions from "./controller/TemplateActions"
+import * as storageActions from "./controller/StorageActions"
 import * as common from "./common"
 import * as utils from "../utils"
 
@@ -391,6 +392,31 @@ const elementRoutes: utils.OrmRoute[] = [
   },
 ]
 
+const storageRoutes: utils.OrmRoute[] = [
+  {
+    path: `${ base }/storages`,
+    method: "get",
+    action: storageActions.getAllStorages
+  },
+  {
+    path: `${ base }/storage`,
+    method: "get",
+    check: [common.queryIdCheck],
+    action: storageActions.getStorageByName
+  },
+  {
+    path: `${ base }/storage`,
+    method: "post",
+    action: storageActions.saveStorage
+  },
+  {
+    path: `${ base }/storage`,
+    method: "delete",
+    check: [common.queryIdCheck],
+    action: storageActions.deleteStorage
+  },
+]
+
 
 export const gallery: utils.OrmRoute[] = [
 
@@ -407,5 +433,7 @@ export const gallery: utils.OrmRoute[] = [
   ...templateRoutes,
 
   ...elementRoutes,
+
+  ...storageRoutes,
 
 ]

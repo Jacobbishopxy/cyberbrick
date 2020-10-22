@@ -16,6 +16,7 @@ export const content = "content"
 export const mark = "mark"
 export const tag = "tag"
 export const author = "author"
+export const storage = "storage"
 
 // column name
 export const id = "id"
@@ -121,6 +122,18 @@ export const getElementType = (v: string) => {
   }
 }
 
+export enum StorageType {
+  PG = "pg"
+}
+
+export const getStorageType = (v: string) => {
+  switch (v) {
+    case "pg":
+      return StorageType.PG
+    default:
+      return undefined
+  }
+}
 
 // joint column name
 export const elementsContents = `${ elements }.${ contents }`
