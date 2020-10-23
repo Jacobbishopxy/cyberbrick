@@ -17,7 +17,7 @@ import { FileInterceptor } from "@nestjs/platform-express"
 import { Request, Response } from "express"
 import formidable from "formidable"
 import { Workbook, Worksheet } from 'exceljs'
-import * as moment from 'moment'
+import moment from 'moment'
 
 interface Spreadsheet {
   name: string

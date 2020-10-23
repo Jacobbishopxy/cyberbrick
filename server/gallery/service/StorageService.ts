@@ -2,7 +2,9 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import { getConnection } from "typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -46,5 +48,39 @@ export async function deleteStorage(id: string) {
 export async function executeSql(id: string, sqlString: string) {
   const repo = getConnection(id)
   return repo.query(sqlString)
+}
+
+@Injectable()
+export class StorageService {
+  constructor(@InjectRepository(Storage) private repo: Repository<Storage>) {}
+
+  getAllStorages() {
+    return this.repo.find()
+  }
+
+  getStorageById(id: string) {
+    return this.repo.findOne({
+      ...utils.whereIdEqual(id)
+    })
+  }
+
+  saveStorage(storage: Storage) {
+    const newSto = this.repo.create(storage)
+    return this.repo.save(newSto)
+  }
+
+  async deleteStorage(id: string) {
+    const i = await this.getStorageById(id)
+    if (i) {
+      this.repo.remove(i, {listeners: true})
+      return true
+    }
+    return false
+  }
+
+  static executeSql(id: string, sqlString: string) {
+    const repo = getConnection(id)
+    return repo.query(sqlString)
+  }
 }
 

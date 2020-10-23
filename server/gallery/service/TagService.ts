@@ -2,8 +2,9 @@
  * Created by Jacob Xie on 9/15/2020.
  */
 
-
-import { getConnection } from "typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -53,7 +54,8 @@ export async function deleteTag(id: string) {
 export async function getCategoriesByTagName(name: string) {
   const raw = await tagRepo().find({
     ...tagCategoryRelations,
-    ...utils.whereNameEqual(name)
+    ...utils.whereNameEqual(name),
+    select: [common.id]
   })
 
   if (raw) return raw.map(i => i.category)
@@ -65,10 +67,57 @@ export async function deleteTagInCategory(categoryName: string, tagName: string)
     .createQueryBuilder(common.tag)
     .leftJoinAndSelect(common.tagCategory, common.category)
     .select([common.tagName, common.categoryName])
-    .where(`${common.categoryName} = :categoryName AND ${common.tagName} = :tagName`, {categoryName, tagName})
+    .where(`${ common.categoryName } = :categoryName AND ${ common.tagName } = :tagName`, { categoryName, tagName })
     .delete()
     .execute()
 
   if (raw) return utils.HTMLStatus.SUCCESS_DELETE
   return utils.HTMLStatus.FAIL_OPERATION
 }
+
+@Injectable()
+export class TagService {
+  constructor(@InjectRepository(Tag) private repo: Repository<Tag>) {}
+
+  getAllTags() {
+    return this.repo.find(tagFullRelations)
+  }
+
+  getTagsByName(name: string) {
+    return this.repo.find({
+      ...tagFullRelations,
+      ...utils.whereNameEqual(name)
+    })
+  }
+
+  saveTag(tag: Tag) {
+    const newTag = this.repo.create(tag)
+    return this.repo.save(newTag)
+  }
+
+  deleteTag(id: string) {
+    return this.repo.delete(id)
+  }
+
+  async getCategoriesByTagName(name: string) {
+    const raw = await this.repo.find({
+      ...tagCategoryRelations,
+      ...utils.whereNameEqual(name),
+      select: [common.id]
+    })
+
+    if (raw) return raw.map(i => i.category)
+    return []
+  }
+
+  deleteTagInCategory(categoryName: string, tagName: string) {
+    return this.repo
+      .createQueryBuilder(common.tag)
+      .leftJoinAndSelect(common.tagCategory, common.category)
+      .select([common.tagName, common.categoryName])
+      .where(`${ common.categoryName } = :categoryName AND ${ common.tagName } = :tagName`, { categoryName, tagName })
+      .delete()
+      .execute()
+  }
+}
+
