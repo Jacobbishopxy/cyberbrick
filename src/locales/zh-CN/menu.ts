@@ -54,7 +54,6 @@ export default {
   'menu.gallery.configuration': 'Configuration',
   'menu.gallery.overview': 'Overview',
   'menu.gallery.dashboard': 'Dashboard',
-  'menu.gallery.literature': 'Literature',
 
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',

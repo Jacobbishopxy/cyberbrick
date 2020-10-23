@@ -41,6 +41,8 @@ export async function deleteStorage(id: string) {
 
 // =====================================================================================================================
 
+// todo: new function: test db connection
+
 export async function executeSql(id: string, sqlString: string) {
   const repo = getConnection(id)
   return repo.query(sqlString)

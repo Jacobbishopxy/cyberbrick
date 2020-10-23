@@ -26,12 +26,6 @@ const onlineRoutes = [
         path: "/gallery/dashboard",
         component: "./gallery/Dashboard"
       },
-      // unnecessary since it is included in overview
-      // {
-      //   name: 'literature',
-      //   path: '/gallery/literature',
-      //   component: './gallery/Literature',
-      // },
     ]
   }
 ]

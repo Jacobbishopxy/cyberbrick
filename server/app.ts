@@ -5,19 +5,14 @@
 import express from "express"
 import path from "path"
 
-import { literatureConnect, galleryConnect } from "./orm"
+import { galleryConnect } from "./orm"
 import * as homeController from "./controllers/home"
 import * as miscController from "./controllers/misc"
 import * as fmController from "./controllers/fileManagement"
 import * as kcController from "./kChart/kChart"
 import { fileNameBi, fileNameDn } from "./kChart/kChart"
 
-import {
-  connDevLiterature,
-  connDevGallery,
-  connProdLiterature,
-  connProdGallery
-} from "../resources/config"
+import { connDevGallery, connProdGallery } from "../resources/config"
 
 // Create Express server
 const app = express()
@@ -47,16 +42,6 @@ app.get("/api/kChart/bi", kcController.readLine(kChartRoot, fileNameBi))
 app.get("/api/kChart/dn", kcController.readLine(kChartRoot, fileNameDn))
 
 // API (Database) routes, wrapped in async function
-async function connectionsAwaitLiterature() {
-  const literatureConnOptions = app.get("env") === "prod" ?
-    connProdLiterature : connDevLiterature
-
-  await literatureConnect(app, literatureConnOptions)
-
-  const connInfo = JSON.stringify(literatureConnOptions, null, 2)
-  console.log(`Connected to ${ connInfo }`)
-}
-
 async function connectionsAwaitGallery() {
   const galleryConnOptions = app.get("ene") === "prod" ?
     connProdGallery : connDevGallery
@@ -67,4 +52,4 @@ async function connectionsAwaitGallery() {
   console.log(`Connected to ${ connInfo }`)
 }
 
-export { app, connectionsAwaitLiterature, connectionsAwaitGallery }
+export { app, connectionsAwaitGallery }

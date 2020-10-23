@@ -5,7 +5,7 @@
   "description": "React demo",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "nest build && umi build",
     "deploy": "npm run site && npm run gh-pages",
     "dev": "npm run start:dev",
     "gh-pages": "gh-pages -d dist",
@@ -52,6 +52,8 @@
     "@ant-design/pro-layout": "^6.4.19",
     "@handsontable/react": "^4.0.0",
     "@nestjs/common": "^7.4.4",
+    "@nestjs/core": "^7.4.4",
+    "@nestjs/platform-express": "^7.4.4",
     "@nestjs/typeorm": "^7.1.4",
     "antd": "^4.7.0",
     "axios": "^0.20.0",

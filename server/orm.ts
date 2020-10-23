@@ -7,7 +7,6 @@ import express, { Request, Response } from "express"
 import { createConnection, ConnectionOptions } from "typeorm"
 
 import { OrmRoute } from "./utils"
-import { literature } from './literature/literature'
 import { gallery } from "./gallery/gallery"
 
 
@@ -30,6 +29,4 @@ function createConnectAndGenRoutes(routes: OrmRoute[]) {
     )
 }
 
-
-export const literatureConnect = createConnectAndGenRoutes(literature)
 export const galleryConnect = createConnectAndGenRoutes(gallery)

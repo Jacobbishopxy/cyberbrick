@@ -21,15 +21,11 @@ const readConfig =() => {
 
 const config = readConfig()
 
-const connDevLiterature = config.connDevLiterature as ConnectionOptions
 const connDevGallery = config.connDevGallery as ConnectionOptions
-const connProdLiterature = config.connProdLiterature as ConnectionOptions
 const connProdGallery = config.connProdGallery as ConnectionOptions
 
 export {
-  connDevLiterature,
   connDevGallery,
-  connProdLiterature,
   connProdGallery
 }
 
