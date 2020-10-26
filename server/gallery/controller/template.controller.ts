@@ -6,9 +6,9 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query }
 import { Request, Response } from "express"
 
 import { TemplateCopyElementsDto } from "./template.dto"
-import * as templateService from "../service/template.service"
+import * as templateService from "../provider/template.service"
 import * as utils from "../../utils"
-import { Template } from "../entity/Template"
+import { Template } from "../entity/template.entity"
 
 
 export async function getAllTemplates(req: Request, res: Response) {

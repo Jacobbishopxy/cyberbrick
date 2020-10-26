@@ -1,9 +1,11 @@
 /**
  * Created by Jacob Xie on 8/27/2020.
  */
-import { Body, Controller, Get } from '@nestjs/common'
+import { Body, Controller, Get, Res } from '@nestjs/common'
 import { Request, Response } from "express"
 import path from "path"
+
+import { CollectionService } from "./collection.service"
 
 
 export const getHomeLogo = (req: Request, res: Response) => {
@@ -39,20 +41,21 @@ export const getCurrentUser = (req: Request, res: Response) => {
 }
 
 @Controller()
-export class Home {
+export class HomeController {
+  constructor(private readonly service: CollectionService) {}
 
   @Get("homeLogo")
-  static async getHomeLogo() {
-    return path.join(__dirname, ".../assets", "favicon.ico")
+  async getHomeLogo(@Res() res: Response) {
+    return res.sendFile(this.service.getAsset("favicon.ico"))
   }
 
   @Get("currentUserAvatar")
-  static async getCurrentUserAvatar() {
-    return path.join(__dirname, '../assets', 'favicon.ico')
+  async getCurrentUserAvatar(@Res() res: Response) {
+    return res.sendFile(this.service.getAsset("favicon.ico"))
   }
 
   @Get("currentUser")
-  static async currentUser() {
+  async currentUser() {
     return {
       name: 'Jacob Xie',
       avatar: '/api/currentUserAvatar',
@@ -66,7 +69,7 @@ export class Home {
   }
 
   @Get("login/account")
-  static async loginAccount(@Body("type") type: string) {
+  async loginAccount(@Body("type") type: string) {
     return {
       status: 'ok',
       type,

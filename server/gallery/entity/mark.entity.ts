@@ -5,19 +5,18 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  ManyToMany,
   Column,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
   Unique
 } from "typeorm"
 import * as common from "../common"
-import { Category } from "./Category"
-import { Content } from "./Content"
+import { Category } from "./category.entity"
+import { Content } from "./content.entity"
 
-@Entity({ name: common.tag })
+@Entity({ name: common.mark })
 @Unique([common.name, common.category])
-export class Tag {
+export class Mark {
 
   @PrimaryGeneratedColumn("uuid")
   id!: string
@@ -31,10 +30,9 @@ export class Tag {
   @Column("text", { nullable: true })
   description?: string
 
-  @ManyToOne(() => Category, c => c.tags, { nullable: false })
+  @ManyToOne(() => Category, c => c.marks, { nullable: false })
   category!: Category
 
-  @ManyToMany(() => Content, c => c.tags, { nullable: true })
-  @JoinTable()
+  @OneToMany(() => Content, c => c.mark, { nullable: true })
   contents!: Content[]
 }

@@ -8,7 +8,7 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Mark } from "../entity/Mark"
+import { Mark } from "../entity/mark.entity"
 
 
 const markRepo = () => getConnection(common.db).getRepository(Mark)

@@ -10,7 +10,7 @@ import moment from "moment"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Content } from "../entity/Content"
+import { Content } from "../entity/content.entity"
 
 const contentRepo = () => getConnection(common.db).getRepository(Content)
 

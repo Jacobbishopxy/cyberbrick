@@ -5,9 +5,9 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 import { Request, Response } from "express"
 
-import * as elementService from "../service/element.service"
+import * as elementService from "../provider/element.service"
 import * as utils from "../../utils"
-import { Element } from "../entity/Element"
+import { Element } from "../entity/element.entity"
 
 
 export async function getAllElements(req: Request, res: Response) {

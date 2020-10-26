@@ -6,11 +6,11 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query }
 import { Request, Response } from "express"
 
 import { CategoryPureDto } from "./category.dto"
-import * as categoryService from "../service/category.service"
+import * as categoryService from "../provider/category.service"
 import * as utils from "../../utils"
-import { Category } from "../entity/Category"
-import { Mark } from "../entity/Mark"
-import { Tag } from "../entity/Tag"
+import { Category } from "../entity/category.entity"
+import { Mark } from "../entity/mark.entity"
+import { Tag } from "../entity/tag.entity"
 
 export async function getAllCategories(req: Request, res: Response) {
   const ans = await categoryService.getAllCategories()

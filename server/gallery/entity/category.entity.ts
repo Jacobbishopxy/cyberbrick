@@ -14,10 +14,10 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import * as common from "../common"
-import { Tag } from "./Tag"
-import { Mark } from "./Mark"
-import { Content } from "./Content"
-import { Dashboard } from "./Dashboard"
+import { Tag } from "./tag.entity"
+import { Mark } from "./mark.entity"
+import { Content } from "./content.entity"
+import { Dashboard } from "./dashboard.entity"
 
 
 @Entity({ name: common.category })

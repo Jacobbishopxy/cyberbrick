@@ -5,9 +5,9 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 import { Request, Response } from "express"
 
-import * as tagService from "../service/tag.service"
+import * as tagService from "../provider/tag.service"
 import * as utils from "../../utils"
-import { Tag } from "../entity/Tag"
+import { Tag } from "../entity/tag.entity"
 
 
 export async function getAllTags(req: Request, res: Response) {

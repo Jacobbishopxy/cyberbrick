@@ -5,9 +5,9 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 import { Request, Response } from "express"
 
-import * as storageService from "../service/storage.service"
+import * as storageService from "../provider/storage.service"
 import * as utils from "../../utils"
-import { Storage } from "../entity/Storage"
+import { Storage } from "../entity/storage.entity"
 
 export async function getAllStorages(req: Request, res: Response) {
   const ans = await storageService.getAllStorages()

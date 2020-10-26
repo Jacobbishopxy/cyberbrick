@@ -12,11 +12,11 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Element } from "./Element"
-import { Category } from "./Category"
-import { Tag } from "./Tag"
-import { Mark } from "./Mark"
-import { Author } from "./Author"
+import { Element } from "./element.entity"
+import { Category } from "./category.entity"
+import { Tag } from "./tag.entity"
+import { Mark } from "./mark.entity"
+import { Author } from "./author.entity"
 
 @Entity({ name: common.content })
 @Unique([common.category, common.element, common.mark, common.date])

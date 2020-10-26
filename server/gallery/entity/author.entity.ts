@@ -9,7 +9,7 @@ import {
   OneToMany
 } from "typeorm"
 import { author } from "../common"
-import { Content } from "./Content"
+import { Content } from "./content.entity"
 
 
 @Entity({ name: author })

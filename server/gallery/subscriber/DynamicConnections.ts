@@ -5,7 +5,7 @@
 import { createConnection, ConnectionOptions, Connection } from "typeorm"
 import _ from "lodash"
 
-import { Storage } from "../entity/Storage"
+import { Storage } from "../entity/storage.entity"
 
 
 export class DynamicConnections {

@@ -5,9 +5,9 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 import { Request, Response } from "express"
 
-import * as markService from "../service/mark.service"
+import * as markService from "../provider/mark.service"
 import * as utils from "../../utils"
-import { Mark } from "../entity/Mark"
+import { Mark } from "../entity/mark.entity"
 
 
 export async function getAllMarks(req: Request, res: Response) {

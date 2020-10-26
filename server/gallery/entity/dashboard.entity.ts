@@ -13,8 +13,8 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Category } from "./Category"
-import { Template } from "./Template"
+import { Category } from "./category.entity"
+import { Template } from "./template.entity"
 
 @Entity({ name: common.dashboard })
 export class Dashboard {

@@ -8,8 +8,8 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Element } from "../entity/Element"
-import { Content } from "../entity/Content"
+import { Element } from "../entity/element.entity"
+import { Content } from "../entity/content.entity"
 
 
 const elementRepo = () => getConnection(common.db).getRepository(Element)

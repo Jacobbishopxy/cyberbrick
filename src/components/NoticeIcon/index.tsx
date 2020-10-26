@@ -4,7 +4,7 @@ import { groupBy } from 'lodash';
 import moment from 'moment';
 // @ts-ignore
 import { useModel } from 'umi';
-import { queryNotices } from '@/services/user';
+import { queryNotices } from '@/provider/user';
 
 import NoticeIcon from './NoticeIcon';
 import styles from './index.less';

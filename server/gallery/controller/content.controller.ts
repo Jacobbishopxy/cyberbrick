@@ -5,10 +5,10 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 import { Request, Response } from "express"
 
-import * as contentService from "../service/content.service"
+import * as contentService from "../provider/content.service"
 import * as utils from "../../utils"
 import * as common from "../common"
-import { Content } from "../entity/Content"
+import { Content } from "../entity/content.entity"
 
 
 export async function getAllContents(req: Request, res: Response) {

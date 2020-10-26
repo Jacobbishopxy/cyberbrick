@@ -11,11 +11,10 @@ import {
   RemoveEvent,
 } from "typeorm"
 
-import { Storage } from "../entity/Storage"
+import { Storage } from "../entity/storage.entity"
 import { DynamicConnections } from "./DynamicConnections"
 
 
-// todo: inject service by `@nestjs/typeorm`
 @EventSubscriber()
 export class StorageSubscriber implements EntitySubscriberInterface<Storage> {
 

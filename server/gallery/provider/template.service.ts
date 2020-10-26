@@ -9,8 +9,7 @@ import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Template } from "../entity/Template"
-import { Element } from "../entity/Element"
+import { Element, Template } from "../entity"
 
 
 const templateRepo = () => getConnection(common.db).getRepository(Template)

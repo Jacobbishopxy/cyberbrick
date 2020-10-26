@@ -14,8 +14,8 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Dashboard } from "./Dashboard"
-import { Element } from "./Element"
+import { Dashboard } from "./dashboard.entity"
+import { Element } from "./element.entity"
 
 @Entity({ name: common.template })
 @Unique([common.dashboard, common.name])

@@ -6,9 +6,9 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query }
 import { Request, Response } from "express"
 
 import { DashboardDescriptionModifyDto } from "./dashboard.dto"
-import * as dashboardService from "../service/dashboard.service"
+import * as dashboardService from "../provider/dashboard.service"
 import * as utils from "../../utils"
-import { Dashboard } from "../entity/Dashboard"
+import { Dashboard } from "../entity/dashboard.entity"
 
 
 export async function getAllDashboards(req: Request, res: Response) {

@@ -9,9 +9,9 @@ import { getConnection, Repository } from "typeorm"
 import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Category } from "../entity/Category"
-import { Mark } from "../entity/Mark"
-import { Tag } from "../entity/Tag"
+import { Category } from "../entity/category.entity"
+import { Mark } from "../entity/mark.entity"
+import { Tag } from "../entity/tag.entity"
 
 
 const categoryRepo = () => getConnection(common.db).getRepository(Category)

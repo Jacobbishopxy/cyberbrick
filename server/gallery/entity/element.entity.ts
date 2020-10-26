@@ -12,8 +12,8 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Template } from "./Template"
-import { Content } from "./Content"
+import { Template } from "./template.entity"
+import { Content } from "./content.entity"
 
 
 @Entity({ name: common.element })
