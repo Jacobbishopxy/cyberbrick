@@ -231,6 +231,8 @@ export class CategoryService {
     return this.repo.delete(name)
   }
 
+  // ===================================================================================================================
+
   getAllCategoriesName() {
     return this.repo.find({ select: [common.name] })
   }
@@ -242,6 +244,13 @@ export class CategoryService {
   getCategoryMarkAndTagByName(name: string) {
     return this.repo.findOne({
       ...categoryMarkTagRelations,
+      ...utils.whereNameEqual(name)
+    })
+  }
+
+  getCategoryContentByName(name: string) {
+    return this.repo.findOne({
+      ...categoryContentRelations,
       ...utils.whereNameEqual(name)
     })
   }

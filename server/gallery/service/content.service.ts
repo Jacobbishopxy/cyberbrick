@@ -154,6 +154,8 @@ export class ContentService {
     return this.repo.delete(id)
   }
 
+  // ===================================================================================================================
+
   async getContentsInCategoryByElementTypeAndMarkAndTags(categoryName: string,
                                                          elementType?: common.ElementType,
                                                          markName?: string,

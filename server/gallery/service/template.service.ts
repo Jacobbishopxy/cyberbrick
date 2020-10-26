@@ -195,6 +195,8 @@ export class TemplateService {
     return this.repoTemplate.delete(id)
   }
 
+  // ===================================================================================================================
+
   getTemplateElementsContents(dashboardName: string, templateName: string) {
     return this.repoTemplate.findOne({
       ...templateFullRelations,

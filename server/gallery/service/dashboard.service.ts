@@ -152,6 +152,8 @@ export class DashboardService {
     return this.repoDashboard.delete(name)
   }
 
+  // ===================================================================================================================
+
   getAllDashboardsName() {
     return this.repoDashboard.find({ select: [common.name] })
   }

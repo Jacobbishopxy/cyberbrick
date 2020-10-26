@@ -78,7 +78,9 @@ export class StorageService {
     return false
   }
 
-  static executeSql(id: string, sqlString: string) {
+  // ===================================================================================================================
+
+  executeSql = (id: string, sqlString: string) => {
     const repo = getConnection(id)
     return repo.query(sqlString)
   }

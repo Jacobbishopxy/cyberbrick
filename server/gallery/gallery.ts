@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 8/30/2020.
  */
 
-import * as categoryActions from "./controller/CategoryActions"
-import * as markActions from "./controller/MarkActions"
-import * as tagActions from "./controller/TagActions"
-import * as contentActions from "./controller/ContentActions"
-import * as dashboardActions from "./controller/DashboardActions"
-import * as elementActions from "./controller/ElementActions"
-import * as templateActions from "./controller/TemplateActions"
-import * as storageActions from "./controller/StorageActions"
+import * as categoryActions from "./controller/category.controller"
+import * as markActions from "./controller/mark.controller"
+import * as tagActions from "./controller/tag.controller"
+import * as contentActions from "./controller/content.controller"
+import * as dashboardActions from "./controller/dashboard.controller"
+import * as elementActions from "./controller/element.controller"
+import * as templateActions from "./controller/template.controller"
+import * as storageActions from "./controller/storage.controller"
 import * as common from "./common"
 import * as utils from "../utils"
 
