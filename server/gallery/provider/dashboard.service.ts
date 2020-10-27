@@ -8,8 +8,8 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Dashboard } from "../entity/dashboard.entity"
-import { Category } from "../entity/category.entity"
+import { Dashboard , Category } from "../entity"
+
 
 
 const dashboardRepo = () => getConnection(common.db).getRepository(Dashboard)
@@ -129,8 +129,8 @@ export async function newDashboardAttachToEmptyCategory(categoryName: string, da
 
 @Injectable()
 export class DashboardService {
-  constructor(@InjectRepository(Dashboard) private repoDashboard: Repository<Dashboard>,
-              @InjectRepository(Category) private repoCategory: Repository<Category>) {}
+  constructor(@InjectRepository(Dashboard, common.db) private repoDashboard: Repository<Dashboard>,
+              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
 
   getAllDashboards() {
     return this.repoDashboard.find(dashboardFullRelations)

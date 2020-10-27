@@ -8,7 +8,7 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Tag } from "../entity/tag.entity"
+import { Tag } from "../entity"
 
 
 const tagRepo = () => getConnection(common.db).getRepository(Tag)
@@ -77,7 +77,7 @@ export async function deleteTagInCategory(categoryName: string, tagName: string)
 
 @Injectable()
 export class TagService {
-  constructor(@InjectRepository(Tag) private repo: Repository<Tag>) {}
+  constructor(@InjectRepository(Tag, common.db) private repo: Repository<Tag>) {}
 
   getAllTags() {
     return this.repo.find(tagFullRelations)

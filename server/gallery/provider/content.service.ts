@@ -10,7 +10,7 @@ import moment from "moment"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Content } from "../entity/content.entity"
+import { Content } from "../entity"
 
 const contentRepo = () => getConnection(common.db).getRepository(Content)
 
@@ -132,7 +132,7 @@ export async function saveContentInCategory(name: string, content: Content) {
 
 @Injectable()
 export class ContentService {
-  constructor(@InjectRepository(Content) private repo: Repository<Content>) {}
+  constructor(@InjectRepository(Content, common.db) private repo: Repository<Content>) {}
 
   getAllContents() {
     return this.repo.find(contentFullRelations)

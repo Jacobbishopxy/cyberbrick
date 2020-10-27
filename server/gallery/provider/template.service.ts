@@ -171,8 +171,8 @@ export async function updateTemplateElements(template: Template) {
 
 @Injectable()
 export class TemplateService {
-  constructor(@InjectRepository(Template) private repoTemplate: Repository<Template>,
-              @InjectRepository(Element) private repoElement: Repository<Element>) {}
+  constructor(@InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
+              @InjectRepository(Element, common.db) private repoElement: Repository<Element>) {}
 
   getAllTemplates() {
     return this.repoTemplate.find(templateFullRelations)

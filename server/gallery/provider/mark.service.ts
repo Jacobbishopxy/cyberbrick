@@ -8,7 +8,7 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Mark } from "../entity/mark.entity"
+import { Mark } from "../entity"
 
 
 const markRepo = () => getConnection(common.db).getRepository(Mark)
@@ -77,7 +77,7 @@ export async function deleteMarkInCategory(categoryName: string, markName: strin
 
 @Injectable()
 export class MarkService {
-  constructor(@InjectRepository(Mark) private repo: Repository<Mark>) {}
+  constructor(@InjectRepository(Mark, common.db) private repo: Repository<Mark>) {}
 
   getAllMarks() {
     return this.repo.find(markFullRelations)

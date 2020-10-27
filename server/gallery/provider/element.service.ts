@@ -8,8 +8,8 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Element } from "../entity/element.entity"
-import { Content } from "../entity/content.entity"
+import { Element, Content } from "../entity"
+
 
 
 const elementRepo = () => getConnection(common.db).getRepository(Element)
@@ -133,7 +133,7 @@ export async function getElementContent(id: string, date?: string, markName?: st
 
 @Injectable()
 export class ElementService {
-  constructor(@InjectRepository(Element) private repo: Repository<Element>) {}
+  constructor(@InjectRepository(Element, common.db) private repo: Repository<Element>) {}
 
   getAllElements() {
     return this.repo.find(templateAndContentRelations)

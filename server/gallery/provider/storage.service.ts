@@ -8,7 +8,7 @@ import { getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Storage } from "../entity/storage.entity"
+import { Storage } from "../entity"
 
 const storageRepo = () => getConnection(common.db).getRepository(Storage)
 
@@ -52,7 +52,7 @@ export async function executeSql(id: string, sqlString: string) {
 
 @Injectable()
 export class StorageService {
-  constructor(@InjectRepository(Storage) private repo: Repository<Storage>) {}
+  constructor(@InjectRepository(Storage, common.db) private repo: Repository<Storage>) {}
 
   getAllStorages() {
     return this.repo.find()

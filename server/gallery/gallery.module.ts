@@ -4,17 +4,8 @@
 
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
+import { db } from "./common"
 
-import {
-  CategoryController,
-  ContentController,
-  DashboardController,
-  ElementController,
-  MarkController,
-  StorageController,
-  TagController,
-  TemplateController,
-} from "./controller"
 import {
   Author,
   Category,
@@ -36,6 +27,18 @@ import {
   TagService,
   TemplateService,
 } from "./provider"
+import { StorageSubscriber } from "./subscriber"
+import {
+  CategoryController,
+  ContentController,
+  DashboardController,
+  ElementController,
+  MarkController,
+  StorageController,
+  TagController,
+  TemplateController,
+} from "./controller"
+
 
 @Module({
   imports: [
@@ -49,7 +52,7 @@ import {
       Storage,
       Tag,
       Template,
-    ])
+    ], db)
   ],
   providers: [
     CategoryService,
@@ -60,6 +63,7 @@ import {
     StorageService,
     TagService,
     TemplateService,
+    StorageSubscriber,
   ],
   controllers: [
     CategoryController,

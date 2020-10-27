@@ -9,9 +9,7 @@ import { getConnection, Repository } from "typeorm"
 import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Category } from "../entity/category.entity"
-import { Mark } from "../entity/mark.entity"
-import { Tag } from "../entity/tag.entity"
+import { Category , Mark , Tag } from "../entity"
 
 
 const categoryRepo = () => getConnection(common.db).getRepository(Category)
@@ -208,7 +206,7 @@ export async function saveCategoryTag(categoryName: string, tag: Tag) {
 
 @Injectable()
 export class CategoryService {
-  constructor(@InjectRepository(Category) private repo: Repository<Category>) {}
+  constructor(@InjectRepository(Category, common.db) private repo: Repository<Category>) {}
 
   getAllCategories() {
     return this.repo.find(categoryFullRelations)
