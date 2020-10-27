@@ -2,35 +2,14 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Request, Response } from "express"
-import { validationResult, ValidationChain, query, body } from "express-validator"
 import { Equal, In } from "typeorm"
 
 // misc
 export type QueryStr = string | undefined
 
-export interface OrmRoute {
-  path: string,
-  method: "get" | "put" | "post" | "delete",
-  check?: ValidationChain[],
-  action: Function
-}
-
-// HTML status
-export enum HTMLStatus {
-  SUCCESS_QUERY = 200,
-  SUCCESS_MODIFY = 201,
-  SUCCESS_DELETE = 204,
-  NOT_MODIFY = 304,
-  FAIL_REQUEST = 400,
-  FAIL_OPERATION = 404,
-  FAIL_NOT_ALLOWED = 405,
-}
-
 // query filters
 export const whereNameEqual = (v: string) => ({ where: { name: Equal(v) } })
 export const whereIdEqual = (v: string) => ({ where: { id: Equal(v) } })
-export const whereNamesIn = (v: string[]) => ({ where: { name: In(v) } })
 export const whereIdsIn = (v: string[]) => ({ where: { id: In(v) } })
 
 // query orders
@@ -62,18 +41,7 @@ export const paginationTake = (pagination: QueryStr) => {
   return +t[1]
 }
 
-export const paginationGet = (pagination: QueryStr) => {
-  let pg = {}
-  if (pagination) {
-    const s = paginationSkip(pagination)
-    const t = paginationTake(pagination)
-    if (s) pg = { ...pg, skip: s }
-    if (t) pg = { ...pg, take: t }
-  }
-  return pg
-}
-
-export const paginationGet2 = (pagination: [number, number] | undefined) => {
+export const paginationGet = (pagination: [number, number] | undefined) => {
   if (pagination) {
     return {
       skip: pagination[0],
@@ -97,39 +65,3 @@ export const arrayLikeGet = (arr: QueryStr) => {
   return undefined
 }
 
-/**
- * request error validator
- */
-export function expressErrorsBreak(req: Request, res: Response) {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    res.status(HTMLStatus.FAIL_REQUEST).json({ errors: errors.array() })
-    return true
-  }
-  return false
-}
-
-// express request checkers
-export const messageRequestQuery = (d: string) => `${ d } is required in request query!`
-export const messageRequestBody = (d: string) => `${ d } is required in request body!`
-
-/**
- * general query param check
- */
-export const queryFieldCheck = (field: string) =>
-  query(field, messageRequestQuery(field)).exists()
-
-/**
- * general query optional param check
- */
-export const queryOptionalFieldCheck = (field: string, fn?: (v: string) => boolean) => {
-  const raw = query(field, messageRequestQuery(field)).optional()
-  if (fn) return raw.custom(fn).exists()
-  return raw.exists()
-}
-
-/**
- * general body field check
- */
-export const bodyFieldCheck = (field: string) =>
-  body(field, messageRequestBody(field)).isLength({ min: 1 }).exists()

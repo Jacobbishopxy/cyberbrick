@@ -36,9 +36,7 @@ export class DynamicConnections {
         .then(() => {
           this.connections = _.filter(this.connections, c => c.options.name === id)
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(err => console.log(err))
     }
   }
 

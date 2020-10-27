@@ -3,16 +3,10 @@
  */
 
 import { Controller, Get, Res } from '@nestjs/common'
-import { Request, Response } from "express"
-import path from "path"
+import { Response } from "express"
 
 import { CollectionService } from "./collection.service"
 
-
-export const getDocumentPng = (name: string) =>
-  (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, `../../public/${ name }`))
-  }
 
 @Controller()
 export class MiscController {

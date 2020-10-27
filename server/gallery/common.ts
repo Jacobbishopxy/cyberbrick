@@ -1,8 +1,8 @@
 /**
  * Created by Jacob Xie on 8/29/2020.
  */
+
 import { Equal } from "typeorm"
-import * as utils from "../utils"
 
 // db name
 export const db = "gallery"
@@ -144,39 +144,4 @@ export const templatesElementsContents = `${ templates }.${ elements }.${ conten
 // query filters
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
-
-// express validator
-export const queryIdCheck = utils.queryFieldCheck(id)
-export const queryIdsCheck = utils.queryFieldCheck(ids)
-export const queryDateCheck = utils.queryFieldCheck(date)
-export const queryNameCheck = utils.queryFieldCheck(name)
-export const queryDashboardNameCheck = utils.queryFieldCheck("dashboardName")
-export const queryTemplateNameCheck = utils.queryFieldCheck("templateName")
-export const queryCategoryNameCheck = utils.queryFieldCheck("categoryName")
-export const queryMarkNameCheck = utils.queryFieldCheck("markName")
-export const queryTagNameCheck = utils.queryFieldCheck("tagName")
-export const queryOptionalDateCheck = utils.queryOptionalFieldCheck(date)
-export const queryOptionalElementTypeCheck = utils.queryOptionalFieldCheck("elementType")
-export const queryOptionalMarkNameCheck = utils.queryOptionalFieldCheck("markName")
-export const queryOptionalTagNamesCheck = utils.queryOptionalFieldCheck(
-  "tagNames",
-  (v: string) => utils.regArrayLike.exec(v) !== null
-)
-export const queryOptionalPaginationCheck = utils.queryOptionalFieldCheck(
-  "pagination",
-  (v: string) => utils.regPagination.exec(v) !== null
-)
-
-export const bodyNameCheck = utils.bodyFieldCheck(name)
-export const bodyDescriptionCheck = utils.bodyFieldCheck(description)
-export const bodyOriginDashboardNameCheck = utils.bodyFieldCheck("originDashboardName")
-export const bodyOriginTemplateNameCheck = utils.bodyFieldCheck("originTemplateName")
-export const bodyTargetDashboardNameCheck = utils.bodyFieldCheck("targetDashboardName")
-export const bodyTargetTemplateNameCheck = utils.bodyFieldCheck("targetTemplateName")
-export const bodyDashboardCheck = utils.bodyFieldCheck(dashboard)
-export const bodyCategoryCheck = utils.bodyFieldCheck(category)
-export const bodyDateCheck = utils.bodyFieldCheck(date)
-export const bodyTitleCheck = utils.bodyFieldCheck(title)
-export const bodyDataCheck = utils.bodyFieldCheck("data")
-export const bodyElementsCheck = utils.bodyFieldCheck(elements)
 

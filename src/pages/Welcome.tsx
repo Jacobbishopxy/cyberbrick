@@ -11,7 +11,7 @@ const srcGallery = "/api/collection/document/rocket"
 export default (): React.ReactNode => (
   <PageContainer>
     <div style={{textAlign: "center"}}>
-      <img src={ srcGallery } alt="new-rocket" height="800vh"/>
+      <img src={ srcGallery } alt="rocket" height="800vh"/>
     </div>
   </PageContainer>
 )

@@ -3,55 +3,10 @@
  */
 
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
-import { Request, Response } from "express"
 
 import * as storageService from "../provider/storage.service"
-import * as utils from "../../utils"
-import { Storage } from "../entity/storage.entity"
+import { Storage } from "../entity"
 
-export async function getAllStorages(req: Request, res: Response) {
-  const ans = await storageService.getAllStorages()
-
-  res.send(ans)
-}
-
-export async function getStorageByName(req: Request, res: Response) {
-  if (utils.expressErrorsBreak(req, res)) return
-
-  const id = req.query.id as string
-  const ans = await storageService.getStorageById(id)
-
-  res.send(ans)
-}
-
-export async function saveStorage(req: Request, res: Response) {
-  if (utils.expressErrorsBreak(req, res)) return
-
-  const ans = await storageService.saveStorage(req.body as Storage)
-
-  res.status(ans).end()
-}
-
-export async function deleteStorage(req: Request, res: Response) {
-  if (utils.expressErrorsBreak(req, res)) return
-
-  const id = req.query.id as string
-  const ans = await storageService.deleteStorage(id)
-
-  res.sendStatus(ans)
-}
-
-// =====================================================================================================================
-
-export async function executeSql(req: Request, res: Response) {
-  if (utils.expressErrorsBreak(req, res)) return
-
-  const id = req.query.id as string
-  const sqlString = req.query.sqlString as string
-  const ans = await storageService.executeSql(id, sqlString)
-
-  res.send(ans)
-}
 
 @Controller()
 export class StorageController {

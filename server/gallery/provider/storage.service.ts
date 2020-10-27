@@ -10,45 +10,6 @@ import * as common from "../common"
 import * as utils from "../../utils"
 import { Storage } from "../entity"
 
-const storageRepo = () => getConnection(common.db).getRepository(Storage)
-
-export async function getAllStorages() {
-  return storageRepo().find()
-}
-
-export async function getStorageById(id: string) {
-  return storageRepo().findOne({
-    ...utils.whereIdEqual(id)
-  })
-}
-
-export async function saveStorage(storage: Storage) {
-  const sr = storageRepo()
-  const newStorage = sr.create(storage)
-  await sr.save(newStorage)
-
-  return utils.HTMLStatus.SUCCESS_MODIFY
-}
-
-export async function deleteStorage(id: string) {
-  const sr = storageRepo()
-  const s = await getStorageById(id)
-  if (s) {
-    await sr.remove(s, { listeners: true })
-    return utils.HTMLStatus.SUCCESS_DELETE
-  }
-
-  return utils.HTMLStatus.FAIL_OPERATION
-}
-
-// =====================================================================================================================
-
-// todo: new function: test db connection
-
-export async function executeSql(id: string, sqlString: string) {
-  const repo = getConnection(id)
-  return repo.query(sqlString)
-}
 
 @Injectable()
 export class StorageService {
@@ -79,6 +40,8 @@ export class StorageService {
   }
 
   // ===================================================================================================================
+
+  // todo: new function: test db connection
 
   executeSql = (id: string, sqlString: string) => {
     const repo = getConnection(id)
