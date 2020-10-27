@@ -8,6 +8,7 @@ const { REACT_APP_ENV } = process.env
 
 
 export default defineConfig({
+  outputPath: "frontend",
   hash: true,
   antd: {},
   dva: {
@@ -17,7 +18,7 @@ export default defineConfig({
     name: 'JacobBishop',
     locale: true,
     siderWidth: 200,
-    logo: '/api/homeLogo',
+    logo: '/api/collection/homeLogo',
   },
   locale: {
     default: 'en-US',
@@ -75,11 +76,6 @@ export default defineConfig({
           name: 'local-storage',
           path: '/demo/localstorage',
           component: './demo/LocalStorage',
-        },
-        {
-          name: 'kChart',
-          path: '/demo/kChart',
-          component: './demo/KChart',
         },
         {
           name: 'rectangleChart',

@@ -1,4 +1,10 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "server"
+  "sourceRoot": "server",
+  "compilerOptions": {
+    "assets": [
+      "resources/*.json",
+      "assets/*"
+    ]
+  }
 }

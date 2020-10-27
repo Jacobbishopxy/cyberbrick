@@ -14,7 +14,7 @@ yarn
 
 In `resources` folder:
 
-1. new `config.json` (see [config.template.json](resources/config.template.json)). 
+1. new `config.json` (see [config.template.json](server/resources/config.template.json)). 
 If file not supplied, system would automatically read `config.template.json`.
 
 ## Start Project

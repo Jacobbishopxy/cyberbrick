@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "outDir": "dist",
+    "outDir": "backend",
     "noEmit": false
   },
   "include": [
