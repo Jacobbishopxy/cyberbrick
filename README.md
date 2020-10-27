@@ -1,5 +1,15 @@
 # REACT DEMO
 
+## Prerequisites
+
+1. [nestjs](https://nestjs.com/) NodeJS framework
+
+2. [typeorm](https://typeorm.io/) database ORM
+
+3. [react](https://reactjs.org/) JavaScript library
+
+4. [ant design pro](https://beta-pro.ant.design/) UI solution
+
 ## Environment Prepare
 
 ```
@@ -21,7 +31,7 @@ If file not supplied, system would automatically read `config.template.json`.
 
 1. development mode: 
 
-    *  `yarn serve:dev` for server side then in another terminal `yarn dev` for frontend
+    * `yarn serve:dev` for server side then in another terminal `yarn dev` for frontend
     
     * if offline mode (no database connection), please use `yarn serve:dev:offline` & `yarn dev:offline`
 

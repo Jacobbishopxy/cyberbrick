@@ -1,6 +1,5 @@
 {
   "backendUrl": "http://localhost:8080",
-  "kChartFileRoot": "data/kChart",
   "connDevGallery": {
     "name": "gallery",
     "type": "postgres",
@@ -10,11 +9,9 @@
     "password": "admin",
     "database": "dev",
     "synchronize": true,
+    "autoLoadEntities": true,
     "logging": false,
-    "uuidExtension ": "uuid-ossp",
-    "entities": [
-      "./server/gallery/entity/*.ts"
-    ]
+    "uuidExtension ": "uuid-ossp"
   },
   "connProdGallery": {
     "name": "gallery",
@@ -25,10 +22,8 @@
     "password": "admin",
     "database": "dev",
     "synchronize": true,
+    "autoLoadEntities": true,
     "logging": false,
-    "uuidExtension ": "uuid-ossp",
-    "entities": [
-      "./server/gallery/entities/*.ts"
-    ]
+    "uuidExtension ": "uuid-ossp"
   }
 }
