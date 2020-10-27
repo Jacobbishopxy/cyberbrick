@@ -6,7 +6,7 @@ import React from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 
 
-const srcGallery = "/api/misc/new-rocket"
+const srcGallery = "/api/collection/document/rocket"
 
 export default (): React.ReactNode => (
   <PageContainer>

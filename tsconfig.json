@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    //"rootDir": "src",
     "module": "esnext",
     "target": "esnext",
     "lib": [
@@ -32,11 +30,12 @@
   },
   "exclude": [
     "node_modules",
-    "build",
     "dist",
     "scripts",
     "src/client/.umi/*",
     "webpack",
-    "jest"
+    "jest",
+    "frontend",
+    "backend"
   ]
 }

@@ -5,7 +5,7 @@
 import { createConnection, ConnectionOptions, Connection } from "typeorm"
 import _ from "lodash"
 
-import { Storage } from "../entity/Storage"
+import { Storage } from "../entity"
 
 
 export class DynamicConnections {
@@ -25,13 +25,8 @@ export class DynamicConnections {
     const co = this.genConnOption(conn)
 
     createConnection(co)
-      .then(res => {
-        console.log("databaseConnect:", res)
-        this.connections.push(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      .then(res => this.connections.push(res))
+      .catch(err => console.log(err))
   }
 
   private async databaseDisconnect(id: string) {
@@ -78,7 +73,6 @@ export class DynamicConnections {
     return Promise.reject()
   }
 
-  // todo: create connection when initialize subscriber
   async loadConnection(conn: Storage) {
     const targetConn = this.findConn(conn.id)
     if (!targetConn)

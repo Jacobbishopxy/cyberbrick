@@ -57,7 +57,6 @@ export default {
 
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',
-  'menu.demo.kChart': 'KChart',
   'menu.demo.rectangleChart': 'RectangleChart',
   'menu.demo.charts': 'Charts',
 

@@ -37,12 +37,13 @@ screenshot
 .firebase
 .eslintcache
 
-build
+frontend
+backend
 
 cache
 !cache/.gitkeep
 data
 !data/.gitkeep
-resources/config.json
+server/resources/config.json
 test
 
