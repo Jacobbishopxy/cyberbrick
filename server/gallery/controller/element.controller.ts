@@ -66,7 +66,7 @@ export async function getElementContent(req: Request, res: Response) {
   res.send(ans)
 }
 
-@Controller("gallery")
+@Controller()
 export class ElementController {
   constructor(private readonly service: elementService.ElementService) {}
 

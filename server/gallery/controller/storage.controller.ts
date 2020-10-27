@@ -53,7 +53,7 @@ export async function executeSql(req: Request, res: Response) {
   res.send(ans)
 }
 
-@Controller("gallery")
+@Controller()
 export class StorageController {
   constructor(private readonly service: storageService.StorageService) {}
 

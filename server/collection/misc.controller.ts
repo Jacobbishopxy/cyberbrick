@@ -14,7 +14,7 @@ export const getDocumentPng = (name: string) =>
     res.sendFile(path.join(__dirname, `../../public/${ name }`))
   }
 
-@Controller("misc")
+@Controller()
 export class MiscController {
   constructor(private readonly service: CollectionService) {}
 

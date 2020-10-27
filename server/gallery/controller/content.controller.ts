@@ -68,7 +68,7 @@ export async function saveContentInCategory(req: Request, res: Response) {
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class ContentController {
   constructor(private readonly service: contentService.ContentService) {}
 

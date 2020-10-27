@@ -5,7 +5,7 @@
 import { Module } from "@nestjs/common"
 
 import { CollectionService } from "./collection.service"
-import { FileCotroller } from "./file.controller"
+import { FileController } from "./file.controller"
 import { HomeController } from "./home.controller"
 import { MiscController } from "./misc.controller"
 
@@ -15,7 +15,7 @@ import { MiscController } from "./misc.controller"
     CollectionService
   ],
   controllers: [
-    FileCotroller,
+    FileController,
     HomeController,
     MiscController,
   ]

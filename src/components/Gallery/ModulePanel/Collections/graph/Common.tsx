@@ -14,7 +14,7 @@ import { Emoji } from "@/components/Emoji"
 import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 
-const postingUrl = "/api/fm/extractXlsxFile"
+const postingUrl = "/api/collection/extractXlsxFile"
 
 type DataIndexDirection = "vertical" | "horizontal"
 

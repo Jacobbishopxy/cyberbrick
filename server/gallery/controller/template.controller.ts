@@ -110,7 +110,7 @@ export async function updateTemplateElements(req: Request, res: Response) {
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class TemplateController {
   constructor(private readonly service: templateService.TemplateService) {}
 

@@ -3,16 +3,13 @@
  */
 
 import express from "express"
-import path from "path"
 
 import { galleryConnect } from "./orm"
-import * as homeController from "./controllers/home"
-import * as miscController from "./controllers/misc"
-import * as fmController from "./controllers/fileManagement"
-import * as kcController from "./kChart/kChart"
-import { fileNameBi, fileNameDn } from "./kChart/kChart"
+import * as homeController from "./collection/home.controller"
+import * as miscController from "./collection/misc.controller"
+import * as fmController from "./collection/file.controller"
 
-import { connDevGallery, connProdGallery } from "../resources/config"
+import { connDevGallery, connProdGallery } from "./resources/config"
 
 // Create Express server
 const app = express()
@@ -33,13 +30,6 @@ app.get("/api/misc/document/gallery", miscController.getDocumentPng("GalleryData
 app.get("/api/misc/new-rocket", miscController.getDocumentPng("NewRocket.png"))
 
 app.post("/api/fm/extractXlsxFile", fmController.extractXlsxFile)
-
-// kChart routes
-const kChartRoot = path.join(__dirname, "../data/kChart")
-app.get("/api/kChart/tickers", kcController.readDir(kChartRoot))
-app.get("/api/kChart/rkx", kcController.readRkx(kChartRoot))
-app.get("/api/kChart/bi", kcController.readLine(kChartRoot, fileNameBi))
-app.get("/api/kChart/dn", kcController.readLine(kChartRoot, fileNameDn))
 
 // API (Database) routes, wrapped in async function
 async function connectionsAwaitGallery() {

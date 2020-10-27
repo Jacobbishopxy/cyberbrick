@@ -55,7 +55,7 @@ export async function deleteMarkInCategory(req: Request, res: Response) {
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class MarkController {
   constructor(private readonly service: markService.MarkService) {}
 

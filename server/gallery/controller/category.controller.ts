@@ -93,7 +93,7 @@ export async function saveCategoryTag(req: Request, res: Response) {
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class CategoryController {
   constructor(private readonly service: categoryService.CategoryService) {}
 

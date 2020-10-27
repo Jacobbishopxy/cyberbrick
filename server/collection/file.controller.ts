@@ -100,7 +100,7 @@ export const extractXlsxFile = (req: Request, res: Response) => {
 }
 
 @Controller()
-export class FileCotroller {
+export class FileController {
 
   private readFromXlsx = async (file: Buffer, options: ReadXlsxOptions) => {
     const workbook = new Workbook()

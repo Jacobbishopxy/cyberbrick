@@ -86,7 +86,7 @@ export async function newDashboardAttachToEmptyCategory(req: Request, res: Respo
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class DashboardController {
   constructor(private readonly service: dashboardService.DashboardService) {}
 

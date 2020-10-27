@@ -15,7 +15,7 @@ import * as DataType from "../../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
 
-const postingUrl = "/api/fm/extractXlsxFile"
+const postingUrl = "/api/collection/extractXlsxFile"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {

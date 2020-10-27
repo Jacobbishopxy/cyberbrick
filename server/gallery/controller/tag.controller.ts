@@ -55,7 +55,7 @@ export async function deleteTagInCategory(req: Request, res: Response) {
   res.status(ans).end()
 }
 
-@Controller("gallery")
+@Controller()
 export class TagController {
   constructor(private readonly service: tagService.TagService) {}
 
