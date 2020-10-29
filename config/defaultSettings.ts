@@ -6,7 +6,7 @@ export default {
   headerHeight: 40,
   layout: 'mix',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
   menu: {
@@ -15,6 +15,7 @@ export default {
   title: 'JacobBishop',
   pwa: false,
   iconfontUrl: '',
+  splitMenus: true
 } as LayoutSettings & {
   pwa: boolean;
 }

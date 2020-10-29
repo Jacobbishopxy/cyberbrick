@@ -17,7 +17,7 @@ export default defineConfig({
   layout: {
     name: 'JacobBishop',
     locale: true,
-    siderWidth: 200,
+    siderWidth: 150,
     logo: '/api/collection/homeLogo',
   },
   locale: {
