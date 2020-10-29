@@ -169,3 +169,29 @@ export const getElementContent = async (id: string, date?: string, markName?: st
   return request(path)
 }
 
+
+// Storage
+
+export const getAllStorages = async (): Promise<GalleryAPI.Storage[]> =>
+  request(`${ base }/storages`)
+
+export const getStorageById = async (id: string): Promise<GalleryAPI.Storage> =>
+  request(`${ base }/storage?id=${ id }`)
+
+export const saveStorage = async (storage: GalleryAPI.Storage) =>
+  request(`${ base }/storage`, {
+    method: "post",
+    data: storage
+  })
+
+export const deleteStorage = async (id: string) =>
+  request(`${ base }/storage?id=${ id }`, {
+    method: "delete"
+  })
+
+export const testConnection = async (id: string) =>
+  request(`${ base }/testConnection?id=${ id }`)
+
+export const executeSql = async (id: string, sqlString: string) =>
+  request(`${ base }/executeSql?id=${ id }&sqlString=${ sqlString }`)
+

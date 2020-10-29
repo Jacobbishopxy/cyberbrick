@@ -3,36 +3,54 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Divider } from "antd"
+import { Tabs } from "antd"
+import { DashboardOutlined, DatabaseOutlined, TagsOutlined } from "@ant-design/icons"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import { CategoryConfigTable, DashboardConfigTable } from "@/components/Gallery/Configuration"
+import { CategoryConfigTable, DashboardConfigTable, StorageConfigTable } from "@/components/Gallery/Configuration"
+
+
+const getAllCategories = () => GalleryService.getAllCategoriesWithoutContents()
+
+const getAllDashboards = () => GalleryService.getAllDashboardsTemplate()
+
+const getAllStorages = () => GalleryService.getAllStorages()
+
+type TabPaneType = "Category" | "Dashboard" | "Storage"
 
 
 export default () => {
 
   const [dataCategory, setDataCategory] = useState<DataType.Category[]>([])
   const [dataDashboard, setDataDashboard] = useState<DataType.Dashboard[]>([])
-  const [categoryRefresh, setCategoryRefresh] = useState<number>(0)
-  const [dashboardRefresh, setDashboardRefresh] = useState<number>(0)
+  const [storage, setStorage] = useState<DataType.Storage[]>([])
+  const [activeKey, setActiveKey] = useState<TabPaneType>("Storage")
 
-  const getAllCategories = () =>
-    GalleryService.getAllCategoriesWithoutContents()
-
-  const getAllDashboards = () =>
-    GalleryService.getAllDashboardsTemplate()
-
-  useEffect(() => {
+  const refreshCat = () =>
     getAllCategories().then(res => setDataCategory(res as DataType.Category[]))
-  }, [categoryRefresh])
 
-  useEffect(() => {
+  const refreshDsb = () =>
     getAllDashboards().then(res => setDataDashboard(res as DataType.Dashboard[]))
-  }, [dashboardRefresh])
 
-  const refreshCat = () => setCategoryRefresh(categoryRefresh + 1)
-  const refreshDsb = () => setDashboardRefresh(dashboardRefresh + 1)
+  const refreshSto = () =>
+    getAllStorages().then(res => setStorage(res as DataType.Storage[]))
+
+  const tabPaneOnchange = (key: string) => {
+    switch (key) {
+      case "Category":
+        refreshCat().finally()
+        break
+      case "Dashboard":
+        refreshDsb().finally()
+        break
+      case "Storage":
+        refreshSto().finally()
+        break
+    }
+  }
+
+  useEffect(() => tabPaneOnchange(activeKey), [activeKey])
 
   const saveCategory = (name: string, description?: string) =>
     GalleryService
@@ -79,25 +97,58 @@ export default () => {
       .deleteTemplateInDashboard(dashboardName, templateName)
       .then(refreshDsb)
 
+  const saveStorage = (storage: DataType.Storage) =>
+    GalleryService
+      .saveStorage(storage)
+      .then(refreshSto)
+
+  const deleteStorage = (id: string) =>
+    GalleryService
+      .deleteStorage(id)
+      .then(refreshSto)
+
   return (
-    <>
-      <CategoryConfigTable
-        data={ dataCategory }
-        saveCategory={ saveCategory }
-        modifyDashboardDescription={ modifyDashboardDescription }
-        saveMark={ saveMark }
-        deleteMark={ deleteMark }
-        saveTag={ saveTag }
-        deleteTag={ deleteTag }
-        newDashboard={ newDashboard }
-      />
-      <Divider/>
-      <DashboardConfigTable
-        data={ dataDashboard }
-        saveTemplate={ saveTemplate }
-        deleteTemplate={ deleteTemplate }
-      />
-    </>
+    <Tabs
+      centered
+      defaultActiveKey={ activeKey }
+      onChange={ v => setActiveKey(v as TabPaneType) }
+    >
+      <Tabs.TabPane
+        tab={ <span> <TagsOutlined/> Category</span> }
+        key="Category"
+      >
+        <CategoryConfigTable
+          data={ dataCategory }
+          saveCategory={ saveCategory }
+          modifyDashboardDescription={ modifyDashboardDescription }
+          saveMark={ saveMark }
+          deleteMark={ deleteMark }
+          saveTag={ saveTag }
+          deleteTag={ deleteTag }
+          newDashboard={ newDashboard }
+        />
+      </Tabs.TabPane>
+      <Tabs.TabPane
+        tab={ <span> <DashboardOutlined/> Dashboard</span> }
+        key="Dashboard"
+      >
+        <DashboardConfigTable
+          data={ dataDashboard }
+          saveTemplate={ saveTemplate }
+          deleteTemplate={ deleteTemplate }
+        />
+      </Tabs.TabPane>
+      <Tabs.TabPane
+        tab={ <span> <DatabaseOutlined/> Storage</span> }
+        key="Storage"
+      >
+        <StorageConfigTable
+          data={ storage }
+          saveStorage={ saveStorage }
+          deleteStorage={ deleteStorage }
+        />
+      </Tabs.TabPane>
+    </Tabs>
   )
 }
 

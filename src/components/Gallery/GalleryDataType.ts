@@ -151,3 +151,28 @@ export const getElementType = (v: string) => {
   }
 }
 
+export enum StorageType {
+  PG = "postgres"
+}
+
+export const getStorageType = (v: string) => {
+  switch (v) {
+    case "postgres":
+      return StorageType.PG
+    default:
+      return undefined
+  }
+}
+
+export interface Storage {
+  id?: string
+  name: string
+  description?: string
+  type: StorageType
+  host: string
+  port: number
+  database: string
+  username: string
+  password: string
+}
+

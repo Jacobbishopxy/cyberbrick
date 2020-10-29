@@ -22,7 +22,7 @@ export class StorageController {
   }
 
   @Get("storage")
-  getStorageByName(@Query("id") id: string) {
+  getStorageById(@Query("id") id: string) {
     try {
       return this.service.getStorageById(id)
     } catch (err) {
@@ -49,6 +49,11 @@ export class StorageController {
   }
 
   // ===================================================================================================================
+
+  @Get("testConnection")
+  testConnection(@Query("id") id: string) {
+    return this.service.testConnection(id)
+  }
 
   @Get("executeSql")
   executeSql(@Query("id") id: string,

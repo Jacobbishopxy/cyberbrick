@@ -41,7 +41,10 @@ export class StorageService {
 
   // ===================================================================================================================
 
-  // todo: new function: test db connection
+  testConnection = (id: string) => {
+    const repo = getConnection(id)
+    return repo.isConnected
+  }
 
   executeSql = (id: string, sqlString: string) => {
     const repo = getConnection(id)

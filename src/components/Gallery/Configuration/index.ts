@@ -4,6 +4,7 @@
 
 import { CategoryConfigTable } from "./CategoryConfigTable"
 import { DashboardConfigTable } from "./DashboardConfigTable"
+import { StorageConfigTable } from "./StorageConfigTable"
 
-export { CategoryConfigTable, DashboardConfigTable }
+export { CategoryConfigTable, DashboardConfigTable, StorageConfigTable }
 
