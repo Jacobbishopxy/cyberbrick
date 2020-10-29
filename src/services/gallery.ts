@@ -189,7 +189,7 @@ export const deleteStorage = async (id: string) =>
     method: "delete"
   })
 
-export const testConnection = async (id: string) =>
+export const testConnection = async (id: string): Promise<boolean> =>
   request(`${ base }/testConnection?id=${ id }`)
 
 export const executeSql = async (id: string, sqlString: string) =>

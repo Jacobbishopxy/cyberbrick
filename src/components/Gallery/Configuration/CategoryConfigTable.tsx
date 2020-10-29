@@ -86,7 +86,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         }
         size="small"
         bordered
-        pagination={ false }
+        pagination={ { pageSize: 10 } }
         { ...tableFooter() }
       >
         <Table.ColumnGroup title="Category">

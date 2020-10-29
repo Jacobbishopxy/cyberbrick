@@ -10,22 +10,30 @@ import { queryCurrent } from './services/user'
 import defaultSettings from '../config/defaultSettings'
 
 export async function getInitialState(): Promise<{
-  currentUser?: API.CurrentUser;
   settings?: LayoutSettings;
+  currentUser?: API.CurrentUser;
+  fetchUserInfo: () => Promise<API.CurrentUser | undefined>;
 }> {
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
+  const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrent()
-      return {
-        currentUser,
-        settings: defaultSettings,
-      }
+      return await queryCurrent()
     } catch (error) {
       history.push('/user/login')
     }
+    return undefined
+  }
+
+  // pass if login page
+  if (history.location.pathname !== '/user/login') {
+    const currentUser = await fetchUserInfo()
+    return {
+      fetchUserInfo,
+      currentUser,
+      settings: defaultSettings,
+    }
   }
   return {
+    fetchUserInfo,
     settings: defaultSettings,
   }
 }
@@ -38,8 +46,10 @@ export const layout = ({ initialState }: {
     disableContentMargin: false,
     footerRender: () => <Footer/>,
     onPageChange: () => {
-      // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser?.userid && history.location.pathname !== '/user/login') {
+      const { currentUser } = initialState
+      const { location } = history
+      // if not login, redirect to login page
+      if (!currentUser && location.pathname !== '/user/login') {
         history.push('/user/login')
       }
     },
@@ -68,7 +78,7 @@ const codeMessage = {
 }
 
 /**
- * 异常处理程序
+ * error handling
  */
 const errorHandler = (error: ResponseError) => {
   const { response } = error
@@ -77,15 +87,15 @@ const errorHandler = (error: ResponseError) => {
     const { status, url } = response
 
     notification.error({
-      message: `请求错误 ${ status }: ${ url }`,
+      message: `Request error ${ status }: ${ url }`,
       description: errorText,
     })
   }
 
   if (!response) {
     notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
+      description: 'cannot connect to server due to network error',
+      message: 'network error',
     })
   }
   throw error

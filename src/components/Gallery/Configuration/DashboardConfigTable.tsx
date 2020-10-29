@@ -41,7 +41,7 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
         }
         size="small"
         bordered
-        pagination={ false }
+        pagination={ { pageSize: 10 } }
       >
         <Table.ColumnGroup title="Dashboard">
           <Table.Column
@@ -73,3 +73,4 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
     </div>
   )
 }
+

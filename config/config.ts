@@ -19,6 +19,7 @@ export default defineConfig({
     locale: true,
     siderWidth: 150,
     logo: '/api/collection/homeLogo',
+    ...defaultSettings
   },
   locale: {
     default: 'en-US',

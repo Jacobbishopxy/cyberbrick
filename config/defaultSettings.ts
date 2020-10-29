@@ -3,7 +3,6 @@ import { Settings as LayoutSettings } from '@ant-design/pro-layout'
 export default {
   navTheme: 'light',
   primaryColor: '#1890ff',
-  headerHeight: 40,
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: true,
@@ -15,7 +14,7 @@ export default {
   title: 'JacobBishop',
   pwa: false,
   iconfontUrl: '',
-  splitMenus: true
+  splitMenus: true,
 } as LayoutSettings & {
   pwa: boolean;
 }

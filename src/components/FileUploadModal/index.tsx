@@ -35,7 +35,7 @@ export interface SheetStyle {
 
 const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> => {
   let u = `${ url }?`
-  if (options.multiSheets) u += "multiSheets=true&"
+  u += `multiSheets=${ options.multiSheets || false }&`
   if (options.numberRounding) u += `numberRounding=${ options.numberRounding }&`
   if (options.dateFormat) u += `dateFormat=${ options.dateFormat }&`
 
@@ -76,7 +76,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
   const onUploadFile = (options: FileOptions) => {
     if (uploadFiles.length !== 0) {
       const data = new FormData()
-      data.append("xlsx_file", uploadFiles[0])
+      data.append("xlsx", uploadFiles[0])
       setUploading(true)
 
       axiosPost(props.postingUrl, options, data)

@@ -155,6 +155,10 @@ export enum StorageType {
   PG = "postgres"
 }
 
+export const storageTypeList = [
+  "postgres"
+]
+
 export const getStorageType = (v: string) => {
   switch (v) {
     case "postgres":

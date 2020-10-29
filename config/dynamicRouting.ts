@@ -13,16 +13,19 @@ const onlineRoutes = [
     routes: [
       {
         name: "configuration",
+        icon: "SettingOutlined",
         path: "/gallery/configuration",
         component: "./gallery/Configuration"
       },
       {
         name: "overview",
+        icon: 'ProfileOutlined',
         path: "/gallery/overview",
         component: "./gallery/Overview"
       },
       {
         name: "dashboard",
+        icon: 'DashboardOutlined',
         path: "/gallery/dashboard",
         component: "./gallery/Dashboard"
       },

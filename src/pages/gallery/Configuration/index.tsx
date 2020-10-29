@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Tabs } from "antd"
+import { message, Tabs } from "antd"
 import { DashboardOutlined, DatabaseOutlined, TagsOutlined } from "@ant-design/icons"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
@@ -107,6 +107,17 @@ export default () => {
       .deleteStorage(id)
       .then(refreshSto)
 
+  const checkConnection = (id: string) => {
+    console.log("checkConnection", id)
+    GalleryService
+      .testConnection(id)
+      .then(res => {
+        if (res) message.success(`Database: ${ id } is connected!`)
+        else message.error(`Database: ${ id } is disconnected!`)
+      })
+  }
+
+
   return (
     <Tabs
       centered
@@ -146,6 +157,7 @@ export default () => {
           data={ storage }
           saveStorage={ saveStorage }
           deleteStorage={ deleteStorage }
+          checkConnection={ checkConnection }
         />
       </Tabs.TabPane>
     </Tabs>
