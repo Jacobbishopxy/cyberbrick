@@ -27,7 +27,7 @@ const formItemLayout = {
 }
 
 export const CreationModal = (props: CreationModalProps) => {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<CreationModalValue>()
   const [color, setColor] = useState<string>()
 
   const onCancel = () => {

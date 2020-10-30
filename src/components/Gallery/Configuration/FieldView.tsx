@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { Button, Input, InputNumber, Select } from "antd"
+import { Button, Input, InputNumber, Select, Space } from "antd"
 import { CheckCircleTwoTone, CloseCircleTwoTone, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
 
@@ -21,8 +21,9 @@ interface StateFieldProps {
 
 interface OperationFieldProps {
   editable: boolean
-  onTrueClick: () => void
-  onFalseClick: () => void
+  onUpdateClick: () => void
+  onDeleteClick: () => void
+  onCheckClick: () => void
   disabled: boolean
 }
 
@@ -84,18 +85,28 @@ export const PasswordField = (props: EditFieldProps<string>) =>
 
 export const OperationField = (props: OperationFieldProps) =>
   props.editable ?
+    <Space>
+      <Button
+        size="small"
+        type="primary"
+        onClick={ props.onUpdateClick }
+        disabled={ props.disabled }
+      >
+        Update
+      </Button>
+      <Button
+        size="small"
+        danger
+        onClick={ props.onDeleteClick }
+        disabled={ props.disabled }
+      >
+        Delete
+      </Button>
+    </Space> :
     <Button
       size="small"
       type="primary"
-      onClick={ props.onTrueClick }
-      disabled={ props.disabled }
-    >
-      Update
-    </Button> :
-    <Button
-      size="small"
-      type="primary"
-      onClick={ props.onFalseClick }
+      onClick={ props.onCheckClick }
     >
       Check connection
     </Button>

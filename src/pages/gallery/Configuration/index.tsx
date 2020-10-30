@@ -107,15 +107,13 @@ export default () => {
       .deleteStorage(id)
       .then(refreshSto)
 
-  const checkConnection = (id: string) => {
-    console.log("checkConnection", id)
+  const checkConnection = (id: string) =>
     GalleryService
       .testConnection(id)
       .then(res => {
         if (res) message.success(`Database: ${ id } is connected!`)
         else message.error(`Database: ${ id } is disconnected!`)
       })
-  }
 
 
   return (

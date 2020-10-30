@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react'
 
 import { Editor } from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { Table } from "antd"
+import { Button, Table } from "antd"
 
 import { StringField, NumberField, SelectionField, PasswordField, OperationField } from "./FieldView"
-
+import { NewStorageModal } from "./NewStorageModal"
 
 export interface StorageConfigTableProps {
   data: DataType.Storage[]
@@ -18,78 +18,83 @@ export interface StorageConfigTableProps {
   checkConnection: (id: string) => void
 }
 
-// todo: 1. status column for connection checking; 2. `deleteStorage`
 export const StorageConfigTable = (props: StorageConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
   const [selectedStorage, setSelectedStorage] = useState<DataType.Storage | undefined>()
+  const [newStorageModalVisible, setNewStorageModalVisible] = useState<boolean>(false)
 
   useEffect(() => {
     if (!editable) setSelectedStorage(undefined)
   }, [editable])
 
   const nameOnChange = (name: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      name
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, name })
   }
 
   const descriptionOnChange = (description: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      description
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, description })
   }
 
   const typeOnChange = (type: string) => {
     if (selectedStorage) {
       const t = DataType.getStorageType(type)
-      if (t) setSelectedStorage({
-        ...selectedStorage,
-        type: t
-      })
+      if (t) setSelectedStorage({ ...selectedStorage, type: t })
     }
   }
 
   const hostOnChange = (host: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      host
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, host })
   }
 
   const portOnChange = (port: number) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      port
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, port })
   }
 
   const databaseOnChange = (database: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      database
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, database })
   }
 
   const usernameOnChange = (username: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      username
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, username })
   }
 
   const passwordOnChange = (password: string) => {
-    if (selectedStorage) setSelectedStorage({
-      ...selectedStorage,
-      password
-    })
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, password })
   }
 
   const saveStorage = () => {
     if (selectedStorage) props.saveStorage(selectedStorage)
   }
+
+  const deleteStorage = (id: string) => {
+    if (selectedStorage) props.deleteStorage(id)
+  }
+
+  const newStorageOnSubmit = (value: DataType.Storage) => {
+    props.saveStorage(value)
+    setNewStorageModalVisible(false)
+  }
+
+  const tableFooter = () =>
+    editable ?
+      {
+        footer: () =>
+          <>
+            <Button
+              size="small"
+              type="primary"
+              onClick={ () => setNewStorageModalVisible(true) }
+            >
+              New storage
+            </Button>
+            <NewStorageModal
+              visible={ newStorageModalVisible }
+              onSubmit={ newStorageOnSubmit }
+              onCancel={ () => setNewStorageModalVisible(false) }
+            />
+          </>
+      } : {}
 
   return (
     <div>
@@ -107,10 +112,13 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
         expandable={ {
           expandedRowRender: (record: DataType.Storage) => <span>ID: { record.id }</span>
         } }
-        rowSelection={ editable ? {
-          type: "radio",
-          onSelect: ((record: DataType.Storage) => setSelectedStorage(record)),
-        } : undefined }
+        rowSelection={ editable ?
+          {
+            type: "radio",
+            onSelect: ((record: DataType.Storage) => setSelectedStorage(record)),
+          } : undefined
+        }
+        { ...tableFooter() }
       >
         <Table.Column
           title="Name"
@@ -214,8 +222,9 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           render={ (storages: DataType.Storage[], record: DataType.Storage) =>
             <OperationField
               editable={ editable }
-              onTrueClick={ saveStorage }
-              onFalseClick={ () => props.checkConnection(record.id!) }
+              onUpdateClick={ saveStorage }
+              onDeleteClick={ () => deleteStorage(record.id!) }
+              onCheckClick={ () => props.checkConnection(record.id!) }
               disabled={ record.id !== selectedStorage?.id }/>
           }
         />
