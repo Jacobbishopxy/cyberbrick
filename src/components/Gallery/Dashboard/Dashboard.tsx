@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { message } from "antd"
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {message} from "antd"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
-import { Controller } from "./DashboardController/Controller"
-import { Container, ContainerRef } from "./DashboardContainer/Container"
+import {Controller} from "./DashboardController/Controller"
+import {Container, ContainerRef} from "./DashboardContainer/Container"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -158,9 +158,9 @@ export const Dashboard = (props: DashboardProps) => {
     let markValue = {}
     if (props.markAvailable && selectedMark) {
       const mId = _.find(selectedDashboard!.category!.marks, m => m.name === selectedMark)
-      if (mId) markValue = { mark: { id: mId.id } }
+      if (mId) markValue = {mark: {id: mId.id}}
     }
-    const newContent = { ...ctt, ...markValue } as DataType.Content
+    const newContent = {...ctt, ...markValue} as DataType.Content
 
     setNewestContent(newContent)
   }
@@ -170,34 +170,34 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const genController = useMemo(() => <Controller
-    markAvailable={ props.markAvailable }
-    canEdit={ canEdit }
-    dashboards={ dashboards }
-    dashboardOnSelect={ dashboardOnSelect }
-    markOnSelect={ markOnSelect }
-    onAddModule={ onAddModule }
-    onCopyTemplate={ onCopyTemplate }
-    onEditTemplate={ setEdit }
-    onSaveTemplate={ onSaveTemplateAndContents }
+    markAvailable={props.markAvailable}
+    canEdit={canEdit}
+    dashboards={dashboards}
+    dashboardOnSelect={dashboardOnSelect}
+    markOnSelect={markOnSelect}
+    onAddModule={onAddModule}
+    onCopyTemplate={onCopyTemplate}
+    onEditTemplate={setEdit}
+    onSaveTemplate={onSaveTemplateAndContents}
   />, [canEdit, dashboards, onSaveTemplateAndContents])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
-      markAvailable={ props.markAvailable }
-      selectedMark={ selectedMark }
-      dashboardInfo={ selectedDashboard }
-      onSelectPane={ setSelectedTemplate }
-      fetchElements={ fetchElements }
-      fetchElementContentFn={ fetchElementContent }
-      fetchElementContentDatesFn={ fetchElementContentDates }
-      updateElementContentFn={ updateElementContent }
-      ref={ cRef }
+      markAvailable={props.markAvailable}
+      selectedMark={selectedMark}
+      dashboardInfo={selectedDashboard}
+      onSelectPane={setSelectedTemplate}
+      fetchElements={fetchElements}
+      fetchElementContentFn={fetchElementContent}
+      fetchElementContentDatesFn={fetchElementContentDates}
+      updateElementContentFn={updateElementContent}
+      ref={cRef}
     /> : <></>, [selectedDashboard, selectedMark])
 
   return (
-    <EditableContext.Provider value={ edit }>
-      { genController }
-      { genContainer }
+    <EditableContext.Provider value={edit}>
+      {genController}
+      {genContainer}
     </EditableContext.Provider>
   )
 }

@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { createConnection, getConnection, Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {createConnection, getConnection, Repository} from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Storage } from "../entity"
+import {Storage} from "../entity"
 
 
 @Injectable()
@@ -33,7 +33,7 @@ export class StorageService {
   async deleteStorage(id: string) {
     const i = await this.getStorageById(id)
     if (i) {
-      this.repo.remove(i, { listeners: true })
+      this.repo.remove(i, {listeners: true})
       return true
     }
     return false

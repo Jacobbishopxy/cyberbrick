@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/16/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Element, Content } from "../entity"
+import {Element, Content} from "../entity"
 
 
 const templateAndContentRelations = {
@@ -47,13 +47,13 @@ export class ElementService {
   getElementContentDates(id: string, markName?: string) {
     let que = this.repo
       .createQueryBuilder(common.element)
-      .where(`${ common.elementId } = :id`, { id })
+      .where(`${common.elementId} = :id`, {id})
       .leftJoinAndSelect(common.elementContents, common.content)
 
     if (markName)
       que = que
         .leftJoinAndSelect(common.contentMark, common.mark)
-        .andWhere(`${ common.markName } = :markName`, { markName })
+        .andWhere(`${common.markName} = :markName`, {markName})
 
     return que
       .select([common.elementId, common.contentDate])
@@ -65,12 +65,12 @@ export class ElementService {
       .createQueryBuilder(common.element)
       .select(common.elementId)
       .leftJoinAndSelect(common.elementContents, common.content)
-      .where(`${ common.elementId } = :id AND ${ common.contentDate } = :date`, { id, date })
+      .where(`${common.elementId} = :id AND ${common.contentDate} = :date`, {id, date})
 
     return markName ?
       que
         .leftJoin(common.contentMark, common.mark)
-        .andWhere(`${ common.markName } = :markName`, { markName })
+        .andWhere(`${common.markName} = :markName`, {markName})
         .getOne() :
       que.getOne()
   }
@@ -84,9 +84,9 @@ export class ElementService {
           if (markName)
             raw = qb
               .leftJoin(common.contentMark, common.mark)
-              .where(`${ common.markName } = :markName`, { markName })
+              .where(`${common.markName} = :markName`, {markName})
           return raw
-            .select(`MAX(${ common.date })`, common.date)
+            .select(`MAX(${common.date})`, common.date)
             .addSelect(`"elementId"`, "eid")
             .groupBy("eid")
         },
@@ -96,14 +96,14 @@ export class ElementService {
       .leftJoinAndSelect(
         common.elementContents,
         common.content,
-        `${ common.contentDate } = last_date.date`
+        `${common.contentDate} = last_date.date`
       )
-      .where(`${ common.elementId } = :id`, { id })
+      .where(`${common.elementId} = :id`, {id})
 
     return markName ?
       que
         .leftJoin(common.contentMark, common.mark)
-        .andWhere(`${ common.markName } = :markName`, { markName })
+        .andWhere(`${common.markName} = :markName`, {markName})
         .getOne() :
       que.getOne()
   }

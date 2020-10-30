@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/8/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as tagService from "../provider/tag.service"
-import { Tag } from "../entity"
+import {Tag} from "../entity"
 
 
 @Controller()

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/12/2020.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 
 import * as DataType from "../../GalleryDataType"
 
@@ -20,7 +20,7 @@ export const Container = (props: ContainerProps) => {
   useEffect(() => setContents(props.contents), [props.contents])
 
   return (
-    <>{ contents }</>
+    <>{contents}</>
   )
 }
 

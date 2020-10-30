@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import React, { useEffect, useState } from 'react'
-import { Button, Checkbox, message, Radio, Space } from "antd"
+import React, {useEffect, useState} from 'react'
+import {Button, Checkbox, message, Radio, Space} from "antd"
 import ReactEcharts from "echarts-for-react"
-import { EChartOption } from "echarts"
+import {EChartOption} from "echarts"
 import _ from "lodash"
 
-import { FileUploadModal, SheetStyle } from "@/components/FileUploadModal"
-import { Emoji } from "@/components/Emoji"
+import {FileUploadModal, SheetStyle} from "@/components/FileUploadModal"
+import {Emoji} from "@/components/Emoji"
 
-import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 
 const postingUrl = "/api/collection/extractXlsxFile"
@@ -67,7 +67,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
       const ctt = {
         ...content!,
         date: DataType.today(),
-        config: { dataIndexDir }
+        config: {dataIndexDir}
       }
       setContent(ctt)
     }
@@ -79,8 +79,8 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
       if (checkUniqueness(fields)) {
         const ctt = {
           ...content!,
-          data: { data: dataSource },
-          config: { ...content!.config }
+          data: {data: dataSource},
+          config: {...content!.config}
         }
         setContent(ctt)
         setSelectableFields(fields)
@@ -92,7 +92,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     const saveContentConfigLineArr = (lineArr: string[]) => {
       const ctt = {
         ...content,
-        config: { ...content!.config, lineArr }
+        config: {...content!.config, lineArr}
       }
       setContent(ctt as DataType.Content)
     }
@@ -102,18 +102,18 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
         return (
           <Space direction="vertical">
             <Space>
-              <Emoji label="0" symbol="③" size={ 20 }/>
+              <Emoji label="0" symbol="③" size={20}/>
               Select fields as line in chart:
             </Space>
             <Checkbox.Group
-              style={ { width: "100%" } }
-              onChange={ vs => saveContentConfigLineArr(vs as string[]) }
-              disabled={ !savingProcessData }
-              defaultValue={ content.config!.lineArr }
+              style={{width: "100%"}}
+              onChange={vs => saveContentConfigLineArr(vs as string[])}
+              disabled={!savingProcessData}
+              defaultValue={content.config!.lineArr}
             >
               {
                 selectableFields.map((n: string) =>
-                  <Checkbox key={ n } value={ n }>{ n }</Checkbox>
+                  <Checkbox key={n} value={n}>{n}</Checkbox>
                 )
               }
             </Checkbox.Group>
@@ -133,51 +133,51 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     }
 
     return (
-      <div className={ props.styling }>
+      <div className={props.styling}>
         <Space
           direction="vertical"
-          style={ { position: "relative", top: "30%" } }
+          style={{position: "relative", top: "30%"}}
         >
           <Space>
-            <Emoji label="0" symbol="①" size={ 20 }/>
+            <Emoji label="0" symbol="①" size={20}/>
             Index direction:
             <Radio.Group
-              onChange={ e => saveContentConfig(e.target.value) }
-              defaultValue={ props.content?.config?.dataIndexDir }
+              onChange={e => saveContentConfig(e.target.value)}
+              defaultValue={props.content?.config?.dataIndexDir}
             >
               <Radio value="horizontal">Horizontal</Radio>
               <Radio value="vertical">Vertical</Radio>
             </Radio.Group>
           </Space>
           <Space>
-            <Emoji label="0" symbol="②" size={ 20 }/>
+            <Emoji label="0" symbol="②" size={20}/>
             <Button
               type='primary'
               shape='round'
               size='small'
-              disabled={ !savingProcessDataIndexDir }
-              onClick={ () => setVisible(true) }
+              disabled={!savingProcessDataIndexDir}
+              onClick={() => setVisible(true)}
             >
               Click here to upload file
             </Button>
           </Space>
 
-          { genCheckBox() }
+          {genCheckBox()}
           <Button
             type='primary'
             size='small'
-            onClick={ saveContent }
-            disabled={ mixin ? !savingProcessLineArr : !savingProcessData }
+            onClick={saveContent}
+            disabled={mixin ? !savingProcessLineArr : !savingProcessData}
           >
             Update
           </Button>
         </Space>
 
         <FileUploadModal
-          postingUrl={ postingUrl }
-          setVisible={ setVisible }
-          visible={ visible }
-          upload={ saveContentData }
+          postingUrl={postingUrl}
+          setVisible={setVisible}
+          visible={visible}
+          upload={saveContentData}
           multiSheetDisable
         />
       </div>
@@ -188,8 +188,8 @@ export const generateCommonPresenterField = (chartOptionGenerator: (v: DataType.
   (props: ModulePresenterField) => {
     if (props.content && props.content.data)
       return <ReactEcharts
-        option={ chartOptionGenerator(props.content) }
-        style={ { height: props.contentHeight } }
+        option={chartOptionGenerator(props.content)}
+        style={{height: props.contentHeight}}
       />
     return <></>
   }

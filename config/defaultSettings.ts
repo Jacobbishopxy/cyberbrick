@@ -1,4 +1,4 @@
-import { Settings as LayoutSettings } from '@ant-design/pro-layout'
+import {Settings as LayoutSettings} from '@ant-design/pro-layout'
 
 export default {
   navTheme: 'light',
@@ -11,7 +11,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'JacobBishop',
+  title: 'CyberBrick',
   pwa: false,
   iconfontUrl: '',
   splitMenus: true,

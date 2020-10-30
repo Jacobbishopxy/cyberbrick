@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, { useEffect, useRef, useState } from 'react'
-import { Button, Divider, Modal, Space, Tag, Tooltip } from "antd"
-import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import React, {useEffect, useRef, useState} from 'react'
+import {Button, Divider, Modal, Space, Tag, Tooltip} from "antd"
+import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
 
-import { CreationModal, CreationModalValue } from "../Misc/CreationModal"
-import { SelectableTags, SelectableTagsRef, GenericDataInput } from "./SelectableTags"
+import {CreationModal, CreationModalValue} from "../Misc/CreationModal"
+import {SelectableTags, SelectableTagsRef, GenericDataInput} from "./SelectableTags"
 
 const tagDeleteModal = (onOk: () => void) =>
   Modal.confirm({
@@ -71,44 +71,44 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
   const nonSearchableTags = () =>
     data.map(t =>
-      <Tooltip title={ t.description } key={ t.name }>
+      <Tooltip title={t.description} key={t.name}>
         <Tag
-          closable={ props.editable }
-          onClose={ e => {
+          closable={props.editable}
+          onClose={e => {
             e.preventDefault()
             tagDeleteModal(() => elementOnRemove(t.name))
-          } }
-          color={ t.color }
+          }}
+          color={t.color}
         >
-          { t.name }
+          {t.name}
         </Tag>
       </Tooltip>
     )
 
   const searchableTags = () =>
     <SelectableTags
-      tags={ data }
-      onSelectTags={ setSelectedDataNames }
-      ref={ selectableTagsRef }
+      tags={data}
+      onSelectTags={setSelectedDataNames}
+      ref={selectableTagsRef}
     />
 
   return (
     <>
-      { tagSearchable ? searchableTags() : nonSearchableTags() }
+      {tagSearchable ? searchableTags() : nonSearchableTags()}
       {
         tagSearchable ?
           <>
             <Divider/>
             <Space>
               <Button
-                onClick={ elementSelect }
+                onClick={elementSelect}
                 type="primary"
                 size="small"
               >
                 Search
               </Button>
               <Button
-                onClick={ clearSelectedTagName }
+                onClick={clearSelectedTagName}
                 size="small"
               >
                 Reset
@@ -119,20 +119,20 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
       {
         props.editable ?
           <Tag
-            icon={ <PlusOutlined/> }
-            onClick={ () => setModalVisible(true) }
+            icon={<PlusOutlined/>}
+            onClick={() => setModalVisible(true)}
           >
             New Tag
           </Tag> : <></>
       }
 
       <CreationModal
-        name={ props.name }
+        name={props.name}
         title="Please enter new tag information below:"
-        visible={ modalVisible }
-        onSubmit={ tagCreateModalOnOk }
-        onCancel={ () => setModalVisible(false) }
-        colorSelector={ props.colorSelector }
+        visible={modalVisible}
+        onSubmit={tagCreateModalOnOk}
+        onCancel={() => setModalVisible(false)}
+        colorSelector={props.colorSelector}
       />
     </>
   )

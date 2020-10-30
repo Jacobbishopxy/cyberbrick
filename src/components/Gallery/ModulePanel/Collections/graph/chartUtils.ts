@@ -3,7 +3,7 @@
  */
 
 import _ from "lodash"
-import { EChartOption } from "echarts"
+import {EChartOption} from "echarts"
 
 import * as DataType from "../../../GalleryDataType"
 
@@ -26,7 +26,7 @@ export const generateChartOption = (chartType: string) =>
     return {
       tooltip: {},
       legend: {},
-      dataset: [{ source: d }],
+      dataset: [{source: d}],
       xAxis: {
         type: "category"
       },
@@ -35,12 +35,12 @@ export const generateChartOption = (chartType: string) =>
     }
   }
 
-const genPctRadius = (num: number) => `${ 1 / num * 100 }%`
+const genPctRadius = (num: number) => `${1 / num * 100}%`
 const genPctArr = (num: number) => {
   const end = num + 3
   const arr = _.range(1, end)
 
-  return arr.map((i: number) => `${ i / end * 100 }%`).slice(1, -1)
+  return arr.map((i: number) => `${i / end * 100}%`).slice(1, -1)
 }
 const genPieSeries = (data: any[][]) => {
   const encodeName = data[0][0]
@@ -53,7 +53,7 @@ const genPieSeries = (data: any[][]) => {
     type: "pie",
     radius,
     center: [pctArr[idx], "50%"],
-    label: { alignTo: 'labelLine' },
+    label: {alignTo: 'labelLine'},
     encode: {
       itemName: encodeName,
       value
@@ -72,7 +72,7 @@ export const generatePieOption = () =>
     return {
       tooltip: {},
       legend: {},
-      dataset: [{ source: d }],
+      dataset: [{source: d}],
       series: genPieSeries(d)
     }
   }
@@ -120,12 +120,12 @@ export const generateLineBarOption = () =>
 
     return {
       tooltip: {},
-      legend: { data: legendData },
-      dataset: [{ source: d }],
-      xAxis: [{ type: "category" }],
+      legend: {data: legendData},
+      dataset: [{source: d}],
+      xAxis: [{type: "category"}],
       yAxis: [
-        { position: "left" },
-        { position: "right", splitLine: { show: false } }
+        {position: "left"},
+        {position: "right", splitLine: {show: false}}
       ],
       series: genLineBarSeries(d, c.lineArr)
     }

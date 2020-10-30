@@ -1,9 +1,8 @@
-import { Button, Result } from 'antd';
-import React from 'react';
-// @ts-ignore
-import { history } from 'umi';
+import {Button, Result} from 'antd'
+import React from 'react'
+import {history} from 'umi'
 
-const NoFoundPage: React.FC<{}> = () => (
+const NoFoundPage = () => (
   <Result
     status="404"
     title="404"
@@ -14,6 +13,6 @@ const NoFoundPage: React.FC<{}> = () => (
       </Button>
     }
   />
-);
+)
 
-export default NoFoundPage;
+export default NoFoundPage

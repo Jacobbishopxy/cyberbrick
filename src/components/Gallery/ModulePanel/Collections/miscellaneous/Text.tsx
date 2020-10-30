@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import React, { useState } from 'react'
-import { message } from "antd"
+import React, {useState} from 'react'
+import {message} from "antd"
 
-import { TextEditorModifier, TextEditorPresenter } from "@/components/TextEditor"
-import { ModuleGenerator } from "../../Generator/ModuleGenerator"
-import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import {TextEditorModifier, TextEditorPresenter} from "@/components/TextEditor"
+import {ModuleGenerator} from "../../Generator/ModuleGenerator"
+import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 
 const EditorField = (props: ModuleEditorField) => {
@@ -15,8 +15,8 @@ const EditorField = (props: ModuleEditorField) => {
 
   const onChangeContent = (value: string) => {
     const ctt = content ?
-      { ...content, data: { text: value } } :
-      { date: DataType.today(), data: { text: value } }
+      {...content, data: {text: value}} :
+      {date: DataType.today(), data: {text: value}}
     setContent(ctt)
   }
 
@@ -29,11 +29,11 @@ const EditorField = (props: ModuleEditorField) => {
 
   return (
     <TextEditorModifier
-      onChange={ onChangeContent }
-      content={ content ? content.data.text : null }
-      onSave={ onSaveContent }
+      onChange={onChangeContent}
+      content={content ? content.data.text : null}
+      onSave={onSaveContent}
       saveButton
-      styling={ props.styling }
+      styling={props.styling}
     />
   )
 }
@@ -41,8 +41,8 @@ const EditorField = (props: ModuleEditorField) => {
 const PresenterField = (props: ModulePresenterField) =>
   props.content ?
     <TextEditorPresenter
-      content={ props.content.data.text }
-      styling={ props.styling }
+      content={props.content.data.text}
+      styling={props.styling}
     /> : <></>
 
 export const Text = new ModuleGenerator(EditorField, PresenterField, true).generate()

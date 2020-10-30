@@ -1,12 +1,11 @@
 import React from 'react'
-import { BasicLayoutProps, Settings as LayoutSettings } from '@ant-design/pro-layout'
-import { notification } from 'antd'
-// @ts-ignore
-import { history, RequestConfig } from 'umi'
+import {BasicLayoutProps, Settings as LayoutSettings} from '@ant-design/pro-layout'
+import {notification} from 'antd'
+import {history, RequestConfig} from 'umi'
 import RightContent from '@/components/RightContent'
 import Footer from '@/components/Footer'
-import { ResponseError } from 'umi-request'
-import { queryCurrent } from './services/user'
+import {ResponseError} from 'umi-request'
+import {queryCurrent} from './services/user'
 import defaultSettings from '../config/defaultSettings'
 
 export async function getInitialState(): Promise<{
@@ -38,7 +37,7 @@ export async function getInitialState(): Promise<{
   }
 }
 
-export const layout = ({ initialState }: {
+export const layout = ({initialState}: {
   initialState: { settings?: LayoutSettings; currentUser?: API.CurrentUser };
 }): BasicLayoutProps => {
   return {
@@ -46,8 +45,8 @@ export const layout = ({ initialState }: {
     disableContentMargin: false,
     footerRender: () => <Footer/>,
     onPageChange: () => {
-      const { currentUser } = initialState
-      const { location } = history
+      const {currentUser} = initialState
+      const {location} = history
       // if not login, redirect to login page
       if (!currentUser && location.pathname !== '/user/login') {
         history.push('/user/login')
@@ -81,13 +80,13 @@ const codeMessage = {
  * error handling
  */
 const errorHandler = (error: ResponseError) => {
-  const { response } = error
+  const {response} = error
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText
-    const { status, url } = response
+    const {status, url} = response
 
     notification.error({
-      message: `Request error ${ status }: ${ url }`,
+      message: `Request error ${status}: ${url}`,
       description: errorText,
     })
   }

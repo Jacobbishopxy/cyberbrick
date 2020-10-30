@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/8/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as markService from "../provider/mark.service"
-import { Mark } from "../entity"
+import {Mark} from "../entity"
 
 
 @Controller()

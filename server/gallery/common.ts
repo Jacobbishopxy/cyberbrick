@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Equal } from "typeorm"
+import {Equal} from "typeorm"
 
 // db name
 export const db = "gallery"
@@ -34,29 +34,29 @@ export const tags = "tags"
 // relations column & misc
 export const ids = "ids"
 export const names = "names"
-export const markCategory = `${ mark }.${ category }`
-export const markName = `${ mark }.${ name }`
-export const categoryName = `${ category }.${ name }`
-export const categoryMarks = `${ category }.${ marks }`
-export const tagCategory = `${ tag }.${ category }`
-export const tagName = `${ tag }.${ name }`
-export const contentId = `${ content }.${ id }`
-export const contentElement = `${ content }.${ element }`
-export const contentCategory = `${ content }.${ category }`
-export const contentMark = `${ content }.${ mark }`
-export const contentTags = `${ content }.${ tags }`
-export const contentAuthor = `${ content }.${ author }`
-export const contentDate = `${ content }.${ date }`
-export const contentsDate = `${ contents }.${ date }`
-export const templateId = `${ template }.${ id }`
-export const templateName = `${ template }.${ name }`
-export const templateDashboard = `${ template }.${ dashboard }`
-export const elementId = `${ element }.${ id }`
-export const elementType = `${ element }.type`
-export const elementTemplate = `${ element }.${ template }`
-export const elementContents = `${ element }.${ contents }`
-export const dashboardName = `${ dashboard }.${ name }`
-export const dashboardCategory = `${ dashboard }.${ category }`
+export const markCategory = `${mark}.${category}`
+export const markName = `${mark}.${name}`
+export const categoryName = `${category}.${name}`
+export const categoryMarks = `${category}.${marks}`
+export const tagCategory = `${tag}.${category}`
+export const tagName = `${tag}.${name}`
+export const contentId = `${content}.${id}`
+export const contentElement = `${content}.${element}`
+export const contentCategory = `${content}.${category}`
+export const contentMark = `${content}.${mark}`
+export const contentTags = `${content}.${tags}`
+export const contentAuthor = `${content}.${author}`
+export const contentDate = `${content}.${date}`
+export const contentsDate = `${contents}.${date}`
+export const templateId = `${template}.${id}`
+export const templateName = `${template}.${name}`
+export const templateDashboard = `${template}.${dashboard}`
+export const elementId = `${element}.${id}`
+export const elementType = `${element}.type`
+export const elementTemplate = `${element}.${template}`
+export const elementContents = `${element}.${contents}`
+export const dashboardName = `${dashboard}.${name}`
+export const dashboardCategory = `${dashboard}.${category}`
 
 export const dateFormat = "YYYY-MM-DD"
 
@@ -136,12 +136,12 @@ export const getStorageType = (v: string) => {
 }
 
 // joint column name
-export const elementsContents = `${ elements }.${ contents }`
-export const elementsContentsMark = `${ elements }.${ contents }.${ mark }`
-export const templatesElements = `${ templates }.${ elements }`
-export const templatesElementsContents = `${ templates }.${ elements }.${ contents }`
+export const elementsContents = `${elements}.${contents}`
+export const elementsContentsMark = `${elements}.${contents}.${mark}`
+export const templatesElements = `${templates}.${elements}`
+export const templatesElementsContents = `${templates}.${elements}.${contents}`
 
 // query filters
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
-  ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
+  ({where: [{"dashboard.name": Equal(dn)}, {name: Equal(tn)}]})
 

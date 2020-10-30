@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { useEffect, useMemo, useState } from 'react'
-import { Button, message, Modal, Select, Space } from 'antd'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Button, message, Modal, Select, Space} from 'antd'
 import {
   CheckCircleOutlined,
   ExclamationCircleOutlined,
@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons"
 
 import * as DataType from "../../GalleryDataType"
-import { AddModuleModal } from "./AddModuleModal"
+import {AddModuleModal} from "./AddModuleModal"
 
 export interface ModuleControllerProps {
   markAvailable?: boolean
@@ -54,7 +54,7 @@ export const Controller = (props: ModuleControllerProps) => {
             quit()
           })
           .catch(err => {
-            message.error(`Error: ${ err }`)
+            message.error(`Error: ${err}`)
             quit()
 
           })
@@ -71,32 +71,32 @@ export const Controller = (props: ModuleControllerProps) => {
         <Button
           type="primary"
           size="small"
-          onClick={ () => setAddModuleModalVisible(true) }
+          onClick={() => setAddModuleModalVisible(true)}
         >
           <PlusCircleOutlined/> New
         </Button>
         <Button
           type="primary"
           size="small"
-          onClick={ saveTemplate(false) }
+          onClick={saveTemplate(false)}
         >
           <CheckCircleOutlined/> Save
         </Button>
         <Button
           size="small"
           danger
-          onClick={ saveTemplate(true) }
+          onClick={saveTemplate(true)}
         >
           <PoweroffOutlined/> Exit
         </Button>
 
       </Space>
       <AddModuleModal
-        dashboards={ props.dashboards }
-        onAddModule={ props.onAddModule }
-        copyTemplate={ props.onCopyTemplate }
-        visible={ addModuleModalVisible }
-        onQuit={ quitAddModule }
+        dashboards={props.dashboards}
+        onAddModule={props.onAddModule}
+        copyTemplate={props.onCopyTemplate}
+        visible={addModuleModalVisible}
+        onQuit={quitAddModule}
       />
     </>
   ), [addModuleModalVisible, props.onSaveTemplate])
@@ -105,40 +105,40 @@ export const Controller = (props: ModuleControllerProps) => {
     <Button
       type="primary"
       size="small"
-      onClick={ () => setEdit(true) }
-      disabled={ !props.canEdit }
+      onClick={() => setEdit(true)}
+      disabled={!props.canEdit}
     >
       <SettingOutlined/> Edit
     </Button>
   ), [props.canEdit])
 
   return (
-    <div style={ { display: 'flex', justifyContent: 'space-between' } }>
+    <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <Space>
         <Select
-          style={ { width: 120 } }
-          onSelect={ dashboardOnSelect }
+          style={{width: 120}}
+          onSelect={dashboardOnSelect}
           size="small"
           placeholder="Dashboard"
         >
           {
             props.dashboards.map(d =>
-              <Select.Option key={ d.name } value={ d.name }>{ d.name }</Select.Option>
+              <Select.Option key={d.name} value={d.name}>{d.name}</Select.Option>
             )
           }
         </Select>
         {
           props.markAvailable ?
             <Select
-              style={ { width: 120 } }
-              onSelect={ props.markOnSelect }
-              disabled={ marks.length === 0 }
+              style={{width: 120}}
+              onSelect={props.markOnSelect}
+              disabled={marks.length === 0}
               size="small"
               placeholder="Mark"
             >
               {
                 marks.map(m =>
-                  <Select.Option key={ m.id } value={ m.name }>{ m.name }</Select.Option>
+                  <Select.Option key={m.id} value={m.name}>{m.name}</Select.Option>
                 )
               }
             </Select> :
@@ -146,7 +146,7 @@ export const Controller = (props: ModuleControllerProps) => {
         }
       </Space>
       <div>
-        { edit ? editMode : idleMode }
+        {edit ? editMode : idleMode}
       </div>
     </div>
   )

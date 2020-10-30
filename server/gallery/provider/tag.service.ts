@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/15/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Tag } from "../entity"
+import {Tag} from "../entity"
 
 
 const tagFullRelations = {
@@ -64,7 +64,7 @@ export class TagService {
       .createQueryBuilder(common.tag)
       .leftJoinAndSelect(common.tagCategory, common.category)
       .select([common.tagName, common.categoryName])
-      .where(`${ common.categoryName } = :categoryName AND ${ common.tagName } = :tagName`, { categoryName, tagName })
+      .where(`${common.categoryName} = :categoryName AND ${common.tagName} = :tagName`, {categoryName, tagName})
       .delete()
       .execute()
   }

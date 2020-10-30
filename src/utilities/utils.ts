@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 const dateFormat = 'YYYYMMDD'
 const dateFormat2 = 'YYYY-MM-DD'

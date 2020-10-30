@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 8/27/2020.
  */
 
-import React, { useState } from "react"
-import { Form, Input, Modal } from "antd"
-import { ColorResult, BlockPicker } from "react-color"
+import React, {useState} from "react"
+import {Form, Input, Modal} from "antd"
+import {ColorResult, BlockPicker} from "react-color"
 
 export interface CreationModalValue {
   name: string
@@ -22,8 +22,8 @@ export interface CreationModalProps {
 }
 
 const formItemLayout = {
-  labelCol: { offset: 2, span: 4 },
-  wrapperCol: { span: 16 },
+  labelCol: {offset: 2, span: 4},
+  wrapperCol: {span: 16},
 }
 
 export const CreationModal = (props: CreationModalProps) => {
@@ -47,22 +47,22 @@ export const CreationModal = (props: CreationModalProps) => {
     setColor(value.hex)
 
   const onSelectColorComplete = (value: ColorResult) =>
-    form.setFieldsValue({ color: value.hex })
+    form.setFieldsValue({color: value.hex})
 
   return (
     <Modal
-      visible={ props.visible }
-      title={ props.title }
-      onOk={ onOk }
-      onCancel={ onCancel }
+      visible={props.visible}
+      title={props.title}
+      onOk={onOk}
+      onCancel={onCancel}
       destroyOnClose
       forceRender
     >
-      <Form { ...formItemLayout } form={ form } name={ props.name }>
+      <Form {...formItemLayout} form={form} name={props.name}>
         <Form.Item
           name="name"
           label="Name"
-          rules={ [{ required: true, message: "Name is required" }] }
+          rules={[{required: true, message: "Name is required"}]}
         >
           <Input placeholder="Place name here"/>
         </Form.Item>
@@ -79,9 +79,9 @@ export const CreationModal = (props: CreationModalProps) => {
               label="Color"
             >
               <BlockPicker
-                color={ color }
-                onChange={ onSelectColor }
-                onChangeComplete={ onSelectColorComplete }
+                color={color}
+                onChange={onSelectColor}
+                onChangeComplete={onSelectColorComplete}
                 triangle="hide"
                 width="100%"
               />

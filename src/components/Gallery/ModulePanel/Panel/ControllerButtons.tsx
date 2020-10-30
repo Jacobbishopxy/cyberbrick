@@ -3,10 +3,10 @@
  */
 
 import React from 'react'
-import { Button, Tooltip } from "antd"
+import {Button, Tooltip} from "antd"
 
-import { Emoji } from "@/components/Emoji"
-import { Editor } from "@/components/Editor"
+import {Emoji} from "@/components/Emoji"
+import {Editor} from "@/components/Editor"
 
 
 export const DragButton = () =>
@@ -28,7 +28,7 @@ export const TimeSetButton = (props: { show: boolean | undefined, onClick: () =>
         shape='circle'
         size='small'
         type='link'
-        onClick={ props.onClick }
+        onClick={props.onClick}
       >
         <Emoji label="date" symbol="🗓️"/>
       </Button>
@@ -37,8 +37,8 @@ export const TimeSetButton = (props: { show: boolean | undefined, onClick: () =>
 export const EditButton = (props: { editContent: (value: boolean) => void }) =>
   <Tooltip title="Edit">
     <Editor
-      icons={ { open: "⚙️", close: "❌️" } }
-      onChange={ props.editContent }
+      icons={{open: "⚙️", close: "❌️"}}
+      onChange={props.editContent}
     />
   </Tooltip>
 
@@ -48,7 +48,7 @@ export const DeleteButton = (props: { confirmDelete: () => void }) =>
       shape='circle'
       size='small'
       type='link'
-      onClick={ props.confirmDelete }
+      onClick={props.confirmDelete}
     >
       <Emoji label="delete" symbol="🗑️️️"/>
     </Button>
@@ -60,7 +60,7 @@ export const TimePickButton = (props: { onClick: () => void }) =>
       shape='circle'
       size='small'
       type='link'
-      onClick={ props.onClick }
+      onClick={props.onClick}
     >
       <Emoji label="date" symbol="🗓️"/>
     </Button>

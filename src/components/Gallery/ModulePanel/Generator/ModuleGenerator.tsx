@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
-import { ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
+import {ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField} from "./data"
 import styles from "./Common.less"
 
 export class ModuleGenerator {
@@ -25,7 +25,7 @@ export class ModuleGenerator {
   public generate = () => {
     const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
       const [editable, setEditable] = useState<boolean>()
-      const { forceStyle } = this
+      const {forceStyle} = this
 
       useImperativeHandle(crProps.forwardedRef, () => ({
         edit: setEditable
@@ -33,25 +33,25 @@ export class ModuleGenerator {
 
       return editable ?
         <this.editor
-          content={ crProps.content }
-          contentHeight={ crProps.contentHeight }
-          updateContent={ crProps.updateContent }
-          styling={ forceStyle ? crProps.styling : styles.editorField }
+          content={crProps.content}
+          contentHeight={crProps.contentHeight}
+          updateContent={crProps.updateContent}
+          styling={forceStyle ? crProps.styling : styles.editorField}
         /> :
         <this.presenter
-          content={ crProps.content }
-          contentHeight={ crProps.contentHeight }
-          styling={ crProps.styling }
+          content={crProps.content}
+          contentHeight={crProps.contentHeight}
+          styling={crProps.styling}
         />
     }
 
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
-        content={ props.content }
-        contentHeight={ props.contentHeight }
-        updateContent={ props.updateContent }
-        styling={ props.styling }
-        forwardedRef={ ref }
+        content={props.content}
+        contentHeight={props.contentHeight}
+        updateContent={props.updateContent}
+        styling={props.styling}
+        forwardedRef={ref}
       />
     )
   }

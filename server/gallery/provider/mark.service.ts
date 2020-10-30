@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/14/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Mark } from "../entity"
+import {Mark} from "../entity"
 
 
 const markFullRelations = {
@@ -65,8 +65,8 @@ export class MarkService {
       .leftJoinAndSelect(common.markCategory, common.category)
       .select([common.markName, common.categoryName])
       .where(
-        `${ common.categoryName } = :categoryName AND ${ common.markName } = :markName`,
-        { categoryName, markName }
+        `${common.categoryName} = :categoryName AND ${common.markName} = :markName`,
+        {categoryName, markName}
       )
       .delete()
       .execute()

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   Checkbox,
@@ -16,8 +16,8 @@ import {
   Tooltip,
   Upload
 } from "antd"
-import { ExclamationCircleTwoTone, UploadOutlined } from '@ant-design/icons'
-import axios, { AxiosResponse } from "axios"
+import {ExclamationCircleTwoTone, UploadOutlined} from '@ant-design/icons'
+import axios, {AxiosResponse} from "axios"
 
 
 const inputFileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -34,17 +34,17 @@ export interface SheetStyle {
 }
 
 const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> => {
-  let u = `${ url }?`
-  u += `multiSheets=${ options.multiSheets || false }&`
-  if (options.numberRounding) u += `numberRounding=${ options.numberRounding }&`
-  if (options.dateFormat) u += `dateFormat=${ options.dateFormat }&`
+  let u = `${url}?`
+  u += `multiSheets=${options.multiSheets || false}&`
+  if (options.numberRounding) u += `numberRounding=${options.numberRounding}&`
+  if (options.dateFormat) u += `dateFormat=${options.dateFormat}&`
 
   return axios.post(u, data)
 }
 
 const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 14 },
+  labelCol: {span: 6},
+  wrapperCol: {span: 14},
 }
 
 export interface FileUploadModalProps {
@@ -70,7 +70,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       return false
     },
     onRemove: () => setUploadFiles([]),
-    fileList: uploadFiles.map((i, j) => ({ ...i, name: i.name, uid: String(j) }))
+    fileList: uploadFiles.map((i, j) => ({...i, name: i.name, uid: String(j)}))
   }
 
   const onUploadFile = (options: FileOptions) => {
@@ -104,13 +104,13 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       .then(values => {
         let options = {}
         if (values.fileOptions) {
-          options = { ...options, multiSheets: values.fileOptions.includes("multiSheets") }
+          options = {...options, multiSheets: values.fileOptions.includes("multiSheets")}
         }
         if (values.numberRounding) {
-          options = { ...options, numberRounding: values.numberRounding }
+          options = {...options, numberRounding: values.numberRounding}
         }
         if (values.dateFormat) {
-          options = { ...options, dateFormat: values.dateFormat }
+          options = {...options, dateFormat: values.dateFormat}
         }
 
         onUploadFile(options)
@@ -122,24 +122,24 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
   return (
     <Modal
       title='Please complete below:'
-      visible={ props.visible }
-      onOk={ onFinish }
-      onCancel={ () => props.setVisible(false) }
-      confirmLoading={ uploading }
+      visible={props.visible}
+      onOk={onFinish}
+      onCancel={() => props.setVisible(false)}
+      confirmLoading={uploading}
       okText="Confirm"
       cancelText="Discard"
     >
       <Form
-        { ...formItemLayout }
-        form={ form }
-        initialValues={ { numberRounding: 2, dateFormat: "YYYY-MM-DD" } }
+        {...formItemLayout}
+        form={form}
+        initialValues={{numberRounding: 2, dateFormat: "YYYY-MM-DD"}}
       >
-        <Divider plain orientation="left" style={ { color: "lightgray" } }>File</Divider>
+        <Divider plain orientation="left" style={{color: "lightgray"}}>File</Divider>
 
         <Form.Item name="fileUpload" label="File">
           <Space>
-            <Upload { ...uploadProps }>
-              <Button icon={ <UploadOutlined/> }>Click to upload</Button>
+            <Upload {...uploadProps}>
+              <Button icon={<UploadOutlined/>}>Click to upload</Button>
             </Upload>
             <Tooltip title="Please use pure Excel file!">
               <ExclamationCircleTwoTone twoToneColor="red"/>
@@ -150,7 +150,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
         {
           props.multiSheetDisable ? <></> :
             <>
-              <Divider plain orientation="left" style={ { color: "lightgray" } }>File options</Divider>
+              <Divider plain orientation="left" style={{color: "lightgray"}}>File options</Divider>
 
               <Form.Item name="fileOptions" label="File options">
                 <Checkbox.Group>
@@ -164,13 +164,13 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
             </>
         }
 
-        <Divider plain orientation="left" style={ { color: "lightgray" } }>Cell options</Divider>
+        <Divider plain orientation="left" style={{color: "lightgray"}}>Cell options</Divider>
 
         <Form.Item name="numberRounding" label="Rounding">
           <InputNumber
-            min={ 0 }
-            max={ 10 }
-            precision={ 0 }
+            min={0}
+            max={10}
+            precision={0}
           />
         </Form.Item>
         <Form.Item name="dateFormat" label="Date format">

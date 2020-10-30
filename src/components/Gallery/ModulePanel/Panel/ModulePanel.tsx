@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Modal } from "antd"
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {Modal} from "antd"
+import {ExclamationCircleOutlined} from '@ant-design/icons'
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import { ConvertFwRef } from "../Generator/data"
-import { ModulePanelHeader } from "./ModulePanelHeader"
-import { ModulePanelFooter } from "./ModulePanelFooter"
-import { collectionSelector } from "../Collections"
-import { ModuleSelectorProps } from "../Collections/collectionSelector"
+import {ConvertFwRef} from "../Generator/data"
+import {ModulePanelHeader} from "./ModulePanelHeader"
+import {ModulePanelFooter} from "./ModulePanelFooter"
+import {collectionSelector} from "../Collections"
+import {ModuleSelectorProps} from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 
@@ -68,30 +68,30 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const updateTitle = (title: string) => {
     const newContent = content ?
-      { ...content, title } :
-      { title, date: DataType.today() } as DataType.Content
+      {...content, title} :
+      {title, date: DataType.today()} as DataType.Content
     setContent(newContent)
     props.updateContent(newContent)
   }
 
   const footerDate = () => {
     if (props.timeSeries && content)
-      return { date: content.date }
+      return {date: content.date}
     return {}
   }
 
   const headerDate = (date: string) => {
     if (props.timeSeries) {
       const newContent = content ?
-        { ...content, date } :
-        { date, data: {} } as DataType.Content
+        {...content, date} :
+        {date, data: {}} as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }
   }
 
   const updateModuleContent = (ctt: DataType.Content) => {
-    const newContent = { ...content, ...ctt }
+    const newContent = {...content, ...ctt}
     setContent(newContent)
     props.updateContent(newContent)
   }
@@ -108,17 +108,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const genHeader = useMemo(() =>
     <ModulePanelHeader
-      editable={ props.editable }
-      timeSeries={ props.timeSeries }
-      headName={ props.headName }
-      title={ content ? content.title : undefined }
-      updateTitle={ updateTitle }
-      editContent={ editContent }
-      newContent={ newDateWithContent }
-      confirmDelete={ confirmDelete }
-      dateList={ props.dates }
-      editDate={ headerDate }
-      onSelectDate={ props.fetchContent }
+      editable={props.editable}
+      timeSeries={props.timeSeries}
+      headName={props.headName}
+      title={content ? content.title : undefined}
+      updateTitle={updateTitle}
+      editContent={editContent}
+      newContent={newDateWithContent}
+      confirmDelete={confirmDelete}
+      dateList={props.dates}
+      editDate={headerDate}
+      onSelectDate={props.fetchContent}
     />, [props.editable, content, props.dates])
 
   const genContext = useMemo(() => {
@@ -137,15 +137,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
-      id={ content ? content.id : undefined }
-      { ...footerDate() }
+      id={content ? content.id : undefined}
+      {...footerDate()}
     />, [content])
 
   return (
-    <div className={ styles.modulePanel }>
-      { genHeader }
-      { genContext }
-      { genFooter }
+    <div className={styles.modulePanel}>
+      {genHeader}
+      {genContext}
+      {genFooter}
     </div>
   )
 }

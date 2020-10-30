@@ -2,15 +2,15 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import React, { useEffect, useState } from 'react'
-import { Button, Checkbox, message, Space, Tabs } from "antd"
-import { HotTable } from "@handsontable/react"
+import React, {useEffect, useState} from 'react'
+import {Button, Checkbox, message, Space, Tabs} from "antd"
+import {HotTable} from "@handsontable/react"
 
-import { FileUploadModal } from "@/components/FileUploadModal"
-import { Emoji } from "@/components/Emoji"
+import {FileUploadModal} from "@/components/FileUploadModal"
+import {Emoji} from "@/components/Emoji"
 
-import { ModuleGenerator } from "../../Generator/ModuleGenerator"
-import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import {ModuleGenerator} from "../../Generator/ModuleGenerator"
+import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
@@ -34,7 +34,7 @@ const EditorField = (props: ModuleEditorField) => {
     const ctt = {
       ...content!,
       date: DataType.today(),
-      config: { hideOptions: options }
+      config: {hideOptions: options}
     }
     setContent(ctt)
   }
@@ -42,10 +42,10 @@ const EditorField = (props: ModuleEditorField) => {
   const saveContentData = (d: object[]) => {
     const ctt = content ? {
       ...content,
-      data: { data: d }
+      data: {data: d}
     } : {
       date: DataType.today(),
-      data: { data: d }
+      data: {data: d}
     }
     setContent(ctt)
   }
@@ -60,18 +60,18 @@ const EditorField = (props: ModuleEditorField) => {
   }
 
   return (
-    <div className={ props.styling }>
+    <div className={props.styling}>
       <Space
         direction="vertical"
-        style={ { position: "relative", top: "30%" } }
+        style={{position: "relative", top: "30%"}}
       >
         <Space>
-          <Emoji label="0" symbol="①" size={ 20 }/>
+          <Emoji label="0" symbol="①" size={20}/>
           Viewing:
           <Checkbox.Group
-            style={ { width: "100%" } }
-            onChange={ vs => saveContentConfigHideHeader(vs as string[]) }
-            defaultValue={ content?.config?.hideOptions }
+            style={{width: "100%"}}
+            onChange={vs => saveContentConfigHideHeader(vs as string[])}
+            defaultValue={content?.config?.hideOptions}
           >
             <Checkbox value="col">Hide column</Checkbox>
             <Checkbox value="row">Hide row</Checkbox>
@@ -79,13 +79,13 @@ const EditorField = (props: ModuleEditorField) => {
         </Space>
 
         <Space>
-          <Emoji label="0" symbol="②" size={ 20 }/>
+          <Emoji label="0" symbol="②" size={20}/>
           <Button
             type='primary'
             shape='round'
             size='small'
-            onClick={ () => setVisible(true) }
-            disabled={ !savingProcessHideOptions }
+            onClick={() => setVisible(true)}
+            disabled={!savingProcessHideOptions}
           >
             Click here to modify
           </Button>
@@ -94,18 +94,18 @@ const EditorField = (props: ModuleEditorField) => {
         <Button
           type='primary'
           size='small'
-          onClick={ saveContent }
-          disabled={ !savingProcessData }
+          onClick={saveContent}
+          disabled={!savingProcessData}
         >
           Update
         </Button>
       </Space>
 
       <FileUploadModal
-        postingUrl={ postingUrl }
-        setVisible={ setVisible }
-        visible={ visible }
-        upload={ saveContentData }
+        postingUrl={postingUrl}
+        setVisible={setVisible}
+        visible={visible}
+        upload={saveContentData}
       />
     </div>
   )
@@ -139,8 +139,8 @@ const PresenterField = (props: ModulePresenterField) => {
 
   const singleS = (data: SpreadsheetData) => (
     <HotTable
-      { ...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions) }
-      data={ data[0].data }
+      {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
+      data={data[0].data}
     />
   )
 
@@ -148,10 +148,10 @@ const PresenterField = (props: ModulePresenterField) => {
     <Tabs tabPosition="bottom">
       {
         data.map((i: SpreadsheetData) =>
-          <Tabs.TabPane tab={ i.name } key={ i.name }>
+          <Tabs.TabPane tab={i.name} key={i.name}>
             <HotTable
-              { ...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions) }
-              data={ i.data }
+              {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
+              data={i.data}
             />
           </Tabs.TabPane>
         )
@@ -170,7 +170,7 @@ const PresenterField = (props: ModulePresenterField) => {
   }
 
   return props.content && props.content.data ?
-    <div className={ props.styling }>{ view(props.content) }</div> : <></>
+    <div className={props.styling}>{view(props.content)}</div> : <></>
 }
 
 export const XlsxTable = new ModuleGenerator(EditorField, PresenterField).generate()

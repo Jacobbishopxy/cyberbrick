@@ -4,4 +4,4 @@
 
 import * as GalleryDataType from "./GalleryDataType"
 
-export { GalleryDataType }
+export {GalleryDataType}

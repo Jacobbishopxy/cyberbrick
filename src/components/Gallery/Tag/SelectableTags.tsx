@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 8/27/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { Tag } from "antd"
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react"
+import {Tag} from "antd"
 
 export interface GenericDataInput {
   name: string
@@ -44,11 +44,11 @@ export const SelectableTags = forwardRef((props: SelectableTagsProps, ref: React
       {
         props.tags.map(t =>
           <Tag.CheckableTag
-            key={ t.name }
-            checked={ selectedTagNames.indexOf(t.name) > -1 }
-            onChange={ c => handleChange(t.name, c) }
+            key={t.name}
+            checked={selectedTagNames.indexOf(t.name) > -1}
+            onChange={c => handleChange(t.name, c)}
           >
-            { t.name }
+            {t.name}
           </Tag.CheckableTag>
         )
       }

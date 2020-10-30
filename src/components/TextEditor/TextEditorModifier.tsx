@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
-import React, { useEffect, useState } from 'react'
-import ReactQuill, { Quill } from 'react-quill'
-import { Button } from 'antd'
+import React, {useEffect, useState} from 'react'
+import ReactQuill, {Quill} from 'react-quill'
+import {Button} from 'antd'
 
 import 'react-quill/dist/quill.snow.css'
 
@@ -113,20 +113,20 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
   }, [content])
 
   return (
-    <div className={ style }>
+    <div className={style}>
       <CustomToolbar/>
       <ReactQuill
         theme="snow"
-        modules={ modules }
-        formats={ formats }
-        value={ content }
-        onChange={ setContent }
+        modules={modules}
+        formats={formats}
+        value={content}
+        onChange={setContent}
       />
       {
         props.saveButton ?
           <Button
-            style={ { marginTop: 5 } }
-            onClick={ saveContent }
+            style={{marginTop: 5}}
+            onClick={saveContent}
             size='small'
             type='primary'
           >

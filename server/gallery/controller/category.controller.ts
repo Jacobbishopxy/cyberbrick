@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 9/14/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import { CategoryPureDto } from "./category.dto"
+import {CategoryPureDto} from "./category.dto"
 import * as categoryService from "../provider/category.service"
-import { Category , Mark , Tag } from "../entity"
+import {Category, Mark, Tag} from "../entity"
 
 
 @Controller()

@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 8/12/2020.
  */
 
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import React, { useState } from 'react';
-import { Button, Input, Space } from "antd";
+import {PageHeaderWrapper} from '@ant-design/pro-layout'
+import React, {useState} from 'react'
+import {Button, Input, Space} from "antd"
 
-import { ExpiryType, LocalStorageHelper } from "@/utils/localStorageHelper";
+import {ExpiryType, LocalStorageHelper} from "@/utils/localStorageHelper"
 
 
-const lsIdentifier = "ls-test";
-const expiry = [1, "minute"] as ExpiryType;
-const ls = new LocalStorageHelper(lsIdentifier, { expiry });
+const lsIdentifier = "ls-test"
+const expiry = [1, "minute"] as ExpiryType
+const ls = new LocalStorageHelper(lsIdentifier, {expiry})
 const lsKey = "name"
 
 export default () => {
@@ -29,14 +29,14 @@ export default () => {
   const dataDisplay = () => {
     const e = ls.get(lsKey)
     if (e !== null)
-      return `Local storage data: ${ e.data }`;
+      return `Local storage data: ${e.data}`
     return "No data set"
   }
 
   const expiryDisplay = () => {
     const e = ls.get(lsKey)
     if (e?.expiry !== undefined)
-      return `Local storage expiry: ${ e.expiry }`;
+      return `Local storage expiry: ${e.expiry}`
     return "No expiry set"
   }
 
@@ -44,31 +44,31 @@ export default () => {
   return (
     <PageHeaderWrapper>
       <Space direction="vertical">
-        <h2>identifier: { lsIdentifier }</h2>
+        <h2>identifier: {lsIdentifier}</h2>
         <div>
           <Input
             placeholder="ls input"
-            onBlur={ inputOnChange }
-            style={ { width: 120 } }
+            onBlur={inputOnChange}
+            style={{width: 120}}
           />
           <Button
-            onClick={ submitLS }
+            onClick={submitLS}
             type="primary"
-            style={ { width: 120 } }
+            style={{width: 120}}
           >
             Submit LS
           </Button>
           <Button
-            onClick={ clearLs }
+            onClick={clearLs}
             danger
-            style={ { width: 120 } }
+            style={{width: 120}}
           >
             Clear LS
           </Button>
         </div>
         <div>
-          <h1>{ dataDisplay() }</h1>
-          <h1>{ expiryDisplay() }</h1>
+          <h1>{dataDisplay()}</h1>
+          <h1>{expiryDisplay()}</h1>
           <h1>ls.getAllItemsByIdentifier():</h1>
           <pre>
             {JSON.stringify(ls.getAllItemsByIdentifier(), null, 2)}
@@ -76,5 +76,5 @@ export default () => {
         </div>
       </Space>
     </PageHeaderWrapper>
-  );
+  )
 };

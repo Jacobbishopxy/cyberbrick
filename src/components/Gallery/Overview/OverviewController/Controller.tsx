@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 10/12/2020.
  */
 
-import React, { useState } from 'react'
-import { Select, Space } from "antd"
-import { SaveTwoTone, SettingTwoTone } from '@ant-design/icons'
+import React, {useState} from 'react'
+import {Select, Space} from "antd"
+import {SaveTwoTone, SettingTwoTone} from '@ant-design/icons'
 
-import { Editor } from "@/components/Editor"
+import {Editor} from "@/components/Editor"
 import * as DataType from "../../GalleryDataType"
 
 
@@ -27,30 +27,30 @@ export const Controller = (props: ControllerProps) => {
     })
 
   return (
-    <div style={ { display: 'flex', justifyContent: 'space-between' } }>
+    <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <Space>
         <Select
-          style={ { width: 120 } }
-          onSelect={ categoryOnSelect }
+          style={{width: 120}}
+          onSelect={categoryOnSelect}
           size="small"
           placeholder="Category"
         >
           {
             props.categoryNames.map(n =>
-              <Select.Option key={ n } value={ n }>{ n }</Select.Option>
+              <Select.Option key={n} value={n}>{n}</Select.Option>
             )
           }
         </Select>
         <Select
-          style={ { width: 120 } }
-          onSelect={ props.markOnSelect }
-          disabled={ marks.length === 0 }
+          style={{width: 120}}
+          onSelect={props.markOnSelect}
+          disabled={marks.length === 0}
           size="small"
           placeholder="Mark"
         >
           {
             marks.map(m =>
-              <Select.Option key={ m.id } value={ m.name }>{ m.name }</Select.Option>
+              <Select.Option key={m.id} value={m.name}>{m.name}</Select.Option>
             )
           }
         </Select>
@@ -58,11 +58,11 @@ export const Controller = (props: ControllerProps) => {
 
       <div>
         <Editor // todo: current page configuration, e.g.: number of contents shown in one page
-          icons={ {
-            open: <SettingTwoTone style={ { fontSize: 20 } }/>,
-            close: <SaveTwoTone style={ { fontSize: 20 } }/>
-          } }
-          onChange={ props.onEdit }
+          icons={{
+            open: <SettingTwoTone style={{fontSize: 20}}/>,
+            close: <SaveTwoTone style={{fontSize: 20}}/>
+          }}
+          onChange={props.onEdit}
         />
       </div>
     </div>

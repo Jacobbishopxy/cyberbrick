@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import {PageContainer} from '@ant-design/pro-layout'
 
 
 const srcGallery = "/api/collection/document/rocket"
@@ -11,7 +11,7 @@ const srcGallery = "/api/collection/document/rocket"
 export default (): React.ReactNode => (
   <PageContainer>
     <div style={{textAlign: "center"}}>
-      <img src={ srcGallery } alt="rocket" height="800vh"/>
+      <img src={srcGallery} alt="rocket" height="800vh"/>
     </div>
   </PageContainer>
 )

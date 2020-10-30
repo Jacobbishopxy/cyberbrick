@@ -12,10 +12,10 @@ import {
   Unique
 } from "typeorm"
 import * as common from "../common"
-import { Category } from "./category.entity"
-import { Content } from "./content.entity"
+import {Category} from "./category.entity"
+import {Content} from "./content.entity"
 
-@Entity({ name: common.tag })
+@Entity({name: common.tag})
 @Unique([common.name, common.category])
 export class Tag {
 
@@ -25,16 +25,16 @@ export class Tag {
   @Column("varchar")
   name!: string
 
-  @Column("varchar", { nullable: true })
+  @Column("varchar", {nullable: true})
   color?: string
 
-  @Column("text", { nullable: true })
+  @Column("text", {nullable: true})
   description?: string
 
-  @ManyToOne(() => Category, c => c.tags, { nullable: false })
+  @ManyToOne(() => Category, c => c.tags, {nullable: false})
   category!: Category
 
-  @ManyToMany(() => Content, c => c.tags, { nullable: true })
+  @ManyToMany(() => Content, c => c.tags, {nullable: true})
   @JoinTable()
   contents!: Content[]
 }

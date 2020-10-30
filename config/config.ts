@@ -1,10 +1,10 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi'
+import {defineConfig} from 'umi'
 import defaultSettings from './defaultSettings'
 import proxy from './proxy'
-import { onlineRoutesGenerator } from "./dynamicRouting"
+import {onlineRoutesGenerator} from "./dynamicRouting"
 
-const { REACT_APP_ENV } = process.env
+const {REACT_APP_ENV} = process.env
 
 
 export default defineConfig({
@@ -15,7 +15,7 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: 'JacobBishop',
+    name: 'CyberBrick',
     locale: true,
     siderWidth: 150,
     logo: '/api/collection/homeLogo',
@@ -115,7 +115,6 @@ export default defineConfig({
     // ...darkTheme,
     'primary-color': defaultSettings.primaryColor,
   },
-  // @ts-ignore
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],

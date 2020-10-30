@@ -12,13 +12,13 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Element } from "./element.entity"
-import { Category } from "./category.entity"
-import { Tag } from "./tag.entity"
-import { Mark } from "./mark.entity"
-import { Author } from "./author.entity"
+import {Element} from "./element.entity"
+import {Category} from "./category.entity"
+import {Tag} from "./tag.entity"
+import {Mark} from "./mark.entity"
+import {Author} from "./author.entity"
 
-@Entity({ name: common.content })
+@Entity({name: common.content})
 @Unique([common.category, common.element, common.mark, common.date])
 export class Content {
 
@@ -28,31 +28,31 @@ export class Content {
   /**
    * if an element is deleted, its' content would not be destroyed but unbind from element
    */
-  @ManyToOne(() => Element, e => e.contents, { nullable: true, onDelete: "SET NULL" })
+  @ManyToOne(() => Element, e => e.contents, {nullable: true, onDelete: "SET NULL"})
   element!: Element
 
-  @ManyToOne(() => Category, c => c.contents, { nullable: false })
+  @ManyToOne(() => Category, c => c.contents, {nullable: false})
   category!: Category
 
-  @ManyToOne(() => Mark, m => m.contents, { cascade: true, nullable: true })
+  @ManyToOne(() => Mark, m => m.contents, {cascade: true, nullable: true})
   mark!: Mark
 
-  @ManyToMany(() => Tag, t => t.contents, { cascade: true, nullable: true })
+  @ManyToMany(() => Tag, t => t.contents, {cascade: true, nullable: true})
   tags!: Tag[]
 
-  @ManyToOne(() => Author, a => a.contents, { nullable: true })
+  @ManyToOne(() => Author, a => a.contents, {nullable: true})
   author!: Author
 
-  @Column("timestamp with time zone", { nullable: false })
+  @Column("timestamp with time zone", {nullable: false})
   date!: string
 
-  @Column("text", { nullable: false })
+  @Column("text", {nullable: false})
   title!: string
 
-  @Column("json", { nullable: false })
+  @Column("json", {nullable: false})
   data!: Record<string, any>
 
-  @Column("json", { nullable: true })
+  @Column("json", {nullable: true})
   config?: Record<string, any>
 }
 

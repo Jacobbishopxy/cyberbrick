@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 9/21/2020.
  */
 
-import React, { useState } from 'react'
-import { Input, Space, Tag } from "antd"
-import { CheckOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import React, {useState} from 'react'
+import {Input, Space, Tag} from "antd"
+import {CheckOutlined, EditOutlined, PlusOutlined} from '@ant-design/icons'
 
 export interface TextBuilderProps {
   create?: boolean
@@ -27,38 +27,38 @@ export const TextBuilder = (props: TextBuilderProps) => {
 
   const inputDefaultValue = () => {
     if (props.create === false)
-      return { defaultValue: props.text }
+      return {defaultValue: props.text}
     return {}
   }
 
   const edit = () =>
     <Space>
       <Input
-        { ...inputDefaultValue() }
-        onChange={ inputOnChange }
+        {...inputDefaultValue()}
+        onChange={inputOnChange}
         size="small"
       />
       <CheckOutlined
-        onClick={ saveNewText }
+        onClick={saveNewText}
       />
     </Space>
 
   const nonEdit = () =>
     props.create ?
       <Tag
-        icon={ <PlusOutlined/> }
-        onClick={ () => setEditable(true) }
+        icon={<PlusOutlined/>}
+        onClick={() => setEditable(true)}
       >
-        { props.text }
+        {props.text}
       </Tag> :
       <Space>
-        { props.text }
+        {props.text}
         <EditOutlined
-          onClick={ () => setEditable(true) }
+          onClick={() => setEditable(true)}
         />
       </Space>
 
-  return <>{ editable ? edit() : nonEdit() }</>
+  return <>{editable ? edit() : nonEdit()}</>
 
 }
 

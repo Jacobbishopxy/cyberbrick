@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import { DashboardDescriptionModifyDto } from "./dashboard.dto"
+import {DashboardDescriptionModifyDto} from "./dashboard.dto"
 import * as dashboardService from "../provider/dashboard.service"
-import { Dashboard } from "../entity"
+import {Dashboard} from "../entity"
 
 
 @Controller()

@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as storageService from "../provider/storage.service"
-import { Storage } from "../entity"
+import {Storage} from "../entity"
 
 
 @Controller()

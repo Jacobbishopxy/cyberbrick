@@ -3,9 +3,9 @@
  */
 
 
-import { ModuleGenerator } from "../../Generator/ModuleGenerator"
-import { generateCommonEditorField, generateCommonPresenterField } from "./Common"
-import { generateChartOption } from "./chartUtils"
+import {ModuleGenerator} from "../../Generator/ModuleGenerator"
+import {generateCommonEditorField, generateCommonPresenterField} from "./Common"
+import {generateChartOption} from "./chartUtils"
 
 
 const EditorField = generateCommonEditorField()

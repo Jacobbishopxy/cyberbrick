@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import { Connection, ConnectionOptions, createConnection, getConnection } from "typeorm"
+import {Connection, ConnectionOptions, createConnection, getConnection} from "typeorm"
 import _ from "lodash"
 
-import { Storage } from "../entity"
+import {Storage} from "../entity"
 
 
 export class DynamicConnections {

@@ -3,14 +3,14 @@
  */
 
 import React from 'react'
-import { Form, Input, InputNumber, Modal, Select } from "antd"
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
+import {Form, Input, InputNumber, Modal, Select} from "antd"
+import {EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons'
 
 import * as DataType from "../GalleryDataType"
 
 const formItemLayout = {
-  labelCol: { offset: 2, span: 4 },
-  wrapperCol: { span: 16 },
+  labelCol: {offset: 2, span: 4},
+  wrapperCol: {span: 16},
 }
 
 
@@ -39,17 +39,17 @@ export const NewStorageModal = (props: NewStorageModalProps) => {
 
   return (
     <Modal
-      visible={ props.visible }
+      visible={props.visible}
       title="Please complete following to add a new storage:"
-      onOk={ onOk }
-      onCancel={ onCancel }
+      onOk={onOk}
+      onCancel={onCancel}
       destroyOnClose
     >
-      <Form { ...formItemLayout } form={ form }>
+      <Form {...formItemLayout} form={form}>
         <Form.Item
           name="name"
           label="Name"
-          rules={ [{ required: true, message: "Name is required" }] }
+          rules={[{required: true, message: "Name is required"}]}
         >
           <Input placeholder="Place name here"/>
         </Form.Item>
@@ -62,13 +62,13 @@ export const NewStorageModal = (props: NewStorageModalProps) => {
         <Form.Item
           name="type"
           label="Type"
-          rules={ [{ required: true, message: "Type is required" }] }
+          rules={[{required: true, message: "Type is required"}]}
         >
           <Select
           >
             {
               DataType.storageTypeList.map((s, idx) =>
-                <Select.Option value={ s } key={ idx }>{ s }</Select.Option>
+                <Select.Option value={s} key={idx}>{s}</Select.Option>
               )
             }
           </Select>
@@ -76,39 +76,39 @@ export const NewStorageModal = (props: NewStorageModalProps) => {
         <Form.Item
           name="host"
           label="Host"
-          rules={ [{ required: true, message: "Host is required" }] }
+          rules={[{required: true, message: "Host is required"}]}
         >
           <Input placeholder="Place host here"/>
         </Form.Item>
         <Form.Item
           name="port"
           label="Port"
-          rules={ [{ required: true, message: "Port is required" }] }
+          rules={[{required: true, message: "Port is required"}]}
         >
-          <InputNumber placeholder="Place port here" precision={ 0 }/>
+          <InputNumber placeholder="Place port here" precision={0}/>
         </Form.Item>
         <Form.Item
           name="database"
           label="Database"
-          rules={ [{ required: true, message: "Database is required" }] }
+          rules={[{required: true, message: "Database is required"}]}
         >
           <Input placeholder="Place database here"/>
         </Form.Item>
         <Form.Item
           name="username"
           label="Username"
-          rules={ [{ required: true, message: "Username is required" }] }
+          rules={[{required: true, message: "Username is required"}]}
         >
           <Input placeholder="Place username here"/>
         </Form.Item>
         <Form.Item
           name="password"
           label="Password"
-          rules={ [{ required: true, message: "Password is required" }] }
+          rules={[{required: true, message: "Password is required"}]}
         >
           <Input.Password
             placeholder="Place password here"
-            iconRender={ visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>) }
+            iconRender={visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
           />
         </Form.Item>
       </Form>

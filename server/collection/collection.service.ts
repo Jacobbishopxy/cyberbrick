@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 10/26/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { join } from "path"
+import {Injectable} from "@nestjs/common"
+import {join} from "path"
 
 @Injectable()
 export class CollectionService {

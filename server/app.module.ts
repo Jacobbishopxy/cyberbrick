@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 10/23/2020.
  */
 
-import { Module } from "@nestjs/common"
-import { TypeOrmModule } from "@nestjs/typeorm"
-import { ServeStaticModule } from "@nestjs/serve-static"
-import { Routes, RouterModule } from "nest-router"
-import { join } from "path"
+import {Module} from "@nestjs/common"
+import {TypeOrmModule} from "@nestjs/typeorm"
+import {ServeStaticModule} from "@nestjs/serve-static"
+import {Routes, RouterModule} from "nest-router"
+import {join} from "path"
 
-import { CollectionModule } from "./collection/collection.module"
-import { GalleryModule } from "./gallery/gallery.module"
+import {CollectionModule} from "./collection/collection.module"
+import {GalleryModule} from "./gallery/gallery.module"
 import {
   Author,
   Category,
@@ -21,7 +21,7 @@ import {
   Tag,
   Template,
 } from "./gallery/entity"
-import { connDevGallery } from "./resources/config"
+import {connDevGallery} from "./resources/config"
 
 
 const routes: Routes = [

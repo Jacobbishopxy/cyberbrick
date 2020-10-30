@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, { useEffect, useState } from 'react'
-import { message, Tabs } from "antd"
-import { DashboardOutlined, DatabaseOutlined, TagsOutlined } from "@ant-design/icons"
+import React, {useEffect, useState} from 'react'
+import {message, Tabs} from "antd"
+import {DashboardOutlined, DatabaseOutlined, TagsOutlined} from "@ant-design/icons"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import { CategoryConfigTable, DashboardConfigTable, StorageConfigTable } from "@/components/Gallery/Configuration"
+import {CategoryConfigTable, DashboardConfigTable, StorageConfigTable} from "@/components/Gallery/Configuration"
 
 
 const getAllCategories = () => GalleryService.getAllCategoriesWithoutContents()
@@ -54,12 +54,12 @@ export default () => {
 
   const saveCategory = (name: string, description?: string) =>
     GalleryService
-      .saveCategory({ name, description })
+      .saveCategory({name, description})
       .then(refreshCat)
 
   const modifyDashboardDescription = (name: string, description: string) =>
     GalleryService
-      .modifyDashboardDescription({ name, description })
+      .modifyDashboardDescription({name, description})
       .then(refreshCat)
 
   const saveMark = (categoryName: string, mark: DataType.Mark) =>
@@ -111,8 +111,8 @@ export default () => {
     GalleryService
       .testConnection(id)
       .then(res => {
-        if (res) message.success(`Database: ${ id } is connected!`)
-        else message.error(`Database: ${ id } is disconnected!`)
+        if (res) message.success(`Database: ${id} is connected!`)
+        else message.error(`Database: ${id} is disconnected!`)
       })
 
   const reloadConnection = (id: string) =>
@@ -124,44 +124,44 @@ export default () => {
   return (
     <Tabs
       centered
-      defaultActiveKey={ activeKey }
-      onChange={ v => setActiveKey(v as TabPaneType) }
+      defaultActiveKey={activeKey}
+      onChange={v => setActiveKey(v as TabPaneType)}
     >
       <Tabs.TabPane
-        tab={ <span> <TagsOutlined/> Category</span> }
+        tab={<span> <TagsOutlined/> Category</span>}
         key="Category"
       >
         <CategoryConfigTable
-          data={ dataCategory }
-          saveCategory={ saveCategory }
-          modifyDashboardDescription={ modifyDashboardDescription }
-          saveMark={ saveMark }
-          deleteMark={ deleteMark }
-          saveTag={ saveTag }
-          deleteTag={ deleteTag }
-          newDashboard={ newDashboard }
+          data={dataCategory}
+          saveCategory={saveCategory}
+          modifyDashboardDescription={modifyDashboardDescription}
+          saveMark={saveMark}
+          deleteMark={deleteMark}
+          saveTag={saveTag}
+          deleteTag={deleteTag}
+          newDashboard={newDashboard}
         />
       </Tabs.TabPane>
       <Tabs.TabPane
-        tab={ <span> <DashboardOutlined/> Dashboard</span> }
+        tab={<span> <DashboardOutlined/> Dashboard</span>}
         key="Dashboard"
       >
         <DashboardConfigTable
-          data={ dataDashboard }
-          saveTemplate={ saveTemplate }
-          deleteTemplate={ deleteTemplate }
+          data={dataDashboard}
+          saveTemplate={saveTemplate}
+          deleteTemplate={deleteTemplate}
         />
       </Tabs.TabPane>
       <Tabs.TabPane
-        tab={ <span> <DatabaseOutlined/> Storage</span> }
+        tab={<span> <DatabaseOutlined/> Storage</span>}
         key="Storage"
       >
         <StorageConfigTable
-          data={ storage }
-          saveStorage={ saveStorage }
-          deleteStorage={ deleteStorage }
-          checkConnection={ checkConnection }
-          reloadConnection={ reloadConnection }
+          data={storage}
+          saveStorage={saveStorage}
+          deleteStorage={deleteStorage}
+          checkConnection={checkConnection}
+          reloadConnection={reloadConnection}
         />
       </Tabs.TabPane>
     </Tabs>

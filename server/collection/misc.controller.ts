@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/17/2020.
  */
 
-import { Controller, Get, Res } from '@nestjs/common'
-import { Response } from "express"
+import {Controller, Get, Res} from '@nestjs/common'
+import {Response} from "express"
 
-import { CollectionService } from "./collection.service"
+import {CollectionService} from "./collection.service"
 
 
 @Controller()

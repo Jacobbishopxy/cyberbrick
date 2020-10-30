@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/9/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 
 import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Category, Mark, Tag } from "../entity"
+import {Category, Mark, Tag} from "../entity"
 
 
 const categoryFullRelations = {
@@ -82,7 +82,7 @@ export class CategoryService {
   // ===================================================================================================================
 
   getAllCategoriesName() {
-    return this.repo.find({ select: [common.name] })
+    return this.repo.find({select: [common.name]})
   }
 
   getAllCategoriesWithoutContents() {
@@ -133,7 +133,7 @@ export class CategoryService {
           return true
         }
 
-        newMarks = preMarks.map(i => i.name === mark.name ? { ...mark, id: i.id } : i)
+        newMarks = preMarks.map(i => i.name === mark.name ? {...mark, id: i.id} : i)
       } else
         newMarks = [...preMarks, mark]
 
@@ -172,7 +172,7 @@ export class CategoryService {
           return true
         }
 
-        newTags = preTags.map(i => i.name === tag.name ? { ...tag, id: i.id } : i)
+        newTags = preTags.map(i => i.name === tag.name ? {...tag, id: i.id} : i)
       } else
         newTags = [...preTags, tag]
 

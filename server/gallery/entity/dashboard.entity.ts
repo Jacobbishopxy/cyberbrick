@@ -13,28 +13,28 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Category } from "./category.entity"
-import { Template } from "./template.entity"
+import {Category} from "./category.entity"
+import {Template} from "./template.entity"
 
-@Entity({ name: common.dashboard })
+@Entity({name: common.dashboard})
 export class Dashboard {
 
   @PrimaryColumn("varchar")
   name!: string
 
-  @OneToOne(() => Category, c => c.dashboard, { nullable: false })
+  @OneToOne(() => Category, c => c.dashboard, {nullable: false})
   category!: Category
 
-  @OneToMany(() => Template, t => t.dashboard, { nullable: true })
+  @OneToMany(() => Template, t => t.dashboard, {nullable: true})
   templates!: Template[]
 
-  @Column("text", { nullable: true })
+  @Column("text", {nullable: true})
   description?: string
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn({select: false})
   createdAt!: string
 
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn({select: false})
   updatedAt!: string
 }
 

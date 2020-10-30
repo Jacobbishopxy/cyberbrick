@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import React, { useState } from 'react'
-import { Table } from "antd"
+import React, {useState} from 'react'
+import {Table} from "antd"
 
-import { Editor } from "@/components/Editor"
+import {Editor} from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { EditableTagPanel } from "../Tag/EditableTagPanel"
+import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
 
 export interface DashboardConfigTableProps {
@@ -32,16 +32,16 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={ props.data.map(i => ({ ...i, key: i.name })) }
-        title={ () =>
-          <div style={ { display: "flex", justifyContent: "space-between" } }>
-            <span style={ { fontWeight: "bold" } }>Dashboard configuration</span>
-            <Editor onChange={ setEditable }/>
+        dataSource={props.data.map(i => ({...i, key: i.name}))}
+        title={() =>
+          <div style={{display: "flex", justifyContent: "space-between"}}>
+            <span style={{fontWeight: "bold"}}>Dashboard configuration</span>
+            <Editor onChange={setEditable}/>
           </div>
         }
         size="small"
         bordered
-        pagination={ { pageSize: 10 } }
+        pagination={{pageSize: 10}}
       >
         <Table.ColumnGroup title="Dashboard">
           <Table.Column
@@ -59,13 +59,13 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
           title="Templates"
           dataIndex="templates"
           key="templates"
-          render={ (templates: DataType.Template[], record: DataType.Dashboard) =>
+          render={(templates: DataType.Template[], record: DataType.Dashboard) =>
             <EditableTagPanel
-              name={ `dt-${ record.name }` }
-              data={ templates }
-              editable={ editable }
-              elementOnCreate={ saveTemplate(record.name) }
-              elementOnRemove={ deleteTemplate(record.name) }
+              name={`dt-${record.name}`}
+              data={templates}
+              editable={editable}
+              elementOnCreate={saveTemplate(record.name)}
+              elementOnRemove={deleteTemplate(record.name)}
             />
           }
         />

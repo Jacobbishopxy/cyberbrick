@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useState } from "react"
-import { Button } from "antd"
+import React, {useState} from "react"
+import {Button} from "antd"
 
-import { Emoji } from "@/components/Emoji"
+import {Emoji} from "@/components/Emoji"
 
 interface EditorProps {
   icons?: { open: string | React.ReactNode, close: string | React.ReactNode } | boolean
@@ -27,11 +27,11 @@ export const Editor = (props: EditorProps) => {
 
     if (props.icons && typeof props.icons !== "boolean") {
       if (typeof props.icons.close === "string")
-        closeIcon = <Emoji label="edit" symbol={ props.icons.close }/>
+        closeIcon = <Emoji label="edit" symbol={props.icons.close}/>
       else
         closeIcon = props.icons.close
       if (typeof props.icons.open === "string")
-        openIcon = <Emoji label="edit" symbol={ props.icons.open }/>
+        openIcon = <Emoji label="edit" symbol={props.icons.open}/>
       else
         openIcon = props.icons.open
     } else {
@@ -47,9 +47,9 @@ export const Editor = (props: EditorProps) => {
         shape="circle"
         size="small"
         type="link"
-        onClick={ editableOnChange }
+        onClick={editableOnChange}
       >
-        { show() }
+        {show()}
       </Button>
     </div>
   )

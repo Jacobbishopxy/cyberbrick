@@ -1,6 +1,6 @@
-import { LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined } from '@ant-design/icons';
-import React from 'react';
-import styles from './index.less';
+import {LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined} from '@ant-design/icons'
+import React from 'react'
+import styles from './index.less'
 
 export default {
   Username: {
@@ -27,7 +27,7 @@ export default {
   Password: {
     props: {
       size: 'large',
-      prefix: <LockTwoTone className={styles.prefixIcon} />,
+      prefix: <LockTwoTone className={styles.prefixIcon}/>,
       type: 'password',
       id: 'password',
       placeholder: '888888',
@@ -42,7 +42,7 @@ export default {
   Mobile: {
     props: {
       size: 'large',
-      prefix: <MobileTwoTone className={styles.prefixIcon} />,
+      prefix: <MobileTwoTone className={styles.prefixIcon}/>,
       placeholder: 'mobile number',
     },
     rules: [
@@ -59,7 +59,7 @@ export default {
   Captcha: {
     props: {
       size: 'large',
-      prefix: <MailTwoTone className={styles.prefixIcon} />,
+      prefix: <MailTwoTone className={styles.prefixIcon}/>,
       placeholder: 'captcha',
     },
     rules: [
@@ -69,4 +69,4 @@ export default {
       },
     ],
   },
-};
+}

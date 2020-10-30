@@ -12,9 +12,9 @@ import {
   ParseBoolPipe,
   ParseIntPipe
 } from '@nestjs/common'
-import { FileInterceptor } from "@nestjs/platform-express"
+import {FileInterceptor} from "@nestjs/platform-express"
 
-import { Workbook, Worksheet } from 'exceljs'
+import {Workbook, Worksheet} from 'exceljs'
 import moment from 'moment'
 
 
@@ -32,9 +32,9 @@ interface ReadXlsxOptions {
 const recordXlsxRows = (book: Spreadsheet[], sheet: Worksheet, option?: ReadXlsxOptions) => {
   const s: any[][] = []
 
-  sheet.eachRow({ includeEmpty: true }, row => {
+  sheet.eachRow({includeEmpty: true}, row => {
     const r: any[] = []
-    row.eachCell({ includeEmpty: true }, (cell) => {
+    row.eachCell({includeEmpty: true}, (cell) => {
       switch (cell.type) {
         case 2:
           if (option && option.numberRounding && cell.value !== null)
@@ -89,11 +89,11 @@ export class FileController {
 
     let options = {}
     if (multiSheets)
-      options = { ...options, multiSheets: true }
+      options = {...options, multiSheets: true}
     if (numberRounding)
-      options = { ...options, numberRounding }
+      options = {...options, numberRounding}
     if (dateFormat)
-      options = { ...options, dateFormat }
+      options = {...options, dateFormat}
 
     return this.readFromXlsx(file.buffer, options)
   }

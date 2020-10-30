@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { Controller } from "@/components/Gallery/Overview/OverviewController/Controller"
+import {Controller} from "@/components/Gallery/Overview/OverviewController/Controller"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -33,10 +33,10 @@ export default () => {
   return (
     <>
       <Controller
-        categoryNames={ categoryNames }
-        categoryOnSelect={ categoryOnSelect }
-        markOnSelect={ e => console.log(e) }
-        onEdit={ e => console.log(e) }
+        categoryNames={categoryNames}
+        categoryOnSelect={categoryOnSelect}
+        markOnSelect={e => console.log(e)}
+        onEdit={e => console.log(e)}
       />
     </>
   )

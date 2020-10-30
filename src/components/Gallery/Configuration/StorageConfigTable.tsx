@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 10/28/2020.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 
-import { Editor } from "@/components/Editor"
+import {Editor} from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { Button, Table } from "antd"
+import {Button, Table} from "antd"
 
-import { StringField, NumberField, SelectionField, PasswordField, OperationField } from "./FieldView"
-import { NewStorageModal } from "./NewStorageModal"
+import {StringField, NumberField, SelectionField, PasswordField, OperationField} from "./FieldView"
+import {NewStorageModal} from "./NewStorageModal"
 
 export interface StorageConfigTableProps {
   data: DataType.Storage[]
@@ -30,38 +30,38 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
   }, [editable])
 
   const nameOnChange = (name: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, name })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, name})
   }
 
   const descriptionOnChange = (description: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, description })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, description})
   }
 
   const typeOnChange = (type: string) => {
     if (selectedStorage) {
       const t = DataType.getStorageType(type)
-      if (t) setSelectedStorage({ ...selectedStorage, type: t })
+      if (t) setSelectedStorage({...selectedStorage, type: t})
     }
   }
 
   const hostOnChange = (host: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, host })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, host})
   }
 
   const portOnChange = (port: number) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, port })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, port})
   }
 
   const databaseOnChange = (database: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, database })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, database})
   }
 
   const usernameOnChange = (username: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, username })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, username})
   }
 
   const passwordOnChange = (password: string) => {
-    if (selectedStorage) setSelectedStorage({ ...selectedStorage, password })
+    if (selectedStorage) setSelectedStorage({...selectedStorage, password})
   }
 
   const saveStorage = () => {
@@ -85,14 +85,14 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
             <Button
               size="small"
               type="primary"
-              onClick={ () => setNewStorageModalVisible(true) }
+              onClick={() => setNewStorageModalVisible(true)}
             >
               New storage
             </Button>
             <NewStorageModal
-              visible={ newStorageModalVisible }
-              onSubmit={ newStorageOnSubmit }
-              onCancel={ () => setNewStorageModalVisible(false) }
+              visible={newStorageModalVisible}
+              onSubmit={newStorageOnSubmit}
+              onCancel={() => setNewStorageModalVisible(false)}
             />
           </>
       } : {}
@@ -100,36 +100,36 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={ props.data.map(i => ({ ...i, key: i.id })) }
-        title={ () =>
-          <div style={ { display: "flex", justifyContent: "space-between" } }>
-            <span style={ { fontWeight: "bold" } }>Storage configuration</span>
-            <Editor onChange={ setEditable }/>
+        dataSource={props.data.map(i => ({...i, key: i.id}))}
+        title={() =>
+          <div style={{display: "flex", justifyContent: "space-between"}}>
+            <span style={{fontWeight: "bold"}}>Storage configuration</span>
+            <Editor onChange={setEditable}/>
           </div>
         }
         size="small"
         bordered
-        pagination={ { pageSize: 10 } }
-        expandable={ {
-          expandedRowRender: (record: DataType.Storage) => <span>ID: { record.id }</span>
-        } }
-        rowSelection={ editable ?
+        pagination={{pageSize: 10}}
+        expandable={{
+          expandedRowRender: (record: DataType.Storage) => <span>ID: {record.id}</span>
+        }}
+        rowSelection={editable ?
           {
             type: "radio",
             onSelect: ((record: DataType.Storage) => setSelectedStorage(record)),
           } : undefined
         }
-        { ...tableFooter() }
+        {...tableFooter()}
       >
         <Table.Column
           title="Name"
           dataIndex="name"
           key="name"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <StringField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.name }
-              onChange={ nameOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.name}
+              onChange={nameOnChange}
             />
           }
         />
@@ -137,11 +137,11 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Description"
           dataIndex="description"
           key="description"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <StringField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.description }
-              onChange={ descriptionOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.description}
+              onChange={descriptionOnChange}
             />
           }
         />
@@ -149,12 +149,12 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Type"
           dataIndex="type"
           key="type"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <SelectionField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.type }
-              selections={ DataType.storageTypeList }
-              onChange={ typeOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.type}
+              selections={DataType.storageTypeList}
+              onChange={typeOnChange}
             />
           }
         />
@@ -162,11 +162,11 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Host"
           dataIndex="host"
           key="host"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <StringField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.host }
-              onChange={ hostOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.host}
+              onChange={hostOnChange}
             />
           }
         />
@@ -174,11 +174,11 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Port"
           dataIndex="port"
           key="port"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <NumberField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.port }
-              onChange={ portOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.port}
+              onChange={portOnChange}
             />
           }
         />
@@ -186,11 +186,11 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Database"
           dataIndex="database"
           key="database"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <StringField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.database }
-              onChange={ databaseOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.database}
+              onChange={databaseOnChange}
             />
           }
         />
@@ -198,11 +198,11 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Username"
           dataIndex="username"
           key="username"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <StringField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.username }
-              onChange={ usernameOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.username}
+              onChange={usernameOnChange}
             />
           }
         />
@@ -210,24 +210,24 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           title="Password"
           dataIndex="password"
           key="password"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <PasswordField
-              editable={ editable && record.id === selectedStorage?.id }
-              defaultValue={ record.password }
-              onChange={ passwordOnChange }
+              editable={editable && record.id === selectedStorage?.id}
+              defaultValue={record.password}
+              onChange={passwordOnChange}
             />
           }
         />
         <Table.Column
           title="Operation"
-          render={ (storages: DataType.Storage[], record: DataType.Storage) =>
+          render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <OperationField
-              editable={ editable }
-              onUpdateClick={ saveStorage }
-              onDeleteClick={ () => deleteStorage(record.id!) }
-              onCheckClick={ () => props.checkConnection(record.id!) }
-              onReloadClick={ () => props.reloadConnection(record.id!) }
-              disabled={ record.id !== selectedStorage?.id }/>
+              editable={editable}
+              onUpdateClick={saveStorage}
+              onDeleteClick={() => deleteStorage(record.id!)}
+              onCheckClick={() => props.checkConnection(record.id!)}
+              onReloadClick={() => props.reloadConnection(record.id!)}
+              disabled={record.id !== selectedStorage?.id}/>
           }
         />
       </Table>

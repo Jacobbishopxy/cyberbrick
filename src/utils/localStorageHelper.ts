@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 8/12/2020.
  */
 
-import _ from 'lodash';
-import * as moment from 'moment';
+import _ from 'lodash'
+import * as moment from 'moment'
 
 export interface StorageValue {
   data: Object,
@@ -32,35 +32,35 @@ const LocalStorageHelperOptionsDefaults: LocalStorageHelperOptions = {
  */
 export class LocalStorageHelper {
 
-  identifier: string;
+  identifier: string
 
   options: LocalStorageHelperOptions
 
-  localStorageSupported: boolean;
+  localStorageSupported: boolean
 
   constructor(identifier: string,
               options: LocalStorageHelperOptions) {
-    this.identifier = identifier;
-    this.options = { ...LocalStorageHelperOptionsDefaults, ...options };
-    this.localStorageSupported = typeof window.localStorage !== 'undefined' && window.localStorage !== null;
+    this.identifier = identifier
+    this.options = {...LocalStorageHelperOptionsDefaults, ...options}
+    this.localStorageSupported = typeof window.localStorage !== 'undefined' && window.localStorage !== null
   }
 
   private keyWrapping = (key: string): string =>
-    `${ this.identifier }${ this.options.splitter }${ key }`
+    `${this.identifier}${this.options.splitter}${key}`
 
   private keyExtractHead = (key: string): null | string => {
-    const regH = new RegExp(`^(.*?)${ this.options.splitter }`).exec(key)
+    const regH = new RegExp(`^(.*?)${this.options.splitter}`).exec(key)
     return regH === null ? null : regH[1]
   }
 
   private keyExtractTail = (key: string): null | string => {
-    const regT = new RegExp(`${ this.options.splitter }(.*)$`).exec(key)
+    const regT = new RegExp(`${this.options.splitter}(.*)$`).exec(key)
     return regT === null ? null : regT[1]
   }
 
   private valueWrapping = (value: string): string => {
-    const e = this.options.expiry;
-    let expiry: moment.Moment | undefined;
+    const e = this.options.expiry
+    let expiry: moment.Moment | undefined
     if (e !== undefined)
       expiry = moment().add(e[0], e[1])
     else
@@ -76,22 +76,22 @@ export class LocalStorageHelper {
     JSON.parse(value)
 
   private itemRemoveIfExpired = (key: string, withIdentifier: boolean = true): StorageItem | null => {
-    let keyW: string;
+    let keyW: string
     if (withIdentifier)
       keyW = this.keyWrapping(key)
     else
-      keyW = key;
+      keyW = key
 
-    const valueStr = localStorage.getItem(keyW);
+    const valueStr = localStorage.getItem(keyW)
     if (valueStr !== null) {
-      const value = this.valueUnwrapping(valueStr);
+      const value = this.valueUnwrapping(valueStr)
       if (value.expiry !== undefined && moment().isAfter(moment(value.expiry))) {
-        localStorage.removeItem(keyW);
-        return null;
+        localStorage.removeItem(keyW)
+        return null
       }
-      return { key: keyW, value }
+      return {key: keyW, value}
     }
-    return null;
+    return null
   }
 
 
@@ -107,45 +107,45 @@ export class LocalStorageHelper {
    * get all values from storage (all items)
    */
   getAllItems = (): StorageItem[] => {
-    const list: StorageItem[] = [];
+    const list: StorageItem[] = []
 
     _.range(localStorage.length).forEach(i => {
-      const key = localStorage.key(i)!;
-      const valueStr = localStorage.getItem(key)!;
+      const key = localStorage.key(i)!
+      const valueStr = localStorage.getItem(key)!
       const value = this.valueUnwrapping(valueStr)
-      const item: StorageItem = { key, value }
+      const item: StorageItem = {key, value}
       list.push(item)
     })
 
-    return list;
+    return list
   }
 
   /**
    * get all items by identifier
    */
   getAllItemsByIdentifier = (): StorageItem[] => {
-    const list: StorageItem[] = [];
+    const list: StorageItem[] = []
 
     _.range(localStorage.length).forEach(i => {
-      const key = localStorage.key(i)!;
-      const keyH = this.keyExtractHead(key);
-      const keyT = this.keyExtractTail(key);
+      const key = localStorage.key(i)!
+      const keyH = this.keyExtractHead(key)
+      const keyT = this.keyExtractTail(key)
       if (keyH === this.identifier && keyT !== null) {
-        const valueStr = localStorage.getItem(key)!;
+        const valueStr = localStorage.getItem(key)!
         const value = this.valueUnwrapping(valueStr)
-        const item: StorageItem = { key: keyT, value }
+        const item: StorageItem = {key: keyT, value}
         list.push(item)
       }
     })
 
-    return list;
+    return list
   }
 
   /**
    * get all keys from storage
    */
   getAllKeys = (): string[] => {
-    const list: string[] = [];
+    const list: string[] = []
 
     _.range(localStorage.length).forEach(i => {
       const key = localStorage.key(i)!
@@ -159,11 +159,11 @@ export class LocalStorageHelper {
    * get all identifiers
    */
   getAllIdentifiers = (): string[] => {
-    const list: string[] = [];
+    const list: string[] = []
 
     _.range(localStorage.length).forEach(i => {
       const key = localStorage.key(i)!
-      const keyH = this.keyExtractHead(key);
+      const keyH = this.keyExtractHead(key)
       if (keyH !== null) list.push(keyH)
     })
 
@@ -174,45 +174,45 @@ export class LocalStorageHelper {
    * get all keys without identifier showed
    */
   getAllKeysByIdentifier = (): string[] => {
-    const list: string[] = [];
+    const list: string[] = []
 
     _.range(localStorage.length).forEach(i => {
       const key = localStorage.key(i)!
-      const keyH = this.keyExtractHead(key);
-      const keyT = this.keyExtractTail(key);
-      if (keyH === this.identifier && keyT !== null) list.push(keyT);
+      const keyH = this.keyExtractHead(key)
+      const keyT = this.keyExtractTail(key)
+      if (keyH === this.identifier && keyT !== null) list.push(keyT)
     })
 
-    return list;
+    return list
   }
 
   /**
    * get only all values localStorage
    */
   getAllValues = (): StorageValue[] => {
-    const list: StorageValue[] = [];
+    const list: StorageValue[] = []
 
     _.range(localStorage.length).forEach(i => {
-      const key = localStorage.key(i)!;
-      const value = localStorage.getItem(key)!;
-      list.push(this.valueUnwrapping(value));
+      const key = localStorage.key(i)!
+      const value = localStorage.getItem(key)!
+      list.push(this.valueUnwrapping(value))
     })
 
-    return list;
+    return list
   }
 
   /**
    * get all values by identifier
    */
   getAllValuesByIdentifier = (): StorageValue[] => {
-    const list: StorageValue[] = [];
+    const list: StorageValue[] = []
 
     _.range(localStorage.length).forEach(i => {
-      const key = localStorage.key(i)!;
-      const keyH = this.keyExtractHead(key);
+      const key = localStorage.key(i)!
+      const keyH = this.keyExtractHead(key)
       if (keyH === this.identifier) {
-        const value = localStorage.getItem(key)!;
-        list.push(this.valueUnwrapping(value));
+        const value = localStorage.getItem(key)!
+        list.push(this.valueUnwrapping(value))
       }
     })
 
@@ -226,10 +226,10 @@ export class LocalStorageHelper {
     if (this.localStorageSupported) {
       const value = this.itemRemoveIfExpired(key, withIdentifier)
       if (value === null)
-        return null;
-      return value.value;
+        return null
+      return value.value
     }
-    return null;
+    return null
   }
 
   /**
@@ -238,9 +238,9 @@ export class LocalStorageHelper {
   remove = (key: string, withIdentifier: boolean = true): void => {
     if (this.localStorageSupported) {
       if (withIdentifier)
-        localStorage.removeItem(this.keyWrapping(key));
+        localStorage.removeItem(this.keyWrapping(key))
       else
-        localStorage.removeItem(key);
+        localStorage.removeItem(key)
     }
   }
 
@@ -251,12 +251,12 @@ export class LocalStorageHelper {
     if (this.localStorageSupported) {
       if (withIdentifier) {
         _.range(localStorage.length).forEach(i => {
-          const key = localStorage.key(i)!;
-          const keyH = this.keyExtractHead(key);
-          if (keyH === this.identifier) localStorage.removeItem(key);
+          const key = localStorage.key(i)!
+          const keyH = this.keyExtractHead(key)
+          if (keyH === this.identifier) localStorage.removeItem(key)
         })
       } else
-        localStorage.clear();
+        localStorage.clear()
     }
   }
 }

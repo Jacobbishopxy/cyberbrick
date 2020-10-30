@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useState, useRef, useLayoutEffect } from 'react'
-import { PageContainer } from "@ant-design/pro-layout"
-import { EChartOption } from "echarts"
+import React, {useState, useRef, useLayoutEffect} from 'react'
+import {PageContainer} from "@ant-design/pro-layout"
+import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 
 
@@ -26,7 +26,7 @@ const chartOption: EChartOption = {
     }
   ],
   xAxis: [
-    { type: 'category' },
+    {type: 'category'},
   ],
   yAxis: [
     {
@@ -38,7 +38,7 @@ const chartOption: EChartOption = {
       type: "value",
       name: "Line",
       position: "right",
-      splitLine: { show: false }
+      splitLine: {show: false}
     },
   ],
   series: [
@@ -89,8 +89,8 @@ export default () => {
 
   return (
     <PageContainer>
-      <div style={ { height: "85vh" } } ref={ chartRef }>
-        <ReactEcharts option={ chartOption } opts={ { height: chartHeight } }/>
+      <div style={{height: "85vh"}} ref={chartRef}>
+        <ReactEcharts option={chartOption} opts={{height: chartHeight}}/>
       </div>
     </PageContainer>
   )

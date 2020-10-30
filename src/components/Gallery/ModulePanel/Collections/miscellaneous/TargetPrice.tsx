@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import React, { useState } from 'react'
-import { Button, Col, Input, InputNumber, message, Radio, Row, Space } from "antd"
-import { RadioChangeEvent } from "antd/lib/radio"
+import React, {useState} from 'react'
+import {Button, Col, Input, InputNumber, message, Radio, Row, Space} from "antd"
+import {RadioChangeEvent} from "antd/lib/radio"
 
-import { ModuleGenerator } from "../../Generator/ModuleGenerator"
-import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
+import {ModuleGenerator} from "../../Generator/ModuleGenerator"
+import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 
 
@@ -17,33 +17,33 @@ const EditorField = (props: ModuleEditorField) => {
   const radioOnChange = (e: RadioChangeEvent) => {
     if (content) setContent({
       ...content,
-      data: { ...content.data, direction: e.target.value }
+      data: {...content.data, direction: e.target.value}
     })
     else setContent({
       date: DataType.today(),
-      data: { direction: e.target.value }
+      data: {direction: e.target.value}
     })
   }
 
   const inputNumberOnChange = (v: number | string | undefined) => {
     if (content) setContent({
       ...content,
-      data: { ...content.data, price: v }
+      data: {...content.data, price: v}
     })
     else setContent({
       date: DataType.today(),
-      data: { price: v }
+      data: {price: v}
     })
   }
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (content) setContent({
       ...content,
-      data: { ...content.data, note: e.target.value }
+      data: {...content.data, note: e.target.value}
     })
     else setContent({
       date: DataType.today(),
-      data: { note: e.target.value }
+      data: {note: e.target.value}
     })
   }
 
@@ -56,34 +56,34 @@ const EditorField = (props: ModuleEditorField) => {
   }
 
   return (
-    <div className={ props.styling }>
+    <div className={props.styling}>
       <Space
         align="center"
         direction="vertical"
-        style={ { position: "relative", top: "25%" } }
+        style={{position: "relative", top: "25%"}}
       >
         <Radio.Group
-          onChange={ radioOnChange }
-          defaultValue={ content?.data.direction }
+          onChange={radioOnChange}
+          defaultValue={content?.data.direction}
         >
           <Radio value="B">Buy</Radio>
           <Radio value="N">Neutral</Radio>
           <Radio value="S">Sell</Radio>
         </Radio.Group>
         <InputNumber
-          min={ 0 }
-          step={ 0.01 }
-          onChange={ inputNumberOnChange }
-          defaultValue={ content?.data.price || 0 }
+          min={0}
+          step={0.01}
+          onChange={inputNumberOnChange}
+          defaultValue={content?.data.price || 0}
         />
         <Input
           placeholder="Note"
-          onChange={ inputOnChange }
-          defaultValue={ content?.data.note }
+          onChange={inputOnChange}
+          defaultValue={content?.data.note}
         />
         <Button
           type="primary"
-          onClick={ buttonOnSave }
+          onClick={buttonOnSave}
         >
           Update
         </Button>
@@ -97,33 +97,33 @@ const showDirection = (dir: string, pr: number) => {
     case "B":
       return (
         <Row>
-          <Col span={ 9 } offset={ 2 }>
-            <span style={ { color: "white", background: "red", fontSize: 100 } }>Buy</span>
+          <Col span={9} offset={2}>
+            <span style={{color: "white", background: "red", fontSize: 100}}>Buy</span>
           </Col>
-          <Col span={ 9 } offset={ 4 }>
-            <span style={ { color: "red", fontSize: 100 } }>{ pr }</span>
+          <Col span={9} offset={4}>
+            <span style={{color: "red", fontSize: 100}}>{pr}</span>
           </Col>
         </Row>
       )
     case "S":
       return (
         <Row>
-          <Col span={ 9 } offset={ 2 }>
-            <span style={ { color: "white", background: "green", fontSize: 100 } }>Sell</span>
+          <Col span={9} offset={2}>
+            <span style={{color: "white", background: "green", fontSize: 100}}>Sell</span>
           </Col>
-          <Col span={ 9 } offset={ 4 }>
-            <span style={ { color: "green", fontSize: 100 } }>{ pr }</span>
+          <Col span={9} offset={4}>
+            <span style={{color: "green", fontSize: 100}}>{pr}</span>
           </Col>
         </Row>
       )
     default:
       return (
         <Row>
-          <Col span={ 9 } offset={ 2 }>
-            <span style={ { color: "white", background: "gray", fontSize: 100 } }>Neutral</span>
+          <Col span={9} offset={2}>
+            <span style={{color: "white", background: "gray", fontSize: 100}}>Neutral</span>
           </Col>
-          <Col span={ 9 } offset={ 4 }>
-            <span style={ { color: "gray", fontSize: 100 } }>{ pr }</span>
+          <Col span={9} offset={4}>
+            <span style={{color: "gray", fontSize: 100}}>{pr}</span>
           </Col>
         </Row>
       )
@@ -132,20 +132,20 @@ const showDirection = (dir: string, pr: number) => {
 
 const PresenterField = (props: ModulePresenterField) =>
   props.content ?
-    <Space direction="vertical" style={ { width: "100%" } } className={ props.styling }>
+    <Space direction="vertical" style={{width: "100%"}} className={props.styling}>
       <Row>
-        <Col span={ 9 } offset={ 2 }>
-          <span style={ { fontWeight: "bold", fontSize: 25 } }>Investment advice</span>
+        <Col span={9} offset={2}>
+          <span style={{fontWeight: "bold", fontSize: 25}}>Investment advice</span>
         </Col>
-        <Col span={ 9 } offset={ 4 }>
-          <span style={ { fontWeight: "bold", fontSize: 25 } }>Target price</span>
+        <Col span={9} offset={4}>
+          <span style={{fontWeight: "bold", fontSize: 25}}>Target price</span>
         </Col>
       </Row>
 
-      { showDirection(props.content.data.direction, props.content.data.price) }
+      {showDirection(props.content.data.direction, props.content.data.price)}
 
       <Row>
-        <Col offset={ 2 }>{ props.content.data.note }</Col>
+        <Col offset={2}>{props.content.data.note}</Col>
       </Row>
     </Space> : <></>
 

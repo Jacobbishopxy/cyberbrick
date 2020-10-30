@@ -4,8 +4,8 @@
 
 import React from 'react'
 
-import { Dashboard } from "@/components/Gallery/Dashboard"
-import { GalleryDataType } from "@/components/Gallery"
+import {Dashboard} from "@/components/Gallery/Dashboard"
+import {GalleryDataType} from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -39,14 +39,14 @@ export default () => {
   return (
     <Dashboard
       markAvailable
-      fetchDashboards={ fetchDashboards }
-      fetchDashboard={ fetchDashboard }
-      fetchTemplate={ fetchTemplate }
-      saveTemplate={ saveTemplate }
-      copyTemplate={ copyTemplate }
-      fetchElementContent={ fetchElementContent }
-      fetchElementContentDates={ fetchElementContentDates }
-      updateElementContent={ updateElementContent }
+      fetchDashboards={fetchDashboards}
+      fetchDashboard={fetchDashboard}
+      fetchTemplate={fetchTemplate}
+      saveTemplate={saveTemplate}
+      copyTemplate={copyTemplate}
+      fetchElementContent={fetchElementContent}
+      fetchElementContentDates={fetchElementContentDates}
+      updateElementContent={updateElementContent}
     />
   )
 }

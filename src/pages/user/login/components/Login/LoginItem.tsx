@@ -1,11 +1,11 @@
-import { Button, Col, Input, Row, Form, message } from 'antd'
-import React, { useState, useCallback, useEffect } from 'react'
-import { FormItemProps } from 'antd/es/form/FormItem'
-import { getFakeCaptcha } from '@/services/login'
+import {Button, Col, Input, Row, Form, message} from 'antd'
+import React, {useState, useCallback, useEffect} from 'react'
+import {FormItemProps} from 'antd/es/form/FormItem'
+import {getFakeCaptcha} from '@/services/login'
 import _ from "lodash"
 
 import ItemMap from './map'
-import LoginContext, { LoginContextProps } from './LoginContext'
+import LoginContext, {LoginContextProps} from './LoginContext'
 import styles from './index.less'
 
 export type WrappedLoginItemProps = LoginItemProps;
@@ -87,7 +87,7 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
 
   useEffect(() => {
     let interval = 0
-    const { countDown } = props
+    const {countDown} = props
     if (timing) {
       interval = window.setInterval(() => {
         setCount((preSecond) => {
@@ -116,34 +116,34 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
 
     return (
       <FormItem shouldUpdate noStyle>
-        { ({ getFieldValue }) => (
-          <Row gutter={ 8 }>
-            <Col span={ 16 }>
-              <FormItem name={ name } { ...options }>
-                <Input { ...customProps } { ...inputProps } />
+        {({getFieldValue}) => (
+          <Row gutter={8}>
+            <Col span={16}>
+              <FormItem name={name} {...options}>
+                <Input {...customProps} {...inputProps} />
               </FormItem>
             </Col>
-            <Col span={ 8 }>
+            <Col span={8}>
               <Button
-                disabled={ timing }
-                className={ styles.getCaptcha }
+                disabled={timing}
+                className={styles.getCaptcha}
                 size="large"
-                onClick={ () => {
+                onClick={() => {
                   const value = getFieldValue('mobile')
                   onGetCaptcha(value)
-                } }
+                }}
               >
-                { timing ? `${ count } 秒` : '获取验证码' }
+                {timing ? `${count} 秒` : '获取验证码'}
               </Button>
             </Col>
           </Row>
-        ) }
+        )}
       </FormItem>
     )
   }
   return (
-    <FormItem name={ name } { ...options }>
-      <Input { ...customProps } { ...otherProps } />
+    <FormItem name={name} {...options}>
+      <Input {...customProps} {...otherProps} />
     </FormItem>
   )
 }
@@ -154,16 +154,16 @@ Object.keys(ItemMap).forEach((key) => {
   const item = ItemMap[key]
   LoginItems[key] = (props: LoginItemProps) => (
     <LoginContext.Consumer>
-      { (context) => (
+      {(context) => (
         <LoginItem
-          customProps={ item.props }
-          rules={ item.rules }
-          { ...props }
-          type={ key }
-          { ...context }
-          updateActive={ context.updateActive }
+          customProps={item.props}
+          rules={item.rules}
+          {...props}
+          type={key}
+          {...context}
+          updateActive={context.updateActive}
         />
-      ) }
+      )}
     </LoginContext.Consumer>
   )
 })

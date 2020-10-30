@@ -14,31 +14,31 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Dashboard } from "./dashboard.entity"
-import { Element } from "./element.entity"
+import {Dashboard} from "./dashboard.entity"
+import {Element} from "./element.entity"
 
-@Entity({ name: common.template })
+@Entity({name: common.template})
 @Unique([common.dashboard, common.name])
 export class Template {
 
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @ManyToOne(() => Dashboard, d => d.templates, {cascade: true,  nullable: false })
+  @ManyToOne(() => Dashboard, d => d.templates, {cascade: true, nullable: false})
   dashboard!: Dashboard
 
-  @OneToMany(() => Element, e => e.template, { cascade: true, nullable: true })
+  @OneToMany(() => Element, e => e.template, {cascade: true, nullable: true})
   elements!: Element[]
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   name!: string
 
-  @Column("text", { nullable: true })
+  @Column("text", {nullable: true})
   description?: string
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn({select: false})
   createdAt!: string
 
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn({select: false})
   updatedAt!: string
 }

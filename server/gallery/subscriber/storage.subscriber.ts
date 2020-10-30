@@ -11,12 +11,12 @@ import {
   UpdateEvent,
   RemoveEvent,
 } from "typeorm"
-import { Injectable } from "@nestjs/common"
-import { InjectConnection } from "@nestjs/typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectConnection} from "@nestjs/typeorm"
 
-import { Storage } from "../entity"
-import { DynamicConnections } from "./DynamicConnections"
-import { db } from "../common"
+import {Storage} from "../entity"
+import {DynamicConnections} from "./DynamicConnections"
+import {db} from "../common"
 
 @Injectable()
 @EventSubscriber()

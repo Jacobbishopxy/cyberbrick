@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { useEffect, useState } from 'react'
-import { Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip } from "antd"
-import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
+import React, {useEffect, useState} from 'react'
+import {Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip} from "antd"
+import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import { moduleList } from "../../ModulePanel/Collections"
+import {moduleList} from "../../ModulePanel/Collections"
 
 import styles from "./Common.less"
 
@@ -19,31 +19,31 @@ interface ModuleSelectionListProps {
 
 const ModuleSelectionList = (props: ModuleSelectionListProps) =>
   <>
-    { moduleList.map(chunk => (
-      <div key={ chunk.key }>
-        <Divider orientation="left">{ chunk.name }</Divider>
+    {moduleList.map(chunk => (
+      <div key={chunk.key}>
+        <Divider orientation="left">{chunk.name}</Divider>
         <List
-          grid={ { column: 6 } }
+          grid={{column: 6}}
           size="small"
-          dataSource={ chunk.children }
-          renderItem={ item => (
+          dataSource={chunk.children}
+          renderItem={item => (
             <List.Item>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
-              <label className={ styles.moduleSelectionLabel }>
-                <input type="radio" name="radio-name" disabled={ item.disabled } id={ item.key }/>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label className={styles.moduleSelectionLabel}>
+                <input type="radio" name="radio-name" disabled={item.disabled} id={item.key}/>
                 <div
-                  id={ item.key }
-                  onClick={ () => props.onSelect(item.key) }
-                  className={ item.disabled ? styles.selectionCardDisabled : styles.selectionCard }
+                  id={item.key}
+                  onClick={() => props.onSelect(item.key)}
+                  className={item.disabled ? styles.selectionCardDisabled : styles.selectionCard}
                 >
-                  { item.name }
+                  {item.name}
                 </div>
               </label>
             </List.Item>
-          ) }
+          )}
         />
       </div>
-    )) }
+    ))}
   </>
 
 interface ModuleSelectionViewProps {
@@ -57,25 +57,25 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
     <Space direction="vertical">
       <Space>
         <StarTwoTone/>
-        <span style={ { width: 250, fontSize: 15 } }>Please enter your module name:</span>
+        <span style={{width: 250, fontSize: 15}}>Please enter your module name:</span>
       </Space>
       <Space>
         <RightOutlined/>
-        <Input size="small" style={ { width: 200 } } onChange={ e => props.setName(e.target.value) }/>
+        <Input size="small" style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
         <Tooltip title="Duplicated module name is not allowed!">
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>
       <Space>
         <StarTwoTone/>
-        <span style={ { width: 250, fontSize: 15 } }>Please check options you need:</span>
+        <span style={{width: 250, fontSize: 15}}>Please check options you need:</span>
       </Space>
       <Space>
         <RightOutlined/>
-        <Checkbox onChange={ e => props.setTimeSeries(e.target.checked) }>Time series</Checkbox>
+        <Checkbox onChange={e => props.setTimeSeries(e.target.checked)}>Time series</Checkbox>
       </Space>
     </Space>
-    <ModuleSelectionList onSelect={ props.setSelected }/>
+    <ModuleSelectionList onSelect={props.setSelected}/>
   </>
 
 interface SelectedDashboardTemplate {
@@ -102,37 +102,37 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
     const dsb = _.find(props.dashboards, d => d.name === value)!
     const tpl = dsb.templates!.map(t => t.name)
     setTemplates(tpl)
-    setSelectedDashboardTemplate({ dashboard: value, template: tpl[0] })
+    setSelectedDashboardTemplate({dashboard: value, template: tpl[0]})
   }
 
   const onSelectTemplate = (value: string) => {
     if (selectedDashboardTemplate)
-      setSelectedDashboardTemplate({ ...selectedDashboardTemplate, template: value })
+      setSelectedDashboardTemplate({...selectedDashboardTemplate, template: value})
   }
 
   return (
     <Space direction="vertical">
       <Space>
         <StarTwoTone/>
-        <span style={ { fontSize: 15 } }>Please select one of template in dashboard to copy:</span>
+        <span style={{fontSize: 15}}>Please select one of template in dashboard to copy:</span>
       </Space>
       <Space>
         <RightOutlined/>
         <Select
-          style={ { width: 120 } }
-          onSelect={ onSelectDashboard }
+          style={{width: 120}}
+          onSelect={onSelectDashboard}
           placeholder="Dashboard"
           size="small"
         >
-          { props.dashboards.map(d => <Select.Option key={ d.name } value={ d.name }>{ d.name }</Select.Option>) }
+          {props.dashboards.map(d => <Select.Option key={d.name} value={d.name}>{d.name}</Select.Option>)}
         </Select>
         <Select
-          style={ { width: 120 } }
-          onSelect={ onSelectTemplate }
+          style={{width: 120}}
+          onSelect={onSelectTemplate}
           placeholder="Template"
           size="small"
         >
-          { templates.map(t => <Select.Option key={ t } value={ t }>{ t }</Select.Option>) }
+          {templates.map(t => <Select.Option key={t} value={t}>{t}</Select.Option>)}
         </Select>
         <Tooltip title="Copy elements to non-empty template is forbidden!">
           <ExclamationCircleTwoTone twoToneColor="red"/>
@@ -177,30 +177,30 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
   return (
     <Modal
       title="Select module to add"
-      visible={ props.visible }
-      onOk={ onSetOk }
-      onCancel={ props.onQuit }
+      visible={props.visible}
+      onOk={onSetOk}
+      onCancel={props.onQuit}
       width="60%"
       okText="Confirm"
       cancelText="Discard"
-      bodyStyle={ { paddingTop: 0, paddingBottom: 0 } }
-      style={ { top: 40 } }
+      bodyStyle={{paddingTop: 0, paddingBottom: 0}}
+      style={{top: 40}}
     >
       <Tabs
-        defaultActiveKey={ selectedPane }
-        onChange={ setSelectedPane }
+        defaultActiveKey={selectedPane}
+        onChange={setSelectedPane}
       >
         <Tabs.TabPane tab="Module" key="Module">
           <ModuleSelectionView
-            setName={ setModuleName }
-            setTimeSeries={ setTimeSeries }
-            setSelected={ setSelected }
+            setName={setModuleName}
+            setTimeSeries={setTimeSeries}
+            setSelected={setSelected}
           />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Template" key="Template">
           <TemplateSelectionView
-            dashboards={ props.dashboards }
-            onSelectedDashboardTemplate={ setSelectedDashboardTemplate }
+            dashboards={props.dashboards}
+            onSelectedDashboardTemplate={setSelectedDashboardTemplate}
           />
         </Tabs.TabPane>
       </Tabs>

@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 9/10/2020.
  */
 
-import { PageContainer } from '@ant-design/pro-layout'
-import React, { useState, useRef, useLayoutEffect } from 'react'
-import { EChartOption } from "echarts"
+import {PageContainer} from '@ant-design/pro-layout'
+import React, {useState, useRef, useLayoutEffect} from 'react'
+import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 
 
@@ -50,7 +50,7 @@ function renderFn(params: any, api: any) {
       width: end[0] - start[0],
       height: size[1]
     },
-    style: api.style({ stroke: dataStyles[params.dataIndex] })
+    style: api.style({stroke: dataStyles[params.dataIndex]})
   }
 }
 
@@ -77,7 +77,6 @@ const chartOption: EChartOption = {
       datasetIndex: 0,
       name: "custom",
       type: 'custom',
-      // @ts-ignore
       renderItem: renderFn,
       label: {
         show: true,
@@ -112,10 +111,10 @@ export default () => {
 
   return (
     <PageContainer>
-      <div style={ { height: "85vh" } } ref={ chartRef }>
+      <div style={{height: "85vh"}} ref={chartRef}>
         <ReactEcharts
-          option={ chartOption }
-          opts={ { height: chartHeight } }
+          option={chartOption}
+          opts={{height: chartHeight}}
         />
       </div>
     </PageContainer>

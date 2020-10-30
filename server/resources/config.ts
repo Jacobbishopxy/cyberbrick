@@ -4,9 +4,9 @@
 
 import fs from "fs"
 import path from "path"
-import { ConnectionOptions } from "typeorm"
+import {ConnectionOptions} from "typeorm"
 
-const readConfig =() => {
+const readConfig = () => {
   const configFile = path.join(__dirname, "./config.json")
   let f
   if (fs.existsSync(configFile)) {

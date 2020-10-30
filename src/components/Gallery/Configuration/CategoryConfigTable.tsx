@@ -2,15 +2,15 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, { useState } from 'react'
-import { Table, Tag } from "antd"
-import { PlusOutlined } from '@ant-design/icons'
+import React, {useState} from 'react'
+import {Table, Tag} from "antd"
+import {PlusOutlined} from '@ant-design/icons'
 
-import { Editor } from "@/components/Editor"
+import {Editor} from "@/components/Editor"
 import * as DataType from "../GalleryDataType"
-import { CreationModal } from "../Misc/CreationModal"
-import { TextBuilder } from "../Misc/TextBuilder"
-import { EditableTagPanel } from "../Tag/EditableTagPanel"
+import {CreationModal} from "../Misc/CreationModal"
+import {TextBuilder} from "../Misc/TextBuilder"
+import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
 
 export interface CategoryConfigTableProps {
@@ -69,7 +69,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           <TextBuilder
             create
             text="New category"
-            saveNewText={ props.saveCategory }
+            saveNewText={props.saveCategory}
           />
       } : {}
 
@@ -77,17 +77,17 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={ props.data.map(i => ({ ...i, key: i.name })) }
-        title={ () =>
-          <div style={ { display: "flex", justifyContent: "space-between" } }>
-            <span style={ { fontWeight: "bold" } }>Category configuration</span>
-            <Editor onChange={ setEditable }/>
+        dataSource={props.data.map(i => ({...i, key: i.name}))}
+        title={() =>
+          <div style={{display: "flex", justifyContent: "space-between"}}>
+            <span style={{fontWeight: "bold"}}>Category configuration</span>
+            <Editor onChange={setEditable}/>
           </div>
         }
         size="small"
         bordered
-        pagination={ { pageSize: 10 } }
-        { ...tableFooter() }
+        pagination={{pageSize: 10}}
+        {...tableFooter()}
       >
         <Table.ColumnGroup title="Category">
           <Table.Column
@@ -99,11 +99,11 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
             title="Description"
             dataIndex="description"
             key="description"
-            render={ (text: string, record: DataType.Category) =>
+            render={(text: string, record: DataType.Category) =>
               editable ?
                 <TextBuilder
-                  text={ text }
-                  saveNewText={ modifyCategoryDescription(record.name) }
+                  text={text}
+                  saveNewText={modifyCategoryDescription(record.name)}
                 /> : text
             }
           />
@@ -111,13 +111,13 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         <Table.ColumnGroup title="Dashboard">
           <Table.Column
             title="Name"
-            dataIndex={ ["dashboard", "name"] }
+            dataIndex={["dashboard", "name"]}
             key="dashboardName"
-            render={ (text: string, record: DataType.Category) =>
+            render={(text: string, record: DataType.Category) =>
               text === null && editable ?
                 <Tag
-                  icon={ <PlusOutlined/> }
-                  onClick={ () => openNewDashboardModal(record.name) }
+                  icon={<PlusOutlined/>}
+                  onClick={() => openNewDashboardModal(record.name)}
                 >
                   New Dashboard
                 </Tag> : text
@@ -125,13 +125,13 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           />
           <Table.Column
             title="Description"
-            dataIndex={ ["dashboard", "description"] }
+            dataIndex={["dashboard", "description"]}
             key="dashboardDescription"
-            render={ (text: string, record: DataType.Category) =>
+            render={(text: string, record: DataType.Category) =>
               editable && record.dashboard ?
                 <TextBuilder
-                  text={ text }
-                  saveNewText={ modifyDashboardDescription(record.dashboard.name) }
+                  text={text}
+                  saveNewText={modifyDashboardDescription(record.dashboard.name)}
                 /> : text
             }
           />
@@ -140,13 +140,13 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           title="Marks"
           dataIndex="marks"
           key="marks"
-          render={ (marks: DataType.Mark[], record: DataType.Category) =>
+          render={(marks: DataType.Mark[], record: DataType.Category) =>
             <EditableTagPanel
-              name={ `cm-${ record.name }` }
-              data={ marks }
-              editable={ editable }
-              elementOnCreate={ saveMark(record.name) }
-              elementOnRemove={ deleteMark(record.name) }
+              name={`cm-${record.name}`}
+              data={marks}
+              editable={editable}
+              elementOnCreate={saveMark(record.name)}
+              elementOnRemove={deleteMark(record.name)}
               colorSelector
             />
           }
@@ -155,13 +155,13 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           title="Tags"
           dataIndex="tags"
           key="tags"
-          render={ (tags: DataType.Tag[], record: DataType.Category) =>
+          render={(tags: DataType.Tag[], record: DataType.Category) =>
             <EditableTagPanel
-              name={ `ct-${ record.name }` }
-              data={ tags }
-              editable={ editable }
-              elementOnCreate={ saveTag(record.name) }
-              elementOnRemove={ deleteTag(record.name) }
+              name={`ct-${record.name}`}
+              data={tags}
+              editable={editable}
+              elementOnCreate={saveTag(record.name)}
+              elementOnRemove={deleteTag(record.name)}
               colorSelector
             />
           }
@@ -169,9 +169,9 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
       </Table>
       <CreationModal
         title="Please enter new dashboard information below:"
-        visible={ newDashboardVisible }
-        onSubmit={ newDashboard }
-        onCancel={ () => setNewDashboardVisible(false) }
+        visible={newDashboardVisible}
+        onSubmit={newDashboard}
+        onCancel={() => setNewDashboardVisible(false)}
       />
     </div>
   )

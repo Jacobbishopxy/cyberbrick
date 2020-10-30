@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import { TemplateCopyElementsDto } from "./template.dto"
+import {TemplateCopyElementsDto} from "./template.dto"
 import * as templateService from "../provider/template.service"
-import { Template } from "../entity"
+import {Template} from "../entity"
 
 
 @Controller()

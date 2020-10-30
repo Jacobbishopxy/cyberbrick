@@ -15,8 +15,8 @@ export interface ModulePanelFooterProps {
 }
 
 export const ModulePanelFooter = (props: ModulePanelFooterProps) =>
-  <div className={ styles.modulePanelFooter }>
-    { props.id ? <span>ID: { props.id }</span> : <></> }
-    { props.date ? <span>Date: { DataType.timeToString(props.date) }</span> : <></> }
+  <div className={styles.modulePanelFooter}>
+    {props.id ? <span>ID: {props.id}</span> : <></>}
+    {props.date ? <span>Date: {DataType.timeToString(props.date)}</span> : <></>}
   </div>
 

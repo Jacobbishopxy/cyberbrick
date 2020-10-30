@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
+import React, {forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState} from 'react'
 
 import * as DataType from "../../GalleryDataType"
-import { ModulePanel } from "../../ModulePanel/Panel"
+import {ModulePanel} from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
   markAvailable?: boolean
@@ -61,24 +61,24 @@ export const TemplateElement =
           )
     }
 
-    useImperativeHandle(ref, () => ({ fetchContent }))
+    useImperativeHandle(ref, () => ({fetchContent}))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
     return (
-      <div style={ { height: "100%" } } ref={ mpRef }>
+      <div style={{height: "100%"}} ref={mpRef}>
         <ModulePanel
-          headName={ props.element.name }
-          timeSeries={ props.timeSeries }
-          elementType={ props.element.type }
-          content={ content }
-          contentHeight={ mpHeight }
-          fetchContent={ fetchContent }
-          dates={ dates }
-          fetchContentDates={ fetchContentDates }
-          updateContent={ updateContent }
-          onRemove={ props.onRemove }
-          editable={ props.editable }
+          headName={props.element.name}
+          timeSeries={props.timeSeries}
+          elementType={props.element.type}
+          content={content}
+          contentHeight={mpHeight}
+          fetchContent={fetchContent}
+          dates={dates}
+          fetchContentDates={fetchContentDates}
+          updateContent={updateContent}
+          onRemove={props.onRemove}
+          editable={props.editable}
         />
       </div>
     )

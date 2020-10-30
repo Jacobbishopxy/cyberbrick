@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/16/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Element, Template } from "../entity"
+import {Element, Template} from "../entity"
 
 
 const templateFullRelations = {
@@ -81,7 +81,7 @@ export class TemplateService {
       .createQueryBuilder(common.template)
       .leftJoinAndSelect(common.templateDashboard, common.dashboard)
       .select([common.templateName, common.dashboardName])
-      .where(`${ common.dashboardName } = :dashboardName AND ${ common.templateName } = :templateName`, {
+      .where(`${common.dashboardName} = :dashboardName AND ${common.templateName} = :templateName`, {
         dashboardName,
         templateName
       })
@@ -107,7 +107,7 @@ export class TemplateService {
 
         const nt = {
           id: tt.id,
-          dashboard: { name: targetDashboardName },
+          dashboard: {name: targetDashboardName},
           elements: originTemplate.elements.map(i => _.omit(i, "id")),
         } as Template
 
@@ -128,7 +128,7 @@ export class TemplateService {
       .createQueryBuilder(common.element)
       .leftJoinAndSelect(common.elementTemplate, common.template)
       .select(common.elementId)
-      .where(`${ common.templateId } = :targetTemplateId`, { targetTemplateId })
+      .where(`${common.templateId} = :targetTemplateId`, {targetTemplateId})
       .getMany()
 
     if (originElementsId) {

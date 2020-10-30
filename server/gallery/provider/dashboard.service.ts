@@ -2,13 +2,13 @@
  * Created by Jacob Xie on 9/16/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Dashboard, Category } from "../entity"
+import {Dashboard, Category} from "../entity"
 
 
 const dashboardFullRelations = {
@@ -64,7 +64,7 @@ export class DashboardService {
   // ===================================================================================================================
 
   getAllDashboardsName() {
-    return this.repoDashboard.find({ select: [common.name] })
+    return this.repoDashboard.find({select: [common.name]})
   }
 
   getDashboardCategoryMarksAndTemplateByName(dashboardName: string) {

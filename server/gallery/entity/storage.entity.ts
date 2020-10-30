@@ -11,7 +11,7 @@ import {
 import * as common from "../common"
 
 
-@Entity({ name: common.storage })
+@Entity({name: common.storage})
 export class Storage {
 
   @PrimaryGeneratedColumn("uuid")
@@ -20,24 +20,24 @@ export class Storage {
   @Column("varchar")
   name!: string
 
-  @Column("text", { nullable: true })
+  @Column("text", {nullable: true})
   description?: string
 
-  @Column("enum", { nullable: false, enum: common.StorageType })
+  @Column("enum", {nullable: false, enum: common.StorageType})
   type!: string
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   host!: string
 
-  @Column("int", { nullable: false })
+  @Column("int", {nullable: false})
   port!: number
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   database!: string
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   username!: string
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   password!: string
 }

@@ -24,7 +24,7 @@
         "./src/*"
       ],
       "@@/*": [
-        "./src/client/.umi/*"
+        "./src/.umi/*"
       ]
     }
   },
@@ -32,7 +32,7 @@
     "node_modules",
     "dist",
     "scripts",
-    "src/client/.umi/*",
+    "src/.umi/*",
     "webpack",
     "jest",
     "frontend",
