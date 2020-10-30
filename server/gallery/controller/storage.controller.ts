@@ -55,6 +55,11 @@ export class StorageController {
     return this.service.testConnection(id)
   }
 
+  @Get("reloadConnection")
+  reloadConnection(@Query("id") id: string) {
+    return this.service.reloadConnection(id)
+  }
+
   @Get("executeSql")
   executeSql(@Query("id") id: string,
              @Query("sqlString") sqlString: string) {

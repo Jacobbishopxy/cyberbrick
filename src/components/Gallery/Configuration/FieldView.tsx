@@ -24,6 +24,7 @@ interface OperationFieldProps {
   onUpdateClick: () => void
   onDeleteClick: () => void
   onCheckClick: () => void
+  onReloadClick: () => void
   disabled: boolean
 }
 
@@ -103,11 +104,19 @@ export const OperationField = (props: OperationFieldProps) =>
         Delete
       </Button>
     </Space> :
-    <Button
-      size="small"
-      type="primary"
-      onClick={ props.onCheckClick }
-    >
-      Check connection
-    </Button>
+    <Space>
+      <Button
+        size="small"
+        type="primary"
+        onClick={ props.onCheckClick }
+      >
+        Check
+      </Button>
+      <Button
+        size="small"
+        onClick={ props.onReloadClick }
+      >
+        Reload
+      </Button>
+    </Space>
 

@@ -115,6 +115,11 @@ export default () => {
         else message.error(`Database: ${ id } is disconnected!`)
       })
 
+  const reloadConnection = (id: string) =>
+    GalleryService
+      .reloadConnection(id)
+      .then(res => message.info(res))
+
 
   return (
     <Tabs
@@ -156,6 +161,7 @@ export default () => {
           saveStorage={ saveStorage }
           deleteStorage={ deleteStorage }
           checkConnection={ checkConnection }
+          reloadConnection={ reloadConnection }
         />
       </Tabs.TabPane>
     </Tabs>

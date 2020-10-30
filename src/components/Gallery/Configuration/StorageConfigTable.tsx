@@ -16,6 +16,7 @@ export interface StorageConfigTableProps {
   saveStorage: (storage: DataType.Storage) => void
   deleteStorage: (id: string) => void
   checkConnection: (id: string) => void
+  reloadConnection: (id: string) => void
 }
 
 export const StorageConfigTable = (props: StorageConfigTableProps) => {
@@ -225,6 +226,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
               onUpdateClick={ saveStorage }
               onDeleteClick={ () => deleteStorage(record.id!) }
               onCheckClick={ () => props.checkConnection(record.id!) }
+              onReloadClick={ () => props.reloadConnection(record.id!) }
               disabled={ record.id !== selectedStorage?.id }/>
           }
         />

@@ -192,6 +192,9 @@ export const deleteStorage = async (id: string) =>
 export const testConnection = async (id: string): Promise<boolean> =>
   request(`${ base }/testConnection?id=${ id }`)
 
+export const reloadConnection = async (id: string): Promise<string> =>
+  request(`${ base }/reloadConnection?id=${ id }`)
+
 export const executeSql = async (id: string, sqlString: string) =>
   request(`${ base }/executeSql?id=${ id }&sqlString=${ sqlString }`)
 

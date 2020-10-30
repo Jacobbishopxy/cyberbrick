@@ -4,7 +4,7 @@
 
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { getConnection, Repository } from "typeorm"
+import { createConnection, getConnection, Repository } from "typeorm"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -33,7 +33,7 @@ export class StorageService {
   async deleteStorage(id: string) {
     const i = await this.getStorageById(id)
     if (i) {
-      this.repo.remove(i, {listeners: true})
+      this.repo.remove(i, { listeners: true })
       return true
     }
     return false
@@ -44,6 +44,18 @@ export class StorageService {
   testConnection = (id: string) => {
     const repo = getConnection(id)
     return repo.isConnected
+  }
+
+  reloadConnection = async (id: string) => {
+    if (!this.testConnection(id)) {
+      await createConnection(id)
+      if (this.testConnection(id))
+        return "Successfully reconnect!"
+      else
+        return "Failed reconnect!"
+    } else {
+      return "Already connected!"
+    }
   }
 
   executeSql = (id: string, sqlString: string) => {

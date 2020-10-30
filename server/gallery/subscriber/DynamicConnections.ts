@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import { createConnection, ConnectionOptions, Connection } from "typeorm"
+import { Connection, ConnectionOptions, createConnection, getConnection } from "typeorm"
 import _ from "lodash"
 
 import { Storage } from "../entity"
@@ -21,61 +21,62 @@ export class DynamicConnections {
     return _.find(this.connections, c => c.options.name === id)
   }
 
-  private async databaseConnect(conn: Storage) {
-    const co = this.genConnOption(conn)
-
-    createConnection(co)
-      .then(res => this.connections.push(res))
-      .catch(err => console.log(err))
+  private async databaseConnect(conn: Storage): Promise<boolean> {
+    const res = await createConnection(this.genConnOption(conn))
+    if (res.isConnected) {
+      this.connections.push(res)
+      return true
+    } else {
+      return false
+    }
   }
 
-  private async databaseDisconnect(id: string) {
+  private async databaseDisconnect(id: string): Promise<boolean> {
     const conn = this.findConn(id)
     if (conn) {
-      conn.close()
-        .then(() => {
-          this.connections = _.filter(this.connections, c => c.options.name === id)
-        })
-        .catch(err => console.log(err))
+      await conn.close()
+      const isConnect = await getConnection(id)
+      if (isConnect) {
+        this.connections = _.filter(this.connections, c => c.options.name !== id)
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
     }
   }
 
-  async newConnection(conn: Storage) {
+  async newConnection(conn: Storage): Promise<boolean> {
     const targetConn = this.findConn(conn.id)
-    if (!targetConn) {
+    if (!targetConn)
       return this.databaseConnect(conn)
-    }
-    return Promise.reject()
+    else
+      return false
   }
 
-  async removeConnection(id: string) {
+  async removeConnection(id: string): Promise<boolean> {
     const targetConn = this.findConn(id)
-    if (targetConn) {
+    if (targetConn)
       return this.databaseDisconnect(id)
-    }
-    return Promise.reject()
+    else
+      return false
   }
 
-  async updateConnection(conn: Storage) {
-    const targetConn = this.findConn(conn.id)
-    if (targetConn) {
-      this.databaseDisconnect(conn.id)
-        .then(() => {
-          return this.databaseConnect(conn)
-        })
-        .catch(() => {
-          return Promise.reject()
-        })
-
-    }
-    return Promise.reject()
+  async updateConnection(conn: Storage): Promise<boolean> {
+    const resRmv = await this.removeConnection(conn.id)
+    if (resRmv)
+      return this.newConnection(conn)
+    else
+      return false
   }
 
-  async loadConnection(conn: Storage) {
+  async loadConnection(conn: Storage): Promise<boolean> {
     const targetConn = this.findConn(conn.id)
     if (!targetConn)
       return this.newConnection(conn)
-    return Promise.resolve()
+    else
+      return false
   }
 
   showConnections = () => this.connections
