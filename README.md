@@ -1,4 +1,4 @@
-# REACT DEMO
+# CYBER BRICK
 
 ## Prerequisites
 

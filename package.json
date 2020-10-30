@@ -1,8 +1,8 @@
 {
-  "name": "react-demo",
+  "name": "cyberbrick",
   "version": "0.0.0",
   "private": true,
-  "description": "React demo",
+  "description": "Cyber Brick",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build:backend": "nest build",
