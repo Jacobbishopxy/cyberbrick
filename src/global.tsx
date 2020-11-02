@@ -65,19 +65,19 @@ if (pwa) {
   if (serviceWorker.getRegistrations) {
     serviceWorker.getRegistrations().then((sws) => {
       sws.forEach((sw) => {
-        sw.unregister()
+        sw.unregister().finally()
       })
     })
   }
   serviceWorker.getRegistration().then((sw) => {
-    if (sw) sw.unregister()
+    if (sw) sw.unregister().finally()
   })
 
   // remove all caches
   if (window.caches && window.caches.keys) {
     caches.keys().then((keys) => {
       keys.forEach((key) => {
-        caches.delete(key)
+        caches.delete(key).finally()
       })
     })
   }

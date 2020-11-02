@@ -61,6 +61,8 @@ If file not supplied, system would automatically read `config.template.json`.
       bash start.sh
       ```
 
+    * `yarn build:backend` & `yarn build:frontend` building up server & client respectively
+
 ## Route
 
 Check [config/config.ts](config/config.ts) for detail.
@@ -71,5 +73,5 @@ For some detailed project components.
 
 ### Gallery
 
-![Data Structure](public/GalleryDataStructure.png)
+![Data Structure](public/GalleryDataStructure.svg)
 
