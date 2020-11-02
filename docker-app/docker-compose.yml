@@ -9,7 +9,7 @@ services:
       - ${CONTAINER_PORT}:${APP_PORT}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-    command: yarn start
+    command: yarn serve
 
 
 networks:
