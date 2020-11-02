@@ -1,0 +1,8 @@
+.dockerignore
+.git
+.gitignore
+.idea
+.prettierrc
+node_modules
+backend
+frontend

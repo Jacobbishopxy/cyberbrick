@@ -7,12 +7,12 @@ import path from "path"
 import {ConnectionOptions} from "typeorm"
 
 const readConfig = () => {
-  const configFile = path.join(__dirname, "./config.json")
+  const configFile = path.join(__dirname, "..", "./resources/config.json")
   let f
   if (fs.existsSync(configFile)) {
     f = fs.readFileSync(configFile)
   } else {
-    const templateConfigFile = path.join(__dirname, "./config.template.json")
+    const templateConfigFile = path.join(__dirname, "..", "./resources/config.template.json")
     f = fs.readFileSync(templateConfigFile)
   }
 

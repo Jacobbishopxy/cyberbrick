@@ -21,7 +21,7 @@ import {
   Tag,
   Template,
 } from "./gallery/entity"
-import {connDevGallery} from "./resources/config"
+import {connDevGallery} from "./config"
 
 
 const routes: Routes = [
