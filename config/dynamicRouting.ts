@@ -18,6 +18,12 @@ const onlineRoutes = [
         component: "./gallery/Configuration"
       },
       {
+        name: "dataset",
+        icon: "DatabaseOutlined",
+        path: "/gallery/dataset",
+        component: "./gallery/Dataset"
+      },
+      {
         name: "overview",
         icon: 'ProfileOutlined',
         path: "/gallery/overview",

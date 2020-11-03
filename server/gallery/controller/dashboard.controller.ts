@@ -87,7 +87,7 @@ export class DashboardController {
     }
   }
 
-  @Post("DashboardDescriptionModifyDto")
+  @Post("newDashboardAttachToEmptyCategory")
   newDashboardAttachToEmptyCategory(@Query("categoryName") categoryName: string,
                                     @Body() dashboard: Dashboard) {
     try {

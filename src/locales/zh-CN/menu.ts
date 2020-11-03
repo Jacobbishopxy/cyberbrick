@@ -52,6 +52,7 @@ export default {
 
   'menu.gallery': 'Gallery',
   'menu.gallery.configuration': 'Configuration',
+  'menu.gallery.dataset': 'Dataset',
   'menu.gallery.overview': 'Overview',
   'menu.gallery.dashboard': 'Dashboard',
 
