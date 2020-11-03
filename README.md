@@ -53,8 +53,6 @@ Please `cd web` first then do the following commands.
 
     * `yarn serve:dev` for server side then in another terminal `yarn dev` for frontend
     
-    * if offline mode (no database connection), please use `yarn serve:dev:offline` & `yarn dev:offline`
-
 2. production:
 
     * `yarn build` then `yarn serve`
@@ -83,15 +81,12 @@ Please `cd web` first then do the following commands.
 
     * `yarn build:backend` & `yarn build:frontend` building up server & client respectively
 
-## Route
+## Detail
 
-Check [config/config.ts](web/config/config.ts) for detail.
+### Server
 
-## Mark
+[README](server/README.md)
 
-For some detailed project components.
+### Web
 
-### Gallery
-
-![Data Structure](web/public/GalleryDataStructure.svg)
-
+[README](web/README.md)

@@ -2,7 +2,6 @@
 import {defineConfig} from 'umi'
 import defaultSettings from './defaultSettings'
 import proxy from './proxy'
-import {onlineRoutesGenerator} from "./dynamicRouting"
 
 const {REACT_APP_ENV} = process.env
 
@@ -67,7 +66,38 @@ export default defineConfig({
         },
       ],
     },
-    ...onlineRoutesGenerator(),
+    {
+      path: "/gallery",
+      name: "gallery",
+      icon: "BankOutlined",
+      access: "canOnline",
+      routes: [
+        {
+          name: "configuration",
+          icon: "SettingOutlined",
+          path: "/gallery/configuration",
+          component: "./gallery/Configuration"
+        },
+        {
+          name: "dataset",
+          icon: "DatabaseOutlined",
+          path: "/gallery/dataset",
+          component: "./gallery/Dataset"
+        },
+        {
+          name: "overview",
+          icon: 'ProfileOutlined',
+          path: "/gallery/overview",
+          component: "./gallery/Overview"
+        },
+        {
+          name: "dashboard",
+          icon: 'DashboardOutlined',
+          path: "/gallery/dashboard",
+          component: "./gallery/Dashboard"
+        },
+      ]
+    },
     {
       path: '/demo',
       name: 'demo',

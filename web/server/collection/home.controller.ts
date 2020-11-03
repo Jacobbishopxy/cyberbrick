@@ -13,7 +13,7 @@ export class HomeController {
 
   @Get("homeLogo")
   async getHomeLogo(@Res() res: Response) {
-    return res.sendFile(this.service.getAsset("favicon.ico"))
+    return res.sendFile(this.service.getUnicorn("048-origami.svg"))
   }
 
   @Get("currentUserAvatar")

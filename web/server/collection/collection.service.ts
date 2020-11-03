@@ -8,9 +8,15 @@ import {join} from "path"
 @Injectable()
 export class CollectionService {
 
+  private publicPath = "../../public"
+  private assetsPath = "../assets"
+
   getDocument = (name: string) =>
-    join(__dirname, "../../public", name)
+    join(__dirname, `${this.publicPath}/document`, name)
+
+  getUnicorn = (name: string) =>
+    join(__dirname, `${this.publicPath}/unicorn`, name)
 
   getAsset = (name: string) =>
-    join(__dirname, "../assets", name)
+    join(__dirname, this.assetsPath, name)
 }
