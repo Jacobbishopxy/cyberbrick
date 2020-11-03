@@ -2,6 +2,12 @@
 
 ## Prerequisites
 
+### Server
+
+todo
+
+### Web
+
 1. [nestjs](https://nestjs.com/) NodeJS framework
 
 2. [typeorm](https://typeorm.io/) Database ORM
@@ -12,22 +18,36 @@
 
 ## Environment Prepare
 
-```
-npm i
-```
-or
-```
-yarn
-```
+### Server
+
+todo
+
+### Web
+
+Please `cd web` first then do the following commands.
+
+`npm i` or `yarn`
 
 ## Configuration Prepare
 
-In `resources` folder:
+### Server
 
-1. new `config.json` (see [config.template.json](resources/config.template.json)). 
+todo
+
+### Web
+
+1. In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)). 
 If file not supplied, system would automatically read `config.template.json`.
 
 ## Start Project
+
+### Server
+
+todo
+
+### Web
+
+Please `cd web` first then do the following commands.
 
 1. development mode: 
 
@@ -65,7 +85,7 @@ If file not supplied, system would automatically read `config.template.json`.
 
 ## Route
 
-Check [config/config.ts](config/config.ts) for detail.
+Check [config/config.ts](web/config/config.ts) for detail.
 
 ## Mark
 
@@ -73,5 +93,5 @@ For some detailed project components.
 
 ### Gallery
 
-![Data Structure](public/GalleryDataStructure.svg)
+![Data Structure](web/public/GalleryDataStructure.svg)
 

@@ -11,7 +11,7 @@ src/client/.umi
 docker
 .editorconfig
 Dockerfile*
-.gitignore
+../.gitignore
 .prettierignore
 LICENSE
 .eslintcache

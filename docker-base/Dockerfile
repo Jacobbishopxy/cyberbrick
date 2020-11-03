@@ -11,8 +11,8 @@ FROM    $FUND_IMAGE:$FUND_IMAGE_VERSION
 RUN     mkdir /app
 
 # copy package requirements to workdir
-COPY    package.json /app
-COPY    yarn.lock /app
+COPY    web/package.json /app
+COPY    web/yarn.lock /app
 
 # change the active directory
 WORKDIR /app

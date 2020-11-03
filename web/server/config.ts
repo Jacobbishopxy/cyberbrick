@@ -16,12 +16,12 @@ import {GalleryModule} from "./gallery/gallery.module"
 const isProd = process.env.NODE_ENV === "production"
 
 const readConfig = () => {
-  const configFile = path.join(__dirname, "..", "./resources/config.json")
+  const configFile = path.join(__dirname, "../..", "./resources/config.json")
   let f
   if (fs.existsSync(configFile)) {
     f = fs.readFileSync(configFile)
   } else {
-    const templateConfigFile = path.join(__dirname, "..", "./resources/config.template.json")
+    const templateConfigFile = path.join(__dirname, "../..", "./resources/config.template.json")
     f = fs.readFileSync(templateConfigFile)
   }
 

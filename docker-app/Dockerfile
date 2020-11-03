@@ -7,7 +7,7 @@ ARG     BASE_IMAGE_VERSION
 FROM    $BASE_IMAGE_NAME:$BASE_IMAGE_VERSION
 
 # copy source code to workdir
-COPY    . /app
+COPY    ./web /app
 
 # change the active directory
 WORKDIR /app
