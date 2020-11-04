@@ -7,14 +7,14 @@
 from flask import Flask
 from flask_restx import Api
 
-from .config import config_by_name
+from .config import AppConfig
 
 api = Api()
 
 
-def create_app(config_name: str):
+def create_app(app_cfg: AppConfig):
     app = Flask(__name__)
-    app.config.from_object(config_by_name[config_name])
+    app.config.from_object(app_cfg)
     api.init_app(app)
 
     return app
