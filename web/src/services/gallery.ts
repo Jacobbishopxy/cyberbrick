@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import request from "umi-request"
+import {request} from "umi"
 
 
 const base = "/api/gallery"

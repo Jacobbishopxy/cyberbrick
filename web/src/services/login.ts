@@ -1,4 +1,4 @@
-import request from "umi-request"
+import {request} from "umi"
 
 export interface LoginParamsType {
   username: string;

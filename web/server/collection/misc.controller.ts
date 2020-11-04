@@ -12,6 +12,11 @@ import {CollectionService} from "./collection.service"
 export class MiscController {
   constructor(private readonly service: CollectionService) {}
 
+  @Get("misc/random-unicorn")
+  async getRandomUnicorn(@Res() res: Response) {
+    return res.sendFile(this.service.getRandomUnicorn())
+  }
+
   @Get("document/gallery")
   async getDocumentGallery(@Res() res: Response) {
     return res.sendFile(this.service.getDocument("GalleryDataStructure.svg"))
