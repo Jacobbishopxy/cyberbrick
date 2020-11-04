@@ -3,7 +3,7 @@
 @time 9/3/2020
 """
 
-from flask_restx import Resource, Namespace, reqparse, abort
+from flask_restx import Resource, Namespace, reqparse
 from werkzeug.datastructures import FileStorage
 import pandas as pd
 
@@ -11,6 +11,7 @@ ns = Namespace("upload", description="Upload Excel and return spreadsheet")
 
 xlsx_file = "xlsx"
 xlsx_file_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
 parser = reqparse.RequestParser()
 parser.add_argument(xlsx_file,
                     type=FileStorage,
@@ -22,8 +23,12 @@ parser.add_argument(param_multi_sheets,
                     type=str)
 
 
-@ns.route("/upload")
+@ns.route("/")
 class FileUploadAPI(Resource):
+
+    @staticmethod
+    def get():
+        return "wtf"
 
     @ns.expect(parser)
     def post(self):
@@ -40,4 +45,4 @@ class FileUploadAPI(Resource):
                 res = xs.fillna("").to_dict(orient="records")
             return res
         else:
-            return abort(404)
+            ns.abort(400)

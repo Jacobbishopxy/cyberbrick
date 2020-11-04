@@ -7,14 +7,14 @@ import logging
 from flask_cors import CORS
 import click
 
-from .app import blueprint
-from .app.main import create_app, AppConfig
+from app import create_blueprint, create_app, AppConfig, namespaces
 
+
+# todo: connecting database according to `env`
 
 @click.command()
 @click.option('--env', default="dev", help="environment: dev/prod")
 def start(env: str):
-
     if env == "prod":
         app = create_app(AppConfig.prod)
         debug = False
@@ -22,8 +22,10 @@ def start(env: str):
         app = create_app(AppConfig.dev)
         debug = True
 
+    blueprint = create_blueprint("api", namespaces)
+
     CORS(blueprint)
-    app.register_blueprint(blueprint)
+    app.register_blueprint(blueprint, url_prefix="/api")
     gunicorn_logger = logging.getLogger("gunicorn.error")
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
