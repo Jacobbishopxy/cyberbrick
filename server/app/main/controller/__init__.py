@@ -4,5 +4,5 @@
 """
 
 from .abstract_controller import Controller
-from .hello import HelloController
+from .config_view import ConfigViewController
 from .file_upload import FileUploadController

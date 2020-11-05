@@ -5,9 +5,11 @@
 
 from .config import AppConfig
 from .controller.file_upload import FileUploadController
-from .controller.hello import HelloController
+from .controller.config_view import ConfigViewController
+from .controller.database_view import DatabaseViewController
 
 controllers = [
     FileUploadController,
-    HelloController
+    ConfigViewController,
+    DatabaseViewController,
 ]

@@ -1,6 +1,6 @@
 """
 @author Jacob Xie
-@time 9/3/2020
+@time 11/5/2020
 """
 
 from flask_restx import Resource, Namespace
@@ -9,19 +9,19 @@ from .abstract_controller import Controller
 from ..config import AppConfig
 
 
-class HelloController(Controller):
+class ConfigViewController(Controller):
 
     def __init__(self, env: AppConfig):
         super().__init__(env)
 
     def get_namespace(self) -> Namespace:
-        namespace = Namespace("hello")
+        namespace = Namespace("config")
 
-        @namespace.route("/")
+        @namespace.route("/view")
         class R(Resource):
 
             @staticmethod
             def get():
-                return f"Hello: {self.show_env().value.conn}"
+                return self.show_env().value
 
         return namespace

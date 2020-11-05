@@ -4,10 +4,5 @@
 """
 
 from .creator import create_app, create_blueprint
-from .main.config import AppConfig
-from .main.controller import HelloController, FileUploadController
-
-controllers = [
-    HelloController,
-    FileUploadController,
-]
+from .main import AppConfig
+from .main import controllers

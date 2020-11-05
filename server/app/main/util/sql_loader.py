@@ -9,8 +9,10 @@ import pandas as pd
 import sqlalchemy as sa
 
 
-def json_dumps(data):
-    return 'null' if data is None else json.dumps(data, ensure_ascii=False)
+def get_loader_prefix(db_type: str):
+    if db_type == "postgres":
+        return "postgresql+psycopg2"
+    raise Exception(f"db_type: {db_type} not found!")
 
 
 class Loader(object):
@@ -161,13 +163,16 @@ class Loader(object):
         self.mutate(exec_str, use_sa_text)
 
     @staticmethod
-    def df2db_values(df: pd.DataFrame, json_cols: List[str], str_cols: List[str]):
+    def json_dumps(data):
+        return 'null' if data is None else json.dumps(data, ensure_ascii=False)
+
+    def df2db_values(self, df: pd.DataFrame, json_cols: List[str], str_cols: List[str]):
         index_list = []
         for index, row in df.iterrows():
             value_list = []
             for idx, item in row.items():
                 if idx in json_cols:
-                    _context = json_dumps(item).replace("'", "''").replace("%", "%%")
+                    _context = self.json_dumps(item).replace("'", "''").replace("%", "%%")
                     value_list.append(f"'{_context}'")
                 else:
                     if idx in str_cols:
