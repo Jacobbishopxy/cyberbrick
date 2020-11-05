@@ -3,9 +3,9 @@
 @time 11/3/2020
 """
 
-from flask_restx import Resource, Namespace, reqparse
-from werkzeug.datastructures import FileStorage
+from flask import abort, Blueprint, request
 import pandas as pd
+import json
 
 from .abstract_controller import Controller
 from ..config import AppConfig
@@ -19,39 +19,37 @@ class FileUploadController(Controller):
     def __init__(self, env: AppConfig):
         super().__init__(env)
 
-    def get_namespace(self) -> Namespace:
-        namespace = Namespace("upload", description="Upload Excel and return spreadsheet")
+    def get_blueprint(self) -> Blueprint:
+        bp = Blueprint("upload", __name__, url_prefix="/upload")
 
-        parser = reqparse.RequestParser()
-        parser.add_argument(xlsx_file,
-                            type=FileStorage,
-                            location="files")
         param_head, param_multi_sheets = "head", "multiSheets"
-        parser.add_argument(param_head, type=str)
-        parser.add_argument(param_multi_sheets, type=str)
 
-        @namespace.route("/", strict_slashes=False)
-        class R(Resource):
+        @bp.route("/", strict_slashes=False, methods=["POST"])
+        def post():
+            f = request.files[xlsx_file]
 
-            @staticmethod
-            def get():
-                return "wtf"
-
-            @namespace.expect(parser)
-            def post(self):
-                args = parser.parse_args()
-                f = args.get(xlsx_file)
-
-                hd = 0 if args.get(param_head) == "true" else None
-                ms = None if args.get(param_multi_sheets) == "true" else 0
-                if f is not None and f.content_type == xlsx_file_type:
-                    xs = pd.read_excel(f, header=hd, sheet_name=ms)
-                    if isinstance(xs, dict):
-                        res = {k: v.fillna("").to_dict(orient="records") for k, v in xs.items()}
-                    else:
-                        res = xs.fillna("").to_dict(orient="records")
-                    return res
+            if f is not None and f.content_type == xlsx_file_type:
+                hd = 0 if request.args.get(param_head) == "true" else None
+                ms = request.args.get(param_multi_sheets)
+                if ms == "true":
+                    sheet_name = None
+                elif ms == "false" or ms is None:
+                    sheet_name = 0
                 else:
-                    namespace.abort(400)
+                    sheet_name = [int(i) for i in ms.split(",")]
 
-        return namespace
+                # xs = pd.read_excel(f, na_values="", header=hd, sheet_name=sheet_name, parse_dates=True)
+                xs = pd.read_excel(
+                    f, header=hd, sheet_name=sheet_name
+                )
+
+                if isinstance(xs, dict):
+                    res = {k: json.loads(v.to_json(orient="records", date_format="iso")) for k, v in xs.items()}
+                else:
+                    res = {"0": json.loads(xs.to_json(orient="records", date_format="iso"))}
+
+                return res
+            else:
+                abort(400)
+
+        return bp

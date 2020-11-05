@@ -4,36 +4,38 @@
 """
 
 from flask import Flask
-from flask_restx import Api
-from flask import Blueprint
 from typing import List, Type
 
 from .main import AppConfig
 from .main.controller import Controller
 
 
-def create_app(app_cfg: AppConfig):
+class PrefixMiddleware(object):
+
+    def __init__(self, app, prefix=''):
+        self.app = app
+        self.prefix = prefix
+
+    def __call__(self, environ, start_response):
+
+        if environ['PATH_INFO'].startswith(self.prefix):
+            environ['PATH_INFO'] = environ['PATH_INFO'][len(self.prefix):]
+            environ['SCRIPT_NAME'] = self.prefix
+            return self.app(environ, start_response)
+        else:
+            start_response('404', [('Content-Type', 'text/plain')])
+            return ["This url does not belong to the app.".encode()]
+
+
+def create_app(prefix: str,
+               app_cfg: AppConfig,
+               controller_list: List[Type[Controller]]):
     app = Flask(__name__)
+    app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
     # app.url_map.strict_slashes = False
     app.config.from_object(app_cfg)
-
-    api = Api()
-    api.init_app(app)
-
-    return app
-
-
-def create_blueprint(app_cfg: AppConfig,
-                     controller_list: List[Type[Controller]]):
-    blueprint = Blueprint("api", __name__)
-
-    api = Api(blueprint,
-              title='CyberBrick-api',
-              version='1.0',
-              description='CyberBrick service')
-
     for n in controller_list:
         ns = n(app_cfg)
-        api.add_namespace(ns.get_namespace())
+        app.register_blueprint(ns.get_blueprint())
 
-    return blueprint
+    return app

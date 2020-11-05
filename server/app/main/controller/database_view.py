@@ -3,8 +3,7 @@
 @time 11/5/2020
 """
 
-from flask_restx import Resource, Namespace
-from flask import jsonify
+from flask import Blueprint, jsonify
 
 from .abstract_controller import Controller
 from ..config import AppConfig
@@ -23,18 +22,15 @@ class DatabaseViewController(Controller):
                              username=self.conn["username"],
                              password=self.conn["password"])
 
-    def get_namespace(self) -> Namespace:
-        ns = Namespace("database", description="database connections")
+    def get_blueprint(self) -> Blueprint:
+        ns = Blueprint("database", __name__, url_prefix="/database")
 
         @ns.route("/view")
-        class R(Resource):
-
-            @staticmethod
-            def get():
-                q = f"""
-                SELECT * FROM storage
-                """
-                d = self.loader.read(q)
-                return jsonify(d.to_dict(orient="records"))
+        def get():
+            q = f"""
+            SELECT * FROM storage
+            """
+            d = self.loader.read(q)
+            return jsonify(d.to_dict(orient="records"))
 
         return ns

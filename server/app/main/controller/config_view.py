@@ -3,7 +3,7 @@
 @time 11/5/2020
 """
 
-from flask_restx import Resource, Namespace
+from flask import Blueprint, jsonify
 
 from .abstract_controller import Controller
 from ..config import AppConfig
@@ -14,14 +14,11 @@ class ConfigViewController(Controller):
     def __init__(self, env: AppConfig):
         super().__init__(env)
 
-    def get_namespace(self) -> Namespace:
-        namespace = Namespace("config")
+    def get_blueprint(self) -> Blueprint:
+        bp = Blueprint("config", __name__, url_prefix="/config")
 
-        @namespace.route("/view")
-        class R(Resource):
+        @bp.route("/view")
+        def get():
+            return jsonify(self.show_env().value.conn)
 
-            @staticmethod
-            def get():
-                return self.show_env().value
-
-        return namespace
+        return bp

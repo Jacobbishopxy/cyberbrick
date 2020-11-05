@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from flask_restx import Namespace
+from flask import Blueprint
 
 from ..config import AppConfig
 
@@ -17,5 +17,5 @@ class Controller(ABC):
         return self._env
 
     @abstractmethod
-    def get_namespace(self) -> Namespace:
+    def get_blueprint(self) -> Blueprint:
         pass
