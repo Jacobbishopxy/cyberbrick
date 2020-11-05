@@ -5,12 +5,23 @@
 
 from flask_restx import Resource, Namespace
 
-ns = Namespace("hello")
+from .abstract_controller import Controller
+from ..config import AppConfig
 
 
-@ns.route("/")
-class HelloWorld(Resource):
+class HelloController(Controller):
 
-    @staticmethod
-    def get():
-        return "Hello World!"
+    def __init__(self, env: AppConfig):
+        super().__init__(env)
+
+    def get_namespace(self) -> Namespace:
+        namespace = Namespace("hello")
+
+        @namespace.route("/")
+        class R(Resource):
+
+            @staticmethod
+            def get():
+                return f"Hello: {self.show_env().value.conn}"
+
+        return namespace

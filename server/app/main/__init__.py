@@ -4,10 +4,10 @@
 """
 
 from .config import AppConfig
-from .controller.file_upload import ns as fu_namespace
-from .controller.hello import ns as hl_namespace
+from .controller.file_upload import FileUploadController
+from .controller.hello import HelloController
 
-namespaces = [
-    fu_namespace,
-    hl_namespace
+controllers = [
+    FileUploadController,
+    HelloController
 ]

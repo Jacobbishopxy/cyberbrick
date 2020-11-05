@@ -7,22 +7,21 @@ import logging
 from flask_cors import CORS
 import click
 
-from app import create_blueprint, create_app, AppConfig, namespaces
+from app import create_app, AppConfig, create_blueprint, controllers
 
-
-# todo: connecting database according to `env`
 
 @click.command()
 @click.option('--env', default="dev", help="environment: dev/prod")
 def start(env: str):
     if env == "prod":
-        app = create_app(AppConfig.prod)
+        cfg = AppConfig.prod
         debug = False
     else:
-        app = create_app(AppConfig.dev)
+        cfg = AppConfig.dev
         debug = True
 
-    blueprint = create_blueprint("api", namespaces)
+    app = create_app(cfg)
+    blueprint = create_blueprint(cfg, controllers)
 
     CORS(blueprint)
     app.register_blueprint(blueprint, url_prefix="/api")
