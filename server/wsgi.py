@@ -17,7 +17,7 @@ def start(env: str):
     app = create_app("/api", cfg, controllers)
     CORS(app)
 
-    app.run(debug=cfg.value.DEBUG)
+    app.run(debug=cfg.value.DEBUG, port=cfg.value.server_port)
 
 
 if __name__ == '__main__':

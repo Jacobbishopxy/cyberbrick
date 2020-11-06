@@ -9,6 +9,7 @@ import json
 
 from .abstract_controller import Controller
 from ..config import AppConfig
+from ..util.sql_loader import Loader
 
 xlsx_file = "xlsx"
 xlsx_file_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -16,15 +17,16 @@ xlsx_file_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sh
 
 class FileUploadController(Controller):
 
-    def __init__(self, env: AppConfig):
+    def __init__(self, env: AppConfig, db_loader: Loader, *args, **kwargs):
         super().__init__(env)
+        self.loader = db_loader
 
     def get_blueprint(self) -> Blueprint:
         bp = Blueprint("upload", __name__, url_prefix="/upload")
 
         param_head, param_multi_sheets = "head", "multiSheets"
 
-        @bp.route("/", strict_slashes=False, methods=["POST"])
+        @bp.route("/extractXlsx", strict_slashes=False, methods=["POST"])
         def post():
             f = request.files[xlsx_file]
 
@@ -36,12 +38,12 @@ class FileUploadController(Controller):
                 elif ms == "false" or ms is None:
                     sheet_name = 0
                 else:
-                    sheet_name = [int(i) for i in ms.split(",")]
+                    try:
+                        sheet_name = [int(i) for i in ms.split(",")]
+                    except ValueError:
+                        return abort(400, {"error": "multiSheets must be bool type or 1,2,3 alike"})
 
-                # xs = pd.read_excel(f, na_values="", header=hd, sheet_name=sheet_name, parse_dates=True)
-                xs = pd.read_excel(
-                    f, header=hd, sheet_name=sheet_name
-                )
+                xs = pd.read_excel(f, header=hd, sheet_name=sheet_name)
 
                 if isinstance(xs, dict):
                     res = {k: json.loads(v.to_json(orient="records", date_format="iso")) for k, v in xs.items()}
@@ -50,6 +52,6 @@ class FileUploadController(Controller):
 
                 return res
             else:
-                abort(400)
+                return abort(400, {"error": "file must be .xlsx"})
 
         return bp

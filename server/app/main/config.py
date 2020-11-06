@@ -32,11 +32,13 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEBUG = True
     conn = Config.CFG['connDevGallery']
+    server_port = Config.CFG["serverPort"]
 
 
 class ProductionConfig(Config):
     DEBUG = False
     conn = Config.CFG['connProdGallery']
+    server_port = Config.CFG["serverPort"]
 
 
 class AppConfig(Enum):

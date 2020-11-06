@@ -8,6 +8,7 @@ from typing import List, Type
 
 from .main import AppConfig
 from .main.controller import Controller
+from .main.util.sql_loader import Loader, get_loader_prefix
 
 
 class PrefixMiddleware(object):
@@ -34,8 +35,17 @@ def create_app(prefix: str,
     app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
     # app.url_map.strict_slashes = False
     app.config.from_object(app_cfg)
+
+    conn = app_cfg.value.conn
+    db_loader = Loader(prefix=get_loader_prefix(conn["type"]),
+                       host=conn["host"],
+                       port=conn["port"],
+                       database=conn["database"],
+                       username=conn["username"],
+                       password=conn["password"])
+
     for n in controller_list:
-        ns = n(app_cfg)
+        ns = n(app_cfg, db_loader)
         app.register_blueprint(ns.get_blueprint())
 
     return app

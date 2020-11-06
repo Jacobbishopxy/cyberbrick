@@ -11,7 +11,7 @@ from ..config import AppConfig
 
 class ConfigViewController(Controller):
 
-    def __init__(self, env: AppConfig):
+    def __init__(self, env: AppConfig, *args, **kwargs):
         super().__init__(env)
 
     def get_blueprint(self) -> Blueprint:

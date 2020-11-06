@@ -1,5 +1,5 @@
 {
-  "backendUrl": "http://localhost:8080",
+  "serverPort": 7998,
   "connDevGallery": {
     "name": "gallery",
     "type": "postgres",

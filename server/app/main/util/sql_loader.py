@@ -29,7 +29,16 @@ class Loader(object):
         self.conn = f'{prefix}://{username}:{password}@{host}{pt}/{database}{drv}'
         self._engine = sa.create_engine(self.conn, encoding='utf-8')
 
+    def dispose(self):
+        """
+        dispose db connection
+        """
+        self._engine.dispose()
+
     def execute(self, execute_str: str, **kwargs):
+        """
+        raw execute sql string
+        """
         self._engine.execute(execute_str, **kwargs)
 
     def read(self, query_str: str, **kwargs):
