@@ -37,6 +37,8 @@ def create_app(prefix: str,
     app.config.from_object(app_cfg)
 
     conn = app_cfg.value.conn
+
+    # todo: check long run connection
     db_loader = Loader(prefix=get_loader_prefix(conn["type"]),
                        host=conn["host"],
                        port=conn["port"],
