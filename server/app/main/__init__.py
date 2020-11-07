@@ -6,10 +6,10 @@
 from .config import AppConfig
 from .controller.file_upload import FileUploadController
 from .controller.config_view import ConfigViewController
-from .controller.database_view import DatabaseViewController
+from .controller.database_manipulation import DatabaseManipulationController
 
 controllers = [
     FileUploadController,
     ConfigViewController,
-    DatabaseViewController,
+    DatabaseManipulationController,
 ]

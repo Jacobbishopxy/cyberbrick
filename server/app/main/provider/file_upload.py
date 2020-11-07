@@ -9,6 +9,10 @@ import pandas as pd
 import json
 
 
+xlsx_file = "xlsx"
+xlsx_file_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+
 def extract_xlsx(file: io, param_head: bool, param_multi_sheets: Union[bool, List[int]]):
     hd = 0 if param_head is True else None
     if param_multi_sheets is True:
@@ -28,3 +32,4 @@ def xlsx_to_json(xs: Union[dict, pd.DataFrame]):
         ans = {"0": json.loads(xs.to_json(orient="records", date_format="iso"))}
 
     return ans
+
