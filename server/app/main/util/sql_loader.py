@@ -7,6 +7,7 @@ from typing import List, Optional, Dict
 import json
 import pandas as pd
 import sqlalchemy as sa
+from sqlalchemy.pool import NullPool
 
 
 def get_loader_prefix(db_type: str):
@@ -23,11 +24,15 @@ class Loader(object):
                  password: str,
                  database: str,
                  port: Optional[int] = None,
-                 driver: Optional[str] = None):
+                 driver: Optional[str] = None,
+                 null_pool: bool = False):
         drv = '' if driver is None else f'?driver={driver}'
         pt = '' if port is None else f':{port}'
         self.conn = f'{prefix}://{username}:{password}@{host}{pt}/{database}{drv}'
-        self._engine = sa.create_engine(self.conn, encoding='utf-8')
+        if null_pool:
+            self._engine = sa.create_engine(self.conn, encoding='utf-8', poolclass=NullPool)
+        else:
+            self._engine = sa.create_engine(self.conn, encoding='utf-8')
 
     def dispose(self):
         """

@@ -3,23 +3,47 @@
 @time 11/4/2020
 """
 
+from sqlalchemy import create_engine, Column, Integer, String, Enum as EnumType
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from enum import Enum
-from flask_sqlalchemy import SQLAlchemy
+import datetime
 
-db = SQLAlchemy()
+# SQLALCHEMY_DATABASE_URL = ""
+#
+# engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+# SessionLocal = sessionmaker(autocommit=False,
+#                             autoflush=False,
+#                             bind=engine)
+
+Base = declarative_base()
+
+
+class DictMixIn:
+    def to_dict(self):
+        return {
+            column.name: getattr(self, column.name)
+            if not isinstance(
+                getattr(self, column.name), (datetime.datetime, datetime.date)
+            )
+            else getattr(self, column.name).isoformat()
+            for column in self.__table__.columns
+        }
 
 
 class StorageType(Enum):
     PG = "postgres"
 
 
-class Storage(db.Model):
-    id = db.Column(db.String(), primary_key=True)
-    name = db.Column(db.String(), nullable=False)
-    description = db.Column(db.String(), nullable=True)
-    type = db.Column(db.Enum(StorageType))
-    host = db.Column(db.String())
-    port = db.Column(db.Integer())
-    database = db.Column(db.String())
-    username = db.Column(db.String())
-    password = db.Column(db.String())
+class Storage(Base, DictMixIn):
+    __tablename__ = "Storage"
+
+    id = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    type = Column(EnumType(StorageType))
+    host = Column(String)
+    port = Column(Integer)
+    database = Column(String)
+    username = Column(String)
+    password = Column(String)
