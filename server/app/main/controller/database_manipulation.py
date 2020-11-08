@@ -24,10 +24,28 @@ class DatabaseManipulationController(Controller):
         bp = Blueprint("database", __name__, url_prefix="/database")
 
         @bp.route("/view-storage")
-        def view_storage():
+        def view_storage_api():
             q = f"""SELECT * FROM storage"""
             d = self.loader.read(q)
             return jsonify(d.to_dict(orient="records"))
+
+        @bp.route("/list-table")
+        def list_table_api():
+            """
+            list table names in a database (id specified in storage)
+            """
+            db_id = request.args.get("id")
+            if db_id is None:
+                return abort(400, "Error: database `id` not found")
+
+            temp_db_conn = get_database_source(self.loader, db_id)
+            if isinstance(temp_db_conn, str):
+                return abort(400, temp_db_conn)
+            temp_loader = create_temporary_loader(temp_db_conn)
+            names = temp_loader.table_names()
+            temp_loader.dispose()
+
+            return {"names": names}
 
         # todo: options: 1. insert/upsert, 2. file format
         @bp.route("/insert", strict_slashes=False, methods=["POST"])

@@ -40,6 +40,12 @@ class Loader(object):
         """
         self._engine.dispose()
 
+    def table_names(self):
+        """
+        show all table name
+        """
+        return self._engine.table_names()
+
     def execute(self, execute_str: str, **kwargs):
         """
         raw execute sql string
