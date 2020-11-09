@@ -4,23 +4,32 @@
 
 ### Server
 
-todo
+1. [Flask](https://palletsprojects.com/p/flask/) Web framework
+
+2. [SqlAlchemy](https://www.sqlalchemy.org/) Database ORM
+
+3. [Pandas](https://pandas.pydata.org/) Data Analysis Library
 
 ### Web
 
-1. [nestjs](https://nestjs.com/) NodeJS framework
+1. [Typescript](https://www.typescriptlang.org/) Typed JavaScript
 
-2. [typeorm](https://typeorm.io/) Database ORM
+2. [NestJS](https://nestjs.com/) NodeJS framework
 
-3. [react](https://reactjs.org/) JavaScript library
+3. [Typeorm](https://typeorm.io/) Database ORM
 
-4. [ant design pro](https://beta-pro.ant.design/) UI solution
+4. [React](https://reactjs.org/) JavaScript library
+
+5. [Ant design pro](https://beta-pro.ant.design/) UI solution
 
 ## Environment Prepare
 
 ### Server
 
-todo
+Python version: 3.8
+
+1. `cd server`
+2. `pip install -r requirements.txt`
 
 ### Web
 
@@ -43,7 +52,19 @@ If file not supplied, system would automatically read `config.template.json`.
 
 ### Server
 
-todo
+Please `cd server` first then do the following commands.
+
+1. development mode:
+
+    * `python wsgi.py`
+
+2. production:
+
+    * `python wsgi.py --env=prod`
+
+3. production (docker):
+
+    todo
 
 ### Web
 
