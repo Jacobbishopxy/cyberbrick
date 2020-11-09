@@ -70,11 +70,32 @@ class Loader(object):
     def insert(self,
                table_name: str,
                df: pd.DataFrame,
+               index: bool = True,
                if_exists: str = "append"):
         """
         insert DF to DB
         """
-        df.to_sql(table_name, con=self._engine, index=False, if_exists=if_exists)
+        df.to_sql(table_name, con=self._engine, index=index, if_exists=if_exists)
+
+    def add_primary_uuid_key(self,
+                             table_name: str,
+                             key_col: str):
+        """
+        alter an existing column to uuid column, only worked for PostgresSql
+        """
+
+        q1 = f"""
+        ALTER TABLE "{table_name}"
+        ALTER COLUMN {key_col} SET DATA TYPE UUID USING (uuid_generate_v4()),
+        ALTER COLUMN {key_col} SET DEFAULT uuid_generate_v4()
+        """
+        self._engine.execute(q1)
+
+        q2 = f"""
+        ALTER TABLE "{table_name}"
+        ADD CONSTRAINT "{table_name}_{key_col}_primary" PRIMARY KEY ("{key_col}")      
+        """
+        self._engine.execute(q2)
 
     def list_all_constraint(self, table_name: str) -> List[str]:
         """

@@ -33,9 +33,8 @@ Python version: 3.8
 
 ### Web
 
-Please `cd web` first then do the following commands.
-
-`npm i` or `yarn`
+1. `cd web`
+2. `npm i` or `yarn`
 
 ## Configuration Prepare
 
@@ -45,7 +44,7 @@ todo
 
 ### Web
 
-1. In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)). 
+In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)). 
 If file not supplied, system would automatically read `config.template.json`.
 
 ## Start Project

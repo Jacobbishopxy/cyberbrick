@@ -12,6 +12,9 @@ from ..util.sql_loader import Loader
 from ..provider.file_upload import xlsx_file, xlsx_file_type, extract_xlsx
 from ..provider.database_manipulation import get_database_source, create_temporary_loader
 
+res_success = {"message": "Created", "code": "SUCCESS"}
+res_failure = {"message": "Created", "code": "FAILURE"}
+
 
 class DatabaseManipulationController(Controller):
 
@@ -45,21 +48,27 @@ class DatabaseManipulationController(Controller):
             names = temp_loader.table_names()
             temp_loader.dispose()
 
-            return {"names": names}
+            return jsonify(names)
 
-        # todo: options: 1. insert/upsert, 2. file format
-        @bp.route("/insert", strict_slashes=False, methods=["POST"])
-        def insert_xlsx_api():
+        # todo: options: file format
+        @bp.route("/new-table", strict_slashes=False, methods=["POST"])
+        def new_table_by_xlsx_api():
             """
             insert xlsx file to a database (id specified in storage)
             """
             f = request.files.get(xlsx_file)
             db_id = request.args.get("id")
+            insert_option = request.args.get("insertOption")
+            insert_option = "replace" if insert_option is None else insert_option
 
-            if db_id is None or f is None:
-                return abort(400, "Error: `id` or `file` is required")
+            if db_id is None:
+                return abort(400, "Error: `id` is required")
+            if f is None:
+                return abort(400, "Error: `file` is required")
             if f.content_type != xlsx_file_type:
                 return abort(400, "Error: file must be .xlsx")
+            if insert_option not in ["replace", "append", "fail"]:
+                return abort(400, "Error: `insertOption` should be replace/append")
 
             temp_db_conn = get_database_source(self.loader, db_id)
             if isinstance(temp_db_conn, str):
@@ -70,30 +79,68 @@ class DatabaseManipulationController(Controller):
             d = extract_xlsx(f, param_head=True, param_multi_sheets=True)
 
             for key, value in d.items():
-                temp_loader.insert(key, value)
+                try:
+                    temp_loader.insert(key, value, if_exists=insert_option)
+                except Exception:
+                    return make_response(jsonify(res_failure), 400)
 
             temp_loader.dispose()
 
-            data = {"message": "Created", "code": "SUCCESS"}
-            return make_response(jsonify(data), 201)
+            return make_response(jsonify(res_success), 201)
 
-        @bp.route("/read", strict_slashes=False, methods=["POST"])
-        def read_table_api():
+        @bp.route("/gen-uuid-key", strict_slashes=False, methods=["POST"])
+        def gen_uuid_key_api():
             """
-            read data from a database (id specified in storage)
-            """
-            db_id = request.json.get("id")
-            query_str = request.json.get("query")
 
-            if db_id is None or query_str is None:
-                return abort(400, "Error: `id` or `query` is required")
+            """
+            db_id = request.args.get("id")
+            table_name = request.json.get("tableName")
+            key_col = request.json.get("keyColumn")
+
+            if db_id is None:
+                return abort(400, "Error: `id` is required")
+            if table_name is None:
+                return abort(400, "Error: `tableName` is required in body")
+            if key_col is None:
+                return abort(400, "Error: `keyColumn` is required in body")
 
             temp_db_conn = get_database_source(self.loader, db_id)
             if isinstance(temp_db_conn, str):
                 return abort(400, temp_db_conn)
 
             temp_loader = create_temporary_loader(temp_db_conn)
-            data = temp_loader.read(query_str)
+
+            try:
+                temp_loader.add_primary_uuid_key(table_name, key_col)
+            except Exception:
+                return make_response(jsonify(res_failure), 400)
+
+            temp_loader.dispose()
+
+            return make_response(jsonify(res_success), 201)
+
+        @bp.route("/read", strict_slashes=False, methods=["POST"])
+        def read_table_api():
+            """
+            read data from a database (id specified in storage)
+            """
+            db_id = request.args.get("id")
+            query_str = request.json.get("query")
+
+            if db_id is None:
+                return abort(400, "Error: `id` is required")
+            if query_str is None:
+                return abort(400, "Error: `query` is required")
+
+            temp_db_conn = get_database_source(self.loader, db_id)
+            if isinstance(temp_db_conn, str):
+                return abort(400, temp_db_conn)
+
+            temp_loader = create_temporary_loader(temp_db_conn)
+            try:
+                data = temp_loader.read(query_str)
+            except Exception:
+                return make_response(jsonify(res_failure), 400)
 
             temp_loader.dispose()
 
