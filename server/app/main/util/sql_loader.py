@@ -8,6 +8,7 @@ import json
 import pandas as pd
 import sqlalchemy as sa
 from sqlalchemy.pool import NullPool
+import gc
 
 
 def get_loader_prefix(db_type: str):
@@ -34,11 +35,18 @@ class Loader(object):
         else:
             self._engine = sa.create_engine(self.conn, encoding='utf-8')
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.dispose()
+
     def dispose(self):
         """
         dispose db connection
         """
         self._engine.dispose()
+        gc.collect()
 
     def table_names(self):
         """

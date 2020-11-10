@@ -20,7 +20,7 @@ import axios from "axios"
 import FormData from "form-data"
 
 
-import {serverPort} from "../config"
+import {serverUrl} from "../config"
 
 interface Spreadsheet {
   name: string
@@ -108,17 +108,12 @@ export class FileController {
   async extractXlsxFilePro(file: Express.Multer.File,
                            @Query("head", ParseBoolPipe) head: boolean,
                            @Query("multiSheets") multiSheets: boolean | string) {
-    const baseUrl = `http://localhost:${serverPort}`
-    const url = `api/upload/extractXlsx?head=${head}&multiSheets=${multiSheets}`
+    const url = `${serverUrl}/api/upload/extractXlsx?head=${head}&multiSheets=${multiSheets}`
 
     const form = new FormData()
     form.append("xlsx", file.buffer, file.originalname)
 
-    const ans = await axios.post(
-      `${baseUrl}/${url}`,
-      form,
-      {headers: form.getHeaders()}
-    )
+    const ans = await axios.post(url, form, {headers: form.getHeaders()})
 
     return ans.data
   }

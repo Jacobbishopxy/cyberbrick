@@ -33,7 +33,7 @@ const config = readConfig()
 const connDevGallery = config.connDevGallery as ConnectionOptions
 const connProdGallery = config.connProdGallery as ConnectionOptions
 const connGallery = isProd ? connProdGallery : connDevGallery
-const serverPort = config.serverPort as number
+const serverUrl = `http://localhost:${config.serverPort}`
 
 /**
  * API routes
@@ -82,5 +82,5 @@ const databaseImports =
   })
 
 
-export {serverPort, routerImports, frontendImports, databaseImports}
+export {serverUrl, routerImports, frontendImports, databaseImports}
 

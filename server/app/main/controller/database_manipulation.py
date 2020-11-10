@@ -52,9 +52,8 @@ class DatabaseManipulationController(Controller):
             """
             db_id = request.args.get("id")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-            names = temp_loader.table_names()
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                names = loader.table_names()
 
             return jsonify(names)
 
@@ -72,15 +71,11 @@ class DatabaseManipulationController(Controller):
             if key_col is None:
                 return abort(400, "Error: `keyColumn` is required in body")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-
-            try:
-                temp_loader.add_primary_uuid_key(table_name, key_col)
-            except Exception as e:
-                temp_loader.dispose()
-                return make_response(str(e), 400)
-
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    loader.add_primary_uuid_key(table_name, key_col)
+                except Exception as e:
+                    return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 
@@ -103,20 +98,15 @@ class DatabaseManipulationController(Controller):
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-
-            d = extract_xlsx(f, param_head=True, param_multi_sheets=True)
-
-            for key, value in d.items():
-                try:
-                    temp_loader.insert(key, value, if_exists=insert_option)
-                    if insert_option == "replace":
-                        temp_loader.add_primary_uuid_key(key, "index")
-                except Exception as e:
-                    temp_loader.dispose()
-                    return make_response(str(e), 400)
-
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                d = extract_xlsx(f, param_head=True, param_multi_sheets=True)
+                for key, value in d.items():
+                    try:
+                        loader.insert(key, value, if_exists=insert_option)
+                        if insert_option == "replace":
+                            loader.add_primary_uuid_key(key, "index")
+                    except Exception as e:
+                        return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 
@@ -137,19 +127,16 @@ class DatabaseManipulationController(Controller):
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-
-            try:
-                d = pd.DataFrame(data)
-                if insert_option == "append":
-                    temp_loader.insert(table_name, d, index=False, if_exists=insert_option)
-                else:
-                    temp_loader.insert(table_name, d, if_exists=insert_option)
-            except Exception as e:
-                temp_loader.dispose()
-                return make_response(str(e), 400)
-
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    d = pd.DataFrame(data)
+                    if insert_option == "append":
+                        loader.insert(table_name, d, index=False, if_exists=insert_option)
+                    else:
+                        loader.insert(table_name, d, if_exists=insert_option)
+                except Exception as e:
+                    loader.dispose()
+                    return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 
@@ -170,21 +157,17 @@ class DatabaseManipulationController(Controller):
             if not isinstance(data, dict):
                 return abort(400, "Error: json must be a plain object which keys represent column name")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-
-            try:
-                stringify_data = ",".join([f"\"{key}\" = '{value}'" for key, value in data.items()])
-                q = f"""
-                UPDATE {table_name}
-                SET {stringify_data}
-                WHERE index='{item_id}'
-                """
-                temp_loader.execute(q)
-            except Exception as e:
-                temp_loader.dispose()
-                return make_response(str(e), 400)
-
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    stringify_data = ",".join([f"\"{key}\" = '{value}'" for key, value in data.items()])
+                    q = f"""
+                    UPDATE {table_name}
+                    SET {stringify_data}
+                    WHERE index='{item_id}'
+                    """
+                    loader.execute(q)
+                except Exception as e:
+                    return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 
@@ -199,14 +182,11 @@ class DatabaseManipulationController(Controller):
             if query_str is None:
                 return abort(400, "Error: `query` is required")
 
-            temp_loader = _create_temp_loader(self.loader, db_id)
-            try:
-                data = temp_loader.read(query_str)
-            except Exception as e:
-                temp_loader.dispose()
-                return make_response(str(e), 400)
-
-            temp_loader.dispose()
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    data = loader.read(query_str)
+                except Exception as e:
+                    return make_response(str(e), 400)
 
             return jsonify(json.loads(data.to_json(orient="records")))
 
