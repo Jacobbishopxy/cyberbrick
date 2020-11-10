@@ -61,7 +61,7 @@ class DatabaseManipulationController(Controller):
         @bp.route("/gen-uuid-key", strict_slashes=False, methods=["POST"])
         def gen_uuid_key_api():
             """
-
+            generate a primary uuid key fow a raw table in a database (id specified in storage)
             """
             db_id = request.args.get("id")
             table_name = request.json.get("tableName")

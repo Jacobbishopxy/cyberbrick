@@ -24,7 +24,7 @@ class FileUploadController(Controller):
         def extract_xlsx_api():
             f = request.files.get(xlsx_file)
 
-            if f is None or f.content_type == xlsx_file_type:
+            if f is None or f.content_type != xlsx_file_type:
                 return abort(400, "Error: file must be .xlsx")
 
             hd = True if request.args.get(param_head) == "true" else False

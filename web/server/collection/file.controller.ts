@@ -16,7 +16,11 @@ import {FileInterceptor} from "@nestjs/platform-express"
 
 import {Workbook, Worksheet} from 'exceljs'
 import moment from 'moment'
+import axios from "axios"
+import FormData from "form-data"
 
+
+import {serverPort} from "../config"
 
 interface Spreadsheet {
   name: string
@@ -98,4 +102,24 @@ export class FileController {
     return this.readFromXlsx(file.buffer, options)
   }
 
+  @Post("extractXlsxFilePro")
+  @UseInterceptors(FileInterceptor("xlsx"))
+  @Bind(UploadedFile())
+  async extractXlsxFilePro(file: Express.Multer.File,
+                           @Query("head", ParseBoolPipe) head: boolean,
+                           @Query("multiSheets") multiSheets: boolean | string) {
+    const baseUrl = `http://localhost:${serverPort}`
+    const url = `api/upload/extractXlsx?head=${head}&multiSheets=${multiSheets}`
+
+    const form = new FormData()
+    form.append("xlsx", file.buffer, file.originalname)
+
+    const ans = await axios.post(
+      `${baseUrl}/${url}`,
+      form,
+      {headers: form.getHeaders()}
+    )
+
+    return ans.data
+  }
 }
