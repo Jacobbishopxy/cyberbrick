@@ -17,7 +17,7 @@ export default defineConfig({
     name: 'CyberBrick',
     locale: true,
     siderWidth: 150,
-    logo: '/api/collection/homeLogo',
+    logo: '/api/homeLogo',
     ...defaultSettings
   },
   locale: {

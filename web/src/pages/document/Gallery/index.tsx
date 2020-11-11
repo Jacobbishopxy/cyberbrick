@@ -6,7 +6,7 @@ import React from 'react'
 import {PageContainer} from '@ant-design/pro-layout'
 
 
-const srcGallery = "/api/collection/document/gallery"
+const srcGallery = "/api/document/gallery"
 
 export default () => {
 

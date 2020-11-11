@@ -6,11 +6,12 @@ import {Module} from "@nestjs/common"
 
 import {CollectionModule} from "./collection/collection.module"
 import {GalleryModule} from "./gallery/gallery.module"
-import {routerImports, frontendImports, databaseImports} from "./config"
+import {configImport, routerImports, frontendImports, databaseImports} from "./config"
 
 
 @Module({
   imports: [
+    configImport,
     frontendImports,
     routerImports,
     CollectionModule,

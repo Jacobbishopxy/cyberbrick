@@ -25,7 +25,7 @@ export class HomeController {
   async currentUser() {
     return {
       name: 'Jacob Xie',
-      avatar: '/api/collection/misc/random-unicorn',
+      avatar: '/api/misc/random-unicorn',
       userid: '00000001',
       email: 'jacobbishopxy@gmail.com',
       signature: 'Who drives me forward like fate? The myself striding on my back.',

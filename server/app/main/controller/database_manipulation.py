@@ -79,8 +79,8 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
-        @bp.route("/insert-by-file", strict_slashes=False, methods=["POST"])
-        def insert_by_xlsx_api():
+        @bp.route("/insertByFile", strict_slashes=False, methods=["POST"])
+        def insert_data_by_xlsx_api():
             """
             insert xlsx file to a database (id specified in storage)
             append to existing table when insertOption == "append"
@@ -110,9 +110,9 @@ class DatabaseManipulationController(Controller):
             return make_response(jsonify(res_success), 201)
 
         @bp.route("/insert", strict_slashes=False, methods=["POST"])
-        def insert_table_api():
+        def insert_data_api():
             """
-            insert data into a database's (id specified in storage) table
+            insert data into an existing database's (id specified in storage) table
             """
             db_id = request.args.get("id")
             table_name = request.args.get("tableName")
@@ -120,29 +120,31 @@ class DatabaseManipulationController(Controller):
             insert_option = "append" if insert_option is None else insert_option
             data = request.json
 
+            print("here",data)
+
             if not isinstance(data, list):
                 return abort(400, "Error: json must be a list of plain objects which keys represent column name")
 
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
-            with _create_temp_loader(self.loader, db_id) as loader:
-                try:
-                    d = pd.DataFrame(data)
-                    if insert_option == "append":
-                        loader.insert(table_name, d, index=False, if_exists=insert_option)
-                    else:
-                        loader.insert(table_name, d, if_exists=insert_option)
-                except Exception as e:
-                    loader.dispose()
-                    return make_response(str(e), 400)
+            # with _create_temp_loader(self.loader, db_id) as loader:
+            #     try:
+            #         d = pd.DataFrame(data)
+            #         if insert_option == "append":
+            #             loader.insert(table_name, d, index=False, if_exists=insert_option)
+            #         else:
+            #             loader.insert(table_name, d, if_exists=insert_option)
+            #     except Exception as e:
+            #         loader.dispose()
+            #         return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 
         @bp.route("/update", strict_slashes=False, methods=["POST"])
-        def update_table_api():
+        def update_data_api():
             """
-            update existing table in a database (id specified in storage)
+            update data in an existing table
             """
             db_id = request.args.get("id")
             table_name = request.args.get("tableName")
@@ -164,6 +166,29 @@ class DatabaseManipulationController(Controller):
                     SET {stringify_data}
                     WHERE index='{item_id}'
                     """
+                    loader.execute(q)
+                except Exception as e:
+                    return make_response(str(e), 400)
+
+            return make_response(jsonify(res_success), 201)
+
+        @bp.route("/delete", methods=["DELETE"])
+        def delete_data_api():
+            """
+            delete data in an existing table
+            """
+            db_id = request.args.get("id")
+            table_name = request.args.get("tableName")
+            item_id = request.args.get("itemId")
+
+            if table_name is None:
+                return abort(400, "Error: `tableName` is required")
+            if item_id is None:
+                return abort(400, "Error: `itemId` is required")
+
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    q = f"DELETE FROM {table_name} WHERE index='{item_id}'"
                     loader.execute(q)
                 except Exception as e:
                     return make_response(str(e), 400)

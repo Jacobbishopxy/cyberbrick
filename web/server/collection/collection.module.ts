@@ -8,6 +8,7 @@ import {CollectionService} from "./collection.service"
 import {FileController} from "./file.controller"
 import {HomeController} from "./home.controller"
 import {MiscController} from "./misc.controller"
+import {DatabaseController} from "./database.controller"
 
 
 @Module({
@@ -18,6 +19,7 @@ import {MiscController} from "./misc.controller"
     FileController,
     HomeController,
     MiscController,
+    DatabaseController,
   ]
 })
 export class CollectionModule {}

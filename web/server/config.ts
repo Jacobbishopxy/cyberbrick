@@ -8,6 +8,8 @@ import {Routes, RouterModule} from "nest-router"
 import {ConnectionOptions} from "typeorm"
 import {ServeStaticModule} from "@nestjs/serve-static"
 import {TypeOrmModule} from "@nestjs/typeorm"
+import {ConfigModule} from "@nestjs/config"
+
 import {Author, Category, Content, Dashboard, Element, Mark, Storage, Tag, Template} from "./gallery/entity"
 import {CollectionModule} from "./collection/collection.module"
 import {GalleryModule} from "./gallery/gallery.module"
@@ -33,7 +35,16 @@ const config = readConfig()
 const connDevGallery = config.connDevGallery as ConnectionOptions
 const connProdGallery = config.connProdGallery as ConnectionOptions
 const connGallery = isProd ? connProdGallery : connDevGallery
-const serverUrl = `http://localhost:${config.serverPort}`
+
+
+const configImport = ConfigModule.forRoot({
+  envFilePath: [
+    "../../resources/config.json",
+    "../../resources/config.template.json",
+  ],
+  isGlobal: true,
+})
+
 
 /**
  * API routes
@@ -41,15 +52,12 @@ const serverUrl = `http://localhost:${config.serverPort}`
 const routes: Routes = [
   {
     path: "/api",
+    module: CollectionModule,
     children: [
       {
-        path: "collection",
-        module: CollectionModule
-      },
-      {
-        path: "gallery",
+        path: "/gallery",
         module: GalleryModule
-      }
+      },
     ]
   }
 ]
@@ -82,5 +90,5 @@ const databaseImports =
   })
 
 
-export {serverUrl, routerImports, frontendImports, databaseImports}
+export {configImport, routerImports, frontendImports, databaseImports}
 

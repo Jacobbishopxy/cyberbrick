@@ -15,7 +15,7 @@ import * as DataType from "../../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
 
-const postingUrl = "/api/collection/extract"
+const postingUrl = "/api/extract"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
@@ -39,7 +39,7 @@ const EditorField = (props: ModuleEditorField) => {
     setContent(ctt)
   }
 
-  const saveContentData = (d: object[]) => {
+  const saveContentData = (d: any[]) => {
     const ctt = content ? {
       ...content,
       data: {data: d}
@@ -131,7 +131,7 @@ const genHotTableProps = (height: number | undefined, hideOptions?: string[]) =>
 
 interface SpreadsheetData {
   name: string
-  data: object[]
+  data: any[]
 }
 
 
