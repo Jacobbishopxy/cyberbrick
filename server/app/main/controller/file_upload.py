@@ -18,7 +18,10 @@ class FileUploadController(Controller):
     def get_blueprint(self) -> Blueprint:
         bp = Blueprint("upload", __name__, url_prefix="/upload")
 
-        param_head, param_multi_sheets = "head", "multiSheets"
+        param_head = "head"
+        param_multi_sheets = "multiSheets"
+        param_round = "numberRounding"
+        param_date_format = "dateFormat"
 
         @bp.route("/extractXlsx", strict_slashes=False, methods=["POST"])
         def extract_xlsx_api():
@@ -38,8 +41,14 @@ class FileUploadController(Controller):
                     sheet_name = [int(i) for i in ms.split(",")]
                 except ValueError:
                     return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
+            rd = request.args.get(param_round)
+            if rd is None:
+                rd = 2
+            df = request.args.get(param_date_format)
+            if df is None:
+                df = "%Y/%m/%d"
 
-            d = extract_xlsx(f, hd, sheet_name)
-            return xlsx_to_json(d)
+            d = extract_xlsx(f, hd, sheet_name, int(rd))
+            return xlsx_to_json(d, df)
 
         return bp
