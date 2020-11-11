@@ -26,13 +26,21 @@
 
 ### Server
 
-Python version: 3.8
+versions:
+* Python >= 3.8
 
+commands:
 1. `cd server`
 2. `pip install -r requirements.txt`
 
 ### Web
 
+versions:
+* Node >= 12.13
+* npm >= 6.12
+* yarn >= 1.22
+
+commands:
 1. `cd web`
 2. `npm i` or `yarn`
 

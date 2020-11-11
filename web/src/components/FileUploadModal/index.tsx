@@ -55,7 +55,6 @@ export interface FileUploadModalProps {
   multiSheetDisable?: boolean
 }
 
-// todo: support CSV file, API should be modified as well
 export const FileUploadModal = (props: FileUploadModalProps) => {
   const [form] = Form.useForm()
 
@@ -76,7 +75,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
   const onUploadFile = (options: FileOptions) => {
     if (uploadFiles.length !== 0) {
       const data = new FormData()
-      data.append("xlsx", uploadFiles[0])
+      data.append("file", uploadFiles[0])
       setUploading(true)
 
       axiosPost(props.postingUrl, options, data)

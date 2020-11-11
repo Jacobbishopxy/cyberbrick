@@ -11,7 +11,7 @@ import json
 from .abstract_controller import Controller
 from ..config import AppConfig
 from ..util.sql_loader import Loader
-from ..provider.file_upload import xlsx_file, xlsx_file_type, extract_xlsx
+from ..provider.file_upload import FileType, extract_xlsx
 from ..provider.database_manipulation import get_database_source, create_temporary_loader
 
 res_success = {"message": "Created", "code": "SUCCESS"}
@@ -79,21 +79,20 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
-        # todo: options: file format
         @bp.route("/insert-by-file", strict_slashes=False, methods=["POST"])
         def insert_by_xlsx_api():
             """
             insert xlsx file to a database (id specified in storage)
             append to existing table when insertOption == "append"
             """
-            f = request.files.get(xlsx_file)
+            f = request.files.get("file")
             db_id = request.args.get("id")
             insert_option = request.args.get("insertOption")
             insert_option = "replace" if insert_option is None else insert_option
 
             if f is None:
                 return abort(400, "Error: `file` is required")
-            if f.content_type != xlsx_file_type:
+            if f.content_type != FileType.xlsx.value:
                 return abort(400, "Error: file must be .xlsx")
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")

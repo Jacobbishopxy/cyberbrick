@@ -24,20 +24,21 @@ import {serverUrl} from "../config"
 @Controller()
 export class FileController {
 
-  @Post("extractXlsxFile")
-  @UseInterceptors(FileInterceptor("xlsx"))
+  @Post("extract")
+  @UseInterceptors(FileInterceptor("file"))
   @Bind(UploadedFile())
-  async extractXlsxFile(file: Express.Multer.File,
-                        @Query("head", ParseBoolPipe) head: boolean,
-                        @Query("multiSheets") multiSheets: boolean | string,
-                        @Query('numberRounding', ParseIntPipe) numberRounding: number,
-                        @Query('dateFormat') dateFormat: string) {
-    let url = `${serverUrl}/api/upload/extractXlsx?head=${head}&multiSheets=${multiSheets}`
+  async extractCsvFile(file: Express.Multer.File,
+                       @Query("head", ParseBoolPipe) head: boolean,
+                       @Query("multiSheets") multiSheets: boolean | string,
+                       @Query('numberRounding', ParseIntPipe) numberRounding: number,
+                       @Query('dateFormat') dateFormat: string) {
+    let url = `${serverUrl}/api/upload/extract?head=${head}`
+    if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`
     if (dateFormat) url += `&dateFormat=${dateFormat}`
 
     const form = new FormData()
-    form.append("xlsx", file.buffer, file.originalname)
+    form.append("file", file.buffer, file.originalname)
 
     const ans = await axios.post(url, form, {headers: form.getHeaders()})
 

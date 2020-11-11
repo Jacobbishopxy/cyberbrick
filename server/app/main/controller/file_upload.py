@@ -3,11 +3,11 @@
 @time 11/3/2020
 """
 
-from flask import abort, Blueprint, request
+from flask import abort, Blueprint, request, jsonify
 
 from .abstract_controller import Controller
 from ..config import AppConfig
-from ..provider.file_upload import xlsx_file, xlsx_file_type, extract_xlsx, xlsx_to_json
+from ..provider.file_upload import FileType, extract_xlsx, xlsx_to_json, extract_csv, csv_to_json
 
 
 class FileUploadController(Controller):
@@ -23,24 +23,15 @@ class FileUploadController(Controller):
         param_round = "numberRounding"
         param_date_format = "dateFormat"
 
-        @bp.route("/extractXlsx", strict_slashes=False, methods=["POST"])
+        @bp.route("/extract", strict_slashes=False, methods=["POST"])
         def extract_xlsx_api():
-            f = request.files.get(xlsx_file)
+            f = request.files.get("file")
 
-            if f is None or f.content_type != xlsx_file_type:
-                return abort(400, "Error: file must be .xlsx")
+            if f is None:
+                return abort(400, "Error: file not found")
 
             hd = True if request.args.get(param_head) == "true" else False
-            ms = request.args.get(param_multi_sheets)
-            if ms == "true":
-                sheet_name = True
-            elif ms == "false" or ms is None:
-                sheet_name = False
-            else:
-                try:
-                    sheet_name = [int(i) for i in ms.split(",")]
-                except ValueError:
-                    return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
+
             rd = request.args.get(param_round)
             if rd is None:
                 rd = 2
@@ -48,7 +39,27 @@ class FileUploadController(Controller):
             if df is None:
                 df = "%Y/%m/%d"
 
-            d = extract_xlsx(f, hd, sheet_name, int(rd))
-            return xlsx_to_json(d, df)
+            if f.content_type == FileType.xlsx.value:
+                ms = request.args.get(param_multi_sheets)
+                if ms == "true":
+                    sheet_name = True
+                elif ms == "false" or ms is None:
+                    sheet_name = False
+                else:
+                    try:
+                        sheet_name = [int(i) for i in ms.split(",")]
+                    except ValueError:
+                        return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
+
+                d = extract_xlsx(f, hd, sheet_name, int(rd))
+                ans = xlsx_to_json(d, df)
+            elif f.content_type == FileType.csv.value:
+
+                d = extract_csv(f, hd, int(rd))
+                ans = csv_to_json(d, df)
+            else:
+                return abort(400, "Error: file must be .csv or .xlsx")
+
+            return jsonify(ans)
 
         return bp

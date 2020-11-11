@@ -9,14 +9,9 @@ import pandas as pd
 import json
 from enum import Enum
 
-xlsx_file = "xlsx"
-xlsx_file_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-csv_file = "csv"
-csv_file_type = ".csv"
-
 
 class FileType(Enum):
-    csv = ".csv"
+    csv = "text/csv"
     xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     text = "text/plain"
     image = "image/*"
@@ -68,8 +63,13 @@ def xlsx_to_json(d: Union[dict, pd.DataFrame], date_format: str):
 def extract_csv(file: io,
                 param_head: bool,
                 rounding: Optional[int]):
-    pass
+    hd = 0 if param_head is True else None
+
+    ans = pd.read_csv(file, header=hd)
+    ans = ans.round(rounding) if rounding else ans
+
+    return ans
 
 
 def csv_to_json(d: pd.DataFrame, date_format: str):
-    pass
+    return json.loads(df_datetime_cvt(d, date_format).to_json(orient="records"))
