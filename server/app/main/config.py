@@ -12,6 +12,7 @@ base_dir = Path(__file__).parent
 resources_dir = Path(__file__).parents[3]
 
 config_name = "resources/config.json"
+config_template_name = "resources/config.template.json"
 
 
 def read_config():
@@ -20,7 +21,12 @@ def read_config():
         with open(config_path) as cf:
             return json.loads(cf.read())
     except FileNotFoundError:
-        raise Exception(f"Please check if ${config_name} exists!")
+        config_path = path.join(resources_dir, config_template_name)
+        with open(config_path) as cf:
+            return json.loads(cf.read())
+    except Exception as e:
+        err = f"Please check if {config_name} or {config_template_name} exists! \n\n {e}"
+        raise Exception(err)
 
 
 class Config(object):

@@ -5,7 +5,6 @@
 import fs from "fs"
 import path, {join} from "path"
 import {Routes, RouterModule} from "nest-router"
-import {ConnectionOptions} from "typeorm"
 import {ServeStaticModule} from "@nestjs/serve-static"
 import {TypeOrmModule} from "@nestjs/typeorm"
 import {ConfigModule, registerAs} from "@nestjs/config"
@@ -16,7 +15,9 @@ import {GalleryModule} from "./gallery/gallery.module"
 
 const isProd = process.env.NODE_ENV === "production"
 
-// todo: migrates to configService
+/**
+ * read config file. If `config.json` not existed, use `config.template.json`
+ */
 const readConfig = () => {
   const configFile = path.join(__dirname, "../..", "./resources/config.json")
   let f
@@ -32,12 +33,11 @@ const readConfig = () => {
 
 const config = readConfig()
 
-const connDevGallery = config.connDevGallery as ConnectionOptions
-const connProdGallery = config.connProdGallery as ConnectionOptions
-const connGallery = isProd ? connProdGallery : connDevGallery
 
+/**
+ * Global configuration
+ */
 const configLoad = registerAs("server", () => config)
-
 const configImport = ConfigModule.forRoot({
   load: [configLoad],
   isGlobal: true,
@@ -71,6 +71,7 @@ const frontendImports = ServeStaticModule.forRoot(staticHTML)
 /**
  * database module
  */
+const databaseConfig = isProd ? config.connProdGallery : config.connDevGallery
 const galleryEntities = [
   Author,
   Category,
@@ -83,7 +84,7 @@ const galleryEntities = [
   Template,
 ]
 const databaseImports = TypeOrmModule.forRoot({
-  ...connGallery,
+  ...databaseConfig,
   entities: galleryEntities,
 })
 
