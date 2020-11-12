@@ -5,6 +5,7 @@
 import {
   Controller,
   Delete,
+  Get,
   Post,
   UseInterceptors,
   UploadedFile,
@@ -17,11 +18,35 @@ import {FileInterceptor} from "@nestjs/platform-express"
 import axios from "axios"
 import FormData from "form-data"
 
+
 const dbPath = "api/database"
 
-@Controller()
+@Controller("database")
 export class DatabaseController {
-  constructor(private configService: ConfigService) {  }
+  constructor(private configService: ConfigService) { }
+
+  private getProxy() {
+    const server = this.configService.get("server")
+    return {proxy: {host: server.serverHost, port: server.serverPort}}
+  }
+
+  @Get("viewStorage")
+  async viewStorage() {
+    const url = `/${dbPath}/view-storage`
+
+    const ans = await axios.get(url, this.getProxy())
+
+    return ans.data
+  }
+
+  @Get("listTable")
+  async listTable(@Query("id") dbId: string) {
+    const url = `/${dbPath}/list-table?id=${dbId}`
+
+    const ans = await axios.get(url, this.getProxy())
+
+    return ans.data
+  }
 
   @Post("insertByFile")
   @UseInterceptors(FileInterceptor("file"))
@@ -29,13 +54,12 @@ export class DatabaseController {
   async insertDataByFile(file: Express.Multer.File,
                          @Query("id") dbId: string,
                          @Query("insertOption") insertOption: string) {
-    const serverUrl = this.configService.get("serverUrl")
-    const url = `${serverUrl}/${dbPath}/insertByFile?id=${dbId}&insertOption=${insertOption}`
+    const url = `/${dbPath}/insertByFile?id=${dbId}&insertOption=${insertOption}`
 
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
 
-    const ans = await axios.post(url, form, {headers: form.getHeaders()})
+    const ans = await axios.post(url, form, {...this.getProxy(), headers: form.getHeaders()})
 
     return ans.data
   }
@@ -45,10 +69,9 @@ export class DatabaseController {
                    @Query("tableName") tableName: string,
                    @Query("insertOption") insertOption: string,
                    @Body() data: Record<string, any>) {
-    const serverUrl = this.configService.get("serverUrl")
-    const url = `${serverUrl}/${dbPath}/insert?id=${dbId}&tableName=${tableName}&insertOption=${insertOption}`
+    const url = `/${dbPath}/insert?id=${dbId}&tableName=${tableName}&insertOption=${insertOption}`
 
-    const ans = await axios.post(url, data)
+    const ans = await axios.post(url, data, this.getProxy())
 
     return ans.data
   }

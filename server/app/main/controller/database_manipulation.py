@@ -120,24 +120,22 @@ class DatabaseManipulationController(Controller):
             insert_option = "append" if insert_option is None else insert_option
             data = request.json
 
-            print("here",data)
-
             if not isinstance(data, list):
                 return abort(400, "Error: json must be a list of plain objects which keys represent column name")
 
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
-            # with _create_temp_loader(self.loader, db_id) as loader:
-            #     try:
-            #         d = pd.DataFrame(data)
-            #         if insert_option == "append":
-            #             loader.insert(table_name, d, index=False, if_exists=insert_option)
-            #         else:
-            #             loader.insert(table_name, d, if_exists=insert_option)
-            #     except Exception as e:
-            #         loader.dispose()
-            #         return make_response(str(e), 400)
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    d = pd.DataFrame(data)
+                    if insert_option == "append":
+                        loader.insert(table_name, d, index=False, if_exists=insert_option)
+                    else:
+                        loader.insert(table_name, d, if_exists=insert_option)
+                except Exception as e:
+                    loader.dispose()
+                    return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)
 

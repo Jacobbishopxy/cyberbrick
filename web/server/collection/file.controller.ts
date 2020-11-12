@@ -18,9 +18,14 @@ import axios from "axios"
 import FormData from "form-data"
 
 
-@Controller()
+@Controller("upload")
 export class FileController {
   constructor(private configService: ConfigService) { }
+
+  private getProxy() {
+    const server = this.configService.get("server")
+    return {proxy: {host: server.serverHost, port: server.serverPort}}
+  }
 
   @Post("extract")
   @UseInterceptors(FileInterceptor("file"))
@@ -30,9 +35,7 @@ export class FileController {
                     @Query("multiSheets") multiSheets: boolean | string,
                     @Query('numberRounding', ParseIntPipe) numberRounding: number,
                     @Query('dateFormat') dateFormat: string) {
-    const serverUrl = this.configService.get("serverUrl")
-
-    let url = `${serverUrl}/api/upload/extract?head=${head}`
+    let url = `/api/upload/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`
     if (dateFormat) url += `&dateFormat=${dateFormat}`
@@ -40,7 +43,7 @@ export class FileController {
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
 
-    const ans = await axios.post(url, form, {headers: form.getHeaders()})
+    const ans = await axios.post(url, form, {...this.getProxy(), headers: form.getHeaders()})
 
     return ans.data
   }
