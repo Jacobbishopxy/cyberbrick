@@ -46,14 +46,15 @@ commands:
 
 ## Configuration Prepare
 
+In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)). 
+
 ### Server
 
 todo
 
 ### Web
 
-In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)). 
-If file not supplied, system would automatically read `config.template.json`.
+todo
 
 ## Start Project
 
