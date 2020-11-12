@@ -44,9 +44,11 @@ def extract_xlsx(file: io,
 
     ans = pd.read_excel(file, header=hd, sheet_name=sheet_name)
     if isinstance(ans, dict):
-        ans = {k: v.round(rounding) for k, v in ans.items()}
+        ans = {
+            k: v if rounding is None else v.round(rounding) for k, v in ans.items()
+        }
     else:
-        ans = ans.round(rounding) if rounding else ans
+        ans = ans if rounding is None else ans.round(rounding)
 
     return ans
 
@@ -66,7 +68,7 @@ def extract_csv(file: io,
     hd = 0 if param_head is True else None
 
     ans = pd.read_csv(file, header=hd)
-    ans = ans.round(rounding) if rounding else ans
+    ans = ans if rounding is None else ans.round(rounding)
 
     return ans
 

@@ -12,7 +12,8 @@ from .abstract_controller import Controller
 from ..config import AppConfig
 from ..util.sql_loader import Loader
 from ..provider.file_upload import FileType, extract_xlsx
-from ..provider.database_manipulation import get_database_source, create_temporary_loader
+from ..provider.database_manipulation import get_database_source, create_temporary_loader, gen_update_string, \
+    gen_delete_string
 
 res_success = {"message": "Created", "code": "SUCCESS"}
 res_failure = {"message": "Created", "code": "FAILURE"}
@@ -89,6 +90,8 @@ class DatabaseManipulationController(Controller):
             db_id = request.args.get("id")
             insert_option = request.args.get("insertOption")
             insert_option = "replace" if insert_option is None else insert_option
+            number_rounding = request.files.get("numberRounding")
+            nr = None if number_rounding is None else int(number_rounding)
 
             if f is None:
                 return abort(400, "Error: `file` is required")
@@ -98,7 +101,7 @@ class DatabaseManipulationController(Controller):
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
             with _create_temp_loader(self.loader, db_id) as loader:
-                d = extract_xlsx(f, param_head=True, param_multi_sheets=True)
+                d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
                 for key, value in d.items():
                     try:
                         loader.insert(key, value, if_exists=insert_option)
@@ -158,12 +161,7 @@ class DatabaseManipulationController(Controller):
 
             with _create_temp_loader(self.loader, db_id) as loader:
                 try:
-                    stringify_data = ",".join([f"\"{key}\" = '{value}'" for key, value in data.items()])
-                    q = f"""
-                    UPDATE {table_name}
-                    SET {stringify_data}
-                    WHERE index='{item_id}'
-                    """
+                    q = gen_update_string(table_name=table_name, item_id=item_id, data=data)
                     loader.execute(q)
                 except Exception as e:
                     return make_response(str(e), 400)
@@ -186,7 +184,7 @@ class DatabaseManipulationController(Controller):
 
             with _create_temp_loader(self.loader, db_id) as loader:
                 try:
-                    q = f"DELETE FROM {table_name} WHERE index='{item_id}'"
+                    q = gen_delete_string(table_name=table_name, item_id=item_id)
                     loader.execute(q)
                 except Exception as e:
                     return make_response(str(e), 400)

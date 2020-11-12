@@ -32,9 +32,8 @@ class FileUploadController(Controller):
 
             hd = True if request.args.get(param_head) == "true" else False
 
-            rd = request.args.get(param_round)
-            if rd is None:
-                rd = 2
+            number_rounding = request.args.get(param_round)
+            nr = None if number_rounding is None else int(number_rounding)
             df = request.args.get(param_date_format)
             if df is None:
                 df = "%Y/%m/%d"
@@ -50,12 +49,10 @@ class FileUploadController(Controller):
                         sheet_name = [int(i) for i in ms.split(",")]
                     except ValueError:
                         return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
-
-                d = extract_xlsx(f, hd, sheet_name, int(rd))
+                d = extract_xlsx(f, hd, sheet_name, nr)
                 ans = xlsx_to_json(d, df)
             elif f.content_type == FileType.csv.value:
-
-                d = extract_csv(f, hd, int(rd))
+                d = extract_csv(f, hd, nr)
                 ans = csv_to_json(d, df)
             else:
                 return abort(400, "Error: file must be .csv or .xlsx")

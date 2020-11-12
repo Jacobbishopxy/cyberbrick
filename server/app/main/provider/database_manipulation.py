@@ -20,6 +20,15 @@ def get_database_source(loader: Loader, db_id: str):
     return source.iloc[0].to_dict()
 
 
+def gen_update_string(table_name: str, item_id: str, data: dict):
+    stringify_data = ",".join([f"\"{key}\" = '{value}'" for key, value in data.items()])
+    return f"UPDATE {table_name} SET {stringify_data} WHERE index='{item_id}'"
+
+
+def gen_delete_string(table_name: str, item_id: str):
+    return f"DELETE FROM {table_name} WHERE index='{item_id}'"
+
+
 def create_temporary_loader(conn: dict):
     return Loader(prefix=get_loader_prefix(conn["type"]),
                   host=conn["host"],
