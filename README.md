@@ -110,6 +110,10 @@ Please `cd web` first then do the following commands.
 
     * `yarn build:backend` & `yarn build:frontend` building up server & client respectively
 
+## Project Structure
+
+![Project Structure](doc/ProjectStructure.svg)
+
 ## Detail
 
 ### Server
