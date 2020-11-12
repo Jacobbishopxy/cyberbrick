@@ -12,7 +12,7 @@
     "synchronize": true,
     "autoLoadEntities": true,
     "logging": false,
-    "uuidExtension ": "uuid-ossp"
+    "uuidExtension": "uuid-ossp"
   },
   "connProdGallery": {
     "name": "gallery",
@@ -25,6 +25,6 @@
     "synchronize": true,
     "autoLoadEntities": true,
     "logging": false,
-    "uuidExtension ": "uuid-ossp"
+    "uuidExtension": "uuid-ossp"
   }
 }
