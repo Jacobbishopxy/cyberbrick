@@ -3,6 +3,9 @@
 .gitignore
 .idea
 .prettierrc
-node_modules
-backend
-frontend
+**/node_modules
+web/backend
+web/frontend
+cache
+data
+doc
