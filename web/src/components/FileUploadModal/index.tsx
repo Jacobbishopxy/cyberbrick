@@ -131,7 +131,7 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
       <Form
         {...formItemLayout}
         form={form}
-        initialValues={{numberRounding: 2, dateFormat: "YYYY-MM-DD"}}
+        initialValues={{numberRounding: 2, dateFormat: "%Y-%m-%d"}}
       >
         <Divider plain orientation="left" style={{color: "lightgray"}}>File</Divider>
 
@@ -174,16 +174,16 @@ export const FileUploadModal = (props: FileUploadModalProps) => {
         </Form.Item>
         <Form.Item name="dateFormat" label="Date format">
           <Select>
-            <Select.Option value="YYYY">
+            <Select.Option value="%Y">
               YYYY
             </Select.Option>
-            <Select.Option value="YYYY-MM">
+            <Select.Option value="%Y-%m">
               YYYY-MM
             </Select.Option>
-            <Select.Option value="YYYY-MM-DD">
+            <Select.Option value="%Y-%m-%d">
               YYYY-MM-DD
             </Select.Option>
-            <Select.Option value="YYYY-MM-DD HH:mm:ss">
+            <Select.Option value="%Y-%m-%d %H:%M:%S">
               YYYY-MM-DD HH:mm:ss
             </Select.Option>
           </Select>
