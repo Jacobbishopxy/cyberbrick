@@ -1,11 +1,11 @@
 # Author: Jacob Bishop
 
 # args from --build-arg
-ARG     FUND_IMAGE
+ARG     FUND_IMAGE_NAME
 ARG     FUND_IMAGE_VERSION
 
 # base
-FROM    $FUND_IMAGE:$FUND_IMAGE_VERSION
+FROM    $FUND_IMAGE_NAME:$FUND_IMAGE_VERSION
 
 # make directory
 RUN     mkdir /app

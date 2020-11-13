@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Jacob Bishop
 
-source ../../resources/docker.env
-docker pull "${NODE_IMAGE}":"${NODE_IMAGE_VERSION}"
+source ../../resources/docker.web.env
+docker pull "${NODE_IMAGE_NAME}":"${NODE_IMAGE_VERSION}"
 docker image tag \
-  "${NODE_IMAGE}":"${NODE_IMAGE_VERSION}" "${FUND_IMAGE}":"${FUND_IMAGE_VERSION}"
+  "${NODE_IMAGE_NAME}":"${NODE_IMAGE_VERSION}" "${FUND_IMAGE_NAME}":"${FUND_IMAGE_VERSION}"

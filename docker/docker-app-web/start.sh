@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Jacob Bishop
 
-source ../../resources/docker.env
+source ../../resources/docker.web.env
 export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
 export APP_IMAGE_NAME=${APP_IMAGE_NAME}
 export APP_IMAGE_VERSION=${APP_IMAGE_VERSION}
