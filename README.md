@@ -90,25 +90,25 @@ Please `cd web` first then do the following commands.
 
     * setup node image, only for the first time:
       ```
-      cd docker-node
+      cd docker/docker-node
       bash setup.sh
       ```
     
     * setup dependencies installed image, rerun if dependencies updated:
       ```
-      cd docker-base
+      cd docker/docker-base-web
       bash setup.sh
       ```
       
     * setup built app image and start a container:
       
       ```
-      cd ../docker-app
+      cd docker/docker-app-web
       bash setupt.sh
       bash start.sh
       ```
 
-    * `yarn build:backend` & `yarn build:frontend` building up server & client respectively
+    * `yarn build:backend` & `yarn build:frontend` building up web's server & client respectively
 
 ## Project Structure
 

@@ -37,8 +37,8 @@ screenshot
 .firebase
 .eslintcache
 
-frontend
-backend
+web/frontend
+web/backend
 
 cache
 !cache/.gitkeep

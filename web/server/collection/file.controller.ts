@@ -9,8 +9,6 @@ import {
   UploadedFile,
   Bind,
   Query,
-  ParseBoolPipe,
-  ParseIntPipe
 } from '@nestjs/common'
 import {ConfigService} from "@nestjs/config"
 import {FileInterceptor} from "@nestjs/platform-express"
@@ -31,9 +29,9 @@ export class FileController {
   @UseInterceptors(FileInterceptor("file"))
   @Bind(UploadedFile())
   async extractFile(file: Express.Multer.File,
-                    @Query("head", ParseBoolPipe) head: boolean,
+                    @Query("head") head: boolean,
                     @Query("multiSheets") multiSheets: boolean | string,
-                    @Query('numberRounding', ParseIntPipe) numberRounding: number,
+                    @Query('numberRounding') numberRounding: number,
                     @Query('dateFormat') dateFormat: string) {
     let url = `/api/upload/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`

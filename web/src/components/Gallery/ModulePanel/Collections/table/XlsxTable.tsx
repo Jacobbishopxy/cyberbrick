@@ -5,6 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Checkbox, message, Space, Tabs} from "antd"
 import {HotTable} from "@handsontable/react"
+import _ from "lodash"
 
 import {FileUploadModal} from "@/components/FileUploadModal"
 import {Emoji} from "@/components/Emoji"
@@ -15,7 +16,7 @@ import * as DataType from "../../../GalleryDataType"
 
 import "handsontable/dist/handsontable.full.css"
 
-const postingUrl = "/api/extract"
+const postingUrl = "/api/upload/extract"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
@@ -39,13 +40,13 @@ const EditorField = (props: ModuleEditorField) => {
     setContent(ctt)
   }
 
-  const saveContentData = (d: any[]) => {
+  const saveContentData = (data: any) => {
     const ctt = content ? {
       ...content,
-      data: {data: d}
+      data
     } : {
       date: DataType.today(),
-      data: {data: d}
+      data
     }
     setContent(ctt)
   }
@@ -129,42 +130,41 @@ const genHotTableProps = (height: number | undefined, hideOptions?: string[]) =>
   }
 }
 
-interface SpreadsheetData {
-  name: string
-  data: any[]
-}
-
-
 const PresenterField = (props: ModulePresenterField) => {
 
-  const singleS = (data: SpreadsheetData) => (
+  const singleS = (data: Record<string, any[]>) => (
     <HotTable
       {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
-      data={data[0].data}
+      data={data["0"]}
     />
   )
 
-  const multiS = (data: SpreadsheetData[]) => (
-    <Tabs tabPosition="bottom">
-      {
-        data.map((i: SpreadsheetData) =>
-          <Tabs.TabPane tab={i.name} key={i.name}>
-            <HotTable
-              {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
-              data={i.data}
-            />
-          </Tabs.TabPane>
-        )
-      }
-    </Tabs>
-  )
+  const multiS = (data: Record<string, any[]>) => {
+    const d: any[] = []
+    _.mapValues(data, (v: any[], k: string) => {
+      d.push(
+        <Tabs.TabPane tab={k} key={k}>
+          <HotTable
+            {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
+            data={v}
+          />
+        </Tabs.TabPane>
+      )
+    })
+
+    return (
+      <Tabs tabPosition="bottom">
+        {d}
+      </Tabs>
+    )
+  }
 
   const view = (content: DataType.Content) => {
-    const d = content.data.data
+    const d = _.keys(content.data)
     if (d) {
       if (d.length === 1)
-        return singleS(d)
-      return multiS(d)
+        return singleS(content.data)
+      return multiS(content.data)
     }
     return <></>
   }

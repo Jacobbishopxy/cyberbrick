@@ -89,7 +89,7 @@ export const Dashboard = (props: DashboardProps) => {
       setCanEdit(true)
       return undefined
     }
-    return dsb.category?.marks!
+    return dsb.category?.marks
   }
   const markOnSelect = (value: string) => {
     if (props.markAvailable) setCanEdit(true)
