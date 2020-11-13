@@ -11,7 +11,7 @@ import json
 from .abstract_controller import Controller
 from ..config import AppConfig
 from ..util.sql_loader import Loader
-from ..provider.file_upload import FileType, extract_xlsx
+from ..provider.file_upload import FileType, extract_xlsx, extract_csv
 from ..provider.database_manipulation import get_database_source, create_temporary_loader, gen_update_string, \
     gen_delete_string
 
@@ -80,35 +80,51 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
-        @bp.route("/insertByFile", strict_slashes=False, methods=["POST"])
-        def insert_data_by_xlsx_api():
+        @bp.route("/insert-by-file", strict_slashes=False, methods=["POST"])
+        def insert_data_by_file_api():
             """
-            insert xlsx file to a database (id specified in storage)
+            insert csv file to a database (id specified in storage)
             append to existing table when insertOption == "append"
             """
             f = request.files.get("file")
             db_id = request.args.get("id")
+            table_name = request.args.get("tableName")
             insert_option = request.args.get("insertOption")
             insert_option = "replace" if insert_option is None else insert_option
             number_rounding = request.files.get("numberRounding")
             nr = None if number_rounding is None else int(number_rounding)
 
             if f is None:
-                return abort(400, "Error: `file` is required")
-            if f.content_type != FileType.xlsx.value:
-                return abort(400, "Error: file must be .xlsx")
+                return abort(400, "Error: `file` is required in form data")
             if insert_option not in ["replace", "append", "fail"]:
                 return abort(400, "Error: `insertOption` should be replace/append/fail")
 
-            with _create_temp_loader(self.loader, db_id) as loader:
-                d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
-                for key, value in d.items():
+            if f.content_type == FileType.csv.value:
+                if table_name is None:
+                    return abort(400, "Error: `tableName` is required in query")
+
+                with _create_temp_loader(self.loader, db_id) as loader:
+                    d = extract_csv(f, param_head=True, rounding=nr)
                     try:
-                        loader.insert(key, value, if_exists=insert_option)
+                        loader.insert(table_name, d, if_exists=insert_option)
                         if insert_option == "replace":
-                            loader.add_primary_uuid_key(key, "index")
+                            loader.add_primary_uuid_key(table_name, "index")
                     except Exception as e:
                         return make_response(str(e), 400)
+
+            elif f.content_type == FileType.xlsx.value:
+                with _create_temp_loader(self.loader, db_id) as loader:
+                    d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
+                    for key, value in d.items():
+                        try:
+                            loader.insert(key, value, if_exists=insert_option)
+                            if insert_option == "replace":
+                                loader.add_primary_uuid_key(key, "index")
+                        except Exception as e:
+                            return make_response(str(e), 400)
+
+            else:
+                return abort(400, "Error: file must be .csv or .xlsx")
 
             return make_response(jsonify(res_success), 201)
 

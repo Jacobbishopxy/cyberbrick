@@ -30,6 +30,9 @@ export class DatabaseController {
     return {proxy: {host: server.serverHost, port: server.serverPort}}
   }
 
+  /**
+   * get all database connection config information
+   */
   @Get("viewStorage")
   async viewStorage() {
     const url = `/${dbPath}/view-storage`
@@ -37,6 +40,9 @@ export class DatabaseController {
     return ans.data
   }
 
+  /**
+   * list table in a database
+   */
   @Get("listTable")
   async listTable(@Query("id") dbId: string) {
     const url = `/${dbPath}/list-table?id=${dbId}`
@@ -44,19 +50,31 @@ export class DatabaseController {
     return ans.data
   }
 
+  /**
+   * @param file: csv or xlsx file
+   * @param dbId: database id (specified in storage)
+   * @param insertOption: replace (default)/append/fail
+   * @param tableName: only required when file is csv
+   */
   @Post("insertByFile")
   @UseInterceptors(FileInterceptor("file"))
   @Bind(UploadedFile())
   async insertDataByFile(file: Express.Multer.File,
                          @Query("id") dbId: string,
-                         @Query("insertOption") insertOption: string) {
-    const url = `/${dbPath}/insertByFile?id=${dbId}&insertOption=${insertOption}`
+                         @Query("insertOption") insertOption: string,
+                         @Query("tableName") tableName: string) {
+    let url = `/${dbPath}/insert-by-file?id=${dbId}`
+    if (insertOption) url += `&insertOption=${insertOption}`
+    if (tableName) url += `&tableName=${tableName}`
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
     const ans = await axios.post(encodeURI(url), form, {...this.getProxy(), headers: form.getHeaders()})
     return ans.data
   }
 
+  /**
+   * insert data into a table by json data
+   */
   @Post("insert")
   async insertData(@Query("id") dbId: string,
                    @Query("tableName") tableName: string,
@@ -68,6 +86,9 @@ export class DatabaseController {
     return ans.data
   }
 
+  /**
+   * update data in a table by json data
+   */
   @Post("update")
   async updateData(@Query("id") dbId: string,
                    @Query("tableName") tableName: string,
@@ -78,6 +99,9 @@ export class DatabaseController {
     return ans.data
   }
 
+  /**
+   * delete a row in a table
+   */
   @Delete("delete")
   async deleteData(@Query("id") dbId: string,
                    @Query("tableName") tableName: string,
@@ -87,6 +111,9 @@ export class DatabaseController {
     return ans.data
   }
 
+  /**
+   * read data from a table
+   */
   @Post("read")
   async readData(@Query("id") dbId: string,
                  @Body() data: Record<string, any>) {
