@@ -69,5 +69,7 @@ export class StorageController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  // todo: read Post
 }
 

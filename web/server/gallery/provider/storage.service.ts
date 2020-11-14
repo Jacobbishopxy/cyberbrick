@@ -5,6 +5,7 @@
 import {Injectable} from "@nestjs/common"
 import {InjectRepository} from "@nestjs/typeorm"
 import {createConnection, getConnection, Repository} from "typeorm"
+import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -62,5 +63,37 @@ export class StorageService {
     const repo = getConnection(id)
     return repo.query(sqlString)
   }
+
+  read = (id: string, selects: string[], tableName: string, conditions?: Condition[]) => {
+    const query = genReadStr(selects, tableName, conditions)
+    return this.executeSql(id, query)
+  }
 }
 
+export enum ConditionSymbol {
+  Equal = "=",
+  Greater = ">",
+  GreaterEqual = ">=",
+  Lesser = "<",
+  LesserEqual = "<="
+}
+
+export interface Condition {
+  field: string
+  value: string
+  symbol: ConditionSymbol
+}
+
+const genConditionStr = (c: Condition) =>
+  `"${c.field}" ${c.symbol} '${c.value}'`
+
+const genReadStr = (selects: string[], tableName: string, conditions?: Condition[]) => {
+  let s = `SELECT ${selects.join(",")} FROM "${tableName}"`
+  if (conditions) {
+    s += _.reduce(conditions, (ans: string, item: Condition) => {
+      return `${ans} ${genConditionStr(item)} AND`
+    }, " WHERE ")
+    s = s.slice(0, -4)
+  }
+  return s
+}
