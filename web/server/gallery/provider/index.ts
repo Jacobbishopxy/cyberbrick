@@ -11,6 +11,9 @@ import {StorageService} from "./storage.service"
 import {TagService} from "./tag.service"
 import {TemplateService} from "./template.service"
 
+import {ReadDto} from "./read.dto"
+import {ReadPipe} from "./read.pipe"
+
 export {
   CategoryService,
   ContentService,
@@ -20,5 +23,8 @@ export {
   StorageService,
   TagService,
   TemplateService,
+
+  ReadDto,
+  ReadPipe
 }
 

@@ -4,6 +4,7 @@
 
 import {NestFactory} from "@nestjs/core"
 import {NestExpressApplication} from "@nestjs/platform-express"
+import {BadRequestException, ValidationError, ValidationPipe} from "@nestjs/common"
 
 import {AppModule} from "./app.module"
 
@@ -12,7 +13,13 @@ const port = 7999
 
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        return new BadRequestException(validationErrors)
+      },
+    })
+  )
   await app.listen(port)
   return `App listening on port ${port}`
 }

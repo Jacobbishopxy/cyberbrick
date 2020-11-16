@@ -3,22 +3,20 @@
  */
 
 import {PipeTransform, Injectable, BadRequestException} from '@nestjs/common'
+import {validateSync} from "class-validator"
+import {plainToClass} from "class-transformer"
 
-import {ReadDto, ConditionSymbol} from "./read.dto"
+import {ReadDto} from "./read.dto"
+
 
 @Injectable()
 export class ReadPipe implements PipeTransform<ReadDto> {
   transform(value: ReadDto) {
 
-    if (!value.tableName) {
-      throw new BadRequestException('key: `tableName` is required!')
-    }
+    const check = validateSync(plainToClass(ReadDto, value))
 
-    if (value.conditions) {
-       value.conditions.forEach(c => {
-         if (!Object.values(ConditionSymbol).includes(c.symbol))
-           throw new BadRequestException(`${c.symbol} is inappropriate!`)
-       })
+    if (check.length !== 0) {
+      throw new BadRequestException('validation error')
     }
 
     return value
