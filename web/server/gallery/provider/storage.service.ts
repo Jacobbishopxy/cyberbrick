@@ -10,6 +10,7 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import {Storage} from "../entity"
+import {ReadDto, ConditionDto} from "./read.dto"
 
 
 @Injectable()
@@ -64,36 +65,27 @@ export class StorageService {
     return repo.query(sqlString)
   }
 
-  read = (id: string, selects: string[], tableName: string, conditions?: Condition[]) => {
-    const query = genReadStr(selects, tableName, conditions)
+  read = (id: string, readDto: ReadDto) => {
+    const query = genReadStr(readDto.selects, readDto.tableName, readDto.conditions)
     return this.executeSql(id, query)
   }
 }
 
-export enum ConditionSymbol {
-  Equal = "=",
-  Greater = ">",
-  GreaterEqual = ">=",
-  Lesser = "<",
-  LesserEqual = "<="
-}
-
-export interface Condition {
-  field: string
-  value: string
-  symbol: ConditionSymbol
-}
-
-const genConditionStr = (c: Condition) =>
+const genConditionStr = (c: ConditionDto) =>
   `"${c.field}" ${c.symbol} '${c.value}'`
 
-const genReadStr = (selects: string[], tableName: string, conditions?: Condition[]) => {
-  let s = `SELECT ${selects.join(",")} FROM "${tableName}"`
+const genReadStr = (selects: string[] | undefined,
+                    tableName: string,
+                    conditions?: ConditionDto[]) => {
+  const selection = selects ? selects.map(i => `"${i}"`).join(", ") : "*"
+  let s = `SELECT ${selection} FROM "${tableName}"`
+
   if (conditions) {
-    s += _.reduce(conditions, (ans: string, item: Condition) => {
+    s += _.reduce(conditions, (ans: string, item: ConditionDto) => {
       return `${ans} ${genConditionStr(item)} AND`
     }, " WHERE ")
     s = s.slice(0, -4)
   }
   return s
 }
+

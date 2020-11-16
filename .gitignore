@@ -37,6 +37,7 @@ screenshot
 .firebase
 .eslintcache
 
+out
 web/frontend
 web/backend
 
