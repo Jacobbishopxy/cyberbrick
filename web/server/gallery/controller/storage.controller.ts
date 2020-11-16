@@ -6,7 +6,8 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 
 import * as storageService from "../provider/storage.service"
 import {Storage} from "../entity"
-import {ReadDto, ReadPipe} from "../provider"
+import {ReadDto} from "../dto"
+import {ReadPipe} from "../pipe"
 
 
 @Controller()

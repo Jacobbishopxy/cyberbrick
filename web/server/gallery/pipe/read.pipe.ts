@@ -6,7 +6,7 @@ import {PipeTransform, Injectable, BadRequestException} from '@nestjs/common'
 import {validateSync} from "class-validator"
 import {plainToClass} from "class-transformer"
 
-import {ReadDto} from "./read.dto"
+import {ReadDto} from "../dto/read.dto"
 
 
 @Injectable()

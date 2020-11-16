@@ -10,7 +10,7 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import {Storage} from "../entity"
-import {ReadDto, ConditionDto} from "./read.dto"
+import {ReadDto, ConditionDto} from "../dto/read.dto"
 
 
 @Injectable()
@@ -35,7 +35,7 @@ export class StorageService {
   async deleteStorage(id: string) {
     const i = await this.getStorageById(id)
     if (i) {
-      this.repo.remove(i, {listeners: true})
+      await this.repo.remove(i, {listeners: true})
       return true
     }
     return false

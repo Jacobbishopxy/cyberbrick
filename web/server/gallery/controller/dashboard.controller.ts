@@ -4,7 +4,7 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {DashboardDescriptionModifyDto} from "./dashboard.dto"
+import {DashboardDescriptionModifyDto} from "../dto"
 import * as dashboardService from "../provider/dashboard.service"
 import {Dashboard} from "../entity"
 

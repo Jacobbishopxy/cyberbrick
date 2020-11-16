@@ -4,7 +4,7 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {CategoryPureDto} from "./category.dto"
+import {CategoryPureDto} from "../dto"
 import * as categoryService from "../provider/category.service"
 import {Category, Mark, Tag} from "../entity"
 

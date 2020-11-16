@@ -4,7 +4,7 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {TemplateCopyElementsDto} from "./template.dto"
+import {TemplateCopyElementsDto} from "../dto"
 import * as templateService from "../provider/template.service"
 import {Template} from "../entity"
 
