@@ -52,6 +52,11 @@ export class StorageController {
 
   // ===================================================================================================================
 
+  @Get("getAllStorageSimple")
+  getAllStorageSimple() {
+    return this.service.getAllStorageSimple()
+  }
+
   @Get("testConnection")
   testConnection(@Query("id") id: string) {
     return this.service.testConnection(id)

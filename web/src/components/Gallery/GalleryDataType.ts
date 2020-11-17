@@ -168,6 +168,12 @@ export const getStorageType = (v: string) => {
   }
 }
 
+export interface StorageSimple {
+  id: string
+  name: string
+  description?: string
+}
+
 export interface Storage {
   id?: string
   name: string

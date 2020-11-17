@@ -10,7 +10,7 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import {Storage} from "../entity"
-import {ReadDto, ConditionDto} from "../dto/read.dto"
+import {ReadDto, ConditionDto} from "../dto"
 
 
 @Injectable()
@@ -42,6 +42,10 @@ export class StorageService {
   }
 
   // ===================================================================================================================
+
+  getAllStorageSimple = () => {
+    return this.repo.find({select: [common.id, common.name, common.description]})
+  }
 
   testConnection = (id: string) => {
     const repo = getConnection(id)

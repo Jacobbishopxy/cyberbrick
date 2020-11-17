@@ -118,6 +118,12 @@ declare namespace GalleryAPI {
     }
   }
 
+  export interface StorageSimple {
+    id: string
+    name: string
+    description?: string
+  }
+
   export interface Storage {
     id?: string
     name: string

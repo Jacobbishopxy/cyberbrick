@@ -6,6 +6,7 @@ import {request} from "umi"
 
 
 const base = "/api/gallery"
+const baseDb = "/api/database"
 
 
 // Category
@@ -171,6 +172,7 @@ export const getElementContent = async (id: string, date?: string, markName?: st
 
 
 // Storage
+// web server API
 
 export const getAllStorages = async (): Promise<GalleryAPI.Storage[]> =>
   request(`${base}/storages`)
@@ -189,6 +191,9 @@ export const deleteStorage = async (id: string) =>
     method: "delete"
   })
 
+export const getAllStorageSimple = async (): Promise<GalleryAPI.StorageSimple[]> =>
+  request(`${base}/getAllStorageSimple`)
+
 export const testConnection = async (id: string): Promise<boolean> =>
   request(`${base}/testConnection?id=${id}`)
 
@@ -203,4 +208,34 @@ export const read = async (id: string, readOption: GalleryAPI.Read) =>
     method: "post",
     data: readOption
   })
+
+// Storage
+// server API (redirect)
+
+export const databaseListTable = async (id: string): Promise<string[]> =>
+  request(`${baseDb}/list-table?id=${id}`)
+
+export const databaseInsert = async (id: string, insertOption: string, tableName: string, data: any) => {
+  let path = `${baseDb}/insert?id=${id}&tableName=${tableName}`
+  if (insertOption) path += `&insertOption=${insertOption}`
+  request(path, {
+    method: "post",
+    data
+  })
+}
+
+export const databaseUpdate = async (id: string, tableName: string, itemId: string, data: any) => {
+  const path = `${baseDb}/update?id=${id}&tableName=${tableName}&itemId=${itemId}`
+  request(path, {
+    method: "post",
+    data
+  })
+}
+
+export const databaseDelete = async (id: string, tableName: string, itemId: string) => {
+  const path = `${baseDb}/delete?id=${id}&tableName=${tableName}&itemId=${itemId}`
+  request(path, {
+    method: "delete",
+  })
+}
 
