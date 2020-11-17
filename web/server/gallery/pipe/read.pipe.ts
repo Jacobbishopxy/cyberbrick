@@ -6,18 +6,17 @@ import {PipeTransform, Injectable, BadRequestException} from '@nestjs/common'
 import {validateSync} from "class-validator"
 import {plainToClass} from "class-transformer"
 
-import {ReadDto} from "../dto/read.dto"
+import {ReadDto} from "../dto"
 
 
 @Injectable()
 export class ReadPipe implements PipeTransform<ReadDto> {
-  transform(value: ReadDto) {
+  transform(value: ReadDto): ReadDto {
 
     const check = validateSync(plainToClass(ReadDto, value))
 
-    if (check.length !== 0) {
-      throw new BadRequestException('validation error')
-    }
+    if (check.length !== 0)
+      throw new BadRequestException("validation error")
 
     return value
   }

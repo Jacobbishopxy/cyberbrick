@@ -4,9 +4,10 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {CategoryPureDto} from "../dto"
 import * as categoryService from "../provider/category.service"
 import {Category, Mark, Tag} from "../entity"
+import {CategoryPureDto} from "../dto"
+import {CategoryPurePipe} from "../pipe"
 
 
 @Controller()
@@ -88,7 +89,7 @@ export class CategoryController {
   }
 
   @Post("saveCategory")
-  savePureCategory(@Body() category: CategoryPureDto) {
+  savePureCategory(@Body(CategoryPurePipe) category: CategoryPureDto) {
     try {
       return this.service.saveCategory(category as Category)
     } catch (err) {

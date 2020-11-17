@@ -4,9 +4,10 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {TemplateCopyElementsDto} from "../dto"
 import * as templateService from "../provider/template.service"
 import {Template} from "../entity"
+import {TemplateCopyElementsDto} from "../dto"
+import {TemplateCopyElementsPipe} from "../pipe"
 
 
 @Controller()
@@ -92,7 +93,7 @@ export class TemplateController {
   }
 
   @Post("copyTemplateElements")
-  copyTemplateElements(@Body() cpy: TemplateCopyElementsDto) {
+  copyTemplateElements(@Body(TemplateCopyElementsPipe) cpy: TemplateCopyElementsDto) {
     try {
       return this.service
         .copyTemplateElements(

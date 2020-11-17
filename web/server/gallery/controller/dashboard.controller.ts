@@ -4,9 +4,10 @@
 
 import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
-import {DashboardDescriptionModifyDto} from "../dto"
 import * as dashboardService from "../provider/dashboard.service"
 import {Dashboard} from "../entity"
+import {DashboardDescriptionModifyDto} from "../dto"
+import {DashboardDescriptionModifyPipe} from "../pipe"
 
 
 @Controller()
@@ -79,7 +80,7 @@ export class DashboardController {
   }
 
   @Post("modifyDashboardDescription")
-  modifyDashboardDescription(@Body() dashboard: DashboardDescriptionModifyDto) {
+  modifyDashboardDescription(@Body(DashboardDescriptionModifyPipe) dashboard: DashboardDescriptionModifyDto) {
     try {
       return this.service.modifyDashboardDescription(dashboard.name, dashboard.description)
     } catch (err) {
