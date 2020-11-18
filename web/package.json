@@ -46,6 +46,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@ant-design/pro-layout": "^6.5.14",
+    "@ant-design/pro-table": "^2.10.1",
     "@handsontable/react": "^4.0.0",
     "@nestjs/common": "^7.5.2",
     "@nestjs/config": "^0.5.0",
