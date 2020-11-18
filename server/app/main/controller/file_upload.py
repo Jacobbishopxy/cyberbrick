@@ -18,6 +18,7 @@ class FileUploadController(Controller):
     def get_blueprint(self) -> Blueprint:
         bp = Blueprint("upload", __name__, url_prefix="/upload")
 
+        param_head = "head"
         param_multi_sheets = "multiSheets"
         param_round = "numberRounding"
         param_date_format = "dateFormat"
@@ -30,6 +31,7 @@ class FileUploadController(Controller):
                 return abort(400, "Error: file not found")
 
             number_rounding = request.args.get(param_round)
+            hd = True if request.args.get(param_head) == "true" else False
             nr = None if number_rounding is None else int(number_rounding)
             df = request.args.get(param_date_format)
             if df is None:
@@ -46,10 +48,10 @@ class FileUploadController(Controller):
                         sheet_name = [int(i) for i in ms.split(",")]
                     except ValueError:
                         return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
-                d = extract_xlsx(f, False, sheet_name, nr)
+                d = extract_xlsx(f, hd, sheet_name, nr)
                 ans = xlsx_to_json(d, df)
             elif f.content_type == FileType.csv.value:
-                d = extract_csv(f, False, nr)
+                d = extract_csv(f, hd, nr)
                 ans = csv_to_json(d, df)
             else:
                 return abort(400, "Error: file must be .csv or .xlsx")

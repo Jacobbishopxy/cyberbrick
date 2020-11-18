@@ -104,13 +104,13 @@ export default defineConfig({
       icon: 'ExperimentOutlined',
       routes: [
         {
-          name: 'local-storage',
+          name: 'localstorage',
           path: '/demo/localstorage',
           component: './demo/LocalStorage',
         },
         {
-          name: 'rectangleChart',
-          path: '/demo/rectangleChart',
+          name: 'rectangle-chart',
+          path: '/demo/rectangle-chart',
           component: './demo/RectangleChart',
         },
         {
@@ -118,6 +118,11 @@ export default defineConfig({
           path: '/demo/charts',
           component: './demo/Charts',
         },
+        {
+          name: 'sql-lab',
+          path: '/demo/sql-lab',
+          component: './demo/SqlLab'
+        }
       ],
     },
     {

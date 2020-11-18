@@ -57,9 +57,10 @@ export default {
   'menu.gallery.dashboard': 'Dashboard',
 
   'menu.demo': 'Demo',
-  'menu.demo.local-storage': 'Local Storage',
-  'menu.demo.rectangleChart': 'RectangleChart',
+  'menu.demo.localstorage': 'Local Storage',
+  'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
+  'menu.demo.sql-lab': 'Sql Lab',
 
   'menu.document': 'Document',
   'menu.document.gallery': 'Gallery',
