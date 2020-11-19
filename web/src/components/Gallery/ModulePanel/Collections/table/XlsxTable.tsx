@@ -7,16 +7,17 @@ import {Button, Checkbox, message, Space, Tabs} from "antd"
 import {HotTable} from "@handsontable/react"
 import _ from "lodash"
 
-import {FileUploadModal} from "@/components/FileUploadModal"
+import {FileExtractModal} from "@/components/FileUploadModal"
 import {Emoji} from "@/components/Emoji"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
+import {fileExtract} from "../../../Misc/FileUploadConfig"
+
 
 import "handsontable/dist/handsontable.full.css"
 
-const postingUrl = "/api/upload/extract"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
@@ -102,11 +103,11 @@ const EditorField = (props: ModuleEditorField) => {
         </Button>
       </Space>
 
-      <FileUploadModal
-        postingUrl={postingUrl}
+      <FileExtractModal
         setVisible={setVisible}
         visible={visible}
-        upload={saveContentData}
+        upload={fileExtract}
+        uploadResHandle={saveContentData}
       />
     </div>
   )

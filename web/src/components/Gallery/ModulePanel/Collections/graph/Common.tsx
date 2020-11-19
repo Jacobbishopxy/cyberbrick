@@ -8,13 +8,13 @@ import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
 import _ from "lodash"
 
-import {FileUploadModal} from "@/components/FileUploadModal"
+import {FileExtractModal} from "@/components/FileUploadModal"
 import {Emoji} from "@/components/Emoji"
 
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
+import {fileExtract} from "../../../Misc/FileUploadConfig"
 
-const postingUrl = "/api/upload/extract"
 
 type DataIndexDirection = "vertical" | "horizontal"
 
@@ -173,11 +173,11 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
           </Button>
         </Space>
 
-        <FileUploadModal
-          postingUrl={postingUrl}
+        <FileExtractModal
           setVisible={setVisible}
           visible={visible}
-          upload={saveContentData}
+          upload={fileExtract}
+          uploadResHandle={saveContentData}
           multiSheetDisable
         />
       </div>
