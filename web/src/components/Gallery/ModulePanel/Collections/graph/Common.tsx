@@ -8,7 +8,7 @@ import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
 import _ from "lodash"
 
-import {FileUploadModal, SheetStyle} from "@/components/FileUploadModal"
+import {FileUploadModal} from "@/components/FileUploadModal"
 import {Emoji} from "@/components/Emoji"
 
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
@@ -73,7 +73,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     }
 
     // 2. set data
-    const saveContentData = (d: SheetStyle[]) => {
+    const saveContentData = (d: any[]) => {
       const [dataSource, fields] = convertChartData(d.map(i => i.data)[0], content!.config!.dataIndexDir)
 
       if (checkUniqueness(fields)) {

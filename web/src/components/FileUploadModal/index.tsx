@@ -28,12 +28,7 @@ interface FileOptions {
   dateFormat?: string
 }
 
-export interface SheetStyle {
-  name: string
-  data: [][]
-}
-
-const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<SheetStyle[]>> => {
+const axiosPost = (url: string, options: FileOptions, data: any): Promise<AxiosResponse<any[]>> => {
   let u = `${url}?`
   u += `multiSheets=${options.multiSheets || false}&`
   if (options.numberRounding) u += `numberRounding=${options.numberRounding}&`
@@ -51,7 +46,7 @@ export interface FileUploadModalProps {
   postingUrl: string
   setVisible: (value: boolean) => void
   visible: boolean
-  upload: (value: SheetStyle[]) => void
+  upload: (value: any[]) => void
   multiSheetDisable?: boolean
 }
 

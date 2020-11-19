@@ -5,10 +5,14 @@
 import React, {useRef, useState} from 'react'
 import {Card, Menu, Space, Button, Tooltip, Input, Select, Row, Col} from 'antd'
 import ProTable, {ProColumns} from '@ant-design/pro-table'
-import {CaretRightOutlined} from "@ant-design/icons"
+import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
 
+import {Editor} from "@/components/Editor"
 import {devData} from "./devData"
+import {FileUploadModal} from "@/components/FileUploadModal"
 
+
+const postingUrl = "/api/database/insert"
 
 const genTableColumn = (data: Record<string, any>[]) => {
   if (data.length > 0) {
@@ -20,6 +24,11 @@ const genTableColumn = (data: Record<string, any>[]) => {
   return []
 }
 
+const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
+  <Editor
+    icons={{open: <PlusOutlined/>, close: <MinusOutlined/>}}
+    onChange={props.onClick}
+  />
 
 interface StructProps {
   dom: React.ReactElement
@@ -27,15 +36,22 @@ interface StructProps {
   onDatabaseSelect: (id: string) => Promise<string[]>
   onTableSelect: (value: string) => void
   onExecute: (sql: string) => void
+  // onCreateNewTable: () => void
 }
 
 const Struct = (props: StructProps) => {
   const [sqlStr, setSqlStr] = useState<string>()
+  const [selectedDb, setSelectedDb] = useState<string>()
   const [tableList, setTableList] = useState<string[]>([])
+  const [queryVisible, setQueryVisible] = useState<boolean>(false)
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
 
   const onDatabaseSelect = async (id: string) => {
     const tl = await props.onDatabaseSelect(id)
-    if (tl) setTableList(tl)
+    if (tl) {
+      setSelectedDb(id)
+      setTableList(tl)
+    }
   }
 
   const onExecute = () => {
@@ -47,7 +63,7 @@ const Struct = (props: StructProps) => {
       size="small"
     >
       <Row>
-        <Col span={4}>
+        <Col span={3}>
           <Space direction="vertical" style={{width: "100%"}}>
             <span style={{fontWeight: "bold"}}>Table list</span>
             <Menu
@@ -63,34 +79,56 @@ const Struct = (props: StructProps) => {
           </Space>
         </Col>
 
-        <Col span={20}>
+        <Col span={21}>
           <Space direction="vertical" style={{width: "100%"}}>
-            <Space>
-              <Select
-                style={{width: 200}}
-                onSelect={onDatabaseSelect}
-                size="small"
-                placeholder="Database"
-              >
-                {
-                  props.databaseList.map(s =>
-                    <Select.Option key={s} value={s}>
-                      {s}
-                    </Select.Option>
-                  )
-                }
-              </Select>
-            </Space>
-            <Input.TextArea
-              rows={10}
-              allowClear
-              onChange={e => setSqlStr(e.target.value)}
-            />
-            <Tooltip title="Execute">
-              <Button type="primary" icon={<CaretRightOutlined/>} onClick={onExecute}>
-                Execute
-              </Button>
-            </Tooltip>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <Space>
+                <Select
+                  style={{width: 200}}
+                  onSelect={onDatabaseSelect}
+                  size="small"
+                  placeholder="Database"
+                >
+                  {
+                    props.databaseList.map(s =>
+                      <Select.Option key={s} value={s}>
+                        {s}
+                      </Select.Option>
+                    )
+                  }
+                </Select>
+              </Space>
+              <Space>
+                <Button
+                  type="primary"
+                  size="small"
+                  disabled={!selectedDb}
+                  onClick={() => setUploadVisible(true)}
+                >Upload</Button>
+                <QueryViewer onClick={setQueryVisible}/>
+              </Space>
+              <FileUploadModal
+                postingUrl={postingUrl}
+                setVisible={setUploadVisible}
+                visible={uploadVisible}
+                upload={() => {}}
+              />
+            </div>
+            {
+              queryVisible ?
+                <>
+                  <Input.TextArea
+                    rows={10}
+                    allowClear
+                    onChange={e => setSqlStr(e.target.value)}
+                  />
+                  <Tooltip title="Execute">
+                    <Button type="primary" icon={<CaretRightOutlined/>} onClick={onExecute}>
+                      Execute
+                    </Button>
+                  </Tooltip>
+                </> : <></>
+            }
             {props.dom}
           </Space>
         </Col>
@@ -119,7 +157,7 @@ const SqlLab = (props: SqlLabProps) => {
   const ref = useRef<ActionType>()
 
   const [data, setData] = useState<any[]>([])
-  const [columns, setColumns] = useState<ProColumns<any>[]>([{title: "index"}])
+  const [columns, setColumns] = useState<ProColumns<any>[]>([{}])
 
   const onSelectTable = async (tb: string) => {
     const res = await props.onSelectTable(tb)
@@ -158,7 +196,6 @@ const SqlLab = (props: SqlLabProps) => {
       }
       params={{key: data}}
       request={async () => {
-        await waitTime(1000)
         return {
           success: true,
           data,
@@ -169,14 +206,6 @@ const SqlLab = (props: SqlLabProps) => {
       headerTitle="Result"
     />
   )
-}
-
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true)
-    }, time)
-  })
 }
 
 
