@@ -9,14 +9,14 @@ const fileInsertUrl = "/api/database/insert"
 
 
 export interface FileExtractOption extends Record<string, any> {
-  multiSheets?: boolean
+  fileOptions?: string[]
   numberRounding?: number
   dateFormat?: string
 }
 
 export const fileExtract = (option: FileExtractOption, data: any): Promise<AxiosResponse> => {
   let u = `${fileExtractUrl}?`
-  u += `multiSheets=${option.multiSheets || false}&`
+  u += `multiSheets=${option.fileOptions?.includes("multiSheets") || false}&`
   if (option.numberRounding) u += `numberRounding=${option.numberRounding}&`
   if (option.dateFormat) u += `dateFormat=${option.dateFormat}&`
 

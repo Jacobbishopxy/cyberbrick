@@ -37,7 +37,7 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
           <Select>
             {
               props.idList.map(i => (
-                <Select.Option value={i.id}>{i.name}</Select.Option>
+                <Select.Option key={i.id} value={i.id}>{i.name}</Select.Option>
               ))
             }
           </Select>
@@ -46,8 +46,6 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
         <Form.Item name="tableName" label="Table name">
           <Input placeholder="Table name"/>
         </Form.Item>
-
-        <Divider plain orientation="left" style={{color: "lightgray"}}>Insert options</Divider>
 
         <Form.Item name="insertOption" label="Insert option">
           <Radio.Group>

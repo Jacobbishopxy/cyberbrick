@@ -3,16 +3,15 @@
  */
 
 import React, {useRef, useState} from 'react'
-import {Card, Menu, Space, Button, Tooltip, Input, Select, Row, Col} from 'antd'
+import {Card, Menu, Space, Button, Tooltip, Input, Select, Row, Col, Descriptions} from 'antd'
 import ProTable, {ProColumns} from '@ant-design/pro-table'
 import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
 
 import {Editor} from "@/components/Editor"
 import {devData} from "./devData"
-import {FileUploadModal} from "@/components/FileUploadModal"
+import {FileInsertModal} from "@/components/FileUploadModal"
+import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"
 
-
-const postingUrl = "/api/database/insert"
 
 const genTableColumn = (data: Record<string, any>[]) => {
   if (data.length > 0) {
@@ -30,9 +29,14 @@ const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
     onChange={props.onClick}
   />
 
+interface DbList {
+  id: string
+  name: string
+}
+
 interface StructProps {
-  dom: React.ReactElement
-  databaseList: string[]
+  children: React.ReactElement
+  databaseList: DbList[]
   onDatabaseSelect: (id: string) => Promise<string[]>
   onTableSelect: (value: string) => void
   onExecute: (sql: string) => void
@@ -91,8 +95,13 @@ const Struct = (props: StructProps) => {
                 >
                   {
                     props.databaseList.map(s =>
-                      <Select.Option key={s} value={s}>
-                        {s}
+                      <Select.Option key={s.id} value={s.id}>
+                        <Descriptions column={2}>
+                          <Descriptions.Item>DB: </Descriptions.Item>
+                          <Descriptions.Item>{s.name}</Descriptions.Item>
+                          <Descriptions.Item>ID: </Descriptions.Item>
+                          <Descriptions.Item>{s.id}</Descriptions.Item>
+                        </Descriptions>
                       </Select.Option>
                     )
                   }
@@ -107,11 +116,12 @@ const Struct = (props: StructProps) => {
                 >Upload</Button>
                 <QueryViewer onClick={setQueryVisible}/>
               </Space>
-              <FileUploadModal
-                postingUrl={postingUrl}
+              <FileInsertModal
+                idList={props.databaseList}
                 setVisible={setUploadVisible}
                 visible={uploadVisible}
-                upload={() => {}}
+                upload={fileInsert}
+                uploadResHandle={() => {}}
               />
             </div>
             {
@@ -129,10 +139,9 @@ const Struct = (props: StructProps) => {
                   </Tooltip>
                 </> : <></>
             }
-            {props.dom}
+            {props.children}
           </Space>
         </Col>
-
       </Row>
     </Card>
   )
@@ -140,7 +149,8 @@ const Struct = (props: StructProps) => {
 
 
 interface SqlLabProps {
-  databaseList: string[]
+  rowKey: string
+  databaseList: DbList[]
   onSelectDatabase: (db: string) => Promise<string[]>
   onSelectTable: (tb: string) => Promise<any[]>
   onExecuteSql: (sqlStr: string) => Promise<any[]>
@@ -181,24 +191,25 @@ const SqlLab = (props: SqlLabProps) => {
     <ProTable
       actionRef={ref}
       columns={columns}
-      rowKey="index"
-      pagination={{
-        showSizeChanger: true,
-      }}
+      rowKey={props.rowKey}
+      pagination={{showSizeChanger: true}}
       tableRender={(_, dom) =>
         <Struct
-          dom={dom}
           databaseList={props.databaseList}
           onDatabaseSelect={props.onSelectDatabase}
           onTableSelect={onSelectTable}
           onExecute={onExecuteSql}
-        />
+        >
+          {dom}
+        </Struct>
       }
       params={{key: data}}
       request={async () => {
+        const d = data.map(i => ({...i, key: i[props.rowKey]}))
+        console.log(d)
         return {
           success: true,
-          data,
+          data: d,
         }
       }}
       search={false}
@@ -208,9 +219,18 @@ const SqlLab = (props: SqlLabProps) => {
   )
 }
 
+const dbList = [
+  {
+    name: "dev 0",
+    id: "1"
+  },
+  {
+    name: "dev 1",
+    id: "2"
+  }
+]
 
 export default () => {
-  const dbList = ["dev 0", "dev 1"]
 
   const onSelectDatabase = (db: string): Promise<string[]> => {
     return new Promise((resolve) => {
@@ -238,6 +258,7 @@ export default () => {
 
   return (
     <SqlLab
+      rowKey="S_INFO_WINDCODE"
       databaseList={dbList}
       onSelectDatabase={onSelectDatabase}
       onSelectTable={onSelectTable}
