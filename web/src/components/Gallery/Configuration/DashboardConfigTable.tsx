@@ -6,6 +6,7 @@ import React, {useState} from 'react'
 import {Table} from "antd"
 
 import {Editor} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
 import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
@@ -34,10 +35,10 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
       <Table
         dataSource={props.data.map(i => ({...i, key: i.name}))}
         title={() =>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
+          <SpaceBetween>
             <span style={{fontWeight: "bold"}}>Dashboard configuration</span>
             <Editor onChange={setEditable}/>
-          </div>
+          </SpaceBetween>
         }
         size="small"
         bordered

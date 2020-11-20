@@ -7,6 +7,7 @@ import {Select, Space} from "antd"
 import {SaveTwoTone, SettingTwoTone} from '@ant-design/icons'
 
 import {Editor} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
 
 
@@ -27,7 +28,7 @@ export const Controller = (props: ControllerProps) => {
     })
 
   return (
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+    <SpaceBetween>
       <Space>
         <Select
           style={{width: 120}}
@@ -65,7 +66,7 @@ export const Controller = (props: ControllerProps) => {
           onChange={props.onEdit}
         />
       </div>
-    </div>
+    </SpaceBetween>
   )
 }
 

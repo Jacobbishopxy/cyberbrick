@@ -14,6 +14,7 @@ import {
 
 import * as DataType from "../../GalleryDataType"
 import {AddModuleModal} from "./AddModuleModal"
+import {SpaceBetween} from "@/components/SpaceBetween"
 
 export interface ModuleControllerProps {
   markAvailable?: boolean
@@ -113,7 +114,7 @@ export const Controller = (props: ModuleControllerProps) => {
   ), [props.canEdit])
 
   return (
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+    <SpaceBetween>
       <Space>
         <Select
           style={{width: 120}}
@@ -148,7 +149,7 @@ export const Controller = (props: ModuleControllerProps) => {
       <div>
         {edit ? editMode : idleMode}
       </div>
-    </div>
+    </SpaceBetween>
   )
 }
 

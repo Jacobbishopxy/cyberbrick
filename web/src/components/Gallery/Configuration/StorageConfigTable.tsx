@@ -5,11 +5,13 @@
 import React, {useEffect, useState} from 'react'
 
 import {Editor} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
 import {Button, Table} from "antd"
 
 import {StringField, NumberField, SelectionField, PasswordField, OperationField} from "./FieldView"
 import {NewStorageModal} from "./NewStorageModal"
+
 
 export interface StorageConfigTableProps {
   data: DataType.Storage[]
@@ -102,10 +104,10 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
       <Table
         dataSource={props.data.map(i => ({...i, key: i.id}))}
         title={() =>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
+          <SpaceBetween>
             <span style={{fontWeight: "bold"}}>Storage configuration</span>
             <Editor onChange={setEditable}/>
-          </div>
+          </SpaceBetween>
         }
         size="small"
         bordered

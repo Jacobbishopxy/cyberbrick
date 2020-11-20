@@ -7,6 +7,7 @@ import {Table, Tag} from "antd"
 import {PlusOutlined} from '@ant-design/icons'
 
 import {Editor} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
 import {CreationModal} from "../Misc/CreationModal"
 import {TextBuilder} from "../Misc/TextBuilder"
@@ -79,10 +80,10 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
       <Table
         dataSource={props.data.map(i => ({...i, key: i.name}))}
         title={() =>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
+          <SpaceBetween>
             <span style={{fontWeight: "bold"}}>Category configuration</span>
             <Editor onChange={setEditable}/>
-          </div>
+          </SpaceBetween>
         }
         size="small"
         bordered

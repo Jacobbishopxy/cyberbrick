@@ -3,11 +3,12 @@
  */
 
 import React, {useRef, useState} from 'react'
-import {Card, Menu, Space, Button, Tooltip, Input, Select, Row, Col, Descriptions} from 'antd'
+import {Card, Menu, Space, Button, Tooltip, Input, Select, Row, Col} from 'antd'
 import ProTable, {ProColumns} from '@ant-design/pro-table'
-import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
+import {CaretRightOutlined, MinusOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons"
 
-import {Editor} from "@/components/Editor"
+import {EditorButton} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import {devData} from "./devData"
 import {FileInsertModal} from "@/components/FileUploadModal"
 import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"
@@ -24,8 +25,10 @@ const genTableColumn = (data: Record<string, any>[]) => {
 }
 
 const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
-  <Editor
+  <EditorButton
     icons={{open: <PlusOutlined/>, close: <MinusOutlined/>}}
+    name={{open: "Query", close: "Close"}}
+    size="small"
     onChange={props.onClick}
   />
 
@@ -74,19 +77,16 @@ const Struct = (props: StructProps) => {
               onSelect={(e) => props.onTableSelect(e.key as string)}
               mode="inline"
             >
-              {
-                tableList.map(m => (
-                  <Menu.Item key={m}>{m}</Menu.Item>
-                ))
-              }
+              {tableList.map(m => (<Menu.Item key={m}>{m}</Menu.Item>))}
             </Menu>
           </Space>
         </Col>
 
         <Col span={21}>
           <Space direction="vertical" style={{width: "100%"}}>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <SpaceBetween>
               <Space>
+                <span>DB: </span>
                 <Select
                   style={{width: 200}}
                   onSelect={onDatabaseSelect}
@@ -95,22 +95,17 @@ const Struct = (props: StructProps) => {
                 >
                   {
                     props.databaseList.map(s =>
-                      <Select.Option key={s.id} value={s.id}>
-                        <Descriptions column={2}>
-                          <Descriptions.Item>DB: </Descriptions.Item>
-                          <Descriptions.Item>{s.name}</Descriptions.Item>
-                          <Descriptions.Item>ID: </Descriptions.Item>
-                          <Descriptions.Item>{s.id}</Descriptions.Item>
-                        </Descriptions>
-                      </Select.Option>
+                      <Select.Option key={s.id} value={s.id}>{s.name}</Select.Option>
                     )
                   }
                 </Select>
+                {selectedDb ? <span>ID: {selectedDb}</span> : <></>}
               </Space>
               <Space>
                 <Button
                   type="primary"
                   size="small"
+                  icon={<UploadOutlined/>}
                   disabled={!selectedDb}
                   onClick={() => setUploadVisible(true)}
                 >Upload</Button>
@@ -123,7 +118,7 @@ const Struct = (props: StructProps) => {
                 upload={fileInsert}
                 uploadResHandle={() => {}}
               />
-            </div>
+            </SpaceBetween>
             {
               queryVisible ?
                 <>
@@ -206,7 +201,6 @@ const SqlLab = (props: SqlLabProps) => {
       params={{key: data}}
       request={async () => {
         const d = data.map(i => ({...i, key: i[props.rowKey]}))
-        console.log(d)
         return {
           success: true,
           data: d,
@@ -266,3 +260,4 @@ export default () => {
     />
   )
 }
+

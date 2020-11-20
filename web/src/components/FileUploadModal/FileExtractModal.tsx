@@ -26,55 +26,54 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
 
   return (
     <BaseModal
+      initialValues={{numberRounding: 2, dateFormat: "%Y-%m-%d"}}
       setVisible={props.setVisible}
       visible={props.visible}
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
-      <>
-        {
-          props.multiSheetDisable ? <></> :
-            <>
-              <Divider plain orientation="left" style={{color: "lightgray"}}>File options</Divider>
+      {
+        props.multiSheetDisable ? <></> :
+          <>
+            <Divider plain orientation="left" style={{color: "lightgray"}}>File options</Divider>
 
-              <Form.Item name="fileOptions" label="File options">
-                <Checkbox.Group>
-                  <Checkbox
-                    value="multiSheets"
-                  >
-                    Multiple sheets
-                  </Checkbox>
-                </Checkbox.Group>
-              </Form.Item>
-            </>
-        }
+            <Form.Item name="fileOptions" label="File options">
+              <Checkbox.Group>
+                <Checkbox
+                  value="multiSheets"
+                >
+                  Multiple sheets
+                </Checkbox>
+              </Checkbox.Group>
+            </Form.Item>
+          </>
+      }
 
-        <Divider plain orientation="left" style={{color: "lightgray"}}>Cell options</Divider>
+      <Divider plain orientation="left" style={{color: "lightgray"}}>Cell options</Divider>
 
-        <Form.Item name="numberRounding" label="Rounding">
-          <InputNumber
-            min={0}
-            max={10}
-            precision={0}
-          />
-        </Form.Item>
-        <Form.Item name="dateFormat" label="Date format">
-          <Select>
-            <Select.Option value="%Y">
-              YYYY
-            </Select.Option>
-            <Select.Option value="%Y-%m">
-              YYYY-MM
-            </Select.Option>
-            <Select.Option value="%Y-%m-%d">
-              YYYY-MM-DD
-            </Select.Option>
-            <Select.Option value="%Y-%m-%d %H:%M:%S">
-              YYYY-MM-DD HH:mm:ss
-            </Select.Option>
-          </Select>
-        </Form.Item>
-      </>
+      <Form.Item name="numberRounding" label="Rounding">
+        <InputNumber
+          min={0}
+          max={10}
+          precision={0}
+        />
+      </Form.Item>
+      <Form.Item name="dateFormat" label="Date format">
+        <Select>
+          <Select.Option value="%Y">
+            YYYY
+          </Select.Option>
+          <Select.Option value="%Y-%m">
+            YYYY-MM
+          </Select.Option>
+          <Select.Option value="%Y-%m-%d">
+            YYYY-MM-DD
+          </Select.Option>
+          <Select.Option value="%Y-%m-%d %H:%M:%S">
+            YYYY-MM-DD HH:mm:ss
+          </Select.Option>
+        </Select>
+      </Form.Item>
     </BaseModal>
   )
 }

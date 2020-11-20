@@ -25,42 +25,41 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
 
   return (
     <BaseModal
+      initialValues={{insertOption: "replace"}}
       setVisible={props.setVisible}
       visible={props.visible}
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
-      <>
-        <Divider plain orientation="left" style={{color: "lightgray"}}>Database options</Divider>
+      <Divider plain orientation="left" style={{color: "lightgray"}}>Database options</Divider>
 
-        <Form.Item name="id" label="Database">
-          <Select>
-            {
-              props.idList.map(i => (
-                <Select.Option key={i.id} value={i.id}>{i.name}</Select.Option>
-              ))
-            }
-          </Select>
-        </Form.Item>
+      <Form.Item name="id" label="Database">
+        <Select>
+          {
+            props.idList.map(i => (
+              <Select.Option key={i.id} value={i.id}>{i.name}</Select.Option>
+            ))
+          }
+        </Select>
+      </Form.Item>
 
-        <Form.Item name="tableName" label="Table name">
-          <Input placeholder="Table name"/>
-        </Form.Item>
+      <Form.Item name="tableName" label="Table name">
+        <Input placeholder="Table name"/>
+      </Form.Item>
 
-        <Form.Item name="insertOption" label="Insert option">
-          <Radio.Group>
-            <Radio value="replace">
-              Replace
-            </Radio>
-            <Radio value="append">
-              Append
-            </Radio>
-            <Radio value="fail">
-              Fail
-            </Radio>
-          </Radio.Group>
-        </Form.Item>
-      </>
+      <Form.Item name="insertOption" label="Insert option">
+        <Radio.Group>
+          <Radio value="replace">
+            Replace
+          </Radio>
+          <Radio value="append">
+            Append
+          </Radio>
+          <Radio value="fail">
+            Fail
+          </Radio>
+        </Radio.Group>
+      </Form.Item>
     </BaseModal>
   )
 }

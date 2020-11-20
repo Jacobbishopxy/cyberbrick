@@ -22,7 +22,8 @@ const formItemLayout = {
 
 
 export interface BaseModalProps {
-  children: React.ReactElement
+  children: React.ReactElement[]
+  initialValues?: Record<any, any>
   setVisible: (value: boolean) => void
   visible: boolean
   upload: (option: Record<string, any>, data: any) => Promise<any>
@@ -93,7 +94,7 @@ export const BaseModal = (props: BaseModalProps) => {
       <Form
         {...formItemLayout}
         form={form}
-        initialValues={{numberRounding: 2, dateFormat: "%Y-%m-%d"}}
+        initialValues={props.initialValues}
       >
         <Divider plain orientation="left" style={{color: "lightgray"}}>File</Divider>
 
@@ -112,5 +113,7 @@ export const BaseModal = (props: BaseModalProps) => {
   )
 }
 
-BaseModal.defaultProps = {} as Partial<BaseModalProps>
+BaseModal.defaultProps = {
+  initialValues: {}
+} as Partial<BaseModalProps>
 

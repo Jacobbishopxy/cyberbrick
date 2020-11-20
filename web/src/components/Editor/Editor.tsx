@@ -1,5 +1,5 @@
 /**
- * Created by Jacob Xie on 10/16/2020.
+ * Created by Jacob Xie on 11/20/2020
  */
 
 import React, {useState} from "react"
@@ -42,16 +42,14 @@ export const Editor = (props: EditorProps) => {
   }
 
   return (
-    <div>
-      <Button
-        shape="circle"
-        size="small"
-        type="link"
-        onClick={editableOnChange}
-      >
-        {show()}
-      </Button>
-    </div>
+    <Button
+      shape="circle"
+      size="small"
+      type="link"
+      onClick={editableOnChange}
+    >
+      {show()}
+    </Button>
   )
 }
 
