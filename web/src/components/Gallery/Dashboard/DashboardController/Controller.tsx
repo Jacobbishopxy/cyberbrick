@@ -12,9 +12,10 @@ import {
   SettingOutlined
 } from "@ant-design/icons"
 
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
 import {AddModuleModal} from "./AddModuleModal"
-import {SpaceBetween} from "@/components/SpaceBetween"
+
 
 export interface ModuleControllerProps {
   markAvailable?: boolean

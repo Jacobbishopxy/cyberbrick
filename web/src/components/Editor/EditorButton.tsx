@@ -18,7 +18,7 @@ export interface EditorButtonProps {
 export const EditorButton = (props: EditorButtonProps) => {
 
   const buttonProps = {
-    type: props.type || "primary",
+    type: props.type,
     size: props.size || "middle",
     shape: props.shape
   }
@@ -49,9 +49,6 @@ export const EditorButton = (props: EditorButtonProps) => {
 }
 
 EditorButton.defaultProps = {
-  defaultOpen: false,
-  type: "primary",
-  size: "middle",
-  shape: undefined
-}
+  defaultOpen: false
+} as Partial<EditorButtonProps>
 

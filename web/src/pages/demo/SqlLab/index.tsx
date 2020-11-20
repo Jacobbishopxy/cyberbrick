@@ -9,9 +9,8 @@ import {CaretRightOutlined, MinusOutlined, PlusOutlined, UploadOutlined} from "@
 
 import {EditorButton} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
-import {devData} from "./devData"
 import {FileInsertModal} from "@/components/FileUploadModal"
-import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"
+import {devData} from "./devData"
 
 
 const genTableColumn = (data: Record<string, any>[]) => {
@@ -43,7 +42,7 @@ interface StructProps {
   onDatabaseSelect: (id: string) => Promise<string[]>
   onTableSelect: (value: string) => void
   onExecute: (sql: string) => void
-  // onCreateNewTable: () => void
+  onUpload: (option: any, data: any) => Promise<any>
 }
 
 const Struct = (props: StructProps) => {
@@ -115,7 +114,7 @@ const Struct = (props: StructProps) => {
                 idList={props.databaseList}
                 setVisible={setUploadVisible}
                 visible={uploadVisible}
-                upload={fileInsert}
+                upload={props.onUpload}
                 uploadResHandle={() => {}}
               />
             </SpaceBetween>
@@ -149,6 +148,7 @@ interface SqlLabProps {
   onSelectDatabase: (db: string) => Promise<string[]>
   onSelectTable: (tb: string) => Promise<any[]>
   onExecuteSql: (sqlStr: string) => Promise<any[]>
+  onUpload: (option: any, data: any) => Promise<any>
 }
 
 interface ActionType {
@@ -194,6 +194,7 @@ const SqlLab = (props: SqlLabProps) => {
           onDatabaseSelect={props.onSelectDatabase}
           onTableSelect={onSelectTable}
           onExecute={onExecuteSql}
+          onUpload={props.onUpload}
         >
           {dom}
         </Struct>
@@ -250,6 +251,9 @@ export default () => {
     })
   }
 
+  const fileInsert = (option: any, data: any): Promise<any> =>
+    Promise.reject()
+
   return (
     <SqlLab
       rowKey="S_INFO_WINDCODE"
@@ -257,6 +261,7 @@ export default () => {
       onSelectDatabase={onSelectDatabase}
       onSelectTable={onSelectTable}
       onExecuteSql={onExecute}
+      onUpload={fileInsert}
     />
   )
 }
