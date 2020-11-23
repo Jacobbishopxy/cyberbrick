@@ -49,7 +49,6 @@ export const Struct = (props: StructProps) => {
         </Col>
       </Row>
     </Card>
-
   )
 }
 

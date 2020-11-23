@@ -213,12 +213,12 @@ export const read = async (id: string, readOption: GalleryAPI.Read) =>
 // server API (redirect)
 
 export const databaseListTable = async (id: string): Promise<string[]> =>
-  request(`${baseDb}/list-table?id=${id}`)
+  request(`${baseDb}/listTable?id=${id}`)
 
 export const databaseInsert = async (id: string, insertOption: string, tableName: string, data: any) => {
   let path = `${baseDb}/insert?id=${id}&tableName=${tableName}`
   if (insertOption) path += `&insertOption=${insertOption}`
-  request(path, {
+  return request(path, {
     method: "post",
     data
   })
@@ -226,7 +226,7 @@ export const databaseInsert = async (id: string, insertOption: string, tableName
 
 export const databaseUpdate = async (id: string, tableName: string, itemId: string, data: any) => {
   const path = `${baseDb}/update?id=${id}&tableName=${tableName}&itemId=${itemId}`
-  request(path, {
+  return request(path, {
     method: "post",
     data
   })
@@ -234,7 +234,7 @@ export const databaseUpdate = async (id: string, tableName: string, itemId: stri
 
 export const databaseDelete = async (id: string, tableName: string, itemId: string) => {
   const path = `${baseDb}/delete?id=${id}&tableName=${tableName}&itemId=${itemId}`
-  request(path, {
+  return request(path, {
     method: "delete",
   })
 }
