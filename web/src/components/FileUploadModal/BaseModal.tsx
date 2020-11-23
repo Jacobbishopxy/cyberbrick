@@ -27,7 +27,7 @@ export interface BaseModalProps {
   setVisible: (value: boolean) => void
   visible: boolean
   upload: (option: Record<string, any>, data: any) => Promise<any>
-  uploadResHandle: (value: any) => void
+  uploadResHandle?: (value: any) => void
 }
 
 export const BaseModal = (props: BaseModalProps) => {
@@ -56,7 +56,7 @@ export const BaseModal = (props: BaseModalProps) => {
         message.success(res.statusText)
         setUploading(false)
         setUploadFiles([])
-        props.uploadResHandle(res.data)
+        if (props.uploadResHandle) props.uploadResHandle(res.data)
       })
         .catch(err => {
           setUploading(false)

@@ -18,7 +18,7 @@ export interface FileInsertModalProps {
   setVisible: (value: boolean) => void
   visible: boolean
   upload: (option: Record<string, any>, data: any) => Promise<any>
-  uploadResHandle: (value: any) => void
+  uploadResHandle?: (value: any) => void
 }
 
 export const FileInsertModal = (props: FileInsertModalProps) => {
