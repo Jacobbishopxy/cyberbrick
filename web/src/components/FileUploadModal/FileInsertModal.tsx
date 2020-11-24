@@ -21,6 +21,7 @@ export interface FileInsertModalProps {
   uploadResHandle?: (value: any) => void
 }
 
+// todo: if file is xlsx, no table name is required
 export const FileInsertModal = (props: FileInsertModalProps) => {
 
   return (

@@ -15,7 +15,7 @@ import {FileInsertModal} from "@/components/FileUploadModal"
 const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
   <EditorButton
     icons={{open: <PlusOutlined/>, close: <MinusOutlined/>}}
-    name={{open: "Query", close: "Close"}}
+    name={{open: "Execution", close: "Close"}}
     size="small"
     onChange={props.onClick}
   />
@@ -33,7 +33,7 @@ const QueryField = (props: QueryFieldProps) => {
   }
 
   return props.queryVisible ?
-    <>
+    <Space direction="vertical" style={{width: "100%"}}>
       <Input.TextArea
         rows={10}
         allowClear
@@ -44,7 +44,7 @@ const QueryField = (props: QueryFieldProps) => {
           Execute
         </Button>
       </Tooltip>
-    </> : <></>
+    </Space> : <></>
 }
 
 
@@ -67,7 +67,7 @@ export const Header = (props: HeaderProps) => {
 
 
   return (
-    <>
+    <Space direction="vertical" style={{width: "100%"}}>
       <SpaceBetween>
         <Space>
           <span>DB: </span>
@@ -109,7 +109,7 @@ export const Header = (props: HeaderProps) => {
         upload={props.onUpload}
         // uploadResHandle={() => {}}
       />
-    </>
+    </Space>
   )
 }
 

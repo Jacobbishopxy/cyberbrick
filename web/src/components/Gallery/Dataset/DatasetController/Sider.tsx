@@ -3,21 +3,90 @@
  */
 
 import React from 'react'
-import {Menu, Space} from "antd"
+import {Button, List, Modal, Space, Tooltip} from "antd"
+import {DeleteOutlined, ExclamationCircleOutlined} from "@ant-design/icons"
+
+import {SpaceBetween} from "@/components/SpaceBetween"
+
+
+interface ListRenderProps {
+  item: string
+  onTableSelect: (table: string) => void
+  onTableDelete: (table: string) => void
+}
+
+const showDeleteConfirm = (onOk: () => void) =>
+  Modal.confirm({
+    title: "Are you sure delete this table?",
+    icon: <ExclamationCircleOutlined/>,
+    okText: "Yes",
+    okType: "danger",
+    cancelText: "No",
+    onOk,
+  })
+
+const ListRender = (props: ListRenderProps) => {
+
+  const onDeleteClick = (item: string) => () => {
+    showDeleteConfirm(() => props.onTableDelete(item))
+  }
+
+  return (
+    <List.Item
+      key={props.item}
+    >
+      <SpaceBetween style={{width: "100%"}}>
+        <Button
+          type="link"
+          onClick={() => props.onTableSelect(props.item)}
+        >
+          <div style={{width: 150, overflow: "hidden", textOverflow: "ellipsis"}}>
+            <Tooltip placement="topLeft" title={props.item}>
+              {props.item}
+            </Tooltip>
+          </div>
+        </Button>
+        <Button
+          type="link"
+          danger
+          icon={<DeleteOutlined/>}
+          onClick={onDeleteClick(props.item)}
+        />
+      </SpaceBetween>
+    </List.Item>
+  )
+}
+
 
 export interface SiderProps {
   tableList: string[]
   onTableSelect: (table: string) => void
+  onTableDelete: (table: string) => void
 }
 
-export const Sider = (props: SiderProps) =>
-  <Space direction="vertical" style={{width: "100%"}}>
-    <span style={{fontWeight: "bold"}}>Table list</span>
-    <Menu
-      onSelect={(e) => props.onTableSelect(e.key as string)}
-      mode="inline"
-    >
-      {props.tableList.map(m => (<Menu.Item key={m}>{m}</Menu.Item>))}
-    </Menu>
-  </Space>
+export const Sider = (props: SiderProps) => {
+
+  const renderItem = (item: string) =>
+    <ListRender
+      item={item}
+      onTableSelect={props.onTableSelect}
+      onTableDelete={props.onTableDelete}
+    />
+
+  return (
+    <Space direction="vertical" style={{width: "100%"}}>
+      <span style={{fontWeight: "bold"}}>Table list</span>
+      <List
+        size="small"
+        pagination={{
+          size: "small",
+          defaultPageSize: 10,
+          showSizeChanger: true
+        }}
+        dataSource={props.tableList}
+        renderItem={renderItem}
+      />
+    </Space>
+  )
+}
 

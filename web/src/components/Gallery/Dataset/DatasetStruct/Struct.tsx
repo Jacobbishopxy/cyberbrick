@@ -14,6 +14,7 @@ export interface StructProps {
   storages: DataType.StorageSimple[]
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (tableName: string) => void
+  tableOnDelete: (tableName: string) => void
   sqlOnExecute: (sql: string) => void
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
@@ -21,7 +22,7 @@ export interface StructProps {
 export const Struct = (props: StructProps) => {
   const [tableList, setTableList] = useState<string[]>([])
 
-  const storageOnSelect = async (id: string) => {
+  const getTableList = async (id: string) => {
     const tl = await props.storageOnSelect(id)
     if (tl) setTableList(tl)
   }
@@ -29,22 +30,25 @@ export const Struct = (props: StructProps) => {
   return (
     <Card size="small">
       <Row>
-        <Col span={3}>
+        <Col span={4}>
           <Sider
             tableList={tableList}
             onTableSelect={props.tableOnSelect}
+            onTableDelete={props.tableOnDelete}
           />
         </Col>
 
-        <Col span={21}>
+        <Col span={20}>
           <Space direction="vertical" style={{width: "100%"}}>
             <Header
               storages={props.storages}
-              storageOnSelect={storageOnSelect}
+              storageOnSelect={getTableList}
               onExecute={props.sqlOnExecute}
               onUpload={props.fileOnUpload}
             />
-            {props.children}
+            <div style={{overflowX: "scroll"}}>
+              {props.children}
+            </div>
           </Space>
         </Col>
       </Row>

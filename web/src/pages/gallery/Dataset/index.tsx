@@ -33,16 +33,20 @@ export default () => {
   }
 
   const tableOnSelect = (tableName: string) => {
-    if (selectedStorage) {
+    if (selectedStorage)
       return GalleryService.read(selectedStorage, {tableName})
-    }
+    return Promise.reject()
+  }
+
+  const tableOnDelete = (tableName: string) => {
+    if (selectedStorage)
+      return GalleryService.databaseDropTable(selectedStorage, tableName)
     return Promise.reject()
   }
 
   const sqlOnExecute = (sql: string) => {
-    if (selectedStorage) {
+    if (selectedStorage)
       return GalleryService.executeSql(selectedStorage, sql)
-    }
     return Promise.reject()
   }
 
@@ -52,6 +56,7 @@ export default () => {
       storages={storages}
       storageOnSelect={storageOnSelect}
       tableOnSelect={tableOnSelect}
+      tableOnDelete={tableOnDelete}
       sqlOnExecute={sqlOnExecute}
       fileOnUpload={fileInsert}
     />

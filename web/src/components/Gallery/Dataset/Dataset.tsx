@@ -3,7 +3,6 @@
  */
 
 import React, {useRef, useState} from 'react'
-
 import ProTable, {ProColumns} from "@ant-design/pro-table"
 
 import {Struct} from "./DatasetStruct/Struct"
@@ -30,6 +29,7 @@ export interface DatasetProps {
   storages: DataType.StorageSimple[]
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (tableName: string) => Promise<any[]>
+  tableOnDelete: (tableName: string) => Promise<any[]>
   sqlOnExecute: (sql: string) => Promise<any[]>
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
@@ -38,13 +38,20 @@ export const Dataset = (props: DatasetProps) => {
   const ref = useRef<ActionType>()
 
   const [data, setData] = useState<any[]>([])
-  const [columns, setColumns] = useState<ProColumns<any>[]>([{}])
+  const [columns, setColumns] = useState<ProColumns[]>([{}])
 
   const onSelectTable = async (tb: string) => {
     const res = await props.tableOnSelect(tb)
     if (res && ref.current) {
-      setColumns(genTableColumn(res) as ProColumns<any>[])
+      setColumns(genTableColumn(res) as ProColumns[])
       setData(res)
+      ref.current.reload()
+    }
+  }
+
+  const onDeleteTable = async (tb: string) => {
+    const res = await props.tableOnDelete(tb)
+    if (res && ref.current) {
       ref.current.reload()
     }
   }
@@ -52,10 +59,20 @@ export const Dataset = (props: DatasetProps) => {
   const onExecuteSql = async (sqlStr: string) => {
     const res = await props.sqlOnExecute(sqlStr)
     if (res && ref.current) {
-      setColumns(genTableColumn(res) as ProColumns<any>[])
+      setColumns(genTableColumn(res) as ProColumns[])
       setData(res)
       ref.current.reload()
     }
+  }
+
+  const clearData = () => {
+    setData([])
+    setColumns([{}])
+  }
+
+  const storageOnSelect = (id: string) => {
+    clearData()
+    return props.storageOnSelect(id)
   }
 
   return (
@@ -67,8 +84,9 @@ export const Dataset = (props: DatasetProps) => {
       tableRender={(_, dom) =>
         <Struct
           storages={props.storages}
-          storageOnSelect={props.storageOnSelect}
+          storageOnSelect={storageOnSelect}
           tableOnSelect={onSelectTable}
+          tableOnDelete={onDeleteTable}
           sqlOnExecute={onExecuteSql}
           fileOnUpload={props.fileOnUpload}
         >
