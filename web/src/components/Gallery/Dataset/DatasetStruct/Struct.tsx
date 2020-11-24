@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/17/2020
  */
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card, Col, Row, Space} from "antd"
 
 import {Header, Sider} from "../DatasetController"
@@ -20,11 +20,20 @@ export interface StructProps {
 }
 
 export const Struct = (props: StructProps) => {
+  const [storageId, setStorageId] = useState<string>()
   const [tableList, setTableList] = useState<string[]>([])
 
-  const getTableList = async (id: string) => {
-    const tl = await props.storageOnSelect(id)
-    if (tl) setTableList(tl)
+  const getTableList = () => {
+    if (storageId)
+      props.storageOnSelect(storageId)
+        .then(res => { if (res) setTableList(res) })
+  }
+
+  useEffect(getTableList, [storageId])
+
+  const tableOnDelete = (tableName: string) => {
+    props.tableOnDelete(tableName)
+    getTableList()
   }
 
   return (
@@ -34,7 +43,7 @@ export const Struct = (props: StructProps) => {
           <Sider
             tableList={tableList}
             onTableSelect={props.tableOnSelect}
-            onTableDelete={props.tableOnDelete}
+            onTableDelete={tableOnDelete}
           />
         </Col>
 
@@ -42,9 +51,10 @@ export const Struct = (props: StructProps) => {
           <Space direction="vertical" style={{width: "100%"}}>
             <Header
               storages={props.storages}
-              storageOnSelect={getTableList}
+              storageOnSelect={setStorageId}
               onExecute={props.sqlOnExecute}
               onUpload={props.fileOnUpload}
+              onUploadFinished={getTableList}
             />
             {props.children}
           </Space>

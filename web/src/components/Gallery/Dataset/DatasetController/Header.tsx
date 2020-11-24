@@ -66,6 +66,7 @@ export interface HeaderProps {
   storageOnSelect: (id: string) => void
   onExecute: (sql: string) => void
   onUpload: (option: any, data: any) => Promise<any>
+  onUploadFinished: () => void
 }
 
 export const Header = (props: HeaderProps) => {
@@ -124,7 +125,7 @@ export const Header = (props: HeaderProps) => {
         setVisible={setUploadVisible}
         visible={uploadVisible}
         upload={props.onUpload}
-        // uploadResHandle={() => {}}
+        uploadResHandle={props.onUploadFinished}
       />
     </Space>
   )

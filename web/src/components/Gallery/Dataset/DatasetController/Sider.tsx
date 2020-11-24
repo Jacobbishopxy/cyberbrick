@@ -77,16 +77,19 @@ export const Sider = (props: SiderProps) => {
   return (
     <Space direction="vertical" style={{...props.style}}>
       <span style={{fontWeight: "bold"}}>Table list</span>
-      <List
-        size="small"
-        pagination={{
-          size: "small",
-          defaultPageSize: 10,
-          showSizeChanger: true
-        }}
-        dataSource={props.tableList}
-        renderItem={renderItem}
-      />
+      {
+        props.tableList.length !== 0 ?
+          <List
+            size="small"
+            pagination={{
+              size: "small",
+              defaultPageSize: 10,
+              showSizeChanger: true
+            }}
+            dataSource={props.tableList}
+            renderItem={renderItem}
+          /> : <></>
+      }
     </Space>
   )
 }
