@@ -215,6 +215,11 @@ export const read = async (id: string, readOption: GalleryAPI.Read) =>
 export const databaseListTable = async (id: string): Promise<string[]> =>
   request(`${baseDb}/listTable?id=${id}`)
 
+export const databaseDropTable = async (id: string, tableName: string) =>
+  request(`${baseDb}/dropTable?id=${id}&tableName=${tableName}`, {
+    method: "delete"
+  })
+
 export const databaseInsert = async (id: string, insertOption: string, tableName: string, data: any) => {
   let path = `${baseDb}/insert?id=${id}&tableName=${tableName}`
   if (insertOption) path += `&insertOption=${insertOption}`

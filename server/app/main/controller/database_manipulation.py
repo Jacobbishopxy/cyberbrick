@@ -128,6 +128,19 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
+        @bp.route("/drop-table", methods=["DELETE"])
+        def drop_table_api():
+            db_id = request.args.get("id")
+            table_name = request.args.get("tableName")
+
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    loader.drop_table(table_name)
+                except Exception as e:
+                    return make_response(str(e), 400)
+
+            return make_response(jsonify(res_success), 200)
+
         @bp.route("/insert", strict_slashes=False, methods=["POST"])
         def insert_data_api():
             """
@@ -153,7 +166,6 @@ class DatabaseManipulationController(Controller):
                     else:
                         loader.insert(table_name, d, if_exists=insert_option)
                 except Exception as e:
-                    loader.dispose()
                     return make_response(str(e), 400)
 
             return make_response(jsonify(res_success), 201)

@@ -73,6 +73,17 @@ export class DatabaseController {
   }
 
   /**
+   * drop a named table
+   */
+  @Delete("dropTable")
+  async dropTable(@Query("id") dbId: string,
+                  @Query("tableName") tableName: string) {
+    const url = `/${dbPath}/drop-table?id=${dbId}&tableName=${tableName}`
+    const ans = await axios.delete(encodeURI(url), this.getProxy())
+    return ans.data
+  }
+
+  /**
    * insert data into a table by json data
    */
   @Post("insert")

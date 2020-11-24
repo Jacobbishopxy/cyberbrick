@@ -185,6 +185,12 @@ class Loader(object):
         except Exception as e:
             print(e)
 
+    def drop_table(self, table_name: str):
+        try:
+            self.execute(f'DROP TABLE "{table_name}"')
+        except Exception as e:
+            print(e)
+
     def rename_columns(self, table_name: str, rename_dict: Dict[str, str]):
         exec_str_list = [
             f"""
