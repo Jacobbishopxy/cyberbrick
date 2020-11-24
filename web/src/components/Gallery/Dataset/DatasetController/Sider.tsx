@@ -62,6 +62,7 @@ export interface SiderProps {
   tableList: string[]
   onTableSelect: (table: string) => void
   onTableDelete: (table: string) => void
+  style?: React.CSSProperties
 }
 
 export const Sider = (props: SiderProps) => {
@@ -74,7 +75,7 @@ export const Sider = (props: SiderProps) => {
     />
 
   return (
-    <Space direction="vertical" style={{width: "100%"}}>
+    <Space direction="vertical" style={{...props.style}}>
       <span style={{fontWeight: "bold"}}>Table list</span>
       <List
         size="small"

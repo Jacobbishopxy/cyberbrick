@@ -25,7 +25,6 @@ const genTableColumn = (data: Record<string, any>[]) => {
 }
 
 export interface DatasetProps {
-  rowKey: string
   storages: DataType.StorageSimple[]
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (tableName: string) => Promise<any[]>
@@ -79,8 +78,8 @@ export const Dataset = (props: DatasetProps) => {
     <ProTable
       actionRef={ref}
       columns={columns}
-      rowKey={props.rowKey}
       pagination={{showSizeChanger: true}}
+      scroll={{x: true}}
       tableRender={(_, dom) =>
         <Struct
           storages={props.storages}
@@ -95,7 +94,7 @@ export const Dataset = (props: DatasetProps) => {
       }
       params={{key: data}}
       request={async () => {
-        const d = data.map(i => ({...i, key: i[props.rowKey]}))
+        const d = data.map((i, idx) => ({...i, key: idx}))
         return {
           success: true,
           data: d,

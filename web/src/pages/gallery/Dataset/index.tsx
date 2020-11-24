@@ -52,7 +52,6 @@ export default () => {
 
   return (
     <Dataset
-      rowKey="index"
       storages={storages}
       storageOnSelect={storageOnSelect}
       tableOnSelect={tableOnSelect}

@@ -4,13 +4,27 @@
 
 import React, {useState} from 'react'
 import {Button, Input, Select, Space, Tooltip} from "antd"
-import {CaretRightOutlined, MinusOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons"
+import {
+  CaretRightOutlined,
+  ExclamationCircleOutlined,
+  MinusCircleOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  UploadOutlined
+} from "@ant-design/icons"
 
-import {EditorButton} from "@/components/Editor"
+import {Editor, EditorButton} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
 import {FileInsertModal} from "@/components/FileUploadModal"
 
+
+const IdViewer = (props: { visible: boolean, onClick: (value: boolean) => void }) =>
+  props.visible ?
+    <Editor
+      icons={{open: <ExclamationCircleOutlined/>, close: <MinusCircleOutlined/>}}
+      onChange={props.onClick}
+    /> : <></>
 
 const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
   <EditorButton
@@ -47,7 +61,6 @@ const QueryField = (props: QueryFieldProps) => {
     </Space> : <></>
 }
 
-
 export interface HeaderProps {
   storages: DataType.StorageSimple[]
   storageOnSelect: (id: string) => void
@@ -57,6 +70,7 @@ export interface HeaderProps {
 
 export const Header = (props: HeaderProps) => {
   const [selectedDb, setSelectedDb] = useState<string>()
+  const [idVisible, setIdVisible] = useState<boolean>(false)
   const [queryVisible, setQueryVisible] = useState<boolean>(false)
   const [uploadVisible, setUploadVisible] = useState<boolean>(false)
 
@@ -70,7 +84,7 @@ export const Header = (props: HeaderProps) => {
     <Space direction="vertical" style={{width: "100%"}}>
       <SpaceBetween>
         <Space>
-          <span>DB: </span>
+          <span style={{fontWeight: "bold"}}>Database: </span>
           <Select
             style={{width: 200}}
             onSelect={onDatabaseSelect}
@@ -83,7 +97,10 @@ export const Header = (props: HeaderProps) => {
               )
             }
           </Select>
-          {selectedDb ? <span>ID: {selectedDb}</span> : <></>}
+          <div>
+            <IdViewer visible={!!selectedDb} onClick={setIdVisible}/>
+            {idVisible ? <span>ID: {selectedDb}</span> : <></>}
+          </div>
         </Space>
         <Space>
           <Button

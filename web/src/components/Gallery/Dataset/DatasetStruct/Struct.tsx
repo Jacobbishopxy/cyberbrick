@@ -28,7 +28,7 @@ export const Struct = (props: StructProps) => {
   }
 
   return (
-    <Card size="small">
+    <Card size="small" style={{minHeight: "85vh"}}>
       <Row>
         <Col span={4}>
           <Sider
@@ -46,9 +46,7 @@ export const Struct = (props: StructProps) => {
               onExecute={props.sqlOnExecute}
               onUpload={props.fileOnUpload}
             />
-            <div style={{overflowX: "scroll"}}>
-              {props.children}
-            </div>
+            {props.children}
           </Space>
         </Col>
       </Row>
