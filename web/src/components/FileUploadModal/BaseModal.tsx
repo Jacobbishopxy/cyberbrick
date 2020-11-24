@@ -9,7 +9,6 @@ import {
   Form,
   message,
   Modal,
-  Space,
   Upload
 } from "antd"
 import {UploadOutlined} from '@ant-design/icons'
@@ -26,6 +25,7 @@ export interface BaseModalProps {
   initialValues?: Record<any, any>
   setVisible: (value: boolean) => void
   visible: boolean
+  beforeUpload?: (file: File) => boolean
   upload: (option: Record<string, any>, data: any) => Promise<any>
   uploadResHandle?: (value: any) => void
 }
@@ -39,11 +39,25 @@ export const BaseModal = (props: BaseModalProps) => {
   const uploadProps = {
     multiple: false,
     beforeUpload: (file: File) => {
+      if (props.beforeUpload) {
+        if (props.beforeUpload(file)) {
+          setUploadFiles([file])
+          return true
+        } else {
+          message.error(`file type: ${file.type} is not allowed!`)
+          return false
+        }
+      }
       setUploadFiles([file])
       return false
     },
     onRemove: () => setUploadFiles([]),
     fileList: uploadFiles.map((i, j) => ({...i, name: i.name, uid: String(j)}))
+  }
+
+  const clearData = () => {
+    setUploading(false)
+    setUploadFiles([])
   }
 
   const onUploadFile = (options: Record<string, any>) => {
@@ -52,22 +66,21 @@ export const BaseModal = (props: BaseModalProps) => {
       data.append("file", uploadFiles[0])
       setUploading(true)
 
-      props.upload(options, data).then(res => {
-        message.success(res.statusText)
-        setUploading(false)
-        setUploadFiles([])
-        if (props.uploadResHandle) props.uploadResHandle(res.data)
-      })
+      props.upload(options, data)
+        .then(res => {
+          message.success(res.statusText)
+          clearData()
+          if (props.uploadResHandle) props.uploadResHandle(res.data)
+        })
         .catch(err => {
-          setUploading(false)
+          clearData()
           message.error(JSON.stringify(err, null, 2))
         })
     }
   }
 
   const onReset = () => {
-    setUploading(false)
-    setUploadFiles([])
+    clearData()
     form.resetFields()
   }
 
@@ -98,12 +111,14 @@ export const BaseModal = (props: BaseModalProps) => {
       >
         <Divider plain orientation="left" style={{color: "lightgray"}}>File</Divider>
 
-        <Form.Item name="file" label="File">
-          <Space>
-            <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined/>}>Click to upload</Button>
-            </Upload>
-          </Space>
+        <Form.Item
+          name="file"
+          label="File"
+          rules={[{required: true, message: "File is required"}]}
+        >
+          <Upload {...uploadProps}>
+            <Button icon={<UploadOutlined/>}>Click to upload</Button>
+          </Upload>
         </Form.Item>
 
         {props.children}

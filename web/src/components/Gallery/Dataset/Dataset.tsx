@@ -4,9 +4,12 @@
 
 import React, {useRef, useState} from 'react'
 import ProTable, {ProColumns} from "@ant-design/pro-table"
+import {FormOutlined} from "@ant-design/icons"
 
 import {Struct} from "./DatasetStruct/Struct"
 import * as DataType from "../GalleryDataType"
+import {Button} from "antd"
+
 
 interface ActionType {
   reload: (resetPageIndex?: boolean) => void
@@ -19,9 +22,10 @@ const genTableColumn = (data: Record<string, any>[]) => {
     return Object.keys(data[0]).map((k: string) => ({
       title: k,
       dataIndex: k,
+      ellipsis: true
     }))
   }
-  return []
+  return [{}]
 }
 
 export interface DatasetProps {
@@ -36,11 +40,13 @@ export interface DatasetProps {
 export const Dataset = (props: DatasetProps) => {
   const ref = useRef<ActionType>()
 
+  const [selectedTable, setSelectedTable] = useState<string>()
   const [data, setData] = useState<any[]>([])
   const [columns, setColumns] = useState<ProColumns[]>([{}])
 
   const onSelectTable = async (tb: string) => {
     const res = await props.tableOnSelect(tb)
+    setSelectedTable(tb)
     if (res && ref.current) {
       setColumns(genTableColumn(res) as ProColumns[])
       setData(res)
@@ -65,6 +71,7 @@ export const Dataset = (props: DatasetProps) => {
   }
 
   const clearData = () => {
+    setSelectedTable(undefined)
     setData([])
     setColumns([{}])
   }
@@ -77,9 +84,22 @@ export const Dataset = (props: DatasetProps) => {
   return (
     <ProTable
       actionRef={ref}
+      size="small"
       columns={columns}
-      pagination={{showSizeChanger: true}}
+      pagination={{
+        defaultPageSize: 15,
+        showSizeChanger: true
+      }}
       scroll={{x: true}}
+      toolbar={{
+        actions: [
+          <Button
+            key="edit"
+            type="text"
+            icon={<FormOutlined/>}
+          />
+        ]
+      }}
       tableRender={(_, dom) =>
         <Struct
           storages={props.storages}
@@ -102,7 +122,7 @@ export const Dataset = (props: DatasetProps) => {
       }}
       search={false}
       dateFormatter="string"
-      headerTitle="Result"
+      headerTitle={selectedTable}
     />
   )
 }

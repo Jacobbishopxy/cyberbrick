@@ -83,7 +83,7 @@ export const Sider = (props: SiderProps) => {
             size="small"
             pagination={{
               size: "small",
-              defaultPageSize: 10,
+              defaultPageSize: 15,
               showSizeChanger: true
             }}
             dataSource={props.tableList}

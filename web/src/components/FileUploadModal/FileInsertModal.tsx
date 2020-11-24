@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/19/2020
  */
 
-import React from 'react'
+import React, {useState} from 'react'
 import {Divider, Form, Input, Radio, Select} from "antd"
 
 import {BaseModal} from "./BaseModal"
@@ -21,14 +21,27 @@ export interface FileInsertModalProps {
   uploadResHandle?: (value: any) => void
 }
 
-// todo: if file is xlsx, no table name is required
 export const FileInsertModal = (props: FileInsertModalProps) => {
+
+  const [isCsv, setIsCsv] = useState<boolean>(false)
+
+  const beforeUpload = (file: File) => {
+    if (file.type === "application/vnd.ms-excel")
+      setIsCsv(true)
+    else if (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      setIsCsv(false)
+    else {
+      return false
+    }
+    return true
+  }
 
   return (
     <BaseModal
       initialValues={{insertOption: "replace"}}
       setVisible={props.setVisible}
       visible={props.visible}
+      beforeUpload={beforeUpload}
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
@@ -44,9 +57,16 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
         </Select>
       </Form.Item>
 
-      <Form.Item name="tableName" label="Table name">
-        <Input placeholder="Table name"/>
-      </Form.Item>
+      {
+        isCsv ?
+          <Form.Item
+            name="tableName"
+            label="Table name"
+            rules={[{required: true, message: "File is required"}]}
+          >
+            <Input placeholder="Table name"/>
+          </Form.Item> : <></>
+      }
 
       <Form.Item name="insertOption" label="Insert option">
         <Radio.Group>

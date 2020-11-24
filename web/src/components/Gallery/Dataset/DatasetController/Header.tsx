@@ -3,20 +3,14 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Input, Select, Space, Tooltip} from "antd"
-import {
-  CaretRightOutlined,
-  ExclamationCircleOutlined,
-  MinusCircleOutlined,
-  MinusOutlined,
-  PlusOutlined,
-  UploadOutlined
-} from "@ant-design/icons"
+import {Button, Select, Space} from "antd"
+import {ExclamationCircleOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons"
 
-import {Editor, EditorButton} from "@/components/Editor"
+import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
-import * as DataType from "../../GalleryDataType"
 import {FileInsertModal} from "@/components/FileUploadModal"
+import * as DataType from "../../GalleryDataType"
+import {QueryViewer, QueryField} from "./QueryField"
 
 
 const IdViewer = (props: { visible: boolean, onClick: (value: boolean) => void }) =>
@@ -26,40 +20,6 @@ const IdViewer = (props: { visible: boolean, onClick: (value: boolean) => void }
       onChange={props.onClick}
     /> : <></>
 
-const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
-  <EditorButton
-    icons={{open: <PlusOutlined/>, close: <MinusOutlined/>}}
-    name={{open: "Execution", close: "Close"}}
-    size="small"
-    onChange={props.onClick}
-  />
-
-interface QueryFieldProps {
-  queryVisible: boolean
-  onExecute: (sql: string) => void
-}
-
-const QueryField = (props: QueryFieldProps) => {
-  const [sqlStr, setSqlStr] = useState<string>()
-
-  const onExecute = () => {
-    if (sqlStr) props.onExecute(sqlStr)
-  }
-
-  return props.queryVisible ?
-    <Space direction="vertical" style={{width: "100%"}}>
-      <Input.TextArea
-        rows={10}
-        allowClear
-        onChange={e => setSqlStr(e.target.value)}
-      />
-      <Tooltip title="Execute">
-        <Button type="primary" icon={<CaretRightOutlined/>} onClick={onExecute}>
-          Execute
-        </Button>
-      </Tooltip>
-    </Space> : <></>
-}
 
 export interface HeaderProps {
   storages: DataType.StorageSimple[]
@@ -110,7 +70,9 @@ export const Header = (props: HeaderProps) => {
             icon={<UploadOutlined/>}
             disabled={!selectedDb}
             onClick={() => setUploadVisible(true)}
-          >Upload</Button>
+          >
+            Upload
+          </Button>
           <QueryViewer onClick={setQueryVisible}/>
         </Space>
       </SpaceBetween>
