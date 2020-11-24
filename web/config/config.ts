@@ -118,11 +118,6 @@ export default defineConfig({
           path: '/demo/charts',
           component: './demo/Charts',
         },
-        {
-          name: 'sql-lab',
-          path: '/demo/sql-lab',
-          component: './demo/SqlLab'
-        }
       ],
     },
     {

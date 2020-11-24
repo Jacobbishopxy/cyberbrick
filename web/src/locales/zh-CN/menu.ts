@@ -60,7 +60,6 @@ export default {
   'menu.demo.localstorage': 'Local Storage',
   'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
-  'menu.demo.sql-lab': 'Sql Lab',
 
   'menu.document': 'Document',
   'menu.document.gallery': 'Gallery',
