@@ -29,8 +29,8 @@ export default () => {
   const fetchElementContent = (id: string, date?: string, markName?: string) =>
     GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
 
-  const fetchElementContentRemote = (value: DataType.Content) =>
-    Promise.reject()
+  const fetchElementContentRemote = (id: string, option: GalleryDataType.Read) =>
+    GalleryService.read(id, option as GalleryAPI.Read)
 
   const fetchElementContentDates = (id: string, markName?: string) =>
     GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>

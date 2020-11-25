@@ -51,7 +51,7 @@ export interface DashboardProps {
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
-  fetchElementContentRemote: (value: DataType.Content) => Promise<any>
+  fetchElementContentRemote: (id: string, option: DataType.Read) => Promise<any>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
 }
@@ -152,6 +152,14 @@ export const Dashboard = (props: DashboardProps) => {
     return undefined
   }
 
+  const fetchElementContentRemote = async (value: DataType.Content) => {
+    const id = value.data.databaseId
+    const option = value.data.readOption
+    if (id && option)
+      return props.fetchElementContentRemote(id, option)
+    return Promise.reject(new Error("databaseId and readOption is required!"))
+  }
+
   const fetchElementContentDates = async (id: string) =>
     props.fetchElementContentDates(id, selectedMark)
 
@@ -190,7 +198,7 @@ export const Dashboard = (props: DashboardProps) => {
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}
-      fetchElementContentRemoteFn={props.fetchElementContentRemote}
+      fetchElementContentRemoteFn={fetchElementContentRemote}
       fetchElementContentDatesFn={fetchElementContentDates}
       updateElementContentFn={updateElementContent}
       ref={cRef}

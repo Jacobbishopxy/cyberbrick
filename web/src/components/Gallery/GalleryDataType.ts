@@ -186,3 +186,23 @@ export interface Storage {
   password: string
 }
 
+export enum ConditionSymbol {
+  Equal = "=",
+  Greater = ">",
+  GreaterEqual = ">=",
+  Lesser = "<",
+  LesserEqual = "<="
+}
+
+export interface Condition {
+  field: string
+  value: string | number
+  symbol: ConditionSymbol
+}
+
+export interface Read {
+  selects?: string[]
+  tableName: string
+  conditions?: Condition[]
+}
+

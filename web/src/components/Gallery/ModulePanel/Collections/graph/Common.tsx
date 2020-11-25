@@ -42,6 +42,7 @@ const convertChartData = (data: any[][], dataIndexDirection: DataIndexDirection)
   return [cData, fields]
 }
 
+// todo: redo Editor, needs UI to generate `DataType.Read`
 export const generateCommonEditorField = (mixin: boolean = false) =>
   (props: ModuleEditorField) => {
     const [visible, setVisible] = useState<boolean>(false)
@@ -184,8 +185,12 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     )
   }
 
+// todo: use fetchRemote when content is available
 export const generateCommonPresenterField = (chartOptionGenerator: (v: DataType.Content) => EChartOption) =>
   (props: ModulePresenterField) => {
+
+    // props.fetchRemote()
+
     if (props.content && props.content.data)
       return <ReactEcharts
         option={chartOptionGenerator(props.content)}
