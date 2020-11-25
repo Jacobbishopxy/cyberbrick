@@ -39,7 +39,7 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) =>
-  props.content ?
+  props.content && props.content.data.text ?
     <TextEditorPresenter
       content={props.content.data.text}
       styling={props.styling}

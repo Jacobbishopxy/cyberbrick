@@ -17,6 +17,7 @@ export interface ContainerProps {
   onSelectPane: (templateName: string) => void
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
+  fetchElementContentRemoteFn: (value: DataType.Content) => Promise<any>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
 }
@@ -133,6 +134,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         markAvailable={props.markAvailable}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
+        elementFetchContentRemoteFn={props.fetchElementContentRemoteFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}
         elementUpdateContentFn={elementUpdateContentFn}
         ref={ctRef}

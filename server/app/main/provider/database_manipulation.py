@@ -3,7 +3,7 @@
 @time 11/7/2020
 """
 
-from ..util.sql_loader import Loader, get_loader_prefix
+from ..util import Loader, get_loader_prefix
 
 
 def get_database_source(loader: Loader, db_id: str):

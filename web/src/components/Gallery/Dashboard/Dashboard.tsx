@@ -51,6 +51,7 @@ export interface DashboardProps {
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
+  fetchElementContentRemote: (value: DataType.Content) => Promise<any>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
 }
@@ -189,6 +190,7 @@ export const Dashboard = (props: DashboardProps) => {
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}
+      fetchElementContentRemoteFn={props.fetchElementContentRemote}
       fetchElementContentDatesFn={fetchElementContentDates}
       updateElementContentFn={updateElementContent}
       ref={cRef}

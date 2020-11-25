@@ -13,6 +13,7 @@ export interface ContainerElementProps {
   editable: boolean
   element: DataType.Element
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  fetchRemoteFn?: (value: DataType.Content) => Promise<any>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
@@ -72,6 +73,7 @@ export const TemplateElement =
           timeSeries={props.timeSeries}
           elementType={props.element.type}
           content={content}
+          fetchRemote={props.fetchRemoteFn}
           contentHeight={mpHeight}
           fetchContent={fetchContent}
           dates={dates}

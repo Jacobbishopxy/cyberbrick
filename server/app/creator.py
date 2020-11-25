@@ -8,7 +8,7 @@ from typing import List, Type
 
 from .main import AppConfig
 from .main.controller import Controller
-from .main.util.sql_loader import Loader, get_loader_prefix
+from .main.util import Loader, get_loader_prefix
 
 
 class PrefixMiddleware(object):

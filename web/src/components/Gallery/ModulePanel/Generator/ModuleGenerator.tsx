@@ -40,6 +40,7 @@ export class ModuleGenerator {
         /> :
         <this.presenter
           content={crProps.content}
+          fetchRemote={crProps.fetchRemote}
           contentHeight={crProps.contentHeight}
           styling={crProps.styling}
         />
@@ -48,6 +49,7 @@ export class ModuleGenerator {
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={props.content}
+        fetchRemote={props.fetchRemote}
         contentHeight={props.contentHeight}
         updateContent={props.updateContent}
         styling={props.styling}

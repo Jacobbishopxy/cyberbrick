@@ -10,7 +10,7 @@ import json
 
 from .abstract_controller import Controller
 from ..config import AppConfig
-from ..util.sql_loader import Loader
+from ..util import Loader
 from ..provider.file_upload import FileType, extract_xlsx, extract_csv
 from ..provider.database_manipulation import get_database_source, create_temporary_loader, gen_update_string, \
     gen_delete_string

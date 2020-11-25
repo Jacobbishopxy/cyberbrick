@@ -22,6 +22,7 @@ export interface ModulePanelProps {
   timeSeries?: boolean
   elementType: DataType.ElementType
   content?: DataType.Content
+  fetchRemote?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   fetchContent: (date?: string) => void
   dates?: string[]
@@ -33,6 +34,7 @@ export interface ModulePanelProps {
 
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
+// todo: fetch content from content (sql query API: `read(databaseId, queryOption)`)
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
@@ -127,6 +129,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
       return rf({
         content,
+        fetchRemote: props.fetchRemote,
         contentHeight: h,
         updateContent: updateModuleContent,
         forwardedRef: moduleFwRef
