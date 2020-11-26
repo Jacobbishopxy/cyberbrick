@@ -3,8 +3,10 @@
  */
 
 import React from 'react'
+import {Button} from "antd"
+import {PlusOutlined} from '@ant-design/icons'
 
-import {QuerySelector} from "@/components/Gallery/Dataset"
+import {QuerySelectorForm, QuerySelectorModal} from "@/components/Gallery/Dataset"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -12,7 +14,7 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 export default () => {
 
   const storageOnFetch = () =>
-    GalleryService.getAllStorages() as Promise<DataType.StorageSimple[]>
+    GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
 
   const storageOnSelect = (id: string) =>
     GalleryService.databaseListTable(id)
@@ -22,10 +24,27 @@ export default () => {
 
   return (
     <div style={{padding: 24}}>
-      <QuerySelector
+      <QuerySelectorModal
+        trigger={
+          <Button type="primary">
+            <PlusOutlined/>
+            Click
+          </Button>
+        }
         storagesOnFetch={storageOnFetch}
         storageOnSelect={storageOnSelect}
         tableOnSelect={tableOnSelect}
+        onSubmit={async (value) => {
+          console.log(value)
+          return true
+        }}
+      />
+
+      <QuerySelectorForm
+        storagesOnFetch={storageOnFetch}
+        storageOnSelect={storageOnSelect}
+        tableOnSelect={tableOnSelect}
+        onSubmit={async (value) => console.log(value)}
       />
     </div>
   )

@@ -3,7 +3,8 @@
  */
 
 import {Dataset} from "./Dataset"
-import {QuerySelector} from "./QuerySelector"
+import {QuerySelectorForm} from "./QuerySelector/QuerySelectorForm"
+import {QuerySelectorModal} from "./QuerySelector/QuerySelectorModal"
 
-export {Dataset, QuerySelector}
+export {Dataset, QuerySelectorForm, QuerySelectorModal}
 
