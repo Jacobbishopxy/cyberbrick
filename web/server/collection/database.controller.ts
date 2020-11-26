@@ -46,7 +46,7 @@ export class DatabaseController {
   @Get("listTable")
   async listTable(@Query("id") dbId: string) {
     const url = `/${dbPath}/listTable?id=${dbId}`
-    const ans = await axios.get(url, this.getProxy())
+    const ans = await axios.get(encodeURI(url), this.getProxy())
     return ans.data
   }
 
@@ -54,7 +54,7 @@ export class DatabaseController {
   async getTableColumns(@Query("id") dbId: string,
                         @Query("tableName") tableName: string) {
     const url = `/${dbPath}/getTableColumns?id=${dbId}&tableName=${tableName}`
-    const ans = await axios.get(url, this.getProxy())
+    const ans = await axios.get(encodeURI(url), this.getProxy())
     return ans.data
   }
 
