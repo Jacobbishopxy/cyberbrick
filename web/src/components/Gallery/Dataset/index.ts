@@ -3,6 +3,7 @@
  */
 
 import {Dataset} from "./Dataset"
+import {QuerySelector} from "./QuerySelector"
 
-export {Dataset}
+export {Dataset, QuerySelector}
 

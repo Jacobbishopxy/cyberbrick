@@ -186,7 +186,7 @@
     rc-util "^5.4.0"
     swr "^0.3.6"
 
-"@ant-design/pro-form@1.6.2":
+"@ant-design/pro-form@1.6.2", "@ant-design/pro-form@^1.6.2":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@ant-design/pro-form/-/pro-form-1.6.2.tgz#2750fa6faadee1ebd593ac1ad15598688ae10c88"
   integrity sha512-B+f5CXhJ4CgWfMx/YWFRXrXTE2/2bHmj8QppwwxrQBxc9CX9ksHiwPgOhc/wZv2Pn9pxdrPwpobdZps/yDkJeQ==

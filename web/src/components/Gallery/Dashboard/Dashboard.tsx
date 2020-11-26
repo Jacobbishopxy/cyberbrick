@@ -54,6 +54,9 @@ export interface DashboardProps {
   fetchElementContentRemote: (id: string, option: DataType.Read) => Promise<any>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  fetchStorages: () => Promise<DataType.StorageSimple>
+  fetchTableList: (id: string) => Promise<string[]>
+  fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
 }
 
 export const Dashboard = (props: DashboardProps) => {

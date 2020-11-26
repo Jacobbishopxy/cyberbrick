@@ -96,6 +96,7 @@ export const Dataset = (props: DatasetProps) => {
           <Button
             key="edit"
             type="text"
+            disabled
             icon={<FormOutlined/>}
           />
         ]

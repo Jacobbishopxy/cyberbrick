@@ -38,6 +38,17 @@ export default () => {
   const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
     GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
 
+  // todo
+
+  const fetchStorages = () =>
+    Promise.reject()
+
+  const fetchTableList = (id: string) =>
+    Promise.reject()
+
+  const fetchTableColumns = (storageId: string, tableName: string) =>
+    Promise.reject()
+
 
   return (
     <Dashboard
@@ -51,6 +62,9 @@ export default () => {
       fetchElementContentRemote={fetchElementContentRemote}
       fetchElementContentDates={fetchElementContentDates}
       updateElementContent={updateElementContent}
+      fetchStorages={fetchStorages}
+      fetchTableList={fetchTableList}
+      fetchTableColumns={fetchTableColumns}
     />
   )
 }

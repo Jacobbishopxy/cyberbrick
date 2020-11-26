@@ -118,6 +118,11 @@ export default defineConfig({
           path: '/demo/charts',
           component: './demo/Charts',
         },
+        {
+          name: 'query-selector',
+          path: '/demo/query-selector',
+          component: './demo/QuerySelector',
+        },
       ],
     },
     {
