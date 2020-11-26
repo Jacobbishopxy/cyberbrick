@@ -215,6 +215,9 @@ export const read = async (id: string, readOption: GalleryAPI.Read) =>
 export const databaseListTable = async (id: string): Promise<string[]> =>
   request(`${baseDb}/listTable?id=${id}`)
 
+export const databaseGetTableColumns = async (id: string, tableName: string) =>
+  request(`${baseDb}/getTableColumns?id=${id}&tableName=${tableName}`)
+
 export const databaseDropTable = async (id: string, tableName: string) =>
   request(`${baseDb}/dropTable?id=${id}&tableName=${tableName}`, {
     method: "delete"

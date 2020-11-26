@@ -85,6 +85,15 @@ class Loader(object):
         """
         df.to_sql(table_name, con=self._engine, index=index, if_exists=if_exists)
 
+    def get_column_info(self, table_name: str):
+        """
+        get column info from a table
+        """
+        q = f"""
+        SELECT "column_name", "data_type" FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}'
+        """
+        return self.read(q)
+
     def add_primary_uuid_key(self,
                              table_name: str,
                              key_col: str):

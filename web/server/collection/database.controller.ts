@@ -35,7 +35,7 @@ export class DatabaseController {
    */
   @Get("viewStorage")
   async viewStorage() {
-    const url = `/${dbPath}/view-storage`
+    const url = `/${dbPath}/viewStorage`
     const ans = await axios.get(url, this.getProxy())
     return ans.data
   }
@@ -45,7 +45,15 @@ export class DatabaseController {
    */
   @Get("listTable")
   async listTable(@Query("id") dbId: string) {
-    const url = `/${dbPath}/list-table?id=${dbId}`
+    const url = `/${dbPath}/listTable?id=${dbId}`
+    const ans = await axios.get(url, this.getProxy())
+    return ans.data
+  }
+
+  @Get("getTableColumns")
+  async getTableColumns(@Query("id") dbId: string,
+                        @Query("tableName") tableName: string) {
+    const url = `/${dbPath}/getTableColumns?id=${dbId}&tableName=${tableName}`
     const ans = await axios.get(url, this.getProxy())
     return ans.data
   }
@@ -63,7 +71,7 @@ export class DatabaseController {
                          @Query("id") dbId: string,
                          @Query("insertOption") insertOption: string,
                          @Query("tableName") tableName: string) {
-    let url = `/${dbPath}/insert-by-file?id=${dbId}`
+    let url = `/${dbPath}/insertByFile?id=${dbId}`
     if (insertOption) url += `&insertOption=${insertOption}`
     if (tableName) url += `&tableName=${tableName}`
     const form = new FormData()
@@ -78,7 +86,7 @@ export class DatabaseController {
   @Delete("dropTable")
   async dropTable(@Query("id") dbId: string,
                   @Query("tableName") tableName: string) {
-    const url = `/${dbPath}/drop-table?id=${dbId}&tableName=${tableName}`
+    const url = `/${dbPath}/dropTable?id=${dbId}&tableName=${tableName}`
     const ans = await axios.delete(encodeURI(url), this.getProxy())
     return ans.data
   }

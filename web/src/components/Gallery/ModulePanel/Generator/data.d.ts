@@ -15,7 +15,7 @@ export interface ModuleEditorField {
 
 export interface ModulePresenterField {
   content?: DataType.Content
-  fetchRemote?: (value: DataType.Content) => Promise<any>
+  fetchRemote?: (c: DataType.Content) => Promise<any>
   contentHeight?: number
   styling?: string
 }
@@ -26,7 +26,7 @@ export interface ConvertFwRef {
 
 export interface ConvertRefProps {
   content?: DataType.Content
-  fetchRemote?: (value: DataType.Content) => Promise<any>
+  fetchRemote?: (c: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
@@ -35,7 +35,7 @@ export interface ConvertRefProps {
 
 export interface ConvertProps {
   content?: DataType.Content
-  fetchRemote?: (value: DataType.Content) => Promise<any>
+  fetchRemote?: (c: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string

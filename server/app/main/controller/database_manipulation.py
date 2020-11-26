@@ -40,13 +40,13 @@ class DatabaseManipulationController(Controller):
     def get_blueprint(self) -> Blueprint:
         bp = Blueprint("database", __name__, url_prefix="/database")
 
-        @bp.route("/view-storage")
+        @bp.route("/viewStorage")
         def view_storage_api():
             q = f"""SELECT * FROM storage"""
             d = self.loader.read(q)
             return jsonify(d.to_dict(orient="records"))
 
-        @bp.route("/list-table")
+        @bp.route("/listTable")
         def list_table_api():
             """
             list table names in a database (id specified in storage)
@@ -58,7 +58,27 @@ class DatabaseManipulationController(Controller):
 
             return jsonify(names)
 
-        @bp.route("/gen-uuid-key", strict_slashes=False, methods=["POST"])
+        @bp.route("/getTableColumns")
+        def get_table_columns_api():
+            """
+            get a table's columns info
+            """
+            db_id = request.args.get("id")
+            table_name = request.args.get("tableName")
+            data_type = request.args.get("dataType")
+
+            if table_name is None:
+                return abort(400, "Error: `tableName` is required in query")
+
+            with _create_temp_loader(self.loader, db_id) as loader:
+                info = loader.get_column_info(table_name)
+
+            if data_type == "true":
+                return jsonify(json.loads(info.to_json(orient="records")))
+            else:
+                return jsonify(list(info["column_name"]))
+
+        @bp.route("/genUuidKey", strict_slashes=False, methods=["POST"])
         def gen_uuid_key_api():
             """
             generate a primary uuid key fow a raw table in a database (id specified in storage)
@@ -80,7 +100,7 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
-        @bp.route("/insert-by-file", strict_slashes=False, methods=["POST"])
+        @bp.route("/insertByFile", strict_slashes=False, methods=["POST"])
         def insert_data_by_file_api():
             """
             insert csv file to a database (id specified in storage)
@@ -128,7 +148,7 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
-        @bp.route("/drop-table", methods=["DELETE"])
+        @bp.route("/dropTable", methods=["DELETE"])
         def drop_table_api():
             db_id = request.args.get("id")
             table_name = request.args.get("tableName")
