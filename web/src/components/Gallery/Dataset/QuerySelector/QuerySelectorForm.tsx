@@ -9,6 +9,7 @@ import {BaseForm, BaseFormRef} from "./BaseForm"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export interface QuerySelectorFormProps {
+  initialValues?: Record<string, any>
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
@@ -27,8 +28,10 @@ export const QuerySelectorForm = (props: QuerySelectorFormProps) => {
       name="Query Selector"
       onValuesChange={onValuesChange}
       onFinish={props.onSubmit}
+      initialValues={props.initialValues}
     >
       <BaseForm
+        initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}
         tableOnSelect={props.tableOnSelect}

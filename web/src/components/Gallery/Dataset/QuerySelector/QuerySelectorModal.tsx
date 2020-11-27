@@ -9,6 +9,7 @@ import {BaseForm, BaseFormRef} from "./BaseForm"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export interface QuerySelectorModalProps {
+  initialValues?: Record<string, any>
   trigger: React.ReactElement
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
@@ -30,8 +31,10 @@ export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
       onValuesChange={onValuesChange}
       onFinish={props.onSubmit}
       modalProps={{maskClosable: false, keyboard: false, closable: false}}
+      initialValues={props.initialValues}
     >
       <BaseForm
+        initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}
         tableOnSelect={props.tableOnSelect}

@@ -24,7 +24,7 @@ const symbolOption = [
 ]
 
 export interface BaseFormProps {
-  trigger?: React.ReactElement
+  initialValues?: Record<string, any>
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
@@ -37,41 +37,40 @@ export interface BaseFormRef {
 export const BaseForm =
   forwardRef((props: BaseFormProps, ref: React.Ref<BaseFormRef>) => {
 
-    const [storage, setStorage] = useState<string>()
-    const [table, setTable] = useState<string>()
+    const [storage, setStorage] = useState<string>(props.initialValues?.id || undefined)
+    const [table, setTable] = useState<string>(props.initialValues?.tableName || undefined)
 
     const [tableSelects, setTableSelects] = useState<OptionType[]>()
     const [columnSelects, setColumnSelects] = useState<OptionType[]>()
 
+    const getStorages = async () => props.storagesOnFetch()
+      .then(res => res.map(item => ({label: item.name, value: item.id})))
+
+    const storageOnSelect = (s: string) => props.storageOnSelect(s)
+      .then(res => {
+        const ans = res.map(item => ({label: item, value: item}))
+        setTableSelects(ans)
+      })
+
+    const tableOnSelect = (s: string, t: string) => props.tableOnSelect(s, t)
+      .then(res => {
+        const ans = res.map(item => ({label: item, value: item}))
+        setColumnSelects(ans)
+      })
+
+    useEffect(() => {
+      if (storage) storageOnSelect(storage).finally()
+    }, [storage])
+
+    useEffect(() => {
+      if (storage && table) tableOnSelect(storage!, table!).finally()
+    }, [table])
 
     const onValuesChange = (value: Record<string, any>) => {
       if (value.id) setStorage(value.id)
       if (value.tableName) setTable(value.tableName)
     }
-
     useImperativeHandle(ref, () => ({onValuesChange}))
-
-    const getStorages = async () => props.storagesOnFetch()
-      .then(res => res.map(item => ({label: item.name, value: item.id})))
-
-    useEffect(() => {
-      if (storage)
-        props.storageOnSelect(storage)
-          .then(res => {
-            const ans = res.map(item => ({label: item, value: item}))
-            setTableSelects(ans)
-          })
-    }, [storage])
-
-    useEffect(() => {
-      if (storage && table)
-        props.tableOnSelect(storage, table)
-          .then(res => {
-            const ans = res.map(item => ({label: item, value: item}))
-            setColumnSelects(ans)
-          })
-    }, [table])
-
 
     return (
       <>
