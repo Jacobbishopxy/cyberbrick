@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/23/2020
  */
 
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import {Dataset} from "@/components/Gallery/Dataset"
 import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"
@@ -12,50 +12,35 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export default () => {
 
-  const [storages, setStorages] = useState<DataType.StorageSimple[]>([])
-  const [selectedStorage, setSelectedStorage] = useState<string>()
-
   const fetchStorages = () =>
     GalleryService.getAllStorageSimple()
 
-  useEffect(() => {
-    fetchStorages()
-      .then(res => {
-        if (res) setStorages(res)
-      })
-      .catch()
+  const storageOnSelect = (id: string) =>
+    GalleryService.databaseListTable(id)
 
-  }, [])
+  const tableOnSelect = (id: string, name: string) =>
+    GalleryService.databaseGetTableColumns(id, name)
 
-  const storageOnSelect = (id: string) => {
-    setSelectedStorage(id)
-    return GalleryService.databaseListTable(id)
-  }
+  const tableOnClick = (id: string, tableName: string) =>
+    GalleryService.read(id, {tableName})
 
-  const tableOnSelect = (tableName: string) => {
-    if (selectedStorage)
-      return GalleryService.read(selectedStorage, {tableName})
-    return Promise.reject()
-  }
+  const tableOnDelete = (id: string, tableName: string) =>
+    GalleryService.databaseDropTable(id, tableName)
 
-  const tableOnDelete = (tableName: string) => {
-    if (selectedStorage)
-      return GalleryService.databaseDropTable(selectedStorage, tableName)
-    return Promise.reject()
-  }
+  const queryOnSelect = (id: string,value: Record<string, any>) =>
+    GalleryService.read(id, value as DataType.Read)
 
-  const sqlOnExecute = (sql: string) => {
-    if (selectedStorage)
-      return GalleryService.executeSql(selectedStorage, sql)
-    return Promise.reject()
-  }
+  const sqlOnExecute = (id: string, sql: string) =>
+    GalleryService.executeSql(id, sql)
 
   return (
     <Dataset
-      storages={storages}
+      storageOnFetch={fetchStorages}
       storageOnSelect={storageOnSelect}
       tableOnSelect={tableOnSelect}
       tableOnDelete={tableOnDelete}
+      tableOnClick={tableOnClick}
+      querySelectorOnSubmit={queryOnSelect}
       sqlOnExecute={sqlOnExecute}
       fileOnUpload={fileInsert}
     />

@@ -11,29 +11,58 @@ import * as DataType from "../../GalleryDataType"
 
 export interface StructProps {
   children: React.ReactElement
-  storages: DataType.StorageSimple[]
+  storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
-  tableOnSelect: (tableName: string) => void
-  tableOnDelete: (tableName: string) => void
-  sqlOnExecute: (sql: string) => void
+  tableOnClick: (id: string, tableName: string) => Promise<any>
+  tableOnDelete: (id: string, tableName: string) => Promise<any>
+  tableOnSelect: (id: string, tableName: string) => Promise<string[]>
+  querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any>
+  sqlOnExecute: (id: string, sql: string) => void
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
 
 export const Struct = (props: StructProps) => {
+  const [storages, setStorages] = useState<DataType.StorageSimple[]>([])
   const [storageId, setStorageId] = useState<string>()
   const [tableList, setTableList] = useState<string[]>([])
 
-  const getTableList = () => {
-    if (storageId)
-      props.storageOnSelect(storageId)
-        .then(res => { if (res) setTableList(res) })
+  useEffect(() => {
+    props.storagesOnFetch().then(res => {
+      if (res) setStorages(res)
+    })
+  }, [])
+
+  const storageOnSelect = () => {
+    if (storageId) props.storageOnSelect(storageId).then(res => {
+      if (res) setTableList(res)
+    })
   }
 
-  useEffect(getTableList, [storageId])
+  useEffect(storageOnSelect, [storageId])
+
+  const tableOnClick = (tableName: string) => {
+    if (storageId) return props.tableOnClick(storageId, tableName)
+    return Promise.reject()
+  }
+
+  const tableOnSelect = (tableName: string) => {
+    if (storageId) return props.tableOnSelect(storageId, tableName)
+    return Promise.reject()
+  }
 
   const tableOnDelete = (tableName: string) => {
-    props.tableOnDelete(tableName)
-    getTableList()
+    if (storageId) return props.tableOnDelete(storageId, tableName).then(storageOnSelect)
+    return Promise.reject()
+  }
+
+  const querySelectorOnSubmit = (value: Record<string, any>) => {
+    if (storageId) return props.querySelectorOnSubmit(storageId, value).then(() => true).catch(() => false)
+    return Promise.reject()
+  }
+
+  const sqlOnExecute = (sql: string) => {
+    if (storageId) return props.sqlOnExecute(storageId, sql)
+    return Promise.reject()
   }
 
   return (
@@ -41,20 +70,25 @@ export const Struct = (props: StructProps) => {
       <Row>
         <Col span={4}>
           <Sider
+            id={storageId}
             tableList={tableList}
-            onTableSelect={props.tableOnSelect}
-            onTableDelete={tableOnDelete}
+            storagesOnFetch={props.storagesOnFetch}
+            storageOnSelect={props.storageOnSelect}
+            tableOnClick={tableOnClick}
+            tableOnSelect={tableOnSelect}
+            tableOnDelete={tableOnDelete}
+            onSubmit={querySelectorOnSubmit}
           />
         </Col>
 
         <Col span={20}>
           <Space direction="vertical" style={{width: "100%"}}>
             <Header
-              storages={props.storages}
+              storages={storages}
               storageOnSelect={setStorageId}
-              onExecute={props.sqlOnExecute}
+              onExecute={sqlOnExecute}
               onUpload={props.fileOnUpload}
-              onUploadFinished={getTableList}
+              onUploadFinished={storageOnSelect}
             />
             {props.children}
           </Space>

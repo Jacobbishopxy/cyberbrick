@@ -29,11 +29,13 @@ const genTableColumn = (data: Record<string, any>[]) => {
 }
 
 export interface DatasetProps {
-  storages: DataType.StorageSimple[]
+  storageOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
-  tableOnSelect: (tableName: string) => Promise<any[]>
-  tableOnDelete: (tableName: string) => Promise<any[]>
-  sqlOnExecute: (sql: string) => Promise<any[]>
+  tableOnSelect: (id: string, tableName: string) => Promise<string[]>
+  tableOnDelete: (id: string, tableName: string) => Promise<any[]>
+  tableOnClick: (id: string, tableName: string) => Promise<any[]>
+  querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any[]>
+  sqlOnExecute: (id: string, sql: string) => Promise<any[]>
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
 
@@ -44,8 +46,8 @@ export const Dataset = (props: DatasetProps) => {
   const [data, setData] = useState<any[]>([])
   const [columns, setColumns] = useState<ProColumns[]>([{}])
 
-  const onSelectTable = async (tb: string) => {
-    const res = await props.tableOnSelect(tb)
+  const onClickTable = async (id: string, tb: string) => {
+    const res = await props.tableOnClick(id, tb)
     setSelectedTable(tb)
     if (res && ref.current) {
       setColumns(genTableColumn(res) as ProColumns[])
@@ -54,15 +56,35 @@ export const Dataset = (props: DatasetProps) => {
     }
   }
 
-  const onDeleteTable = async (tb: string) => {
-    const res = await props.tableOnDelete(tb)
+  const onSelectTable = async (id: string, tb: string) => {
+    console.log("onSelectTable", id, tb)
+    const res = await props.tableOnSelect(id, tb)
+    setSelectedTable(tb)
+    if (res) {
+      return res
+    }
+    return []
+  }
+
+  const onQuerySelect = async (id: string, value: Record<string, any>) => {
+    const res = await props.querySelectorOnSubmit(id, value)
+    setSelectedTable(value.tableName)
+    if (res && ref.current) {
+      setColumns(genTableColumn(res) as ProColumns[])
+      setData(res)
+      ref.current.reload()
+    }
+  }
+
+  const onDeleteTable = async (id: string, tb: string) => {
+    const res = await props.tableOnDelete(id, tb)
     if (res && ref.current) {
       ref.current.reload()
     }
   }
 
-  const onExecuteSql = async (sqlStr: string) => {
-    const res = await props.sqlOnExecute(sqlStr)
+  const onExecuteSql = async (id: string, sqlStr: string) => {
+    const res = await props.sqlOnExecute(id, sqlStr)
     if (res && ref.current) {
       setColumns(genTableColumn(res) as ProColumns[])
       setData(res)
@@ -103,10 +125,12 @@ export const Dataset = (props: DatasetProps) => {
       }}
       tableRender={(_, dom) =>
         <Struct
-          storages={props.storages}
+          storagesOnFetch={props.storageOnFetch}
           storageOnSelect={storageOnSelect}
-          tableOnSelect={onSelectTable}
+          tableOnClick={onClickTable}
           tableOnDelete={onDeleteTable}
+          tableOnSelect={onSelectTable}
+          querySelectorOnSubmit={onQuerySelect}
           sqlOnExecute={onExecuteSql}
           fileOnUpload={props.fileOnUpload}
         >

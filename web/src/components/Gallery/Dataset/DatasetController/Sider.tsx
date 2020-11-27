@@ -4,15 +4,22 @@
 
 import React from 'react'
 import {Button, List, Modal, Space, Tooltip} from "antd"
-import {DeleteOutlined, ExclamationCircleOutlined} from "@ant-design/icons"
+import {DeleteOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons"
 
 import {SpaceBetween} from "@/components/SpaceBetween"
+import {QuerySelectorModal} from "@/components/Gallery/Dataset"
+import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
 interface ListRenderProps {
+  id?: string
   item: string
-  onTableSelect: (table: string) => void
-  onTableDelete: (table: string) => void
+  storagesOnFetch: () => Promise<DataType.StorageSimple[]>
+  storageOnSelect: (id: string) => Promise<string[]>
+  tableOnClick: (name: string) => Promise<any>
+  tableOnSelect: (name: string) => Promise<string[]>
+  tableOnDelete: (table: string) => Promise<any>
+  onSubmit: (value: Record<string, any>) => Promise<any>
 }
 
 const showDeleteConfirm = (onOk: () => void) =>
@@ -28,7 +35,7 @@ const showDeleteConfirm = (onOk: () => void) =>
 const ListRender = (props: ListRenderProps) => {
 
   const onDeleteClick = (item: string) => () => {
-    showDeleteConfirm(() => props.onTableDelete(item))
+    showDeleteConfirm(() => props.tableOnDelete(item).finally())
   }
 
   return (
@@ -38,7 +45,7 @@ const ListRender = (props: ListRenderProps) => {
       <SpaceBetween style={{width: "100%"}}>
         <Button
           type="link"
-          onClick={() => props.onTableSelect(props.item)}
+          onClick={() => props.tableOnClick(props.item)}
         >
           <div style={{width: 150, overflow: "hidden", textOverflow: "ellipsis"}}>
             <Tooltip placement="topLeft" title={props.item}>
@@ -46,12 +53,28 @@ const ListRender = (props: ListRenderProps) => {
             </Tooltip>
           </div>
         </Button>
-        <Button
-          type="link"
-          danger
-          icon={<DeleteOutlined/>}
-          onClick={onDeleteClick(props.item)}
-        />
+
+        <Space>
+          <QuerySelectorModal
+            trigger={
+              <Button
+                type="link"
+                icon={<SearchOutlined/>}
+              />
+            }
+            storagesOnFetch={props.storagesOnFetch}
+            storageOnSelect={props.storageOnSelect}
+            tableOnSelect={() => props.tableOnSelect(props.item)}
+            onSubmit={props.onSubmit}
+            initialValues={{id: props.id, tableName: props.item}}
+          />
+          <Button
+            type="link"
+            danger
+            icon={<DeleteOutlined/>}
+            onClick={onDeleteClick(props.item)}
+          />
+        </Space>
       </SpaceBetween>
     </List.Item>
   )
@@ -59,9 +82,14 @@ const ListRender = (props: ListRenderProps) => {
 
 
 export interface SiderProps {
+  id?: string
   tableList: string[]
-  onTableSelect: (table: string) => void
-  onTableDelete: (table: string) => void
+  storagesOnFetch: () => Promise<DataType.StorageSimple[]>
+  storageOnSelect: (id: string) => Promise<string[]>
+  tableOnClick: (name: string) => Promise<any>
+  tableOnSelect: (name: string) => Promise<string[]>
+  tableOnDelete: (table: string) => Promise<any>
+  onSubmit: (value: Record<string, any>) => Promise<any>
   style?: React.CSSProperties
 }
 
@@ -69,9 +97,14 @@ export const Sider = (props: SiderProps) => {
 
   const renderItem = (item: string) =>
     <ListRender
+      id={props.id}
       item={item}
-      onTableSelect={props.onTableSelect}
-      onTableDelete={props.onTableDelete}
+      storagesOnFetch={props.storagesOnFetch}
+      storageOnSelect={props.storageOnSelect}
+      tableOnClick={props.tableOnClick}
+      tableOnSelect={props.tableOnSelect}
+      tableOnDelete={props.tableOnDelete}
+      onSubmit={props.onSubmit}
     />
 
   return (
