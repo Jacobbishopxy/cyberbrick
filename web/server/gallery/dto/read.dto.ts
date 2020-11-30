@@ -30,6 +30,11 @@ export enum ConditionSymbol {
   LesserEqual = "<="
 }
 
+export enum Junction {
+  AND = "AND",
+  OR = "OR"
+}
+
 export class ConditionDto {
   @IsString()
   @IsNotEmpty()
@@ -41,5 +46,9 @@ export class ConditionDto {
   @IsEnum(ConditionSymbol)
   @IsNotEmpty()
   symbol!: ConditionSymbol
+
+  @IsEnum(Junction)
+  @IsOptional()
+  junction?: Junction
 }
 

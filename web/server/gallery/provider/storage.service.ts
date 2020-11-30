@@ -75,8 +75,12 @@ export class StorageService {
   }
 }
 
-const genConditionStr = (c: ConditionDto) =>
-  `"${c.field}" ${c.symbol} '${c.value}'`
+const genConditionStr = (c: ConditionDto) => {
+  const rr = `"${c.field}" ${c.symbol} '${c.value}'`
+  if (c.junction)
+    return `${c.junction} ${rr}`
+  return rr
+}
 
 const genReadStr = (selects: string[] | undefined,
                     tableName: string,
@@ -86,9 +90,8 @@ const genReadStr = (selects: string[] | undefined,
 
   if (conditions) {
     s += _.reduce(conditions, (ans: string, item: ConditionDto) => {
-      return `${ans} ${genConditionStr(item)} AND`
+      return `${ans} ${genConditionStr(item)}`
     }, " WHERE ")
-    s = s.slice(0, -4)
   }
   return s
 }
