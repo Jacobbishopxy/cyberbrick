@@ -198,6 +198,7 @@ export interface Condition {
   field: string
   value: string | number
   symbol: ConditionSymbol
+  junction?: "AND" | "OR"
 }
 
 export interface Read {

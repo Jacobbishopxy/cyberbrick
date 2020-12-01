@@ -29,25 +29,23 @@ export default () => {
   const fetchElementContent = (id: string, date?: string, markName?: string) =>
     GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
 
-  const fetchElementContentRemote = (id: string, option: GalleryDataType.Read) =>
-    GalleryService.read(id, option as GalleryAPI.Read)
-
   const fetchElementContentDates = (id: string, markName?: string) =>
     GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>
 
   const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
     GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
 
-  // todo
-
   const fetchStorages = () =>
-    Promise.reject()
+    GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
 
   const fetchTableList = (id: string) =>
-    Promise.reject()
+    GalleryService.databaseListTable(id)
 
   const fetchTableColumns = (storageId: string, tableName: string) =>
-    Promise.reject()
+    GalleryService.databaseGetTableColumns(storageId, tableName)
+
+  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read) =>
+    GalleryService.read(storageId, readOption)
 
 
   return (
@@ -59,12 +57,12 @@ export default () => {
       saveTemplate={saveTemplate}
       copyTemplate={copyTemplate}
       fetchElementContent={fetchElementContent}
-      fetchElementContentRemote={fetchElementContentRemote}
       fetchElementContentDates={fetchElementContentDates}
       updateElementContent={updateElementContent}
       fetchStorages={fetchStorages}
       fetchTableList={fetchTableList}
       fetchTableColumns={fetchTableColumns}
+      fetchQueryData={fetchQueryData}
     />
   )
 }

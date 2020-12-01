@@ -57,7 +57,6 @@ export const Dataset = (props: DatasetProps) => {
   }
 
   const onSelectTable = async (id: string, tb: string) => {
-    console.log("onSelectTable", id, tb)
     const res = await props.tableOnSelect(id, tb)
     setSelectedTable(tb)
     if (res) {

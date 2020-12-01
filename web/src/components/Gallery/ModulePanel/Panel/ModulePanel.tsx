@@ -22,7 +22,10 @@ export interface ModulePanelProps {
   timeSeries?: boolean
   elementType: DataType.ElementType
   content?: DataType.Content
-  fetchRemote?: (value: DataType.Content) => Promise<any>
+  fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchTableList?: (id: string) => Promise<string[]>
+  fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   fetchContent: (date?: string) => void
   dates?: string[]
@@ -129,7 +132,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
       return rf({
         content,
-        fetchRemote: props.fetchRemote,
+        fetchStorages: props.fetchStorages,
+        fetchTableList: props.fetchTableList,
+        fetchTableColumns: props.fetchTableColumns,
+        fetchQueryData: props.fetchQueryData,
         contentHeight: h,
         updateContent: updateModuleContent,
         forwardedRef: moduleFwRef

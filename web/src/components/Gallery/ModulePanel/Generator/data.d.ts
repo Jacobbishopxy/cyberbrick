@@ -8,6 +8,9 @@ import * as DataType from "../../GalleryDataType"
 
 export interface ModuleEditorField {
   content?: DataType.Content
+  fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchTableList?: (id: string) => Promise<string[]>
+  fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
@@ -15,7 +18,7 @@ export interface ModuleEditorField {
 
 export interface ModulePresenterField {
   content?: DataType.Content
-  fetchRemote?: (c: DataType.Content) => Promise<any>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   styling?: string
 }
@@ -26,7 +29,10 @@ export interface ConvertFwRef {
 
 export interface ConvertRefProps {
   content?: DataType.Content
-  fetchRemote?: (c: DataType.Content) => Promise<any>
+  fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchTableList?: (id: string) => Promise<string[]>
+  fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
@@ -35,7 +41,10 @@ export interface ConvertRefProps {
 
 export interface ConvertProps {
   content?: DataType.Content
-  fetchRemote?: (c: DataType.Content) => Promise<any>
+  fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchTableList?: (id: string) => Promise<string[]>
+  fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string

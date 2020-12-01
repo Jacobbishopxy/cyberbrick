@@ -13,10 +13,13 @@ export interface ContainerElementProps {
   editable: boolean
   element: DataType.Element
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
-  fetchRemoteFn?: (value: DataType.Content) => Promise<any>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
+  fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
+  fetchTableListFn: (id: string) => Promise<string[]>
+  fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
 }
 
 export interface ContainerElementRef {
@@ -73,7 +76,10 @@ export const TemplateElement =
           timeSeries={props.timeSeries}
           elementType={props.element.type}
           content={content}
-          fetchRemote={props.fetchRemoteFn}
+          fetchStorages={props.fetchStoragesFn}
+          fetchTableList={props.fetchTableListFn}
+          fetchTableColumns={props.fetchTableColumnsFn}
+          fetchQueryData={props.fetchQueryDataFn}
           contentHeight={mpHeight}
           fetchContent={fetchContent}
           dates={dates}

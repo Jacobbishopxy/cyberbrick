@@ -53,9 +53,12 @@ export interface ContainerTemplateProps {
   markAvailable?: boolean
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
-  elementFetchContentRemoteFn: (value: DataType.Content) => Promise<any>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
+  elementFetchStoragesFn: () => Promise<DataType.StorageSimple[]>
+  elementFetchTableListFn: (id: string) => Promise<string[]>
+  elementFetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
+  elementFetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
 }
 
 export interface ContainerTemplateRef {
@@ -136,10 +139,13 @@ export const ContainerTemplate =
                 editable={editable}
                 element={ele}
                 fetchContentFn={props.elementFetchContentFn}
-                fetchRemoteFn={props.elementFetchContentRemoteFn}
                 fetchContentDatesFn={props.elementFetchContentDatesFn}
                 updateContentFn={updateContent(ele)}
                 onRemove={elementOnRemove(ele.id!)}
+                fetchStoragesFn={props.elementFetchStoragesFn}
+                fetchTableListFn={props.elementFetchTableListFn}
+                fetchTableColumnsFn={props.elementFetchTableColumnsFn}
+                fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
               />
             </div>

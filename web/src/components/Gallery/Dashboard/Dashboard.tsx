@@ -19,13 +19,8 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 
   return contents.map(c => {
     if (c.element!.id === undefined) {
-      return {
-        ...c,
-        element: {
-          ...c.element!,
-          id: elementNameIdMap[c.element!.name]
-        }
-      }
+      const element = {...c.element!, id: elementNameIdMap[c.element!.name]}
+      return {...c, element}
     }
     return c
   })
@@ -43,6 +38,22 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
   return newContents
 }
 
+/**
+ * markAvailable:
+ * fetchDashboards:
+ * fetchDashboard:
+ * fetchTemplate:
+ * saveTemplate:
+ * copyTemplate:
+ * fetchElementContent:
+ * fetchElementContentRemote:
+ * fetchElementContentDates:
+ * updateElementContent:
+ * fetchStorages:
+ * fetchTableList:
+ * fetchTableColumns:
+ * fetchQueryData:
+ */
 export interface DashboardProps {
   markAvailable?: boolean
   fetchDashboards: () => Promise<GalleryAPI.Dashboard[]>
@@ -51,12 +62,12 @@ export interface DashboardProps {
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
-  fetchElementContentRemote: (id: string, option: DataType.Read) => Promise<any>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
-  fetchStorages: () => Promise<DataType.StorageSimple>
+  fetchStorages: () => Promise<DataType.StorageSimple[]>
   fetchTableList: (id: string) => Promise<string[]>
   fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryData: (storageId: string, readOption: DataType.Read) => Promise<any>
 }
 
 export const Dashboard = (props: DashboardProps) => {
@@ -155,14 +166,6 @@ export const Dashboard = (props: DashboardProps) => {
     return undefined
   }
 
-  const fetchElementContentRemote = async (value: DataType.Content) => {
-    const id = value.data.databaseId
-    const option = value.data.readOption
-    if (id && option)
-      return props.fetchElementContentRemote(id, option)
-    return Promise.reject(new Error("databaseId and readOption is required!"))
-  }
-
   const fetchElementContentDates = async (id: string) =>
     props.fetchElementContentDates(id, selectedMark)
 
@@ -175,6 +178,14 @@ export const Dashboard = (props: DashboardProps) => {
     const newContent = {...ctt, ...markValue} as DataType.Content
 
     setNewestContent(newContent)
+  }
+
+  const fetchQueryData = async (value: DataType.Content) => {
+    const id = value.data.databaseId
+    const option = value.data.readOption
+    if (id && option)
+      return props.fetchQueryData(id, option)
+    return Promise.reject(new Error("databaseId and readOption is required!"))
   }
 
   const onAddModule = (n: string, ts: boolean, et: DataType.ElementType) => {
@@ -201,9 +212,12 @@ export const Dashboard = (props: DashboardProps) => {
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}
-      fetchElementContentRemoteFn={fetchElementContentRemote}
       fetchElementContentDatesFn={fetchElementContentDates}
       updateElementContentFn={updateElementContent}
+      fetchStoragesFn={props.fetchStorages}
+      fetchTableListFn={props.fetchTableList}
+      fetchTableColumnsFn={props.fetchTableColumns}
+      fetchQueryDataFn={fetchQueryData}
       ref={cRef}
     /> : <></>, [selectedDashboard, selectedMark])
 

@@ -17,9 +17,12 @@ export interface ContainerProps {
   onSelectPane: (templateName: string) => void
   fetchElements: (templateName: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
-  fetchElementContentRemoteFn: (value: DataType.Content) => Promise<any>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
+  fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
+  fetchTableListFn: (id: string) => Promise<string[]>
+  fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
 }
 
 export interface ContainerRef {
@@ -134,9 +137,12 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         markAvailable={props.markAvailable}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
-        elementFetchContentRemoteFn={props.fetchElementContentRemoteFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}
         elementUpdateContentFn={elementUpdateContentFn}
+        elementFetchStoragesFn={props.fetchStoragesFn}
+        elementFetchTableListFn={props.fetchTableListFn}
+        elementFetchTableColumnsFn={props.fetchTableColumnsFn}
+        elementFetchQueryDataFn={props.fetchQueryDataFn}
         ref={ctRef}
       />
     return <></>

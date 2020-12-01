@@ -20,7 +20,10 @@ import styles from "../Panel/Common.less"
 
 export interface ModuleSelectorProps {
   content?: DataType.Content
-  fetchRemote?: (value: DataType.Content) => Promise<any>
+  fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchTableList?: (id: string) => Promise<string[]>
+  fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertFwRef>
@@ -63,7 +66,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const line = <Line
       content={props.content}
-      fetchRemote={props.fetchRemote}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       styling={styles.contentPanel}
@@ -72,7 +78,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const bar = <Bar
       content={props.content}
-      fetchRemote={props.fetchRemote}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       styling={styles.contentPanel}
@@ -81,7 +90,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const lineBar = <LineBar
       content={props.content}
-      fetchRemote={props.fetchRemote}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       styling={styles.contentPanel}
@@ -90,7 +102,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const pie = <Pie
       content={props.content}
-      fetchRemote={props.fetchRemote}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       styling={styles.contentPanel}
