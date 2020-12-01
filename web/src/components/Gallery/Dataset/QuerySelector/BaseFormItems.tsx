@@ -4,8 +4,8 @@
 
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
 import {ProFormSelect} from "@ant-design/pro-form"
-import {Button, Form, Input, Select, Space} from "antd"
-import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons'
+import {Button, Form, Input, Radio, Select, Space} from "antd"
+import {DeleteTwoTone, PlusOutlined} from '@ant-design/icons'
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -23,19 +23,19 @@ const symbolOption = [
   "<=",
 ]
 
-export interface BaseFormProps {
+export interface BaseFormItemsProps {
   initialValues?: Record<string, any>
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
 }
 
-export interface BaseFormRef {
+export interface BaseFormItemsRef {
   onValuesChange: (values: Record<string, any>) => void
 }
 
-export const BaseForm =
-  forwardRef((props: BaseFormProps, ref: React.Ref<BaseFormRef>) => {
+export const BaseFormItems =
+  forwardRef((props: BaseFormItemsProps, ref: React.Ref<BaseFormItemsRef>) => {
 
     const [storage, setStorage] = useState<string>(props.initialValues?.id || undefined)
     const [table, setTable] = useState<string>(props.initialValues?.tableName || undefined)
@@ -102,12 +102,13 @@ export const BaseForm =
         <Form.List name="conditions">
           {(fields, {add, remove}) => (
             <>
-              {fields.map(field => (
-                <Space key={field.key} style={{display: 'flex'}} align="baseline">
+              {fields.map((field, idx) => (
+                <Space key={field.key} style={{display: 'flex'}} align="center">
                   <Form.Item
                     {...field}
                     name={[field.name, 'field']}
                     fieldKey={[field.fieldKey, 'field']}
+                    label='Field'
                     rules={[{required: true, message: 'Missing field'}]}
                   >
                     <Select placeholder="Field" style={{width: 200}}>
@@ -123,6 +124,7 @@ export const BaseForm =
                     {...field}
                     name={[field.name, 'symbol']}
                     fieldKey={[field.fieldKey, 'symbol']}
+                    label='Symbol'
                     rules={[{required: true, message: 'Missing symbol'}]}
                   >
                     <Select placeholder="Symbol" style={{width: 100}}>
@@ -138,12 +140,31 @@ export const BaseForm =
                     {...field}
                     name={[field.name, 'value']}
                     fieldKey={[field.fieldKey, 'value']}
+                    label='Value'
                     rules={[{required: true, message: 'Missing value'}]}
                   >
                     <Input placeholder="Value"/>
                   </Form.Item>
 
-                  <MinusCircleOutlined onClick={() => remove(field.name)}/>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'junction']}
+                    fieldKey={[field.fieldKey, 'junction']}
+                    label='Junction'
+                    rules={[{required: idx !== 0, message: 'Missing junction'}]}
+                    initialValue={idx !== 0 ? "AND" : undefined}
+                  >
+                    <Radio.Group disabled={idx === 0}>
+                      <Radio value="AND">AND</Radio>
+                      <Radio value="OR">OR</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+
+                  <DeleteTwoTone
+                    twoToneColor="red"
+                    onClick={() => remove(field.name)}
+                    style={{fontSize: 20}}
+                  />
                 </Space>
               ))}
               <Form.Item>
