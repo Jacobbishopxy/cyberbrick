@@ -2,194 +2,89 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import React, {useEffect, useState} from 'react'
-import {Button, Checkbox, message, Radio, Space} from "antd"
+import React, {useState} from 'react'
+import {Button, message} from "antd"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
-import _ from "lodash"
+import ProForm from "@ant-design/pro-form"
 
-import {FileExtractModal} from "@/components/FileUploadModal"
-import {Emoji} from "@/components/Emoji"
+import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
-import {fileExtract} from "../../../Misc/FileUploadConfig"
+import {AxisSelectorForm} from "./AxisSelectorForm"
 
 
-type DataIndexDirection = "vertical" | "horizontal"
-
-const stringifyDataHeader = (data: any[][]) =>
-  _.concat([data[0].map((i: any) => i.toString())], data.slice(1))
-const stringifyDataIndex = (data: any[][]) =>
-  data.map((arr: any[]) => _.concat(arr[0].toString(), arr.slice(1)))
-const checkUniqueness = (data: any[]) =>
-  _.uniq(data).length === data.length
-
-const convertChartData = (data: any[][], dataIndexDirection: DataIndexDirection): [any[][], string[]] => {
-
-  let cData
-  let fields
-  if (dataIndexDirection === "vertical") {
-    const d = stringifyDataHeader(data)
-    cData = stringifyDataHeader(_.zip(...d))
-    fields = cData[0].slice(1)
-  } else {
-    const d = stringifyDataHeader(data)
-    cData = stringifyDataIndex(d)
-    fields = cData.map((a: string[]) => a[0])
-  }
-
-  return [cData, fields]
-}
-
-// todo: redo Editor, needs UI to generate `DataType.Read`
 export const generateCommonEditorField = (mixin: boolean = false) =>
   (props: ModuleEditorField) => {
-    const [visible, setVisible] = useState<boolean>(false)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-    const [selectableFields, setSelectableFields] = useState<string[]>([])
-    const [savingProcessDataIndexDir, setSavingProcessDataIndexDir] = useState(false)
-    const [savingProcessData, setSavingProcessData] = useState(false)
-    const [savingProcessLineArr, setSavingProcessLineArr] = useState(false)
+    const [columns, setColumns] = useState<string[]>()
 
-    useEffect(() => {
-      if (content?.config?.dataIndexDir)
-        setSavingProcessDataIndexDir(true)
-      if (content?.data) {
-        setSavingProcessData(true)
-        setSelectableFields(content.data.data.slice(1).map((arr: any[]) => arr[0]))
-      }
-      if (content?.config?.lineArr)
-        setSavingProcessLineArr(true)
-    }, [content])
-
-    // 1. set data index direction
-    const saveContentConfig = (dataIndexDir: string) => {
+    const saveContentData = (data: Record<string, any>) => {
       const ctt = {
         ...content!,
         date: DataType.today(),
-        config: {dataIndexDir}
+        data
       }
       setContent(ctt)
+      setColumns(data.selects)
+
+      return true
     }
 
-    // 2. set data
-    const saveContentData = (d: any[]) => {
-      const [dataSource, fields] = convertChartData(d.map(i => i.data)[0], content!.config!.dataIndexDir)
 
-      if (checkUniqueness(fields)) {
-        const ctt = {
-          ...content!,
-          data: {data: dataSource},
-          config: {...content!.config}
-        }
-        setContent(ctt)
-        setSelectableFields(fields)
-      } else
-        message.warn("Please confirm there is no duplicated fields in your file!")
-    }
-
-    // 3. set lines (required if mixin is true)
-    const saveContentConfigLineArr = (lineArr: string[]) => {
-      const ctt = {
-        ...content,
-        config: {...content!.config, lineArr}
-      }
-      setContent(ctt as DataType.Content)
-    }
-
-    const genCheckBox = () => {
-      if (mixin && content && savingProcessData) {
-        return (
-          <Space direction="vertical">
-            <Space>
-              <Emoji label="0" symbol="③" size={20}/>
-              Select fields as line in chart:
-            </Space>
-            <Checkbox.Group
-              style={{width: "100%"}}
-              onChange={vs => saveContentConfigLineArr(vs as string[])}
-              disabled={!savingProcessData}
-              defaultValue={content.config!.lineArr}
-            >
-              {
-                selectableFields.map((n: string) =>
-                  <Checkbox key={n} value={n}>{n}</Checkbox>
-                )
-              }
-            </Checkbox.Group>
-          </Space>
-        )
-      }
-      return <></>
-    }
-
-    const saveContent = () => {
+    const saveContent = async (values: Record<string, any>) => {
       if (content) {
-        props.updateContent(content)
+        // props.updateContent(content)
+        console.log("saveContent data: ", content)
+        console.log("saveContent config: ", values)
         message.success("Updating succeeded!")
       } else {
         message.warn("Updating failed! File and options are required!")
       }
     }
 
+    const genConfigs = () =>
+      columns ?
+        <AxisSelectorForm
+          mixin={mixin}
+          columns={columns}
+        /> : <></>
+
+
     return (
-      <div className={props.styling}>
-        <Space
-          direction="vertical"
-          style={{position: "relative", top: "30%"}}
-        >
-          <Space>
-            <Emoji label="0" symbol="①" size={20}/>
-            Index direction:
-            <Radio.Group
-              onChange={e => saveContentConfig(e.target.value)}
-              defaultValue={props.content?.config?.dataIndexDir}
-            >
-              <Radio value="horizontal">Horizontal</Radio>
-              <Radio value="vertical">Vertical</Radio>
-            </Radio.Group>
-          </Space>
-          <Space>
-            <Emoji label="0" symbol="②" size={20}/>
+      <>
+        <QuerySelectorModal
+          trigger={
             <Button
               type='primary'
               shape='round'
               size='small'
-              disabled={!savingProcessDataIndexDir}
-              onClick={() => setVisible(true)}
             >
-              Click here to upload file
+              Click here to select dataset
             </Button>
-          </Space>
-
-          {genCheckBox()}
-          <Button
-            type='primary'
-            size='small'
-            onClick={saveContent}
-            disabled={mixin ? !savingProcessLineArr : !savingProcessData}
-          >
-            Update
-          </Button>
-        </Space>
-
-        <FileExtractModal
-          setVisible={setVisible}
-          visible={visible}
-          upload={fileExtract}
-          uploadResHandle={saveContentData}
-          multiSheetDisable
+          }
+          storagesOnFetch={props.fetchStorages!}
+          storageOnSelect={props.fetchTableList!}
+          tableOnSelect={props.fetchTableColumns!}
+          onSubmit={saveContentData}
         />
-      </div>
+
+        <ProForm
+          name="Configuration"
+          onFinish={saveContent}
+        >
+          {genConfigs()}
+        </ProForm>
+      </>
     )
   }
 
-// todo: use fetchRemote when content is available
 export const generateCommonPresenterField = (chartOptionGenerator: (v: DataType.Content) => EChartOption) =>
   (props: ModulePresenterField) => {
 
-    // props.fetchRemote()
+    // todo: query data
+    // props.fetchQueryData
 
     if (props.content && props.content.data)
       return <ReactEcharts

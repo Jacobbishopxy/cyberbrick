@@ -60,7 +60,7 @@ export default {
   'menu.demo.localstorage': 'Local Storage',
   'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
-  'menu.demo.query-selector': 'Query Selector',
+  'menu.demo.component-test': 'Component Test',
 
   'menu.document': 'Document',
   'menu.document.gallery': 'Gallery',

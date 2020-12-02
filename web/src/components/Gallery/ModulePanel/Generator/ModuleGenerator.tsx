@@ -34,13 +34,16 @@ export class ModuleGenerator {
       return editable ?
         <this.editor
           content={crProps.content}
+          fetchStorages={crProps.fetchStorages}
+          fetchTableList={crProps.fetchTableList}
+          fetchTableColumns={crProps.fetchTableColumns}
           contentHeight={crProps.contentHeight}
           updateContent={crProps.updateContent}
           styling={forceStyle ? crProps.styling : styles.editorField}
         /> :
         <this.presenter
           content={crProps.content}
-          fetchRemote={crProps.fetchRemote}
+          fetchQueryData={crProps.fetchQueryData}
           contentHeight={crProps.contentHeight}
           styling={crProps.styling}
         />
@@ -49,7 +52,10 @@ export class ModuleGenerator {
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={props.content}
-        fetchRemote={props.fetchRemote}
+        fetchStorages={props.fetchStorages}
+        fetchTableList={props.fetchTableList}
+        fetchTableColumns={props.fetchTableColumns}
+        fetchQueryData={props.fetchQueryData}
         contentHeight={props.contentHeight}
         updateContent={props.updateContent}
         styling={props.styling}

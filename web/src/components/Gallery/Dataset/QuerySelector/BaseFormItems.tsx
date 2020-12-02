@@ -103,7 +103,7 @@ export const BaseFormItems =
           {(fields, {add, remove}) => (
             <>
               {fields.map((field, idx) => (
-                <Space key={field.key} style={{display: 'flex'}} align="center">
+                <Space key={field.key} style={{display: 'flex'}} >
                   <Form.Item
                     {...field}
                     name={[field.name, 'field']}
@@ -146,24 +146,27 @@ export const BaseFormItems =
                     <Input placeholder="Value"/>
                   </Form.Item>
 
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'junction']}
-                    fieldKey={[field.fieldKey, 'junction']}
-                    label='Junction'
-                    rules={[{required: idx !== 0, message: 'Missing junction'}]}
-                    initialValue={idx !== 0 ? "AND" : undefined}
-                  >
-                    <Radio.Group disabled={idx === 0}>
-                      <Radio value="AND">AND</Radio>
-                      <Radio value="OR">OR</Radio>
-                    </Radio.Group>
-                  </Form.Item>
+                  {
+                    idx === 0 ? <></> :
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'junction']}
+                        fieldKey={[field.fieldKey, 'junction']}
+                        label='Junction'
+                        rules={[{required: idx !== 0, message: 'Missing junction'}]}
+                        initialValue="AND"
+                      >
+                        <Radio.Group>
+                          <Radio value="AND">AND</Radio>
+                          <Radio value="OR">OR</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                  }
 
                   <DeleteTwoTone
                     twoToneColor="red"
                     onClick={() => remove(field.name)}
-                    style={{fontSize: 20}}
+                    style={{fontSize: 20, marginTop: 7}}
                   />
                 </Space>
               ))}
