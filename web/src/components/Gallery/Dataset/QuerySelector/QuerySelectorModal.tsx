@@ -15,6 +15,8 @@ export interface QuerySelectorModalProps {
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
   onSubmit: (value: Record<string, any>) => Promise<any> | any
+  style?: React.CSSProperties
+  columnsRequired?: boolean
 }
 
 export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
@@ -32,12 +34,14 @@ export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
       onFinish={props.onSubmit}
       modalProps={{maskClosable: false, keyboard: false, closable: false}}
       initialValues={props.initialValues}
+      style={props.style}
     >
       <BaseFormItems
         initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}
         tableOnSelect={props.tableOnSelect}
+        columnsRequired={props.columnsRequired}
         ref={ref}
       />
     </ModalForm>

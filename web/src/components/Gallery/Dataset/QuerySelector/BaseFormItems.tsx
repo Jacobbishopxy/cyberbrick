@@ -28,6 +28,7 @@ export interface BaseFormItemsProps {
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
+  columnsRequired?: boolean
 }
 
 export interface BaseFormItemsRef {
@@ -95,6 +96,7 @@ export const BaseFormItems =
           label="Columns"
           fieldProps={{mode: "multiple"}}
           placeholder="Please select columns"
+          rules={props.columnsRequired === true ? [{required: true, message: 'Please select your columns!'}] : []}
           options={columnSelects}
         />
 
@@ -103,7 +105,7 @@ export const BaseFormItems =
           {(fields, {add, remove}) => (
             <>
               {fields.map((field, idx) => (
-                <Space key={field.key} style={{display: 'flex'}} >
+                <Space key={field.key} style={{display: 'flex'}}>
                   <Form.Item
                     {...field}
                     name={[field.name, 'field']}

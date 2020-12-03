@@ -3,7 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Button, message} from "antd"
+import {Button, message, Space} from "antd"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
 import ProForm from "@ant-design/pro-form"
@@ -35,31 +35,27 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
 
     const saveContent = async (values: Record<string, any>) => {
       if (content) {
-        // props.updateContent(content)
-        console.log("saveContent data: ", content)
-        console.log("saveContent config: ", values)
+        const ctt = {
+          ...content,
+          config: values
+        }
+        props.updateContent(ctt)
         message.success("Updating succeeded!")
       } else {
-        message.warn("Updating failed! File and options are required!")
+        message.warn("Updating failed! dataset and options are required!")
       }
     }
 
-    const genConfigs = () =>
-      columns ?
-        <AxisSelectorForm
-          mixin={mixin}
-          columns={columns}
-        /> : <></>
-
-
     return (
       <>
+        <Space style={{marginBottom: 8}}>
+          Dataset
+        </Space>
         <QuerySelectorModal
           trigger={
             <Button
               type='primary'
-              shape='round'
-              size='small'
+              style={{marginBottom: 20}}
             >
               Click here to select dataset
             </Button>
@@ -68,13 +64,17 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
           storageOnSelect={props.fetchTableList!}
           tableOnSelect={props.fetchTableColumns!}
           onSubmit={saveContentData}
+          columnsRequired
         />
 
         <ProForm
           name="Configuration"
           onFinish={saveContent}
         >
-          {genConfigs()}
+          <AxisSelectorForm
+            mixin={mixin}
+            columns={columns}
+          />
         </ProForm>
       </>
     )

@@ -2,17 +2,22 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React from 'react'
+import React, {useState} from 'react'
+import {Col, Row} from "antd"
 
-import {generateCommonEditorField} from "@/components/Gallery/ModulePanel/Collections/graph/Common"
+import {generateCommonEditorField, generateCommonPresenterField} from "@/components/Gallery/ModulePanel/Collections/graph/Common"
+import {generateLineBarOption} from "@/components/Gallery/ModulePanel/Collections/graph/chartUtils"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
 
 
-const CT = generateCommonEditorField(true)
+const EF = generateCommonEditorField(true)
+const PF = generateCommonPresenterField(generateLineBarOption())
 
 export default () => {
+
+  const [content, setContent] = useState<DataType.Content | undefined>()
 
   const fetchStorages = () =>
     GalleryService.getAllStorageSimple()
@@ -24,20 +29,29 @@ export default () => {
     GalleryService.databaseGetTableColumns(sId, tn)
 
   const updateContent = (c: DataType.Content) => {
+    console.log(c)
+    setContent(c)
     return Promise.reject()
   }
 
   return (
-    <div style={{padding: 24}}>
-      <CT
-        content={undefined}
-        fetchStorages={fetchStorages}
-        fetchTableList={fetchTableList}
-        fetchTableColumns={fetchTableColumns}
-        contentHeight={500}
-        updateContent={updateContent}
-      />
-    </div>
+    <Row>
+      <Col span={12}>
+        <EF
+          content={content}
+          fetchStorages={fetchStorages}
+          fetchTableList={fetchTableList}
+          fetchTableColumns={fetchTableColumns}
+          updateContent={updateContent}
+        />
+      </Col>
+      <Col span={12}>
+        <PF
+          // content={content}
+          // fetchQueryData={}
+        />
+      </Col>
+    </Row>
   )
 }
 

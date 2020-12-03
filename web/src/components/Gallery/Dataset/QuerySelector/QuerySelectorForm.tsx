@@ -14,6 +14,8 @@ export interface QuerySelectorFormProps {
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, name: string) => Promise<string[]>
   onSubmit: (value: Record<string, any>) => Promise<any> | any
+  style?: React.CSSProperties
+  columnsRequired?: boolean
 }
 
 export const QuerySelectorForm = (props: QuerySelectorFormProps) => {
@@ -29,12 +31,14 @@ export const QuerySelectorForm = (props: QuerySelectorFormProps) => {
       onValuesChange={onValuesChange}
       onFinish={props.onSubmit}
       initialValues={props.initialValues}
+      style={props.style}
     >
       <BaseFormItems
         initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}
         tableOnSelect={props.tableOnSelect}
+        columnsRequired={props.columnsRequired}
         ref={ref}
       />
     </ProForm>

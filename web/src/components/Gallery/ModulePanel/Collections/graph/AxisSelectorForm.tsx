@@ -11,12 +11,12 @@ import _ from "lodash"
 
 export interface AxisSelectorFormProps {
   mixin: boolean
-  columns: string[]
+  columns?: string[]
 }
 
 export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
 
-  const [yAxis, setYAxis] = useState<string[]>(props.columns)
+  const [yAxis, setYAxis] = useState<string[] | undefined>(props.columns)
   const [yAxisRecord, setYAxisRecord] = useState<string[][]>([])
 
   const xAxisOnChange = (col: string) =>
@@ -44,15 +44,12 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
   const getYAxisRest = () =>
     _.differenceWith(yAxis, _.flatten(yAxisRecord))
 
-  return (
+  return props.columns ? (
     <>
-
-      {props.columns.join(", ")}
-
       {
         props.mixin ?
           <ProFormSelect
-            name="mixin"
+            name="bar"
             label="Display as Bar chart"
             fieldProps={{mode: "multiple"}}
             options={props.columns.map(c => ({label: c, value: c}))}
@@ -140,6 +137,6 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
         )}
       </Form.List>
     </>
-  )
+  ) : <></>
 }
 
