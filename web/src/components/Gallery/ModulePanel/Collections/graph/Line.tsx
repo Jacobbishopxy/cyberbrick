@@ -5,11 +5,11 @@
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {generateCommonEditorField, generateCommonPresenterField} from "./Common"
-import {generateChartOption} from "./chartUtils"
+import {generateLineBarOption} from "./chartGenerators"
 
 
 const EditorField = generateCommonEditorField()
-const PresenterField = generateCommonPresenterField(generateChartOption("line"))
+const PresenterField = generateCommonPresenterField(generateLineBarOption("line"))
 
 export const Line = new ModuleGenerator(EditorField, PresenterField).generate()
 

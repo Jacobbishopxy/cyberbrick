@@ -88,7 +88,7 @@ const genReadStr = (selects: string[] | undefined,
   const selection = selects ? selects.map(i => `"${i}"`).join(", ") : "*"
   let s = `SELECT ${selection} FROM "${tableName}"`
 
-  if (conditions) {
+  if (conditions && conditions.length !== 0) {
     s += _.reduce(conditions, (ans: string, item: ConditionDto) => {
       return `${ans} ${genConditionStr(item)}`
     }, " WHERE ")

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, message, Space} from "antd"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
@@ -12,6 +12,7 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
+import {ChartConfig} from "./data"
 import {AxisSelectorForm} from "./AxisSelectorForm"
 
 
@@ -19,6 +20,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
   (props: ModuleEditorField) => {
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     const [columns, setColumns] = useState<string[]>()
+    const [defaultYColumns, setDefaultYColumns] = useState<string[]>([])
 
     const saveContentData = (data: Record<string, any>) => {
       const ctt = {
@@ -33,12 +35,14 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     }
 
 
-    const saveContent = async (values: Record<string, any>) => {
+    const saveContent = async (values: ChartConfig) => {
       if (content) {
-        const ctt = {
-          ...content,
-          config: values
-        }
+
+        const baseY = [{position: "left", columns: defaultYColumns}]
+        const y = values.y ? [...baseY, ...values.y] : baseY
+
+        const config = {...values, y}
+        const ctt = {...content, config}
         props.updateContent(ctt)
         message.success("Updating succeeded!")
       } else {
@@ -70,26 +74,35 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
         <ProForm
           name="Configuration"
           onFinish={saveContent}
+          initialValues={{x: {type: "category"}}}
         >
           <AxisSelectorForm
             mixin={mixin}
             columns={columns}
+            getYAxis={setDefaultYColumns}
           />
         </ProForm>
       </>
     )
   }
 
-export const generateCommonPresenterField = (chartOptionGenerator: (v: DataType.Content) => EChartOption) =>
-  (props: ModulePresenterField) => {
+export const generateCommonPresenterField =
+  (chartOptionGenerator: (data: any[], config: ChartConfig) => EChartOption) =>
+    (props: ModulePresenterField) => {
 
-    // todo: query data
-    // props.fetchQueryData
+      const [data, setData] = useState<any[]>()
 
-    if (props.content && props.content.data)
-      return <ReactEcharts
-        option={chartOptionGenerator(props.content)}
-        style={{height: props.contentHeight}}
-      />
-    return <></>
-  }
+      useEffect(() => {
+        if (props.fetchQueryData && props.content)
+          props.fetchQueryData(props.content).then(res => setData(res))
+      }, [props.content])
+
+
+      if (data && props.content && props.content.config)
+        return <ReactEcharts
+          option={chartOptionGenerator(data, props.content.config as ChartConfig)}
+          style={{height: props.contentHeight}}
+        />
+      return <></>
+    }
+

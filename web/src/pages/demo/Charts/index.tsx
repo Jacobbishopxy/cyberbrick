@@ -9,10 +9,10 @@ import ReactEcharts from "echarts-for-react"
 
 
 const data = [
-  ['product', '2012', '2013', '2014', '2015'],
-  ['alpha', 41.1, 30.4, 65.1, 53.3],
-  ['beta', 86.5, 92.1, 85.7, 83.1],
-  ['trend', 24.1, 67.2, 79.5, 86.4]
+  {time: '2017', 'alpha': 43.3, 'beta': 85.8, 'trend': 93.7},
+  {time: '2018', 'alpha': 83.1, 'beta': 73.4, 'trend': 55.1},
+  {time: '2019', 'alpha': 86.4, 'beta': 65.2, 'trend': 82.5},
+  {time: '2020', 'alpha': 72.4, 'beta': 53.9, 'trend': 39.1}
 ]
 
 const chartOption: EChartOption = {
@@ -44,35 +44,32 @@ const chartOption: EChartOption = {
   series: [
     {
       type: 'bar',
-      seriesLayoutBy: 'row',
       yAxisIndex: 0,
       name: "alpha",
       encode: {
-        x: "product",
+        x: "time",
         y: "alpha",
-        tooltip: ["product", "alpha"]
+        tooltip: ["alpha"]
       }
     },
     {
       type: 'bar',
-      seriesLayoutBy: 'row',
       yAxisIndex: 0,
       name: "beta",
       encode: {
-        x: "product",
+        x: "time",
         y: "beta",
-        tooltip: ["product", "beta"]
+        tooltip: ["beta"]
       }
     },
     {
       type: 'line',
-      seriesLayoutBy: "row",
       yAxisIndex: 1,
       name: 'trend',
       encode: {
-        x: "product",
+        x: "time",
         y: "trend",
-        tooltip: ["product", "trend"],
+        tooltip: ["trend"],
       }
     }
   ]

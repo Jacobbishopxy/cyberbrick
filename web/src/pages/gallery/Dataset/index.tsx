@@ -27,7 +27,7 @@ export default () => {
   const tableOnDelete = (id: string, tableName: string) =>
     GalleryService.databaseDropTable(id, tableName)
 
-  const queryOnSelect = (id: string,value: Record<string, any>) =>
+  const queryOnSelect = (id: string, value: Record<string, any>) =>
     GalleryService.read(id, value as DataType.Read)
 
   const sqlOnExecute = (id: string, sql: string) =>

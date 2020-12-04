@@ -3,12 +3,11 @@
  */
 
 
-import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {generateCommonEditorField, generateCommonPresenterField} from "./Common"
-import {generatePieOption} from "./chartUtils"
+// import {ModuleGenerator} from "../../Generator/ModuleGenerator"
+// import {generateCommonEditorField, generateCommonPresenterField} from "./Common"
 
-const EditorField = generateCommonEditorField()
-const PresenterField = generateCommonPresenterField(generatePieOption())
-
-export const Pie = new ModuleGenerator(EditorField, PresenterField).generate()
+// const EditorField = generateCommonEditorField()
+// const PresenterField = generateCommonPresenterField(generatePieOption())
+//
+// export const Pie = new ModuleGenerator(EditorField, PresenterField).generate()
 

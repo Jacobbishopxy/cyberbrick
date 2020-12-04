@@ -6,14 +6,14 @@ import React, {useState} from 'react'
 import {Col, Row} from "antd"
 
 import {generateCommonEditorField, generateCommonPresenterField} from "@/components/Gallery/ModulePanel/Collections/graph/Common"
-import {generateLineBarOption} from "@/components/Gallery/ModulePanel/Collections/graph/chartUtils"
+import {generateLineBarOption} from "@/components/Gallery/ModulePanel/Collections/graph/chartGenerators"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
 
 
 const EF = generateCommonEditorField(true)
-const PF = generateCommonPresenterField(generateLineBarOption())
+const PF = generateCommonPresenterField(generateLineBarOption("mixin"))
 
 export default () => {
 
@@ -28,10 +28,13 @@ export default () => {
   const fetchTableColumns = (sId: string, tn: string) =>
     GalleryService.databaseGetTableColumns(sId, tn)
 
+  const fetchQueryData = (value: DataType.Content) =>
+    GalleryService.read(value.data.id, value.data as GalleryAPI.Read)
+
   const updateContent = (c: DataType.Content) => {
     console.log(c)
     setContent(c)
-    return Promise.reject()
+    return Promise.resolve()
   }
 
   return (
@@ -47,8 +50,9 @@ export default () => {
       </Col>
       <Col span={12}>
         <PF
-          // content={content}
-          // fetchQueryData={}
+          content={content}
+          fetchQueryData={fetchQueryData}
+          contentHeight={500}
         />
       </Col>
     </Row>
