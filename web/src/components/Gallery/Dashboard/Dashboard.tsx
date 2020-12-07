@@ -77,6 +77,7 @@ export const Dashboard = (props: DashboardProps) => {
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplate, setSelectedTemplate] = useState<string>()
   const [selectedMark, setSelectedMark] = useState<string>()
+  const [refresh, setRefresh] = useState<number>(0)
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
   const [newestContent, setNewestContent] = useState<DataType.Content>()
@@ -109,6 +110,7 @@ export const Dashboard = (props: DashboardProps) => {
   const markOnSelect = (value: string) => {
     if (props.markAvailable) setCanEdit(true)
     setSelectedMark(value)
+    setRefresh(refresh + 1)
   }
 
   const fetchElements = async (value: string) => {
@@ -154,6 +156,8 @@ export const Dashboard = (props: DashboardProps) => {
           setNewestContent(undefined)
           setUpdatedContents([])
         }
+        cRef.current.fetchTemplate()
+        setRefresh(refresh + 1)
         return Promise.resolve()
       }
     }
@@ -219,7 +223,7 @@ export const Dashboard = (props: DashboardProps) => {
       fetchTableColumnsFn={props.fetchTableColumns}
       fetchQueryDataFn={fetchQueryData}
       ref={cRef}
-    /> : <></>, [selectedDashboard, selectedMark])
+    /> : <></>, [refresh])
 
   return (
     <EditableContext.Provider value={edit}>

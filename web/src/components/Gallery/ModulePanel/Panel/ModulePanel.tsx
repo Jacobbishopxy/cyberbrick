@@ -33,6 +33,7 @@ export interface ModulePanelProps {
   updateContent: (c: DataType.Content) => void
   onRemove: () => void
   editable: boolean
+  settable: boolean
 }
 
 // todo: add Tags presenting
@@ -114,6 +115,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const genHeader = useMemo(() =>
     <ModulePanelHeader
       editable={props.editable}
+      settable={props.settable}
       timeSeries={props.timeSeries}
       headName={props.headName}
       title={content ? content.title : undefined}
@@ -124,7 +126,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       dateList={props.dates}
       editDate={headerDate}
       onSelectDate={props.fetchContent}
-    />, [props.editable, content, props.dates])
+    />, [props.editable, props.settable, content, props.dates])
 
   const genContext = useMemo(() => {
     const rf = moduleRef.current

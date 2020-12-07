@@ -10,6 +10,7 @@ import {HeaderController} from "./HeaderController"
 
 interface ModulePanelHeaderProps {
   editable: boolean
+  settable: boolean
   timeSeries?: boolean
   headName?: string
   title: string | undefined
@@ -50,7 +51,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         onBlur={changeTitle}
         defaultValue={title}
       />
-    if (props.editable)
+    if (props.editable && props.settable)
       return <Button
         type="link"
         size="small"
@@ -64,6 +65,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
   const genController = () =>
     <HeaderController
       editable={props.editable}
+      settable={props.settable}
       timeSeries={props.timeSeries}
       dateList={props.dateList}
       editDate={props.editDate}

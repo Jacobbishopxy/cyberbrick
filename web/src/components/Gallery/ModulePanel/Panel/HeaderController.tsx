@@ -95,6 +95,7 @@ interface DateModalVisible {
 
 export interface HeaderController {
   editable: boolean
+  settable: boolean
   timeSeries?: boolean
   dateList?: string[]
   editDate?: (date: string) => void
@@ -130,9 +131,9 @@ export const HeaderController = (props: HeaderController) => {
         show={props.timeSeries}
         onClick={() => setDateModalVisible({...dateModalVisible, set: true})}
       />
-      <EditButton
-        editContent={props.editContent}
-      />
+      {
+        props.settable ? <EditButton editContent={props.editContent}/> : <></>
+      }
       <DeleteButton
         confirmDelete={props.confirmDelete}
       />

@@ -29,6 +29,7 @@ export interface ContainerRef {
   startFetchElements: () => void
   startFetchAllContents: () => void
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
+  fetchTemplate: () => void
   saveTemplate: () => DataType.Template | undefined
 }
 
@@ -93,6 +94,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     }
   }
 
+  const fetchTemplate = () => {
+    if (selectedPane)
+      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
+  }
+
   const saveTemplate = () => {
     if (selectedPane) {
       const rf = ctRef.current
@@ -109,6 +115,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     startFetchElements,
     startFetchAllContents,
     newElement,
+    fetchTemplate,
     saveTemplate
   }))
 

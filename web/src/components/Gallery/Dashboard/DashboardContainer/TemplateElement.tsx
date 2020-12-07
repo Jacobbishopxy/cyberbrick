@@ -87,6 +87,7 @@ export const TemplateElement =
           updateContent={updateContent}
           onRemove={props.onRemove}
           editable={props.editable}
+          settable={!!eleId}
         />
       </div>
     )
