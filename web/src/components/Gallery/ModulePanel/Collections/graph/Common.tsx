@@ -51,7 +51,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     }
 
     return (
-      <>
+      <div style={{padding: 20}}>
         <Space style={{marginBottom: 8}}>
           Dataset
         </Space>
@@ -82,7 +82,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
             getYAxis={setDefaultYColumns}
           />
         </ProForm>
-      </>
+      </div>
     )
   }
 
@@ -93,8 +93,10 @@ export const generateCommonPresenterField =
       const [data, setData] = useState<any[]>()
 
       useEffect(() => {
-        if (props.fetchQueryData && props.content)
-          props.fetchQueryData(props.content).then(res => setData(res))
+        if (props.fetchQueryData && props.content) {
+          if (props.content.data)
+            props.fetchQueryData(props.content).then(res => setData(res))
+        }
       }, [props.content])
 
 

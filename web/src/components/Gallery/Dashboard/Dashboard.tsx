@@ -181,11 +181,11 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const fetchQueryData = async (value: DataType.Content) => {
-    const id = value.data.databaseId
-    const option = value.data.readOption
+    const id = value.data.id
+    const option = value.data as DataType.Read
     if (id && option)
       return props.fetchQueryData(id, option)
-    return Promise.reject(new Error("databaseId and readOption is required!"))
+    return Promise.reject(new Error("content data is inappropriate!"))
   }
 
   const onAddModule = (n: string, ts: boolean, et: DataType.ElementType) => {
