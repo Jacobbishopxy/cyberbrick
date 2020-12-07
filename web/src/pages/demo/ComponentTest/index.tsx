@@ -12,8 +12,8 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
 
 
-const EF = generateCommonEditorField(true)
-const PF = generateCommonPresenterField(generateLineBarOption("mixin"))
+const EF = generateCommonEditorField()
+const PF = generateCommonPresenterField(generateLineBarOption("bar"))
 
 export default () => {
 
