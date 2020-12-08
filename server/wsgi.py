@@ -15,7 +15,7 @@ from app import create_app, AppConfig, controllers
 @click.option('--debug', default="default", help="debug: default/true/false")
 def start(env: str, debug: str):
     cfg = AppConfig.prod if env == "prod" else AppConfig.dev
-    host, port = cfg.value.server_host, cfg.value.server_port
+    host, port = "0.0.0.0", cfg.value.server_port
 
     app = create_app("/api", cfg, controllers)
     CORS(app)

@@ -20,9 +20,17 @@ import FormData from "form-data"
 export class FileController {
   constructor(private configService: ConfigService) { }
 
+  private serverConfig = this.configService.get("server")
+
+  private uploadPath = process.env.NODE_ENV === "production" ?
+    `http://${this.serverConfig.serverHost}:${this.serverConfig.serverPort}/api/upload` :
+    "/api/upload"
+
   private getProxy() {
+    if (process.env.NODE_ENV === "production")
+      return {}
     const server = this.configService.get("server")
-    return {proxy: {host: server.serverHost, port: server.serverPort}}
+    return {proxy: {host: server.serverHost, port: server.serverPort, protocol: "http"}}
   }
 
   @Post("extract")
@@ -33,7 +41,7 @@ export class FileController {
                     @Query("multiSheets") multiSheets: boolean | string,
                     @Query('numberRounding') numberRounding: number,
                     @Query('dateFormat') dateFormat: string) {
-    let url = `/api/upload/extract?head=${head}`
+    let url = `${this.uploadPath}/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`
     if (dateFormat) url += `&dateFormat=${dateFormat}`
