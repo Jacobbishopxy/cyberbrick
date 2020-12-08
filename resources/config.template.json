@@ -1,6 +1,6 @@
 {
   "serverHost": "127.0.0.1",
-  "serverPort": 7998,
+  "serverPort": 2009,
   "connDevGallery": {
     "name": "gallery",
     "type": "postgres",

@@ -6,4 +6,4 @@ docker build \
     -t "${BASE_IMAGE_NAME}":"${BASE_IMAGE_VERSION}" \
     --build-arg FUND_IMAGE_NAME="${FUND_IMAGE_NAME}" \
     --build-arg FUND_IMAGE_VERSION="${FUND_IMAGE_VERSION}" \
-    -f ../docker-base/Dockerfile ../..
+    -f ../docker-base-server/Dockerfile ../..
