@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  ngr:
+  cyberbrick:
     restart: always
     image: ${APP_IMAGE_NAME}:${APP_IMAGE_VERSION}
     container_name: ${CONTAINER_NAME}
@@ -9,7 +9,9 @@ services:
       - ${CONTAINER_PORT}:${APP_PORT}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-    command: yarn serve
+      - ${VOLUME_CONF_EXT}:${VOLUME_CONF_INN}:ro
+    command:
+      yarn serve
 
 
 networks:

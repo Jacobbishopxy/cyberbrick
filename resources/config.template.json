@@ -1,5 +1,5 @@
 {
-  "serverHost": "127.0.0.1",
+  "serverHost": "0.0.0.0",
   "serverPort": 2009,
   "connDevGallery": {
     "name": "gallery",
