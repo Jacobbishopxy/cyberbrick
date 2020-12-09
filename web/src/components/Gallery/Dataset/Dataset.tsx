@@ -18,13 +18,12 @@ interface ActionType {
 }
 
 const genTableColumn = (data: Record<string, any>[]) => {
-  if (data.length > 0) {
-    return Object.keys(data[0]).map((k: string) => ({
+  if (data.length > 0)
+    return Object.keys(data[0]).filter(k => k !== "index").map((k: string) => ({
       title: k,
       dataIndex: k,
       ellipsis: true
     }))
-  }
   return [{}]
 }
 

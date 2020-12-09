@@ -3,10 +3,9 @@
  */
 
 import React from 'react'
-import {Button, List, Modal, Space, Tooltip} from "antd"
-import {DeleteOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons"
+import {Button, Dropdown, List, Menu, Modal, Space} from "antd"
+import {DeleteOutlined, ExclamationCircleOutlined, ReadOutlined, SearchOutlined} from "@ant-design/icons"
 
-import {SpaceBetween} from "@/components/SpaceBetween"
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -38,44 +37,59 @@ const ListRender = (props: ListRenderProps) => {
     showDeleteConfirm(() => props.tableOnDelete(item).finally())
   }
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Button
+          type="link"
+          size="small"
+          icon={<ReadOutlined/>}
+          onClick={() => props.tableOnClick(props.item)}
+        >
+          All
+        </Button>
+      </Menu.Item>
+      <Menu.Item>
+        <QuerySelectorModal
+          trigger={
+            <Button
+              type="link"
+              size="small"
+              icon={<SearchOutlined/>}
+            >
+              Search
+            </Button>
+          }
+          storagesOnFetch={props.storagesOnFetch}
+          storageOnSelect={props.storageOnSelect}
+          tableOnSelect={() => props.tableOnSelect(props.item)}
+          onSubmit={props.onSubmit}
+          initialValues={{id: props.id, tableName: props.item}}
+        />
+      </Menu.Item>
+      <Menu.Item>
+        <Button
+          type="link"
+          size="small"
+          danger
+          icon={<DeleteOutlined/>}
+          onClick={onDeleteClick(props.item)}
+        >
+          Delete
+        </Button>
+      </Menu.Item>
+    </Menu>
+  )
+
   return (
     <List.Item
       key={props.item}
     >
-      <SpaceBetween style={{width: "100%"}}>
-        <Button
-          type="link"
-          onClick={() => props.tableOnClick(props.item)}
-        >
-          <div style={{width: 150, overflow: "hidden", textOverflow: "ellipsis"}}>
-            <Tooltip placement="topLeft" title={props.item}>
-              {props.item}
-            </Tooltip>
-          </div>
-        </Button>
-
-        <Space>
-          <QuerySelectorModal
-            trigger={
-              <Button
-                type="link"
-                icon={<SearchOutlined/>}
-              />
-            }
-            storagesOnFetch={props.storagesOnFetch}
-            storageOnSelect={props.storageOnSelect}
-            tableOnSelect={() => props.tableOnSelect(props.item)}
-            onSubmit={props.onSubmit}
-            initialValues={{id: props.id, tableName: props.item}}
-          />
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined/>}
-            onClick={onDeleteClick(props.item)}
-          />
-        </Space>
-      </SpaceBetween>
+      <Dropdown overlay={menu}>
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          {props.item}
+        </a>
+      </Dropdown>
     </List.Item>
   )
 }
