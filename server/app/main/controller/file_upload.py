@@ -48,11 +48,17 @@ class FileUploadController(Controller):
                         sheet_name = [int(i) for i in ms.split(",")]
                     except ValueError:
                         return abort(400, "Error: multiSheets must be bool type or 1,2,3 alike")
-                d = extract_xlsx(f, hd, sheet_name, nr)
-                ans = xlsx_to_json(d, df)
+                try:
+                    d = extract_xlsx(f, hd, sheet_name, nr)
+                    ans = xlsx_to_json(d, df)
+                except Exception as e:
+                    return abort(400, e)
             elif f.content_type == FileType.csv.value:
-                d = extract_csv(f, hd, nr)
-                ans = csv_to_json(d, df)
+                try:
+                    d = extract_csv(f, hd, nr)
+                    ans = csv_to_json(d, df)
+                except Exception as e:
+                    return abort(400, e)
             else:
                 return abort(400, "Error: file must be .csv or .xlsx")
 

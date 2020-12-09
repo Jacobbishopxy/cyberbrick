@@ -124,7 +124,10 @@ class DatabaseManipulationController(Controller):
                     return abort(400, "Error: `tableName` is required in query")
 
                 with _create_temp_loader(self.loader, db_id) as loader:
-                    d = extract_csv(f, param_head=True, rounding=nr)
+                    try:
+                        d = extract_csv(f, param_head=True, rounding=nr)
+                    except Exception as e:
+                        return make_response(str(e), 400)
                     try:
                         loader.insert(table_name, d, if_exists=insert_option)
                         if insert_option == "replace":
@@ -134,7 +137,10 @@ class DatabaseManipulationController(Controller):
 
             elif f.content_type == FileType.xlsx.value:
                 with _create_temp_loader(self.loader, db_id) as loader:
-                    d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
+                    try:
+                        d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
+                    except Exception as e:
+                        return make_response(str(e), 400)
                     for key, value in d.items():
                         try:
                             loader.insert(key, value, if_exists=insert_option)
@@ -142,7 +148,6 @@ class DatabaseManipulationController(Controller):
                                 loader.add_primary_uuid_key(key, "index")
                         except Exception as e:
                             return make_response(str(e), 400)
-
             else:
                 return abort(400, "Error: file must be .csv or .xlsx")
 

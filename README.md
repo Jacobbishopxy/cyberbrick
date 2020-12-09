@@ -72,7 +72,24 @@ Please `cd server` first then do the following commands.
 
 3. production (docker):
 
-    todo
+    * setup python image, only for the first time:
+      ```
+      cd docker/docker-python
+      bash setup.sh
+      ```
+    
+    * setup dependencies installed image, rerun if dependencies updated:
+      ```
+      cd docker/docker-base-server
+      bash setup.sh
+      ```
+    
+    * setup built app image and start a container:
+      ```
+      cd docker/docker-app-server
+      bash setup.sh
+      bash start.sh
+      ```
 
 ### Web
 
@@ -101,10 +118,9 @@ Please `cd web` first then do the following commands.
       ```
       
     * setup built app image and start a container:
-      
       ```
       cd docker/docker-app-web
-      bash setupt.sh
+      bash setup.sh
       bash start.sh
       ```
 
