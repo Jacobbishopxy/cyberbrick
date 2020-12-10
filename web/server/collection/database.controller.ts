@@ -97,6 +97,14 @@ export class DatabaseController {
     return ans.data
   }
 
+  @Post("renameTable")
+  async renameTable(@Query("id") dbId: string,
+                    @Body() data: {tableName: string, replacement: string}) {
+    const url = `${this.dbPath}/renameTable?id=${dbId}`
+    const ans = await axios.post(encodeURI(url), this.getProxy())
+    return ans.data
+  }
+
   /**
    * insert data into a table by json data
    */

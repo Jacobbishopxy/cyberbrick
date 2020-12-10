@@ -223,6 +223,14 @@ export const databaseDropTable = async (id: string, tableName: string) =>
     method: "delete"
   })
 
+export const databaseRenameTable = async (id: string, data: any) => {
+  const path = `${baseDb}/renameTable?id=${id}`
+  return request(path, {
+    method: "post",
+    data
+  })
+}
+
 export const databaseInsert = async (id: string, insertOption: string, tableName: string, data: any) => {
   let path = `${baseDb}/insert?id=${id}&tableName=${tableName}`
   if (insertOption) path += `&insertOption=${insertOption}`

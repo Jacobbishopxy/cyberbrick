@@ -25,7 +25,7 @@ export default () => {
   const [dataCategory, setDataCategory] = useState<DataType.Category[]>([])
   const [dataDashboard, setDataDashboard] = useState<DataType.Dashboard[]>([])
   const [storage, setStorage] = useState<DataType.Storage[]>([])
-  const [activeKey, setActiveKey] = useState<TabPaneType>("Storage")
+  const [activeKey, setActiveKey] = useState<TabPaneType>("Category")
 
   const refreshCat = () =>
     getAllCategories().then(res => setDataCategory(res as DataType.Category[]))

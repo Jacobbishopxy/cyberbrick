@@ -194,6 +194,13 @@ class Loader(object):
         except Exception as e:
             print(e)
 
+    def rename_table(self, table_name: str, replacement: str):
+        """
+        pg only
+        """
+        exec_str = f"""ALTER TABLE "{table_name}" RENAME TO "{replacement}" """
+        self.execute(exec_str)
+
     def drop_table(self, table_name: str):
         try:
             self.execute(f'DROP TABLE "{table_name}"')

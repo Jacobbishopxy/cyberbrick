@@ -153,6 +153,23 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
+        @bp.route("/renameTable", methods=["POST"])
+        def rename_table_api():
+            db_id = request.args.get("id")
+            data = request.json
+            table_name, replacement = data.tableName, data.replacement
+
+            if table_name is None or replacement is None:
+                return abort(400, "Error: json requires `tableName` and `replacement`")
+
+            with _create_temp_loader(self.loader, db_id) as loader:
+                try:
+                    loader.rename_table(table_name, replacement)
+                except Exception as e:
+                    return make_response(str(e), 400)
+
+            return make_response(jsonify(res_success), 200)
+
         @bp.route("/dropTable", methods=["DELETE"])
         def drop_table_api():
             db_id = request.args.get("id")
