@@ -59,6 +59,20 @@ export class TagService {
     return []
   }
 
+  async modifyTag(id: string, tag: Tag) {
+    const tg = await this.repo.findOne({...utils.whereIdEqual(id)})
+
+    if (tg) {
+      const newTag = this.repo.create({
+        ...tg,
+        ...tag
+      })
+      await this.repo.save(newTag)
+      return true
+    }
+    return false
+  }
+
   deleteTagInCategory(categoryName: string, tagName: string) {
     return this.repo
       .createQueryBuilder(common.tag)

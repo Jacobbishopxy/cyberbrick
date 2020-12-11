@@ -59,6 +59,20 @@ export class MarkService {
     return []
   }
 
+  async modifyMark(id: string, mark: Mark) {
+    const mk = await this.repo.findOne({...utils.whereIdEqual(id)})
+
+    if (mk) {
+      const newMark = this.repo.create({
+        ...mk,
+        ...mark
+      })
+      await this.repo.save(newMark)
+      return true
+    }
+    return false
+  }
+
   deleteMarkInCategory(categoryName: string, markName: string) {
     return this.repo
       .createQueryBuilder(common.mark)

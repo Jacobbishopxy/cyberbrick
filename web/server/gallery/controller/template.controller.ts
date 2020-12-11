@@ -82,6 +82,16 @@ export class TemplateController {
     }
   }
 
+  @Post("modifyTemplate")
+  modifyTemplate(@Query("id") id: string,
+                 @Body() template: Template) {
+    try {
+      return this.service.modifyTemplate(id, template)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Delete("deleteTemplateInDashboard")
   deleteTemplateInDashboard(@Query("dashboardName") dashboardName: string,
                             @Query("templateName") templateName: string) {

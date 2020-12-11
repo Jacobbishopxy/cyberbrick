@@ -59,6 +59,16 @@ export class TagController {
     }
   }
 
+  @Post("modifyTag")
+  modifyTag(@Query("id") id: string,
+            @Body() tag: Tag) {
+    try {
+      return this.service.modifyTag(id, tag)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Delete("deleteTagInCategory")
   deleteTagInCategory(@Query("categoryName") categoryName: string,
                       @Query("tagName") tagName: string) {

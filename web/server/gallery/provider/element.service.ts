@@ -112,5 +112,16 @@ export class ElementService {
     if (date) return this.getElementContentByDate(id, date, markName)
     return this.getElementLatestContent(id, markName)
   }
+
+  async modifyElement(id: string, element: Element) {
+    const el = await this.repo.findOne({...utils.whereIdEqual(id)})
+
+    if (el) {
+      const newElement = this.repo.create({...el, ...element})
+      await this.repo.save(newElement)
+      return true
+    }
+    return false
+  }
 }
 

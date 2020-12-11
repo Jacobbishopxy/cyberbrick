@@ -59,6 +59,16 @@ export class MarkController {
     }
   }
 
+  @Post("modifyMark")
+  modifyMark(@Query("id") id: string,
+             @Body() mark: Mark) {
+    try {
+      return this.service.modifyMark(id, mark)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Delete("deleteMarkInCategory")
   deleteMarkInCategory(@Query("categoryName") categoryName: string,
                        @Query("markName") markName: string) {

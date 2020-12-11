@@ -76,6 +76,20 @@ export class TemplateService {
     return this.repoTemplate.save(newTmp)
   }
 
+  async modifyTemplate(id: string, template: Template) {
+    const tp = await this.repoTemplate.findOne({...utils.whereIdEqual(id)})
+
+    if (tp) {
+      const newTemplate = this.repoTemplate.create({
+        ...tp,
+        ...template
+      })
+      await this.repoTemplate.save(newTemplate)
+      return true
+    }
+    return false
+  }
+
   deleteTemplateInDashboard(dashboardName: string, templateName: string) {
     return this.repoTemplate
       .createQueryBuilder(common.template)

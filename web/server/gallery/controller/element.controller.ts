@@ -70,5 +70,15 @@ export class ElementController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("modifyElement")
+  modifyElement(@Query("id") id: string,
+                @Body() element: Element) {
+    try {
+      return this.service.modifyElement(id, element)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 
