@@ -24,6 +24,9 @@ export default () => {
   const tableOnClick = (id: string, tableName: string) =>
     GalleryService.read(id, {tableName})
 
+  const tableOnRename = (id: string, tableName: string, replacement: string) =>
+    GalleryService.databaseRenameTable(id, {tableName, replacement})
+
   const tableOnDelete = (id: string, tableName: string) =>
     GalleryService.databaseDropTable(id, tableName)
 
@@ -38,6 +41,7 @@ export default () => {
       storageOnFetch={fetchStorages}
       storageOnSelect={storageOnSelect}
       tableOnSelect={tableOnSelect}
+      tableOnRename={tableOnRename}
       tableOnDelete={tableOnDelete}
       tableOnClick={tableOnClick}
       querySelectorOnSubmit={queryOnSelect}

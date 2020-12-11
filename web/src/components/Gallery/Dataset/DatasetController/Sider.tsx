@@ -2,23 +2,36 @@
  * Created by Jacob Xie on 11/20/2020
  */
 
-import React from 'react'
-import {Button, Dropdown, List, Menu, Modal, Space} from "antd"
-import {DeleteOutlined, ExclamationCircleOutlined, ReadOutlined, SearchOutlined} from "@ant-design/icons"
+import React, {useState} from 'react'
+import {Button, Dropdown, Input, List, Menu, Modal, Space} from "antd"
+import {DeleteOutlined, EditOutlined, ExclamationCircleOutlined, ReadOutlined, SearchOutlined} from "@ant-design/icons"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
-interface ListRenderProps {
-  id?: string
-  item: string
-  storagesOnFetch: () => Promise<DataType.StorageSimple[]>
-  storageOnSelect: (id: string) => Promise<string[]>
-  tableOnClick: (name: string) => Promise<any>
-  tableOnSelect: (name: string) => Promise<string[]>
-  tableOnDelete: (table: string) => Promise<any>
-  onSubmit: (value: Record<string, any>) => Promise<any>
+interface RenameTableModalProps {
+  visible: boolean
+  originalName: string
+  onOk: (replacement: string) => void
+  onCancel: () => void
+}
+
+const RenameTableModal = (props: RenameTableModalProps) => {
+  const [input, setInput] = useState(props.originalName)
+
+  return (
+    <Modal
+      visible={props.visible}
+      title="Are you sure rename this table?"
+      onOk={() => props.onOk(input)}
+      onCancel={props.onCancel}
+      okText="Yes"
+      cancelText="No"
+    >
+      <Input defaultValue={props.originalName} onChange={e => setInput(e.target.value)}/>
+    </Modal>
+  )
 }
 
 const showDeleteConfirm = (onOk: () => void) =>
@@ -31,11 +44,27 @@ const showDeleteConfirm = (onOk: () => void) =>
     onOk,
   })
 
+interface ListRenderProps {
+  id?: string
+  item: string
+  storagesOnFetch: () => Promise<DataType.StorageSimple[]>
+  storageOnSelect: (id: string) => Promise<string[]>
+  tableOnClick: (name: string) => Promise<any>
+  tableOnSelect: (name: string) => Promise<string[]>
+  tableOnRename: (name: string, replacement: string) => Promise<void>
+  tableOnDelete: (table: string) => Promise<any>
+  onSubmit: (value: Record<string, any>) => Promise<any>
+}
+
 const ListRender = (props: ListRenderProps) => {
 
-  const onDeleteClick = (item: string) => () => {
-    showDeleteConfirm(() => props.tableOnDelete(item).finally())
-  }
+  const [renameModalVisible, setRenameModalVisible] = useState<boolean>(false)
+
+  const onRenameTable = (name: string) => (replacement: string) =>
+    props.tableOnRename(name, replacement).finally(() => setRenameModalVisible(false))
+
+  const onDeleteClick = (name: string) => () =>
+    showDeleteConfirm(() => props.tableOnDelete(name).finally())
 
   const menu = (
     <Menu>
@@ -65,6 +94,22 @@ const ListRender = (props: ListRenderProps) => {
           tableOnSelect={() => props.tableOnSelect(props.item)}
           onSubmit={props.onSubmit}
           initialValues={{id: props.id, tableName: props.item}}
+        />
+      </Menu.Item>
+      <Menu.Item>
+        <Button
+          type="link"
+          size="small"
+          icon={<EditOutlined/>}
+          onClick={() => setRenameModalVisible(true)}
+        >
+          Rename
+        </Button>
+        <RenameTableModal
+          visible={renameModalVisible}
+          originalName={props.item}
+          onOk={onRenameTable(props.item)}
+          onCancel={() => setRenameModalVisible(false)}
         />
       </Menu.Item>
       <Menu.Item>
@@ -102,6 +147,7 @@ export interface SiderProps {
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnClick: (name: string) => Promise<any>
   tableOnSelect: (name: string) => Promise<string[]>
+  tableOnRename: (name: string, replacement: string) => Promise<void>
   tableOnDelete: (table: string) => Promise<any>
   onSubmit: (value: Record<string, any>) => Promise<any>
   style?: React.CSSProperties
@@ -117,6 +163,7 @@ export const Sider = (props: SiderProps) => {
       storageOnSelect={props.storageOnSelect}
       tableOnClick={props.tableOnClick}
       tableOnSelect={props.tableOnSelect}
+      tableOnRename={props.tableOnRename}
       tableOnDelete={props.tableOnDelete}
       onSubmit={props.onSubmit}
     />

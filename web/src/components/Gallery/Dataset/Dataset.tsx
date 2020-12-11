@@ -31,6 +31,7 @@ export interface DatasetProps {
   storageOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnSelect: (id: string, tableName: string) => Promise<string[]>
+  tableOnRename: (id: string, tableName: string, replacement: string) => Promise<any[]>
   tableOnDelete: (id: string, tableName: string) => Promise<any[]>
   tableOnClick: (id: string, tableName: string) => Promise<any[]>
   querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any[]>
@@ -74,11 +75,16 @@ export const Dataset = (props: DatasetProps) => {
     }
   }
 
+  const onRenameTable = async (id: string, tb: string, rp: string) => {
+    const res = await props.tableOnRename(id, tb, rp)
+    if (res && ref.current)
+      ref.current.reload()
+  }
+
   const onDeleteTable = async (id: string, tb: string) => {
     const res = await props.tableOnDelete(id, tb)
-    if (res && ref.current) {
+    if (res && ref.current)
       ref.current.reload()
-    }
   }
 
   const onExecuteSql = async (id: string, sqlStr: string) => {
@@ -126,6 +132,7 @@ export const Dataset = (props: DatasetProps) => {
           storagesOnFetch={props.storageOnFetch}
           storageOnSelect={storageOnSelect}
           tableOnClick={onClickTable}
+          tableOnRename={onRenameTable}
           tableOnDelete={onDeleteTable}
           tableOnSelect={onSelectTable}
           querySelectorOnSubmit={onQuerySelect}

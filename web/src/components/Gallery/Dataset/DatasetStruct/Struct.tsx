@@ -14,6 +14,7 @@ export interface StructProps {
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
   tableOnClick: (id: string, tableName: string) => Promise<any>
+  tableOnRename: (id: string, tableName: string, replacement: string) => Promise<any>
   tableOnDelete: (id: string, tableName: string) => Promise<any>
   tableOnSelect: (id: string, tableName: string) => Promise<string[]>
   querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any>
@@ -55,6 +56,11 @@ export const Struct = (props: StructProps) => {
     return Promise.reject()
   }
 
+  const tableOnRename = (tableName: string, replacement: string) => {
+    if (storageId) return props.tableOnRename(storageId, tableName, replacement).then(storageOnSelect)
+    return Promise.reject()
+  }
+
   const querySelectorOnSubmit = (value: Record<string, any>) => {
     if (storageId) return props.querySelectorOnSubmit(storageId, value).then(() => true).catch(() => false)
     return Promise.reject()
@@ -76,6 +82,7 @@ export const Struct = (props: StructProps) => {
             storageOnSelect={props.storageOnSelect}
             tableOnClick={tableOnClick}
             tableOnSelect={tableOnSelect}
+            tableOnRename={tableOnRename}
             tableOnDelete={tableOnDelete}
             onSubmit={querySelectorOnSubmit}
           />

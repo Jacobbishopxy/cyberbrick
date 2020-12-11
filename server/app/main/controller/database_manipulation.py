@@ -157,7 +157,7 @@ class DatabaseManipulationController(Controller):
         def rename_table_api():
             db_id = request.args.get("id")
             data = request.json
-            table_name, replacement = data.tableName, data.replacement
+            table_name, replacement = data.get("tableName"), data.get("replacement")
 
             if table_name is None or replacement is None:
                 return abort(400, "Error: json requires `tableName` and `replacement`")
