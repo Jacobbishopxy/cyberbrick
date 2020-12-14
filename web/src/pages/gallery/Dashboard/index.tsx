@@ -14,11 +14,11 @@ export default () => {
   const fetchDashboards = () =>
     GalleryService.getAllDashboardsTemplate()
 
-  const fetchDashboard = (dashboardName: string) =>
-    GalleryService.getDashboardCategoryMarksAndTemplateByName(dashboardName) as Promise<DataType.Dashboard>
+  const fetchDashboard = (id: string) =>
+    GalleryService.getDashboardCategoryMarksAndTemplate(id) as Promise<DataType.Dashboard>
 
-  const fetchTemplate = (dashboardName: string, templateName: string) =>
-    GalleryService.getTemplateElements(dashboardName, templateName) as Promise<DataType.Template>
+  const fetchTemplate = (templateId: string) =>
+    GalleryService.getTemplateElements(templateId) as Promise<DataType.Template>
 
   const saveTemplate = (template: GalleryDataType.Template) =>
     GalleryService.updateTemplateElements(template as GalleryAPI.Template)

@@ -51,25 +51,23 @@ export class TemplateService {
 
   // ===================================================================================================================
 
-  getTemplateElementsContents(dashboardName: string, templateName: string) {
+  getTemplateElementsContents(templateId: string) {
     return this.repoTemplate.findOne({
       ...templateFullRelations,
-      ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
+      ...utils.whereIdEqual(templateId)
     })
   }
 
-  getTemplateElements(dashboardName: string, templateName: string) {
+  getTemplateElements(templateId: string) {
     return this.repoTemplate.findOne({
       ...elementsRelations,
-      ...common.whereDashboardNameAndTemplateEqual(dashboardName, templateName)
+      ...utils.whereIdEqual(templateId)
     })
   }
 
-  saveTemplateInDashboard(dashboardName: string, template: Template) {
+  saveTemplateInDashboard(dashboardId: string, template: Template) {
     const newTmp = this.repoTemplate.create({
-      dashboard: {
-        name: dashboardName
-      },
+      dashboard: {id: dashboardId},
       name: template.name,
       description: template.description
     })
@@ -90,28 +88,13 @@ export class TemplateService {
     return false
   }
 
-  deleteTemplateInDashboard(dashboardName: string, templateName: string) {
-    return this.repoTemplate
-      .createQueryBuilder(common.template)
-      .leftJoinAndSelect(common.templateDashboard, common.dashboard)
-      .select([common.templateName, common.dashboardName])
-      .where(`${common.dashboardName} = :dashboardName AND ${common.templateName} = :templateName`, {
-        dashboardName,
-        templateName
-      })
-      .delete()
-      .execute()
-  }
+  async copyTemplateElements(originTemplateId: string,
+                             targetTemplateId: string) {
 
-  async copyTemplateElements(originDashboardName: string,
-                             originTemplateName: string,
-                             targetDashboardName: string,
-                             targetTemplateName: string) {
-
-    const originTemplate = await this.getTemplateElements(originDashboardName, originTemplateName) as Template
+    const originTemplate = await this.getTemplateElements(originTemplateId) as Template
 
     if (!_.isEmpty(originTemplate)) {
-      const targetTemplate = await this.getTemplateElements(targetDashboardName, targetTemplateName)
+      const targetTemplate = await this.getTemplateElements(targetTemplateId)
       if (targetTemplate) {
         const tt = targetTemplate as Template
 
@@ -121,7 +104,7 @@ export class TemplateService {
 
         const nt = {
           id: tt.id,
-          dashboard: {name: targetDashboardName},
+          dashboard: {id: tt.dashboard.id},
           elements: originTemplate.elements.map(i => _.omit(i, "id")),
         } as Template
 

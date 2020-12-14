@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip} from "antd"
 import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
 import _ from "lodash"
@@ -28,7 +28,6 @@ const ModuleSelectionList = (props: ModuleSelectionListProps) =>
           dataSource={chunk.children}
           renderItem={item => (
             <List.Item>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label className={styles.moduleSelectionLabel}>
                 <input type="radio" name="radio-name" disabled={item.disabled} id={item.key}/>
                 <div
@@ -78,36 +77,25 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
     <ModuleSelectionList onSelect={props.setSelected}/>
   </>
 
-interface SelectedDashboardTemplate {
-  dashboard: string
-  template: string
-}
 
 interface TemplateSelectionViewProps {
   dashboards: GalleryAPI.Dashboard[]
-  onSelectedDashboardTemplate: (d: SelectedDashboardTemplate) => void
+  onSelectedTemplate: (templateId: string) => void
 }
 
 const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
 
-  const [selectedDashboardTemplate, setSelectedDashboardTemplate] = useState<SelectedDashboardTemplate>()
-  const [templates, setTemplates] = useState<string[]>([])
-
-  useEffect(() => {
-    if (selectedDashboardTemplate)
-      props.onSelectedDashboardTemplate(selectedDashboardTemplate)
-  }, [selectedDashboardTemplate])
+  const [selectedTemplate, setSelectedTemplate] = useState<string>()
+  const [templates, setTemplates] = useState<DataType.Template[]>([])
 
   const onSelectDashboard = (value: string) => {
     const dsb = _.find(props.dashboards, d => d.name === value)!
-    const tpl = dsb.templates!.map(t => t.name)
+    const tpl = dsb.templates! as DataType.Template[]
     setTemplates(tpl)
-    setSelectedDashboardTemplate({dashboard: value, template: tpl[0]})
   }
 
   const onSelectTemplate = (value: string) => {
-    if (selectedDashboardTemplate)
-      setSelectedDashboardTemplate({...selectedDashboardTemplate, template: value})
+    if (selectedTemplate) setSelectedTemplate(value)
   }
 
   return (
@@ -132,7 +120,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           placeholder="Template"
           size="small"
         >
-          {templates.map(t => <Select.Option key={t} value={t}>{t}</Select.Option>)}
+          {templates.map(t => <Select.Option key={t.id} value={t.id!}>{t.name}</Select.Option>)}
         </Select>
         <Tooltip title="Copy elements to non-empty template is forbidden!">
           <ExclamationCircleTwoTone twoToneColor="red"/>
@@ -145,7 +133,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
 export interface AddModuleModalProps {
   dashboards: GalleryAPI.Dashboard[]
   onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
-  copyTemplate: (dashboardName: string, templateName: string) => void
+  copyTemplate: (originTemplateId: string) => void
   visible: boolean
   onQuit: () => void
 }
@@ -156,7 +144,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
   const [moduleName, setModuleName] = useState<string>()
   const [timeSeries, setTimeSeries] = useState<boolean>(false)
   const [selectedPane, setSelectedPane] = useState<string>("Module")
-  const [selectedDashboardTemplate, setSelectedDashboardTemplate] = useState<SelectedDashboardTemplate>()
+  const [selectedTemplate, setSelectedTemplate] = useState<string>()
 
   const onSetOk = () => {
     if (selectedPane === "Module") {
@@ -167,9 +155,9 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         message.warn("Please enter your element name and select one module!")
     }
     if (selectedPane === "Template") {
-      if (selectedDashboardTemplate) {
+      if (selectedTemplate) {
         props.onQuit()
-        props.copyTemplate(selectedDashboardTemplate.dashboard, selectedDashboardTemplate.template)
+        props.copyTemplate(selectedTemplate)
       }
     }
   }
@@ -200,7 +188,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         <Tabs.TabPane tab="Template" key="Template">
           <TemplateSelectionView
             dashboards={props.dashboards}
-            onSelectedDashboardTemplate={setSelectedDashboardTemplate}
+            onSelectedTemplate={setSelectedTemplate}
           />
         </Tabs.TabPane>
       </Tabs>

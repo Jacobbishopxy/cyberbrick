@@ -17,7 +17,7 @@ import {EditableTagPanel} from "../Tag/EditableTagPanel"
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
   saveCategory: (categoryName: string, description?: string) => void
-  modifyDashboardDescription: (dashboardName: string, description: string) => void
+  modifyDashboard: (dashboard: DataType.Dashboard) => void
   saveMark: (categoryName: string, mark: DataType.Mark) => void
   deleteMark: (categoryName: string, mark: string) => void
   saveTag: (categoryName: string, tag: DataType.Tag) => void
@@ -37,8 +37,9 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const modifyCategoryDescription = (categoryName: string) =>
     (description: string) => props.saveCategory(categoryName, description)
 
-  const modifyDashboardDescription = (dashboardName: string) =>
-    (description: string) => props.modifyDashboardDescription(dashboardName, description)
+  // todo: modify dashboard name & description
+  const modifyDashboardDescription = (dashboardId: string) =>
+    (description: string) => props.modifyDashboard({id: dashboardId, description} as DataType.Dashboard)
 
   const saveMark = (categoryName: string) =>
     (mark: DataType.Mark) => props.saveMark(categoryName, mark)
@@ -132,7 +133,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               editable && record.dashboard ?
                 <TextBuilder
                   text={text}
-                  saveNewText={modifyDashboardDescription(record.dashboard.name)}
+                  saveNewText={modifyDashboardDescription(record.dashboard.id!)}
                 /> : text
             }
           />

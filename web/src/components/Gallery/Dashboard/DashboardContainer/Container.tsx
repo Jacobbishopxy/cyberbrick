@@ -15,7 +15,7 @@ export interface ContainerProps {
   selectedMark?: string
   dashboardInfo: DataType.Dashboard
   onSelectPane: (templateName: string) => void
-  fetchElements: (templateName: string) => Promise<DataType.Template>
+  fetchElements: (templateId: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
@@ -34,13 +34,14 @@ export interface ContainerRef {
 }
 
 interface SelectedPane {
+  id: string
   index: number
   name: string
 }
 
 const initSelectedPane = (templates: DataType.Template[]) => {
   if (templates && templates.length > 0)
-    return {index: 0, name: templates[0].name}
+    return {id: templates[0].id!, index: 0, name: templates[0].name}
   return undefined
 }
 
@@ -64,20 +65,21 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
    */
   useEffect(() => {
     if (selectedPane) {
-      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
-      props.onSelectPane(selectedPane.name)
+      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
+      props.onSelectPane(selectedPane.id)
     }
   }, [selectedPane])
 
 
   const tabOnChange = (name: string) => setSelectedPane({
+    id: _.find(templates, {name})!.id!,
     name,
     index: _.findIndex(templates, t => t.name === name)
   })
 
   const startFetchElements = () => {
     if (selectedPane)
-      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
+      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
   }
 
   const startFetchAllContents = () => {
@@ -96,7 +98,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const fetchTemplate = () => {
     if (selectedPane)
-      props.fetchElements(selectedPane.name).then(res => setTemplate(res))
+      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
   }
 
   const saveTemplate = () => {

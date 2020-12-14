@@ -4,12 +4,12 @@
 
 import {
   Entity,
-  PrimaryColumn,
   Column,
   OneToOne,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm"
 
 import * as common from "../common"
@@ -19,14 +19,17 @@ import {Template} from "./template.entity"
 @Entity({name: common.dashboard})
 export class Dashboard {
 
-  @PrimaryColumn("varchar")
-  name!: string
+  @PrimaryGeneratedColumn("uuid")
+  id!: string
 
   @OneToOne(() => Category, c => c.dashboard, {nullable: false})
   category!: Category
 
   @OneToMany(() => Template, t => t.dashboard, {nullable: true})
   templates!: Template[]
+
+  @Column("varchar")
+  name!: string
 
   @Column("text", {nullable: true})
   description?: string

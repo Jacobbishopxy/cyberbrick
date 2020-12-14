@@ -21,10 +21,10 @@ export interface ModuleControllerProps {
   markAvailable?: boolean
   canEdit: boolean
   dashboards: GalleryAPI.Dashboard[]
-  dashboardOnSelect: (dashboardName: string) => Promise<DataType.Mark[] | undefined>
+  dashboardOnSelect: (dashboardId: string) => Promise<DataType.Mark[] | undefined>
   markOnSelect: (value: string) => void
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
-  onCopyTemplate: (dashboardName: string, templateName: string) => void
+  onCopyTemplate: (originTemplateId: string) => void
   onEditTemplate: (value: boolean) => void
   onSaveTemplate: () => Promise<void>
 }
@@ -37,10 +37,11 @@ export const Controller = (props: ModuleControllerProps) => {
 
   useEffect(() => props.onEditTemplate(edit), [edit])
 
-  const dashboardOnSelect = (value: string) =>
-    props.dashboardOnSelect(value).then(res => {
+  const dashboardOnSelect = (dashboardId: string) => {
+    props.dashboardOnSelect(dashboardId).then(res => {
       if (res) setMarks(res)
     })
+  }
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 
@@ -58,7 +59,6 @@ export const Controller = (props: ModuleControllerProps) => {
           .catch(err => {
             message.error(`Error: ${err}`)
             quit()
-
           })
         ,
         onCancel: quit,
@@ -125,7 +125,7 @@ export const Controller = (props: ModuleControllerProps) => {
         >
           {
             props.dashboards.map(d =>
-              <Select.Option key={d.name} value={d.name}>{d.name}</Select.Option>
+              <Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>
             )
           }
         </Select>

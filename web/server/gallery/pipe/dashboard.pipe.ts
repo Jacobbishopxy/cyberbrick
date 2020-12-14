@@ -6,14 +6,14 @@ import {BadRequestException, Injectable, PipeTransform} from "@nestjs/common"
 import {validateSync} from "class-validator"
 import {plainToClass} from "class-transformer"
 
-import {DashboardDescriptionModifyDto} from "../dto"
+import {DashboardModifyDto} from "../dto"
 
 
 @Injectable()
-export class DashboardDescriptionModifyPipe implements PipeTransform<DashboardDescriptionModifyDto> {
-  transform(value: DashboardDescriptionModifyDto): DashboardDescriptionModifyDto {
+export class DashboardModifyPipe implements PipeTransform<DashboardModifyDto> {
+  transform(value: DashboardModifyDto): DashboardModifyDto {
 
-    const check = validateSync(plainToClass(DashboardDescriptionModifyDto, value))
+    const check = validateSync(plainToClass(DashboardModifyDto, value))
 
     if (check.length !== 0)
       throw new BadRequestException("validation error")

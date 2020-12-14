@@ -57,8 +57,8 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 export interface DashboardProps {
   markAvailable?: boolean
   fetchDashboards: () => Promise<GalleryAPI.Dashboard[]>
-  fetchDashboard: (dashboardName: string) => Promise<DataType.Dashboard>
-  fetchTemplate: (dashboardName: string, templateName: string) => Promise<DataType.Template>
+  fetchDashboard: (dashboardId: string) => Promise<DataType.Dashboard>
+  fetchTemplate: (templateId: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
@@ -70,13 +70,18 @@ export interface DashboardProps {
   fetchQueryData: (storageId: string, readOption: DataType.Read) => Promise<any>
 }
 
+interface SelectedMark {
+  dashboardId: string
+  markName: string
+}
+
 export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
 
   const [dashboards, setDashboards] = useState<GalleryAPI.Dashboard[]>([])
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplate, setSelectedTemplate] = useState<string>()
-  const [selectedMark, setSelectedMark] = useState<string>()
+  const [selectedMark, setSelectedMark] = useState<SelectedMark>()
   const [refresh, setRefresh] = useState<number>(0)
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
@@ -98,8 +103,8 @@ export const Dashboard = (props: DashboardProps) => {
     }
   }, [newestContent])
 
-  const dashboardOnSelect = async (dashboardName: string) => {
-    const dsb = await props.fetchDashboard(dashboardName)
+  const dashboardOnSelect = async (dashboardId: string) => {
+    const dsb = await props.fetchDashboard(dashboardId)
     setSelectedDashboard(dsb)
     if (!props.markAvailable) {
       setCanEdit(true)
@@ -109,13 +114,13 @@ export const Dashboard = (props: DashboardProps) => {
   }
   const markOnSelect = (value: string) => {
     if (props.markAvailable) setCanEdit(true)
-    setSelectedMark(value)
+    setSelectedMark({dashboardId: selectedDashboard!.id!, markName: value})
     setRefresh(refresh + 1)
   }
 
-  const fetchElements = async (value: string) => {
+  const fetchElements = async (templateId: string) => {
     if (selectedDashboard)
-      return props.fetchTemplate(selectedDashboard.name, value)
+      return props.fetchTemplate(templateId)
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
@@ -127,15 +132,11 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
-  const onCopyTemplate = async (originDashboardName: string, originTemplateName: string) => {
+  const onCopyTemplate = async (originTemplateId: string) => {
     if (selectedDashboard && selectedTemplate) {
-      const targetDashboardName = selectedDashboard.name
-      const targetTemplateName = selectedTemplate
       props.copyTemplate({
-        originDashboardName,
-        originTemplateName,
-        targetDashboardName,
-        targetTemplateName
+        originTemplateId,
+        targetTemplateId: selectedTemplate
       }).then(() => {
         message.success("Copy template succeeded!")
         if (cRef.current) cRef.current.startFetchElements()
@@ -150,7 +151,7 @@ export const Dashboard = (props: DashboardProps) => {
       if (t) {
         await props.saveTemplate(t)
         if (updatedContents.length > 0) {
-          const updatedTemplate = await props.fetchTemplate(selectedDashboard!.name, t.name)
+          const updatedTemplate = await props.fetchTemplate(t.id!)
           const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
           await updateAllContents(contents)
           setNewestContent(undefined)
@@ -165,18 +166,18 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const fetchElementContent = async (id: string, date?: string) => {
-    const ele = await props.fetchElementContent(id, date, selectedMark)
+    const ele = await props.fetchElementContent(id, date, selectedMark?.markName)
     if (ele && ele.contents) return ele.contents[0]
     return undefined
   }
 
   const fetchElementContentDates = async (id: string) =>
-    props.fetchElementContentDates(id, selectedMark)
+    props.fetchElementContentDates(id, selectedMark?.markName)
 
   const updateElementContent = (ctt: DataType.Content) => {
     let markValue = {}
     if (props.markAvailable && selectedMark) {
-      const mId = _.find(selectedDashboard!.category!.marks, m => m.name === selectedMark)
+      const mId = _.find(selectedDashboard!.category!.marks, m => m.name === selectedMark.markName)
       if (mId) markValue = {mark: {id: mId.id}}
     }
     const newContent = {...ctt, ...markValue} as DataType.Content
@@ -211,7 +212,7 @@ export const Dashboard = (props: DashboardProps) => {
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
       markAvailable={props.markAvailable}
-      selectedMark={selectedMark}
+      selectedMark={selectedMark?.markName}
       dashboardInfo={selectedDashboard}
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}

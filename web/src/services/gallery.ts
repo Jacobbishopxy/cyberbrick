@@ -100,12 +100,12 @@ export const getAllDashboardsName = async (): Promise<GalleryAPI.Dashboard[]> =>
 export const getAllDashboardsTemplate = async (): Promise<GalleryAPI.Dashboard[]> =>
   request(`${base}/getAllDashboardsTemplate`)
 
-export const getDashboardCategoryMarksAndTemplateByName =
-  async (dashboardName: string): Promise<GalleryAPI.Dashboard> =>
-    request(`${base}/getDashboardCategoryMarksAndTemplateByName?dashboardName=${dashboardName}`)
+export const getDashboardCategoryMarksAndTemplate =
+  async (id: string): Promise<GalleryAPI.Dashboard> =>
+    request(`${base}/getDashboardCategoryMarksAndTemplate?id=${id}`)
 
-export const modifyDashboardDescription = async (dashboard: GalleryAPI.Dashboard): Promise<void> =>
-  request(`${base}/modifyDashboardDescription`, {
+export const modifyDashboard = async (dashboard: GalleryAPI.Dashboard): Promise<void> =>
+  request(`${base}/modifyDashboard`, {
     method: "post",
     data: dashboard
   })
@@ -121,19 +121,19 @@ export const newDashboardAttachToEmptyCategory =
 // Template
 
 export const getTemplateElements =
-  async (dashboardName: string, templateName: string): Promise<GalleryAPI.Template> =>
-    request(`${base}/getTemplateElements?dashboardName=${dashboardName}&templateName=${templateName}`)
+  async (templateId: string): Promise<GalleryAPI.Template> =>
+    request(`${base}/getTemplateElements?id=${templateId}`)
 
 export const saveTemplateInDashboard =
-  async (dashboardName: string, template: GalleryAPI.Template): Promise<void> =>
-    request(`${base}/saveTemplateInDashboard?dashboardName=${dashboardName}`, {
+  async (id: string, template: GalleryAPI.Template): Promise<void> =>
+    request(`${base}/saveTemplateInDashboard?id=${id}`, {
       method: "post",
       data: template
     })
 
-export const deleteTemplateInDashboard =
-  async (dashboardName: string, templateName: string): Promise<void> =>
-    request(`${base}/deleteTemplateInDashboard?dashboardName=${dashboardName}&templateName=${templateName}`, {
+export const deleteTemplate =
+  async (templateId: string): Promise<void> =>
+    request(`${base}/template?id=${templateId}`, {
       method: "delete"
     })
 

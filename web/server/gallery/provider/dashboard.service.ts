@@ -45,10 +45,10 @@ export class DashboardService {
     return this.repoDashboard.find(dashboardFullRelations)
   }
 
-  getDashboardByName(name: string) {
+  getDashboardById(id: string) {
     return this.repoDashboard.findOne({
       ...dashboardFullRelations,
-      ...utils.whereNameEqual(name)
+      ...utils.whereIdEqual(id)
     })
   }
 
@@ -57,8 +57,8 @@ export class DashboardService {
     return this.repoDashboard.save(newDsb)
   }
 
-  deleteDashboard(name: string) {
-    return this.repoDashboard.delete(name)
+  deleteDashboard(id: string) {
+    return this.repoDashboard.delete(id)
   }
 
   // ===================================================================================================================
@@ -67,26 +67,27 @@ export class DashboardService {
     return this.repoDashboard.find({select: [common.name]})
   }
 
-  getDashboardCategoryMarksAndTemplateByName(dashboardName: string) {
-    return this.repoDashboard.findOne({
-      ...dashboardAndCategoryMarkAndTemplateRelations,
-      ...utils.whereNameEqual(dashboardName)
-    })
-  }
-
   getAllDashboardsTemplate() {
     return this.repoDashboard.find(dashboardTemplateRelations)
   }
 
-  async modifyDashboardDescription(dashboardName: string, description: string) {
+  getDashboardCategoryMarksAndTemplate(dashboardId: string) {
+    return this.repoDashboard.findOne({
+      ...dashboardAndCategoryMarkAndTemplateRelations,
+      ...utils.whereIdEqual(dashboardId)
+    })
+  }
+
+  async modifyDashboard(dashboard: Dashboard) {
     const dsb = await this.repoDashboard.findOne({
-      ...utils.whereNameEqual(dashboardName)
+      ...utils.whereIdEqual(dashboard.id)
     })
 
     if (dsb) {
       const newDsb = this.repoDashboard.create({
-        name: dsb.name,
-        description
+        ...dsb,
+        name: dashboard.name,
+        description: dashboard.description
       })
       await this.repoDashboard.save(newDsb)
       return true

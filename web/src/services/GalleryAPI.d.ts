@@ -51,6 +51,7 @@ declare namespace GalleryAPI {
   }
 
   export interface Dashboard {
+    id: string
     name: string
     category?: Category
     templates?: Template[]
@@ -66,10 +67,8 @@ declare namespace GalleryAPI {
   }
 
   export interface CopyTemplateElements {
-    originDashboardName: string
-    originTemplateName: string
-    targetDashboardName: string
-    targetTemplateName: string
+    originTemplateId: string
+    targetTemplateId: string
   }
 
   export interface Element {

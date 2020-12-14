@@ -53,30 +53,28 @@ export class TemplateController {
   // ===================================================================================================================
 
   @Get("getTemplateElementsContents")
-  getTemplateElementsContents(@Query("dashboardName") dashboardName: string,
-                              @Query("templateName") templateName: string) {
+  getTemplateElementsContents(@Query("id") id: string) {
     try {
-      return this.service.getTemplateElementsContents(dashboardName, templateName)
+      return this.service.getTemplateElementsContents(id)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Get("getTemplateElements")
-  getTemplateElements(@Query("dashboardName") dashboardName: string,
-                      @Query("templateName") templateName: string) {
+  getTemplateElements(@Query("id") id: string) {
     try {
-      return this.service.getTemplateElements(dashboardName, templateName)
+      return this.service.getTemplateElements(id)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("saveTemplateInDashboard")
-  saveTemplateInDashboard(@Query("dashboardName") dashboardName: string,
+  saveTemplateInDashboard(@Query("id") id: string,
                           @Body() template: Template) {
     try {
-      return this.service.saveTemplateInDashboard(dashboardName, template)
+      return this.service.saveTemplateInDashboard(id, template)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -92,25 +90,13 @@ export class TemplateController {
     }
   }
 
-  @Delete("deleteTemplateInDashboard")
-  deleteTemplateInDashboard(@Query("dashboardName") dashboardName: string,
-                            @Query("templateName") templateName: string) {
-    try {
-      return this.service.deleteTemplateInDashboard(dashboardName, templateName)
-    } catch (err) {
-      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
-
   @Post("copyTemplateElements")
   copyTemplateElements(@Body(TemplateCopyElementsPipe) cpy: TemplateCopyElementsDto) {
     try {
       return this.service
         .copyTemplateElements(
-          cpy.originDashboardName,
-          cpy.originTemplateName,
-          cpy.targetDashboardName,
-          cpy.targetTemplateName
+          cpy.originTemplateId,
+          cpy.targetTemplateId,
         )
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)

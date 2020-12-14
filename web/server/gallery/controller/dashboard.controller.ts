@@ -6,8 +6,8 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 
 import * as dashboardService from "../provider/dashboard.service"
 import {Dashboard} from "../entity"
-import {DashboardDescriptionModifyDto} from "../dto"
-import {DashboardDescriptionModifyPipe} from "../pipe"
+import {DashboardModifyDto} from "../dto"
+import {DashboardModifyPipe} from "../pipe"
 
 
 @Controller()
@@ -26,7 +26,7 @@ export class DashboardController {
   @Get("dashboard")
   getDashboardByName(@Query("name") name: string) {
     try {
-      return this.service.getDashboardByName(name)
+      return this.service.getDashboardById(name)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -70,19 +70,19 @@ export class DashboardController {
     }
   }
 
-  @Get("getDashboardCategoryMarksAndTemplateByName")
-  getDashboardCategoryMarksAndTemplateByName(@Query("dashboardName") dashboardName: string) {
+  @Get("getDashboardCategoryMarksAndTemplate")
+  getDashboardCategoryMarksAndTemplate(@Query("id") id: string) {
     try {
-      return this.service.getDashboardCategoryMarksAndTemplateByName(dashboardName)
+      return this.service.getDashboardCategoryMarksAndTemplate(id)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
-  @Post("modifyDashboardDescription")
-  modifyDashboardDescription(@Body(DashboardDescriptionModifyPipe) dashboard: DashboardDescriptionModifyDto) {
+  @Post("modifyDashboard")
+  modifyDashboard(@Body(DashboardModifyPipe) dashboard: DashboardModifyDto) {
     try {
-      return this.service.modifyDashboardDescription(dashboard.name, dashboard.description)
+      return this.service.modifyDashboard(dashboard as Dashboard)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -30,7 +30,7 @@ const EditorField = (props: ModuleEditorField) => {
   return (
     <TextEditorModifier
       onChange={onChangeContent}
-      content={content ? content.data.text : null}
+      content={content && content.data ? content.data.text : null}
       onSave={onSaveContent}
       saveButton
       styling={props.styling}
@@ -39,7 +39,7 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) =>
-  props.content && props.content.data.text ?
+  props.content && props.content.data && props.content.data.text ?
     <TextEditorPresenter
       content={props.content.data.text}
       styling={props.styling}

@@ -3,14 +3,14 @@
  */
 
 import {CategoryPureDto} from "./category.dto"
-import {DashboardDescriptionModifyDto} from "./dashboard.dto"
+import {DashboardModifyDto} from "./dashboard.dto"
 import {ConditionSymbol, ConditionDto, ReadDto} from "./read.dto"
 import {TemplateCopyElementsDto} from "./template.dto"
 
 
 export {
   CategoryPureDto,
-  DashboardDescriptionModifyDto,
+  DashboardModifyDto,
   ConditionSymbol,
   ConditionDto,
   ReadDto,

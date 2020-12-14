@@ -57,9 +57,9 @@ export default () => {
       .saveCategory({name, description})
       .then(refreshCat)
 
-  const modifyDashboardDescription = (name: string, description: string) =>
+  const modifyDashboard = (dashboard: DataType.Dashboard) =>
     GalleryService
-      .modifyDashboardDescription({name, description})
+      .modifyDashboard(dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
   const saveMark = (categoryName: string, mark: DataType.Mark) =>
@@ -87,14 +87,14 @@ export default () => {
       .newDashboardAttachToEmptyCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
-  const saveTemplate = (dashboardName: string, template: DataType.Template) =>
+  const saveTemplate = (dashboardId: string, template: DataType.Template) =>
     GalleryService
-      .saveTemplateInDashboard(dashboardName, template as GalleryAPI.Template)
+      .saveTemplateInDashboard(dashboardId, template as GalleryAPI.Template)
       .then(refreshDsb)
 
-  const deleteTemplate = (dashboardName: string, templateName: string) =>
+  const deleteTemplate = (templateId: string) =>
     GalleryService
-      .deleteTemplateInDashboard(dashboardName, templateName)
+      .deleteTemplate(templateId)
       .then(refreshDsb)
 
   const saveStorage = (storage: DataType.Storage) =>
@@ -134,7 +134,7 @@ export default () => {
         <CategoryConfigTable
           data={dataCategory}
           saveCategory={saveCategory}
-          modifyDashboardDescription={modifyDashboardDescription}
+          modifyDashboard={modifyDashboard}
           saveMark={saveMark}
           deleteMark={deleteMark}
           saveTag={saveTag}

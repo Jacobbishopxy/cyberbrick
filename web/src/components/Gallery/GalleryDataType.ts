@@ -56,6 +56,7 @@ export interface Author {
 }
 
 export interface Dashboard {
+  id?: string
   name: string
   category?: Category
   templates?: Template[]
@@ -71,10 +72,8 @@ export interface Template {
 }
 
 export interface CopyTemplateElements {
-  originDashboardName: string
-  originTemplateName: string
-  targetDashboardName: string
-  targetTemplateName: string
+  originTemplateId: string
+  targetTemplateId: string
 }
 
 export interface Element {
