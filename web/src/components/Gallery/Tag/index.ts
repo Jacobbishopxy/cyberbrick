@@ -4,10 +4,10 @@
 
 import {EditableTagPanel} from "./EditableTagPanel"
 import {SelectableTags} from "./SelectableTags"
-import {SearchableTags} from "./SearchableTags"
+import {SearchableTagsPanel} from "./SearchableTagsPanel"
 
 export {
   EditableTagPanel,
   SelectableTags,
-  SearchableTags
+  SearchableTagsPanel
 }

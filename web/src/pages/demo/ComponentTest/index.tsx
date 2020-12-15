@@ -3,9 +3,10 @@
  */
 
 import React, {useState} from 'react'
-import {Space} from "antd"
+import {Modal, Space} from "antd"
+import {ExclamationCircleOutlined} from "@ant-design/icons"
 
-import {EditableTagPanel, SearchableTags} from "@/components/Gallery/Tag"
+import {EditableTagPanel, SearchableTagsPanel} from "@/components/Gallery/Tag"
 import {Editor} from "@/components/Editor"
 
 
@@ -20,6 +21,20 @@ const defaultData: Data[] = [
     description: "FP + OOP"
   }
 ]
+
+const showConfirm = (v: string) => {
+  Modal.confirm({
+    title: 'Do you Want to modify these items?',
+    icon: <ExclamationCircleOutlined/>,
+    content: `See ${v}`,
+    onOk() {
+      console.log('OK')
+    },
+    onCancel() {
+      console.log('Cancel')
+    },
+  })
+}
 
 export default () => {
 
@@ -40,11 +55,12 @@ export default () => {
         editable={editable}
         elementOnCreate={elementOnCreate}
         elementOnRemove={elementOnRemove}
+        elementOnClick={showConfirm}
       />
-      <SearchableTags
+      <SearchableTagsPanel
         searchable={editable}
         data={data}
-        elementOnSelect={d => console.log(d)}
+        elementOnSearch={d => console.log(d)}
       />
     </Space>
   )

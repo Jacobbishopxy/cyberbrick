@@ -10,37 +10,33 @@ import {GenericDataInput, SelectableTags, SelectableTagsRef} from "./SelectableT
 export interface SearchableTagsProps<T extends GenericDataInput> {
   searchable: boolean
   data: T[]
-  elementOnSelect: (value: string[]) => void
+  elementOnSearch: (value: string[]) => void
 }
 
-export const SearchableTags = <T extends GenericDataInput>(props: SearchableTagsProps<T>) => {
+export const SearchableTagsPanel = <T extends GenericDataInput>(props: SearchableTagsProps<T>) => {
 
   const selectableTagsRef = useRef<SelectableTagsRef>(null)
 
-  const [data, setData] = useState<T[]>(props.data)
   const [selectedDataNames, setSelectedDataNames] = useState<string[]>([])
 
-  useEffect(() => setData(props.data), [props.data])
-
   const clearSelected = () => {
-    props.elementOnSelect([])
+    setSelectedDataNames([])
     if (selectableTagsRef.current) selectableTagsRef.current.clearSelected()
   }
 
   useEffect(clearSelected, [props.searchable])
 
-
   return props.searchable ?
     <>
       <SelectableTags
-        tags={data}
+        tags={props.data}
         onSelectTags={setSelectedDataNames}
         ref={selectableTagsRef}
       />
       <Divider/>
       <Space>
         <Button
-          onClick={() => props.elementOnSelect(selectedDataNames)}
+          onClick={() => props.elementOnSearch(selectedDataNames)}
           type="primary"
           size="small"
         >
@@ -56,7 +52,7 @@ export const SearchableTags = <T extends GenericDataInput>(props: SearchableTags
     </> :
     <>
       {
-        data.map(t =>
+        props.data.map(t =>
           <Tooltip title={t.description} key={t.name}>
             <Tag>
               {t.name}

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Modal, Tag, Tooltip} from "antd"
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
 
@@ -32,12 +32,9 @@ export interface EditableTagPanelProps<T extends GenericDataInput> {
 
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
 
-  const [data, setData] = useState<T[]>(props.data)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
 
-  useEffect(() => setData(props.data), [props.data])
-
-  const elementOnRemove = (value: string) => {
+  const elementOnRemove = (value: string) => () => {
     if (props.elementOnRemove) props.elementOnRemove(value)
   }
 
@@ -48,33 +45,45 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
     }
   }
 
-  return (
+  const idle = () =>
+    props.data.map(t =>
+      <Tooltip title={t.description} key={t.name}>
+        <Tag color={t.color}>{t.name}</Tag>
+      </Tooltip>
+    )
+
+  const livOnClickProp = (v: string) => () => {
+    if (props.elementOnClick) props.elementOnClick(v)
+  }
+
+  const live = () =>
     <>
       {
-        data.map(t =>
-          <Tooltip title={t.description} key={t.name}>
-            <Tag
-              closable={props.editable}
-              onClose={e => {
-                e.preventDefault()
-                tagDeleteModal(() => elementOnRemove(t.name))
-              }}
-              color={t.color}
-            >
-              {t.name}
-            </Tag>
-          </Tooltip>
+        props.data.map(t =>
+          <Tag
+            closable
+            onClose={e => {
+              e.preventDefault()
+              tagDeleteModal(elementOnRemove(t.name))
+            }}
+            color={t.color}
+            onClick={livOnClickProp(t.name)}
+          >
+            {t.name}
+          </Tag>
         )
       }
-      {
-        props.editable ?
-          <Tag
-            icon={<PlusOutlined/>}
-            onClick={() => setModalVisible(true)}
-          >
-            {props.text}
-          </Tag> : <></>
-      }
+      <Tag
+        icon={<PlusOutlined/>}
+        onClick={() => setModalVisible(true)}
+      >
+        {props.text}
+      </Tag>
+    </>
+
+  return (
+    <>
+      {props.editable ? live() : idle()}
 
       <CreationModal
         name={props.name}
