@@ -78,7 +78,9 @@ export class TagService {
       .createQueryBuilder(common.tag)
       .leftJoinAndSelect(common.tagCategory, common.category)
       .select([common.tagName, common.categoryName])
-      .where(`${common.categoryName} = :categoryName AND ${common.tagName} = :tagName`, {categoryName, tagName})
+      .where(`${common.categoryName} = :categoryName AND ${common.tagName} = :tagName`, {
+        categoryName, tagName
+      })
       .delete()
       .execute()
   }

@@ -117,6 +117,11 @@ export const newDashboardAttachToCategory =
       data: dashboard
     })
 
+export const deleteDashboardInCategory = async (categoryName: string, dashboardName: string): Promise<void> =>
+  request(`${base}/deleteDashboardInCategory?categoryName=${categoryName}&dashboardName=${dashboardName}`, {
+    method: "delete"
+  })
+
 
 // Template
 

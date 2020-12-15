@@ -3,13 +3,11 @@
  */
 
 import React, {useState} from 'react'
-import {Table, Tag} from "antd"
-import {PlusOutlined} from '@ant-design/icons'
+import {Table} from "antd"
 
 import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
-import {CreationModal} from "../Misc/CreationModal"
 import {TextBuilder} from "../Misc/TextBuilder"
 import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
@@ -17,12 +15,12 @@ import {EditableTagPanel} from "../Tag/EditableTagPanel"
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
   saveCategory: (categoryName: string, description?: string) => void
-  modifyDashboard: (dashboard: DataType.Dashboard) => void
+  saveDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
+  deleteDashboard: (categoryName: string, dashboard: string) => void
   saveMark: (categoryName: string, mark: DataType.Mark) => void
   deleteMark: (categoryName: string, mark: string) => void
   saveTag: (categoryName: string, tag: DataType.Tag) => void
   deleteTag: (categoryName: string, tag: string) => void
-  newDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
 }
 
 /**
@@ -31,15 +29,15 @@ export interface CategoryConfigTableProps {
 export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
-  const [newDashboardVisible, setNewDashboardVisible] = useState<boolean>(false)
-  const [selectedCategoryName, setSelectedCategoryName] = useState<string>()
 
   const modifyCategoryDescription = (categoryName: string) =>
     (description: string) => props.saveCategory(categoryName, description)
 
-  // todo: modify dashboard name & description
-  const modifyDashboardDescription = (dashboardId: string) =>
-    (description: string) => props.modifyDashboard({id: dashboardId, description} as DataType.Dashboard)
+  const saveDashboard = (categoryName: string) =>
+    (dashboard: DataType.Dashboard) => props.saveDashboard(categoryName, dashboard)
+
+  const deleteDashboard = (categoryName: string) =>
+    (dashboard: string) => props.deleteDashboard(categoryName, dashboard)
 
   const saveMark = (categoryName: string) =>
     (mark: DataType.Mark) => props.saveMark(categoryName, mark)
@@ -53,16 +51,6 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const deleteTag = (categoryName: string) =>
     (tag: string) => props.deleteTag(categoryName, tag)
 
-  const newDashboard = (dashboard: DataType.Dashboard) => {
-    if (selectedCategoryName)
-      props.newDashboard(selectedCategoryName, dashboard)
-    setNewDashboardVisible(false)
-  }
-
-  const openNewDashboardModal = (categoryName: string) => {
-    setSelectedCategoryName(categoryName)
-    setNewDashboardVisible(true)
-  }
 
   const tableFooter = () =>
     editable ?
@@ -110,34 +98,23 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
             }
           />
         </Table.ColumnGroup>
-        <Table.ColumnGroup title="Dashboard">
-          <Table.Column
-            title="Name"
-            dataIndex={["dashboard", "name"]}
-            key="dashboardName"
-            render={(text: string, record: DataType.Category) =>
-              text === null && editable ?
-                <Tag
-                  icon={<PlusOutlined/>}
-                  onClick={() => openNewDashboardModal(record.name)}
-                >
-                  New Dashboard
-                </Tag> : text
-            }
-          />
-          <Table.Column
-            title="Description"
-            dataIndex={["dashboard", "description"]}
-            key="dashboardDescription"
-            render={(text: string, record: DataType.Category) =>
-              editable && record.dashboard ?
-                <TextBuilder
-                  text={text}
-                  saveNewText={modifyDashboardDescription(record.dashboard.id!)}
-                /> : text
-            }
-          />
-        </Table.ColumnGroup>
+
+        <Table.Column
+          title="Dashboards"
+          dataIndex="dashboards"
+          key="dashboards"
+          render={(dashboards: DataType.Dashboard[], record: DataType.Category) =>
+            <EditableTagPanel
+              name={`db-${record.name}`}
+              text="new dashboard"
+              data={dashboards}
+              editable={editable}
+              elementOnCreate={saveDashboard(record.name)}
+              elementOnRemove={deleteDashboard(record.name)}
+            />
+          }
+        />
+
         <Table.Column
           title="Marks"
           dataIndex="marks"
@@ -145,6 +122,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           render={(marks: DataType.Mark[], record: DataType.Category) =>
             <EditableTagPanel
               name={`cm-${record.name}`}
+              text="new mark"
               data={marks}
               editable={editable}
               elementOnCreate={saveMark(record.name)}
@@ -160,6 +138,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           render={(tags: DataType.Tag[], record: DataType.Category) =>
             <EditableTagPanel
               name={`ct-${record.name}`}
+              text="new tag"
               data={tags}
               editable={editable}
               elementOnCreate={saveTag(record.name)}
@@ -169,12 +148,6 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           }
         />
       </Table>
-      <CreationModal
-        title="Please enter new dashboard information below:"
-        visible={newDashboardVisible}
-        onSubmit={newDashboard}
-        onCancel={() => setNewDashboardVisible(false)}
-      />
     </div>
   )
 }

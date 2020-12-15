@@ -78,10 +78,10 @@ export class MarkService {
       .createQueryBuilder(common.mark)
       .leftJoinAndSelect(common.markCategory, common.category)
       .select([common.markName, common.categoryName])
-      .where(
-        `${common.categoryName} = :categoryName AND ${common.markName} = :markName`,
-        {categoryName, markName}
-      )
+      .where(`${common.categoryName} = :categoryName AND ${common.markName} = :markName`, {
+        categoryName,
+        markName
+      })
       .delete()
       .execute()
   }

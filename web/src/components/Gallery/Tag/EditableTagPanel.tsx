@@ -20,6 +20,7 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export interface EditableTagPanelProps<T extends GenericDataInput> {
   name?: string
+  text?: string
   data: T[]
   editable: boolean
   elementOnCreate: (value: T) => void
@@ -122,13 +123,13 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
             icon={<PlusOutlined/>}
             onClick={() => setModalVisible(true)}
           >
-            New Tag
+            {props.text}
           </Tag> : <></>
       }
 
       <CreationModal
         name={props.name}
-        title="Please enter new tag information below:"
+        title={`Please enter ${props.text} information below:`}
         visible={modalVisible}
         onSubmit={tagCreateModalOnOk}
         onCancel={() => setModalVisible(false)}
@@ -140,6 +141,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
 
 EditableTagPanel.defaultProps = {
+  text: "new tag",
   editable: false,
   colorSelector: false,
   dataSearchable: false

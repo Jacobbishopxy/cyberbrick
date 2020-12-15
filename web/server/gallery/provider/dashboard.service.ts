@@ -112,4 +112,18 @@ export class DashboardService {
 
     return false
   }
+
+  deleteDashboardInCategory(categoryName: string, dashboardName: string) {
+    return this.repoDashboard
+      .createQueryBuilder(common.dashboard)
+      .leftJoinAndSelect(common.dashboardCategory, common.dashboard)
+      .select([common.dashboardName, common.categoryName])
+      .where(`${common.categoryName} = :categoryName AND ${common.dashboardName} = :dashboardName`, {
+        categoryName,
+        dashboardName
+      })
+      .delete()
+      .execute()
+  }
 }
+

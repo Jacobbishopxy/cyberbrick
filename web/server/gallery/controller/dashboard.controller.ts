@@ -88,5 +88,15 @@ export class DashboardController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Delete("deleteDashboardInCategory")
+  deleteDashboardInCategory(@Query("categoryName") categoryName: string,
+                            @Query("dashboardName") dashboardName: string) {
+    try {
+      return this.service.deleteDashboardInCategory(categoryName, dashboardName)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

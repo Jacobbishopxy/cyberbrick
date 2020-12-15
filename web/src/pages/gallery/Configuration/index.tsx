@@ -57,10 +57,14 @@ export default () => {
       .saveCategory({name, description})
       .then(refreshCat)
 
-  const modifyDashboard = (dashboard: DataType.Dashboard) =>
+  const saveDashboard = (categoryName: string, dashboard: DataType.Dashboard) =>
     GalleryService
-      .modifyDashboard(dashboard as GalleryAPI.Dashboard)
+      .newDashboardAttachToCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
+
+  const deleteDashboard = (categoryName: string, dashboardName: string) =>
+    GalleryService
+      .deleteDashboardInCategory(categoryName, dashboardName)
 
   const saveMark = (categoryName: string, mark: DataType.Mark) =>
     GalleryService
@@ -80,11 +84,6 @@ export default () => {
   const deleteTag = (categoryName: string, tagName: string) =>
     GalleryService
       .deleteTagInCategory(categoryName, tagName)
-      .then(refreshCat)
-
-  const newDashboard = (categoryName: string, dashboard: DataType.Dashboard) =>
-    GalleryService
-      .newDashboardAttachToCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
   const saveTemplate = (dashboardId: string, template: DataType.Template) =>
@@ -134,12 +133,12 @@ export default () => {
         <CategoryConfigTable
           data={dataCategory}
           saveCategory={saveCategory}
-          modifyDashboard={modifyDashboard}
+          saveDashboard={saveDashboard}
+          deleteDashboard={deleteDashboard}
           saveMark={saveMark}
           deleteMark={deleteMark}
           saveTag={saveTag}
           deleteTag={deleteTag}
-          newDashboard={newDashboard}
         />
       </Tabs.TabPane>
       <Tabs.TabPane
