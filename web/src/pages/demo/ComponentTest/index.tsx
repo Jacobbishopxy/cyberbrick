@@ -3,59 +3,50 @@
  */
 
 import React, {useState} from 'react'
-import {Col, Row} from "antd"
+import {Space} from "antd"
 
-import {generateCommonEditorField, generateCommonPresenterField} from "@/components/Gallery/ModulePanel/Collections/graph/Common"
-import {generateLineBarOption} from "@/components/Gallery/ModulePanel/Collections/graph/chartGenerators"
-
-import * as DataType from "@/components/Gallery/GalleryDataType"
-import * as GalleryService from "@/services/gallery"
+import {EditableTagPanel, SearchableTags} from "@/components/Gallery/Tag"
+import {Editor} from "@/components/Editor"
 
 
-const EF = generateCommonEditorField()
-const PF = generateCommonPresenterField(generateLineBarOption("bar"))
+interface Data {
+  name: string
+  description: string
+}
+
+const defaultData: Data[] = [
+  {
+    name: "Scala",
+    description: "FP + OOP"
+  }
+]
 
 export default () => {
 
-  const [content, setContent] = useState<DataType.Content | undefined>()
+  const [editable, setEditable] = useState<boolean>(false)
+  const [data, setData] = useState<Data[]>(defaultData)
 
-  const fetchStorages = () =>
-    GalleryService.getAllStorageSimple()
+  const elementOnCreate = (v: Data) =>
+    setData([...data, v])
 
-  const fetchTableList = (id: string) =>
-    GalleryService.databaseListTable(id)
-
-  const fetchTableColumns = (sId: string, tn: string) =>
-    GalleryService.databaseGetTableColumns(sId, tn)
-
-  const fetchQueryData = (value: DataType.Content) =>
-    GalleryService.read(value.data.id, value.data as GalleryAPI.Read)
-
-  const updateContent = (c: DataType.Content) => {
-    console.log(c)
-    setContent(c)
-    return Promise.resolve()
-  }
+  const elementOnRemove = (v: string) =>
+    setData(data.filter(d => d.name !== v))
 
   return (
-    <Row>
-      <Col span={12}>
-        <EF
-          content={content}
-          fetchStorages={fetchStorages}
-          fetchTableList={fetchTableList}
-          fetchTableColumns={fetchTableColumns}
-          updateContent={updateContent}
-        />
-      </Col>
-      <Col span={12}>
-        <PF
-          content={content}
-          fetchQueryData={fetchQueryData}
-          contentHeight={500}
-        />
-      </Col>
-    </Row>
+    <Space direction="vertical">
+      <Editor onChange={setEditable}/>
+      <EditableTagPanel
+        data={data}
+        editable={editable}
+        elementOnCreate={elementOnCreate}
+        elementOnRemove={elementOnRemove}
+      />
+      <SearchableTags
+        searchable={editable}
+        data={data}
+        elementOnSelect={d => console.log(d)}
+      />
+    </Space>
   )
 }
 

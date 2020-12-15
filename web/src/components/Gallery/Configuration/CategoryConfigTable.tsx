@@ -9,7 +9,7 @@ import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
 import {TextBuilder} from "../Misc/TextBuilder"
-import {EditableTagPanel} from "../Tag/EditableTagPanel"
+import {EditableTagPanel} from "../Tag"
 
 
 export interface CategoryConfigTableProps {
