@@ -110,9 +110,9 @@ export const modifyDashboard = async (dashboard: GalleryAPI.Dashboard): Promise<
     data: dashboard
   })
 
-export const newDashboardAttachToEmptyCategory =
+export const newDashboardAttachToCategory =
   async (categoryName: string, dashboard: GalleryAPI.Dashboard): Promise<void> =>
-    request(`${base}/newDashboardAttachToEmptyCategory?categoryName=${categoryName}`, {
+    request(`${base}/newDashboardAttachToCategory?categoryName=${categoryName}`, {
       method: "post",
       data: dashboard
     })

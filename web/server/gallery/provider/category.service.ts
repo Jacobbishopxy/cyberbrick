@@ -23,7 +23,7 @@ const categoryFullRelations = {
 
 const categoryDashboardMarkTagRelations = {
   relations: [
-    common.dashboard,
+    common.dashboards,
     common.marks,
     common.tags
   ]
@@ -46,6 +46,10 @@ const categoryTagRelations = {
 
 const categoryContentRelations = {
   relations: [common.contents]
+}
+
+const categoryDashboardRelations = {
+  relations: [common.dashboards]
 }
 
 type CategorySingleRelations =
@@ -99,6 +103,13 @@ export class CategoryService {
   getCategoryContentByName(name: string) {
     return this.repo.findOne({
       ...categoryContentRelations,
+      ...utils.whereNameEqual(name)
+    })
+  }
+
+  getCategoryDashboardByName(name: string) {
+    return this.repo.findOne({
+      ...categoryDashboardRelations,
       ...utils.whereNameEqual(name)
     })
   }

@@ -6,9 +6,7 @@ import {
   Entity,
   PrimaryColumn,
   Column,
-  OneToOne,
   OneToMany,
-  JoinColumn,
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
@@ -21,7 +19,7 @@ import {Dashboard} from "./dashboard.entity"
 
 
 @Entity({name: common.category})
-@Unique([common.name, common.dashboard])
+@Unique([common.name])
 export class Category {
 
   @PrimaryColumn("varchar")
@@ -30,9 +28,8 @@ export class Category {
   @Column("text", {nullable: true})
   description?: string
 
-  @OneToOne(() => Dashboard, d => d.category, {cascade: true, nullable: true})
-  @JoinColumn()
-  dashboard!: Dashboard
+  @OneToMany(() => Dashboard, d => d.category, {cascade: true, nullable: true})
+  dashboards!: Dashboard[]
 
   @OneToMany(() => Mark, s => s.category, {cascade: true, nullable: true})
   marks!: Mark[]

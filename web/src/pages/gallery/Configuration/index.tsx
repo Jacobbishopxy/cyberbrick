@@ -84,7 +84,7 @@ export default () => {
 
   const newDashboard = (categoryName: string, dashboard: DataType.Dashboard) =>
     GalleryService
-      .newDashboardAttachToEmptyCategory(categoryName, dashboard as GalleryAPI.Dashboard)
+      .newDashboardAttachToCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
   const saveTemplate = (dashboardId: string, template: DataType.Template) =>

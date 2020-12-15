@@ -33,7 +33,7 @@ const dashboardAndCategoryMarkAndTemplateRelations = {
 }
 
 const categoryDashboardRelations = {
-  relations: [common.dashboard]
+  relations: [common.dashboards]
 }
 
 @Injectable()
@@ -62,10 +62,6 @@ export class DashboardService {
   }
 
   // ===================================================================================================================
-
-  getAllDashboardsName() {
-    return this.repoDashboard.find({select: [common.name]})
-  }
 
   getAllDashboardsTemplate() {
     return this.repoDashboard.find(dashboardTemplateRelations)
@@ -96,13 +92,13 @@ export class DashboardService {
     return false
   }
 
-  async newDashboardAttachToEmptyCategory(categoryName: string, dashboard: Dashboard) {
+  async newDashboardAttachToCategory(categoryName: string, dashboard: Dashboard) {
     const cat = await this.repoCategory.findOne({
       ...categoryDashboardRelations,
       ...utils.whereNameEqual(categoryName)
     })
 
-    if (cat && cat.dashboard === null) {
+    if (cat) {
       const newDb = this.repoDashboard.create({
         ...dashboard,
         category: {

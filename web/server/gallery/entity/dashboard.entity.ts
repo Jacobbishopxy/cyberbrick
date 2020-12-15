@@ -5,8 +5,9 @@
 import {
   Entity,
   Column,
-  OneToOne,
+  ManyToOne,
   OneToMany,
+  Unique,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
@@ -17,12 +18,13 @@ import {Category} from "./category.entity"
 import {Template} from "./template.entity"
 
 @Entity({name: common.dashboard})
+@Unique([common.name, common.category])
 export class Dashboard {
 
   @PrimaryGeneratedColumn("uuid")
   id!: string
 
-  @OneToOne(() => Category, c => c.dashboard, {nullable: false})
+  @ManyToOne(() => Category, c => c.dashboards, {nullable: false})
   category!: Category
 
   @OneToMany(() => Template, t => t.dashboard, {nullable: true})

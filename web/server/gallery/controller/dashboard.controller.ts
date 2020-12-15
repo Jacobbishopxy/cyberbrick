@@ -52,15 +52,6 @@ export class DashboardController {
 
   // ===================================================================================================================
 
-  @Get("getAllDashboardsName")
-  getAllDashboardsName() {
-    try {
-      return this.service.getAllDashboardsName()
-    } catch (err) {
-      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
-
   @Get("getAllDashboardsTemplate")
   getAllDashboardsTemplate() {
     try {
@@ -88,11 +79,11 @@ export class DashboardController {
     }
   }
 
-  @Post("newDashboardAttachToEmptyCategory")
-  newDashboardAttachToEmptyCategory(@Query("categoryName") categoryName: string,
+  @Post("newDashboardAttachToCategory")
+  newDashboardAttachToCategory(@Query("categoryName") categoryName: string,
                                     @Body() dashboard: Dashboard) {
     try {
-      return this.service.newDashboardAttachToEmptyCategory(categoryName, dashboard)
+      return this.service.newDashboardAttachToCategory(categoryName, dashboard)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

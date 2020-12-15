@@ -11,6 +11,9 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export default () => {
 
+  // const fetchCategories = () =>
+  //   GalleryService.
+
   const fetchDashboards = () =>
     GalleryService.getAllDashboardsTemplate()
 

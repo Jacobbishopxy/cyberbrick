@@ -30,6 +30,7 @@ export const elements = "elements"
 export const templates = "templates"
 export const marks = "marks"
 export const tags = "tags"
+export const dashboards = "dashboards"
 
 // relations column & misc
 export const ids = "ids"

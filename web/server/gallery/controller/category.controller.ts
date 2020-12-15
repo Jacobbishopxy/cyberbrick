@@ -88,6 +88,15 @@ export class CategoryController {
     }
   }
 
+  @Get("getCategoryDashboardByName")
+  getCategoryDashboardByName(@Query("name") name: string) {
+    try {
+      return this.service.getCategoryDashboardByName(name)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Post("saveCategory")
   savePureCategory(@Body(CategoryPurePipe) category: CategoryPureDto) {
     try {
