@@ -47,6 +47,12 @@ export const saveCategoryTag = async (categoryName: string, tag: GalleryAPI.Tag)
 export const getCategoriesByMarkName = async (name: string): Promise<GalleryAPI.Category[]> =>
   request(`${base}/getCategoriesByMarkName?name=${name}`)
 
+export const modifyMark = async (mark: GalleryAPI.Mark) =>
+  request(`${base}/modifyMark`, {
+    method: "post",
+    data: mark
+  })
+
 export const deleteMarkInCategory = async (categoryName: string, markName: string): Promise<void> =>
   request(`${base}/deleteMarkInCategory?categoryName=${categoryName}&markName=${markName}`, {
     method: "delete"
@@ -57,6 +63,12 @@ export const deleteMarkInCategory = async (categoryName: string, markName: strin
 
 export const getCategoriesByTagName = async (name: string): Promise<GalleryAPI.Category[]> =>
   request(`${base}/getCategoriesByTagName?name=${name}`)
+
+export const modifyTag = async (tag: GalleryAPI.Tag) =>
+  request(`${base}/modifyTag`, {
+    method: "post",
+    data: tag
+  })
 
 export const deleteTagInCategory = async (categoryName: string, tagName: string): Promise<void> =>
   request(`${base}/deleteTagInCategory?categoryName=${categoryName}&tagName=${tagName}`, {

@@ -62,6 +62,11 @@ export default () => {
       .newDashboardAttachToCategory(categoryName, dashboard as GalleryAPI.Dashboard)
       .then(refreshCat)
 
+  const modifyDashboard = (dashboard: DataType.Dashboard) =>
+    GalleryService
+      .modifyDashboard(dashboard as GalleryAPI.Dashboard)
+      .then(refreshCat)
+
   const deleteDashboard = (categoryName: string, dashboardName: string) =>
     GalleryService
       .deleteDashboardInCategory(categoryName, dashboardName)
@@ -69,6 +74,11 @@ export default () => {
   const saveMark = (categoryName: string, mark: DataType.Mark) =>
     GalleryService
       .saveCategoryMark(categoryName, mark as GalleryAPI.Mark)
+      .then(refreshCat)
+
+  const modifyMark = (mark: DataType.Mark) =>
+    GalleryService
+      .modifyMark(mark as GalleryAPI.Mark)
       .then(refreshCat)
 
   const deleteMark = (categoryName: string, markName: string) =>
@@ -79,6 +89,11 @@ export default () => {
   const saveTag = (categoryName: string, tag: DataType.Tag) =>
     GalleryService
       .saveCategoryTag(categoryName, tag as GalleryAPI.Tag)
+      .then(refreshCat)
+
+  const modifyTag = (tag: DataType.Tag) =>
+    GalleryService
+      .modifyTag(tag as GalleryAPI.Tag)
       .then(refreshCat)
 
   const deleteTag = (categoryName: string, tagName: string) =>
@@ -134,13 +149,17 @@ export default () => {
           data={dataCategory}
           saveCategory={saveCategory}
           saveDashboard={saveDashboard}
+          modifyDashboard={modifyDashboard}
           deleteDashboard={deleteDashboard}
           saveMark={saveMark}
+          modifyMark={modifyMark}
           deleteMark={deleteMark}
           saveTag={saveTag}
+          modifyTag={modifyTag}
           deleteTag={deleteTag}
         />
       </Tabs.TabPane>
+
       <Tabs.TabPane
         tab={<span> <DashboardOutlined/> Dashboard</span>}
         key="Dashboard"
@@ -151,6 +170,7 @@ export default () => {
           deleteTemplate={deleteTemplate}
         />
       </Tabs.TabPane>
+
       <Tabs.TabPane
         tab={<span> <DatabaseOutlined/> Storage</span>}
         key="Storage"

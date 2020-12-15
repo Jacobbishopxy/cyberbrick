@@ -19,6 +19,7 @@ export interface CreationModalProps {
   onSubmit: (value: CreationModalValue) => void
   onCancel: () => void
   colorSelector?: boolean
+  initialValues?: CreationModalValue
 }
 
 const formItemLayout = {
@@ -58,7 +59,12 @@ export const CreationModal = (props: CreationModalProps) => {
       destroyOnClose
       forceRender
     >
-      <Form {...formItemLayout} form={form} name={props.name}>
+      <Form
+        form={form}
+        name={props.name}
+        initialValues={props.initialValues}
+        {...formItemLayout}
+      >
         <Form.Item
           name="name"
           label="Name"

@@ -75,18 +75,20 @@ export class DashboardService {
   }
 
   async modifyDashboard(dashboard: Dashboard) {
-    const dsb = await this.repoDashboard.findOne({
-      ...utils.whereIdEqual(dashboard.id)
-    })
-
-    if (dsb) {
-      const newDsb = this.repoDashboard.create({
-        ...dsb,
-        name: dashboard.name,
-        description: dashboard.description
+    if (dashboard.id) {
+      const dsb = await this.repoDashboard.findOne({
+        ...utils.whereIdEqual(dashboard.id)
       })
-      await this.repoDashboard.save(newDsb)
-      return true
+
+      if (dsb) {
+        const newDsb = this.repoDashboard.create({
+          ...dsb,
+          name: dashboard.name,
+          description: dashboard.description
+        })
+        await this.repoDashboard.save(newDsb)
+        return true
+      }
     }
 
     return false

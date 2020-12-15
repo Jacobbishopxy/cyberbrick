@@ -3,8 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Modal, Space} from "antd"
-import {ExclamationCircleOutlined} from "@ant-design/icons"
+import {Divider, Space} from "antd"
 
 import {EditableTagPanel, SearchableTagsPanel} from "@/components/Gallery/Tag"
 import {Editor} from "@/components/Editor"
@@ -22,20 +21,6 @@ const defaultData: Data[] = [
   }
 ]
 
-const showConfirm = (v: string) => {
-  Modal.confirm({
-    title: 'Do you Want to modify these items?',
-    icon: <ExclamationCircleOutlined/>,
-    content: `See ${v}`,
-    onOk() {
-      console.log('OK')
-    },
-    onCancel() {
-      console.log('Cancel')
-    },
-  })
-}
-
 export default () => {
 
   const [editable, setEditable] = useState<boolean>(false)
@@ -43,6 +28,9 @@ export default () => {
 
   const elementOnCreate = (v: Data) =>
     setData([...data, v])
+
+  const elementOnModify = (v: Data) =>
+    console.log(v)
 
   const elementOnRemove = (v: string) =>
     setData(data.filter(d => d.name !== v))
@@ -55,8 +43,11 @@ export default () => {
         editable={editable}
         elementOnCreate={elementOnCreate}
         elementOnRemove={elementOnRemove}
-        elementOnClick={showConfirm}
+        elementOnClick={elementOnModify}
       />
+
+      <Divider/>
+
       <SearchableTagsPanel
         searchable={editable}
         data={data}

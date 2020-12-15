@@ -81,7 +81,7 @@ export class DashboardController {
 
   @Post("newDashboardAttachToCategory")
   newDashboardAttachToCategory(@Query("categoryName") categoryName: string,
-                                    @Body() dashboard: Dashboard) {
+                               @Body() dashboard: Dashboard) {
     try {
       return this.service.newDashboardAttachToCategory(categoryName, dashboard)
     } catch (err) {

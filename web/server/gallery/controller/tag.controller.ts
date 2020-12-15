@@ -60,10 +60,9 @@ export class TagController {
   }
 
   @Post("modifyTag")
-  modifyTag(@Query("id") id: string,
-            @Body() tag: Tag) {
+  modifyTag(@Body() tag: Tag) {
     try {
-      return this.service.modifyTag(id, tag)
+      return this.service.modifyTag(tag)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

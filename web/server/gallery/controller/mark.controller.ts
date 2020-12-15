@@ -60,10 +60,9 @@ export class MarkController {
   }
 
   @Post("modifyMark")
-  modifyMark(@Query("id") id: string,
-             @Body() mark: Mark) {
+  modifyMark(@Body() mark: Mark) {
     try {
-      return this.service.modifyMark(id, mark)
+      return this.service.modifyMark(mark)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

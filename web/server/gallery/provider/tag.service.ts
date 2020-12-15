@@ -59,16 +59,18 @@ export class TagService {
     return []
   }
 
-  async modifyTag(id: string, tag: Tag) {
-    const tg = await this.repo.findOne({...utils.whereIdEqual(id)})
+  async modifyTag(tag: Tag) {
+    if (tag.id) {
+      const tg = await this.repo.findOne({...utils.whereIdEqual(tag.id)})
 
-    if (tg) {
-      const newTag = this.repo.create({
-        ...tg,
-        ...tag
-      })
-      await this.repo.save(newTag)
-      return true
+      if (tg) {
+        const newTag = this.repo.create({
+          ...tg,
+          ...tag
+        })
+        await this.repo.save(newTag)
+        return true
+      }
     }
     return false
   }

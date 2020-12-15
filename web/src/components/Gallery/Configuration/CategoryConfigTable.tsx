@@ -14,12 +14,19 @@ import {EditableTagPanel} from "../Tag"
 
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
+
   saveCategory: (categoryName: string, description?: string) => void
+
   saveDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
+  modifyDashboard: (dashboard: DataType.Dashboard) => void
   deleteDashboard: (categoryName: string, dashboard: string) => void
+
   saveMark: (categoryName: string, mark: DataType.Mark) => void
+  modifyMark: (mark: DataType.Mark) => void
   deleteMark: (categoryName: string, mark: string) => void
+
   saveTag: (categoryName: string, tag: DataType.Tag) => void
+  modifyTag: (tag: DataType.Tag) => void
   deleteTag: (categoryName: string, tag: string) => void
 }
 
@@ -36,17 +43,26 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const saveDashboard = (categoryName: string) =>
     (dashboard: DataType.Dashboard) => props.saveDashboard(categoryName, dashboard)
 
+  const modifyDashboard = (dashboard: DataType.Dashboard) =>
+    props.modifyDashboard(dashboard)
+
   const deleteDashboard = (categoryName: string) =>
     (dashboard: string) => props.deleteDashboard(categoryName, dashboard)
 
   const saveMark = (categoryName: string) =>
     (mark: DataType.Mark) => props.saveMark(categoryName, mark)
 
+  const modifyMark = (mark: DataType.Mark) =>
+    props.modifyMark(mark)
+
   const deleteMark = (categoryName: string) =>
     (mark: string) => props.deleteMark(categoryName, mark)
 
   const saveTag = (categoryName: string) =>
     (tag: DataType.Tag) => props.saveTag(categoryName, tag)
+
+  const modifyTag = (tag: DataType.Tag) =>
+    props.modifyTag(tag)
 
   const deleteTag = (categoryName: string) =>
     (tag: string) => props.deleteTag(categoryName, tag)
@@ -106,11 +122,12 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           render={(dashboards: DataType.Dashboard[], record: DataType.Category) =>
             <EditableTagPanel
               name={`db-${record.name}`}
-              text="new dashboard"
+              textCreation="new dashboard"
               data={dashboards}
               editable={editable}
               elementOnCreate={saveDashboard(record.name)}
               elementOnRemove={deleteDashboard(record.name)}
+              elementOnClick={modifyDashboard}
             />
           }
         />
@@ -122,11 +139,12 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           render={(marks: DataType.Mark[], record: DataType.Category) =>
             <EditableTagPanel
               name={`cm-${record.name}`}
-              text="new mark"
+              textCreation="new mark"
               data={marks}
               editable={editable}
               elementOnCreate={saveMark(record.name)}
               elementOnRemove={deleteMark(record.name)}
+              elementOnClick={modifyMark}
               colorSelector
             />
           }
@@ -138,11 +156,12 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           render={(tags: DataType.Tag[], record: DataType.Category) =>
             <EditableTagPanel
               name={`ct-${record.name}`}
-              text="new tag"
+              textCreation="new tag"
               data={tags}
               editable={editable}
               elementOnCreate={saveTag(record.name)}
               elementOnRemove={deleteTag(record.name)}
+              elementOnClick={modifyTag}
               colorSelector
             />
           }
