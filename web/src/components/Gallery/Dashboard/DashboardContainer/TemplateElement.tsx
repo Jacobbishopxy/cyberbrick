@@ -2,13 +2,12 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from 'react'
 
 import * as DataType from "../../GalleryDataType"
 import {ModulePanel} from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
-  markAvailable?: boolean
   timeSeries?: boolean
   editable: boolean
   element: DataType.Element
@@ -42,14 +41,8 @@ export const TemplateElement =
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
-    useEffect(() => {
-      if (!props.markAvailable && eleId) {
-        props.fetchContentFn(eleId).then(res => setContent(res))
-      }
-    }, [])
-
     const fetchContent = (date?: string) => {
-      if (props.markAvailable && eleId) {
+      if (eleId) {
         if (date)
           props.fetchContentFn(eleId, date).then(res => setContent(res))
         else

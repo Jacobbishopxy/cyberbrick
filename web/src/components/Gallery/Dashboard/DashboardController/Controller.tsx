@@ -3,7 +3,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react'
-import {Button, message, Modal, Select, Space} from 'antd'
+import {Button, message, Modal, Space} from 'antd'
 import {
   CheckCircleOutlined,
   ExclamationCircleOutlined,
@@ -14,15 +14,15 @@ import {
 
 import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
+import {SelectorPanel} from "./SelectorPanel"
 import {AddModuleModal} from "./AddModuleModal"
 
 
 export interface ModuleControllerProps {
-  markAvailable?: boolean
   canEdit: boolean
-  dashboards: GalleryAPI.Dashboard[]
-  dashboardOnSelect: (dashboardId: string) => Promise<DataType.Mark[] | undefined>
-  markOnSelect: (value: string) => void
+  categories: DataType.Category[]
+  categoryOnSelect: (categoryName: string, isCopy: boolean) => Promise<DataType.Dashboard[]>
+  dashboardOnSelect: (id: string, isCopy: boolean) => Promise<DataType.Template[]>
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
   onCopyTemplate: (originTemplateId: string) => void
   onEditTemplate: (value: boolean) => void
@@ -33,15 +33,8 @@ export const Controller = (props: ModuleControllerProps) => {
 
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
-  const [marks, setMarks] = useState<DataType.Mark[]>([])
 
   useEffect(() => props.onEditTemplate(edit), [edit])
-
-  const dashboardOnSelect = (dashboardId: string) => {
-    props.dashboardOnSelect(dashboardId).then(res => {
-      if (res) setMarks(res)
-    })
-  }
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 
@@ -94,8 +87,10 @@ export const Controller = (props: ModuleControllerProps) => {
 
       </Space>
       <AddModuleModal
-        dashboards={props.dashboards}
         onAddModule={props.onAddModule}
+        categories={props.categories}
+        categoryOnSelect={name => props.categoryOnSelect(name, true)}
+        dashboardOnSelect={id => props.dashboardOnSelect(id, true)}
         copyTemplate={props.onCopyTemplate}
         visible={addModuleModalVisible}
         onQuit={quitAddModule}
@@ -116,37 +111,11 @@ export const Controller = (props: ModuleControllerProps) => {
 
   return (
     <SpaceBetween>
-      <Space>
-        <Select
-          style={{width: 120}}
-          onSelect={dashboardOnSelect}
-          size="small"
-          placeholder="Dashboard"
-        >
-          {
-            props.dashboards.map(d =>
-              <Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>
-            )
-          }
-        </Select>
-        {
-          props.markAvailable ?
-            <Select
-              style={{width: 120}}
-              onSelect={props.markOnSelect}
-              disabled={marks.length === 0}
-              size="small"
-              placeholder="Mark"
-            >
-              {
-                marks.map(m =>
-                  <Select.Option key={m.id} value={m.name}>{m.name}</Select.Option>
-                )
-              }
-            </Select> :
-            <></>
-        }
-      </Space>
+      <SelectorPanel
+        categories={props.categories}
+        categoryOnSelect={name => props.categoryOnSelect(name, false)}
+        dashboardOnSelect={id => props.dashboardOnSelect(id, false)}
+      />
       <div>
         {edit ? editMode : idleMode}
       </div>

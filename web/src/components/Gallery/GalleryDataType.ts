@@ -12,7 +12,7 @@ export const timeToString = (v: string) => moment(v).format(dateFormat)
 export interface Category {
   name: string
   description?: string
-  dashboard?: Dashboard
+  dashboards?: Dashboard[]
   marks?: Mark[]
   tags?: Tag[]
   contents?: Content[]

@@ -50,7 +50,6 @@ const genDataGrid = (ele: DataType.Element) =>
 
 
 export interface ContainerTemplateProps {
-  markAvailable?: boolean
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -89,7 +88,7 @@ export const ContainerTemplate =
 
     const startFetchAllContents = () => {
       const rf = teRefs.current
-      if (props.markAvailable && rf) rf.forEach(e => e.fetchContent())
+      if (rf) rf.forEach(e => e.fetchContent())
     }
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
@@ -134,7 +133,6 @@ export const ContainerTemplate =
           elements.map((ele, i) =>
             <div key={ele.name} data-grid={genDataGrid(ele)}>
               <TemplateElement
-                markAvailable={props.markAvailable}
                 timeSeries={ele.timeSeries}
                 editable={editable}
                 element={ele}
@@ -155,7 +153,5 @@ export const ContainerTemplate =
     )
   })
 
-ContainerTemplate.defaultProps = {
-  markAvailable: false
-} as Partial<ContainerTemplateProps>
+ContainerTemplate.defaultProps = {} as Partial<ContainerTemplateProps>
 

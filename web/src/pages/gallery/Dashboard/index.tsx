@@ -11,14 +11,14 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export default () => {
 
-  // const fetchCategories = () =>
-  //   GalleryService.
+  const fetchCategories = () =>
+    GalleryService.getAllCategories() as Promise<DataType.Category[]>
 
-  const fetchDashboards = () =>
-    GalleryService.getAllDashboardsTemplate()
+  const fetchCategory = (name: string) =>
+    GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>
 
   const fetchDashboard = (id: string) =>
-    GalleryService.getDashboardCategoryMarksAndTemplate(id) as Promise<DataType.Dashboard>
+    GalleryService.getDashboardCategoryAndTemplate(id) as Promise<DataType.Dashboard>
 
   const fetchTemplate = (templateId: string) =>
     GalleryService.getTemplateElements(templateId) as Promise<DataType.Template>
@@ -53,8 +53,8 @@ export default () => {
 
   return (
     <Dashboard
-      markAvailable
-      fetchDashboards={fetchDashboards}
+      fetchCategories={fetchCategories}
+      fetchCategory={fetchCategory}
       fetchDashboard={fetchDashboard}
       fetchTemplate={fetchTemplate}
       saveTemplate={saveTemplate}

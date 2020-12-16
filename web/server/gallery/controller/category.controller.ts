@@ -52,7 +52,7 @@ export class CategoryController {
 
   // ===================================================================================================================
 
-  @Get("getAllCategoriesName")
+  @Get("getAllCategories")
   getAllCategoriesName() {
     try {
       return this.service.getAllCategoriesName()

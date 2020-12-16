@@ -61,10 +61,10 @@ export class DashboardController {
     }
   }
 
-  @Get("getDashboardCategoryMarksAndTemplate")
-  getDashboardCategoryMarksAndTemplate(@Query("id") id: string) {
+  @Get("getDashboardCategoryAndTemplate")
+  getDashboardCategoryAndTemplate(@Query("id") id: string) {
     try {
-      return this.service.getDashboardCategoryMarksAndTemplate(id)
+      return this.service.getDashboardCategoryAndTemplate(id)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -11,8 +11,8 @@ const baseDb = "/api/database"
 
 // Category
 
-export const getAllCategoriesName = async (): Promise<string[]> =>
-  request(`${base}/getAllCategoriesName`)
+export const getAllCategories = async (): Promise<GalleryAPI.Category[]> =>
+  request(`${base}/getAllCategories`)
 
 export const getAllCategoriesWithoutContents = async (): Promise<GalleryAPI.Category[]> =>
   request(`${base}/getAllCategoriesWithoutContents`)
@@ -22,6 +22,9 @@ export const getCategoryMarkAndTagByName = async (name: string): Promise<Gallery
 
 export const getCategoryContentByName = async (name: string): Promise<GalleryAPI.Category> =>
   request(`${base}/getCategoryContentByName?name=${name}`)
+
+export const getCategoryDashboardByName = async (name: string): Promise<GalleryAPI.Category> =>
+  request(`${base}/getCategoryDashboardByName?name=${name}`)
 
 export const saveCategory = async (category: GalleryAPI.Category): Promise<void> =>
   request(`${base}/saveCategory`, {
@@ -112,9 +115,8 @@ export const getAllDashboardsName = async (): Promise<GalleryAPI.Dashboard[]> =>
 export const getAllDashboardsTemplate = async (): Promise<GalleryAPI.Dashboard[]> =>
   request(`${base}/getAllDashboardsTemplate`)
 
-export const getDashboardCategoryMarksAndTemplate =
-  async (id: string): Promise<GalleryAPI.Dashboard> =>
-    request(`${base}/getDashboardCategoryMarksAndTemplate?id=${id}`)
+export const getDashboardCategoryAndTemplate = async (id: string): Promise<GalleryAPI.Dashboard> =>
+  request(`${base}/getDashboardCategoryAndTemplate?id=${id}`)
 
 export const modifyDashboard = async (dashboard: GalleryAPI.Dashboard): Promise<void> =>
   request(`${base}/modifyDashboard`, {

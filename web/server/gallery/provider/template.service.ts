@@ -104,7 +104,6 @@ export class TemplateService {
 
         const nt = {
           id: tt.id,
-          dashboard: {id: tt.dashboard.id},
           elements: originTemplate.elements.map(i => _.omit(i, "id")),
         } as Template
 

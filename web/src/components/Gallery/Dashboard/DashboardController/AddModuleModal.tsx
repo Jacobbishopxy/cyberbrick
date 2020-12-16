@@ -9,6 +9,7 @@ import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
 import {moduleList} from "../../ModulePanel/Collections"
+import {SelectorPanel} from "./SelectorPanel"
 
 import styles from "./Common.less"
 
@@ -79,44 +80,36 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
 
 
 interface TemplateSelectionViewProps {
-  dashboards: GalleryAPI.Dashboard[]
+  categories: DataType.Category[]
+  categoryOnSelect: (categoryName: string) => Promise<DataType.Dashboard[]>
+  dashboardOnSelect: (id: string) => Promise<DataType.Template[]>
   onSelectedTemplate: (templateId: string) => void
 }
 
 const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
-
-  const [selectedTemplate, setSelectedTemplate] = useState<string>()
   const [templates, setTemplates] = useState<DataType.Template[]>([])
 
-  const onSelectDashboard = (value: string) => {
-    const dsb = _.find(props.dashboards, d => d.name === value)!
-    const tpl = dsb.templates! as DataType.Template[]
-    setTemplates(tpl)
-  }
-
-  const onSelectTemplate = (value: string) => {
-    if (selectedTemplate) setSelectedTemplate(value)
+  const onSelectDashboard = async (id: string) => {
+    const res = await props.dashboardOnSelect(id)
+    setTemplates(res)
   }
 
   return (
-    <Space direction="vertical">
+    <Space direction="vertical" style={{marginBottom: 20}}>
       <Space>
         <StarTwoTone/>
         <span style={{fontSize: 15}}>Please select one of template in dashboard to copy:</span>
       </Space>
       <Space>
         <RightOutlined/>
+        <SelectorPanel
+          categories={props.categories}
+          categoryOnSelect={props.categoryOnSelect}
+          dashboardOnSelect={onSelectDashboard}
+        />
         <Select
           style={{width: 120}}
-          onSelect={onSelectDashboard}
-          placeholder="Dashboard"
-          size="small"
-        >
-          {props.dashboards.map(d => <Select.Option key={d.name} value={d.name}>{d.name}</Select.Option>)}
-        </Select>
-        <Select
-          style={{width: 120}}
-          onSelect={onSelectTemplate}
+          onSelect={props.onSelectedTemplate}
           placeholder="Template"
           size="small"
         >
@@ -131,8 +124,10 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
 }
 
 export interface AddModuleModalProps {
-  dashboards: GalleryAPI.Dashboard[]
   onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
+  categories: DataType.Category[]
+  categoryOnSelect: (categoryName: string) => Promise<DataType.Dashboard[]>
+  dashboardOnSelect: (id: string) => Promise<DataType.Template[]>
   copyTemplate: (originTemplateId: string) => void
   visible: boolean
   onQuit: () => void
@@ -144,7 +139,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
   const [moduleName, setModuleName] = useState<string>()
   const [timeSeries, setTimeSeries] = useState<boolean>(false)
   const [selectedPane, setSelectedPane] = useState<string>("Module")
-  const [selectedTemplate, setSelectedTemplate] = useState<string>()
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
 
   const onSetOk = () => {
     if (selectedPane === "Module") {
@@ -155,9 +150,9 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         message.warn("Please enter your element name and select one module!")
     }
     if (selectedPane === "Template") {
-      if (selectedTemplate) {
+      if (selectedTemplateId) {
         props.onQuit()
-        props.copyTemplate(selectedTemplate)
+        props.copyTemplate(selectedTemplateId)
       }
     }
   }
@@ -187,8 +182,10 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Template" key="Template">
           <TemplateSelectionView
-            dashboards={props.dashboards}
-            onSelectedTemplate={setSelectedTemplate}
+            categories={props.categories}
+            categoryOnSelect={props.categoryOnSelect}
+            dashboardOnSelect={props.dashboardOnSelect}
+            onSelectedTemplate={setSelectedTemplateId}
           />
         </Tabs.TabPane>
       </Tabs>

@@ -24,10 +24,9 @@ const dashboardTemplateRelations = {
   relations: [common.templates]
 }
 
-const dashboardAndCategoryMarkAndTemplateRelations = {
+const dashboardAndCategoryTemplateRelations = {
   relations: [
     common.category,
-    common.categoryMarks,
     common.templates
   ]
 }
@@ -67,9 +66,9 @@ export class DashboardService {
     return this.repoDashboard.find(dashboardTemplateRelations)
   }
 
-  getDashboardCategoryMarksAndTemplate(dashboardId: string) {
+  getDashboardCategoryAndTemplate(dashboardId: string) {
     return this.repoDashboard.findOne({
-      ...dashboardAndCategoryMarkAndTemplateRelations,
+      ...dashboardAndCategoryTemplateRelations,
       ...utils.whereIdEqual(dashboardId)
     })
   }

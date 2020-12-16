@@ -11,10 +11,8 @@ import {ContainerTemplate, ContainerTemplateRef} from "./ContainerTemplate"
 
 
 export interface ContainerProps {
-  markAvailable?: boolean
-  selectedMark?: string
   dashboardInfo: DataType.Dashboard
-  onSelectPane: (templateName: string) => void
+  onSelectPane: (templateId: string) => void
   fetchElements: (templateId: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -125,12 +123,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
    * template's changing triggers `startFetchAllContents`
    */
   useEffect(() => {
-    if (ctRef.current && template) {
-      if (props.markAvailable && props.selectedMark)
-        startFetchAllContents()
-      if (!props.markAvailable)
-        startFetchAllContents()
-    }
+    if (ctRef.current && template) startFetchAllContents()
   }, [template])
 
   const elementUpdateContentFn = (ctt: DataType.Content) => {
@@ -143,7 +136,6 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const genPane = (t: DataType.Template) => {
     if (ctRef && t.name === selectedPane?.name && template)
       return <ContainerTemplate
-        markAvailable={props.markAvailable}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}
@@ -169,10 +161,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         }
       </Tabs>
     )
-  }, [props.dashboardInfo, props.selectedMark, template])
+  }, [props.dashboardInfo,  template])
 })
 
-Container.defaultProps = {
-  markAvailable: false
-} as Partial<ContainerProps>
+Container.defaultProps = {} as Partial<ContainerProps>
 
