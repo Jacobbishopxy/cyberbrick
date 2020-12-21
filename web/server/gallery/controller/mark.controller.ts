@@ -6,6 +6,7 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 
 import * as markService from "../provider/mark.service"
 import {Mark} from "../entity"
+import {ParseArray} from "../pipe"
 
 
 @Controller()
@@ -74,6 +75,24 @@ export class MarkController {
     try {
       return this.service.deleteMarkInCategory(categoryName, markName)
     } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Post("saveMarks")
+  saveMarks(@Body() marks: Mark[]) {
+    try {
+      return this.service.saveMarks(marks)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Delete("deleteMarks")
+  deleteMarks(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
+    try {
+      return this.service.deleteMarks(ids)
+    }catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

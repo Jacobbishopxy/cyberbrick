@@ -126,5 +126,14 @@ export class DashboardService {
       .delete()
       .execute()
   }
+
+  saveDashboards(dashboards: Dashboard[]) {
+    const newDashboards = dashboards.map(d => this.repoDashboard.create(d))
+    return this.repoDashboard.save(newDashboards)
+  }
+
+  deleteDashboards(dashboardIds: string[]) {
+    return this.repoDashboard.delete(dashboardIds)
+  }
 }
 

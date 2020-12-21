@@ -86,5 +86,14 @@ export class TagService {
       .delete()
       .execute()
   }
+
+  saveTags(tags: Tag[]) {
+    const newTags = tags.map(t => this.repo.create(t))
+    return this.repo.save(newTags)
+  }
+
+  deleteTags(tagIds: string[]) {
+    return this.repo.delete(tagIds)
+  }
 }
 

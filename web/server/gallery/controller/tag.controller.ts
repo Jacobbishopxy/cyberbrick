@@ -6,6 +6,7 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 
 import * as tagService from "../provider/tag.service"
 import {Tag} from "../entity"
+import {ParseArray} from "../pipe"
 
 
 @Controller()
@@ -73,6 +74,24 @@ export class TagController {
                       @Query("tagName") tagName: string) {
     try {
       return this.service.deleteTagInCategory(categoryName, tagName)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Post("saveTags")
+  saveTags(@Body() tags: Tag[]) {
+    try {
+      return this.service.saveTags(tags)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Delete("deleteTags")
+  deleteTags(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
+    try {
+      return this.service.deleteTags(ids)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

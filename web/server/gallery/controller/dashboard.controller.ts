@@ -7,7 +7,7 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 import * as dashboardService from "../provider/dashboard.service"
 import {Dashboard} from "../entity"
 import {DashboardModifyDto} from "../dto"
-import {DashboardModifyPipe} from "../pipe"
+import {DashboardModifyPipe, ParseArray} from "../pipe"
 
 
 @Controller()
@@ -94,6 +94,24 @@ export class DashboardController {
                             @Query("dashboardName") dashboardName: string) {
     try {
       return this.service.deleteDashboardInCategory(categoryName, dashboardName)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Post("saveDashboards")
+  saveDashboards(@Body() dashboards: Dashboard[]) {
+    try {
+      return this.service.saveDashboards(dashboards)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Delete("deleteDashboards")
+  deleteDashboards(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
+    try {
+      return this.service.deleteDashboards(ids)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -87,5 +87,14 @@ export class MarkService {
       .delete()
       .execute()
   }
+
+  saveMarks(marks: Mark[]) {
+    const newMarks = marks.map(m => this.repo.create(m))
+    return this.repo.save(newMarks)
+  }
+
+  deleteMarks(markIds: string[]) {
+    return this.repo.delete(markIds)
+  }
 }
 
