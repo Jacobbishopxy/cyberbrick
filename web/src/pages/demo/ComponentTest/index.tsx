@@ -3,7 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Tag} from "antd"
+import {Button, Space, Tag} from "antd"
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd'
 
 
@@ -13,11 +13,26 @@ interface Item {
 }
 
 
-const getItems = (count: number): Item[] =>
-  Array.from({length: count}, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: <Tag>{`item ${k}`}</Tag>
-  }))
+const getItems = (count: number, remove: (id: string) => void): Item[] =>
+  Array.from({length: count}, (v, k) => k).map(k => {
+
+    const id = `item-${k}-${new Date().getTime()}`
+
+    return {
+      id,
+      content: (
+        <Tag
+          closable
+          onClose={e => {
+            e.preventDefault()
+            remove(id)
+          }}
+        >
+          {`item ${k}`}
+        </Tag>
+      )
+    }
+  })
 
 const reorder = (list: Item[], startIndex: number, endIndex: number) => {
   const result = Array.from(list)
@@ -27,19 +42,19 @@ const reorder = (list: Item[], startIndex: number, endIndex: number) => {
   return result
 }
 
-const grid = 8
-
 const getListStyle = (isDraggingOver: boolean) => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   display: 'flex',
-  padding: grid,
+  padding: 10,
   overflow: 'auto',
 })
 
 
 export default () => {
+  const removeItem = (id: string) => setItems(items.filter(i => i.id !== id))
 
-  const [items, setItems] = useState(getItems(6))
+  const [items, setItems] = useState(getItems(6, removeItem))
+
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
@@ -49,32 +64,41 @@ export default () => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-            {...provided.droppableProps}
-          >
-            {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    {item.content}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <Space direction="vertical">
+      <Button
+        type="primary"
+        size="small"
+        onClick={() => setItems([...items, ...getItems(1, removeItem)])}
+      >
+        Add item
+      </Button>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+              {...provided.droppableProps}
+            >
+              {items.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {item.content}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </Space>
   )
 }
 
