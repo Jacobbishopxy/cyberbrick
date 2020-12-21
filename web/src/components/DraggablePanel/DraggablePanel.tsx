@@ -12,7 +12,9 @@ export interface DraggableElement {
 
 export type DraggableElementType<T extends DraggableElement> = React.ReactElement<T>
 
-const reorder = <T extends DraggableElement>(data: DraggableElementType<T>[], startIndex: number, endIndex: number) => {
+const reorder = <T extends DraggableElement>(data: DraggableElementType<T>[],
+                                             startIndex: number,
+                                             endIndex: number) => {
   const result = Array.from(data)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
@@ -31,15 +33,14 @@ export interface DraggablePanelProps<T extends DraggableElement> {
 export const DraggablePanel = <T extends DraggableElement>(props: DraggablePanelProps<T>) => {
   const [items, setItems] = useState<DraggableElementType<T>[]>(props.children)
 
-  useEffect(() => {
-    if (props.onChange) props.onChange(items.map(i => i.props.id))
-  }, [items])
+  useEffect(() => setItems(props.children), [props.children])
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
 
     const newItems = reorder(items, result.source.index, result.destination.index)
     setItems(newItems)
+    if (props.onChange) props.onChange(newItems.map(i => i.props.id))
   }
 
   return props.editable ?
@@ -73,4 +74,8 @@ export const DraggablePanel = <T extends DraggableElement>(props: DraggablePanel
       {props.children}
     </div>
 }
+
+DraggablePanel.defaultProps = {
+  direction: "horizontal"
+} as Partial<DraggableElement>
 

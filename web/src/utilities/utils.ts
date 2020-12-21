@@ -16,7 +16,7 @@ export const numberToDateString = (time: string) => moment(time).format(dateForm
 export const today = () => moment(new Date())
 export const todayString = () => today().format(dateFormat)
 
-export const useDidMountEffect = (func: Function, deps: any) => {
+export const useDidMountEffect = (func: () => void, deps: any) => {
   const didMount = useRef(false)
 
   useEffect(() => {

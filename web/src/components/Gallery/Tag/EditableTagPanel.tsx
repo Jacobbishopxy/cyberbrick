@@ -5,9 +5,13 @@
 import React, {useState} from 'react'
 import {Modal, Tag, Tooltip} from "antd"
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
+import _ from "lodash"
 
 import {CreationModal, CreationModalValue} from "../Misc/CreationModal"
-import {GenericDataInput} from "./SelectableTags"
+import {DraggablePanel} from "@/components/DraggablePanel/DraggablePanel"
+import {GenericDataInput, EditableTagPanelProps} from "./data"
+import {useDidMountEffect} from "@/utilities/utils"
+
 
 const tagDeleteModal = (onOk: () => void) =>
   Modal.confirm({
@@ -18,81 +22,80 @@ const tagDeleteModal = (onOk: () => void) =>
     cancelText: "Discard"
   })
 
-export interface EditableTagPanelProps<T extends GenericDataInput> {
-  name?: string
-  textCreation?: string
-  textModification?: string
-
-  data: T[]
-  editable: boolean
-  elementOnCreate: (value: T) => void
-  elementOnRemove: (value: string) => void
-  elementOnClick?: (value: T) => void
-
-  colorSelector?: boolean
-}
-
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
+
+  const [items, setItems] = useState<T[]>(props.data)
 
   const [creationVisible, setCreationVisible] = useState<boolean>(false)
   const [modificationVisible, setModificationVisible] = useState<boolean>(false)
   const [modifiedValue, setModifiedValue] = useState<T>()
 
-  const elementOnRemove = (value: string) => () => {
-    if (props.elementOnRemove) props.elementOnRemove(value)
-  }
+  useDidMountEffect(() => props.elementOnChange(items), [items])
+
+  const elementOnRemove = (value: string) => () =>
+    setItems(items.filter(i => i.name !== value))
 
   const tagCreateModalOnOk = (value: CreationModalValue) => {
-    props.elementOnCreate(value as T)
+    setItems([...items, value as T])
     setCreationVisible(false)
   }
 
   const activateModifyModal = (value: CreationModalValue) => () => {
-    if (props.elementOnClick) {
-      setModifiedValue(value as T)
-      setModificationVisible(true)
-    }
+    setModifiedValue(value as T)
+    setModificationVisible(true)
   }
 
   const tagModifyModalOnOk = (value: CreationModalValue) => {
-    if (props.elementOnClick) {
-      props.elementOnClick({...modifiedValue, ...value} as T)
-      setModificationVisible(false)
+    if (modifiedValue) {
+      setItems(items.map(i => {
+        if (i.id)
+          return i.id === modifiedValue.id ? {...i, ...value} as T : i
+        return  i.name === value.name ? {...i, ...value} as T : i
+      }))
     }
+    setModificationVisible(false)
+  }
+
+  const draggableOnChange = (ids: string[]) => {
+    const newItems = _.sortBy(items, i => ids.indexOf(i.name))
+    setItems(newItems)
   }
 
   const idle = () =>
-    props.data.map(t =>
+    items.map(t =>
       <Tooltip title={t.description} key={t.name}>
         <Tag color={t.color}>{t.name}</Tag>
       </Tooltip>
     )
 
   const live = () =>
-    <>
-      {
-        props.data.map(t =>
-          <Tag
-            key={t.name}
-            closable
-            onClose={e => {
-              e.preventDefault()
-              tagDeleteModal(elementOnRemove(t.name))
-            }}
-            color={t.color}
-            onClick={activateModifyModal(t)}
-          >
-            {t.name}
-          </Tag>
-        )
-      }
+    <div style={{display: "flex", overflow: "auto"}}>
+      <DraggablePanel editable onChange={draggableOnChange}>
+        {
+          items.map(t =>
+            <Tag
+              id={t.name}
+              key={t.name}
+              closable
+              onClose={e => {
+                e.preventDefault()
+                tagDeleteModal(elementOnRemove(t.name))
+              }}
+              color={t.color}
+              onClick={activateModifyModal(t)}
+            >
+              {t.name}
+            </Tag>
+          )
+        }
+      </DraggablePanel>
       <Tag
         icon={<PlusOutlined/>}
         onClick={() => setCreationVisible(true)}
       >
         {props.textCreation}
       </Tag>
-    </>
+    </div>
 
   const modificationModal = (v: T) =>
     <CreationModal
@@ -109,10 +112,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
     <>
       {props.editable ? live() : idle()}
 
-      {
-        props.elementOnClick && modifiedValue ?
-          modificationModal(modifiedValue) : <></>
-      }
+      {modificationVisible && modifiedValue ? modificationModal(modifiedValue) : <></>}
 
       <CreationModal
         name={props.name}

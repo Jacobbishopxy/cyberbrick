@@ -5,9 +5,11 @@
 import {EditableTagPanel} from "./EditableTagPanel"
 import {SelectableTags} from "./SelectableTags"
 import {SearchableTagsPanel} from "./SearchableTagsPanel"
+import {DraggableTagPanel} from "./DraggableTagPanel"
 
 export {
-  EditableTagPanel,
   SelectableTags,
+  DraggableTagPanel,
+  EditableTagPanel,
   SearchableTagsPanel
 }

@@ -5,20 +5,8 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react"
 import {Tag} from "antd"
 
-export interface GenericDataInput {
-  name: string
-  description?: string
-  color?: string
-}
+import {SelectableTagsProps, SelectableTagsRef} from "./data"
 
-export interface SelectableTagsProps {
-  tags: GenericDataInput[]
-  onSelectTags: (value: string[]) => void
-}
-
-export interface SelectableTagsRef {
-  clearSelected: () => void
-}
 
 export const SelectableTags = forwardRef((props: SelectableTagsProps, ref: React.Ref<SelectableTagsRef>) => {
 

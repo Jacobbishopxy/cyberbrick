@@ -30,6 +30,9 @@ export class Template {
   @OneToMany(() => Element, e => e.template, {cascade: true, nullable: true})
   elements!: Element[]
 
+  // @Column("int", {nullable: true})
+  // index!: number
+
   @Column("varchar", {nullable: false})
   name!: string
 

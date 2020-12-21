@@ -40,45 +40,18 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const modifyCategoryDescription = (categoryName: string) =>
     (description: string) => props.saveCategory(categoryName, description)
 
-  const saveDashboard = (categoryName: string) =>
-    (dashboard: DataType.Dashboard) => props.saveDashboard(categoryName, dashboard)
+  // todo: `React.useReducer` for state changes?
+  const dashboardsOnChange = (categoryName: string) => (dashboards: DataType.Dashboard[]) => {
 
-  const modifyDashboard = (dashboard: DataType.Dashboard) =>
-    props.modifyDashboard(dashboard)
+  }
 
-  const deleteDashboard = (categoryName: string) =>
-    (dashboard: string) => props.deleteDashboard(categoryName, dashboard)
+  const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) => {
 
-  const saveMark = (categoryName: string) =>
-    (mark: DataType.Mark) => props.saveMark(categoryName, mark)
+  }
 
-  const modifyMark = (mark: DataType.Mark) =>
-    props.modifyMark(mark)
+  const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) => {
 
-  const deleteMark = (categoryName: string) =>
-    (mark: string) => props.deleteMark(categoryName, mark)
-
-  const saveTag = (categoryName: string) =>
-    (tag: DataType.Tag) => props.saveTag(categoryName, tag)
-
-  const modifyTag = (tag: DataType.Tag) =>
-    props.modifyTag(tag)
-
-  const deleteTag = (categoryName: string) =>
-    (tag: string) => props.deleteTag(categoryName, tag)
-
-
-  const tableFooter = () =>
-    editable ?
-      {
-        footer: () =>
-          <TextBuilder
-            create
-            text="New category"
-            saveNewText={props.saveCategory}
-          />
-      } : {}
-
+  }
 
   return (
     <div>
@@ -87,13 +60,20 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         title={() =>
           <SpaceBetween>
             <span style={{fontWeight: "bold"}}>Category configuration</span>
-            <Editor onChange={setEditable}/>
+            <Editor onChange={setEditable} icons={{open: "Edit", close: "Save"}}/>
           </SpaceBetween>
         }
         size="small"
         bordered
         pagination={{pageSize: 10}}
-        {...tableFooter()}
+        footer={
+          editable ?
+            () => <TextBuilder
+              create
+              text="New category"
+              saveNewText={props.saveCategory}
+            /> : undefined
+        }
       >
         <Table.ColumnGroup title="Category">
           <Table.Column
@@ -125,9 +105,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               textCreation="new dashboard"
               data={dashboards}
               editable={editable}
-              elementOnCreate={saveDashboard(record.name)}
-              elementOnRemove={deleteDashboard(record.name)}
-              elementOnClick={modifyDashboard}
+              elementOnChange={dashboardsOnChange(record.name)}
             />
           }
         />
@@ -142,9 +120,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               textCreation="new mark"
               data={marks}
               editable={editable}
-              elementOnCreate={saveMark(record.name)}
-              elementOnRemove={deleteMark(record.name)}
-              elementOnClick={modifyMark}
+              elementOnChange={marksOnChange(record.name)}
               colorSelector
             />
           }
@@ -159,9 +135,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               textCreation="new tag"
               data={tags}
               editable={editable}
-              elementOnCreate={saveTag(record.name)}
-              elementOnRemove={deleteTag(record.name)}
-              elementOnClick={modifyTag}
+              elementOnChange={tagsOnChange(record.name)}
               colorSelector
             />
           }

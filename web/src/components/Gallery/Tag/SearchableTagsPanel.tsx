@@ -5,13 +5,10 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {Button, Divider, Space, Tag, Tooltip} from "antd"
 
-import {GenericDataInput, SelectableTags, SelectableTagsRef} from "./SelectableTags"
+import {GenericDataInput, SelectableTagsRef} from "./data"
+import {SelectableTags} from "./SelectableTags"
+import {SearchableTagsProps} from "./data"
 
-export interface SearchableTagsProps<T extends GenericDataInput> {
-  searchable: boolean
-  data: T[]
-  elementOnSearch: (value: string[]) => void
-}
 
 export const SearchableTagsPanel = <T extends GenericDataInput>(props: SearchableTagsProps<T>) => {
 
