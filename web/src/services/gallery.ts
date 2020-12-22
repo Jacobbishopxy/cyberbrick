@@ -61,6 +61,16 @@ export const deleteMarkInCategory = async (categoryName: string, markName: strin
     method: "delete"
   })
 
+export const saveMarks = async (marks: GalleryAPI.Mark[]) =>
+  request(`${base}/saveMarks`, {
+    method: "post",
+    data: marks
+  })
+
+export const deleteMarks = async (markIds: string[]) =>
+  request(`${base}/deleteMarks?ids=${markIds.join(",")}`, {
+    method: "delete"
+  })
 
 // Tag
 
@@ -75,6 +85,17 @@ export const modifyTag = async (tag: GalleryAPI.Tag) =>
 
 export const deleteTagInCategory = async (categoryName: string, tagName: string): Promise<void> =>
   request(`${base}/deleteTagInCategory?categoryName=${categoryName}&tagName=${tagName}`, {
+    method: "delete"
+  })
+
+export const saveTags = async (tags: GalleryAPI.Tag[]) =>
+  request(`${base}/saveTags`, {
+    method: "post",
+    data: tags
+  })
+
+export const deleteTags = async (tagIds: string[]) =>
+  request(`${base}/deleteTags?ids=${tagIds.join(",")}`, {
     method: "delete"
   })
 
@@ -136,25 +157,48 @@ export const deleteDashboardInCategory = async (categoryName: string, dashboardN
     method: "delete"
   })
 
+export const saveDashboards = async (dashboards: GalleryAPI.Dashboard[]) =>
+  request(`${base}/saveDashboards`, {
+    method: "post",
+    data: dashboards
+  })
+
+export const deleteDashboards = async (dashboardIds: string[]) => {
+  const ids = dashboardIds.join(",")
+  return request(`${base}/deleteDashboards?ids=${ids}`, {
+    method: "delete"
+  })
+}
+
 
 // Template
 
-export const getTemplateElements =
-  async (templateId: string): Promise<GalleryAPI.Template> =>
-    request(`${base}/getTemplateElements?id=${templateId}`)
+export const getTemplateElements = async (templateId: string): Promise<GalleryAPI.Template> =>
+  request(`${base}/getTemplateElements?id=${templateId}`)
 
-export const saveTemplateInDashboard =
-  async (id: string, template: GalleryAPI.Template): Promise<void> =>
-    request(`${base}/saveTemplateInDashboard?id=${id}`, {
-      method: "post",
-      data: template
-    })
+export const saveTemplateInDashboard = async (id: string, template: GalleryAPI.Template): Promise<void> =>
+  request(`${base}/saveTemplateInDashboard?id=${id}`, {
+    method: "post",
+    data: template
+  })
 
-export const deleteTemplate =
-  async (templateId: string): Promise<void> =>
-    request(`${base}/template?id=${templateId}`, {
-      method: "delete"
-    })
+export const deleteTemplate = async (templateId: string): Promise<void> =>
+  request(`${base}/template?id=${templateId}`, {
+    method: "delete"
+  })
+
+export const saveTemplateInDashboards = async (dashboardId: string, templates: GalleryAPI.Template[]) =>
+  request(`${base}/saveTemplateInDashboards?id=${dashboardId}`, {
+    method: "post",
+    data: templates
+  })
+
+export const deleteTemplatesInDashboards = async (templateIds: string[]) => {
+  const ids = templateIds.join(",")
+  return request(`${base}/deleteTemplatesInDashboards?ids=${ids}`, {
+    method: "delete"
+  })
+}
 
 export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements): Promise<void> =>
   request(`${base}/copyTemplateElements`, {

@@ -7,7 +7,7 @@ import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} f
 import * as templateService from "../provider/template.service"
 import {Template} from "../entity"
 import {TemplateCopyElementsDto} from "../dto"
-import {TemplateCopyElementsPipe} from "../pipe"
+import {TemplateCopyElementsPipe, ParseArray} from "../pipe"
 
 
 @Controller()
@@ -75,6 +75,25 @@ export class TemplateController {
                           @Body() template: Template) {
     try {
       return this.service.saveTemplateInDashboard(id, template)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Post("saveTemplatesInDashboard")
+  saveTemplatesInDashboard(@Query("id") id: string,
+                           @Body() templates: Template[]) {
+    try {
+      return this.service.saveTemplatesInDashboard(id, templates)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Delete("deleteTemplatesInDashboard")
+  deleteTemplatesInDashboard(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
+    try {
+      return this.service.deleteTemplatesInDashboard(ids)
     } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -62,6 +62,7 @@ declare namespace GalleryAPI {
     id: string
     dashboard?: Dashboard
     elements?: Element[]
+    index?: number
     name: string
     description: string
   }

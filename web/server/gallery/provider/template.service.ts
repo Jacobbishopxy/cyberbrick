@@ -74,6 +74,19 @@ export class TemplateService {
     return this.repoTemplate.save(newTmp)
   }
 
+  saveTemplatesInDashboard(dashboardId: string, templates: Template[]) {
+    const newTemplates = templates.map(t => this.repoTemplate.create({
+      dashboard: {id: dashboardId},
+      name: t.name,
+      description: t.description
+    }))
+    return this.repoTemplate.save(newTemplates)
+  }
+
+  deleteTemplatesInDashboard(templateIds: string[]) {
+    return this.repoTemplate.delete(templateIds)
+  }
+
   async modifyTemplate(id: string, template: Template) {
     const tp = await this.repoTemplate.findOne({...utils.whereIdEqual(id)})
 

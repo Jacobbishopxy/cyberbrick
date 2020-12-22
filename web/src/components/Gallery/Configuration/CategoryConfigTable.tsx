@@ -40,17 +40,17 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const modifyCategoryDescription = (categoryName: string) =>
     (description: string) => props.saveCategory(categoryName, description)
 
-  // todo: `React.useReducer` for state changes?
+  // todo
   const dashboardsOnChange = (categoryName: string) => (dashboards: DataType.Dashboard[]) => {
-
+    console.log(categoryName, dashboards)
   }
 
   const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) => {
-
+    console.log(categoryName, marks)
   }
 
   const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) => {
-
+    console.log(categoryName, tags)
   }
 
   return (
