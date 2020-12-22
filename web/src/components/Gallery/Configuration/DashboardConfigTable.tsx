@@ -13,8 +13,7 @@ import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
 export interface DashboardConfigTableProps {
   data: DataType.Dashboard[]
-  saveTemplate: (dashboardId: string, template: DataType.Template) => void
-  deleteTemplate: (templateId: string) => void
+  saveTemplates: (dashboardId: string, templates: DataType.Template[]) => void
 }
 
 /**
@@ -24,10 +23,8 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
 
-  const saveTemplate = (dashboardId: string) =>
-    (template: DataType.Template) => props.saveTemplate(dashboardId, template)
-
-  const deleteTemplate = (templateId: string) => props.deleteTemplate(templateId)
+  const templateOnChange = (dashboardId: string) =>
+    (templates: DataType.Template[]) => props.saveTemplates(dashboardId, templates)
 
   return (
     <div>
@@ -64,8 +61,7 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
               name={`dt-${record.name}`}
               data={templates}
               editable={editable}
-              elementOnCreate={saveTemplate(record.id!)}
-              elementOnRemove={() => deleteTemplate(record.id!)}
+              elementOnChange={templateOnChange(record.id!)}
             />
           }
         />

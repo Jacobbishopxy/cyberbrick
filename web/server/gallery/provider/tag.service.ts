@@ -87,6 +87,7 @@ export class TagService {
       .execute()
   }
 
+  // todo: if ids removed
   saveTags(tags: Tag[]) {
     const newTags = tags.map(t => this.repo.create(t))
     return this.repo.save(newTags)

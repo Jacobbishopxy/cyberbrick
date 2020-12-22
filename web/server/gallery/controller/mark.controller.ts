@@ -92,7 +92,7 @@ export class MarkController {
   deleteMarks(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteMarks(ids)
-    }catch (err) {
+    } catch (err) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

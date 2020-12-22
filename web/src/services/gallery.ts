@@ -187,15 +187,15 @@ export const deleteTemplate = async (templateId: string): Promise<void> =>
     method: "delete"
   })
 
-export const saveTemplateInDashboards = async (dashboardId: string, templates: GalleryAPI.Template[]) =>
-  request(`${base}/saveTemplateInDashboards?id=${dashboardId}`, {
+export const saveTemplatesInDashboard = async (dashboardId: string, templates: GalleryAPI.Template[]) =>
+  request(`${base}/saveTemplatesInDashboard?id=${dashboardId}`, {
     method: "post",
     data: templates
   })
 
-export const deleteTemplatesInDashboards = async (templateIds: string[]) => {
+export const deleteTemplatesInDashboard = async (templateIds: string[]) => {
   const ids = templateIds.join(",")
-  return request(`${base}/deleteTemplatesInDashboards?ids=${ids}`, {
+  return request(`${base}/deleteTemplatesInDashboard?ids=${ids}`, {
     method: "delete"
   })
 }

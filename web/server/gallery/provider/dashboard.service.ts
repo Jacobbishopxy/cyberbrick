@@ -127,6 +127,7 @@ export class DashboardService {
       .execute()
   }
 
+  // todo: if ids removed
   saveDashboards(dashboards: Dashboard[]) {
     const newDashboards = dashboards.map(d => this.repoDashboard.create(d))
     return this.repoDashboard.save(newDashboards)

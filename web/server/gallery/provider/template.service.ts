@@ -74,6 +74,7 @@ export class TemplateService {
     return this.repoTemplate.save(newTmp)
   }
 
+  // todo: if ids removed
   saveTemplatesInDashboard(dashboardId: string, templates: Template[]) {
     const newTemplates = templates.map(t => this.repoTemplate.create({
       dashboard: {id: dashboardId},

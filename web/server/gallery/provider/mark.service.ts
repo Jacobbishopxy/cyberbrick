@@ -88,6 +88,7 @@ export class MarkService {
       .execute()
   }
 
+  // todo: if ids removed
   saveMarks(marks: Mark[]) {
     const newMarks = marks.map(m => this.repo.create(m))
     return this.repo.save(newMarks)

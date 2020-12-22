@@ -57,59 +57,34 @@ export default () => {
       .saveCategory({name, description})
       .then(refreshCat)
 
-  const saveDashboard = (categoryName: string, dashboard: DataType.Dashboard) =>
+  const saveDashboards = (categoryName: string, dashboards: DataType.Dashboard[]) => {
+    const data = dashboards.map(d => ({
+      ...d,
+      category: {name: categoryName}
+    }) as GalleryAPI.Dashboard)
+    return GalleryService.saveDashboards(data).then(refreshCat)
+  }
+
+  const saveMarks = (categoryName: string, marks: DataType.Mark[]) => {
+    const data = marks.map(m => ({
+      ...m,
+      category: {name: categoryName}
+    }) as GalleryAPI.Mark)
+    return GalleryService.saveMarks(data).then(refreshCat)
+  }
+
+  const saveTags = (categoryName: string, tags: DataType.Tag[]) => {
+    const data = tags.map(t => ({
+      ...t,
+      category: {name: categoryName}
+    }) as GalleryAPI.Tag)
+    return GalleryService.saveTags(data).then(refreshCat)
+  }
+
+  const saveTemplates = (dashboardId: string, templates: DataType.Template[]) =>
     GalleryService
-      .newDashboardAttachToCategory(categoryName, dashboard as GalleryAPI.Dashboard)
+      .saveTemplatesInDashboard(dashboardId, templates as GalleryAPI.Template[])
       .then(refreshCat)
-
-  const modifyDashboard = (dashboard: DataType.Dashboard) =>
-    GalleryService
-      .modifyDashboard(dashboard as GalleryAPI.Dashboard)
-      .then(refreshCat)
-
-  const deleteDashboard = (categoryName: string, dashboardName: string) =>
-    GalleryService
-      .deleteDashboardInCategory(categoryName, dashboardName)
-
-  const saveMark = (categoryName: string, mark: DataType.Mark) =>
-    GalleryService
-      .saveCategoryMark(categoryName, mark as GalleryAPI.Mark)
-      .then(refreshCat)
-
-  const modifyMark = (mark: DataType.Mark) =>
-    GalleryService
-      .modifyMark(mark as GalleryAPI.Mark)
-      .then(refreshCat)
-
-  const deleteMark = (categoryName: string, markName: string) =>
-    GalleryService
-      .deleteMarkInCategory(categoryName, markName)
-      .then(refreshCat)
-
-  const saveTag = (categoryName: string, tag: DataType.Tag) =>
-    GalleryService
-      .saveCategoryTag(categoryName, tag as GalleryAPI.Tag)
-      .then(refreshCat)
-
-  const modifyTag = (tag: DataType.Tag) =>
-    GalleryService
-      .modifyTag(tag as GalleryAPI.Tag)
-      .then(refreshCat)
-
-  const deleteTag = (categoryName: string, tagName: string) =>
-    GalleryService
-      .deleteTagInCategory(categoryName, tagName)
-      .then(refreshCat)
-
-  const saveTemplate = (dashboardId: string, template: DataType.Template) =>
-    GalleryService
-      .saveTemplateInDashboard(dashboardId, template as GalleryAPI.Template)
-      .then(refreshDsb)
-
-  const deleteTemplate = (templateId: string) =>
-    GalleryService
-      .deleteTemplate(templateId)
-      .then(refreshDsb)
 
   const saveStorage = (storage: DataType.Storage) =>
     GalleryService
@@ -148,15 +123,9 @@ export default () => {
         <CategoryConfigTable
           data={dataCategory}
           saveCategory={saveCategory}
-          saveDashboard={saveDashboard}
-          modifyDashboard={modifyDashboard}
-          deleteDashboard={deleteDashboard}
-          saveMark={saveMark}
-          modifyMark={modifyMark}
-          deleteMark={deleteMark}
-          saveTag={saveTag}
-          modifyTag={modifyTag}
-          deleteTag={deleteTag}
+          saveDashboards={saveDashboards}
+          saveMarks={saveMarks}
+          saveTags={saveTags}
         />
       </Tabs.TabPane>
 
@@ -166,8 +135,7 @@ export default () => {
       >
         <DashboardConfigTable
           data={dataDashboard}
-          saveTemplate={saveTemplate}
-          deleteTemplate={deleteTemplate}
+          saveTemplates={saveTemplates}
         />
       </Tabs.TabPane>
 

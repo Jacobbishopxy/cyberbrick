@@ -16,18 +16,9 @@ export interface CategoryConfigTableProps {
   data: DataType.Category[]
 
   saveCategory: (categoryName: string, description?: string) => void
-
-  saveDashboard: (categoryName: string, dashboard: DataType.Dashboard) => void
-  modifyDashboard: (dashboard: DataType.Dashboard) => void
-  deleteDashboard: (categoryName: string, dashboard: string) => void
-
-  saveMark: (categoryName: string, mark: DataType.Mark) => void
-  modifyMark: (mark: DataType.Mark) => void
-  deleteMark: (categoryName: string, mark: string) => void
-
-  saveTag: (categoryName: string, tag: DataType.Tag) => void
-  modifyTag: (tag: DataType.Tag) => void
-  deleteTag: (categoryName: string, tag: string) => void
+  saveDashboards: (categoryName: string, dashboards: DataType.Dashboard[]) => void
+  saveMarks: (categoryName: string, marks: DataType.Mark[]) => void
+  saveTags: (categoryName: string, tags: DataType.Tag[]) => void
 }
 
 /**
