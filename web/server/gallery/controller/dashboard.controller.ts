@@ -116,5 +116,15 @@ export class DashboardController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("updateDashboardsInCategory")
+  updateDashboardsInCategory(@Query("categoryName") categoryName: string,
+                             @Body() dashboards: Dashboard[]) {
+    try {
+      return this.service.updateDashboardsInCategory(categoryName, dashboards)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

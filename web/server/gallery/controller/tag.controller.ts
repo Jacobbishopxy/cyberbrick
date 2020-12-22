@@ -96,5 +96,15 @@ export class TagController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("updateTagsInCategory")
+  updateTagsInCategory(@Query("categoryName") categoryName: string,
+                       @Body() tags: Tag[]) {
+    try {
+      return this.service.updateTagsInCategory(categoryName, tags)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

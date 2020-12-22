@@ -5,11 +5,16 @@
 import {Injectable} from "@nestjs/common"
 import {InjectRepository} from "@nestjs/typeorm"
 import {Repository} from "typeorm"
+import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Mark} from "../entity"
+import {Mark, Category} from "../entity"
 
+
+const categoryMarkRelations = {
+  relations: [common.marks]
+}
 
 const markFullRelations = {
   relations: [
@@ -24,7 +29,8 @@ const markCategoryRelations = {
 
 @Injectable()
 export class MarkService {
-  constructor(@InjectRepository(Mark, common.db) private repo: Repository<Mark>) {}
+  constructor(@InjectRepository(Mark, common.db) private repo: Repository<Mark>,
+              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
 
   getAllMarks() {
     return this.repo.find(markFullRelations)
@@ -88,7 +94,6 @@ export class MarkService {
       .execute()
   }
 
-  // todo: if ids removed
   saveMarks(marks: Mark[]) {
     const newMarks = marks.map(m => this.repo.create(m))
     return this.repo.save(newMarks)
@@ -96,6 +101,28 @@ export class MarkService {
 
   deleteMarks(markIds: string[]) {
     return this.repo.delete(markIds)
+  }
+
+  async updateMarksInCategory(categoryName: string, marks: Mark[]) {
+    const cat = await this.repoCategory.findOne({
+      ...categoryMarkRelations,
+      ...utils.whereNameEqual(categoryName)
+    })
+
+    if (cat) {
+      const marksRemove = _.differenceWith(
+        cat.marks, marks, (prev, curr) => prev.id === curr.id
+      )
+
+      if (marksRemove.length > 0)
+        await this.deleteMarks(marksRemove.map(m => m.id))
+
+      await this.saveMarks(marks)
+
+      return true
+    }
+
+    return false
   }
 }
 

@@ -96,5 +96,15 @@ export class MarkController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("updateMarksInCategory")
+  updateMarksInCategory(@Query("categoryName") categoryName: string,
+                        @Body() marks: Mark[]) {
+    try {
+      return this.service.updateMarksInCategory(categoryName, marks)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

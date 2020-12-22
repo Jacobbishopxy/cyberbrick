@@ -5,11 +5,16 @@
 import {Injectable} from "@nestjs/common"
 import {InjectRepository} from "@nestjs/typeorm"
 import {Repository} from "typeorm"
+import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Tag} from "../entity"
+import {Tag, Category} from "../entity"
 
+
+const categoryTagRelations = {
+  relations: [common.tags]
+}
 
 const tagFullRelations = {
   relations: [
@@ -24,32 +29,33 @@ const tagCategoryRelations = {
 
 @Injectable()
 export class TagService {
-  constructor(@InjectRepository(Tag, common.db) private repo: Repository<Tag>) {}
+  constructor(@InjectRepository(Tag, common.db) private repoTag: Repository<Tag>,
+              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
 
   getAllTags() {
-    return this.repo.find(tagFullRelations)
+    return this.repoTag.find(tagFullRelations)
   }
 
   getTagsByName(name: string) {
-    return this.repo.find({
+    return this.repoTag.find({
       ...tagFullRelations,
       ...utils.whereNameEqual(name)
     })
   }
 
   saveTag(tag: Tag) {
-    const newTag = this.repo.create(tag)
-    return this.repo.save(newTag)
+    const newTag = this.repoTag.create(tag)
+    return this.repoTag.save(newTag)
   }
 
   deleteTag(id: string) {
-    return this.repo.delete(id)
+    return this.repoTag.delete(id)
   }
 
   // ===================================================================================================================
 
   async getCategoriesByTagName(name: string) {
-    const raw = await this.repo.find({
+    const raw = await this.repoTag.find({
       ...tagCategoryRelations,
       ...utils.whereNameEqual(name),
       select: [common.id]
@@ -61,14 +67,14 @@ export class TagService {
 
   async modifyTag(tag: Tag) {
     if (tag.id) {
-      const tg = await this.repo.findOne({...utils.whereIdEqual(tag.id)})
+      const tg = await this.repoTag.findOne({...utils.whereIdEqual(tag.id)})
 
       if (tg) {
-        const newTag = this.repo.create({
+        const newTag = this.repoTag.create({
           ...tg,
           ...tag
         })
-        await this.repo.save(newTag)
+        await this.repoTag.save(newTag)
         return true
       }
     }
@@ -76,7 +82,7 @@ export class TagService {
   }
 
   deleteTagInCategory(categoryName: string, tagName: string) {
-    return this.repo
+    return this.repoTag
       .createQueryBuilder(common.tag)
       .leftJoinAndSelect(common.tagCategory, common.category)
       .select([common.tagName, common.categoryName])
@@ -87,14 +93,35 @@ export class TagService {
       .execute()
   }
 
-  // todo: if ids removed
   saveTags(tags: Tag[]) {
-    const newTags = tags.map(t => this.repo.create(t))
-    return this.repo.save(newTags)
+    const newTags = tags.map(t => this.repoTag.create(t))
+    return this.repoTag.save(newTags)
   }
 
   deleteTags(tagIds: string[]) {
-    return this.repo.delete(tagIds)
+    return this.repoTag.delete(tagIds)
+  }
+
+  async updateTagsInCategory(categoryName: string, tags: Tag[]) {
+    const cat = await this.repoCategory.findOne({
+      ...categoryTagRelations,
+      ...utils.whereNameEqual(categoryName)
+    })
+
+    if (cat) {
+      const tagsRemove = _.differenceWith(
+        cat.tags, tags, (prev, curr) => prev.id === curr.id
+      )
+
+      if (tagsRemove.length > 0)
+        await this.deleteTags(tagsRemove.map(t => t.id))
+
+      await this.saveTags(tags)
+
+      return true
+    }
+
+    return false
   }
 }
 

@@ -9,8 +9,13 @@ import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Element, Template} from "../entity"
+import {Dashboard, Element, Template} from "../entity"
 
+const dashboardTemplatesRelations = {
+  relations: [
+    common.elements
+  ]
+}
 
 const templateFullRelations = {
   relations: [
@@ -26,7 +31,8 @@ const elementsRelations = {
 
 @Injectable()
 export class TemplateService {
-  constructor(@InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
+  constructor(@InjectRepository(Dashboard, common.db) private repoDashboard: Repository<Dashboard>,
+              @InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
               @InjectRepository(Element, common.db) private repoElement: Repository<Element>) {}
 
   getAllTemplates() {
@@ -86,6 +92,28 @@ export class TemplateService {
 
   deleteTemplatesInDashboard(templateIds: string[]) {
     return this.repoTemplate.delete(templateIds)
+  }
+
+  async updateTemplatesInDashboard(dashboardId: string, templates: Template[]) {
+    const dsb = await this.repoDashboard.findOne({
+      ...dashboardTemplatesRelations,
+      ...utils.whereIdEqual(dashboardId)
+    })
+
+    if (dsb) {
+      const templatesRemove = _.differenceWith(
+        dsb.templates, templates, (prev, curr) => prev.id === curr.id
+      )
+
+      if (templatesRemove.length > 0)
+        await this.deleteTemplatesInDashboard(templatesRemove.map(t => t.id))
+
+      await this.saveTemplatesInDashboard(dashboardId, templates)
+
+      return true
+    }
+
+    return false
   }
 
   async modifyTemplate(id: string, template: Template) {

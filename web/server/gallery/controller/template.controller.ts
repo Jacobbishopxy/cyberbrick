@@ -130,5 +130,15 @@ export class TemplateController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("updateTemplatesInDashboard")
+  updateTemplatesInDashboard(@Query("categoryName") categoryName: string,
+                             @Body() templates: Template[]) {
+    try {
+      return this.service.updateTemplatesInDashboard(categoryName, templates)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

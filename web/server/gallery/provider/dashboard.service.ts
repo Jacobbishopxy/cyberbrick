@@ -5,6 +5,7 @@
 import {Injectable} from "@nestjs/common"
 import {InjectRepository} from "@nestjs/typeorm"
 import {Repository} from "typeorm"
+import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -127,7 +128,6 @@ export class DashboardService {
       .execute()
   }
 
-  // todo: if ids removed
   saveDashboards(dashboards: Dashboard[]) {
     const newDashboards = dashboards.map(d => this.repoDashboard.create(d))
     return this.repoDashboard.save(newDashboards)
@@ -135,6 +135,28 @@ export class DashboardService {
 
   deleteDashboards(dashboardIds: string[]) {
     return this.repoDashboard.delete(dashboardIds)
+  }
+
+  async updateDashboardsInCategory(categoryName: string, dashboards: Dashboard[]) {
+    const cat = await this.repoCategory.findOne({
+      ...categoryDashboardRelations,
+      ...utils.whereNameEqual(categoryName)
+    })
+
+    if (cat) {
+      const dashboardsRemove = _.differenceWith(
+        cat.dashboards, dashboards, (prev, curr) => prev.id === curr.id
+      )
+
+      if (dashboardsRemove.length > 0)
+        await this.deleteDashboards(dashboardsRemove.map(d => d.id))
+
+      await this.saveDashboards(dashboards)
+
+      return true
+    }
+
+    return false
   }
 }
 
