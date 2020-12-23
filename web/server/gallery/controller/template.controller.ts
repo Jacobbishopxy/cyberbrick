@@ -99,6 +99,16 @@ export class TemplateController {
     }
   }
 
+  @Post("updateTemplatesInDashboard")
+  updateTemplatesInDashboard(@Query("id") dashboardId: string,
+                             @Body() templates: Template[]) {
+    try {
+      return this.service.updateTemplatesInDashboard(dashboardId, templates)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Post("modifyTemplate")
   modifyTemplate(@Query("id") id: string,
                  @Body() template: Template) {
@@ -131,14 +141,5 @@ export class TemplateController {
     }
   }
 
-  @Post("updateTemplatesInDashboard")
-  updateTemplatesInDashboard(@Query("categoryName") categoryName: string,
-                             @Body() templates: Template[]) {
-    try {
-      return this.service.updateTemplatesInDashboard(categoryName, templates)
-    } catch (err) {
-      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
 }
 

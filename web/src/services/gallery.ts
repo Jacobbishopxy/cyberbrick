@@ -72,6 +72,12 @@ export const deleteMarks = async (markIds: string[]) =>
     method: "delete"
   })
 
+export const updateMarksInCategory = async (categoryName: string, marks: GalleryAPI.Mark[]) =>
+  request(`${base}/updateMarksInCategory?categoryName=${categoryName}`, {
+    method: "post",
+    data: marks
+  })
+
 // Tag
 
 export const getCategoriesByTagName = async (name: string): Promise<GalleryAPI.Category[]> =>
@@ -97,6 +103,12 @@ export const saveTags = async (tags: GalleryAPI.Tag[]) =>
 export const deleteTags = async (tagIds: string[]) =>
   request(`${base}/deleteTags?ids=${tagIds.join(",")}`, {
     method: "delete"
+  })
+
+export const updateTagsInCategory = async (categoryName: string, tags: GalleryAPI.Tag[]) =>
+  request(`${base}/updateTagsInCategory?categoryName=${categoryName}`, {
+    method: "post",
+    data: tags
   })
 
 
@@ -170,6 +182,12 @@ export const deleteDashboards = async (dashboardIds: string[]) => {
   })
 }
 
+export const updateDashboardsInCategory = async (categoryName: string, dashboards: GalleryAPI.Dashboard[]) =>
+  request(`${base}/updateDashboardsInCategory?categoryName=${categoryName}`, {
+    method: "post",
+    data: dashboards
+  })
+
 
 // Template
 
@@ -199,6 +217,12 @@ export const deleteTemplatesInDashboard = async (templateIds: string[]) => {
     method: "delete"
   })
 }
+
+export const updateTemplatesInDashboard = async (dashboardId: string, templates: GalleryAPI.Template[]) =>
+  request(`${base}/updateTemplatesInDashboard?id=${dashboardId}`, {
+    method: "post",
+    data: templates
+  })
 
 export const copyTemplateElements = async (copyTE: GalleryAPI.CopyTemplateElements): Promise<void> =>
   request(`${base}/copyTemplateElements`, {
