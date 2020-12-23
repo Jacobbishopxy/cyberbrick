@@ -24,7 +24,7 @@ const tagDeleteModal = (onOk: () => void) =>
 
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
 
-  const [items, setItems] = useState<T[]>(props.data)
+  const [items, setItems] = useState<T[]>(_.orderBy(props.data, ["index"]))
 
   const [creationVisible, setCreationVisible] = useState<boolean>(false)
   const [modificationVisible, setModificationVisible] = useState<boolean>(false)

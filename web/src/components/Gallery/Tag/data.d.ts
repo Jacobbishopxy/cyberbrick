@@ -4,6 +4,7 @@
 
 export interface GenericDataInput {
   id?: string
+  index?: number
   name: string
   description?: string
   color?: string

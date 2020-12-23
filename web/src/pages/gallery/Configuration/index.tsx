@@ -57,34 +57,30 @@ export default () => {
       .saveCategory({name, description})
       .then(refreshCat)
 
-  const saveDashboards = (categoryName: string, dashboards: DataType.Dashboard[]) => {
-    const data = dashboards.map(d => ({
-      ...d,
-      category: {name: categoryName}
-    }) as GalleryAPI.Dashboard)
-    return GalleryService.saveDashboards(data).then(refreshCat)
-  }
-
-  const saveMarks = (categoryName: string, marks: DataType.Mark[]) => {
-    const data = marks.map(m => ({
-      ...m,
-      category: {name: categoryName}
-    }) as GalleryAPI.Mark)
-    return GalleryService.saveMarks(data).then(refreshCat)
-  }
-
-  const saveTags = (categoryName: string, tags: DataType.Tag[]) => {
-    const data = tags.map(t => ({
-      ...t,
-      category: {name: categoryName}
-    }) as GalleryAPI.Tag)
-    return GalleryService.saveTags(data).then(refreshCat)
-  }
-
-  const saveTemplates = (dashboardId: string, templates: DataType.Template[]) =>
+  const updateDashboards = (categoryName: string, dashboards: DataType.Dashboard[]) =>
     GalleryService
-      .saveTemplatesInDashboard(dashboardId, templates as GalleryAPI.Template[])
+      .updateDashboardsInCategory(categoryName, dashboards as GalleryAPI.Dashboard[])
       .then(refreshCat)
+
+  const updateMarks = (categoryName: string, marks: DataType.Mark[]) =>
+    GalleryService
+      .updateMarksInCategory(categoryName, marks as GalleryAPI.Mark[])
+      .then(refreshCat)
+
+  const updateTags = (categoryName: string, tags: DataType.Tag[]) =>
+    GalleryService
+      .updateTagsInCategory(categoryName, tags as GalleryAPI.Tag[])
+      .then(refreshCat)
+
+  const updateTemplates = (dashboardId: string, templates: DataType.Template[]) => {
+    const data = templates.map((t, index) => ({
+      ...t,
+      index
+    }) as GalleryAPI.Template)
+    return GalleryService
+      .updateTemplatesInDashboard(dashboardId, data)
+      .then(refreshCat)
+  }
 
   const saveStorage = (storage: DataType.Storage) =>
     GalleryService
@@ -123,9 +119,9 @@ export default () => {
         <CategoryConfigTable
           data={dataCategory}
           saveCategory={saveCategory}
-          saveDashboards={saveDashboards}
-          saveMarks={saveMarks}
-          saveTags={saveTags}
+          updateDashboards={updateDashboards}
+          updateMarks={updateMarks}
+          updateTags={updateTags}
         />
       </Tabs.TabPane>
 
@@ -135,7 +131,7 @@ export default () => {
       >
         <DashboardConfigTable
           data={dataDashboard}
-          saveTemplates={saveTemplates}
+          updateTemplates={updateTemplates}
         />
       </Tabs.TabPane>
 

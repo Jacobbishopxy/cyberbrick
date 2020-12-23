@@ -13,7 +13,7 @@ import {EditableTagPanel} from "../Tag/EditableTagPanel"
 
 export interface DashboardConfigTableProps {
   data: DataType.Dashboard[]
-  saveTemplates: (dashboardId: string, templates: DataType.Template[]) => void
+  updateTemplates: (dashboardId: string, templates: DataType.Template[]) => void
 }
 
 /**
@@ -24,7 +24,7 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
   const [editable, setEditable] = useState<boolean>(false)
 
   const templateOnChange = (dashboardId: string) =>
-    (templates: DataType.Template[]) => props.saveTemplates(dashboardId, templates)
+    (templates: DataType.Template[]) => props.updateTemplates(dashboardId, templates)
 
   return (
     <div>

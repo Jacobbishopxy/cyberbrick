@@ -150,10 +150,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   }
 
   return useMemo(() => {
+    const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
     return (
       <Tabs onChange={tabOnChange} destroyInactiveTabPane>
         {
-          props.dashboardInfo.templates!.map(t =>
+          templates.map(t =>
             <Tabs.TabPane tab={t.name} key={t.name}>
               {genPane(t)}
             </Tabs.TabPane>
@@ -161,7 +162,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         }
       </Tabs>
     )
-  }, [props.dashboardInfo,  template])
+  }, [props.dashboardInfo, template])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>

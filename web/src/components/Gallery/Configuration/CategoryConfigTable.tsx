@@ -16,9 +16,9 @@ export interface CategoryConfigTableProps {
   data: DataType.Category[]
 
   saveCategory: (categoryName: string, description?: string) => void
-  saveDashboards: (categoryName: string, dashboards: DataType.Dashboard[]) => void
-  saveMarks: (categoryName: string, marks: DataType.Mark[]) => void
-  saveTags: (categoryName: string, tags: DataType.Tag[]) => void
+  updateDashboards: (categoryName: string, dashboards: DataType.Dashboard[]) => void
+  updateMarks: (categoryName: string, marks: DataType.Mark[]) => void
+  updateTags: (categoryName: string, tags: DataType.Tag[]) => void
 }
 
 /**
@@ -31,18 +31,14 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   const modifyCategoryDescription = (categoryName: string) =>
     (description: string) => props.saveCategory(categoryName, description)
 
-  // todo
-  const dashboardsOnChange = (categoryName: string) => (dashboards: DataType.Dashboard[]) => {
-    console.log(categoryName, dashboards)
-  }
+  const dashboardsOnChange = (categoryName: string) => (dashboards: DataType.Dashboard[]) =>
+    props.updateDashboards(categoryName, dashboards)
 
-  const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) => {
-    console.log(categoryName, marks)
-  }
+  const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) =>
+    props.updateMarks(categoryName, marks)
 
-  const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) => {
-    console.log(categoryName, tags)
-  }
+  const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) =>
+    props.updateTags(categoryName, tags)
 
   return (
     <div>

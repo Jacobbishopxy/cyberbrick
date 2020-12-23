@@ -12,9 +12,7 @@ import * as utils from "../../utils"
 import {Dashboard, Element, Template} from "../entity"
 
 const dashboardTemplatesRelations = {
-  relations: [
-    common.elements
-  ]
+  relations: [common.templates]
 }
 
 const templateFullRelations = {
@@ -80,11 +78,12 @@ export class TemplateService {
     return this.repoTemplate.save(newTmp)
   }
 
-  // todo: if ids removed
   saveTemplatesInDashboard(dashboardId: string, templates: Template[]) {
     const newTemplates = templates.map(t => this.repoTemplate.create({
       dashboard: {id: dashboardId},
+      id: t.id,
       name: t.name,
+      index: t.index,
       description: t.description
     }))
     return this.repoTemplate.save(newTemplates)
