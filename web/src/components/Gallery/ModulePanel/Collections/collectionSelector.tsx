@@ -7,6 +7,7 @@ import React from 'react'
 import * as DataType from "../../GalleryDataType"
 import {ConvertFwRef} from "../Generator/data"
 import {XlsxTable} from "./table/XlsxTable"
+import {FlexTable} from "./table/FlexTable"
 import {EmbedLink} from "./miscellaneous/EmbedLink"
 import {Text} from "./miscellaneous/Text"
 import {TargetPrice} from "./miscellaneous/TargetPrice"
@@ -49,6 +50,14 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
     />
 
     const xlsxTable = <XlsxTable
+      content={props.content}
+      contentHeight={props.contentHeight}
+      updateContent={props.updateContent}
+      styling={styles.contentPanel}
+      ref={props.forwardedRef}
+    />
+
+    const flexTable = <FlexTable
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
@@ -119,6 +128,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return text
       case DataType.ElementType.XlsxTable:
         return xlsxTable
+      case DataType.ElementType.FlexTable:
+        return flexTable
       case DataType.ElementType.TargetPrice:
         return targetPrice
       case DataType.ElementType.Line:

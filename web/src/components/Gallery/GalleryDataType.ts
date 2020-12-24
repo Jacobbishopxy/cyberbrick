@@ -98,6 +98,7 @@ export enum ElementType {
   FileList = "fileList",
   FileManager = "fileManager",
   XlsxTable = "xlsxTable",
+  FlexTable = "flexTable",
   Table = "table",
   Line = "line",
   Bar = "bar",
@@ -126,6 +127,8 @@ export const getElementType = (v: string) => {
       return ElementType.FileManager
     case "xlsxTable":
       return ElementType.XlsxTable
+    case "flexTable":
+      return ElementType.FlexTable
     case "table":
       return ElementType.Table
     case "line":

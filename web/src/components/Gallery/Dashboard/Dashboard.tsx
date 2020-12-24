@@ -112,7 +112,6 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const onCopyTemplate = async (originTemplateId: string) => {
-    console.log("onCopyTemplate", selectedTemplate)
     if (selectedDashboard && selectedTemplate) {
       props.copyTemplate({
         originTemplateId,

@@ -51,7 +51,7 @@ const initSelectedPane = (templates: DataType.Template[]) => {
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
   const ctRef = useRef<ContainerTemplateRef>(null)
 
-  const templates = props.dashboardInfo.templates!
+  const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
 
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
@@ -149,9 +149,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     return <></>
   }
 
-  return useMemo(() => {
-    const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
-    return (
+  return useMemo(
+    () => (
       <Tabs onChange={tabOnChange} destroyInactiveTabPane>
         {
           templates.map(t =>
@@ -160,9 +159,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
             </Tabs.TabPane>
           )
         }
-      </Tabs>
-    )
-  }, [props.dashboardInfo, template])
+      </Tabs>)
+    , [props.dashboardInfo, template])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>

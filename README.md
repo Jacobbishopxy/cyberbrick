@@ -62,9 +62,11 @@ todo
 
 Please `cd server` first then do the following commands.
 
-1. development mode:
+1. development:
 
-    * `python wsgi.py`
+    * `python wsgi.py` debug mode
+
+    * `python wsgi.py debug=false` no-debug mode
 
 2. production:
 
@@ -95,7 +97,7 @@ Please `cd server` first then do the following commands.
 
 Please `cd web` first then do the following commands.
 
-1. development mode: 
+1. development: 
 
     * `yarn serve:dev` for server side then in another terminal `yarn dev` for frontend
     

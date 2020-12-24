@@ -84,12 +84,12 @@ export default defineConfig({
           path: "/gallery/dataset",
           component: "./gallery/Dataset"
         },
-        {
-          name: "overview",
-          icon: 'ProfileOutlined',
-          path: "/gallery/overview",
-          component: "./gallery/Overview"
-        },
+        // {
+        //   name: "overview",
+        //   icon: 'ProfileOutlined',
+        //   path: "/gallery/overview",
+        //   component: "./gallery/Overview"
+        // },
         {
           name: "dashboard",
           icon: 'DashboardOutlined',

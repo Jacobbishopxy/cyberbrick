@@ -58,6 +58,11 @@ export const moduleList = [
         disabled: false,
       },
       {
+        key: DataType.ElementType.FlexTable,
+        name: 'Flex table',
+        disabled: false,
+      },
+      {
         key: DataType.ElementType.Table,
         name: 'Table',
         disabled: true,

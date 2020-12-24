@@ -73,7 +73,7 @@ const EditorField = (props: ModuleEditorField) => {
           <Checkbox.Group
             style={{width: "100%"}}
             onChange={vs => saveContentConfigHideHeader(vs as string[])}
-            defaultValue={content?.config?.hideOptions}
+            defaultValue={content?.config?.hideOptions || ["col", "row"]}
           >
             <Checkbox value="col">Hide column</Checkbox>
             <Checkbox value="row">Hide row</Checkbox>
