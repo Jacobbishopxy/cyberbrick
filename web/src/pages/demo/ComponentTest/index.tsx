@@ -2,103 +2,112 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React, {useState} from 'react'
-import {Button, Space, Tag} from "antd"
-import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd'
+import React, {useEffect, useState} from 'react'
+import {Table, Tabs} from "antd"
+import _ from "lodash"
+import {ColumnsType} from "antd/lib/table/interface"
 
 
-interface Item {
-  id: string
-  content: React.ReactElement // custom component
+const dataSource = {
+  "core": [
+    {
+      "date": 2015,
+      "val0": 2,
+      "val1": "foo"
+    },
+    {
+      "date": 2016,
+      "val0": 1,
+    },
+    {
+      "date": 2018,
+      "val0": 3,
+      "val1": "bar"
+    },
+  ],
+  // "extra": [
+  //   {
+  //     "date": 20200101,
+  //     "val0": "halo",
+  //   },
+  //   {
+  //     "date": 20200601,
+  //     "val0": 1,
+  //   },
+  //   {
+  //     "date": 20201201,
+  //     "val0": "user",
+  //   },
+  // ],
 }
 
 
-const getItems = (count: number, remove: (id: string) => void): Item[] =>
-  Array.from({length: count}, (v, k) => k).map(k => {
-
-    const id = `item-${k}-${new Date().getTime()}`
-
-    return {
-      id,
-      content: (
-        <Tag
-          closable
-          onClose={e => {
-            e.preventDefault()
-            remove(id)
-          }}
-        >
-          {`item ${k}`}
-        </Tag>
-      )
-    }
-  })
-
-const reorder = (list: Item[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
+interface FooterSelectorProps {
+  tabs: string[]
+  onChange: (tab: string) => void
 }
 
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  display: 'flex',
-  padding: 10,
-  overflow: 'auto',
-})
+const FooterSelector = (props: FooterSelectorProps) => {
+  const {tabs} = props
+
+  return tabs.length > 1 ?
+    <Tabs onChange={props.onChange}>
+      {
+        tabs.map(t => <Tabs.TabPane tab={t} key={t}/>)
+      }
+    </Tabs> :
+    <></>
+}
 
 
-export default () => {
-  const removeItem = (id: string) => setItems(items.filter(i => i.id !== id))
+interface FlexTableProps {
+  data: Record<string, any[]>
+  showHeader: boolean
+  showBorder: boolean
+  showPagination: boolean
+}
 
-  const [items, setItems] = useState(getItems(6, removeItem))
+const FlexTable = (props: FlexTableProps) => {
 
+  const [columns, setColumns] = useState<ColumnsType>([])
+  const [data, setData] = useState<any[]>([])
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return
-
-    const newItems = reorder(items, result.source.index, result.destination.index)
-    setItems(newItems)
+  const setAll = (d: any[]) => {
+    setColumns(_.keys(d[0]).map((k: string) => ({
+      key: k,
+      title: k,
+      dataIndex: k
+    })))
+    setData(d)
   }
 
+  useEffect(() => setAll(props.data[_.keys(props.data)[0]]), [])
+
+  const footerTabOnChange = (tab: string) => setAll(props.data[tab])
+
   return (
-    <Space direction="vertical">
-      <Button
-        type="primary"
-        size="small"
-        onClick={() => setItems([...items, ...getItems(1, removeItem)])}
-      >
-        Add item
-      </Button>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}
-            >
-              {items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </Space>
+    <Table
+      columns={columns}
+      dataSource={data}
+      showHeader={props.showHeader}
+      bordered={props.showBorder}
+      pagination={props.showPagination ? undefined : false}
+      footer={
+        () => <FooterSelector tabs={_.keys(props.data)} onChange={footerTabOnChange}/>
+      }
+    />
+  )
+}
+
+export default () => {
+
+  return (
+    <FlexTable
+      data={dataSource}
+      showHeader
+      showBorder
+      showPagination //={false}
+    />
   )
 }
 

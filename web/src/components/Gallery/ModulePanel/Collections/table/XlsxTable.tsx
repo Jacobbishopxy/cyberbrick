@@ -24,11 +24,9 @@ const EditorField = (props: ModuleEditorField) => {
 
   const [visible, setVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [savingProcessHideOptions, setSavingProcessHideOptions] = useState(false)
   const [savingProcessData, setSavingProcessData] = useState(false)
 
   useEffect(() => {
-    if (content?.config?.hideOptions) setSavingProcessHideOptions(true)
     if (content?.data) setSavingProcessData(true)
   }, [content])
 
@@ -87,7 +85,6 @@ const EditorField = (props: ModuleEditorField) => {
             shape='round'
             size='small'
             onClick={() => setVisible(true)}
-            disabled={!savingProcessHideOptions}
           >
             Click here to modify
           </Button>

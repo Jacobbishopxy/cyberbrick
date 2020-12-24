@@ -19,11 +19,9 @@ const EditorField = (props: ModuleEditorField) => {
 
   const [visible, setVisible] = useState(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [savingConfig, setSavingConfig] = useState(false)
   const [savingData, setSavingData] = useState(false)
 
   useEffect(() => {
-    if (content?.config) setSavingConfig(true)
     if (content?.data) setSavingData(true)
   }, [content])
 
@@ -82,7 +80,6 @@ const EditorField = (props: ModuleEditorField) => {
             shape='round'
             size='small'
             onClick={() => setVisible(true)}
-            disabled={!savingConfig}
           >
             Click here to modify
           </Button>
@@ -144,7 +141,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
       title: k,
       dataIndex: k
     })))
-    setData(d)
+    setData(d.map((i, idx) => ({...i, key: idx})))
   }
 
   useEffect(() => setAll(props.data[_.keys(props.data)[0]]), [])
