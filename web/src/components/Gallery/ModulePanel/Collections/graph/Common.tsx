@@ -35,13 +35,14 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
     }
 
 
-    const saveContent = async (values: ChartConfig) => {
+    const saveContent = async (values: Record<string, any>) => {
       if (content) {
+        const v = values as ChartConfig
 
         const baseY = [{position: "left", columns: defaultYColumns}]
-        const y = values.y ? [...baseY, ...values.y] : baseY
+        const y = v.y ? [...baseY, ...v.y] : baseY
 
-        const config = {...values, y}
+        const config = {...v, y}
         const ctt = {...content, config}
         props.updateContent(ctt)
         message.success("Updating succeeded!")
