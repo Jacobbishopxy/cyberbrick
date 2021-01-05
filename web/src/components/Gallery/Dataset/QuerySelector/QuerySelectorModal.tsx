@@ -32,7 +32,7 @@ export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
       trigger={props.trigger}
       onValuesChange={onValuesChange}
       onFinish={props.onSubmit}
-      modalProps={{maskClosable: false, keyboard: false, closable: false}}
+      modalProps={{maskClosable: false, keyboard: false, closable: false, destroyOnClose: true}}
       initialValues={props.initialValues}
       style={props.style}
     >

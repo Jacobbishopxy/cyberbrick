@@ -77,6 +77,7 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
             visible={uploadVisible}
             upload={fileExtract}
             uploadResHandle={saveContentData}
+            multiSheetDisable
           />
         </>
       )
