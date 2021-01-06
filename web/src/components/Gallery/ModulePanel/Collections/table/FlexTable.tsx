@@ -3,138 +3,32 @@
  */
 
 import React, {useEffect, useState} from 'react'
-import {Button, Checkbox, message, Space, Table, Tabs} from "antd"
+import {Table} from "antd"
+import {ColumnsType} from "antd/lib/table/interface"
+import {HotTable} from "@handsontable/react"
 import _ from "lodash"
 
-import {FileExtractModal} from "@/components/FileUploadModal"
-import {Emoji} from "@/components/Emoji"
 import * as DataType from "../../../GalleryDataType"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
-import {fileExtract} from "../../../Misc/FileUploadConfig"
-import {ColumnsType} from "antd/lib/table/interface"
+import {ModulePresenterField} from "../../Generator/data"
+import {GeneralTableConfigInterface, GeneralTableEditorField} from "./GeneralTableEditorField"
+import {genHotTableProps} from "./XlsxTable"
 
-
-const EditorField = (props: ModuleEditorField) => {
-
-  const [visible, setVisible] = useState(false)
-  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [savingData, setSavingData] = useState(false)
-
-  useEffect(() => {
-    if (content?.data) setSavingData(true)
-  }, [content])
-
-  const saveContentConfig = (options: string[]) => {
-    const ctt = {
-      ...content!,
-      date: DataType.today(),
-      config: {view: options}
-    }
-    setContent(ctt)
-  }
-
-  const saveContentData = (data: any) => {
-    const ctt = content ? {
-      ...content,
-      data
-    } : {
-      date: DataType.today(),
-      data
-    }
-    setContent(ctt)
-  }
-
-  const saveContent = () => {
-    if (content) {
-      props.updateContent(content)
-      message.success("Updating succeeded!")
-    } else {
-      message.warn("Updating failed! File and options are required!")
-    }
-  }
-
-  return (
-    <div className={props.styling}>
-      <Space
-        direction="vertical"
-        style={{position: "relative", top: "30%"}}
-      >
-        <Space>
-          <Emoji label="0" symbol="①" size={20}/>
-          Viewing:
-          <Checkbox.Group
-            style={{width: "100%"}}
-            onChange={vs => saveContentConfig(vs as string[])}
-            defaultValue={content?.config?.hideOptions || ["header"]}
-          >
-            <Checkbox value="header">Hide header</Checkbox>
-            <Checkbox value="border">Hide border</Checkbox>
-          </Checkbox.Group>
-        </Space>
-
-        <Space>
-          <Emoji label="0" symbol="②" size={20}/>
-          <Button
-            type='primary'
-            shape='round'
-            size='small'
-            onClick={() => setVisible(true)}
-          >
-            Click here to modify
-          </Button>
-        </Space>
-
-        <Button
-          type='primary'
-          size='small'
-          onClick={saveContent}
-          disabled={!savingData}
-        >
-          Update
-        </Button>
-      </Space>
-
-      <FileExtractModal
-        setVisible={setVisible}
-        visible={visible}
-        upload={fileExtract}
-        uploadResHandle={saveContentData}
-      />
-    </div>
-  )
-}
-
-interface FooterSelectorProps {
-  tabs: string[]
-  onChange: (tab: string) => void
-}
-
-const FooterSelector = (props: FooterSelectorProps) => {
-  const {tabs} = props
-
-  return tabs.length > 1 ?
-    <Tabs onChange={props.onChange}>
-      {
-        tabs.map(t => <Tabs.TabPane tab={t} key={t}/>)
-      }
-    </Tabs> :
-    <></>
-}
-
+import "handsontable/dist/handsontable.full.css"
 
 interface FlexTableViewProps {
-  data: Record<string, any[]>
-  showHeader: boolean
-  showBorder: boolean
-  showPagination: boolean
+  content: DataType.Content
+  fetchQueryData: (value: DataType.Content) => Promise<any>
+  contentHeight? : number
 }
 
 const FlexTableView = (props: FlexTableViewProps) => {
 
-  const [columns, setColumns] = useState<ColumnsType>([])
+  const [columns, setColumns] = useState<ColumnsType<any>>([])
   const [data, setData] = useState<any[]>([])
+  const [config, setConfig] = useState<GeneralTableConfigInterface>()
 
+  // todo: use config to reform data
   const setAll = (d: any[]) => {
     setColumns(_.keys(d[0]).map((k: string) => ({
       key: k,
@@ -144,34 +38,50 @@ const FlexTableView = (props: FlexTableViewProps) => {
     setData(d.map((i, idx) => ({...i, key: idx})))
   }
 
-  useEffect(() => setAll(props.data[_.keys(props.data)[0]]), [])
+  useEffect(() => {
+    if (props.content.config) {
+      setConfig(props.content.config as GeneralTableConfigInterface)
+      if (props.content.config.type === "dataset")
+        props.fetchQueryData(props.content).then(setAll)
+      if (props.content.config.type === "file")
+        setAll(props.content.data[0])
+    }
+  }, [props.content])
 
-  const footerTabOnChange = (tab: string) => setAll(props.data[tab])
 
-  return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      showHeader={props.showHeader}
-      bordered={props.showBorder}
-      pagination={props.showPagination ? undefined : false}
-      footer={
-        () => <FooterSelector tabs={_.keys(props.data)} onChange={footerTabOnChange}/>
-      }
-    />
-  )
+  const defaultTable = () => <Table
+    columns={columns}
+    dataSource={data}
+    showHeader={config!.view?.includes("header") || undefined}
+    bordered={config!.view?.includes("border") || undefined}
+    pagination={false}
+  />
+
+  const xlsxTable = () => <HotTable
+    {...genHotTableProps(props.contentHeight, config?.view)}
+    data={data}
+  />
+
+  switch (config?.type) {
+    case "dataset":
+      return defaultTable()
+    case "file":
+      return xlsxTable()
+    default:
+      return <></>
+  }
 }
 
-const PresenterField = (props: ModulePresenterField) => {
 
-  return props.content && props.content.data ?
+export const PresenterField = (props: ModulePresenterField) => {
+
+  return props.content ?
     <FlexTableView
-      data={props.content.data}
-      showHeader={!props.content.config?.view.includes("header")}
-      showBorder={!props.content.config?.view.includes("border")}
-      showPagination={false}
+      content={props.content}
+      fetchQueryData={props.fetchQueryData!}
+      contentHeight={props.contentHeight}
     /> : <></>
 }
 
-export const FlexTable = new ModuleGenerator(EditorField, PresenterField).generate()
+export const FlexTable = new ModuleGenerator(GeneralTableEditorField, PresenterField).generate()
 

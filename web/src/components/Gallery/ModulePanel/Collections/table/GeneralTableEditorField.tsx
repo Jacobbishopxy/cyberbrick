@@ -40,17 +40,18 @@ const viewOptionOptions = [
   }
 ]
 
-type TypeOptions = "default" | "percent" | "bar"
+type ColumnTypeOptions = "default" | "percent" | "bar"
 
-const typeOptions = [
+const columnTypeOptions = [
   "default",
+  "date",
   "percent",
-  "bar"
+  "bar",
 ]
 
-export interface GeneralTableConfigType {
+export interface GeneralTableConfigInterface {
   type: DataSelectedType
-  display: { column: string, type: TypeOptions }[]
+  display: { column: string, type: ColumnTypeOptions }[]
   style: ViewStyle
   view: ViewOption[]
 }
@@ -64,7 +65,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
 
   const saveContent = async (config: Record<string, any>) => {
     if (content) {
-      const c = config as GeneralTableConfigType
+      const c = config as GeneralTableConfigInterface
       const ctt = {
         ...content,
         date: content.date || DataType.today(),
@@ -184,7 +185,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
                     >
                       <Select placeholder="Type" style={{width: 100}}>
                         {
-                          typeOptions.map(t =>
+                          columnTypeOptions.map(t =>
                             <Select.Option key={t} value={t}>{t}</Select.Option>
                           )
                         }

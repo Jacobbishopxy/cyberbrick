@@ -112,7 +112,7 @@ const EditorField = (props: ModuleEditorField) => {
 
 const licenseKey = "non-commercial-and-evaluation"
 
-const genHotTableProps = (height: number | undefined, hideOptions?: string[]) => {
+export const genHotTableProps = (height: number | undefined, hideOptions?: string[]) => {
 
   const colHeaders = !hideOptions?.includes("col")
   const rowHeaders = !hideOptions?.includes("row")
