@@ -3,7 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Button, message, Modal} from "antd"
+import {Button, Form, message, Modal, Select, Space} from "antd"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
 
 import _ from "lodash"
@@ -11,7 +11,10 @@ import _ from "lodash"
 import * as DataType from "../../../GalleryDataType"
 import {ModuleEditorField} from "../../Generator/data"
 import {DataSelectedType, DataSourceSelectorForm} from "./DataSourceSelectorForm"
+import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 
+
+type ViewStyle = "default" | "xlsx"
 
 const viewStyleOptions = [
   {
@@ -24,6 +27,8 @@ const viewStyleOptions = [
   }
 ]
 
+type ViewOption = "header" | "border"
+
 const viewOptionOptions = [
   {
     label: "Hide header",
@@ -35,6 +40,20 @@ const viewOptionOptions = [
   }
 ]
 
+type TypeOptions = "default" | "percent" | "bar"
+
+const typeOptions = [
+  "default",
+  "percent",
+  "bar"
+]
+
+export interface GeneralTableConfigType {
+  type: DataSelectedType
+  display: { column: string, type: TypeOptions }[]
+  style: ViewStyle
+  view: ViewOption[]
+}
 
 export const GeneralTableEditorField = (props: ModuleEditorField) => {
 
@@ -45,10 +64,11 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
 
   const saveContent = async (config: Record<string, any>) => {
     if (content) {
+      const c = config as GeneralTableConfigType
       const ctt = {
         ...content,
         date: content.date || DataType.today(),
-        config: {type: dataType, ...config}
+        config: {...c, type: dataType}
       }
       props.updateContent(ctt)
       message.success("Updating succeeded!")
@@ -134,9 +154,63 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
           name="display"
           title="Display"
         >
-          {
-            // todo: editable column type display
-          }
+          <Form.List name="display">
+            {(fields, {add, remove}) =>
+              <>
+                {fields.map((field) =>
+                  <Space key={field.key} style={{display: "flex"}}>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "column"]}
+                      fieldKey={[field.fieldKey, "column"]}
+                      label="Column"
+                      rules={[{required: true, message: "Missing field"}]}
+                    >
+                      <Select placeholder="Column" style={{width: 100}}>
+                        {
+                          dataColumns.map(c =>
+                            <Select.Option key={c} value={c}>{c}</Select.Option>
+                          )
+                        }
+                      </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "type"]}
+                      fieldKey={[field.fieldKey, "type"]}
+                      label="Type"
+                      rules={[{required: true, message: "Missing field"}]}
+                    >
+                      <Select placeholder="Type" style={{width: 100}}>
+                        {
+                          typeOptions.map(t =>
+                            <Select.Option key={t} value={t}>{t}</Select.Option>
+                          )
+                        }
+                      </Select>
+                    </Form.Item>
+
+                    <DeleteTwoTone
+                      twoToneColor="red"
+                      onClick={() => remove(field.name)}
+                      style={{fontSize: 20, marginTop: 7}}
+                    />
+                  </Space>
+                )}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    block
+                    icon={<PlusOutlined/>}
+                    onClick={() => add()}
+                  >
+                    Add criteria
+                  </Button>
+                </Form.Item>
+              </>
+            }
+          </Form.List>
         </StepsForm.StepForm>
       </StepsForm>
     </div>

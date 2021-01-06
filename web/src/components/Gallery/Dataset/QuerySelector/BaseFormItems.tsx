@@ -102,7 +102,7 @@ export const BaseFormItems =
 
         <div style={{marginBottom: 8}}>Conditions</div>
         <Form.List name="conditions">
-          {(fields, {add, remove}) => (
+          {(fields, {add, remove}) =>
             <>
               {fields.map((field, idx) => (
                 <Space key={field.key} style={{display: 'flex'}}>
@@ -115,9 +115,9 @@ export const BaseFormItems =
                   >
                     <Select placeholder="Field" style={{width: 200}}>
                       {
-                        columnSelects!.map(c => (
+                        columnSelects!.map(c =>
                           <Select.Option key={c.label} value={c.label}>{c.value}</Select.Option>
-                        ))
+                        )
                       }
                     </Select>
                   </Form.Item>
@@ -180,11 +180,11 @@ export const BaseFormItems =
                   disabled={table === undefined}
                   onClick={() => add()}
                 >
-                  Add field
+                  Add condition
                 </Button>
               </Form.Item>
             </>
-          )}
+          }
         </Form.List>
       </>
     )
