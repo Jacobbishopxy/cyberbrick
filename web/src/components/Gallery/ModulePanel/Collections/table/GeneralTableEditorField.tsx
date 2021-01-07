@@ -40,18 +40,24 @@ const viewOptionOptions = [
   }
 ]
 
-type ColumnTypeOptions = "default" | "percent" | "bar"
+type ColumnTypeOptions = "default" | "date" | "number" | "percent" | "bar"
 
 const columnTypeOptions = [
   "default",
   "date",
+  "number",
   "percent",
   "bar",
 ]
 
+export interface DisplayType {
+  column: string
+  type: ColumnTypeOptions
+}
+
 export interface GeneralTableConfigInterface {
   type: DataSelectedType
-  display: { column: string, type: ColumnTypeOptions }[]
+  display: DisplayType[]
   style: ViewStyle
   view: ViewOption[]
 }
@@ -79,7 +85,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
   }
 
   const dataSelectOnFinish = async () => {
-    if (content?.data.length === 0) {
+    if (content?.data === undefined || content?.data.length === 0) {
       message.warn("Please choose your data!")
       return false
     }
