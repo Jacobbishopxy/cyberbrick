@@ -4,14 +4,13 @@
 
 import React, {useState} from 'react'
 import {Button, Form, message, Modal, Select, Space} from "antd"
+import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
-
 import _ from "lodash"
 
 import * as DataType from "../../../GalleryDataType"
 import {ModuleEditorField} from "../../Generator/data"
 import {DataSelectedType, DataSourceSelectorForm} from "./DataSourceSelectorForm"
-import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 
 
 type ViewStyle = "default" | "xlsx"

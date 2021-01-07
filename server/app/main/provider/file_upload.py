@@ -91,4 +91,4 @@ def extract_csv(file: io,
 
 
 def csv_to_json(d: pd.DataFrame, date_format: Optional[str] = None):
-    return json.loads(df_datetime_cvt(d, date_format).to_json(orient="records"))
+    return {"0": json.loads(df_datetime_cvt(d, date_format).to_json(orient="records"))}

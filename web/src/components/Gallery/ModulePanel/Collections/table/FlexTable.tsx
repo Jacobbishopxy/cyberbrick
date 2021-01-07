@@ -63,14 +63,8 @@ const FlexTableView = (props: FlexTableViewProps) => {
 
   const genColumnsAndData = (rawData: Record<string, any>[],
                              rawConfig: GeneralTableConfigInterface) => {
-
-    console.log(0, rawData, rawConfig)
-
     if (rawData && rawConfig) {
       const [col, d] = setColumnsAndTransformData(rawData, rawConfig)
-
-      console.log(1, col, d)
-
       setColumns(col)
       setData(d)
     }
@@ -88,24 +82,26 @@ const FlexTableView = (props: FlexTableViewProps) => {
   }, [props.content])
 
 
-  const defaultTable = () => <Table
-    columns={columns}
-    dataSource={data}
-    showHeader={config!.view?.includes("header") || undefined}
-    bordered={config!.view?.includes("border") || undefined}
-    pagination={false}
-  />
+  const defaultTable = (cfg: GeneralTableConfigInterface) =>
+    <Table
+      columns={columns}
+      dataSource={data}
+      showHeader={!cfg.view.includes("header")}
+      bordered={!cfg.view.includes("border")}
+      scroll={{x: true}}
+      pagination={false}
+    />
 
-  const xlsxTable = () => <HotTable
-    {...genHotTableProps(props.contentHeight, config?.view)}
+  const xlsxTable = (cfg: GeneralTableConfigInterface) => <HotTable
+    {...genHotTableProps(props.contentHeight, cfg.view)}
     data={data}
   />
 
-  switch (config?.type) {
-    case "dataset":
-      return defaultTable()
-    case "file":
-      return xlsxTable()
+  switch (config?.style) {
+    case "default":
+      return defaultTable(config)
+    case "xlsx":
+      return xlsxTable(config)
     default:
       return <></>
   }
