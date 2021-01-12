@@ -7,6 +7,7 @@ import {ConfigService} from "@nestjs/config"
 import {Request, Response} from "express"
 import * as fm from "@opuscapita/filemanager-server"
 
+
 @Injectable()
 export class FileManagerMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService) {}
@@ -16,9 +17,13 @@ export class FileManagerMiddleware implements NestMiddleware {
   use(req: Request, res: Response) {
     const {context} = req.params
 
+    const logger = fm.logger
+    logger.transports.forEach((t: any) => t.silent = true)
+
     const fmm = fm.middleware({
       fsRoot: this.serverConfig.fmRoot,
-      rootName: context
+      rootName: context,
+      logger
     })
 
     return fmm(req, res)
