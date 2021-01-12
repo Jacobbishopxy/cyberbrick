@@ -17,7 +17,7 @@ import FormData from "form-data"
 
 
 @Controller("upload")
-export class FileController {
+export class UploadController {
   constructor(private configService: ConfigService) { }
 
   private serverConfig = this.configService.get("server")

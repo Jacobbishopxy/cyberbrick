@@ -3,19 +3,13 @@
  */
 
 import React, {useRef, useState} from 'react'
-import ProTable, {ProColumns} from "@ant-design/pro-table"
+import ProTable, {ActionType, ProColumns} from "@ant-design/pro-table"
 import {FormOutlined} from "@ant-design/icons"
 
 import {Struct} from "./DatasetStruct/Struct"
 import * as DataType from "../GalleryDataType"
 import {Button} from "antd"
 
-
-interface ActionType {
-  reload: (resetPageIndex?: boolean) => void
-  fetchMore: () => void
-  reset: () => void
-}
 
 const genTableColumn = (data: Record<string, any>[]) => {
   if (data.length > 0)

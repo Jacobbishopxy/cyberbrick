@@ -10,8 +10,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "backend",
-    "noEmit": false
+    "noEmit": false,
+    "noImplicitAny": false
   },
+  "typeRoots": [
+    "./server"
+  ],
   "include": [
     "server"
   ]

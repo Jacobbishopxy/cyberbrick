@@ -26,5 +26,6 @@
     "autoLoadEntities": true,
     "logging": false,
     "uuidExtension": "uuid-ossp"
-  }
+  },
+  "fmRoot": "Z:"
 }
