@@ -15,16 +15,12 @@ export class FileManagerMiddleware implements NestMiddleware {
   private serverConfig = this.configService.get("server")
 
   use(req: Request, res: Response) {
-    const {context} = req.params
 
     const logger = fm.logger
     logger.transports.forEach((t: any) => t.silent = true)
 
-    const fmm = fm.middleware({
-      fsRoot: this.serverConfig.fmRoot,
-      rootName: context,
-      logger
-    })
+    const fsRoot = this.serverConfig.fmRoot
+    const fmm = fm.middleware({fsRoot, logger})
 
     return fmm(req, res)
   }
