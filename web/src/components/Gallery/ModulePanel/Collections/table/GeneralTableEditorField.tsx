@@ -79,7 +79,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
       props.updateContent(ctt)
       message.success("Updating succeeded!")
     } else
-      message.warn("Updating failed! Please ")
+      message.warn("Updating failed!")
     setVisible(false)
   }
 

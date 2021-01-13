@@ -11,6 +11,7 @@ import {FlexTable} from "./table/FlexTable"
 import {EmbedLink} from "./miscellaneous/EmbedLink"
 import {Text} from "./miscellaneous/Text"
 import {TargetPrice} from "./miscellaneous/TargetPrice"
+import {FileView} from "./file/FileView"
 import {Line} from "./graph/Line"
 import {Bar} from "./graph/Bar"
 import {LineBar} from "./graph/LineBar"
@@ -66,6 +67,14 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
     />
 
     const targetPrice = <TargetPrice
+      content={props.content}
+      contentHeight={props.contentHeight}
+      updateContent={props.updateContent}
+      styling={styles.contentPanel}
+      ref={props.forwardedRef}
+    />
+
+    const fileView = <FileView
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
@@ -132,6 +141,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return flexTable
       case DataType.ElementType.TargetPrice:
         return targetPrice
+      case DataType.ElementType.FileManager:
+        return fileView
       case DataType.ElementType.Line:
         return line
       case DataType.ElementType.Bar:

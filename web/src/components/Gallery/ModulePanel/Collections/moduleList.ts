@@ -44,7 +44,7 @@ export const moduleList = [
       {
         key: DataType.ElementType.FileManager,
         name: 'File manager',
-        disabled: true,
+        disabled: false,
       },
     ]
   },
