@@ -13,21 +13,26 @@ import * as DataType from "../../../GalleryDataType"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModulePresenterField} from "../../Generator/data"
 import {DisplayType, GeneralTableConfigInterface, GeneralTableEditorField} from "./GeneralTableEditorField"
+import {DataSelectedType} from "./DataSourceSelectorForm"
 import {genHotTableProps} from "./XlsxTable"
 
 import "handsontable/dist/handsontable.full.css"
 
 
 const setColumnsAndTransformData = (data: Record<string, any>[],
-                                    config: GeneralTableConfigInterface): [ColumnsType<any>, Record<string, any>[]] => {
+                                    config: GeneralTableConfigInterface,
+                                    type: DataSelectedType): [ColumnsType<any>, Record<string, any>[]] => {
   const col = _.keys(data[0]).map((k: string) => ({
     key: k,
     title: k,
     dataIndex: k
   }))
-  const display = _.reduce(config.display, (acc: Record<string, any>, v: DisplayType) => ({
-    ...acc, [v.column]: v.type
-  }), {})
+  const fileKeyMap = _.invert(data[0])
+  const display = _.reduce(config.display, (acc: Record<string, any>, v: DisplayType) => {
+    if (type === "dataset")
+      return {...acc, [v.column]: v.type}
+    return {...acc, [fileKeyMap[v.column]]: v.type}
+  }, {})
 
   const d = data.map((i, idx) => {
     const trans = _.transform(i, (r: Record<string, any>, v: any, k: string) => {
@@ -62,9 +67,10 @@ const FlexTableView = (props: FlexTableViewProps) => {
 
 
   const genColumnsAndData = (rawData: Record<string, any>[],
-                             rawConfig: GeneralTableConfigInterface) => {
+                             rawConfig: GeneralTableConfigInterface,
+                             type: DataSelectedType) => {
     if (rawData && rawConfig) {
-      const [col, d] = setColumnsAndTransformData(rawData, rawConfig)
+      const [col, d] = setColumnsAndTransformData(rawData, rawConfig, type)
       setColumns(col)
       setData(d)
     }
@@ -75,9 +81,9 @@ const FlexTableView = (props: FlexTableViewProps) => {
     setConfig(c)
     if (c) {
       if (c.type === "dataset")
-        props.fetchQueryData(props.content).then(res => genColumnsAndData(res, c))
+        props.fetchQueryData(props.content).then(res => genColumnsAndData(res, c, "dataset"))
       if (c.type === "file")
-        genColumnsAndData(props.content.data[0], c)
+        genColumnsAndData(props.content.data[0], c, "file")
     }
   }, [props.content])
 
@@ -88,7 +94,8 @@ const FlexTableView = (props: FlexTableViewProps) => {
       dataSource={data}
       showHeader={!cfg.view.includes("header")}
       bordered={!cfg.view.includes("border")}
-      scroll={{x: true}}
+      size="small"
+      scroll={{x: true, y: props.contentHeight ? props.contentHeight - 60 : undefined}}
       pagination={false}
     />
 

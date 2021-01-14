@@ -74,7 +74,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
       const ctt = {
         ...content,
         date: content.date || DataType.today(),
-        config: {...c, type: dataType}
+        config: {...c, type: dataType, view: c.view || []}
       }
       props.updateContent(ctt)
       message.success("Updating succeeded!")

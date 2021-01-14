@@ -60,6 +60,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
     const flexTable = <FlexTable
       content={props.content}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       styling={styles.contentPanel}
