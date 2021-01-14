@@ -9,11 +9,10 @@ import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
 import _ from "lodash"
 
 import * as DataType from "../../../GalleryDataType"
+import {DataSelectedType, GeneralTableConfigInterface} from "./data"
 import {ModuleEditorField} from "../../Generator/data"
-import {DataSelectedType, DataSourceSelectorForm} from "./DataSourceSelectorForm"
+import {DataSourceSelectorForm} from "./DataSourceSelectorForm"
 
-
-type ViewStyle = "default" | "xlsx"
 
 const viewStyleOptions = [
   {
@@ -26,8 +25,6 @@ const viewStyleOptions = [
   }
 ]
 
-type ViewOption = "header" | "border"
-
 const viewOptionOptions = [
   {
     label: "Hide header",
@@ -39,8 +36,6 @@ const viewOptionOptions = [
   }
 ]
 
-type ColumnTypeOptions = "default" | "date" | "number" | "percent" | "bar"
-
 const columnTypeOptions = [
   "default",
   "date",
@@ -48,18 +43,6 @@ const columnTypeOptions = [
   "percent",
   "bar",
 ]
-
-export interface DisplayType {
-  column: string
-  type: ColumnTypeOptions
-}
-
-export interface GeneralTableConfigInterface {
-  type: DataSelectedType
-  display: DisplayType[]
-  style: ViewStyle
-  view: ViewOption[]
-}
 
 export const GeneralTableEditorField = (props: ModuleEditorField) => {
 

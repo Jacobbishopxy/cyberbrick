@@ -11,9 +11,8 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import {FileExtractModal} from "@/components/FileUploadModal"
 import {fileExtract} from "@/components/Gallery/Misc/FileUploadConfig"
 import * as DataType from "../../../GalleryDataType"
+import {DataSelectedType} from "./data"
 
-
-export type DataSelectedType = "dataset" | "file"
 
 export interface DataSourceSelectorFormProps {
   content?: DataType.Content
