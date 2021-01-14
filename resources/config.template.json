@@ -27,5 +27,5 @@
     "logging": false,
     "uuidExtension": "uuid-ossp"
   },
-  "fmRoot": "Z:"
+  "fmRoot": "/mnt/win_share/ei"
 }
