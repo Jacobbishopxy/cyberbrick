@@ -6,6 +6,7 @@ import React, {useState, useRef, useLayoutEffect} from 'react'
 import {PageContainer} from "@ant-design/pro-layout"
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
+import "@/components/EchartsPro/themes/macarons"
 
 
 const data = [
@@ -87,7 +88,11 @@ export default () => {
   return (
     <PageContainer>
       <div style={{height: "85vh"}} ref={chartRef}>
-        <ReactEcharts option={chartOption} opts={{height: chartHeight}}/>
+        <ReactEcharts
+          option={chartOption}
+          opts={{height: chartHeight}}
+          theme="macarons"
+        />
       </div>
     </PageContainer>
   )

@@ -11,7 +11,6 @@ import {DataSelectedType, DisplayType, GeneralTableConfigInterface} from "./data
 
 export const getColumnsFromRawData = (data0: Record<string, any>,
                                       type: DataSelectedType): ColumnsType<any> => {
-
   switch (type) {
     case "dataset":
       return _.keys(data0).map((k: string) => ({
