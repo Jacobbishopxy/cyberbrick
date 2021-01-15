@@ -37,7 +37,7 @@ export const TimeSetButton = (props: { show: boolean | undefined, onClick: () =>
 export const EditButton = (props: { editContent: (value: boolean) => void }) =>
   <Tooltip title="Edit">
     <Editor
-      icons={{open: "⚙️", close: "❌️"}}
+      icons={{open: "⚙️", close: "✔️"}}
       onChange={props.editContent}
     />
   </Tooltip>

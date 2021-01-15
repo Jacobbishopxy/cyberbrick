@@ -3,91 +3,57 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Col, Input, InputNumber, message, Radio, Row, Space} from "antd"
-import {RadioChangeEvent} from "antd/lib/radio"
+import {Button, Col, Row, Space} from "antd"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
+import {ModalForm, ProFormDigit, ProFormRadio, ProFormText} from "@ant-design/pro-form"
 
 
 const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
-  const radioOnChange = (e: RadioChangeEvent) => {
-    if (content) setContent({
+  const onSubmit = async (values: Record<string, any>) => {
+    const ctt = {
       ...content,
-      data: {...content.data, direction: e.target.value}
-    })
-    else setContent({
-      date: DataType.today(),
-      data: {direction: e.target.value}
-    })
-  }
+      date: content?.date || DataType.today(),
+      data: {...content?.data, ...values}
+    }
+    setContent(ctt)
+    props.updateContent(ctt)
 
-  const inputNumberOnChange = (v: number | string | undefined) => {
-    if (content) setContent({
-      ...content,
-      data: {...content.data, price: v}
-    })
-    else setContent({
-      date: DataType.today(),
-      data: {price: v}
-    })
-  }
-
-  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (content) setContent({
-      ...content,
-      data: {...content.data, note: e.target.value}
-    })
-    else setContent({
-      date: DataType.today(),
-      data: {note: e.target.value}
-    })
-  }
-
-  const buttonOnSave = () => {
-    if (content && content.data.direction && content.data.price) {
-      props.updateContent(content)
-      message.success("Saving succeeded!")
-    } else
-      message.warn("Direction & Price is required!")
+    return true
   }
 
   return (
     <div className={props.styling}>
-      <Space
-        align="center"
-        direction="vertical"
-        style={{position: "relative", top: "25%"}}
+      <ModalForm
+        title="Setup your target price"
+        trigger={<Button type="primary">Update</Button>}
+        initialValues={{}}
+        onFinish={onSubmit}
       >
-        <Radio.Group
-          onChange={radioOnChange}
-          defaultValue={content?.data.direction}
-        >
-          <Radio value="B">Buy</Radio>
-          <Radio value="N">Neutral</Radio>
-          <Radio value="S">Sell</Radio>
-        </Radio.Group>
-        <InputNumber
+        <ProFormRadio.Group
+          name="direction"
+          label="Direction"
+          options={[
+            {label: "Buy", value: "B"},
+            {label: "Neutral", value: "N"},
+            {label: "Sell", value: "S"},
+          ]}
+        />
+        <ProFormDigit
+          name="price"
+          label="Price"
           min={0}
-          step={0.01}
-          onChange={inputNumberOnChange}
-          defaultValue={content?.data.price || 0}
+          fieldProps={{step: 0.01}}
         />
-        <Input
-          placeholder="Note"
-          onChange={inputOnChange}
-          defaultValue={content?.data.note}
+        <ProFormText
+          name="note"
+          label="Note"
         />
-        <Button
-          type="primary"
-          onClick={buttonOnSave}
-        >
-          Update
-        </Button>
-      </Space>
+      </ModalForm>
     </div>
   )
 }
@@ -142,10 +108,10 @@ const PresenterField = (props: ModulePresenterField) =>
         </Col>
       </Row>
 
-      {showDirection(props.content.data.direction, props.content.data.price)}
+      {showDirection(props.content?.data?.direction, props.content?.data?.price)}
 
       <Row>
-        <Col offset={2}>{props.content.data.note}</Col>
+        <Col offset={2}>{props.content?.data?.note}</Col>
       </Row>
     </Space> : <></>
 

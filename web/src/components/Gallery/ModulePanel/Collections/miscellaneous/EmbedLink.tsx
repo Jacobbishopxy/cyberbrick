@@ -15,7 +15,6 @@ const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const onSubmit = async (values: Record<string, any>) => {
-
     const ctt = {
       ...content,
       date: content?.date || DataType.today(),
@@ -32,10 +31,7 @@ const EditorField = (props: ModuleEditorField) => {
       <ModalForm
         title="Place your link below"
         trigger={<Button type="primary">Update</Button>}
-        initialValues={{
-          link: content && content.data && content.data.link ?
-            content.data.link : undefined
-        }}
+        initialValues={{link: content?.data?.link}}
         onFinish={onSubmit}
       >
         <ProFormText name="link" label="Link"/>
@@ -45,8 +41,8 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) =>
-  props.content && props.content.data && props.content.data.link ?
-    <embed className={props.styling} src={props.content.data.link}/> : <></>
+  props.content ?
+    <embed className={props.styling} src={props.content?.data?.link}/> : <></>
 
 export const EmbedLink = new ModuleGenerator(EditorField, PresenterField).generate()
 
