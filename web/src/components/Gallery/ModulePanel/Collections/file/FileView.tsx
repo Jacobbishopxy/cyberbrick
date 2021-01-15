@@ -41,7 +41,7 @@ interface Ancestor {
   type: string
 }
 
-export const EditorField = (props: ModuleEditorField) => {
+const EditorField = (props: ModuleEditorField) => {
 
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
   const [resource, setResource] = useState<Ancestor>()
@@ -89,7 +89,7 @@ export const EditorField = (props: ModuleEditorField) => {
   )
 }
 
-export const PresenterField = (props: ModulePresenterField) => {
+const PresenterField = (props: ModulePresenterField) => {
   const linkRef = useRef<any>(null)
 
   const capabilities = () => [

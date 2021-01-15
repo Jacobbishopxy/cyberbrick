@@ -37,7 +37,6 @@ const FlexTableView = (props: FlexTableViewProps) => {
                              type: DataSelectedType) => {
     if (rawData && rawConfig) {
       const col = getColumnsFromRawData(rawData[0], type)
-      console.log(col)
       const d = transformRawData(rawData, rawConfig, type)
       setColumns(col)
       setData(d)
@@ -83,7 +82,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
 }
 
 
-export const PresenterField = (props: ModulePresenterField) => {
+const PresenterField = (props: ModulePresenterField) => {
 
   return props.content ?
     <FlexTableView

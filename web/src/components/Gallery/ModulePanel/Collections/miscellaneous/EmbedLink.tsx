@@ -3,57 +3,49 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Input, Space} from "antd"
+import {Button} from "antd"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
+import {ModalForm, ProFormText} from "@ant-design/pro-form"
 
 
 const EditorField = (props: ModuleEditorField) => {
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
-  const handleOk = () => {
-    if (content) props.updateContent(content)
-  }
+  const onSubmit = async (values: Record<string, any>) => {
 
-  const linkOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (content) setContent({
+    const ctt = {
       ...content,
-      data: {link: e.target.value}
-    })
-    else setContent({
-      date: DataType.today(),
-      data: {link: e.target.value}
-    })
+      date: content?.date || DataType.today(),
+      data: values
+    }
+    setContent(ctt)
+    props.updateContent(ctt)
+
+    return true
   }
 
   return (
     <div className={props.styling}>
-      <Space direction="vertical" style={{position: "relative", top: "40%"}}>
-        Please enter the link below:
-        <Input
-          style={{width: 400}}
-          placeholder='Link'
-          allowClear
-          onBlur={linkOnChange}
-          defaultValue={content ? content.data.link : null}
-        />
-        <Button
-          type='primary'
-          shape='round'
-          size='small'
-          onClick={handleOk}
-        >
-          Update
-        </Button>
-      </Space>
+      <ModalForm
+        title="Place your link below"
+        trigger={<Button type="primary">Update</Button>}
+        initialValues={{
+          link: content && content.data && content.data.link ?
+            content.data.link : undefined
+        }}
+        onFinish={onSubmit}
+      >
+        <ProFormText name="link" label="Link"/>
+      </ModalForm>
     </div>
   )
 }
 
 const PresenterField = (props: ModulePresenterField) =>
-  props.content ?
+  props.content && props.content.data && props.content.data.link ?
     <embed className={props.styling} src={props.content.data.link}/> : <></>
 
 export const EmbedLink = new ModuleGenerator(EditorField, PresenterField).generate()
