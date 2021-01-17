@@ -2,76 +2,44 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React, {useState} from 'react'
-import {Button, Space} from "antd"
-import {FileManager, FileNavigator} from '@opuscapita/react-filemanager'
-import connectorNodeV1 from '@opuscapita/react-filemanager-connector-node-v1'
+import React from 'react'
+import RGL, {WidthProvider} from "react-grid-layout"
 
+const GridLayout = WidthProvider(RGL)
 
-const apiOptions  = {
-  ...connectorNodeV1.apiOptions,
-  apiRoot: "/api/fm",
+const gridLayoutDefaultProps = {
+  className: "layout",
+  cols: 12,
+  rowHeight: 20,
 }
-
-interface Capabilities {
-  canAddChildren: boolean
-  canCopy: boolean
-  canDelete: boolean
-  canDownload: boolean
-  canEdit: boolean
-  canListChildren: boolean
-  canRemoveChildren: boolean
-  canRename: boolean
-}
-
-interface Ancestor {
-  id: string
-  parentId?: string
-  ancestors: Ancestor[]
-  capabilities: Capabilities
-  name?: string
-  createdTime: string
-  modifiedTime: string
-  type: string
-}
-
 
 export default () => {
 
-  const [resource, setResource] = useState<Ancestor>()
-  const [currentResourceId, setCurrentResourceId] = useState<string>()
-
-
-  const onButtonClick = () => {
-    if (resource) {
-      setCurrentResourceId(resource.id)
-    }
-  }
+  const layout = [
+    {i: 'a', x: 0, y: 0, w: 1, h: 2},
+    {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
+    {i: 'c', x: 4, y: 0, w: 1, h: 2}
+  ]
 
   return (
-    <div style={{height: '80vh'}}>
-      <Space direction="horizontal">
-        <Button
-          type="primary"
-          onClick={onButtonClick}
+    <GridLayout
+      {...gridLayoutDefaultProps}
+      layout={layout}
+      // isDraggable={false}  // todo: set to false when children required editing
+    >
+      <div key="a" style={{background: "gray"}}>
+        <GridLayout
+          {...gridLayoutDefaultProps}
+          layout={layout}
         >
-          Inform
-        </Button>
-        <h1>{currentResourceId}</h1>
-      </Space>
-
-      <FileManager>
-        <FileNavigator
-          id="fm-dev"
-          api={connectorNodeV1.api}
-          apiOptions={apiOptions}
-          initialResourceId={currentResourceId}
-          listViewLayout={connectorNodeV1.listViewLayout}
-          viewLayoutOptions={connectorNodeV1.viewLayoutOptions}
-          onResourceChange={setResource}
-        />
-      </FileManager>
-    </div>
+          <div key="a" style={{background: "lightgray"}}>a</div>
+          <div key="b" style={{background: "lightgray"}}>b</div>
+          <div key="c" style={{background: "lightgray"}}>c</div>
+        </GridLayout>
+      </div>
+      <div key="b" style={{background: "gray"}}>b</div>
+      <div key="c" style={{background: "gray"}}>c</div>
+    </GridLayout>
   )
 }
 

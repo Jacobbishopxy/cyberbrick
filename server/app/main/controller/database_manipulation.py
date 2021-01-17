@@ -153,6 +153,11 @@ class DatabaseManipulationController(Controller):
 
             return make_response(jsonify(res_success), 201)
 
+        # todo: export data from database, new POST JSON structure
+        @bp.route("/exportData", methods=["POST"])
+        def export_data_api():
+            return
+
         @bp.route("/renameTable", methods=["POST"])
         def rename_table_api():
             db_id = request.args.get("id")

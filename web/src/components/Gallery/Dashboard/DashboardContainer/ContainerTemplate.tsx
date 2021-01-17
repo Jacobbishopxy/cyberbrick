@@ -17,7 +17,7 @@ const reactGridLayoutDefaultProps = {
   draggableHandle: ".draggableHandler",
   className: "layout",
   cols: 24,
-  rowHeight: 100,
+  rowHeight: 20,
   margin: [5, 5] as [number, number],
   containerPadding: [10, 10] as [number, number],
 }
@@ -101,7 +101,7 @@ export const ContainerTemplate =
           timeSeries,
           x: 0,
           y: Infinity,
-          h: 4,
+          h: 20,
           w: 12,
         } as Element
         setElements(newElementInLayout(elements, newEle))
