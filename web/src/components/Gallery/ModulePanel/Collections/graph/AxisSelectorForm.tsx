@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 12/2/2020
  */
 
-import React, {useEffect, useState} from 'react'
-import {ProFormSelect} from "@ant-design/pro-form"
+import React, {useState} from 'react'
+import ProForm, {ProFormSelect} from "@ant-design/pro-form"
 import {Button, Form, Radio, Select, Space, Tooltip} from "antd"
 import {DeleteTwoTone, InfoCircleTwoTone, PlusOutlined} from "@ant-design/icons"
 import _ from "lodash"
@@ -12,7 +12,6 @@ import _ from "lodash"
 export interface AxisSelectorFormProps {
   mixin: boolean
   columns?: string[]
-  getYAxis: (columns: string[]) => void
 }
 
 export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
@@ -44,44 +43,28 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
 
   const getYAxisRest = () => _.differenceWith(yAxis, _.flatten(yAxisRecord))
 
-  useEffect(() => props.getYAxis(getYAxisRest()), [yAxis, yAxisRecord])
 
   return props.columns ? (
     <>
-      {
-        props.mixin ?
-          <ProFormSelect
-            name="bar"
-            label="Display as Bar chart"
-            fieldProps={{mode: "multiple"}}
-            options={props.columns.map(c => ({label: c, value: c}))}
-          /> : <></>
-      }
-
-      <Form.Item style={{marginBottom: 0}}>
+      <ProForm.Group>
         <Form.Item
           name={["x", "column"]}
           label="X-Axis"
-          rules={[{required: true, message: "Please select a column for xAxis!"}]}
-          style={{display: 'inline-block', width: 'calc(50% - 10px)'}}
+          rules={[{required: true, message: "Select a column for xAxis!"}]}
         >
           <Select
-            placeholder="Please select a column to be xAxis!"
+            placeholder="Select a column to be xAxis!"
             onChange={xAxisOnChange}
+            style={{width: 200}}
           >
             {props.columns.map(c => <Select.Option key={c} value={c}>{c}</Select.Option>)}
           </Select>
         </Form.Item>
 
-        <span
-          style={{display: 'inline-block', width: '20px', lineHeight: '32px', textAlign: 'center'}}
-        />
-
         <Form.Item
           name={["x", "type"]}
           label="Type"
-          rules={[{required: true, message: "Please select a type for xAxis!"}]}
-          style={{display: 'inline-block', width: 'calc(50% - 10px)'}}
+          rules={[{required: true, message: "Select a type for xAxis!"}]}
         >
           <Radio.Group>
             <Radio value="value">Value</Radio>
@@ -90,7 +73,18 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
             <Radio value="log">Log</Radio>
           </Radio.Group>
         </Form.Item>
-      </Form.Item>
+      </ProForm.Group>
+
+      {
+        props.mixin ?
+          <ProFormSelect
+            name="bar"
+            label={<><span style={{fontWeight: "bold"}}>[Optional] </span> Display as Bar chart</>}
+            fieldProps={{mode: "multiple"}}
+            options={props.columns.map(c => ({label: c, value: c}))}
+            width="lg"
+          /> : <></>
+      }
 
       <Space style={{marginBottom: 8}}>
         Y-Axis Extra

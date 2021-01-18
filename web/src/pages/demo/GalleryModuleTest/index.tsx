@@ -10,8 +10,7 @@ import * as GalleryService from "@/services/gallery"
 import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import {FlexTable} from "@/components/Gallery/ModulePanel/Collections/table/FlexTable"
-
+import {LineBar} from "@/components/Gallery/ModulePanel/Collections/graph/LineBar"
 
 export default () => {
 
@@ -49,7 +48,7 @@ export default () => {
       style={{height: "85vh"}}
       bodyStyle={{height: "100%"}}
     >
-      <FlexTable
+      <LineBar
         content={content}
         fetchStorages={fetchStorages}
         fetchTableList={fetchTableList}
