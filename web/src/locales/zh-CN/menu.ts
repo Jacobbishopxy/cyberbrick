@@ -60,6 +60,7 @@ export default {
   'menu.demo.localstorage': 'Local Storage',
   'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
+  'menu.demo.module-test': 'Module Test',
   'menu.demo.component-test': 'Component Test',
 
   'menu.document': 'Document',

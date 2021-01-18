@@ -2,6 +2,7 @@
 import {defineConfig} from 'umi'
 import defaultSettings from './defaultSettings'
 import proxy from './proxy'
+import {demoRoute} from "./demoRoute"
 
 const {REACT_APP_ENV} = process.env
 
@@ -98,33 +99,7 @@ export default defineConfig({
         },
       ]
     },
-    {
-      path: '/demo',
-      name: 'demo',
-      icon: 'ExperimentOutlined',
-      routes: [
-        {
-          name: 'localstorage',
-          path: '/demo/localstorage',
-          component: './demo/LocalStorage',
-        },
-        {
-          name: 'rectangle-chart',
-          path: '/demo/rectangle-chart',
-          component: './demo/RectangleChart',
-        },
-        {
-          name: 'charts',
-          path: '/demo/charts',
-          component: './demo/Charts',
-        },
-        {
-          name: 'component-test',
-          path: '/demo/component-test',
-          component: './demo/ComponentTest',
-        },
-      ],
-    },
+    ...demoRoute(REACT_APP_ENV),
     {
       path: '/document',
       name: 'document',
