@@ -3,8 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Form, message, Modal, Select, Space} from "antd"
-import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
+import {Button, Form, message, Modal} from "antd"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
 import _ from "lodash"
 
@@ -12,6 +11,7 @@ import * as DataType from "../../../GalleryDataType"
 import {DataSelectedType, GeneralTableConfigInterface} from "./data"
 import {ModuleEditorField} from "../../Generator/data"
 import {DataSourceSelectorForm} from "./DataSourceSelectorForm"
+import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 
 
 const viewStyleOptions = [
@@ -34,14 +34,6 @@ const viewOptionOptions = [
     label: "Hide border",
     value: "border"
   }
-]
-
-const columnTypeOptions = [
-  "default",
-  "date",
-  "number",
-  "percent",
-  "bar",
 ]
 
 export const GeneralTableEditorField = (props: ModuleEditorField) => {
@@ -101,6 +93,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
             onCancel={() => setVisible(false)}
             footer={submitter}
             destroyOnClose
+            width="30vw"
           >
             {dom}
           </Modal>
@@ -143,63 +136,9 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
           name="display"
           title="Display"
         >
-          <Form.List name="display">
-            {(fields, {add, remove}) =>
-              <>
-                {fields.map((field) =>
-                  <Space key={field.key} style={{display: "flex"}}>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "column"]}
-                      fieldKey={[field.fieldKey, "column"]}
-                      label="Column"
-                      rules={[{required: true, message: "Missing field"}]}
-                    >
-                      <Select placeholder="Column" style={{width: 100}}>
-                        {
-                          dataColumns.map(c =>
-                            <Select.Option key={c} value={c}>{c}</Select.Option>
-                          )
-                        }
-                      </Select>
-                    </Form.Item>
-
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "type"]}
-                      fieldKey={[field.fieldKey, "type"]}
-                      label="Type"
-                      rules={[{required: true, message: "Missing field"}]}
-                    >
-                      <Select placeholder="Type" style={{width: 100}}>
-                        {
-                          columnTypeOptions.map(t =>
-                            <Select.Option key={t} value={t}>{t}</Select.Option>
-                          )
-                        }
-                      </Select>
-                    </Form.Item>
-
-                    <DeleteTwoTone
-                      twoToneColor="red"
-                      onClick={() => remove(field.name)}
-                      style={{fontSize: 20, marginTop: 7}}
-                    />
-                  </Space>
-                )}
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    block
-                    icon={<PlusOutlined/>}
-                    onClick={() => add()}
-                  >
-                    Add criteria
-                  </Button>
-                </Form.Item>
-              </>
-            }
-          </Form.List>
+          <Form>
+            <ColumnIdentifier columns={dataColumns}/>
+          </Form>
         </StepsForm.StepForm>
       </StepsForm>
     </div>

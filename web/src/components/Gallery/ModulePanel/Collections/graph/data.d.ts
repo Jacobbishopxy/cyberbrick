@@ -7,6 +7,7 @@ export interface Y {
   columns: string[]
 }
 
+// todo: data trim
 export interface ChartConfig {
   bar?: string[]
   x: {

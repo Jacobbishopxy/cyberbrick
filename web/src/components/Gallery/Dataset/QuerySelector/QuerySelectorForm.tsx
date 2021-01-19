@@ -5,7 +5,7 @@
 import React, {useRef} from 'react'
 import ProForm from "@ant-design/pro-form"
 
-import {BaseFormItems, BaseFormItemsRef} from "./BaseFormItems"
+import {QueryConditionFormItems, BaseFormItemsRef} from "./QueryConditionFormItems"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export interface QuerySelectorFormProps {
@@ -33,7 +33,7 @@ export const QuerySelectorForm = (props: QuerySelectorFormProps) => {
       initialValues={props.initialValues}
       style={props.style}
     >
-      <BaseFormItems
+      <QueryConditionFormItems
         initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}

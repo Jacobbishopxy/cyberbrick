@@ -100,7 +100,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
             title="Data"
             onFinish={dataSelectOnFinish}
           >
-            <Space>
+            <Space align="baseline">
               <QuerySelectorModal
                 trigger={
                   <Button
@@ -123,6 +123,10 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
               }
             </Space>
           </StepsForm.StepForm>
+
+          {
+            // todo: data trim
+          }
 
           <StepsForm.StepForm
             name="config"

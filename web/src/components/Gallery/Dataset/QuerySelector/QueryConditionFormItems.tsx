@@ -35,7 +35,7 @@ export interface BaseFormItemsRef {
   onValuesChange: (values: Record<string, any>) => void
 }
 
-export const BaseFormItems =
+export const QueryConditionFormItems =
   forwardRef((props: BaseFormItemsProps, ref: React.Ref<BaseFormItemsRef>) => {
 
     const [storage, setStorage] = useState<string>(props.initialValues?.id || undefined)
