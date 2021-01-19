@@ -3,43 +3,33 @@
  */
 
 import React from 'react'
-import RGL, {WidthProvider} from "react-grid-layout"
+import ProForm from '@ant-design/pro-form'
 
-const GridLayout = WidthProvider(RGL)
+import {AxisSelectorForm} from "@/components/Gallery/ModulePanel/Collections/graph/AxisSelectorForm"
 
-const gridLayoutDefaultProps = {
-  className: "layout",
-  cols: 12,
-  rowHeight: 20,
-}
+
+const columns = [
+  "Jacob",
+  "Sam",
+  "MZ",
+  "John",
+  "Gary",
+  "Lucas",
+  "Larry",
+  "Adam",
+]
+
+
 
 export default () => {
 
-  const layout = [
-    {i: 'a', x: 0, y: 0, w: 1, h: 2},
-    {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
-    {i: 'c', x: 4, y: 0, w: 1, h: 2}
-  ]
+  const onFinish = async (values: any) => console.log(values)
+
 
   return (
-    <GridLayout
-      {...gridLayoutDefaultProps}
-      layout={layout}
-      // isDraggable={false}  // todo: set to false when children required editing
-    >
-      <div key="a" style={{background: "gray"}}>
-        <GridLayout
-          {...gridLayoutDefaultProps}
-          layout={layout}
-        >
-          <div key="a" style={{background: "lightgray"}}>a</div>
-          <div key="b" style={{background: "lightgray"}}>b</div>
-          <div key="c" style={{background: "lightgray"}}>c</div>
-        </GridLayout>
-      </div>
-      <div key="b" style={{background: "gray"}}>b</div>
-      <div key="c" style={{background: "gray"}}>c</div>
-    </GridLayout>
+    <ProForm onFinish={onFinish}>
+      <AxisSelectorForm mixin columns={columns}/>
+    </ProForm>
   )
 }
 

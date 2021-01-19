@@ -49,7 +49,7 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
       {(fields, {add, remove}) =>
         <>
           {fields.map((field, idx) =>
-            <Space key={field.key}  style={{display: "flex"}}>
+            <Space key={field.key} style={{display: "flex"}}>
               <Form.Item
                 {...field}
                 name={[field.name, "column"]}
@@ -59,7 +59,7 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
               >
                 <Select
                   placeholder="Column"
-                  style={{width: 100}}
+                  style={{width: 150}}
                   onChange={onColumnSelect(idx)}
                 >
                   {
@@ -77,7 +77,7 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
                 label="Type"
                 rules={[{required: true, message: "Missing field"}]}
               >
-                <Select placeholder="Type" style={{width: 100}}>
+                <Select placeholder="Type" style={{width: 150}}>
                   {
                     columnTypeOptions.map(t =>
                       <Select.Option key={t} value={t}>{t}</Select.Option>

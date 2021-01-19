@@ -4,7 +4,8 @@
 
 import {EChartOption} from "echarts"
 
-import {ChartConfig} from "./data"
+import {ChartConfig} from "@/components/Gallery/Utils/data"
+import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
 
 
 const generateYAxis = (config: ChartConfig) => {
@@ -26,6 +27,7 @@ const generateYAxis = (config: ChartConfig) => {
     }
 
     return {
+      name: item.name,
       position: item.position,
       splitLine: {show: idx === 0},
       offset: offsetNum * 50
@@ -67,11 +69,19 @@ const generateSeries = (config: ChartConfig, chartType: ChartType): [EChartOptio
 export const generateLineBarOption = (chartType: ChartType) =>
   (data: any[], config: ChartConfig): EChartOption => {
     const [series, legend] = generateSeries(config, chartType)
+
+    let d
+    if (config.display) {
+      const display = genDisplayConfig(data, config.display, "dataset")
+      d = data.map(i => transformRowDataForChart(i, display))
+    } else
+      d = data
+
     return {
       tooltip: {},
       legend: {data: legend},
-      dataset: [{source: data}],
-      xAxis: [{type: config.x.type}],
+      dataset: [{source: d}],
+      xAxis: [{type: config.x.type, name: config.x.name, nameLocation: "middle"}],
       yAxis: generateYAxis(config),
       series
     }

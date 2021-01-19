@@ -4,8 +4,8 @@
 
 import React, {useState} from 'react'
 import ProForm, {ProFormSelect} from "@ant-design/pro-form"
-import {Button, Form, Radio, Select, Space, Tooltip} from "antd"
-import {DeleteTwoTone, InfoCircleTwoTone, PlusOutlined} from "@ant-design/icons"
+import {Button, Form, Input, Radio, Select, Space} from "antd"
+import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 import _ from "lodash"
 
 
@@ -46,14 +46,14 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
 
   return props.columns ? (
     <>
-      <ProForm.Group>
+      <ProForm.Group title="X">
         <Form.Item
           name={["x", "column"]}
           label="X-Axis"
           rules={[{required: true, message: "Select a column for xAxis!"}]}
         >
           <Select
-            placeholder="Select a column to be xAxis!"
+            placeholder="Select a column for xAxis!"
             onChange={xAxisOnChange}
             style={{width: 200}}
           >
@@ -73,30 +73,43 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
             <Radio value="log">Log</Radio>
           </Radio.Group>
         </Form.Item>
+
+        <Form.Item
+          name={["x", "name"]}
+          label="Name"
+        >
+          <Input style={{width: 200}} placeholder="Name of X-axis"/>
+        </Form.Item>
       </ProForm.Group>
 
-      {
-        props.mixin ?
-          <ProFormSelect
-            name="bar"
-            label={<><span style={{fontWeight: "bold"}}>[Optional] </span> Display as Bar chart</>}
-            fieldProps={{mode: "multiple"}}
-            options={props.columns.map(c => ({label: c, value: c}))}
-            width="lg"
-          /> : <></>
-      }
+      <ProForm.Group title="Y">
+        <Space direction="vertical" style={{marginBottom: 24}}>
+          <div>Y-Axis (View only)</div>
+          <Select
+            mode="multiple"
+            placeholder="Field"
+            style={{width: 200}}
+            value={getYAxisRest()}
+            maxTagCount="responsive"
+          >
+            {
+              getYAxisRest().map(c => <Select.Option key={c} value={c}>{c}</Select.Option>)
+            }
+          </Select>
+        </Space>
+        <Form.Item
+          name="yDefaultName"
+          label="Name"
+        >
+          <Input style={{width: 200}} placeholder="Name of X-axis"/>
+        </Form.Item>
+      </ProForm.Group>
 
-      <Space style={{marginBottom: 8}}>
-        Y-Axis Extra
-        <Tooltip title="Optional: only config for extra y-axis">
-          <InfoCircleTwoTone/>
-        </Tooltip>
-      </Space>
       <Form.List name="y">
         {(fields, {add, remove}) => (
           <>
             {fields.map((field, idx) => (
-              <Space key={field.key} style={{display: 'flex'}}>
+              <ProForm.Group key={idx}>
                 <Form.Item
                   {...field}
                   name={[field.name, 'columns']}
@@ -130,6 +143,15 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
                   </Radio.Group>
                 </Form.Item>
 
+                <Form.Item
+                  {...field}
+                  name={[field.name, "name"]}
+                  fieldKey={[field.fieldKey, 'name']}
+                  label="Name"
+                >
+                  <Input placeholder="Name of Y-axis"/>
+                </Form.Item>
+
                 <DeleteTwoTone
                   twoToneColor="red"
                   onClick={() => {
@@ -138,7 +160,7 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
                   }}
                   style={{fontSize: 20, marginTop: 7}}
                 />
-              </Space>
+              </ProForm.Group>
             ))}
             <Form.Item>
               <Button
@@ -153,6 +175,17 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
           </>
         )}
       </Form.List>
+
+      {
+        props.mixin ?
+          <ProFormSelect
+            name="bar"
+            label="Display as Bar chart"
+            fieldProps={{mode: "multiple"}}
+            options={props.columns.map(c => ({label: c, value: c}))}
+            width="lg"
+          /> : <></>
+      }
     </>
   ) : <></>
 }

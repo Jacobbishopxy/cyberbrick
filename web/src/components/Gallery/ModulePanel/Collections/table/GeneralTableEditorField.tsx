@@ -3,12 +3,12 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Form, message, Modal} from "antd"
+import {Button, message, Modal} from "antd"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
 import _ from "lodash"
 
 import * as DataType from "../../../GalleryDataType"
-import {DataSelectedType, GeneralTableConfigInterface} from "./data"
+import {DataSelectedType, GeneralTableConfigInterface} from "@/components/Gallery/Utils/data"
 import {ModuleEditorField} from "../../Generator/data"
 import {DataSourceSelectorForm} from "./DataSourceSelectorForm"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
@@ -136,9 +136,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
           name="display"
           title="Display"
         >
-          <Form>
-            <ColumnIdentifier columns={dataColumns}/>
-          </Form>
+          <ColumnIdentifier columns={dataColumns}/>
         </StepsForm.StepForm>
       </StepsForm>
     </div>

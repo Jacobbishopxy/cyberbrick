@@ -14,8 +14,9 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
-import {ChartConfig} from "./data"
+import {ChartConfig} from "../../../Utils/data"
 import {AxisSelectorForm} from "./AxisSelectorForm"
+import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 
 
 export const generateCommonEditorField = (mixin: boolean = false) =>
@@ -49,10 +50,10 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
         if (v.y) {
           const yColNames = _.reduce(v.y, (acc: string[], i) =>
             ([...acc, ...i.columns]), [])
-          const baseY = [{position: "left", columns: _.difference(ys, yColNames)}]
+          const baseY = [{position: "left", columns: _.difference(ys, yColNames), name: v.yDefaultName}]
           config = {...v, y: [...baseY, ...v.y]}
         } else
-          config = {...v, y: [{position: "left", columns: ys}]}
+          config = {...v, y: [{position: "left", columns: ys, name: v.yDefaultName}]}
 
         const ctt = {...content, config}
         props.updateContent(ctt)
@@ -89,7 +90,7 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
               onCancel={() => setVisible(false)}
               footer={submitter}
               destroyOnClose
-              width="40vw"
+              width="60vw"
             >
               {dom}
             </Modal>
@@ -124,9 +125,12 @@ export const generateCommonEditorField = (mixin: boolean = false) =>
             </Space>
           </StepsForm.StepForm>
 
-          {
-            // todo: data trim
-          }
+          <StepsForm.StepForm
+            name="data-transform"
+            title="Data transform"
+          >
+            <ColumnIdentifier columns={columns!}/>
+          </StepsForm.StepForm>
 
           <StepsForm.StepForm
             name="config"

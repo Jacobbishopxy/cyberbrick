@@ -8,8 +8,8 @@ import {ColumnsType} from "antd/lib/table/interface"
 import {HotTable} from "@handsontable/react"
 
 import * as DataType from "../../../GalleryDataType"
-import {DataSelectedType, GeneralTableConfigInterface} from "./data"
-import {getColumnsFromRawData, transformRawData} from "./utils"
+import {DataSelectedType, GeneralTableConfigInterface} from "@/components/Gallery/Utils/data"
+import {getColumnsFromRawData, transformRawDataBySourceType} from "../../../Utils/rawDataTransform"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModulePresenterField} from "../../Generator/data"
 import {GeneralTableEditorField} from "./GeneralTableEditorField"
@@ -37,7 +37,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
                              type: DataSelectedType) => {
     if (rawData && rawConfig) {
       const col = getColumnsFromRawData(rawData[0], type)
-      const d = transformRawData(rawData, rawConfig, type)
+      const d = transformRawDataBySourceType(rawData, rawConfig, type)
       setColumns(col)
       setData(d)
     }
