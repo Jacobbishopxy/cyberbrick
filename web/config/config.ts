@@ -52,26 +52,29 @@ export default defineConfig({
       icon: 'smile',
       component: './Welcome',
     },
-    {
-      path: '/admin',
-      name: 'admin',
-      icon: 'crown',
-      access: 'canAdmin',
-      component: './Admin',
-      routes: [
-        {
-          path: '/admin/sub-page',
-          name: 'sub-page',
-          icon: 'smile',
-          component: './Welcome',
-        },
-      ],
-    },
+    // {
+    //   path: '/admin',
+    //   name: 'admin',
+    //   icon: 'crown',
+    //   access: 'canAdmin',
+    //   component: './Admin',
+    //   routes: [
+    //     {
+    //       path: '/admin/sub-page',
+    //       name: 'sub-page',
+    //       icon: 'smile',
+    //       component: './Welcome',
+    //     },
+    //   ],
+    // },
     {
       path: "/gallery",
       name: "gallery",
       icon: "BankOutlined",
       access: "canOnline",
+      layout: {
+        hideFooter: true
+      },
       routes: [
         {
           name: "configuration",
@@ -99,19 +102,26 @@ export default defineConfig({
         },
       ]
     },
-    ...demoRoute(REACT_APP_ENV),
     {
       path: '/document',
       name: 'document',
       icon: 'BookOutlined',
       routes: [
         {
+          name: 'manual',
+          icon: "FileMarkdownOutlined",
+          path: '/document/manual',
+          component: './document/Manual'
+        },
+        {
           name: 'gallery',
+          icon: "CodeOutlined",
           path: '/document/gallery',
           component: './document/Gallery'
-        }
+        },
       ]
     },
+    ...demoRoute(REACT_APP_ENV),
     {
       path: '/',
       redirect: '/welcome',

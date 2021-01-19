@@ -64,6 +64,7 @@ export default {
   'menu.demo.component-test': 'Component Test',
 
   'menu.document': 'Document',
+  'menu.document.manual': 'Manual',
   'menu.document.gallery': 'Gallery',
 
 }
