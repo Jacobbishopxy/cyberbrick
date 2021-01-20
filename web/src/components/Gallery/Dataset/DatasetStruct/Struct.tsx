@@ -72,7 +72,7 @@ export const Struct = (props: StructProps) => {
   }
 
   return (
-    <Card size="small" style={{minHeight: "85vh"}}>
+    <Card size="small" style={{minHeight: "90vh"}}>
       <Row>
         <Col span={4}>
           <Sider

@@ -153,6 +153,7 @@ export interface SiderProps {
   style?: React.CSSProperties
 }
 
+// todo: search table name
 export const Sider = (props: SiderProps) => {
 
   const renderItem = (item: string) =>
@@ -177,7 +178,7 @@ export const Sider = (props: SiderProps) => {
             size="small"
             pagination={{
               size: "small",
-              defaultPageSize: 15,
+              defaultPageSize: 20,
               showSizeChanger: true
             }}
             dataSource={props.tableList}

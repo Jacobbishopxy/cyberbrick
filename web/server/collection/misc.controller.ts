@@ -28,7 +28,7 @@ export class MiscController {
   }
 
   @Get("manual/getManualImage")
-  async getManualImage(@Query() name: string,
+  async getManualImage(@Query("name") name: string,
                        @Res() res: Response) {
     return res.sendFile(this.service.getManualImage(name))
   }
