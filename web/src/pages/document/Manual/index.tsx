@@ -4,13 +4,26 @@
 
 import React from 'react'
 import {PageContainer} from "@ant-design/pro-layout"
+import {Card, Col, Row} from "antd"
+
+import {ManualAnchor} from "./ManualAnchor"
+import {ManualContent} from "./ManualContent"
 
 
 export default () => {
 
   return (
     <PageContainer>
-      Template
+      <Card>
+        <Row>
+          <Col span={20}>
+            <ManualContent/>
+          </Col>
+          <Col span={4}>
+            <ManualAnchor/>
+          </Col>
+        </Row>
+      </Card>
     </PageContainer>
   )
 }
