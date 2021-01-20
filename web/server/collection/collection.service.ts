@@ -26,4 +26,7 @@ export class CollectionService {
 
   getAsset = (name: string) =>
     join(__dirname, assetsPath, name)
+
+  getManualImage = (name: string) =>
+    join(__dirname, `${publicPath}/manual`, name)
 }

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/17/2020.
  */
 
-import {Controller, Get, Res} from '@nestjs/common'
+import {Controller, Get, Query, Res} from '@nestjs/common'
 import {Response} from "express"
 
 import {CollectionService} from "./collection.service"
@@ -25,6 +25,12 @@ export class MiscController {
   @Get("document/rocket")
   async getDocumentRocket(@Res() res: Response) {
     return res.sendFile(this.service.getDocument("NewRocket.png"))
+  }
+
+  @Get("manual/getManualImage")
+  async getManualImage(@Query() name: string,
+                       @Res() res: Response) {
+    return res.sendFile(this.service.getManualImage(name))
   }
 }
 
