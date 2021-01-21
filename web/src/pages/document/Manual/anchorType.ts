@@ -53,41 +53,46 @@ export const anchorList: AnchorType[] = [
       {
         id: "3-b-edit",
         name: "b. 编辑",
+      },
+      {
+        id: "3-c-module",
+        name: "c. 模板",
         children: [
           {
-            id: "3-b-module-link",
+            id: "3-c-module-link",
             name: "[模板]链接"
           },
           {
-            id: "3-b-module-text",
+            id: "3-c-module-text",
             name: "[模板]文章"
           },
           {
-            id: "3-b-module-target-price",
+            id: "3-c-module-target-price",
             name: "[模板]目标价"
           },
           {
-            id: "3-b-module-file-management",
+            id: "3-c-module-file-management",
             name: "[模板]文件管理"
           },
           {
-            id: "3-b-module-table",
+            id: "3-c-module-table",
             name: "[模板]表格"
           },
           {
-            id: "3-b-module-line",
+            id: "3-c-module-line",
             name: "[模板]折线图"
           },
           {
-            id: "3-b-module-bar",
+            id: "3-c-module-bar",
             name: "[模板]柱状图"
           },
           {
-            id: "3-b-module-line-bar",
+            id: "3-c-module-line-bar",
             name: "[模板]折线柱状混合图"
           },
         ]
       },
+
     ]
   },
 ]

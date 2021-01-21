@@ -42,16 +42,21 @@ const EditorField = (props: ModuleEditorField) => {
             {label: "Neutral", value: "N"},
             {label: "Sell", value: "S"},
           ]}
+          rules={[{required: true, message: "Please choose a direction"}]}
         />
         <ProFormDigit
           name="price"
           label="Price"
           min={0}
           fieldProps={{step: 0.01}}
+          placeholder="Please enter your target price"
+          width="lg"
+          rules={[{required: true, message: "Please enter target price"}]}
         />
         <ProFormText
           name="note"
           label="Note"
+          placeholder="Please enter your note, this is optional"
         />
       </ModalForm>
     </div>

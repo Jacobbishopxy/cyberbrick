@@ -16,10 +16,10 @@ export default () => {
     <PageContainer>
       <Card>
         <Row>
-          <Col span={20}>
+          <Col offset={2} span={16} style={{paddingRight:5}}>
             <ManualContent/>
           </Col>
-          <Col span={4}>
+          <Col offset={2} span={4} style={{paddingLeft:5}}>
             <ManualAnchor/>
           </Col>
         </Row>
