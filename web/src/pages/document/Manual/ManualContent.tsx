@@ -293,21 +293,95 @@ export const ManualContent = () => {
 
         <div id={anchorList[2].children![2].children![4].id}>
           <Title level={3}>[模板]表格</Title>
+          表格现在分为两类：
+          <ul>
+            <li><Text strong>Xlsx风格表</Text>: 提供类似Excel风格的表格，无类型约束并且可以切换工作簿。</li>
+            <li><Text strong>普通表格</Text>: 支持上传Excel文件以及直接引用Dataset中的表。</li>
+          </ul>
+          <Title level={4}>Xlsx风格表</Title>
+          <Image
+            src={imageSrc("module-table-xlsx.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-xlsx1.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-xlsx2.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-xlsx3.jpg")}
+            className={Styling.manualImg}
+          />
+          <Title level={4}>普通表格</Title>
+          <Image
+            src={imageSrc("module-table-flex.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-flex1.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-flex2.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-flex3.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-table-flex4.jpg")}
+            className={Styling.manualImg}
+          />
         </div>
 
         <div id={anchorList[2].children![2].children![5].id}>
           <Title level={3}>[模板]折线图</Title>
+          <Image
+            src={imageSrc("module-line.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-line1.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-line2.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-line3.jpg")}
+            className={Styling.manualImg}
+          />
         </div>
 
         <div id={anchorList[2].children![2].children![6].id}>
           <Title level={3}>[模板]柱状图</Title>
+          <Text>柱状图的设置步骤与折线图完全相同，请参考折线图。</Text>
         </div>
 
         <div id={anchorList[2].children![2].children![7].id}>
           <Title level={3}>[模板]折线柱状混合图</Title>
+          <Image
+            src={imageSrc("module-line-bar.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-line-bar1.jpg")}
+            className={Styling.manualImg}
+          />
         </div>
 
         <Divider/>
+
+        <Paragraph>
+          <Text>最后一次更新日期： 2021-1-22</Text>
+          <br/>
+          <Text>如有任何疑问请联系开发者</Text>
+        </Paragraph>
 
       </Space>
     </Typography>

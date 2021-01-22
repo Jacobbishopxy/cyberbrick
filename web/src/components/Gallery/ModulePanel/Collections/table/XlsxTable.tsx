@@ -105,7 +105,7 @@ const EditorField = (props: ModuleEditorField) => {
             type="primary"
             onClick={() => setUploadVisible(true)}
           >
-            Click
+            Upload
           </Button>
           <FileExtractModal
             setVisible={setUploadVisible}
