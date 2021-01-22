@@ -8,7 +8,18 @@ import {ChartConfig} from "@/components/Gallery/Utils/data"
 import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
 
 
-const generateYAxis = (config: ChartConfig) => {
+const generateXAxis = (config: ChartConfig): EChartOption.XAxis[] => {
+  return [
+    {
+      type: config.x.type,
+      name: config.x.name,
+      nameLocation: "middle",
+      nameGap: 20
+    }
+  ]
+}
+
+const generateYAxis = (config: ChartConfig): EChartOption.YAxis[] => {
 
   let left = -1
   let right = -1
@@ -81,7 +92,7 @@ export const generateLineBarOption = (chartType: ChartType) =>
       tooltip: {},
       legend: {data: legend},
       dataset: [{source: d}],
-      xAxis: [{type: config.x.type, name: config.x.name, nameLocation: "middle"}],
+      xAxis: generateXAxis(config),
       yAxis: generateYAxis(config),
       series
     }
