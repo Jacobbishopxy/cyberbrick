@@ -9,10 +9,37 @@ import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 import _ from "lodash"
 
 
+export type Mixin = "lineBar" | "lineScatter" | undefined
+
 export interface AxisSelectorFormProps {
-  mixin: boolean
+  mixin: Mixin
   columns?: string[]
 }
+
+const mixinFormGenerator = (mixin: Mixin, columns: string[]) => {
+  switch (mixin) {
+    case "lineBar":
+      return <ProFormSelect
+        name="bar"
+        label="Display as Bar chart"
+        fieldProps={{mode: "multiple"}}
+        options={columns.map(c => ({label: c, value: c}))}
+        width="lg"
+      />
+    case "lineScatter":
+      // todo: optional double select is required for scatter size
+      return <ProFormSelect
+        name="scatter"
+        label="Display as Scatter chart"
+        fieldProps={{mode: "multiple"}}
+        options={columns.map(c => ({label: c, value: c}))}
+        width="lg"
+      />
+    default:
+      return <></>
+  }
+}
+
 
 export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
 
@@ -177,14 +204,7 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
       </Form.List>
 
       {
-        props.mixin ?
-          <ProFormSelect
-            name="bar"
-            label="Display as Bar chart"
-            fieldProps={{mode: "multiple"}}
-            options={props.columns.map(c => ({label: c, value: c}))}
-            width="lg"
-          /> : <></>
+        mixinFormGenerator(props.mixin, props.columns)
       }
     </>
   ) : <></>

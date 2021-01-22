@@ -15,11 +15,11 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 import {ChartConfig} from "../../../Utils/data"
-import {AxisSelectorForm} from "./AxisSelectorForm"
+import {AxisSelectorForm, Mixin} from "./AxisSelectorForm"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 
 
-export const generateCommonEditorField = (mixin: boolean = false) =>
+export const generateCommonEditorField = (mixin?: Mixin) =>
   (props: ModuleEditorField) => {
     const [visible, setVisible] = useState(false)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
