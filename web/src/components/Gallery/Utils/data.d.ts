@@ -21,7 +21,11 @@ export interface GeneralTableConfigInterface {
   type: DataSelectedType
   display: DisplayType[]
   style: ViewStyle
-  view: ViewOption[]
+  view: string[]
+}
+
+export interface XlsxTableConfigInterface {
+  hideOptions: string[]
 }
 
 export interface XAxis {

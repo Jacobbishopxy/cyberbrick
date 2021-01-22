@@ -2,42 +2,40 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import React, {useEffect, useState} from 'react'
-import {Button, Checkbox, message, Space, Tabs} from "antd"
+import React, {useState} from 'react'
+import {Button, message, Modal, Tabs} from "antd"
 import {HotTable} from "@handsontable/react"
+import {ProFormCheckbox, StepsForm} from "@ant-design/pro-form"
 import _ from "lodash"
 
 import {FileExtractModal} from "@/components/FileUploadModal"
-import {Emoji} from "@/components/Emoji"
-
+import {XlsxTableConfigInterface} from "@/components/Gallery/Utils/data"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 import {fileExtract} from "../../../Misc/FileUploadConfig"
 
-
 import "handsontable/dist/handsontable.full.css"
 
+
+const viewOptionOptions = [
+  {
+    label: "Hide column",
+    value: "col"
+  },
+  {
+    label: "Hide row",
+    value: "row"
+  }
+]
+const licenseKey = "non-commercial-and-evaluation"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
 
   const [visible, setVisible] = useState<boolean>(false)
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
-  const [savingProcessData, setSavingProcessData] = useState(false)
-
-  useEffect(() => {
-    if (content?.data) setSavingProcessData(true)
-  }, [content])
-
-  const saveContentConfigHideHeader = (options: string[]) => {
-    const ctt = {
-      ...content!,
-      date: DataType.today(),
-      config: {hideOptions: options}
-    }
-    setContent(ctt)
-  }
 
   const saveContentData = (data: any) => {
     const ctt = content ? {
@@ -50,70 +48,89 @@ const EditorField = (props: ModuleEditorField) => {
     setContent(ctt)
   }
 
-  const saveContent = () => {
+  const saveContent = async (config: Record<string, any>) => {
     if (content) {
-      props.updateContent(content)
+      const c = config as XlsxTableConfigInterface
+      const ctt = {
+        ...content,
+        date: content.date || DataType.today(),
+        config: {...c, hideOptions: c.hideOptions || []}
+      }
+      props.updateContent(ctt)
       message.success("Updating succeeded!")
     } else {
       message.warn("Updating failed! File and options are required!")
     }
+    setVisible(false)
+  }
+
+  const dataSelectOnFinish = async () => {
+    if (content?.data === undefined || _.isEmpty(content.data)) {
+      message.warn("Please check your data if is empty!")
+      return false
+    }
+    return true
   }
 
   return (
     <div className={props.styling}>
-      <Space
-        direction="vertical"
-        style={{position: "relative", top: "30%"}}
+      <Button
+        type="primary"
+        onClick={() => setVisible(true)}
       >
-        <Space>
-          <Emoji label="0" symbol="①" size={20}/>
-          Viewing:
-          <Checkbox.Group
-            style={{width: "100%"}}
-            onChange={vs => saveContentConfigHideHeader(vs as string[])}
-            defaultValue={content?.config?.hideOptions || ["col", "row"]}
-          >
-            <Checkbox value="col">Hide column</Checkbox>
-            <Checkbox value="row">Hide row</Checkbox>
-          </Checkbox.Group>
-        </Space>
+        Modify
+      </Button>
 
-        <Space>
-          <Emoji label="0" symbol="②" size={20}/>
-          <Button
-            type='primary'
-            shape='round'
-            size='small'
-            onClick={() => setVisible(true)}
+      <StepsForm
+        onFinish={saveContent}
+        stepsFormRender={(dom, submitter) =>
+          <Modal
+            title="Setup process"
+            visible={visible}
+            onCancel={() => setVisible(false)}
+            footer={submitter}
+            destroyOnClose
+            width="30vw"
           >
-            Click here to modify
-          </Button>
-        </Space>
-
-        <Button
-          type='primary'
-          size='small'
-          onClick={saveContent}
-          disabled={!savingProcessData}
+            {dom}
+          </Modal>
+        }
+      >
+        <StepsForm.StepForm
+          name="data"
+          title="Data"
+          onFinish={dataSelectOnFinish}
         >
-          Update
-        </Button>
-      </Space>
+          <Button
+            type="primary"
+            onClick={() => setUploadVisible(true)}
+          >
+            Click
+          </Button>
+          <FileExtractModal
+            setVisible={setUploadVisible}
+            visible={uploadVisible}
+            upload={fileExtract}
+            uploadResHandle={saveContentData}
+          />
+        </StepsForm.StepForm>
 
-      <FileExtractModal
-        setVisible={setVisible}
-        visible={visible}
-        upload={fileExtract}
-        uploadResHandle={saveContentData}
-      />
+        <StepsForm.StepForm
+          name="option"
+          title="Option"
+        >
+          <ProFormCheckbox.Group
+            name="hideOptions"
+            label="Hide options"
+            options={viewOptionOptions}
+          />
+        </StepsForm.StepForm>
+      </StepsForm>
     </div>
   )
 }
 
-const licenseKey = "non-commercial-and-evaluation"
-
 export const genHotTableProps = (height: number | undefined, hideOptions?: string[]) => {
-
   const colHeaders = !hideOptions?.includes("col")
   const rowHeaders = !hideOptions?.includes("row")
   return {
@@ -150,11 +167,7 @@ const PresenterField = (props: ModulePresenterField) => {
       )
     })
 
-    return (
-      <Tabs tabPosition="bottom">
-        {d}
-      </Tabs>
-    )
+    return <Tabs tabPosition="bottom">{d}</Tabs>
   }
 
   const view = (content: DataType.Content) => {
