@@ -96,7 +96,12 @@ export const moduleList = [
       {
         key: DataType.ElementType.Scatter,
         name: 'Scatter',
-        disabled: true,
+        disabled: false,
+      },
+      {
+        key: DataType.ElementType.LineScatter,
+        name: 'Line & Scatter',
+        disabled: false,
       },
       {
         key: DataType.ElementType.Heatmap,

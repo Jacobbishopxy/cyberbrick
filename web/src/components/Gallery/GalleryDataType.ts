@@ -105,6 +105,7 @@ export enum ElementType {
   LineBar = "lineBar",
   Pie = "pie",
   Scatter = "scatter",
+  LineScatter = "lineScatter",
   Heatmap = "heatmap",
   Box = "box",
   Tree = "tree",
@@ -141,6 +142,8 @@ export const getElementType = (v: string) => {
       return ElementType.Pie
     case "scatter":
       return ElementType.Scatter
+    case "lineScatter":
+      return ElementType.LineScatter
     case "heatmap":
       return ElementType.Heatmap
     case "box":

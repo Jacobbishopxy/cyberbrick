@@ -99,6 +99,7 @@ declare namespace GalleryAPI {
     LineBar = "lineBar",
     Pie = "pie",
     Scatter = "scatter",
+    LineScatter = "lineScatter",
     Heatmap = "heatmap",
     Box = "box",
     Tree = "tree",

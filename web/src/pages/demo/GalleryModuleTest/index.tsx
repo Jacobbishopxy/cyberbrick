@@ -10,7 +10,7 @@ import * as GalleryService from "@/services/gallery"
 import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import {LineBar} from "@/components/Gallery/ModulePanel/Collections/graph/LineBar"
+import {LineScatter} from "@/components/Gallery/ModulePanel/Collections/graph"
 
 export default () => {
 
@@ -48,7 +48,7 @@ export default () => {
       style={{height: "85vh"}}
       bodyStyle={{height: "100%"}}
     >
-      <LineBar
+      <LineScatter
         content={content}
         fetchStorages={fetchStorages}
         fetchTableList={fetchTableList}

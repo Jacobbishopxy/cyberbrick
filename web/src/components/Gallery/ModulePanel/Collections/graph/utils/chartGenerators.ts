@@ -3,8 +3,10 @@
  */
 
 import {EChartOption} from "echarts"
+import _ from "lodash"
 
-import {ChartConfig} from "@/components/Gallery/Utils/data"
+import {ChartConfig, Scatter} from "@/components/Gallery/Utils/data"
+import {Mixin} from "./data"
 import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
 
 
@@ -46,11 +48,15 @@ const generateYAxis = (config: ChartConfig): EChartOption.YAxis[] => {
   })
 }
 
-type ChartType = "line" | "bar" | "mixin"
-
-const generateSeries = (config: ChartConfig, chartType: ChartType): [EChartOption.Series[], string[]] => {
+const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Series[], string[]] => {
   const series: EChartOption.Series[] = []
   const legend: string[] = []
+
+  const scatter = config.scatter ?
+    _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
+      return {...acc, [v.column]: v.size}
+    }, {}) : {}
+
   config.y.forEach((item, idx) => {
     item.columns.forEach(c => {
       const ss = {
@@ -62,22 +68,51 @@ const generateSeries = (config: ChartConfig, chartType: ChartType): [EChartOptio
           tooltip: [config.x, c]
         }
       }
-      if (chartType === "mixin")
+
+      if (chartType === "scatter") {
+        const sizeCol = scatter[c]
+        series.push({
+          ...ss,
+          type: "scatter",
+          symbolSize: (data: Record<string, number>) => data[sizeCol],
+          encode: {
+            ...ss.encode,
+            tooltip: [config.x, c, sizeCol]
+          }
+        })
+      } else if (chartType === "lineBar")
         config.bar?.includes(c) ?
           series.push({...ss, type: "bar"}) :
           series.push({...ss, type: "line"})
-      else
+      else if (chartType === "lineScatter") {
+        const sizeCol = scatter[c]
+        sizeCol ?
+          series.push({
+            ...ss,
+            type: "scatter",
+            symbolSize: (data: Record<string, number>) => data[sizeCol],
+            encode: {
+              ...ss.encode,
+              tooltip: [config.x, c, sizeCol]
+            }
+          }) :
+          series.push({...ss, type: "line"})
+      } else
         series.push({...ss, type: chartType})
+
       legend.push(c)
     })
   })
+
+  console.log("series", series)
+
   return [series, legend]
 }
 
 /**
  * generate line, bar chart option
  */
-export const generateLineBarOption = (chartType: ChartType) =>
+export const generateCommonOption = (chartType: Mixin) =>
   (data: any[], config: ChartConfig): EChartOption => {
     const [series, legend] = generateSeries(config, chartType)
 
@@ -94,6 +129,7 @@ export const generateLineBarOption = (chartType: ChartType) =>
       dataset: [{source: d}],
       xAxis: generateXAxis(config),
       yAxis: generateYAxis(config),
+      // todo: visual map for scaling size columns
       series
     }
   }

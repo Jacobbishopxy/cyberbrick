@@ -40,11 +40,16 @@ export interface YAxis {
   columns: string[]
 }
 
+export interface Scatter {
+  column: string
+  size?: string
+}
+
 export interface ChartConfig {
   bar?: string[]
+  scatter?: Scatter[]
   x: XAxis
   y: YAxis[]
-  yDefaultName: string
   display?: DisplayType[]
 }
 

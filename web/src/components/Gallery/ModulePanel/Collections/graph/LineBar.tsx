@@ -3,10 +3,10 @@
  */
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {generateCommonEditorField, generateCommonPresenterField} from "./Common"
-import {generateLineBarOption} from "./chartGenerators"
+import {generateCommonEditorField, generateCommonPresenterField} from "./utils/Common"
+import {generateCommonOption} from "./utils/chartGenerators"
 
 const EditorField = generateCommonEditorField("lineBar")
-const PresenterField = generateCommonPresenterField(generateLineBarOption("mixin"))
+const PresenterField = generateCommonPresenterField(generateCommonOption("lineBar"))
 
 export const LineBar = new ModuleGenerator(EditorField, PresenterField).generate()

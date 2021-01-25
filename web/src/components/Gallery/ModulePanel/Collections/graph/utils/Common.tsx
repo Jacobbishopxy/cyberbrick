@@ -8,14 +8,14 @@ import {StepsForm} from "@ant-design/pro-form"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
-import _ from "lodash"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
-import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
-import * as DataType from "../../../GalleryDataType"
-import {ChartConfig} from "../../../Utils/data"
-import {AxisSelectorForm, Mixin} from "./AxisSelectorForm"
+import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
+import * as DataType from "../../../../GalleryDataType"
+import {ChartConfig} from "../../../../Utils/data"
+import {AxisSelectorForm} from "./AxisSelectorForm"
+import {Mixin} from "../utils/data"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 
 
@@ -42,20 +42,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
     const saveContent = async (values: Record<string, any>) => {
       if (content) {
-        const v = values as ChartConfig
-
-        let config
-        const ys = _.difference(columns, [v.x.column])
-
-        if (v.y) {
-          const yColNames = _.reduce(v.y, (acc: string[], i) =>
-            ([...acc, ...i.columns]), [])
-          const baseY = [{position: "left", columns: _.difference(ys, yColNames), name: v.yDefaultName}]
-          config = {...v, y: [...baseY, ...v.y]}
-        } else
-          config = {...v, y: [{position: "left", columns: ys, name: v.yDefaultName}]}
-
-        const ctt = {...content, config}
+        const ctt = {...content, config: values}
         props.updateContent(ctt)
         message.success("Updating succeeded!")
       } else {
