@@ -5,11 +5,11 @@
 import React from 'react'
 import {Anchor} from "antd"
 
-import {anchorList, AnchorType} from "./anchorType"
+import {anchorList, AnchorList} from "./anchorList"
 
 
-const anchorLinkGenerator = (anchorList: AnchorType[], index: number | string = 0) =>
-  anchorList.map((a: AnchorType, idx) =>
+const anchorLinkGenerator = (anchorList: AnchorList[], index: number | string = 0) =>
+  anchorList.map((a: AnchorList, idx) =>
     a.children ?
       <Anchor.Link href={`#${a.id}`} title={a.name} key={`${index}-${idx}`}>
         {anchorLinkGenerator(a.children, idx)}

@@ -5,7 +5,7 @@
 import React from 'react'
 import {Divider, Image, Space, Typography} from "antd"
 
-import {anchorList} from "./anchorType"
+import {anchorList} from "./anchorList"
 import Styling from "./Style.less"
 
 
@@ -373,6 +373,18 @@ export const ManualContent = () => {
             src={imageSrc("module-line-bar1.jpg")}
             className={Styling.manualImg}
           />
+        </div>
+
+        <div id={anchorList[2].children![2].children![8].id}>
+          <Title level={3}>[模板]气泡图</Title>
+          <br/>
+          <Text type="secondary">施工中...</Text>
+        </div>
+
+        <div id={anchorList[2].children![2].children![9].id}>
+          <Title level={3}>[模板]折线气泡混合图</Title>
+          <br/>
+          <Text type="secondary">施工中...</Text>
         </div>
 
         <Divider/>

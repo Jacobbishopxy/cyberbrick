@@ -3,13 +3,13 @@
  */
 
 
-export interface AnchorType {
+export interface AnchorList {
   id: string
   name: string
-  children?: AnchorType[]
+  children?: AnchorList[]
 }
 
-export const anchorList: AnchorType[] = [
+export const anchorList: AnchorList[] = [
   {
     id: "1-base-config",
     name: "1. 基础配置",
@@ -90,6 +90,15 @@ export const anchorList: AnchorType[] = [
             id: "3-c-module-line-bar",
             name: "[模板]折线柱状混合图"
           },
+          {
+            id: "3-c-module-scatter",
+            name: "[模板]气泡图"
+          },
+          {
+            id: "3-c-module-line-scatter",
+            name: "[模板]折线气泡混合图"
+          },
+
         ]
       },
 
