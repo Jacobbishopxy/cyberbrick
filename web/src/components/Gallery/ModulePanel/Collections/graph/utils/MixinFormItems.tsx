@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import {Button, Divider, Form, Select, Space} from "antd"
+import {Button, Divider, Form, InputNumber, Select, Space} from "antd"
 import {ProFormSelect} from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 
@@ -56,6 +56,36 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
                     <Select.Option key={c} value={c}>{c}</Select.Option>
                   )}
                 </Select>
+              </Form.Item>
+
+              <Form.Item
+                {...field}
+                name={[field.name, "min"]}
+                fieldKey={[field.fieldKey, "min"]}
+                label="Visual min"
+                initialValue={0}
+              >
+                <InputNumber
+                  placeholder="min"
+                  style={{width: 100}}
+                  min={0}
+                  max={200}
+                />
+              </Form.Item>
+
+              <Form.Item
+                {...field}
+                name={[field.name, "max"]}
+                fieldKey={[field.fieldKey, "max"]}
+                label="Visual max"
+                initialValue={100}
+              >
+                <InputNumber
+                  placeholder="max"
+                  style={{width: 100}}
+                  min={0}
+                  max={200}
+                />
               </Form.Item>
 
               <Button

@@ -43,6 +43,8 @@ export interface YAxis {
 export interface Scatter {
   column: string
   size?: string
+  min?: number
+  max?: number
 }
 
 export interface ChartConfig {

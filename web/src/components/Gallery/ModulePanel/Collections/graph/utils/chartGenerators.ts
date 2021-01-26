@@ -48,14 +48,17 @@ const generateYAxis = (config: ChartConfig): EChartOption.YAxis[] => {
   })
 }
 
+const getScatterMap = (config: ChartConfig, value: "size" | "min" | "max") =>
+  config.scatter ?
+    _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
+      return {...acc, [v.column]: v[value]}
+    }, {}) : {}
+
 const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Series[], string[]] => {
   const series: EChartOption.Series[] = []
   const legend: string[] = []
 
-  const scatter = config.scatter ?
-    _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
-      return {...acc, [v.column]: v.size}
-    }, {}) : {}
+  const scatterMap = getScatterMap(config, "size")
 
   config.y.forEach((item, idx) => {
     item.columns.forEach(c => {
@@ -70,11 +73,11 @@ const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Se
       }
 
       if (chartType === "scatter") {
-        const sizeCol = scatter[c]
+        const sizeCol = scatterMap[c]
         series.push({
           ...ss,
           type: "scatter",
-          symbolSize: (data: Record<string, number>) => data[sizeCol],
+          symbolSize: (data: Record<string, number>) => (data[sizeCol] || 50),
           encode: {
             ...ss.encode,
             tooltip: [config.x, c, sizeCol]
@@ -85,12 +88,12 @@ const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Se
           series.push({...ss, type: "bar"}) :
           series.push({...ss, type: "line"})
       else if (chartType === "lineScatter") {
-        const sizeCol = scatter[c]
+        const sizeCol = scatterMap[c]
         sizeCol ?
           series.push({
             ...ss,
             type: "scatter",
-            symbolSize: (data: Record<string, number>) => data[sizeCol],
+            symbolSize: (data: Record<string, number>) => (data[sizeCol] || 50),
             encode: {
               ...ss.encode,
               tooltip: [config.x, c, sizeCol]
@@ -104,9 +107,79 @@ const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Se
     })
   })
 
-  console.log("series", series)
-
   return [series, legend]
+}
+
+const getDataSourceMinMax = (data: Record<string, any>[], column: string) => {
+  const col = _.map(data, i => i[column])
+  return [_.min(col), _.max(col)]
+}
+
+const generateVisualMapForScatter = (data: Record<string, any>[],
+                                     config: ChartConfig,
+                                     chartType: Mixin): EChartOption.VisualMap[] => {
+  const visualMap: any[] = []
+  let seriesIndex = 0
+
+  const scatterSizeMap = getScatterMap(config, "size")
+  const scatterMinMap = getScatterMap(config, "min")
+  const scatterMaxMap = getScatterMap(config, "max")
+
+  config.y.forEach(item => {
+    item.columns.forEach(c => {
+      const vm = {
+        show: false,
+        type: "continuous",
+        name: c,
+        seriesIndex: seriesIndex
+      }
+
+      const [min, max] = getDataSourceMinMax(data, scatterSizeMap[c])
+
+      if (chartType === "scatter") {
+        const dimension = scatterSizeMap[c]
+        dimension ?
+          visualMap.push({
+            ...vm,
+            dimension,
+            min,
+            max,
+            inRange: {
+              symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+            }
+          }) : undefined
+      } else if (chartType === "lineScatter") {
+        const sizeCol = scatterSizeMap[c]
+        const dimension = scatterSizeMap[c]
+        sizeCol && dimension ?
+          visualMap.push({
+            ...vm,
+            dimension,
+            min,
+            max,
+            inRange: {
+              symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+            }
+          }) : undefined
+      }
+      seriesIndex += 1
+    })
+  })
+
+  return visualMap
+}
+
+const generateVisualMap = (data: Record<string, any>[],
+                           config: ChartConfig,
+                           chartType: Mixin): EChartOption.VisualMap[] => {
+  switch (chartType) {
+    case "scatter":
+      return generateVisualMapForScatter(data, config, chartType)
+    case "lineScatter":
+      return generateVisualMapForScatter(data, config, chartType)
+    default:
+      return []
+  }
 }
 
 /**
@@ -129,7 +202,7 @@ export const generateCommonOption = (chartType: Mixin) =>
       dataset: [{source: d}],
       xAxis: generateXAxis(config),
       yAxis: generateYAxis(config),
-      // todo: visual map for scaling size columns
+      visualMap: generateVisualMap(d, config, chartType),
       series
     }
   }

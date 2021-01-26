@@ -3,7 +3,6 @@
  */
 
 import React, {useState, useRef, useLayoutEffect} from 'react'
-import {PageContainer} from "@ant-design/pro-layout"
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 import "@/components/EchartsPro/themes/macarons"
@@ -13,7 +12,7 @@ const data = [
   {time: '2008', 'trick': .3, 'alpha': 59.4, 'beta': 67.8, 'trend1': 53.4, 'area1': .1, 'trend2': 13.4, 'area2': .9},
   {time: '2009', 'trick': .2, 'alpha': 68.9, 'beta': 59.9, 'trend1': 52.1, 'area1': .2, 'trend2': 22.1, 'area2': .11},
   {time: '2010', 'trick': .1, 'alpha': 71.1, 'beta': 79.6, 'trend1': 49.2, 'area1': .4, 'trend2': 39.2, 'area2': .22},
-  {time: '2011', 'trick': .1, 'alpha': 62.1, 'beta': 73.3, 'trend1': 59.6, 'area1': .2, 'trend2': 49.6, 'area2': .25},
+  {time: '2011', 'trick': .2, 'alpha': 62.1, 'beta': 73.3, 'trend1': 59.6, 'area1': .2, 'trend2': 49.6, 'area2': .25},
   {time: '2012', 'trick': .4, 'alpha': 60.5, 'beta': 75.6, 'trend1': 56.5, 'area1': .9, 'trend2': 26.5, 'area2': .45},
   {time: '2013', 'trick': .5, 'alpha': 55.3, 'beta': 79.5, 'trend1': 58.8, 'area1': .6, 'trend2': 18.8, 'area2': .23},
   {time: '2014', 'trick': .3, 'alpha': 58.1, 'beta': 82.2, 'trend1': 63.2, 'area1': .3, 'trend2': 33.2, 'area2': .54},
@@ -80,9 +79,9 @@ const chartOption: EChartOption = {
       encode: {
         x: "time",
         y: "alpha",
-        tooltip: ["alpha", "beta"]
+        tooltip: ["time", "alpha", "beta"]
       },
-      symbolSize: (data: Record<string, number>) => data["beta"]
+      symbolSize: (data: Record<string, number>) => (data["beta"] || 50)
     },
     {
       type: 'scatter',
@@ -91,7 +90,7 @@ const chartOption: EChartOption = {
       encode: {
         x: "time",
         y: "trend1",
-        tooltip: ["trend1", "area1"]
+        tooltip: ["time", "trend1", "area1"]
       },
       symbolSize: (data: Record<string, number>) => data["area1"]
     },
@@ -102,7 +101,7 @@ const chartOption: EChartOption = {
       encode: {
         x: "time",
         y: "trend2",
-        tooltip: ["trend2", "area2"]
+        tooltip: ["time", "trend2", "area2"]
       },
       symbolSize: (data: Record<string, number>) => data["area2"]
     },
@@ -110,14 +109,34 @@ const chartOption: EChartOption = {
   visualMap: [
     {
       show: false,
+      dimension: "beta",
+      seriesIndex: [1],
+      min: 0,
+      max: 100,
+      inRange: {
+        symbolSize: [0, 100]
+      }
+    },
+    {
+      show: false,
       dimension: "area1",
-      seriesIndex: [5, 7],
+      seriesIndex: [2],
       min: 0,
       max: 1,
       inRange: {
-        symbolSize: [10, 100]
+        symbolSize: [0, 100]
       }
-    }
+    },
+    {
+      show: false,
+      dimension: "area2",
+      seriesIndex: [3],
+      min: 0,
+      max: 1,
+      inRange: {
+        symbolSize: [0, 100]
+      }
+    },
   ]
 }
 
@@ -131,15 +150,13 @@ export default () => {
   })
 
   return (
-    <PageContainer>
-      <div style={{height: "80vh"}} ref={chartRef}>
-        <ReactEcharts
-          option={chartOption}
-          opts={{height: chartHeight}}
-          theme="macarons"
-        />
-      </div>
-    </PageContainer>
+    <div style={{height: "85vh"}} ref={chartRef}>
+      <ReactEcharts
+        option={chartOption}
+        opts={{height: chartHeight}}
+        theme="macarons"
+      />
+    </div>
   )
 }
 
