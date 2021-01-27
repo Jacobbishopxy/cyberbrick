@@ -3,8 +3,8 @@
  */
 
 import React from 'react'
-import {Button, Divider, Form, InputNumber, Select, Space} from "antd"
-import {ProFormSelect} from "@ant-design/pro-form"
+import {Button, Form, InputNumber, Select} from "antd"
+import ProForm, {ProFormSelect} from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 
 import {Mixin} from "./data"
@@ -17,114 +17,108 @@ export interface MixinFormItemsProps {
 
 export const MixinFormItems = (props: MixinFormItemsProps) => {
 
-  const scatter = <>
-    <Divider/>
-    <Form.List name="scatter">
-      {(fields, {add, remove}) =>
-        <>
-          {fields.map((field) =>
-            <Space key={field.key} style={{display: "flex"}}>
-              <Form.Item
-                {...field}
-                name={[field.name, "column"]}
-                fieldKey={[field.fieldKey, "column"]}
-                label="Column"
-                rules={[{required: true, message: "Missing field"}]}
-              >
-                <Select
-                  placeholder="Column"
-                  style={{width: 200}}
-                >
-                  {props.columns?.map(c =>
-                    <Select.Option key={c} value={c}>{c}</Select.Option>
-                  )}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                {...field}
-                name={[field.name, "size"]}
-                fieldKey={[field.fieldKey, "size"]}
-                label="Size column"
-              >
-                <Select
-                  placeholder="Size column"
-                  style={{width: 200}}
-                  allowClear
-                >
-                  {props.columns?.map(c =>
-                    <Select.Option key={c} value={c}>{c}</Select.Option>
-                  )}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                {...field}
-                name={[field.name, "min"]}
-                fieldKey={[field.fieldKey, "min"]}
-                label="Visual min"
-                initialValue={0}
-              >
-                <InputNumber
-                  placeholder="min"
-                  style={{width: 100}}
-                  min={0}
-                  max={200}
-                />
-              </Form.Item>
-
-              <Form.Item
-                {...field}
-                name={[field.name, "max"]}
-                fieldKey={[field.fieldKey, "max"]}
-                label="Visual max"
-                initialValue={100}
-              >
-                <InputNumber
-                  placeholder="max"
-                  style={{width: 100}}
-                  min={0}
-                  max={200}
-                />
-              </Form.Item>
-
-              <Button
-                icon={<DeleteTwoTone twoToneColor="red"/>}
-                type="link"
-                danger
-                onClick={() => remove(field.name)}
-              />
-            </Space>
-          )}
-          <Form.Item>
-            <Button
-              type="dashed"
-              block
-              icon={<PlusOutlined/>}
-              onClick={() => add()}
+  const scatter = <Form.List name="scatter">
+    {(fields, {add, remove}) =>
+      <>
+        {fields.map((field, idx) =>
+          <ProForm.Group key={idx}>
+            <Form.Item
+              {...field}
+              name={[field.name, "column"]}
+              fieldKey={[field.fieldKey, "column"]}
+              label="Column"
+              rules={[{required: true, message: "Missing field"}]}
             >
-              Add scatter column
-            </Button>
-          </Form.Item>
-        </>
-      }
-    </Form.List>
-  </>
+              <Select
+                placeholder="Column"
+                style={{width: 200}}
+              >
+                {props.columns?.map(c =>
+                  <Select.Option key={c} value={c}>{c}</Select.Option>
+                )}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              {...field}
+              name={[field.name, "size"]}
+              fieldKey={[field.fieldKey, "size"]}
+              label="Size column"
+            >
+              <Select
+                placeholder="Size column"
+                style={{width: 200}}
+                allowClear
+              >
+                {props.columns?.map(c =>
+                  <Select.Option key={c} value={c}>{c}</Select.Option>
+                )}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              {...field}
+              name={[field.name, "min"]}
+              fieldKey={[field.fieldKey, "min"]}
+              label="Visual min"
+              initialValue={0}
+            >
+              <InputNumber
+                placeholder="min"
+                style={{width: 100}}
+                min={0}
+                max={200}
+              />
+            </Form.Item>
+
+            <Form.Item
+              {...field}
+              name={[field.name, "max"]}
+              fieldKey={[field.fieldKey, "max"]}
+              label="Visual max"
+              initialValue={100}
+            >
+              <InputNumber
+                placeholder="max"
+                style={{width: 100}}
+                min={0}
+                max={200}
+              />
+            </Form.Item>
+
+            <Button
+              icon={<DeleteTwoTone twoToneColor="red"/>}
+              type="link"
+              danger
+              onClick={() => remove(field.name)}
+            />
+          </ProForm.Group>
+        )}
+        <Form.Item>
+          <Button
+            type="dashed"
+            style={{width: 200}}
+            icon={<PlusOutlined/>}
+            onClick={() => add()}
+          >
+            Add scatter sizing
+          </Button>
+        </Form.Item>
+      </>
+    }
+  </Form.List>
 
   const mixinFormGenerator = () => {
     switch (props.mixin) {
       case "lineBar":
         return (
-          <>
-            <Divider/>
-            <ProFormSelect
-              name="bar"
-              label="Display as Bar chart"
-              fieldProps={{mode: "multiple"}}
-              options={props.columns?.map(c => ({label: c, value: c}))}
-              width="lg"
-            />
-          </>
+          <ProFormSelect
+            name="bar"
+            label="Display as Bar chart"
+            fieldProps={{mode: "multiple"}}
+            options={props.columns?.map(c => ({label: c, value: c}))}
+            width="lg"
+          />
         )
       case "lineScatter":
         return scatter

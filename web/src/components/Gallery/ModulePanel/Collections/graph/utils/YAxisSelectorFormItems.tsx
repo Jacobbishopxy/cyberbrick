@@ -61,19 +61,20 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                 fieldKey={[field.fieldKey, 'name']}
                 label="Name"
               >
-                <Input placeholder="Name of Y-axis"/>
+                <Input style={{width: 200}} placeholder="Name of Y-axis"/>
               </Form.Item>
 
               {
                 idx === 0 ?
                   <></> :
-                  <DeleteTwoTone
-                    twoToneColor="red"
+                  <Button
+                    icon={<DeleteTwoTone twoToneColor="red"/>}
+                    type="link"
+                    danger
                     onClick={() => {
                       remove(field.name)
                       props.yAxisOnRelease(idx)
                     }}
-                    style={{fontSize: 20, marginTop: 7}}
                   />
               }
             </ProForm.Group>
@@ -81,7 +82,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
           <Form.Item>
             <Button
               type="dashed"
-              block
+              style={{width: 200}}
               icon={<PlusOutlined/>}
               onClick={() => add()}
             >

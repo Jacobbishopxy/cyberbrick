@@ -99,8 +99,11 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
         />
       </ProForm.Group>
 
+      <Divider/>
 
-      <MixinFormItems mixin={props.mixin} columns={yAxis}/>
+      <ProForm.Group title="Extra">
+        <MixinFormItems mixin={props.mixin} columns={yAxis}/>
+      </ProForm.Group>
     </>
   ) : <></>
 }

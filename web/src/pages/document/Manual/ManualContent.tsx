@@ -377,20 +377,25 @@ export const ManualContent = () => {
 
         <div id={anchorList[2].children![2].children![8].id}>
           <Title level={3}>[模板]气泡图</Title>
-          <br/>
-          <Text type="secondary">施工中...</Text>
+          <Image
+            src={imageSrc("module-scatter.jpg")}
+            className={Styling.manualImg}
+          />
+          <Image
+            src={imageSrc("module-scatter1.jpg")}
+            className={Styling.manualImg}
+          />
         </div>
 
         <div id={anchorList[2].children![2].children![9].id}>
           <Title level={3}>[模板]折线气泡混合图</Title>
-          <br/>
-          <Text type="secondary">施工中...</Text>
+          <Text>折线气泡混合图的设置步骤与折线柱状图类似，气泡图设置部分请参考气泡图。</Text>
         </div>
 
         <Divider/>
 
         <Paragraph>
-          <Text>最后一次更新日期： 2021-1-22</Text>
+          <Text>最后一次更新日期： 2021-1-27</Text>
           <br/>
           <Text>如有任何疑问请联系开发者</Text>
         </Paragraph>
