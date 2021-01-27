@@ -10,14 +10,15 @@ import _ from "lodash"
 import {Mixin} from "./data"
 import {MixinFormItems} from "./MixinFormItems"
 import {YAxisSelectorFormItems} from "./YAxisSelectorFormItems"
+import {themeSelections} from "@/components/EchartsPro/themeSelections"
 
 
-export interface AxisSelectorFormProps {
+export interface DisplayFormProps {
   mixin: Mixin
   columns?: string[]
 }
 
-export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
+export const DisplayForm = (props: DisplayFormProps) => {
 
   const [yAxis, setYAxis] = useState<string[] | undefined>(props.columns)
   const [yAxisRecord, setYAxisRecord] = useState<string[][]>([])
@@ -99,7 +100,17 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
       <Divider/>
 
       <ProForm.Group title="Style">
-
+        <Form.Item
+          name="style"
+          label="Theme style"
+        >
+          <Select
+            placeholder="Select a theme for display"
+            style={{width: 250}}
+          >
+            {themeSelections.map(t => <Select.Option key={t.name} value={t.name}>{t.ele}</Select.Option>)}
+          </Select>
+        </Form.Item>
       </ProForm.Group>
     </>
   ) : <></>

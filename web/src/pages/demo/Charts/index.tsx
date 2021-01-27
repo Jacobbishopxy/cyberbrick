@@ -3,9 +3,10 @@
  */
 
 import React, {useState, useRef, useLayoutEffect} from 'react'
+import {Select} from "antd"
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
-import "@/components/EchartsPro/themes/macarons"
+import {themeSelections} from "@/components/EchartsPro/themeSelections"
 
 
 const data = [
@@ -144,6 +145,7 @@ export default () => {
   const chartRef = useRef<HTMLDivElement>(null)
 
   const [chartHeight, setChartHeight] = useState<number>(0)
+  const [theme, setTheme] = useState<string>("default")
 
   useLayoutEffect(() => {
     if (chartRef.current) setChartHeight(chartRef.current.offsetHeight)
@@ -151,10 +153,20 @@ export default () => {
 
   return (
     <div style={{height: "85vh"}} ref={chartRef}>
+      <Select
+        onChange={(t: string) => setTheme(t)}
+        style={{width: 250}}
+      >
+        {
+          themeSelections.map(t =>
+            <Select.Option key={t.name} value={t.name}>{t.ele}</Select.Option>
+          )
+        }
+      </Select>
       <ReactEcharts
         option={chartOption}
         opts={{height: chartHeight}}
-        theme="macarons"
+        theme={theme}
       />
     </div>
   )

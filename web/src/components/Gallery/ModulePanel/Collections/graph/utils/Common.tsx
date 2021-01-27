@@ -14,7 +14,7 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
 import {ChartConfig} from "../../../../Utils/data"
-import {AxisSelectorForm} from "./AxisSelectorForm"
+import {DisplayForm} from "./DisplayForm"
 import {Mixin} from "../utils/data"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 
@@ -119,11 +119,11 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           </StepsForm.StepForm>
 
           <StepsForm.StepForm
-            name="config"
-            title="Configuration"
+            name="display"
+            title="Display"
             initialValues={{x: {type: "category"}}}
           >
-            <AxisSelectorForm
+            <DisplayForm
               mixin={mixin}
               columns={columns}
             />
@@ -151,6 +151,7 @@ export const generateCommonPresenterField =
         return <ReactEcharts
           option={chartOptionGenerator(data, props.content.config as ChartConfig)}
           style={{height: props.contentHeight}}
+          theme={props.content.config.style || "default"}
         />
       return <></>
     }
