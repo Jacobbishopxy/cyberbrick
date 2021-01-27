@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import {Button, Form, InputNumber, Select} from "antd"
+import {Button, Divider, Form, InputNumber, Select} from "antd"
 import ProForm, {ProFormSelect} from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 
@@ -112,18 +112,38 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
     switch (props.mixin) {
       case "lineBar":
         return (
-          <ProFormSelect
-            name="bar"
-            label="Display as Bar chart"
-            fieldProps={{mode: "multiple"}}
-            options={props.columns?.map(c => ({label: c, value: c}))}
-            width="lg"
-          />
+          <>
+            <Divider/>
+            <ProForm.Group title="Extra">
+              <ProFormSelect
+                name="bar"
+                label="Display as Bar chart"
+                placeholder="Please select columns"
+                fieldProps={{mode: "multiple"}}
+                options={props.columns?.map(c => ({label: c, value: c}))}
+                width="lg"
+              />
+            </ProForm.Group>
+          </>
         )
       case "lineScatter":
-        return scatter
+        return (
+          <>
+            <Divider/>
+            <ProForm.Group title="Extra">
+              {scatter}
+            </ProForm.Group>
+          </>
+        )
       case "scatter":
-        return scatter
+        return (
+          <>
+            <Divider/>
+            <ProForm.Group title="Extra">
+              {scatter}
+            </ProForm.Group>
+          </>
+        )
       default:
         return <></>
     }

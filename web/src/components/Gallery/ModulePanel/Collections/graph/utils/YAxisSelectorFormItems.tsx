@@ -11,7 +11,6 @@ interface YAxisSelectorFormItemsProps {
   yAxisOnChange: (idx: number) => (cols: string[]) => void
   getYAxisRest: () => string[]
   yAxisOnRelease: (idx: number) => void
-  selectAll: (idx: number) => void
 }
 
 export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {

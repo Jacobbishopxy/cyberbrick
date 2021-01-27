@@ -46,10 +46,6 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
 
   const getYAxisRest = () => _.differenceWith(yAxis, _.flatten(yAxisRecord))
 
-  const selectAll = (idx: number) => {
-    yAxisOnChange(idx)(getYAxisRest())
-  }
-
   return props.columns ? (
     <>
       <ProForm.Group title="X">
@@ -95,14 +91,15 @@ export const AxisSelectorForm = (props: AxisSelectorFormProps) => {
           yAxisOnChange={yAxisOnChange}
           getYAxisRest={getYAxisRest}
           yAxisOnRelease={yAxisOnRelease}
-          selectAll={selectAll}
         />
       </ProForm.Group>
 
+      <MixinFormItems mixin={props.mixin} columns={yAxis}/>
+
       <Divider/>
 
-      <ProForm.Group title="Extra">
-        <MixinFormItems mixin={props.mixin} columns={yAxis}/>
+      <ProForm.Group title="Style">
+
       </ProForm.Group>
     </>
   ) : <></>

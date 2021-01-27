@@ -394,6 +394,14 @@ export const ManualContent = () => {
 
         <Divider/>
 
+        <div id={anchorList[3].id}>
+          <Title>4. 综合查询</Title>
+          <br/>
+          <Text type="secondary">施工中...</Text>
+        </div>
+
+        <Divider/>
+
         <Paragraph>
           <Text>最后一次更新日期： 2021-1-27</Text>
           <br/>

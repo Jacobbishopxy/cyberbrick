@@ -4,7 +4,7 @@
 
 import React, {useEffect, useState} from 'react'
 import {Button, message, Modal, Space} from "antd"
-import {StepsForm} from "@ant-design/pro-form"
+import ProForm, {StepsForm} from "@ant-design/pro-form"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
@@ -88,35 +88,34 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
             title="Data"
             onFinish={dataSelectOnFinish}
           >
-            <Space align="baseline">
-              <QuerySelectorModal
-                trigger={
-                  <Button
-                    type='primary'
-                    style={{marginBottom: 20}}
-                  >
-                    Click to select a dataset
-                  </Button>
+            <ProForm.Group title="Data selection">
+              <Space align="baseline">
+                <QuerySelectorModal
+                  trigger={
+                    <Button
+                      type='primary'
+                      style={{marginBottom: 20}}
+                    >
+                      Click to select a dataset
+                    </Button>
+                  }
+                  storagesOnFetch={props.fetchStorages!}
+                  storageOnSelect={props.fetchTableList!}
+                  tableOnSelect={props.fetchTableColumns!}
+                  onSubmit={saveContentData}
+                  columnsRequired
+                />
+                {
+                  dataAvailable ?
+                    <CheckCircleTwoTone twoToneColor="green"/> :
+                    <CloseCircleTwoTone twoToneColor="red"/>
                 }
-                storagesOnFetch={props.fetchStorages!}
-                storageOnSelect={props.fetchTableList!}
-                tableOnSelect={props.fetchTableColumns!}
-                onSubmit={saveContentData}
-                columnsRequired
-              />
-              {
-                dataAvailable ?
-                  <CheckCircleTwoTone twoToneColor="green"/> :
-                  <CloseCircleTwoTone twoToneColor="red"/>
-              }
-            </Space>
-          </StepsForm.StepForm>
+              </Space>
+            </ProForm.Group>
 
-          <StepsForm.StepForm
-            name="data-transform"
-            title="Data transform"
-          >
-            <ColumnIdentifier columns={columns!}/>
+            <ProForm.Group title="Data trim">
+              <ColumnIdentifier columns={columns!}/>
+            </ProForm.Group>
           </StepsForm.StepForm>
 
           <StepsForm.StepForm

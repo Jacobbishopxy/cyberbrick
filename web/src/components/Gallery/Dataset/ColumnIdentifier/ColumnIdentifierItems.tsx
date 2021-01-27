@@ -101,7 +101,7 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
           <Form.Item>
             <Button
               type="dashed"
-              block
+              style={{width: 350}}
               icon={<PlusOutlined/>}
               onClick={() => add()}
             >

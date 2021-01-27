@@ -53,6 +53,7 @@ export interface ChartConfig {
   x: XAxis
   y: YAxis[]
   display?: DisplayType[]
+  styling: string
 }
 
 export interface ChartData {
