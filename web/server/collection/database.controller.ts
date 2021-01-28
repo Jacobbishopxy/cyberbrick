@@ -69,6 +69,7 @@ export class DatabaseController {
    * @param dbId: database id (specified in storage)
    * @param insertOption: replace (default)/append/fail
    * @param tableName: only required when file is csv
+   * @param transpose: horizontal displayed data needs transpose
    */
   @Post("insertByFile")
   @UseInterceptors(FileInterceptor("file"))
@@ -76,10 +77,13 @@ export class DatabaseController {
   async insertDataByFile(file: Express.Multer.File,
                          @Query("id") dbId: string,
                          @Query("insertOption") insertOption: string,
-                         @Query("tableName") tableName: string) {
+                         @Query("tableName") tableName: string,
+                         @Query("transpose") transpose: boolean) {
     let url = `${this.dbPath}/insertByFile?id=${dbId}`
     if (insertOption) url += `&insertOption=${insertOption}`
     if (tableName) url += `&tableName=${tableName}`
+    if (transpose) url += `&transpose=${transpose}`
+
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
     const ans = await axios.post(encodeURI(url), form, {...this.getProxy(), headers: form.getHeaders()})

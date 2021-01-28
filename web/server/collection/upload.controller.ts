@@ -40,11 +40,13 @@ export class UploadController {
                     @Query("head") head: boolean,
                     @Query("multiSheets") multiSheets: boolean | string,
                     @Query('numberRounding') numberRounding: number,
-                    @Query('dateFormat') dateFormat: string) {
+                    @Query('dateFormat') dateFormat: string,
+                    @Query("transpose") transpose: boolean) {
     let url = `${this.uploadPath}/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`
     if (dateFormat) url += `&dateFormat=${dateFormat}`
+    if (transpose) url += `&transpose=${transpose}`
 
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)

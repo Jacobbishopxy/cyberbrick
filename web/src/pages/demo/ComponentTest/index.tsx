@@ -2,33 +2,33 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React from 'react'
-import ProForm from '@ant-design/pro-form'
+import React, {useState} from 'react'
 
-import {DisplayForm} from "@/components/Gallery/ModulePanel/Collections/graph/utils/DisplayForm"
+import {FileExtractModal} from "@/components/FileUploadModal"
+import {fileExtract} from "@/components/Gallery/Misc/FileUploadConfig"
+import {Button} from "antd"
 
 
-const columns = [
-  "Jacob",
-  "Sam",
-  "MZ",
-  "John",
-  "Gary",
-  "Lucas",
-  "Larry",
-  "Adam",
-]
 
 
 export default () => {
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
 
-  const onFinish = async (values: any) => console.log(values)
-
+  const uploadResHandle = (v: any) => console.log(v)
 
   return (
-    <ProForm onFinish={onFinish}>
-      <DisplayForm mixin={"lineScatter"} columns={columns}/>
-    </ProForm>
+
+    <>
+      <Button onClick={() => setUploadVisible(true)}>
+        Click
+      </Button>
+      <FileExtractModal
+        setVisible={setUploadVisible}
+        visible={uploadVisible}
+        upload={fileExtract}
+        uploadResHandle={uploadResHandle}
+      />
+    </>
   )
 }
 

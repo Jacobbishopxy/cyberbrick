@@ -111,8 +111,9 @@ class DatabaseManipulationController(Controller):
             table_name = request.args.get("tableName")
             insert_option = request.args.get("insertOption")
             insert_option = "replace" if insert_option is None else insert_option
-            number_rounding = request.files.get("numberRounding")
+            number_rounding = request.args.get("numberRounding")
             nr = None if number_rounding is None else int(number_rounding)
+            tp = True if request.args.get("transpose") == "true" else False
 
             if f is None:
                 return abort(400, "Error: `file` is required in form data")
@@ -125,7 +126,7 @@ class DatabaseManipulationController(Controller):
 
                 with _create_temp_loader(self.loader, db_id) as loader:
                     try:
-                        d = extract_csv(f, param_head=True, rounding=nr)
+                        d = extract_csv(f, param_head=True, rounding=nr, transpose=tp)
                     except Exception as e:
                         return make_response(str(e), 400)
                     try:
@@ -138,7 +139,7 @@ class DatabaseManipulationController(Controller):
             elif f.content_type == FileType.xlsx.value:
                 with _create_temp_loader(self.loader, db_id) as loader:
                     try:
-                        d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr)
+                        d = extract_xlsx(f, param_head=True, param_multi_sheets=True, rounding=nr, transpose=tp)
                     except Exception as e:
                         return make_response(str(e), 400)
                     for key, value in d.items():

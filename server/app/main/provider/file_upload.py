@@ -54,7 +54,8 @@ def df_float_cvt(df: pd.DataFrame, rounding: Optional[int]):
 def extract_xlsx(file: io,
                  param_head: bool,
                  param_multi_sheets: Union[bool, List[int]],
-                 rounding: Optional[int]):
+                 rounding: Optional[int],
+                 transpose: Optional[bool]):
     hd = 0 if param_head is True else None
     if param_multi_sheets is True:
         sheet_name = None
@@ -65,9 +66,9 @@ def extract_xlsx(file: io,
 
     ans = pd.read_excel(file, header=hd, sheet_name=sheet_name)
     if isinstance(ans, dict):
-        return {k: df_float_cvt(v, rounding) for k, v in ans.items()}
+        return {k: df_float_cvt(v.T if transpose is True else v, rounding) for k, v in ans.items()}
     else:
-        return df_float_cvt(ans, rounding)
+        return df_float_cvt(ans.T if transpose is True else ans, rounding)
 
 
 def xlsx_to_json(d: Union[dict, pd.DataFrame], date_format: Optional[str] = None):
@@ -81,13 +82,14 @@ def xlsx_to_json(d: Union[dict, pd.DataFrame], date_format: Optional[str] = None
 
 def extract_csv(file: io,
                 param_head: bool,
-                rounding: Optional[int]):
+                rounding: Optional[int],
+                transpose: Optional[bool]):
     hd = 0 if param_head is True else None
 
     ans = pd.read_csv(file, header=hd)
     ans = ans if rounding is None else ans.round(rounding)
 
-    return ans
+    return ans.T if transpose is True else ans
 
 
 def csv_to_json(d: pd.DataFrame, date_format: Optional[str] = None):

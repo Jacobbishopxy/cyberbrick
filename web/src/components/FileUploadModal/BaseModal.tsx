@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import {
   Button,
+  Checkbox,
   Divider,
   Form,
   message,
@@ -103,6 +104,7 @@ export const BaseModal = (props: BaseModalProps) => {
       confirmLoading={uploading}
       okText="Confirm"
       cancelText="Discard"
+      width="40vw"
     >
       <Form
         {...formItemLayout}
@@ -119,6 +121,16 @@ export const BaseModal = (props: BaseModalProps) => {
           <Upload {...uploadProps}>
             <Button icon={<UploadOutlined/>}>Click to upload</Button>
           </Upload>
+        </Form.Item>
+
+        <Form.Item
+          name="transpose"
+          label="Transpose"
+          valuePropName="checked"
+        >
+          <Checkbox>
+            Horizontal displayed data needs transpose
+          </Checkbox>
         </Form.Item>
 
         {props.children}
