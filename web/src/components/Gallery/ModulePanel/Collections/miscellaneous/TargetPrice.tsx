@@ -31,8 +31,9 @@ const EditorField = (props: ModuleEditorField) => {
       <ModalForm
         title="Setup your target price"
         trigger={<Button type="primary">Update</Button>}
-        initialValues={{}}
+        initialValues={{direction: "B"}}
         onFinish={onSubmit}
+        modalProps={{width: "30vw"}}
       >
         <ProFormRadio.Group
           name="direction"
@@ -50,7 +51,7 @@ const EditorField = (props: ModuleEditorField) => {
           min={0}
           fieldProps={{step: 0.01}}
           placeholder="Please enter your target price"
-          width="lg"
+          width="md"
           rules={[{required: true, message: "Please enter target price"}]}
         />
         <ProFormText

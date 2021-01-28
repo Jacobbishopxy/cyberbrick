@@ -23,6 +23,7 @@ export interface ContainerElementProps {
 
 export interface ContainerElementRef {
   fetchContent: (date?: string) => void
+  fetchContentDates: () => Promise<string[]>
 }
 
 /**
@@ -34,7 +35,6 @@ export const TemplateElement =
 
     const [mpHeight, setMpHeight] = useState<number>(0)
     const [content, setContent] = useState<DataType.Content>()
-    const [dates, setDates] = useState<string[]>()
     const eleId = props.element.id as string | undefined
 
     useLayoutEffect(() => {
@@ -50,15 +50,15 @@ export const TemplateElement =
       }
     }
 
-    const fetchContentDates = () => {
-      if (eleId && props.element.timeSeries)
-        props.fetchContentDatesFn(eleId)
-          .then(res =>
-            setDates(res.contents!.map(c => DataType.timeToString(c.date)))
-          )
+    const fetchContentDates = async () => {
+      if (eleId && props.element.timeSeries) {
+        const ele = await props.fetchContentDatesFn(eleId)
+        return ele.contents!.map(c => DataType.timeToString(c.date))
+      }
+      return []
     }
 
-    useImperativeHandle(ref, () => ({fetchContent}))
+    useImperativeHandle(ref, () => ({fetchContent, fetchContentDates}))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
@@ -75,7 +75,6 @@ export const TemplateElement =
           fetchQueryData={props.fetchQueryDataFn}
           contentHeight={mpHeight}
           fetchContent={fetchContent}
-          dates={dates}
           fetchContentDates={fetchContentDates}
           updateContent={updateContent}
           onRemove={props.onRemove}

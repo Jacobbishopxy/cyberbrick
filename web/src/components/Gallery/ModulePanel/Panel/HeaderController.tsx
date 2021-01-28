@@ -127,12 +127,15 @@ export const HeaderController = (props: HeaderController) => {
   const editableController = () =>
     <Space>
       <DragButton/>
-      <TimeSetButton
-        show={props.timeSeries}
-        onClick={() => setDateModalVisible({...dateModalVisible, set: true})}
-      />
       {
-        props.settable ? <EditButton editContent={props.editContent}/> : <></>
+        props.settable ?
+          <>
+            <TimeSetButton
+              show={props.timeSeries}
+              onClick={() => setDateModalVisible({...dateModalVisible, set: true})}
+            />
+            <EditButton editContent={props.editContent}/>
+          </> : <></>
       }
       <DeleteButton
         confirmDelete={props.confirmDelete}
@@ -160,10 +163,9 @@ export const HeaderController = (props: HeaderController) => {
         />
       </Space> : <></>
 
-  const genController = () => {
-    if (props.editable) return editableController()
-    return props.timeSeries && props.dateList ? nonEditableController() : <></>
-  }
+  const genController = () =>
+    props.editable ? editableController() : nonEditableController()
+
 
   return genController()
 }

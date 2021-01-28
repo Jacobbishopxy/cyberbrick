@@ -28,8 +28,7 @@ export interface ModulePanelProps {
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   fetchContent: (date?: string) => void
-  dates?: string[]
-  fetchContentDates?: () => void
+  fetchContentDates?: () => Promise<string[]>
   updateContent: (c: DataType.Content) => void
   onRemove: () => void
   editable: boolean
@@ -38,13 +37,13 @@ export interface ModulePanelProps {
 
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
-// todo: fetch content from content (sql query API: `read(databaseId, queryOption)`)
 export const ModulePanel = (props: ModulePanelProps) => {
 
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
   const moduleFwRef = useRef<ConvertFwRef>(null)
 
   const [content, setContent] = useState<DataType.Content>()
+  const [dates, setDates] = useState<string[]>([])
 
   useEffect(() => {
     moduleRef.current = collectionSelector(props.elementType)
@@ -53,9 +52,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
   useEffect(() => setContent(props.content), [props.content])
 
   useEffect(() => {
-    if (props.timeSeries && props.fetchContentDates && content && !props.editable)
-      props.fetchContentDates()
-  }, [content])
+    if (props.timeSeries && props.fetchContentDates && content && !props.editable) {
+      props.fetchContentDates().then(res => setDates(res))
+    }
+  }, [content, props.editable])
 
 
   const editContent = (value: boolean) => {
@@ -112,21 +112,20 @@ export const ModulePanel = (props: ModulePanelProps) => {
     props.updateContent(newContent)
   }
 
-  const genHeader = useMemo(() =>
-    <ModulePanelHeader
-      editable={props.editable}
-      settable={props.settable}
-      timeSeries={props.timeSeries}
-      headName={props.headName}
-      title={content ? content.title : undefined}
-      updateTitle={updateTitle}
-      editContent={editContent}
-      newContent={newDateWithContent}
-      confirmDelete={confirmDelete}
-      dateList={props.dates}
-      editDate={headerDate}
-      onSelectDate={props.fetchContent}
-    />, [props.editable, props.settable, content, props.dates, confirmDelete])
+  const genHeader = <ModulePanelHeader
+    editable={props.editable}
+    settable={props.settable}
+    timeSeries={props.timeSeries}
+    headName={props.headName}
+    title={content ? content.title : undefined}
+    updateTitle={updateTitle}
+    editContent={editContent}
+    newContent={newDateWithContent}
+    confirmDelete={confirmDelete}
+    dateList={dates}
+    editDate={headerDate}
+    onSelectDate={props.fetchContent}
+  />
 
   const genContext = useMemo(() => {
     const rf = moduleRef.current
