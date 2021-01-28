@@ -126,7 +126,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       dateList={props.dates}
       editDate={headerDate}
       onSelectDate={props.fetchContent}
-    />, [props.editable, props.settable, content, props.dates])
+    />, [props.editable, props.settable, content, props.dates, confirmDelete])
 
   const genContext = useMemo(() => {
     const rf = moduleRef.current

@@ -76,6 +76,7 @@ export const ContainerTemplate =
 
     const [elements, setElements] = useState<Elements>(props.elements)
 
+    // update elements when adding a new element
     useEffect(() => setElements(props.elements), [props.elements])
 
     const elementOnRemove = (id: string) => () => {
