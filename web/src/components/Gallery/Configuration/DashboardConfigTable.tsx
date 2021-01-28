@@ -40,6 +40,11 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
         bordered
         pagination={{pageSize: 10}}
       >
+        <Table.Column
+          title="Category"
+          dataIndex={["category", "name"]}
+          key="category"
+        />
         <Table.ColumnGroup title="Dashboard">
           <Table.Column
             title="Name"

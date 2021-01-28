@@ -22,7 +22,10 @@ const dashboardFullRelations = {
 }
 
 const dashboardTemplateRelations = {
-  relations: [common.templates]
+  relations: [
+    common.category,
+    common.templates
+  ]
 }
 
 const dashboardAndCategoryTemplateRelations = {
