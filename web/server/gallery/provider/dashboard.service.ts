@@ -151,7 +151,8 @@ export class DashboardService {
       if (dashboardsRemove.length > 0)
         await this.deleteDashboards(dashboardsRemove.map(d => d.id))
 
-      await this.saveDashboards(dashboards)
+      const newDashboards = dashboards.map(d => ({...d, category: {name: categoryName}})) as Dashboard[]
+      await this.saveDashboards(newDashboards)
 
       return true
     }
