@@ -2,61 +2,36 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
-import {Cascader} from "antd"
-import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader"
+import * as GalleryService from "@/services/gallery"
+import * as DataType from "@/components/Gallery/GalleryDataType"
+import {SelectorPanelPro} from "@/components/Gallery/Dashboard/DashboardController/SelectorPanelPro"
 
 
-const optionLists = [
-  {
-    value: 'jacob',
-    label: 'Jacob',
-    isLeaf: false,
-  },
-  {
-    value: 'sam',
-    label: 'Sam',
-    isLeaf: false,
-  },
-]
+const fetchCategories = () =>
+  GalleryService.getAllCategories() as Promise<DataType.Category[]>
+
+const fetchCategory = (name: string) =>
+  GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>
+
+const fetchDashboard = (id: string) =>
+  GalleryService.getDashboardCategoryAndTemplate(id) as Promise<DataType.Dashboard>
 
 
 export default () => {
 
-  const [options, setOptions] = useState(optionLists)
+  const [cat, setCat] = useState<DataType.Category[]>([])
 
-  const onChange = (value: CascaderValueType, selectedOptions?: CascaderOptionType[]) => {
-    console.log(value, selectedOptions, options)
-  }
+  useEffect(() => {
+    fetchCategories().then(setCat)
+  }, [])
 
-  const loadData = (selectedOptions?: CascaderOptionType[]) => {
-    const targetOption = selectedOptions ? selectedOptions[selectedOptions.length - 1] : []
-    targetOption.loading = true
-
-    setTimeout(() => {
-      targetOption.loading = false
-      targetOption.children = [
-        {
-          label: `${targetOption.label} Dynamic 1`,
-          value: 'dynamic1',
-        },
-        {
-          label: `${targetOption.label} Dynamic 2`,
-          value: 'dynamic2',
-        },
-      ]
-      setOptions([...options])
-    }, 1000)
-  }
-
-  return (
-    <Cascader
-      options={options}
-      loadData={loadData}
-      onChange={onChange}
-      changeOnSelect
-    />
-  )
+  return <SelectorPanelPro
+    categories={cat}
+    categoryOnSelect={fetchCategory}
+    dashboardOnSelect={fetchDashboard}
+    onChange={v => console.log(v)}
+  />
 }
 
