@@ -80,7 +80,9 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       {
         props.headName ?
           <>
-            <Col span={8} style={{fontWeight: "bold"}}>{props.headName}</Col>
+            <Col span={8} style={{fontWeight: "bold"}}>
+              {props.headName}
+            </Col>
             <Col span={8} style={{textAlign: "center"}}>
               {genTitle()}
             </Col>

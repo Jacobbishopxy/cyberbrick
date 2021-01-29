@@ -147,6 +147,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
+      type={props.elementType}
       id={content ? content.id : undefined}
       {...footerDate()}
     />, [content])

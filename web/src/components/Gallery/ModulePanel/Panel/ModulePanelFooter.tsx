@@ -19,6 +19,7 @@ const IdViewer = (props: { onClick: (value: boolean) => void }) =>
   />
 
 export interface ModulePanelFooterProps {
+  type: DataType.ElementType
   id?: string
   date?: string
 }
@@ -27,15 +28,21 @@ export const ModulePanelFooter = (props: ModulePanelFooterProps) => {
 
   const [viewId, setViewId] = useState<boolean>(false)
 
-  const showId = () =>
+  const showIdAndType = () =>
     <Space>
       <IdViewer onClick={setViewId}/>
-      {viewId ? <>ID: {props.id}</> : <></>}
+      {
+        viewId ?
+          <Space>
+            <span>Type: {props.type}</span>
+            <span>ID: {props.id}</span>
+          </Space> : <></>
+      }
     </Space>
 
   return (
     <div className={styles.modulePanelFooter}>
-      {props.id ? showId() : <></>}
+      {props.id ? showIdAndType() : <></>}
       {props.date ? <span>Date: {DataType.timeToString(props.date)}</span> : <></>}
     </div>
   )

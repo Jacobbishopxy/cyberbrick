@@ -4,31 +4,59 @@
 
 import React, {useState} from 'react'
 
-import {FileExtractModal} from "@/components/FileUploadModal"
-import {fileExtract} from "@/components/Gallery/Misc/FileUploadConfig"
-import {Button} from "antd"
+import {Cascader} from "antd"
+import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader"
 
 
+const optionLists = [
+  {
+    value: 'jacob',
+    label: 'Jacob',
+    isLeaf: false,
+  },
+  {
+    value: 'sam',
+    label: 'Sam',
+    isLeaf: false,
+  },
+]
 
 
 export default () => {
-  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
 
-  const uploadResHandle = (v: any) => console.log(v)
+  const [options, setOptions] = useState(optionLists)
+
+  const onChange = (value: CascaderValueType, selectedOptions?: CascaderOptionType[]) => {
+    console.log(value, selectedOptions, options)
+  }
+
+  const loadData = (selectedOptions?: CascaderOptionType[]) => {
+    const targetOption = selectedOptions ? selectedOptions[selectedOptions.length - 1] : []
+    targetOption.loading = true
+
+    setTimeout(() => {
+      targetOption.loading = false
+      targetOption.children = [
+        {
+          label: `${targetOption.label} Dynamic 1`,
+          value: 'dynamic1',
+        },
+        {
+          label: `${targetOption.label} Dynamic 2`,
+          value: 'dynamic2',
+        },
+      ]
+      setOptions([...options])
+    }, 1000)
+  }
 
   return (
-
-    <>
-      <Button onClick={() => setUploadVisible(true)}>
-        Click
-      </Button>
-      <FileExtractModal
-        setVisible={setUploadVisible}
-        visible={uploadVisible}
-        upload={fileExtract}
-        uploadResHandle={uploadResHandle}
-      />
-    </>
+    <Cascader
+      options={options}
+      loadData={loadData}
+      onChange={onChange}
+      changeOnSelect
+    />
   )
 }
 
