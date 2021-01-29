@@ -21,8 +21,8 @@ import {AddModuleModal} from "./AddModuleModal"
 export interface ModuleControllerProps {
   canEdit: boolean
   categories: DataType.Category[]
-  categoryOnSelect: (categoryName: string, isCopy: boolean) => Promise<DataType.Dashboard[]>
-  dashboardOnSelect: (id: string, isCopy: boolean) => Promise<DataType.Template[]>
+  categoryOnSelect: (categoryName: string, isCopy: boolean) => Promise<DataType.Category>
+  dashboardOnSelect: (id: string, isCopy: boolean) => Promise<DataType.Dashboard>
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
   onCopyTemplate: (originTemplateId: string) => void
   onEditTemplate: (value: boolean) => void
@@ -114,7 +114,8 @@ export const Controller = (props: ModuleControllerProps) => {
       <SelectorPanel
         categories={props.categories}
         categoryOnSelect={name => props.categoryOnSelect(name, false)}
-        dashboardOnSelect={id => props.dashboardOnSelect(id, false)}
+        onSelectFinish={id => props.dashboardOnSelect(id, false)}
+        size="small"
       />
       <div>
         {edit ? editMode : idleMode}

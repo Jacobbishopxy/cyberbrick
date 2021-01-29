@@ -3,9 +3,8 @@
  */
 
 import React, {useState} from 'react'
-import {Checkbox, Divider, Input, List, message, Modal, Select, Space, Tabs, Tooltip} from "antd"
+import {Checkbox, Divider, Input, List, message, Modal,  Space, Tabs, Tooltip} from "antd"
 import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
-import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
 import {moduleList} from "../../ModulePanel/Collections"
@@ -81,18 +80,12 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
 
 interface TemplateSelectionViewProps {
   categories: DataType.Category[]
-  categoryOnSelect: (categoryName: string) => Promise<DataType.Dashboard[]>
-  dashboardOnSelect: (id: string) => Promise<DataType.Template[]>
+  categoryOnSelect: (categoryName: string) => Promise<DataType.Category>
+  dashboardOnSelect: (id: string) => Promise<DataType.Dashboard>
   onSelectedTemplate: (templateId: string) => void
 }
 
 const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
-  const [templates, setTemplates] = useState<DataType.Template[]>([])
-
-  const onSelectDashboard = async (id: string) => {
-    const res = await props.dashboardOnSelect(id)
-    setTemplates(res)
-  }
 
   return (
     <Space direction="vertical" style={{marginBottom: 20}}>
@@ -102,19 +95,28 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
       </Space>
       <Space>
         <RightOutlined/>
+        {/*<SelectorPanel*/}
+        {/*  categories={props.categories}*/}
+        {/*  categoryOnSelect={props.categoryOnSelect}*/}
+        {/*  dashboardOnSelect={onSelectDashboard}*/}
+        {/*/>*/}
+        {/*<Select*/}
+        {/*  style={{width: 120}}*/}
+        {/*  onSelect={props.onSelectedTemplate}*/}
+        {/*  placeholder="Template"*/}
+        {/*  size="small"*/}
+        {/*>*/}
+        {/*  {templates.map(t => <Select.Option key={t.id} value={t.id!}>{t.name}</Select.Option>)}*/}
+        {/*</Select>*/}
+
         <SelectorPanel
           categories={props.categories}
           categoryOnSelect={props.categoryOnSelect}
-          dashboardOnSelect={onSelectDashboard}
-        />
-        <Select
-          style={{width: 120}}
-          onSelect={props.onSelectedTemplate}
-          placeholder="Template"
+          dashboardOnSelect={props.dashboardOnSelect}
+          onSelectFinish={props.onSelectedTemplate}
           size="small"
-        >
-          {templates.map(t => <Select.Option key={t.id} value={t.id!}>{t.name}</Select.Option>)}
-        </Select>
+        />
+
         <Tooltip title="Copy elements to non-empty template is forbidden!">
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
@@ -126,8 +128,8 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
 export interface AddModuleModalProps {
   onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
   categories: DataType.Category[]
-  categoryOnSelect: (categoryName: string) => Promise<DataType.Dashboard[]>
-  dashboardOnSelect: (id: string) => Promise<DataType.Template[]>
+  categoryOnSelect: (categoryName: string) => Promise<DataType.Category>
+  dashboardOnSelect: (id: string) => Promise<DataType.Dashboard>
   copyTemplate: (originTemplateId: string) => void
   visible: boolean
   onQuit: () => void

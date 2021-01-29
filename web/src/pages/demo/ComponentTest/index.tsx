@@ -6,7 +6,7 @@ import React, {useEffect, useState} from 'react'
 
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
-import {SelectorPanelPro} from "@/components/Gallery/Dashboard/DashboardController/SelectorPanelPro"
+import {SelectorPanel} from "@/components/Gallery/Dashboard/DashboardController/SelectorPanel"
 
 
 const fetchCategories = () =>
@@ -27,11 +27,13 @@ export default () => {
     fetchCategories().then(setCat)
   }, [])
 
-  return <SelectorPanelPro
+  return <SelectorPanel
     categories={cat}
     categoryOnSelect={fetchCategory}
     dashboardOnSelect={fetchDashboard}
-    onChange={v => console.log(v)}
+    // onChange={v => console.log(v)}
+    onSelectFinish={v => console.log(v)}
+    style={{width: 400}}
   />
 }
 

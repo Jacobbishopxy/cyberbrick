@@ -83,8 +83,7 @@ export const Dashboard = (props: DashboardProps) => {
 
   const categoryOnSelect = async (name: string, isCopy: boolean = false) => {
     if (!isCopy) setCanEdit(false)
-    const res = await props.fetchCategory(name)
-    return res.dashboards || []
+    return props.fetchCategory(name)
   }
 
   const dashboardOnSelect = async (dashboardId: string, isCopy: boolean = false) => {
@@ -94,7 +93,7 @@ export const Dashboard = (props: DashboardProps) => {
       setCanEdit(true)
       setRefresh(refresh + 1)
     }
-    return dsb.templates || []
+    return dsb
   }
 
   const fetchElements = async (templateId: string) => {
