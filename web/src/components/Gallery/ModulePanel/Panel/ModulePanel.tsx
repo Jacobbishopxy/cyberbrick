@@ -117,6 +117,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     settable={props.settable}
     timeSeries={props.timeSeries}
     headName={props.headName}
+    type={props.elementType}
     title={content ? content.title : undefined}
     updateTitle={updateTitle}
     editContent={editContent}

@@ -5,6 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Col, Input, message, Row} from "antd"
 
+import * as DataType from "@/components/Gallery/GalleryDataType"
 import {HeaderController} from "./HeaderController"
 
 
@@ -13,6 +14,7 @@ interface ModulePanelHeaderProps {
   settable: boolean
   timeSeries?: boolean
   headName?: string
+  type: DataType.ElementType
   title: string | undefined
   updateTitle: (v: string) => void
   editContent: (value: boolean) => void
@@ -57,9 +59,9 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         size="small"
         onClick={() => setTitleEditable(true)}
       >
-        {title || "Please enter your title"}
+        {title || `${props.type}: Please enter your title`}
       </Button>
-    return <span style={{fontWeight: "bold"}}>{title}</span>
+    return <span style={{fontWeight: "bold"}}>{title || props.type}</span>
   }
 
   const genController = () =>

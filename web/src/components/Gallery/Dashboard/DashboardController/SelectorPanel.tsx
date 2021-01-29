@@ -38,7 +38,6 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
   const onChange = (value: CascaderValueType) => {
     if (props.onChange) props.onChange(value as string[])
-    console.log(value)
     if (props.onSelectFinish) {
       if (props.dashboardOnSelect)
         setSelected(value[2] as string)
