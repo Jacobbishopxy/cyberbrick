@@ -4,6 +4,7 @@
 
 import React, {useRef, useState} from "react"
 import {Card, Switch} from "antd"
+import {FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
@@ -39,7 +40,7 @@ export default () => {
 
   return (
     <Card
-      title="Gallery Module Test"
+      title={<FormattedMessage id="gallery.page.demo.module-test.title"/>}
       extra={
         <Switch
           onClick={switchOnClick}
