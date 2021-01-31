@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import {Checkbox, Divider, Input, List, message, Modal,  Space, Tabs, Tooltip} from "antd"
 import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "../../GalleryDataType"
 import {moduleList} from "../../ModulePanel/Collections"
@@ -61,7 +62,7 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
       <Space>
         <RightOutlined/>
         <Input size="small" style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
-        <Tooltip title="Duplicated module name is not allowed!">
+        <Tooltip title={<FormattedMessage id="gallery.component.dashboard-config-table3"/>}>
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>
@@ -95,20 +96,6 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
       </Space>
       <Space>
         <RightOutlined/>
-        {/*<SelectorPanel*/}
-        {/*  categories={props.categories}*/}
-        {/*  categoryOnSelect={props.categoryOnSelect}*/}
-        {/*  dashboardOnSelect={onSelectDashboard}*/}
-        {/*/>*/}
-        {/*<Select*/}
-        {/*  style={{width: 120}}*/}
-        {/*  onSelect={props.onSelectedTemplate}*/}
-        {/*  placeholder="Template"*/}
-        {/*  size="small"*/}
-        {/*>*/}
-        {/*  {templates.map(t => <Select.Option key={t.id} value={t.id!}>{t.name}</Select.Option>)}*/}
-        {/*</Select>*/}
-
         <SelectorPanel
           categories={props.categories}
           categoryOnSelect={props.categoryOnSelect}
@@ -116,8 +103,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           onSelectFinish={props.onSelectedTemplate}
           size="small"
         />
-
-        <Tooltip title="Copy elements to non-empty template is forbidden!">
+        <Tooltip title={<FormattedMessage id="gallery.component.dashboard-config-table2"/>}>
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>
@@ -161,13 +147,11 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
   return (
     <Modal
-      title="Select module to add"
+      title={<FormattedMessage id="gallery.component.dashboard-config-table1"/>}
       visible={props.visible}
       onOk={onSetOk}
       onCancel={props.onQuit}
       width="60%"
-      okText="Confirm"
-      cancelText="Discard"
       bodyStyle={{paddingTop: 0, paddingBottom: 0}}
       style={{top: 40}}
     >
@@ -175,14 +159,20 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         defaultActiveKey={selectedPane}
         onChange={setSelectedPane}
       >
-        <Tabs.TabPane tab="Module" key="Module">
+        <Tabs.TabPane
+          tab={<FormattedMessage id="gallery.component.general9"/>}
+          key="Module"
+        >
           <ModuleSelectionView
             setName={setModuleName}
             setTimeSeries={setTimeSeries}
             setSelected={setSelected}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Template" key="Template">
+        <Tabs.TabPane
+          tab={<FormattedMessage id="gallery.component.general7"/>}
+          key="Template"
+        >
           <TemplateSelectionView
             categories={props.categories}
             categoryOnSelect={props.categoryOnSelect}

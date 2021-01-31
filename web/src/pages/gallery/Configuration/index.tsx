@@ -5,6 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import {message, Tabs} from "antd"
 import {DashboardOutlined, DatabaseOutlined, TagsOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
@@ -113,7 +114,7 @@ export default () => {
       onChange={v => setActiveKey(v as TabPaneType)}
     >
       <Tabs.TabPane
-        tab={<span> <TagsOutlined/> Category</span>}
+        tab={<span><TagsOutlined/><FormattedMessage id="gallery.component.general1"/></span>}
         key="Category"
       >
         <CategoryConfigTable
@@ -126,7 +127,7 @@ export default () => {
       </Tabs.TabPane>
 
       <Tabs.TabPane
-        tab={<span> <DashboardOutlined/> Dashboard</span>}
+        tab={<span><DashboardOutlined/><FormattedMessage id="gallery.component.general2"/></span>}
         key="Dashboard"
       >
         <DashboardConfigTable
@@ -136,7 +137,7 @@ export default () => {
       </Tabs.TabPane>
 
       <Tabs.TabPane
-        tab={<span> <DatabaseOutlined/> Storage</span>}
+        tab={<span><DatabaseOutlined/><FormattedMessage id="gallery.component.general8"/></span>}
         key="Storage"
       >
         <StorageConfigTable
