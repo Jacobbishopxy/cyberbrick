@@ -22,7 +22,7 @@ export default defineConfig({
     ...defaultSettings
   },
   locale: {
-    default: 'en-US',
+    default: 'zh-CN',
     // default true, when it is true, will use `navigator.language` overwrite default
     antd: true,
     baseNavigator: true,

@@ -2,6 +2,8 @@
  * Created by Jacob Xie on 12/17/2020
  */
 
+import React from "react"
+
 export interface GenericDataInput {
   id?: string
   index?: number
@@ -21,8 +23,9 @@ export interface SelectableTagsRef {
 
 export interface EditableTagPanelProps<T extends GenericDataInput> {
   name?: string
-  textCreation?: string
-  textModification?: string
+  textCreation?: string | React.ReactNode
+  textModification?: string | React.ReactNode
+  textDeletion?: string | React.ReactNode
   colorSelector?: boolean
 
   data: T[]

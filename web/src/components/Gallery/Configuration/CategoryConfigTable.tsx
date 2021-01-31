@@ -4,6 +4,7 @@
 
 import React, {useState} from 'react'
 import {Table} from "antd"
+import {FormattedMessage} from "umi"
 
 import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
@@ -46,7 +47,9 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         dataSource={props.data.map(i => ({...i, key: i.name}))}
         title={() =>
           <SpaceBetween>
-            <span style={{fontWeight: "bold"}}>Category configuration</span>
+            <span style={{fontWeight: "bold"}}>
+              <FormattedMessage id="gallery.component.category-config-table1"/>
+            </span>
             <Editor onChange={setEditable} icons={{open: "Edit", close: "Save"}}/>
           </SpaceBetween>
         }
@@ -57,19 +60,21 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           editable ?
             () => <TextBuilder
               create
-              text="New category"
+              text={<FormattedMessage id="gallery.component.category-config-table2"/>}
               saveNewText={props.saveCategory}
             /> : undefined
         }
       >
-        <Table.ColumnGroup title="Category">
+        <Table.ColumnGroup
+          title={<FormattedMessage id="gallery.component.general1"/>}
+        >
           <Table.Column
-            title="Name"
+            title={<FormattedMessage id="gallery.component.general5"/>}
             dataIndex="name"
             key="name"
           />
           <Table.Column
-            title="Description"
+            title={<FormattedMessage id="gallery.component.general6"/>}
             dataIndex="description"
             key="description"
             render={(text: string, record: DataType.Category) =>
@@ -83,13 +88,15 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         </Table.ColumnGroup>
 
         <Table.Column
-          title="Dashboards"
+          title={<FormattedMessage id="gallery.component.general2"/>}
           dataIndex="dashboards"
           key="dashboards"
           render={(dashboards: DataType.Dashboard[], record: DataType.Category) =>
             <EditableTagPanel
               name={`db-${record.name}`}
-              textCreation="new dashboard"
+              textCreation={<FormattedMessage id="gallery.component.category-config-table9"/>}
+              textModification={<FormattedMessage id="gallery.component.category-config-table10"/>}
+              // textDeletion={<FormattedMessage id="gallery.component.category-config-table11"/>}
               data={dashboards}
               editable={editable}
               elementOnChange={dashboardsOnChange(record.name)}
@@ -98,13 +105,15 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         />
 
         <Table.Column
-          title="Marks"
+          title={<FormattedMessage id="gallery.component.general3"/>}
           dataIndex="marks"
           key="marks"
           render={(marks: DataType.Mark[], record: DataType.Category) =>
             <EditableTagPanel
               name={`cm-${record.name}`}
-              textCreation="new mark"
+              textCreation={<FormattedMessage id="gallery.component.category-config-table12"/>}
+              textModification={<FormattedMessage id="gallery.component.category-config-table13"/>}
+              // textDeletion={<FormattedMessage id="gallery.component.category-config-table14"/>}
               data={marks}
               editable={editable}
               elementOnChange={marksOnChange(record.name)}
@@ -113,13 +122,15 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Tags"
+          title={<FormattedMessage id="gallery.component.general4"/>}
           dataIndex="tags"
           key="tags"
           render={(tags: DataType.Tag[], record: DataType.Category) =>
             <EditableTagPanel
               name={`ct-${record.name}`}
-              textCreation="new tag"
+              textCreation={<FormattedMessage id="gallery.component.category-config-table15"/>}
+              textModification={<FormattedMessage id="gallery.component.category-config-table16"/>}
+              // textDeletion={<FormattedMessage id="gallery.component.category-config-table17"/>}
               data={tags}
               editable={editable}
               elementOnChange={tagsOnChange(record.name)}

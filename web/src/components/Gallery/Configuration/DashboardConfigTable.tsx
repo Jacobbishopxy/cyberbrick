@@ -4,6 +4,7 @@
 
 import React, {useState} from 'react'
 import {Table} from "antd"
+import {FormattedMessage} from "umi"
 
 import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
@@ -32,7 +33,9 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
         dataSource={props.data.map(i => ({...i, key: i.name}))}
         title={() =>
           <SpaceBetween>
-            <span style={{fontWeight: "bold"}}>Dashboard configuration</span>
+            <span style={{fontWeight: "bold"}}>
+              <FormattedMessage id="gallery.component.dashboard-config-table1"/>
+            </span>
             <Editor onChange={setEditable}/>
           </SpaceBetween>
         }
@@ -41,24 +44,26 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
         pagination={{pageSize: 10}}
       >
         <Table.Column
-          title="Category"
+          title={<FormattedMessage id="gallery.component.general1"/>}
           dataIndex={["category", "name"]}
           key="category"
         />
-        <Table.ColumnGroup title="Dashboard">
+        <Table.ColumnGroup
+          title={<FormattedMessage id="gallery.component.general2"/>}
+        >
           <Table.Column
-            title="Name"
+            title={<FormattedMessage id="gallery.component.general5"/>}
             dataIndex="name"
             key="name"
           />
           <Table.Column
-            title="Description"
+            title={<FormattedMessage id="gallery.component.general6"/>}
             dataIndex="description"
             key="description"
           />
         </Table.ColumnGroup>
         <Table.Column
-          title="Templates"
+          title={<FormattedMessage id="gallery.component.general7"/>}
           dataIndex="templates"
           key="templates"
           render={(templates: DataType.Template[], record: DataType.Dashboard) =>

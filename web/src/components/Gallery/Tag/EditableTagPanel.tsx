@@ -13,13 +13,11 @@ import {GenericDataInput, EditableTagPanelProps} from "./data"
 import {useDidMountEffect} from "@/utilities/utils"
 
 
-const tagDeleteModal = (onOk: () => void) =>
+const tagDeleteModal = (onOk: () => void, textDeletion: string | React.ReactNode) =>
   Modal.confirm({
-    title: "Are you sure to delete this tag?",
+    title: textDeletion,
     icon: <ExclamationCircleOutlined/>,
     onOk,
-    okText: "Confirm",
-    cancelText: "Discard"
   })
 
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
@@ -79,7 +77,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
               closable
               onClose={e => {
                 e.preventDefault()
-                tagDeleteModal(elementOnRemove(t.name))
+                tagDeleteModal(elementOnRemove(t.name), props.textDeletion)
               }}
               color={t.color}
               onClick={activateModifyModal(t)}
@@ -100,7 +98,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
   const modificationModal = (v: T) =>
     <CreationModal
       name={`${props.name}-mod`}
-      title={`Please enter ${props.textModification} information below:`}
+      title={props.textModification as string}
       visible={modificationVisible}
       onSubmit={tagModifyModalOnOk}
       onCancel={() => setModificationVisible(false)}
@@ -116,7 +114,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
       <CreationModal
         name={props.name}
-        title={`Please enter ${props.textCreation} information below:`}
+        title={props.textCreation as string}
         visible={creationVisible}
         onSubmit={tagCreateModalOnOk}
         onCancel={() => setCreationVisible(false)}
@@ -128,8 +126,10 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
 
 EditableTagPanel.defaultProps = {
-  textCreation: "new tag",
-  textModification: "modify tag",
+  textCreation: "Please enter new tag information below:",
+  textModification: "Please enter modify tag information below:",
+  textDeletion: "Are you sure to delete this tag?",
   editable: false,
   colorSelector: false,
 } as Partial<EditableTagPanelProps<GenericDataInput>>
+

@@ -8,7 +8,7 @@ import {CheckOutlined, EditOutlined, PlusOutlined} from '@ant-design/icons'
 
 export interface TextBuilderProps {
   create?: boolean
-  text?: string
+  text?: string | React.ReactNode
   saveNewText: (value: string) => void
 }
 
@@ -27,7 +27,7 @@ export const TextBuilder = (props: TextBuilderProps) => {
 
   const inputDefaultValue = () => {
     if (props.create === false)
-      return {defaultValue: props.text}
+      return {defaultValue: props.text as string}
     return {}
   }
 
