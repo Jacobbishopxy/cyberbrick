@@ -4,6 +4,7 @@
 
 import React from 'react'
 import {Button, Input, InputNumber, Select, Space} from "antd"
+import {FormattedMessage} from "umi"
 import {CheckCircleTwoTone, CloseCircleTwoTone, EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons'
 
 
@@ -93,7 +94,7 @@ export const OperationField = (props: OperationFieldProps) =>
         onClick={props.onUpdateClick}
         disabled={props.disabled}
       >
-        Update
+        <FormattedMessage id="gallery.component.general13"/>
       </Button>
       <Button
         size="small"
@@ -101,7 +102,7 @@ export const OperationField = (props: OperationFieldProps) =>
         onClick={props.onDeleteClick}
         disabled={props.disabled}
       >
-        Delete
+        <FormattedMessage id="gallery.component.general23"/>
       </Button>
     </Space> :
     <Space>
@@ -110,13 +111,13 @@ export const OperationField = (props: OperationFieldProps) =>
         type="primary"
         onClick={props.onCheckClick}
       >
-        Check
+        <FormattedMessage id="gallery.component.general24"/>
       </Button>
       <Button
         size="small"
         onClick={props.onReloadClick}
       >
-        Reload
+        <FormattedMessage id="gallery.component.general25"/>
       </Button>
     </Space>
 

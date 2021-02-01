@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import {Modal, Tag, Tooltip} from "antd"
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
+import {useIntl} from "umi"
 import _ from "lodash"
 
 import {CreationModal, CreationModalValue} from "../Misc/CreationModal"
@@ -13,15 +14,8 @@ import {GenericDataInput, EditableTagPanelProps} from "./data"
 import {useDidMountEffect} from "@/utilities/utils"
 
 
-const tagDeleteModal = (onOk: () => void, textDeletion: string | React.ReactNode) =>
-  Modal.confirm({
-    title: textDeletion,
-    icon: <ExclamationCircleOutlined/>,
-    onOk,
-  })
-
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
-
+  const intl = useIntl()
   const [items, setItems] = useState<T[]>(_.orderBy(props.data, ["index"]))
 
   const [creationVisible, setCreationVisible] = useState<boolean>(false)
@@ -48,7 +42,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
       setItems(items.map(i => {
         if (i.id)
           return i.id === modifiedValue.id ? {...i, ...value} as T : i
-        return  i.name === value.name ? {...i, ...value} as T : i
+        return i.name === value.name ? {...i, ...value} as T : i
       }))
     }
     setModificationVisible(false)
@@ -77,7 +71,11 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
               closable
               onClose={e => {
                 e.preventDefault()
-                tagDeleteModal(elementOnRemove(t.name), props.textDeletion)
+                Modal.confirm({
+                  title: intl.formatMessage({id: props.textDeletion}),
+                  icon: <ExclamationCircleOutlined/>,
+                  onOk: elementOnRemove(t.name),
+                })
               }}
               color={t.color}
               onClick={activateModifyModal(t)}

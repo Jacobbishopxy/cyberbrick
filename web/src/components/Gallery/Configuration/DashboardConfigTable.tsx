@@ -36,7 +36,13 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
             <span style={{fontWeight: "bold"}}>
               <FormattedMessage id="gallery.component.dashboard-config-table1"/>
             </span>
-            <Editor onChange={setEditable}/>
+            <Editor
+              onChange={setEditable}
+              icons={{
+                open: <FormattedMessage id="gallery.component.general14"/>,
+                close: <FormattedMessage id="gallery.component.general11"/>,
+              }}
+            />
           </SpaceBetween>
         }
         size="small"
@@ -69,6 +75,9 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
           render={(templates: DataType.Template[], record: DataType.Dashboard) =>
             <EditableTagPanel
               name={`dt-${record.name}`}
+              textCreation={<FormattedMessage id="gallery.component.dashboard-config-table2"/>}
+              textModification={<FormattedMessage id="gallery.component.dashboard-config-table3"/>}
+              textDeletion={"gallery.component.dashboard-config-table4"}
               data={templates}
               editable={editable}
               elementOnChange={templateOnChange(record.id!)}

@@ -25,7 +25,7 @@ export interface EditableTagPanelProps<T extends GenericDataInput> {
   name?: string
   textCreation?: string | React.ReactNode
   textModification?: string | React.ReactNode
-  textDeletion?: string | React.ReactNode
+  textDeletion?: string
   colorSelector?: boolean
 
   data: T[]

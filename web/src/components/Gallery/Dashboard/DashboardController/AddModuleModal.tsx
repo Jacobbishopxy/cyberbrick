@@ -62,7 +62,9 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
       <Space>
         <RightOutlined/>
         <Input size="small" style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
-        <Tooltip title={<FormattedMessage id="gallery.component.dashboard-config-table3"/>}>
+        <Tooltip
+          title={<FormattedMessage id="gallery.component.dashboard-config-table3"/>}
+        >
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>
@@ -103,7 +105,9 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           onSelectFinish={props.onSelectedTemplate}
           size="small"
         />
-        <Tooltip title={<FormattedMessage id="gallery.component.dashboard-config-table2"/>}>
+        <Tooltip
+          title={<FormattedMessage id="gallery.component.dashboard-config-table2"/>}
+        >
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>

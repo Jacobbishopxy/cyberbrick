@@ -50,7 +50,13 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
             <span style={{fontWeight: "bold"}}>
               <FormattedMessage id="gallery.component.category-config-table1"/>
             </span>
-            <Editor onChange={setEditable} icons={{open: "Edit", close: "Save"}}/>
+            <Editor
+              onChange={setEditable}
+              icons={{
+                open: <FormattedMessage id="gallery.component.general14"/>,
+                close: <FormattedMessage id="gallery.component.general11"/>,
+              }}
+            />
           </SpaceBetween>
         }
         size="small"
@@ -96,7 +102,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               name={`db-${record.name}`}
               textCreation={<FormattedMessage id="gallery.component.category-config-table9"/>}
               textModification={<FormattedMessage id="gallery.component.category-config-table10"/>}
-              // textDeletion={<FormattedMessage id="gallery.component.category-config-table11"/>}
+              textDeletion={"gallery.component.category-config-table11"}
               data={dashboards}
               editable={editable}
               elementOnChange={dashboardsOnChange(record.name)}
@@ -113,7 +119,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               name={`cm-${record.name}`}
               textCreation={<FormattedMessage id="gallery.component.category-config-table12"/>}
               textModification={<FormattedMessage id="gallery.component.category-config-table13"/>}
-              // textDeletion={<FormattedMessage id="gallery.component.category-config-table14"/>}
+              textDeletion={"gallery.component.category-config-table14"}
               data={marks}
               editable={editable}
               elementOnChange={marksOnChange(record.name)}
@@ -130,7 +136,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               name={`ct-${record.name}`}
               textCreation={<FormattedMessage id="gallery.component.category-config-table15"/>}
               textModification={<FormattedMessage id="gallery.component.category-config-table16"/>}
-              // textDeletion={<FormattedMessage id="gallery.component.category-config-table17"/>}
+              textDeletion={"gallery.component.category-config-table17"}
               data={tags}
               editable={editable}
               elementOnChange={tagsOnChange(record.name)}

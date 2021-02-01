@@ -11,6 +11,7 @@ import {
   PoweroffOutlined,
   SettingOutlined
 } from "@ant-design/icons"
+import {FormattedMessage, useIntl} from "umi"
 
 import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
@@ -30,7 +31,7 @@ export interface ModuleControllerProps {
 }
 
 export const Controller = (props: ModuleControllerProps) => {
-
+  const intl = useIntl()
   const [edit, setEdit] = useState<boolean>(false)
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
 
@@ -42,7 +43,7 @@ export const Controller = (props: ModuleControllerProps) => {
     () => {
       const quit = () => exist ? setEdit(false) : undefined
       return Modal.confirm({
-        title: "Save current layout and contents?",
+        title: intl.formatMessage({id: "gallery.component.dashboard-controller1"}),
         icon: <ExclamationCircleOutlined/>,
         onOk: () => props.onSaveTemplate()
           .then(() => {
@@ -55,8 +56,6 @@ export const Controller = (props: ModuleControllerProps) => {
           })
         ,
         onCancel: quit,
-        okText: "Confirm",
-        cancelText: "Discard"
       })
     }
 
@@ -68,21 +67,24 @@ export const Controller = (props: ModuleControllerProps) => {
           size="small"
           onClick={() => setAddModuleModalVisible(true)}
         >
-          <PlusCircleOutlined/> New
+          <PlusCircleOutlined/>
+          <FormattedMessage id="gallery.component.general10"/>
         </Button>
         <Button
           type="primary"
           size="small"
           onClick={saveTemplate(false)}
         >
-          <CheckCircleOutlined/> Save
+          <CheckCircleOutlined/>
+          <FormattedMessage id="gallery.component.general11"/>
         </Button>
         <Button
           size="small"
           danger
           onClick={saveTemplate(true)}
         >
-          <PoweroffOutlined/> Exit
+          <PoweroffOutlined/>
+          <FormattedMessage id="gallery.component.general12"/>
         </Button>
 
       </Space>
@@ -105,7 +107,8 @@ export const Controller = (props: ModuleControllerProps) => {
       onClick={() => setEdit(true)}
       disabled={!props.canEdit}
     >
-      <SettingOutlined/> Edit
+      <SettingOutlined/>
+      <FormattedMessage id="gallery.component.general14"/>
     </Button>
   ), [props.canEdit])
 

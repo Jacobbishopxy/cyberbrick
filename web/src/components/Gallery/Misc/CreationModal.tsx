@@ -4,6 +4,7 @@
 
 import React, {useState} from "react"
 import {Form, Input, Modal} from "antd"
+import {FormattedMessage} from "umi"
 import {ColorResult, BlockPicker} from "react-color"
 
 export interface CreationModalValue {
@@ -67,14 +68,14 @@ export const CreationModal = (props: CreationModalProps) => {
       >
         <Form.Item
           name="name"
-          label="Name"
+          label={<FormattedMessage id="gallery.component.general5"/>}
           rules={[{required: true, message: "Name is required"}]}
         >
           <Input placeholder="Place name here"/>
         </Form.Item>
         <Form.Item
           name="description"
-          label="Description"
+          label={<FormattedMessage id="gallery.component.general6"/>}
         >
           <Input placeholder="Place description here"/>
         </Form.Item>
@@ -82,7 +83,7 @@ export const CreationModal = (props: CreationModalProps) => {
           props.colorSelector ?
             <Form.Item
               name="color"
-              label="Color"
+              label={<FormattedMessage id="gallery.component.general15"/>}
             >
               <BlockPicker
                 color={color}

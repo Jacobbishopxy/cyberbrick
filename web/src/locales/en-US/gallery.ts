@@ -12,6 +12,25 @@ export default {
   "gallery.component.general7": "Template",
   "gallery.component.general8": "Storage",
   "gallery.component.general9": "Module",
+  "gallery.component.general10": "New",
+  "gallery.component.general11": "Save",
+  "gallery.component.general12": "Exit",
+  "gallery.component.general13": "Update",
+  "gallery.component.general14": "Edit",
+  "gallery.component.general15": "Color",
+  "gallery.component.general16": "Type",
+  "gallery.component.general17": "Host",
+  "gallery.component.general18": "Port",
+  "gallery.component.general19": "Database",
+  "gallery.component.general20": "Username",
+  "gallery.component.general21": "Password",
+  "gallery.component.general22": "Operation",
+  "gallery.component.general23": "Delete",
+  "gallery.component.general24": "Check",
+  "gallery.component.general25": "Reload",
+  "gallery.component.general26": "Upload",
+  "gallery.component.general27": "Download",
+  "gallery.component.general28": "Execute",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.misc.link": "Link",
@@ -53,7 +72,12 @@ export default {
   "gallery.component.add-module-modal2": "Copy elements to non-empty template is forbidden!",
   "gallery.component.add-module-modal3": "Duplicated module name is not allowed!",
 
+  "gallery.component.dashboard-controller1": "Save current layout and contents?",
+
   "gallery.component.dashboard-config-table1": "Dashboard configuration",
+  "gallery.component.dashboard-config-table2": "New template",
+  "gallery.component.dashboard-config-table3": "Modify template",
+  "gallery.component.dashboard-config-table4": "Are you sure to delete this template?",
 
   "gallery.page.demo.module-test.title": "Gallery Module Test",
 }

@@ -11,6 +11,7 @@ import {Button, Table} from "antd"
 
 import {StringField, NumberField, SelectionField, PasswordField, OperationField} from "./FieldView"
 import {NewStorageModal} from "./NewStorageModal"
+import {FormattedMessage} from "umi"
 
 
 export interface StorageConfigTableProps {
@@ -106,7 +107,13 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
         title={() =>
           <SpaceBetween>
             <span style={{fontWeight: "bold"}}>Storage configuration</span>
-            <Editor onChange={setEditable}/>
+            <Editor
+              onChange={setEditable}
+              icons={{
+                open: <FormattedMessage id="gallery.component.general14"/>,
+                close: <FormattedMessage id="gallery.component.general11"/>,
+              }}
+            />
           </SpaceBetween>
         }
         size="small"
@@ -124,7 +131,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
         {...tableFooter()}
       >
         <Table.Column
-          title="Name"
+          title={<FormattedMessage id="gallery.component.general5"/>}
           dataIndex="name"
           key="name"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -136,7 +143,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Description"
+          title={<FormattedMessage id="gallery.component.general6"/>}
           dataIndex="description"
           key="description"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -148,7 +155,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Type"
+          title={<FormattedMessage id="gallery.component.general16"/>}
           dataIndex="type"
           key="type"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -161,7 +168,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Host"
+          title={<FormattedMessage id="gallery.component.general17"/>}
           dataIndex="host"
           key="host"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -173,7 +180,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Port"
+          title={<FormattedMessage id="gallery.component.general18"/>}
           dataIndex="port"
           key="port"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -185,7 +192,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Database"
+          title={<FormattedMessage id="gallery.component.general19"/>}
           dataIndex="database"
           key="database"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -197,7 +204,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Username"
+          title={<FormattedMessage id="gallery.component.general20"/>}
           dataIndex="username"
           key="username"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -209,7 +216,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Password"
+          title={<FormattedMessage id="gallery.component.general21"/>}
           dataIndex="password"
           key="password"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -221,7 +228,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title="Operation"
+          title={<FormattedMessage id="gallery.component.general22"/>}
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <OperationField
               editable={editable}

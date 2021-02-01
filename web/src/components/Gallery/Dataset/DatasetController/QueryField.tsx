@@ -3,9 +3,11 @@
  */
 
 import React, {useState} from 'react'
-import {EditorButton} from "@/components/Editor"
-import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
 import {Button, Input, Space, Tooltip} from "antd"
+import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
+
+import {EditorButton} from "@/components/Editor"
 
 export const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
   <EditorButton
@@ -41,7 +43,7 @@ export const QueryField = (props: QueryFieldProps) => {
           icon={<CaretRightOutlined/>}
           onClick={onExecute}
         >
-          Execute
+          <FormattedMessage id="gallery.component.general28"/>
         </Button>
       </Tooltip>
     </Space> : <></>
