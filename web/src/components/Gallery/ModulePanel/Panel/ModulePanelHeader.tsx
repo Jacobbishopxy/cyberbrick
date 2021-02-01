@@ -54,21 +54,33 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         onBlur={changeTitle}
         defaultValue={title}
       />
+    const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`}/>
+
     if (props.editable && props.settable) {
-      const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`}/>
       const plz = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1"/>
-      return <Button
-        type="link"
-        size="small"
-        onClick={() => setTitleEditable(true)}
-      >
-        {title ?
-          title :
-          <>{eleType} - {plz}</>
-        }
-      </Button>
+      return (
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setTitleEditable(true)}
+        >
+          {
+            title ?
+            title :
+            <>{eleType} - {plz}</>
+          }
+        </Button>
+      )
     }
-    return <span style={{fontWeight: "bold"}}>{title || props.type}</span>
+    return (
+      <span style={{fontWeight: "bold"}}>
+        {
+          title ?
+          title :
+          eleType
+        }
+      </span>
+    )
   }
 
   const genController = () =>

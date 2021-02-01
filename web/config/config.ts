@@ -72,6 +72,7 @@ export default defineConfig({
       name: "gallery",
       icon: "BankOutlined",
       access: "canOnline",
+      component: "./gallery",
       layout: {
         hideFooter: true
       },
@@ -106,6 +107,7 @@ export default defineConfig({
       path: '/document',
       name: 'document',
       icon: 'BookOutlined',
+      component: "./document",
       routes: [
         {
           name: 'manual',

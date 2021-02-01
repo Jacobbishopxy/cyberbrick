@@ -9,6 +9,7 @@ export const demoRoute = (env?: string) => env === "dev" ?
       path: '/demo',
       name: 'demo',
       icon: 'ExperimentOutlined',
+      component: "./demo",
       routes: [
         {
           name: 'localstorage',
