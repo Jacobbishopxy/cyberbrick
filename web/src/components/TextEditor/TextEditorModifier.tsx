@@ -5,6 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import ReactQuill, {Quill} from 'react-quill'
 import {Button} from 'antd'
+import {FormattedMessage} from "umi"
 
 import 'react-quill/dist/quill.snow.css'
 
@@ -130,7 +131,7 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
             size='small'
             type='primary'
           >
-            Update
+            <FormattedMessage id="gallery.component.general42"/>
           </Button> :
           <></>
       }

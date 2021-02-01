@@ -90,7 +90,7 @@ declare namespace GalleryAPI {
     Text = "text",
     TargetPrice = "targetPrice",
     Image = "image",
-    FileList = "fileList",
+    FileOverview = "fileOverview",
     FileManager = "fileManager",
     XlsxTable = "xlsxTable",
     Table = "table",

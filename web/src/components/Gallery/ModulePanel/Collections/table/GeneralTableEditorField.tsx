@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import {Button, message, Modal} from "antd"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
+import {FormattedMessage, useIntl} from "umi"
 import _ from "lodash"
 
 import * as DataType from "../../../GalleryDataType"
@@ -16,28 +17,28 @@ import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/Co
 
 const viewStyleOptions = [
   {
-    label: "Default",
+    label: <FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field1"/>,
     value: "default"
   },
   {
-    label: "Xlsx",
+    label: <FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field2"/>,
     value: "xlsx"
   }
 ]
 
 const viewOptionOptions = [
   {
-    label: "Hide header",
+    label: <FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field3"/>,
     value: "header"
   },
   {
-    label: "Hide border",
+    label: <FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field4"/>,
     value: "border"
   }
 ]
 
 export const GeneralTableEditorField = (props: ModuleEditorField) => {
-
+  const intl = useIntl()
   const [visible, setVisible] = useState(false)
   const [dataType, setDataType] = useState<DataSelectedType>()
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
@@ -81,14 +82,14 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
         type="primary"
         onClick={() => setVisible(true)}
       >
-        Modify
+        <FormattedMessage id="gallery.component.general42"/>
       </Button>
 
       <StepsForm
         onFinish={saveContent}
         stepsFormRender={(dom, submitter) =>
           <Modal
-            title="Setup process"
+            title={intl.formatMessage({id: "gallery.component.module-panel.graph.utils.common1"})}
             visible={visible}
             onCancel={() => setVisible(false)}
             footer={submitter}
@@ -101,7 +102,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
       >
         <StepsForm.StepForm
           name="data"
-          title="Data"
+          title={intl.formatMessage({id: "gallery.component.general43"})}
           onFinish={dataSelectOnFinish}
         >
           <DataSourceSelectorForm
@@ -117,24 +118,24 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
 
         <StepsForm.StepForm
           name="option"
-          title="Option"
+          title={intl.formatMessage({id: "gallery.component.general56"})}
           initialValues={{"style": "default"}}
         >
           <ProFormRadio.Group
             name="style"
-            label="View style"
+            label={<FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field5"/>}
             options={viewStyleOptions}
           />
           <ProFormCheckbox.Group
             name="view"
-            label="View option"
+            label={<FormattedMessage id="gallery.component.module-panel.table.general-table-editor-field6"/>}
             options={viewOptionOptions}
           />
         </StepsForm.StepForm>
 
         <StepsForm.StepForm
           name="display"
-          title="Display"
+          title={intl.formatMessage({id: "gallery.component.general44"})}
         >
           <ColumnIdentifier columns={dataColumns}/>
         </StepsForm.StepForm>

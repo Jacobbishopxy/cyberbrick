@@ -6,6 +6,8 @@ import React from "react"
 import {Button, Form, Input, Radio, Select} from "antd"
 import ProForm from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
+
 
 interface YAxisSelectorFormItemsProps {
   yAxisOnChange: (idx: number) => (cols: string[]) => void
@@ -25,12 +27,12 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                 {...field}
                 name={[field.name, 'columns']}
                 fieldKey={[field.fieldKey, 'columns']}
-                label='Columns'
+                label={<FormattedMessage id="gallery.component.general33"/>}
                 rules={[{required: true, message: 'Missing columns', type: 'array'}]}
               >
                 <Select
                   mode="multiple"
-                  placeholder="Field"
+                  placeholder="Column"
                   style={{width: 200}}
                   onChange={props.yAxisOnChange(idx)}
                 >
@@ -44,13 +46,17 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                 {...field}
                 name={[field.name, 'position']}
                 fieldKey={[field.fieldKey, 'position']}
-                label='Position'
+                label={<FormattedMessage id="gallery.component.general45"/>}
                 rules={[{required: true, message: 'Missing position'}]}
                 initialValue="right"
               >
                 <Radio.Group disabled={idx === 0}>
-                  <Radio value="left">Left</Radio>
-                  <Radio value="right">Right</Radio>
+                  <Radio value="left">
+                    <FormattedMessage id="gallery.component.general46"/>
+                  </Radio>
+                  <Radio value="right">
+                    <FormattedMessage id="gallery.component.general47"/>
+                  </Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -58,7 +64,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                 {...field}
                 name={[field.name, "name"]}
                 fieldKey={[field.fieldKey, 'name']}
-                label="Name"
+                label={<FormattedMessage id="gallery.component.general5"/>}
               >
                 <Input style={{width: 200}} placeholder="Name of Y-axis"/>
               </Form.Item>
@@ -85,7 +91,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
               icon={<PlusOutlined/>}
               onClick={() => add()}
             >
-              Add Y-Axis option
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.y-axis-selector-form-items1"/>
             </Button>
           </Form.Item>
         </>

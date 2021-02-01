@@ -57,24 +57,30 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
     <Space direction="vertical">
       <Space>
         <StarTwoTone/>
-        <span style={{width: 250, fontSize: 15}}>Please enter your module name:</span>
+        <span style={{width: 250, fontSize: 15}}>
+          <FormattedMessage id="gallery.component.add-module-modal4"/>
+        </span>
       </Space>
       <Space>
         <RightOutlined/>
         <Input size="small" style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
         <Tooltip
-          title={<FormattedMessage id="gallery.component.dashboard-config-table3"/>}
+          title={<FormattedMessage id="gallery.component.add-module-modal3"/>}
         >
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
       </Space>
       <Space>
         <StarTwoTone/>
-        <span style={{width: 250, fontSize: 15}}>Please check options you need:</span>
+        <span style={{width: 250, fontSize: 15}}>
+          <FormattedMessage id="gallery.component.add-module-modal5"/>
+        </span>
       </Space>
       <Space>
         <RightOutlined/>
-        <Checkbox onChange={e => props.setTimeSeries(e.target.checked)}>Time series</Checkbox>
+        <Checkbox onChange={e => props.setTimeSeries(e.target.checked)}>
+          <FormattedMessage id="gallery.component.add-module-modal6"/>
+        </Checkbox>
       </Space>
     </Space>
     <ModuleSelectionList onSelect={props.setSelected}/>
@@ -94,7 +100,9 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
     <Space direction="vertical" style={{marginBottom: 20}}>
       <Space>
         <StarTwoTone/>
-        <span style={{fontSize: 15}}>Please select one of template in dashboard to copy:</span>
+        <span style={{fontSize: 15}}>
+          <FormattedMessage id="gallery.component.add-module-modal7"/>
+        </span>
       </Space>
       <Space>
         <RightOutlined/>
@@ -106,7 +114,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
           size="small"
         />
         <Tooltip
-          title={<FormattedMessage id="gallery.component.dashboard-config-table2"/>}
+          title={<FormattedMessage id="gallery.component.add-module-modal2"/>}
         >
           <ExclamationCircleTwoTone twoToneColor="red"/>
         </Tooltip>
@@ -151,7 +159,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
   return (
     <Modal
-      title={<FormattedMessage id="gallery.component.dashboard-config-table1"/>}
+      title={<FormattedMessage id="gallery.component.add-module-modal1"/>}
       visible={props.visible}
       onOk={onSetOk}
       onCancel={props.onQuit}

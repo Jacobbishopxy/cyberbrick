@@ -4,6 +4,7 @@
 
 import React, {useState} from 'react'
 import {Button, Col, Row, Space} from "antd"
+import {FormattedMessage, useIntl} from "umi"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
@@ -12,6 +13,7 @@ import {ModalForm, ProFormDigit, ProFormRadio, ProFormText} from "@ant-design/pr
 
 
 const EditorField = (props: ModuleEditorField) => {
+  const intl = useIntl()
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const onSubmit = async (values: Record<string, any>) => {
@@ -29,25 +31,29 @@ const EditorField = (props: ModuleEditorField) => {
   return (
     <div className={props.styling}>
       <ModalForm
-        title="Setup your target price"
-        trigger={<Button type="primary">Update</Button>}
+        title={intl.formatMessage({id: "gallery.component.module-panel.miscellaneous.target-price1"})}
+        trigger={
+          <Button type="primary">
+            <FormattedMessage id="gallery.component.general42"/>
+          </Button>
+        }
         initialValues={{direction: "B"}}
         onFinish={onSubmit}
         modalProps={{width: "30vw"}}
       >
         <ProFormRadio.Group
           name="direction"
-          label="Direction"
+          label={<FormattedMessage id="gallery.component.general48"/>}
           options={[
-            {label: "Buy", value: "B"},
-            {label: "Neutral", value: "N"},
-            {label: "Sell", value: "S"},
+            {label: <FormattedMessage id="gallery.component.general49"/>, value: "B"},
+            {label: <FormattedMessage id="gallery.component.general50"/>, value: "N"},
+            {label: <FormattedMessage id="gallery.component.general51"/>, value: "S"},
           ]}
           rules={[{required: true, message: "Please choose a direction"}]}
         />
         <ProFormDigit
           name="price"
-          label="Price"
+          label={<FormattedMessage id="gallery.component.general52"/>}
           min={0}
           fieldProps={{step: 0.01}}
           placeholder="Please enter your target price"
@@ -56,7 +62,7 @@ const EditorField = (props: ModuleEditorField) => {
         />
         <ProFormText
           name="note"
-          label="Note"
+          label={<FormattedMessage id="gallery.component.general53"/>}
           placeholder="Please enter your note, this is optional"
         />
       </ModalForm>
@@ -70,7 +76,9 @@ const showDirection = (dir: string, pr: number) => {
       return (
         <Row>
           <Col span={9} offset={2}>
-            <span style={{color: "white", background: "red", fontSize: 100}}>Buy</span>
+            <span style={{color: "white", background: "red", fontSize: 100}}>
+              <FormattedMessage id="gallery.component.general49"/>
+            </span>
           </Col>
           <Col span={9} offset={4}>
             <span style={{color: "red", fontSize: 100}}>{pr}</span>
@@ -81,7 +89,9 @@ const showDirection = (dir: string, pr: number) => {
       return (
         <Row>
           <Col span={9} offset={2}>
-            <span style={{color: "white", background: "green", fontSize: 100}}>Sell</span>
+            <span style={{color: "white", background: "green", fontSize: 100}}>
+              <FormattedMessage id="gallery.component.general51"/>
+            </span>
           </Col>
           <Col span={9} offset={4}>
             <span style={{color: "green", fontSize: 100}}>{pr}</span>
@@ -92,7 +102,9 @@ const showDirection = (dir: string, pr: number) => {
       return (
         <Row>
           <Col span={9} offset={2}>
-            <span style={{color: "white", background: "gray", fontSize: 100}}>Neutral</span>
+            <span style={{color: "white", background: "gray", fontSize: 100}}>
+              <FormattedMessage id="gallery.component.general50"/>
+            </span>
           </Col>
           <Col span={9} offset={4}>
             <span style={{color: "gray", fontSize: 100}}>{pr}</span>
@@ -107,10 +119,14 @@ const PresenterField = (props: ModulePresenterField) =>
     <Space direction="vertical" style={{width: "100%"}} className={props.styling}>
       <Row>
         <Col span={9} offset={2}>
-          <span style={{fontWeight: "bold", fontSize: 25}}>Investment advice</span>
+          <span style={{fontWeight: "bold", fontSize: 25}}>
+            <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2"/>
+          </span>
         </Col>
         <Col span={9} offset={4}>
-          <span style={{fontWeight: "bold", fontSize: 25}}>Target price</span>
+          <span style={{fontWeight: "bold", fontSize: 25}}>
+            <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3"/>
+          </span>
         </Col>
       </Row>
 

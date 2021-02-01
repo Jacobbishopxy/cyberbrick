@@ -4,6 +4,7 @@
 
 import React, {useState} from 'react'
 import {Button} from "antd"
+import {useIntl} from "umi"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
@@ -12,6 +13,7 @@ import {ModalForm, ProFormText} from "@ant-design/pro-form"
 
 
 const EditorField = (props: ModuleEditorField) => {
+  const intl = useIntl()
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
   const onSubmit = async (values: Record<string, any>) => {
@@ -29,7 +31,7 @@ const EditorField = (props: ModuleEditorField) => {
   return (
     <div className={props.styling}>
       <ModalForm
-        title="Place your link below"
+        title={intl.formatMessage({id: "gallery.component.module-panel.miscellaneous.embed-link1"})}
         trigger={<Button type="primary">Update</Button>}
         initialValues={{link: content?.data?.link}}
         onFinish={onSubmit}

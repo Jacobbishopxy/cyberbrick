@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import {Button, Form, Radio, Space} from "antd"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 import _ from "lodash"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
@@ -68,7 +69,7 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
             type="primary"
             onClick={() => setUploadVisible(true)}
           >
-            Click
+            <FormattedMessage id="gallery.component.general26"/>
           </Button>
 
           <FileExtractModal
@@ -80,14 +81,22 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
           />
         </>
       )
-    return <Button type="primary" disabled>Click</Button>
+    return (
+      <Button type="primary" disabled>
+        <FormattedMessage id="gallery.component.general26"/>
+      </Button>
+    )
   }
 
   return (
     <Form.Item label="Data type">
       <Radio.Group onChange={e => props.dataSelected(e.target.value)}>
-        <Radio value="dataset">Dataset</Radio>
-        <Radio value="file">File</Radio>
+        <Radio value="dataset">
+          <FormattedMessage id="gallery.component.general54"/>
+        </Radio>
+        <Radio value="file">
+          <FormattedMessage id="gallery.component.general55"/>
+        </Radio>
       </Radio.Group>
       <Space>
         {dataSelect()}

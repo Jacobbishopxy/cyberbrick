@@ -4,6 +4,7 @@
 
 import React, {useEffect, useState} from 'react'
 import {Button, Col, Input, message, Row} from "antd"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import {HeaderController} from "./HeaderController"
@@ -53,14 +54,20 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         onBlur={changeTitle}
         defaultValue={title}
       />
-    if (props.editable && props.settable)
+    if (props.editable && props.settable) {
+      const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`}/>
+      const plz = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1"/>
       return <Button
         type="link"
         size="small"
         onClick={() => setTitleEditable(true)}
       >
-        {title || `${props.type}: Please enter your title`}
+        {title ?
+          title :
+          <>{eleType} - {plz}</>
+        }
       </Button>
+    }
     return <span style={{fontWeight: "bold"}}>{title || props.type}</span>
   }
 

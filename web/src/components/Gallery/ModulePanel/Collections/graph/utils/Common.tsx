@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react'
 import {Button, message, Modal, Space} from "antd"
 import ProForm, {StepsForm} from "@ant-design/pro-form"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
+import {FormattedMessage, useIntl} from "umi"
 import ReactEcharts from "echarts-for-react"
 import {EChartOption} from "echarts"
 
@@ -21,6 +22,7 @@ import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/Co
 
 export const generateCommonEditorField = (mixin?: Mixin) =>
   (props: ModuleEditorField) => {
+    const intl = useIntl()
     const [visible, setVisible] = useState(false)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     const [dataAvailable, setDataAvailable] = useState(false)
@@ -65,14 +67,14 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           type="primary"
           onClick={() => setVisible(true)}
         >
-          Modify
+          <FormattedMessage id="gallery.component.general42"/>
         </Button>
 
         <StepsForm
           onFinish={saveContent}
           stepsFormRender={(dom, submitter) =>
             <Modal
-              title="Setup process"
+              title={intl.formatMessage({id: "gallery.component.module-panel.graph.utils.common1"})}
               visible={visible}
               onCancel={() => setVisible(false)}
               footer={submitter}
@@ -85,10 +87,12 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         >
           <StepsForm.StepForm
             name="data"
-            title="Data"
+            title={intl.formatMessage({id: "gallery.component.general43"})}
             onFinish={dataSelectOnFinish}
           >
-            <ProForm.Group title="Data selection">
+            <ProForm.Group
+              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3"/>}
+            >
               <Space align="baseline">
                 <QuerySelectorModal
                   trigger={
@@ -96,7 +100,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                       type='primary'
                       style={{marginBottom: 20}}
                     >
-                      Click to select a dataset
+                      <FormattedMessage id="gallery.component.module-panel.collections.file-view4"/>
                     </Button>
                   }
                   storagesOnFetch={props.fetchStorages!}
@@ -113,14 +117,16 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
               </Space>
             </ProForm.Group>
 
-            <ProForm.Group title="Data trim">
+            <ProForm.Group
+              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5"/>}
+            >
               <ColumnIdentifier columns={columns!}/>
             </ProForm.Group>
           </StepsForm.StepForm>
 
           <StepsForm.StepForm
             name="display"
-            title="Display"
+            title={intl.formatMessage({id: "gallery.component.general43"})}
             initialValues={{x: {type: "category"}}}
           >
             <DisplayForm

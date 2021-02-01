@@ -10,6 +10,7 @@ import {
   InputNumber,
   Select,
 } from "antd"
+import {FormattedMessage} from "umi"
 
 import {BaseModal} from "./BaseModal"
 
@@ -35,30 +36,43 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
       {
         props.multiSheetDisable ? <></> :
           <>
-            <Divider plain orientation="left" style={{color: "lightgray"}}>File options</Divider>
+            <Divider plain orientation="left" style={{color: "lightgray"}}>
+              <FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions"/>
+            </Divider>
 
-            <Form.Item name="fileOptions" label="File options">
+            <Form.Item
+              name="fileOptions"
+              label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions"/>}
+            >
               <Checkbox.Group>
                 <Checkbox
                   value="multiSheets"
                 >
-                  Multiple sheets
+                  <FormattedMessage id="component.fileUploadModal.fileExtractModal.multiSheets"/>
                 </Checkbox>
               </Checkbox.Group>
             </Form.Item>
           </>
       }
 
-      <Divider plain orientation="left" style={{color: "lightgray"}}>Cell options</Divider>
+      <Divider plain orientation="left" style={{color: "lightgray"}}>
+        <FormattedMessage id="component.fileUploadModal.fileExtractModal.cellOptions"/>
+      </Divider>
 
-      <Form.Item name="numberRounding" label="Rounding">
+      <Form.Item
+        name="numberRounding"
+        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.rounding"/>}
+      >
         <InputNumber
           min={0}
           max={10}
           precision={0}
         />
       </Form.Item>
-      <Form.Item name="dateFormat" label="Date format">
+      <Form.Item
+        name="dateFormat"
+        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.dateFormat"/>}
+      >
         <Select>
           <Select.Option value="%Y">
             YYYY

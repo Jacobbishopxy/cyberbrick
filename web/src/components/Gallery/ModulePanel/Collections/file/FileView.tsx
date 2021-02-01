@@ -5,6 +5,7 @@
 import React, {useRef, useState} from 'react'
 import {Button} from "antd"
 import {ModalForm, ProFormText} from "@ant-design/pro-form"
+import {FormattedMessage, useIntl} from "umi"
 import {FileManager, FileNavigator} from '@opuscapita/react-filemanager'
 import connectorNodeV1 from "@opuscapita/react-filemanager-connector-node-v1"
 
@@ -42,7 +43,7 @@ interface Ancestor {
 }
 
 const EditorField = (props: ModuleEditorField) => {
-
+  const intl = useIntl()
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
   const [resource, setResource] = useState<Ancestor>()
 
@@ -61,14 +62,14 @@ const EditorField = (props: ModuleEditorField) => {
   return (
     <div className={props.styling}>
       <ModalForm
-        title="New file view"
+        title={intl.formatMessage({id: "gallery.component.module-panel.collections.file-view1"})}
         trigger={<Button type="primary">Create</Button>}
         onFinish={onSubmit}
         modalProps={{width: "80vw"}}
       >
         <ProFormText
           name="link"
-          label="External link"
+          label={<FormattedMessage id="gallery.component.module-panel.collections.file-view1"/>}
         />
 
         <FileManager style={{height: '60vh'}}>
@@ -124,7 +125,5 @@ const PresenterField = (props: ModulePresenterField) => {
     </> : <></>
 }
 
-
 export const FileView = new ModuleGenerator(EditorField, PresenterField).generate()
-
 

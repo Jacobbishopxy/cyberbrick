@@ -4,11 +4,13 @@
 
 import React, {useState} from 'react'
 import {Checkbox, DatePicker, Modal, Select, Space} from "antd"
+import {FormattedMessage, useIntl} from "umi"
 import moment from "moment"
 
 import {DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton} from "./ControllerButtons"
 
 interface TimeSetModalProps {
+  intl: any
   show: boolean | undefined,
   visible: boolean,
   onOk: (isNew: boolean) => void,
@@ -17,7 +19,6 @@ interface TimeSetModalProps {
 }
 
 const TimeSetModal = (props: TimeSetModalProps) => {
-
   const [isNew, setIsNew] = useState<boolean>(false)
 
   const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
@@ -28,7 +29,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 
   return props.show ?
     <Modal
-      title="Select a date"
+      title={props.intl.formatMessage({id: "gallery.component.module-panel.panel.header-controller1"})}
       visible={props.visible}
       onOk={onOk}
       onCancel={props.onCancel}
@@ -39,13 +40,14 @@ const TimeSetModal = (props: TimeSetModalProps) => {
           defaultValue={moment()}
         />
         <Checkbox onChange={e => setIsNew(e.target.checked)}>
-          Create new content
+          <FormattedMessage id="gallery.component.module-panel.panel.header-controller2"/>
         </Checkbox>
       </Space>
     </Modal> : <></>
 }
 
 interface TimePickModalProps {
+  intl: any
   visible: boolean
   onOk: (date: string) => void
   onCancel: () => void
@@ -53,7 +55,6 @@ interface TimePickModalProps {
 }
 
 const TimePickModal = (props: TimePickModalProps) => {
-
   const [selectedDate, setSelectedDate] = useState<string>()
 
   const onChange = (d: string) => setSelectedDate(d)
@@ -63,7 +64,7 @@ const TimePickModal = (props: TimePickModalProps) => {
   }
 
   return <Modal
-    title="Select a date"
+    title={props.intl.formatMessage({id: "gallery.component.module-panel.panel.header-controller1"})}
     visible={props.visible}
     onOk={onOk}
     onCancel={props.onCancel}
@@ -107,7 +108,7 @@ export interface HeaderController {
 
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
 export const HeaderController = (props: HeaderController) => {
-
+  const intl = useIntl()
   const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({set: false, pick: false})
   const [selectedDate, setSelectedDate] = useState<string>()
 
@@ -141,6 +142,7 @@ export const HeaderController = (props: HeaderController) => {
         confirmDelete={props.confirmDelete}
       />
       <TimeSetModal
+        intl={intl}
         show={props.timeSeries}
         visible={dateModalVisible.set}
         onOk={timeSetModalOnOk}
@@ -156,6 +158,7 @@ export const HeaderController = (props: HeaderController) => {
           onClick={() => setDateModalVisible({...dateModalVisible, pick: true})}
         />
         <TimePickModal
+          intl={intl}
           visible={dateModalVisible.pick}
           onOk={timePickModalOnOk}
           onCancel={() => setDateModalVisible({...dateModalVisible, pick: false})}

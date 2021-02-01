@@ -4,6 +4,7 @@
 
 import React, {useState} from 'react'
 import {Divider, Form, Input, Radio, Select} from "antd"
+import {FormattedMessage} from "umi"
 
 import {BaseModal} from "./BaseModal"
 
@@ -45,9 +46,14 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
-      <Divider plain orientation="left" style={{color: "lightgray"}}>Database options</Divider>
+      <Divider plain orientation="left" style={{color: "lightgray"}}>
+        <FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions"/>
+      </Divider>
 
-      <Form.Item name="id" label="Database">
+      <Form.Item
+        name="id"
+        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions"/>}
+      >
         <Select>
           {
             props.idList.map(i => (
@@ -61,23 +67,26 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
         isCsv ?
           <Form.Item
             name="tableName"
-            label="Table name"
+            label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.tableName"/>}
             rules={[{required: true, message: "File is required"}]}
           >
             <Input placeholder="Table name"/>
           </Form.Item> : <></>
       }
 
-      <Form.Item name="insertOption" label="Insert option">
+      <Form.Item
+        name="insertOption"
+        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.insertOption"/>}
+      >
         <Radio.Group>
           <Radio value="replace">
-            Replace
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.replace"/>
           </Radio>
           <Radio value="append">
-            Append
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.append"/>
           </Radio>
           <Radio value="fail">
-            Fail
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.fail"/>
           </Radio>
         </Radio.Group>
       </Form.Item>

@@ -5,6 +5,7 @@
 import React, {useState} from 'react'
 import ProForm from "@ant-design/pro-form"
 import {Divider, Form, Input, Radio, Select} from "antd"
+import {FormattedMessage} from "umi"
 import _ from "lodash"
 
 import {Mixin} from "./data"
@@ -52,7 +53,7 @@ export const DisplayForm = (props: DisplayFormProps) => {
       <ProForm.Group title="X">
         <Form.Item
           name={["x", "column"]}
-          label="Column"
+          label={<FormattedMessage id="gallery.component.general33"/>}
           rules={[{required: true, message: "Select a column for xAxis!"}]}
         >
           <Select
@@ -66,20 +67,28 @@ export const DisplayForm = (props: DisplayFormProps) => {
 
         <Form.Item
           name={["x", "type"]}
-          label="Type"
+          label={<FormattedMessage id="gallery.component.general16"/>}
           rules={[{required: true, message: "Select a type for xAxis!"}]}
         >
           <Radio.Group>
-            <Radio value="value">Value</Radio>
-            <Radio value="category">Category</Radio>
-            <Radio value="time">Time</Radio>
-            <Radio value="log">Log</Radio>
+            <Radio value="value">
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form2"/>
+            </Radio>
+            <Radio value="category">
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form3"/>
+            </Radio>
+            <Radio value="time">
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form4"/>
+            </Radio>
+            <Radio value="log">
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form5"/>
+            </Radio>
           </Radio.Group>
         </Form.Item>
 
         <Form.Item
           name={["x", "name"]}
-          label="Name"
+          label={<FormattedMessage id="gallery.component.general5"/>}
         >
           <Input style={{width: 200}} placeholder="Name of X-axis"/>
         </Form.Item>
@@ -99,10 +108,12 @@ export const DisplayForm = (props: DisplayFormProps) => {
 
       <Divider/>
 
-      <ProForm.Group title="Style">
+      <ProForm.Group
+        title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form7"/>}
+      >
         <Form.Item
           name="style"
-          label="Theme style"
+          label={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form6"/>}
         >
           <Select
             placeholder="Select a theme for display"

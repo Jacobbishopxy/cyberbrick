@@ -6,6 +6,7 @@ import React, {useState} from 'react'
 import {Button, message, Modal, Tabs} from "antd"
 import {HotTable} from "@handsontable/react"
 import {ProFormCheckbox, StepsForm} from "@ant-design/pro-form"
+import {FormattedMessage, useIntl} from "umi"
 import _ from "lodash"
 
 import {FileExtractModal} from "@/components/FileUploadModal"
@@ -20,11 +21,11 @@ import "handsontable/dist/handsontable.full.css"
 
 const viewOptionOptions = [
   {
-    label: "Hide column",
+    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table1"/>,
     value: "col"
   },
   {
-    label: "Hide row",
+    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table2"/>,
     value: "row"
   }
 ]
@@ -32,7 +33,7 @@ const licenseKey = "non-commercial-and-evaluation"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
-
+  const intl = useIntl()
   const [visible, setVisible] = useState<boolean>(false)
   const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
@@ -78,7 +79,7 @@ const EditorField = (props: ModuleEditorField) => {
         type="primary"
         onClick={() => setVisible(true)}
       >
-        Modify
+        <FormattedMessage id="gallery.component.general42"/>
       </Button>
 
       <StepsForm
@@ -98,14 +99,14 @@ const EditorField = (props: ModuleEditorField) => {
       >
         <StepsForm.StepForm
           name="data"
-          title="Data"
+          title={intl.formatMessage({id: "gallery.component.general43"})}
           onFinish={dataSelectOnFinish}
         >
           <Button
             type="primary"
             onClick={() => setUploadVisible(true)}
           >
-            Upload
+            <FormattedMessage id="gallery.component.general26"/>
           </Button>
           <FileExtractModal
             setVisible={setUploadVisible}
@@ -117,11 +118,11 @@ const EditorField = (props: ModuleEditorField) => {
 
         <StepsForm.StepForm
           name="option"
-          title="Option"
+          title={intl.formatMessage({id: "gallery.component.general56"})}
         >
           <ProFormCheckbox.Group
             name="hideOptions"
-            label="Hide options"
+            label={<FormattedMessage id="gallery.component.module-panel.table.xlsx-table3"/>}
             options={viewOptionOptions}
           />
         </StepsForm.StepForm>

@@ -67,11 +67,10 @@ export enum ElementType {
   Text = "text",
   TargetPrice = "targetPrice",
   Image = "image",
-  FileList = "fileList",
+  FileOverview = "fileOverview",
   FileManager = "fileManager",
   XlsxTable = "xlsxTable",
   FlexTable = "flexTable",
-  Table = "table",
   Line = "line",
   Bar = "bar",
   LineBar = "lineBar",
@@ -94,16 +93,14 @@ export const getElementType = (v: string) => {
       return ElementType.TargetPrice
     case "image":
       return ElementType.Image
-    case "fileList":
-      return ElementType.FileList
+    case "fileOverview":
+      return ElementType.FileOverview
     case "fileManager":
       return ElementType.FileManager
     case "xlsxTable":
       return ElementType.XlsxTable
     case "flexTable":
       return ElementType.FlexTable
-    case "table":
-      return ElementType.Table
     case "line":
       return ElementType.Line
     case "bar":

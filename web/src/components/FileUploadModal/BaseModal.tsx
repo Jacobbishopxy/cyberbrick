@@ -13,6 +13,7 @@ import {
   Upload
 } from "antd"
 import {UploadOutlined} from '@ant-design/icons'
+import {FormattedMessage, useIntl} from "umi"
 
 
 const formItemLayout = {
@@ -32,6 +33,7 @@ export interface BaseModalProps {
 }
 
 export const BaseModal = (props: BaseModalProps) => {
+  const intl = useIntl()
   const [form] = Form.useForm()
 
   const [uploading, setUploading] = useState<boolean>(false)
@@ -97,13 +99,11 @@ export const BaseModal = (props: BaseModalProps) => {
 
   return (
     <Modal
-      title='Please complete below:'
+      title={intl.formatMessage({id: "component.fileUploadModal.baseModal.title"})}
       visible={props.visible}
       onOk={onFinish}
       onCancel={() => props.setVisible(false)}
       confirmLoading={uploading}
-      okText="Confirm"
-      cancelText="Discard"
       width="40vw"
     >
       <Form
@@ -111,25 +111,29 @@ export const BaseModal = (props: BaseModalProps) => {
         form={form}
         initialValues={props.initialValues}
       >
-        <Divider plain orientation="left" style={{color: "lightgray"}}>File</Divider>
+        <Divider plain orientation="left" style={{color: "lightgray"}}>
+          <FormattedMessage id="component.fileUploadModal.baseModal.file"/>
+        </Divider>
 
         <Form.Item
           name="file"
-          label="File"
+          label={<FormattedMessage id="component.fileUploadModal.baseModal.file"/>}
           rules={[{required: true, message: "File is required"}]}
         >
           <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined/>}>Click to upload</Button>
+            <Button icon={<UploadOutlined/>}>
+              <FormattedMessage id="component.fileUploadModal.baseModal.upload"/>
+            </Button>
           </Upload>
         </Form.Item>
 
         <Form.Item
           name="transpose"
-          label="Transpose"
+          label={<FormattedMessage id="component.fileUploadModal.baseModal.transpose"/>}
           valuePropName="checked"
         >
           <Checkbox>
-            Horizontal displayed data needs transpose
+            <FormattedMessage id="component.fileUploadModal.baseModal.transposeText"/>
           </Checkbox>
         </Form.Item>
 

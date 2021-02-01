@@ -5,6 +5,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {Modal} from "antd"
 import {ExclamationCircleOutlined} from '@ant-design/icons'
+import {useIntl} from "umi"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
@@ -38,7 +39,7 @@ export interface ModulePanelProps {
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
 export const ModulePanel = (props: ModulePanelProps) => {
-
+  const intl = useIntl()
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
   const moduleFwRef = useRef<ConvertFwRef>(null)
 
@@ -64,11 +65,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const confirmDelete = () =>
     Modal.confirm({
-      title: 'Delete this module?',
+      title: intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel1"}),
       icon: <ExclamationCircleOutlined/>,
-      okText: 'Yes',
       okType: 'danger',
-      cancelText: 'No',
       onOk: () => props.onRemove()
     })
 

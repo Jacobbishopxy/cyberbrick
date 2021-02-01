@@ -6,6 +6,7 @@ import React from 'react'
 import {Button, Divider, Form, InputNumber, Select} from "antd"
 import ProForm, {ProFormSelect} from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 
 import {Mixin} from "./data"
 
@@ -26,7 +27,7 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
               {...field}
               name={[field.name, "column"]}
               fieldKey={[field.fieldKey, "column"]}
-              label="Column"
+              label={<FormattedMessage id="gallery.component.general33"/>}
               rules={[{required: true, message: "Missing field"}]}
             >
               <Select
@@ -43,7 +44,7 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
               {...field}
               name={[field.name, "size"]}
               fieldKey={[field.fieldKey, "size"]}
-              label="Size column"
+              label={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items1"/>}
             >
               <Select
                 placeholder="Size column"
@@ -60,7 +61,7 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
               {...field}
               name={[field.name, "min"]}
               fieldKey={[field.fieldKey, "min"]}
-              label="Visual min"
+              label={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items2"/>}
               initialValue={0}
             >
               <InputNumber
@@ -75,7 +76,7 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
               {...field}
               name={[field.name, "max"]}
               fieldKey={[field.fieldKey, "max"]}
-              label="Visual max"
+              label={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items3"/>}
               initialValue={100}
             >
               <InputNumber
@@ -101,7 +102,7 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
             icon={<PlusOutlined/>}
             onClick={() => add()}
           >
-            Add scatter sizing
+            <FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items4"/>
           </Button>
         </Form.Item>
       </>
@@ -114,10 +115,12 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
         return (
           <>
             <Divider/>
-            <ProForm.Group title="Extra">
+            <ProForm.Group
+              title={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items6"/>}
+            >
               <ProFormSelect
                 name="bar"
-                label="Display as Bar chart"
+                label={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items5"/>}
                 placeholder="Please select columns"
                 fieldProps={{mode: "multiple"}}
                 options={props.columns?.map(c => ({label: c, value: c}))}
@@ -130,7 +133,9 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
         return (
           <>
             <Divider/>
-            <ProForm.Group title="Extra">
+            <ProForm.Group
+              title={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items6"/>}
+            >
               {scatter}
             </ProForm.Group>
           </>
@@ -139,7 +144,9 @@ export const MixinFormItems = (props: MixinFormItemsProps) => {
         return (
           <>
             <Divider/>
-            <ProForm.Group title="Extra">
+            <ProForm.Group
+              title={<FormattedMessage id="gallery.component.module-panel.graph.utils.mixin-form-items6"/>}
+            >
               {scatter}
             </ProForm.Group>
           </>
