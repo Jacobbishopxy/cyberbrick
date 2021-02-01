@@ -31,6 +31,19 @@ export default {
   "gallery.component.general26": "上传",
   "gallery.component.general27": "下载",
   "gallery.component.general28": "执行",
+  "gallery.component.general29": "默认",
+  "gallery.component.general30": "日期",
+  "gallery.component.general31": "数值",
+  "gallery.component.general32": "百分比",
+  "gallery.component.general33": "列",
+  "gallery.component.general34": "查询",
+  "gallery.component.general35": "重命名",
+  "gallery.component.general36": "表格",
+  "gallery.component.general37": "符号",
+  "gallery.component.general38": "值",
+  "gallery.component.general39": "连接",
+  "gallery.component.general40": "和",
+  "gallery.component.general41": "或",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.misc.link": "连结",
@@ -78,6 +91,19 @@ export default {
   "gallery.component.dashboard-config-table2": "新建界面",
   "gallery.component.dashboard-config-table3": "修改界面",
   "gallery.component.dashboard-config-table4": "确认删除该界面？",
+
+  "gallery.component.column-identifier-items1": "添加标准",
+
+  "gallery.component.dataset-controller-query-field1": "Sql展开",
+  "gallery.component.dataset-controller-query-field2": "Sql折叠",
+
+  "gallery.component.dataset-controller-sider1": "确认重命名该表？",
+  "gallery.component.dataset-controller-sider2": "确认删除该表？",
+  "gallery.component.dataset-controller-sider3": "全选",
+  "gallery.component.dataset-controller-sider4": "表名列表",
+
+  "gallery.component.dataset-controller-query-condition-form-items1": "条件",
+  "gallery.component.dataset-controller-query-condition-form-items2": "添加条件",
 
   "gallery.page.demo.module-test.title": "展览馆模板测试",
 }

@@ -6,6 +6,7 @@ import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react
 import {ProFormSelect} from "@ant-design/pro-form"
 import {Button, Form, Input, Radio, Select, Space} from "antd"
 import {DeleteTwoTone, PlusOutlined} from '@ant-design/icons'
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -77,7 +78,7 @@ export const QueryConditionFormItems =
       <>
         <ProFormSelect
           name="id"
-          label="Database"
+          label={<FormattedMessage id="gallery.component.general19"/>}
           placeholder="Please select a database"
           rules={[{required: true, message: 'Please select your database!'}]}
           request={getStorages}
@@ -85,7 +86,7 @@ export const QueryConditionFormItems =
 
         <ProFormSelect
           name="tableName"
-          label="Table"
+          label={<FormattedMessage id="gallery.component.general36"/>}
           placeholder="Please select a table"
           rules={[{required: true, message: 'Please select your table!'}]}
           options={tableSelects}
@@ -93,14 +94,16 @@ export const QueryConditionFormItems =
 
         <ProFormSelect
           name="selects"
-          label="Columns"
+          label={<FormattedMessage id="gallery.component.general33"/>}
           fieldProps={{mode: "multiple"}}
           placeholder="Please select columns"
           rules={props.columnsRequired === true ? [{required: true, message: 'Please select your columns!'}] : []}
           options={columnSelects}
         />
 
-        <div style={{marginBottom: 8}}>Conditions</div>
+        <div style={{marginBottom: 8}}>
+          <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1"/>
+        </div>
         <Form.List name="conditions">
           {(fields, {add, remove}) =>
             <>
@@ -110,10 +113,10 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'field']}
                     fieldKey={[field.fieldKey, 'field']}
-                    label='Field'
+                    label={<FormattedMessage id="gallery.component.general33"/>}
                     rules={[{required: true, message: 'Missing field'}]}
                   >
-                    <Select placeholder="Field" style={{width: 200}}>
+                    <Select placeholder="Column" style={{width: 200}}>
                       {
                         columnSelects!.map(c =>
                           <Select.Option key={c.label} value={c.label}>{c.value}</Select.Option>
@@ -126,7 +129,7 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'symbol']}
                     fieldKey={[field.fieldKey, 'symbol']}
-                    label='Symbol'
+                    label={<FormattedMessage id="gallery.component.general37"/>}
                     rules={[{required: true, message: 'Missing symbol'}]}
                   >
                     <Select placeholder="Symbol" style={{width: 100}}>
@@ -142,7 +145,7 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'value']}
                     fieldKey={[field.fieldKey, 'value']}
-                    label='Value'
+                    label={<FormattedMessage id="gallery.component.general38"/>}
                     rules={[{required: true, message: 'Missing value'}]}
                   >
                     <Input placeholder="Value"/>
@@ -154,13 +157,17 @@ export const QueryConditionFormItems =
                         {...field}
                         name={[field.name, 'junction']}
                         fieldKey={[field.fieldKey, 'junction']}
-                        label='Junction'
+                        label={<FormattedMessage id="gallery.component.general39"/>}
                         rules={[{required: idx !== 0, message: 'Missing junction'}]}
                         initialValue="AND"
                       >
                         <Radio.Group>
-                          <Radio value="AND">AND</Radio>
-                          <Radio value="OR">OR</Radio>
+                          <Radio value="AND">
+                            <FormattedMessage id="gallery.component.general40"/>
+                          </Radio>
+                          <Radio value="OR">
+                            <FormattedMessage id="gallery.component.general41"/>
+                          </Radio>
                         </Radio.Group>
                       </Form.Item>
                   }
@@ -180,7 +187,7 @@ export const QueryConditionFormItems =
                   disabled={table === undefined}
                   onClick={() => add()}
                 >
-                  Add condition
+                  <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items2"/>
                 </Button>
               </Form.Item>
             </>

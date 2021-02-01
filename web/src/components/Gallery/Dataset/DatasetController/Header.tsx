@@ -4,7 +4,8 @@
 
 import React, {useState} from 'react'
 import {Button, Select, Space} from "antd"
-import {ExclamationCircleOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons"
+import {DownloadOutlined, ExclamationCircleOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 
 import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"
@@ -45,7 +46,9 @@ export const Header = (props: HeaderProps) => {
     <Space direction="vertical" style={{width: "100%"}}>
       <SpaceBetween>
         <Space>
-          <span style={{fontWeight: "bold"}}>Database: </span>
+          <span style={{fontWeight: "bold"}}>
+            <FormattedMessage id="gallery.component.general19"/>
+          </span>
           <Select
             style={{width: 200}}
             onSelect={onDatabaseSelect}
@@ -63,6 +66,7 @@ export const Header = (props: HeaderProps) => {
             {idVisible ? <span>ID: {selectedDb}</span> : <></>}
           </div>
         </Space>
+
         <Space>
           <Button
             type="primary"
@@ -71,7 +75,15 @@ export const Header = (props: HeaderProps) => {
             disabled={!selectedDb}
             onClick={() => setUploadVisible(true)}
           >
-            Upload
+            <FormattedMessage id="gallery.component.general26"/>
+          </Button>
+          <Button
+            type="primary"
+            size="small"
+            icon={<DownloadOutlined/>}
+            disabled
+          >
+            <FormattedMessage id="gallery.component.general27"/>
           </Button>
           <QueryViewer onClick={setQueryVisible}/>
         </Space>

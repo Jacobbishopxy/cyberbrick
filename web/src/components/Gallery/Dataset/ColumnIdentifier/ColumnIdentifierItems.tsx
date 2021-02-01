@@ -5,14 +5,27 @@
 import React, {useState} from 'react'
 import {Button, Form, Select, Space} from "antd"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
+import {FormattedMessage} from "umi"
 import _ from "lodash"
 
 
 const columnTypeOptions = [
-  "default",
-  "date",
-  "number",
-  "percent",
+  {
+    type: "default",
+    view: <FormattedMessage id="gallery.component.general28"/>
+  },
+  {
+    type: "date",
+    view: <FormattedMessage id="gallery.component.general29"/>
+  },
+  {
+    type: "number",
+    view: <FormattedMessage id="gallery.component.general30"/>
+  },
+  {
+    type: "percent",
+    view: <FormattedMessage id="gallery.component.general31"/>
+  },
 ]
 
 export interface ColumnIdentifierProps {
@@ -54,8 +67,8 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
                 {...field}
                 name={[field.name, "column"]}
                 fieldKey={[field.fieldKey, "column"]}
-                label="Column"
-                rules={[{required: true, message: "Missing field"}]}
+                label={<FormattedMessage id="gallery.component.general33"/>}
+                rules={[{required: true, message: "Missing column"}]}
               >
                 <Select
                   placeholder="Column"
@@ -74,13 +87,15 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
                 {...field}
                 name={[field.name, "type"]}
                 fieldKey={[field.fieldKey, "type"]}
-                label="Type"
+                label={<FormattedMessage id="gallery.component.general16"/>}
                 rules={[{required: true, message: "Missing field"}]}
               >
                 <Select placeholder="Type" style={{width: 150}}>
                   {
                     columnTypeOptions.map(t =>
-                      <Select.Option key={t} value={t}>{t}</Select.Option>
+                      <Select.Option key={t.type} value={t.type}>
+                        {t.view}
+                      </Select.Option>
                     )
                   }
                 </Select>
@@ -105,7 +120,7 @@ export const ColumnIdentifier = (props: ColumnIdentifierProps) => {
               icon={<PlusOutlined/>}
               onClick={() => add()}
             >
-              Add criteria
+              <FormattedMessage id="gallery.component.column-identifier-items1"/>
             </Button>
           </Form.Item>
         </>

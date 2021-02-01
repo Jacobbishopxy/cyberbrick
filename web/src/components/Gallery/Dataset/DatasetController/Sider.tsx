@@ -5,12 +5,14 @@
 import React, {useState} from 'react'
 import {Button, Dropdown, Input, List, Menu, Modal, Space} from "antd"
 import {DeleteOutlined, EditOutlined, ExclamationCircleOutlined, ReadOutlined, SearchOutlined} from "@ant-design/icons"
+import {FormattedMessage, useIntl} from "umi"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
 interface RenameTableModalProps {
+  intl: any
   visible: boolean
   originalName: string
   onOk: (replacement: string) => void
@@ -23,26 +25,14 @@ const RenameTableModal = (props: RenameTableModalProps) => {
   return (
     <Modal
       visible={props.visible}
-      title="Are you sure rename this table?"
+      title={props.intl.formatMessage({id: "gallery.component.dataset-controller-sider1"})}
       onOk={() => props.onOk(input)}
       onCancel={props.onCancel}
-      okText="Yes"
-      cancelText="No"
     >
       <Input defaultValue={props.originalName} onChange={e => setInput(e.target.value)}/>
     </Modal>
   )
 }
-
-const showDeleteConfirm = (onOk: () => void) =>
-  Modal.confirm({
-    title: "Are you sure delete this table?",
-    icon: <ExclamationCircleOutlined/>,
-    okText: "Yes",
-    okType: "danger",
-    cancelText: "No",
-    onOk,
-  })
 
 interface ListRenderProps {
   id?: string
@@ -57,14 +47,19 @@ interface ListRenderProps {
 }
 
 const ListRender = (props: ListRenderProps) => {
-
+  const intl = useIntl()
   const [renameModalVisible, setRenameModalVisible] = useState<boolean>(false)
 
   const onRenameTable = (name: string) => (replacement: string) =>
     props.tableOnRename(name, replacement).finally(() => setRenameModalVisible(false))
 
   const onDeleteClick = (name: string) => () =>
-    showDeleteConfirm(() => props.tableOnDelete(name).finally())
+    Modal.confirm({
+      title: intl.formatMessage({id: "gallery.component.dataset-controller-sider2"}),
+      icon: <ExclamationCircleOutlined/>,
+      okType: "danger",
+      onOk: () => props.tableOnDelete(name),
+    })
 
   const menu = (
     <Menu>
@@ -75,7 +70,7 @@ const ListRender = (props: ListRenderProps) => {
           icon={<ReadOutlined/>}
           onClick={() => props.tableOnClick(props.item)}
         >
-          All
+          <FormattedMessage id="gallery.component.dataset-controller-sider3"/>
         </Button>
       </Menu.Item>
       <Menu.Item>
@@ -86,7 +81,7 @@ const ListRender = (props: ListRenderProps) => {
               size="small"
               icon={<SearchOutlined/>}
             >
-              Search
+              <FormattedMessage id="gallery.component.general34"/>
             </Button>
           }
           storagesOnFetch={props.storagesOnFetch}
@@ -103,9 +98,10 @@ const ListRender = (props: ListRenderProps) => {
           icon={<EditOutlined/>}
           onClick={() => setRenameModalVisible(true)}
         >
-          Rename
+          <FormattedMessage id="gallery.component.general35"/>
         </Button>
         <RenameTableModal
+          intl={intl}
           visible={renameModalVisible}
           originalName={props.item}
           onOk={onRenameTable(props.item)}
@@ -120,7 +116,7 @@ const ListRender = (props: ListRenderProps) => {
           icon={<DeleteOutlined/>}
           onClick={onDeleteClick(props.item)}
         >
-          Delete
+          <FormattedMessage id="gallery.component.general23"/>
         </Button>
       </Menu.Item>
     </Menu>
@@ -171,7 +167,9 @@ export const Sider = (props: SiderProps) => {
 
   return (
     <Space direction="vertical" style={{...props.style}}>
-      <span style={{fontWeight: "bold"}}>Table list</span>
+      <span style={{fontWeight: "bold"}}>
+        <FormattedMessage id="gallery.component.dataset-controller-sider4"/>
+      </span>
       {
         props.tableList.length !== 0 ?
           <List

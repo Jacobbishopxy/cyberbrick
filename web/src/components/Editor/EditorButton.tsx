@@ -6,8 +6,8 @@ import React, {useState} from 'react'
 import {Button} from "antd"
 
 export interface EditorButtonProps {
-  icons: { open: React.ReactElement, close: React.ReactElement }
-  name: { open: string, close: string }
+  icons: { open: React.ReactNode, close: React.ReactNode }
+  name: { open: React.ReactNode, close: React.ReactNode }
   type?: "text" | "link" | "ghost" | "default" | "primary" | "dashed" | undefined
   size?: "large" | "middle" | "small"
   shape?: "circle" | "round" | undefined

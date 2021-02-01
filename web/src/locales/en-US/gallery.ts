@@ -31,6 +31,19 @@ export default {
   "gallery.component.general26": "Upload",
   "gallery.component.general27": "Download",
   "gallery.component.general28": "Execute",
+  "gallery.component.general29": "Default",
+  "gallery.component.general30": "Date",
+  "gallery.component.general31": "Number",
+  "gallery.component.general32": "Percent",
+  "gallery.component.general33": "Column",
+  "gallery.component.general34": "Search",
+  "gallery.component.general35": "Rename",
+  "gallery.component.general36": "Table",
+  "gallery.component.general37": "Symbol",
+  "gallery.component.general38": "Value",
+  "gallery.component.general39": "Junction",
+  "gallery.component.general40": "AND",
+  "gallery.component.general41": "OR",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.misc.link": "Link",
@@ -78,6 +91,19 @@ export default {
   "gallery.component.dashboard-config-table2": "New template",
   "gallery.component.dashboard-config-table3": "Modify template",
   "gallery.component.dashboard-config-table4": "Are you sure to delete this template?",
+
+  "gallery.component.column-identifier-items1": "Add criteria",
+
+  "gallery.component.dataset-controller-query-field1": "Sql Expand",
+  "gallery.component.dataset-controller-query-field2": "Sql Collapse",
+
+  "gallery.component.dataset-controller-sider1": "Are you sure to rename this table?",
+  "gallery.component.dataset-controller-sider2": "Are you sure to delete this table?",
+  "gallery.component.dataset-controller-sider3": "Select all",
+  "gallery.component.dataset-controller-sider4": "Table list",
+
+  "gallery.component.dataset-controller-query-condition-form-items1": "Conditions",
+  "gallery.component.dataset-controller-query-condition-form-items2": "Add condition",
 
   "gallery.page.demo.module-test.title": "Gallery Module Test",
 }

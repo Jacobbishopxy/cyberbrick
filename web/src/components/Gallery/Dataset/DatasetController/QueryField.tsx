@@ -3,7 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Button, Input, Space, Tooltip} from "antd"
+import {Button, Input, Space} from "antd"
 import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"
 
@@ -12,7 +12,10 @@ import {EditorButton} from "@/components/Editor"
 export const QueryViewer = (props: { onClick: (value: boolean) => void }) =>
   <EditorButton
     icons={{open: <PlusOutlined/>, close: <MinusOutlined/>}}
-    name={{open: "Execution", close: "Close"}}
+    name={{
+      open: <FormattedMessage id="gallery.component.dataset-controller-query-field1"/>,
+      close: <FormattedMessage id="gallery.component.dataset-controller-query-field2"/>
+    }}
     size="small"
     onChange={props.onClick}
   />
@@ -36,16 +39,14 @@ export const QueryField = (props: QueryFieldProps) => {
         allowClear
         onChange={e => setSqlStr(e.target.value)}
       />
-      <Tooltip title="Execute">
-        <Button
-          type="primary"
-          size="small"
-          icon={<CaretRightOutlined/>}
-          onClick={onExecute}
-        >
-          <FormattedMessage id="gallery.component.general28"/>
-        </Button>
-      </Tooltip>
+      <Button
+        type="primary"
+        size="small"
+        icon={<CaretRightOutlined/>}
+        onClick={onExecute}
+      >
+        <FormattedMessage id="gallery.component.general28"/>
+      </Button>
     </Space> : <></>
 }
 
