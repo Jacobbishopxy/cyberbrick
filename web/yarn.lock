@@ -2513,10 +2513,10 @@
     webpack "5.9.0"
     webpack-node-externals "2.5.2"
 
-"@nestjs/common@^7.6.7":
-  version "7.6.7"
-  resolved "https://registry.npm.taobao.org/@nestjs/common/download/@nestjs/common-7.6.7.tgz?cache=0&sync_timestamp=1611736712531&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40nestjs%2Fcommon%2Fdownload%2F%40nestjs%2Fcommon-7.6.7.tgz#471fba6fa1de49d4d9228a05fc21d1ba8663f250"
-  integrity sha1-Rx+6b6HeSdTZIooF/CHRuoZj8lA=
+"@nestjs/common@^7.6.8":
+  version "7.6.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.8.tgz#1c74636c7ede1b7b006d3f9869d49aea716bb4e2"
+  integrity sha512-w3c0T0kfPSkWf5QDYn2FHrItyBT/vxCohrppK/LmFqcUQ6pXG8Yj1MKqgpG94LFsLMJgAvlYfhQ4dHOu72i0LQ==
   dependencies:
     axios "0.21.1"
     iterare "1.2.1"
@@ -2535,10 +2535,10 @@
     lodash.set "4.3.2"
     uuid "8.3.2"
 
-"@nestjs/core@^7.6.7":
-  version "7.6.7"
-  resolved "https://registry.npm.taobao.org/@nestjs/core/download/@nestjs/core-7.6.7.tgz?cache=0&sync_timestamp=1611736713074&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40nestjs%2Fcore%2Fdownload%2F%40nestjs%2Fcore-7.6.7.tgz#972e94dae31ebc726df3fad4c181ad6b578ebdb5"
-  integrity sha1-ly6U2uMevHJt8/rUwYGta1eOvbU=
+"@nestjs/core@^7.6.8":
+  version "7.6.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.8.tgz#c9d38ea87462fc41b4fc9a827997db21ec0eb17c"
+  integrity sha512-BmzRYCS0zp4gFiHlqaHMjWKOCXhAJdUmbSY9VCIaUju5lntRK1m1faTW9z+drNSdsW/1E/zbku8yAqyUeCa+lg==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.0.7"
@@ -2548,10 +2548,10 @@
     tslib "2.1.0"
     uuid "8.3.2"
 
-"@nestjs/platform-express@^7.6.7":
-  version "7.6.7"
-  resolved "https://registry.npm.taobao.org/@nestjs/platform-express/download/@nestjs/platform-express-7.6.7.tgz#f8afbbd86cb27219943266f3bc11a6cea1e53056"
-  integrity sha1-+K+72GyychmUMmbzvBGmzqHlMFY=
+"@nestjs/platform-express@^7.6.8":
+  version "7.6.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-7.6.8.tgz#7f859684b743c5cc37b48dc6921a105e06842eff"
+  integrity sha512-N/DvK4z3AzAf4LvDhWgfVEyQ4G3Wrijr7UUjUZ0k/h/2M8mSrC1H39iVBTlpbHSS5tYu2OONFg+lRxkJmcmL3w==
   dependencies:
     body-parser "1.19.0"
     cors "2.8.5"
