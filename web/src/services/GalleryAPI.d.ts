@@ -93,7 +93,6 @@ declare namespace GalleryAPI {
     FileOverview = "fileOverview",
     FileManager = "fileManager",
     XlsxTable = "xlsxTable",
-    Table = "table",
     Line = "line",
     Bar = "bar",
     LineBar = "lineBar",

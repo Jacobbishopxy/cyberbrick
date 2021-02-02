@@ -3,7 +3,7 @@ export default {
   'component.tagSelect.collapse': "收起",
   "component.tagSelect.all": "全部",
 
-  "component.fileUploadModal.baseModal.": "请完成以下选项",
+  "component.fileUploadModal.baseModal.title": "请完成以下选项",
   "component.fileUploadModal.baseModal.file": "文件",
   "component.fileUploadModal.baseModal.upload": "上传",
   "component.fileUploadModal.baseModal.transpose": "转置",

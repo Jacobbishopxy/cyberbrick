@@ -57,28 +57,20 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`}/>
 
     if (props.editable && props.settable) {
-      const plz = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1"/>
+      const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1"/>
       return (
         <Button
           type="link"
           size="small"
           onClick={() => setTitleEditable(true)}
         >
-          {
-            title ?
-            title :
-            <>{eleType} - {plz}</>
-          }
+          {title ? title : <>{eleType} - {txt}</>}
         </Button>
       )
     }
     return (
       <span style={{fontWeight: "bold"}}>
-        {
-          title ?
-          title :
-          eleType
-        }
+        {title ? title : eleType}
       </span>
     )
   }
@@ -123,7 +115,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     </Row>
   )
 }
-
 
 ModulePanelHeader.defaultProps = {
   timeSeries: false

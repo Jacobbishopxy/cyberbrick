@@ -3,7 +3,7 @@
  */
 
 import React, {useState} from 'react'
-import {Checkbox, Divider, Input, List, message, Modal,  Space, Tabs, Tooltip} from "antd"
+import {Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip} from "antd"
 import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
 import {FormattedMessage} from "umi"
 
@@ -63,7 +63,7 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
       </Space>
       <Space>
         <RightOutlined/>
-        <Input size="small" style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
+        <Input style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
         <Tooltip
           title={<FormattedMessage id="gallery.component.add-module-modal3"/>}
         >
@@ -94,34 +94,30 @@ interface TemplateSelectionViewProps {
   onSelectedTemplate: (templateId: string) => void
 }
 
-const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
-
-  return (
-    <Space direction="vertical" style={{marginBottom: 20}}>
-      <Space>
-        <StarTwoTone/>
-        <span style={{fontSize: 15}}>
+const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
+  <Space direction="vertical" style={{marginBottom: 20}}>
+    <Space>
+      <StarTwoTone/>
+      <span style={{fontSize: 15}}>
           <FormattedMessage id="gallery.component.add-module-modal7"/>
         </span>
-      </Space>
-      <Space>
-        <RightOutlined/>
-        <SelectorPanel
-          categories={props.categories}
-          categoryOnSelect={props.categoryOnSelect}
-          dashboardOnSelect={props.dashboardOnSelect}
-          onSelectFinish={props.onSelectedTemplate}
-          size="small"
-        />
-        <Tooltip
-          title={<FormattedMessage id="gallery.component.add-module-modal2"/>}
-        >
-          <ExclamationCircleTwoTone twoToneColor="red"/>
-        </Tooltip>
-      </Space>
     </Space>
-  )
-}
+    <Space>
+      <RightOutlined/>
+      <SelectorPanel
+        categories={props.categories}
+        categoryOnSelect={props.categoryOnSelect}
+        dashboardOnSelect={props.dashboardOnSelect}
+        onSelectFinish={props.onSelectedTemplate}
+        size="small"
+      />
+      <Tooltip
+        title={<FormattedMessage id="gallery.component.add-module-modal2"/>}
+      >
+        <ExclamationCircleTwoTone twoToneColor="red"/>
+      </Tooltip>
+    </Space>
+  </Space>
 
 export interface AddModuleModalProps {
   onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
