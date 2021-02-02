@@ -8,7 +8,7 @@
     ],
     "sourceMap": true,
     "baseUrl": ".",
-    "jsx": "react",
+    "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,

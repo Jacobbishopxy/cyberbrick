@@ -14,6 +14,9 @@ RUN     mkdir /app
 COPY    web/package.json /app
 COPY    web/yarn.lock /app
 
+# switch source
+#RUN     yarn config set registry https://registry.npm.taobao.org/
+
 # change the active directory
 WORKDIR /app
 

@@ -73,8 +73,13 @@ export default () => {
           <pre>
             {JSON.stringify(ls.getAllItemsByIdentifier(), null, 2)}
           </pre>
+          <h1>ls.getAllValuesByIdentifier():</h1>
+          <pre>
+            {JSON.stringify(ls.getAllValuesByIdentifier(), null, 2)}
+          </pre>
         </div>
       </Space>
     </PageHeaderWrapper>
   )
-};
+}
+

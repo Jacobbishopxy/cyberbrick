@@ -6,7 +6,7 @@ import _ from 'lodash'
 import * as moment from 'moment'
 
 export interface StorageValue {
-  data: Object,
+  data: any,
   expiry?: moment.Moment
 }
 
