@@ -46,7 +46,7 @@ export class Content {
   @Column("timestamp with time zone", {nullable: false})
   date!: string
 
-  @Column("text", {nullable: false})
+  @Column("text", {nullable: true})
   title!: string
 
   @Column("json", {nullable: false})
