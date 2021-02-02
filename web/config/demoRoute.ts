@@ -27,6 +27,11 @@ export const demoRoute = (env?: string) => env === "dev" ?
           component: './demo/Charts',
         },
         {
+          name: 'grid-layout',
+          path: '/demo/grid-layout',
+          component: './demo/GridLayout',
+        },
+        {
           name: 'module-test',
           path: '/demo/module-test',
           component: './demo/GalleryModuleTest',

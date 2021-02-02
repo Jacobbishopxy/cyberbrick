@@ -3,11 +3,21 @@
  */
 
 import React from 'react'
+import {Route, Switch} from "react-router-dom"
+
+import Document from "./Document"
+import Manual from "./Manual"
+import Gallery from "./Gallery"
+
 
 export default () => {
 
   return (
-    <></>
+    <Switch>
+      <Route path="/document/" component={Document} exact/>
+      <Route path="/document/manual" component={Manual}/>
+      <Route path="/document/gallery" component={Gallery}/>
+    </Switch>
   )
 }
 
