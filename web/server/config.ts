@@ -9,9 +9,21 @@ import {ServeStaticModule} from "@nestjs/serve-static"
 import {TypeOrmModule} from "@nestjs/typeorm"
 import {ConfigModule, registerAs} from "@nestjs/config"
 
-import {Author, Category, Content, Dashboard, Element, Mark, Storage, Tag, Template} from "./gallery/entity"
+import {
+  Author,
+  Category,
+  Content,
+  Dashboard,
+  Element,
+  Mark,
+  Storage,
+  Tag,
+  Template
+} from "./gallery/entity"
 import {CollectionModule} from "./collection/collection.module"
 import {GalleryModule} from "./gallery/gallery.module"
+import {Update} from "./inn/entity"
+import {InnModule} from "./inn/inn.module"
 
 const isProd = process.env.NODE_ENV === "production"
 
@@ -57,6 +69,10 @@ const routes: Routes = [
         path: "/gallery",
         module: GalleryModule
       },
+      {
+        path: "/inn",
+        module: InnModule
+      }
     ]
   }
 ]
@@ -69,9 +85,9 @@ const staticHTML = isProd ? {rootPath: join(__dirname, "../frontend")} : {}
 const frontendImports = ServeStaticModule.forRoot(staticHTML)
 
 /**
- * database module
+ * database gallery module
  */
-const databaseConfig = isProd ? config.connProdGallery : config.connDevGallery
+const databaseGalleryConfig = isProd ? config.connProdGallery : config.connDevGallery
 const galleryEntities = [
   Author,
   Category,
@@ -83,11 +99,29 @@ const galleryEntities = [
   Tag,
   Template,
 ]
-const databaseImports = TypeOrmModule.forRoot({
-  ...databaseConfig,
+const databaseGalleryImports = TypeOrmModule.forRoot({
+  ...databaseGalleryConfig,
   entities: galleryEntities,
 })
 
+/**
+ * database inn module
+ */
+const databaseInnConfig = config.connInn
+const innEntities = [
+  Update
+]
+const databaseInnImports = TypeOrmModule.forRoot({
+  ...databaseInnConfig,
+  entities: innEntities,
+  database: `${path.resolve(__dirname, "..", "..")}/inn/inn.sqlite`
+})
 
-export {configImport, routerImports, frontendImports, databaseImports}
+export {
+  configImport,
+  routerImports,
+  frontendImports,
+  databaseGalleryImports,
+  databaseInnImports
+}
 

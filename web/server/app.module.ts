@@ -6,7 +6,14 @@ import {Module} from "@nestjs/common"
 
 import {CollectionModule} from "./collection/collection.module"
 import {GalleryModule} from "./gallery/gallery.module"
-import {configImport, routerImports, frontendImports, databaseImports} from "./config"
+import {InnModule} from "./inn/inn.module"
+import {
+  configImport,
+  routerImports,
+  frontendImports,
+  databaseGalleryImports,
+  databaseInnImports,
+} from "./config"
 
 
 @Module({
@@ -15,8 +22,10 @@ import {configImport, routerImports, frontendImports, databaseImports} from "./c
     frontendImports,
     routerImports,
     CollectionModule,
-    databaseImports,
-    GalleryModule
+    databaseGalleryImports,
+    GalleryModule,
+    databaseInnImports,
+    InnModule,
   ],
   controllers: [],
   providers: []

@@ -11,7 +11,7 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 import {LocalStorageHelper} from "@/utils/localStorageHelper"
 
 
-const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "minute"]})
+const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "week"]})
 const lsKey = "selected"
 
 export default () => {

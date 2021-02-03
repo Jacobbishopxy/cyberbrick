@@ -27,5 +27,12 @@
     "logging": false,
     "uuidExtension": "uuid-ossp"
   },
+  "connInn": {
+    "name": "inn",
+    "type": "sqlite",
+    "synchronize": true,
+    "autoLoadEntities": true,
+    "logging": false
+  },
   "fmRoot": "/mnt/win_share/ei"
 }
