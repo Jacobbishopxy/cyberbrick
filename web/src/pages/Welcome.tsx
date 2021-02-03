@@ -2,16 +2,59 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React from 'react'
-import {PageContainer} from '@ant-design/pro-layout'
+import React, {useEffect, useState} from 'react'
+import {Progress} from 'antd'
+import ProList from '@ant-design/pro-list'
+
+import * as innService from "@/services/inn"
 
 
-const srcGallery = "/api/document/rocket"
+const listGenerator = (data?: InnAPI.Update[]) =>
+  data ? data.map(d => ({
+    title: d.title,
+    content: (
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <div style={{width: 200}}>
+          <div>{d.data}</div>
+          <Progress percent={80}/>
+        </div>
+      </div>
+    )
+  })) : undefined
 
-export default (): React.ReactNode => (
-  <PageContainer>
-    <div style={{textAlign: "center"}}>
-      <img src={srcGallery} alt="rocket" height="800vh"/>
-    </div>
-  </PageContainer>
-)
+
+export default () => {
+
+  const [data, setData] = useState<InnAPI.Update[]>()
+
+  useEffect(() => {
+    innService.getAllUpdate().then(setData)
+  }, [])
+
+  return (
+    <ProList<any>
+      pagination={{
+        defaultPageSize: 5,
+        showSizeChanger: true,
+      }}
+      metas={{
+        title: {},
+        subTitle: {},
+        type: {},
+        avatar: {},
+        content: {},
+        actions: {},
+      }}
+      headerTitle={""}
+      dataSource={listGenerator(data)}
+      renderItem={(item) => item}
+    />
+  )
+}
+
