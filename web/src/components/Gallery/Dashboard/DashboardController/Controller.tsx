@@ -20,6 +20,8 @@ import {AddModuleModal} from "./AddModuleModal"
 
 
 export interface ModuleControllerProps {
+  initialSelected?: string[]
+  selectedOnChange?: (v: string[]) => void
   canEdit: boolean
   categories: DataType.Category[]
   categoryOnSelect: (categoryName: string, isCopy: boolean) => Promise<DataType.Category>
@@ -115,6 +117,8 @@ export const Controller = (props: ModuleControllerProps) => {
   return (
     <SpaceBetween>
       <SelectorPanel
+        initValue={props.initialSelected}
+        onChange={props.selectedOnChange}
         categories={props.categories}
         categoryOnSelect={name => props.categoryOnSelect(name, false)}
         onSelectFinish={id => props.dashboardOnSelect(id, false)}

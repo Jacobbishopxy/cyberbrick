@@ -39,6 +39,9 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 }
 
 export interface DashboardProps {
+  initialSelected?: string[]
+  selectedOnChange?: (v: string[]) => void
+
   fetchCategories: () => Promise<DataType.Category[]>
   fetchCategory: (categoryName: string) => Promise<DataType.Category>
   fetchDashboard: (dashboardId: string) => Promise<DataType.Dashboard>
@@ -165,6 +168,8 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const genController = useMemo(() => <Controller
+    initialSelected={props.initialSelected}
+    selectedOnChange={props.selectedOnChange}
     canEdit={canEdit}
     categories={categories}
     categoryOnSelect={categoryOnSelect}
@@ -173,7 +178,7 @@ export const Dashboard = (props: DashboardProps) => {
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
     onSaveTemplate={onSaveTemplateAndContents}
-  />, [canEdit, categories, onSaveTemplateAndContents])
+  />, [props.initialSelected, canEdit, categories, onSaveTemplateAndContents])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

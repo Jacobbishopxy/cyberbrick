@@ -2,14 +2,30 @@
  * Created by Jacob Xie on 9/28/2020.
  */
 
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {Dashboard} from "@/components/Gallery/Dashboard"
 import {GalleryDataType} from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
+import {LocalStorageHelper} from "@/utils/localStorageHelper"
+
+
+const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "minute"]})
+const lsKey = "selected"
 
 export default () => {
+
+  const [initialSelected, setInitialSelected] = useState<string[]>()
+
+  useEffect(() => {
+    const i = ls.get(lsKey)
+    if (i) setInitialSelected(JSON.parse(i.data))
+  }, [])
+
+  const selectedOnChange = (v: string[]) => {
+    ls.add(lsKey, JSON.stringify(v))
+  }
 
   const fetchCategories = () =>
     GalleryService.getAllCategories() as Promise<DataType.Category[]>
@@ -53,6 +69,8 @@ export default () => {
 
   return (
     <Dashboard
+      initialSelected={initialSelected}
+      selectedOnChange={selectedOnChange}
       fetchCategories={fetchCategories}
       fetchCategory={fetchCategory}
       fetchDashboard={fetchDashboard}
