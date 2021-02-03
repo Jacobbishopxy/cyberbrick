@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, ParseArrayPipe, Post, Query} from '@nestjs/common'
 
 import * as contentService from "../provider/content.service"
 import * as common from "../common"
@@ -56,7 +56,11 @@ export class ContentController {
                                                    @Query("elementType") elementType?: common.ElementType,
                                                    @Query("markName") markName?: string,
                                                    @Query("tagNames") tagNames?: string[],
-                                                   @Query("pagination") pagination?: [number, number]) {
+                                                   @Query("pagination", new ParseArrayPipe({
+                                                     optional: true,
+                                                     items: Number,
+                                                     separator: ","
+                                                   })) pagination?: [number, number]) {
     try {
       return this.service
         .getContentsInCategoryByElementTypeAndMarkAndTags(

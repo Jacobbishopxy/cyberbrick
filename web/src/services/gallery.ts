@@ -128,7 +128,7 @@ export const getContentsInCategoryByElementTypeAndMarkAndTags =
     if (tagNames)
       path += `&tagNames=${tagNames.join(",")}`
     if (pagination)
-      path += `&pagination=(${pagination.join(",")})`
+      path += `&pagination=${pagination.join(",")}`
 
     return request(path)
   }
