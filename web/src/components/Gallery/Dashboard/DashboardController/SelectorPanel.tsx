@@ -10,6 +10,7 @@ import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader"
 import * as DataType from "../../GalleryDataType"
 
 export interface SelectorPanelProps {
+  initValue?: string[]
   categories: DataType.Category[]
   categoryOnSelect: (name: string) => Promise<DataType.Category>
   dashboardOnSelect?: (id: string) => Promise<DataType.Dashboard>
@@ -21,23 +22,31 @@ export interface SelectorPanelProps {
 
 export const SelectorPanel = (props: SelectorPanelProps) => {
 
-  const [options, setOptions] = useState<CascaderOptionType[]>([])
+  const [value, setValue] = useState<string[] | undefined>(props.initValue)
+  const [options, setOptions] = useState<CascaderOptionType[]>()
   const [selected, setSelected] = useState<string>()
 
-  useEffect(() => {
-    setOptions(props.categories.map(c => ({
-      value: c.name,
-      label: c.name,
-      isLeaf: false
-    })))
-  }, [props.categories])
+  useEffect(() => setValue(props.initValue), [props.initValue])
 
   useEffect(() => {
     if (props.onSelectFinish && selected) props.onSelectFinish(selected)
   }, [selected])
 
+  useEffect(() => {
+    const opt = props.categories.map(c => ({
+      value: c.name,
+      label: c.name,
+      isLeaf: false
+    }))
+
+    enhanceOptions(opt).then(setOptions)
+
+  }, [props.categories])
+
   const onChange = (value: CascaderValueType) => {
-    if (props.onChange) props.onChange(value as string[])
+    const v = value as string[]
+    setValue(v)
+    if (props.onChange) props.onChange(v)
     if (props.onSelectFinish) {
       if (props.dashboardOnSelect)
         setSelected(value[2] as string)
@@ -46,53 +55,74 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     }
   }
 
+  const setOptionsLevel2 = async (cat?: string) => {
+    if (cat) {
+      const category = await props.categoryOnSelect(cat)
+      return category.dashboards?.map(d => ({
+        value: d.id,
+        label: d.name,
+        isLeaf: !props.dashboardOnSelect
+      }))
+    }
+    return []
+  }
+
+  const setOptionsLevel3 = async (dsb?: string) => {
+    if (dsb) {
+      const dashboard = await props.dashboardOnSelect!(dsb)
+      return dashboard.templates?.map(t => ({
+        value: t.id,
+        label: t.name
+      }))
+    }
+    return []
+  }
+
+  const enhanceOptions = async (opt: CascaderOptionType[]) => {
+    if (value?.length === 2) {
+      const v = value ? value[0] : undefined
+      const d = await setOptionsLevel2(v)
+
+      return opt.map(i =>
+        i.value === v ? {...i, children: d} : i
+      )
+    } else
+      return opt
+  }
+
   const loadData = async (selectedOptions?: CascaderOptionType[]) => {
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1]
       targetOption.loading = true
 
       if (selectedOptions.length === 1) {
-        const category = await props.categoryOnSelect(targetOption.value as string)
-
-        const dashboardOptions = category.dashboards?.map(d => ({
-          value: d.id,
-          label: d.name,
-          isLeaf: !props.dashboardOnSelect
-        }))
-
+        const dashboardOptions = await setOptionsLevel2(targetOption.value as string)
         if (dashboardOptions) {
           targetOption.loading = false
           targetOption.children = dashboardOptions
-          setOptions([...options])
+          setOptions([...(options ? options : [])])
         }
       }
 
       if (selectedOptions.length === 2) {
-        const dashboard = await props.dashboardOnSelect!(targetOption.value as string)
-
-        const templateOptions = dashboard.templates?.map(t => ({
-          value: t.id,
-          label: t.name
-        }))
-
+        const templateOptions = await setOptionsLevel3(targetOption.value as string)
         if (templateOptions) {
           targetOption.loading = false
           targetOption.children = templateOptions
-          setOptions([...options])
+          setOptions([...(options ? options : [])])
         }
       }
     }
   }
 
-  return (
-    <Cascader
-      options={options}
-      loadData={loadData}
-      onChange={onChange}
-      changeOnSelect
-      style={props.style}
-      size={props.size || "middle"}
-    />
-  )
+  return <Cascader
+    value={value}
+    options={options}
+    loadData={loadData}
+    onChange={onChange}
+    changeOnSelect
+    style={props.style}
+    size={props.size || "middle"}
+  />
 }
 
