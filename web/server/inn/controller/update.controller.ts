@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/3/2021
  */
 
-import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, ParseArrayPipe, Post, Query} from '@nestjs/common'
 
 import {Update} from "../entity"
 import {UpdateService} from "../provider"
@@ -49,7 +49,11 @@ export class UpdateController {
   }
 
   @Get("getLatestUpdate")
-  getLatestUpdate(@Query("pagination") pagination?: [number, number]) {
+  getLatestUpdate(@Query("pagination", new ParseArrayPipe({
+    optional: true,
+    items: Number,
+    separator: ","
+  })) pagination?: [number, number]) {
     try {
       return this.service.getLatestUpdate(pagination)
     } catch (err) {
