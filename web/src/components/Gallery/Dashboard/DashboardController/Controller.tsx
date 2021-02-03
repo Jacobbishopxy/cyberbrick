@@ -38,6 +38,10 @@ export const Controller = (props: ModuleControllerProps) => {
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
 
   useEffect(() => props.onEditTemplate(edit), [edit])
+  useEffect(() => {
+    if (props.initialSelected && props.initialSelected[1])
+      props.dashboardOnSelect(props.initialSelected[1], false).finally()
+  }, [props.initialSelected])
 
   const quitAddModule = () => setAddModuleModalVisible(false)
 

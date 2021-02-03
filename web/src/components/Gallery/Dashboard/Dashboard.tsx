@@ -178,7 +178,7 @@ export const Dashboard = (props: DashboardProps) => {
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
     onSaveTemplate={onSaveTemplateAndContents}
-  />, [props.initialSelected, canEdit, categories, onSaveTemplateAndContents])
+  />, [canEdit, categories, onSaveTemplateAndContents])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

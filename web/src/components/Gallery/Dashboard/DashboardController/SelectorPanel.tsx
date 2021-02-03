@@ -6,9 +6,19 @@ import React, {useEffect, useState} from 'react'
 import {Cascader} from "antd"
 import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader"
 
-
 import * as DataType from "../../GalleryDataType"
 
+
+/**
+ * initValue?: holding previous selected value (often used with local storage)
+ * categories: list of category, 1st level of select options
+ * categoryOnSelect: generate 2nd level of select options
+ * dashboardOnSelect?: generate 3rd level of select options
+ * onChange?: tell parent component changes are made (often used with local storage)
+ * onSelectFinish?: inform parent component the last level of selection
+ * style?: style
+ * size?: size
+ */
 export interface SelectorPanelProps {
   initValue?: string[]
   categories: DataType.Category[]
