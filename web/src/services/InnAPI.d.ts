@@ -10,8 +10,8 @@ declare namespace InnAPI {
     tags?: Tag[]
     title: string
     data: string
-    createdAt: string
-    updatedAt: string
+    createdAt?: string
+    updatedAt?: string
   }
 
   export interface Tag {

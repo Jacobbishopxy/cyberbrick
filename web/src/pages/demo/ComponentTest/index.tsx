@@ -3,57 +3,124 @@
  */
 
 import React, {useEffect, useState} from 'react'
+import {Tag, Tooltip} from 'antd'
+import ProList from '@ant-design/pro-list'
+import {Editor} from "@/components/Editor"
 
-import * as GalleryService from "@/services/gallery"
-import * as DataType from "@/components/Gallery/GalleryDataType"
-import {SelectorPanel} from "@/components/Gallery/Dashboard/DashboardController/SelectorPanel"
-import {ExpiryType, LocalStorageHelper} from "@/utils/localStorageHelper"
+// import * as innService from "@/services/inn"
 
 
-const identifier = "component-test"
-const expiry = [1, "minute"] as ExpiryType
-const ls = new LocalStorageHelper(identifier, {expiry})
-const keySelected = "ct"
+const mock: InnAPI.Update[] = [
+  {
+    id: "2",
+    date: "2021-2-3",
+    title: "t2",
+    data: "content idk...",
+    tags: [
+      {
+        id: "1",
+        name: "dev",
+        description: "dev",
+        color: "#32a852"
+      },
+      {
+        id: "2",
+        name: "prod",
+        description: "prod",
+        color: "#cc1faf"
+      },
+    ]
+  },
+  {
+    id: "1",
+    date: "2021-2-1",
+    title: "t1",
+    data: "test test test",
+    tags: [
+      {
+        id: "1",
+        name: "dev",
+        description: "dev",
+        color: "#32a852"
+      },
+    ]
+  },
+]
 
-const fetchCategories = () =>
-  GalleryService.getAllCategories() as Promise<DataType.Category[]>
+const pagination = {
+  defaultPageSize: 5,
+  showSizeChanger: true,
+}
 
-const fetchCategory = (name: string) =>
-  GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>
 
-// const fetchDashboard = (id: string) =>
-//   GalleryService.getDashboardCategoryAndTemplate(id) as Promise<DataType.Dashboard>
+interface ToolbarProps {
+  editable: boolean
+  onEdit: (v: boolean) => void
+}
+
+const Toolbar = (props: ToolbarProps) => {
+
+  const [visibleNewPost, setVisibleNewPost] = useState(false)
+  const [visibleNewTag, setVisibleNewTag] = useState(false)
+
+  return (
+    <>
+      {
+        props.editable ?
+          <>
+            <Editor onChange={setVisibleNewPost}/>
+            <Editor onChange={setVisibleNewTag}/>
+          </> : <></>
+      }
+      <Editor onChange={props.onEdit}/>
+    </>
+  )
+}
 
 
 export default () => {
 
-  const [value, setValue] = useState<string[]>()
-  const [cat, setCat] = useState<DataType.Category[]>([])
+  const [data, setData] = useState<InnAPI.Update[]>()
+  const [editable, setEditable] = useState<boolean>(false)
 
   useEffect(() => {
-
-    const initSelected = ls.get(keySelected)
-
-    if (initSelected) setValue(JSON.parse(initSelected.data))
-
-    fetchCategories().then(setCat)
-
-
+    // innService.getAllUpdate().then(setData)
+    setData(mock)
   }, [])
 
-
-  const onChange = (v: string[]) => {
-    ls.add(keySelected, JSON.stringify(v))
-  }
-
-  return <SelectorPanel
-    initValue={value}
-    categories={cat}
-    categoryOnSelect={fetchCategory}
-    // dashboardOnSelect={fetchDashboard}
-    onChange={onChange}
-    onSelectFinish={v => console.log("onSelectFinish", v)}
-    style={{width: 400}}
-  />
+  return (
+    <ProList<InnAPI.Update>
+      pagination={pagination}
+      itemLayout="vertical"
+      split
+      toolBarRender={() => [
+        <Toolbar editable={editable} onEdit={setEditable}/>
+      ]}
+      metas={{
+        title: {
+          render: (item, record) =>
+            record.title
+        },
+        description: {
+          render: (item, record) =>
+            record.tags?.map(t =>
+              <Tooltip key={t.id} title={t.description}>
+                <Tag color={t.color}>{t.name}</Tag>
+              </Tooltip>
+            )
+        },
+        content: {
+          render: (item, record) =>
+            record.data
+        },
+        extra: {
+          render: (item, record) =>
+            editable ? <Editor onChange={(v) => console.log(v)}/> : <></>
+        },
+      }}
+      headerTitle={"更新记录"}
+      dataSource={data}
+    />
+  )
 }
 
