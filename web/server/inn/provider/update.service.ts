@@ -11,16 +11,21 @@ import * as utils from "../../utils"
 import {Update} from "../entity"
 
 
+const updateRelations = {
+  relations: ["tags"]
+}
+
 @Injectable()
 export class UpdateService {
   constructor(@InjectRepository(Update, common.db) private repo: Repository<Update>) {}
 
   getAllUpdate() {
-    return this.repo.find()
+    return this.repo.find(updateRelations)
   }
 
   getUpdateById(id: string) {
     return this.repo.findOne({
+      ...updateRelations,
       ...utils.whereIdEqual(id)
     })
   }
@@ -36,6 +41,7 @@ export class UpdateService {
 
   getLatestUpdate(pagination?: [number, number]) {
     return this.repo.find({
+      ...updateRelations,
       ...utils.orderByDate("DESC"),
       ...utils.paginationGet(pagination)
     })

@@ -3,8 +3,10 @@
  */
 
 import {Update} from "./update.entity"
+import {Tag} from "./tag.entity"
 
 export {
   Update,
+  Tag
 }
 

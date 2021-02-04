@@ -4,3 +4,6 @@
 
 export const db = "inn"
 
+export const update = "update"
+export const tag = "tag"
+

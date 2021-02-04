@@ -5,15 +5,24 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column, CreateDateColumn, UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn, ManyToMany
 } from "typeorm"
 
+import {update} from "../common"
+import {Tag} from "./tag.entity"
 
-@Entity("update")
+
+
+@Entity(update)
 export class Update {
 
   @PrimaryGeneratedColumn("uuid")
   id!: string
+
+  @ManyToMany(() => Tag, t => t.updates, {cascade: true, nullable: true})
+  tags!: Tag[]
 
   @Column("datetime", {nullable: false})
   date!: string

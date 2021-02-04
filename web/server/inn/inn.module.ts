@@ -6,22 +6,25 @@ import {Module} from "@nestjs/common"
 import {TypeOrmModule} from "@nestjs/typeorm"
 
 import {db} from "./common"
-import {Update} from "./entity"
-import {UpdateService} from "./provider"
-import {UpdateController} from "./controller"
+import {Update, Tag} from "./entity"
+import {UpdateService, TagService} from "./provider"
+import {UpdateController, TagController} from "./controller"
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Update,
+      Tag,
     ], db)
   ],
   providers: [
     UpdateService,
+    TagService,
   ],
   controllers: [
     UpdateController,
+    TagController
   ]
 })
 export class InnModule {}

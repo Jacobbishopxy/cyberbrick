@@ -3,8 +3,10 @@
  */
 
 import {UpdateController} from "./update.controller"
+import {TagController} from "./tag.controller"
 
 export {
-  UpdateController
+  UpdateController,
+  TagController
 }
 

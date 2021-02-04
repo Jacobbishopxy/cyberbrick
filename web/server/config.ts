@@ -22,7 +22,10 @@ import {
 } from "./gallery/entity"
 import {CollectionModule} from "./collection/collection.module"
 import {GalleryModule} from "./gallery/gallery.module"
-import {Update} from "./inn/entity"
+import {
+  Update,
+  Tag as UpdateTag
+} from "./inn/entity"
 import {InnModule} from "./inn/inn.module"
 
 const isProd = process.env.NODE_ENV === "production"
@@ -109,7 +112,8 @@ const databaseGalleryImports = TypeOrmModule.forRoot({
  */
 const databaseInnConfig = config.connInn
 const innEntities = [
-  Update
+  Update,
+  UpdateTag
 ]
 const databaseInnImports = TypeOrmModule.forRoot({
   ...databaseInnConfig,

@@ -3,8 +3,10 @@
  */
 
 import {UpdateService} from "./update.service"
+import {TagService} from "./tag.service"
 
 export {
-  UpdateService
+  UpdateService,
+  TagService
 }
 
