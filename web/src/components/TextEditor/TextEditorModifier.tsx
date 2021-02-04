@@ -4,8 +4,6 @@
 
 import React, {useEffect, useState} from 'react'
 import ReactQuill, {Quill} from 'react-quill'
-import {Button} from 'antd'
-import {FormattedMessage} from "umi"
 
 import 'react-quill/dist/quill.snow.css'
 
@@ -94,7 +92,7 @@ export interface TextEditorModifierProps {
   onSave?: (value: string) => void
   onChange?: (value: string) => void
   content?: string
-  saveButton?: boolean
+  style?: React.CSSProperties
   styling?: string
 }
 
@@ -102,19 +100,16 @@ export interface TextEditorModifierProps {
 export const TextEditorModifier = (props: TextEditorModifierProps) => {
 
   const style = props.styling ? props.styling : undefined
+  console.log("style", style)
 
   const [content, setContent] = useState<string | undefined>(props.content)
-
-  const saveContent = () => {
-    if (content && props.onSave) props.onSave(content)
-  }
 
   useEffect(() => {
     if (content && props.onChange) props.onChange(content)
   }, [content])
 
   return (
-    <div className={style}>
+    <div className={style} >
       <CustomToolbar/>
       <ReactQuill
         theme="snow"
@@ -122,19 +117,8 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
         formats={formats}
         value={content}
         onChange={setContent}
+        style={props.style}
       />
-      {
-        props.saveButton ?
-          <Button
-            style={{marginTop: 5}}
-            onClick={saveContent}
-            size='small'
-            type='primary'
-          >
-            <FormattedMessage id="gallery.component.general42"/>
-          </Button> :
-          <></>
-      }
     </div>
   )
 }

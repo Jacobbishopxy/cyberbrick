@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.bubble.css'
 export interface DisplayPresenterProps {
   content: string
   styling?: string
+  style?: React.CSSProperties
 }
 
 /**
@@ -32,5 +33,6 @@ export const TextEditorPresenter = (props: DisplayPresenterProps) => {
     value={value}
     onChange={e => setValue(e)}
     readOnly
+    style={props.style}
   />, [update])
 }

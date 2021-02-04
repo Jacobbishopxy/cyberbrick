@@ -2,10 +2,13 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React, {useEffect, useState} from 'react'
-import {Tag, Tooltip} from 'antd'
-import ProList from '@ant-design/pro-list'
+import React, {useEffect, useState} from "react"
+import {Tag, Tooltip} from "antd"
+import ProList from "@ant-design/pro-list"
+
 import {Editor} from "@/components/Editor"
+import {CreationModal} from "@/components/Gallery/Misc/CreationModal"
+import {TextEditorModifier, TextEditorPresenter} from "@/components/TextEditor"
 
 // import * as innService from "@/services/inn"
 
@@ -68,11 +71,27 @@ const Toolbar = (props: ToolbarProps) => {
       {
         props.editable ?
           <>
-            <Editor onChange={setVisibleNewPost}/>
-            <Editor onChange={setVisibleNewTag}/>
+            <Editor
+              icons={{open: "🧾", close: "🧾"}}
+              onChange={() => setVisibleNewPost(true)}
+            />
+            <Editor
+              icons={{open: "🏷️", close: "🏷️"}}
+              onChange={() => setVisibleNewTag(true)}
+            />
+            <CreationModal
+              title={"new tag"}
+              visible={visibleNewTag}
+              onSubmit={() => setVisibleNewTag(false)}
+              onCancel={() => setVisibleNewTag(false)}
+              colorSelector
+            />
           </> : <></>
       }
-      <Editor onChange={props.onEdit}/>
+      <Editor
+        icons={{open: "⚙️", close: "✔️"}}
+        onChange={props.onEdit}
+      />
     </>
   )
 }
@@ -111,11 +130,15 @@ export default () => {
         },
         content: {
           render: (item, record) =>
-            record.data
+            <TextEditorPresenter content={record.data}/>
         },
         extra: {
           render: (item, record) =>
-            editable ? <Editor onChange={(v) => console.log(v)}/> : <></>
+            editable ?
+              <Editor
+                icons={{open: "✏️", close: "✏️"}}
+                onChange={(v) => console.log(v)}
+              /> : <></>
         },
       }}
       headerTitle={"更新记录"}

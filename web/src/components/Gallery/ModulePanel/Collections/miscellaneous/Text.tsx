@@ -3,7 +3,6 @@
  */
 
 import React, {useState} from 'react'
-import {message} from "antd"
 
 import {TextEditorModifier, TextEditorPresenter} from "@/components/TextEditor"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
@@ -18,22 +17,15 @@ const EditorField = (props: ModuleEditorField) => {
       {...content, data: {text: value}} :
       {date: DataType.today(), data: {text: value}}
     setContent(ctt)
-  }
-
-  const onSaveContent = () => {
-    if (content) {
-      props.updateContent(content)
-      message.success("Saving content succeed!")
-    }
+    props.updateContent(ctt)
   }
 
   return (
     <TextEditorModifier
       onChange={onChangeContent}
       content={content && content.data ? content.data.text : null}
-      onSave={onSaveContent}
-      saveButton
       styling={props.styling}
+      style={{height: props.contentHeight ? props.contentHeight - 50 : undefined}}
     />
   )
 }
@@ -43,6 +35,7 @@ const PresenterField = (props: ModulePresenterField) =>
     <TextEditorPresenter
       content={props.content.data.text}
       styling={props.styling}
+      style={{height: props.contentHeight}}
     /> : <></>
 
 export const Text = new ModuleGenerator(EditorField, PresenterField, true).generate()
