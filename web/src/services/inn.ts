@@ -32,3 +32,22 @@ export const getLatestUpdate = async (pagination?: [number, number]): Promise<In
   return request(path)
 }
 
+// Tag
+
+export const getAllTag = async (): Promise<InnAPI.Tag[]> =>
+  request(`${base}/tags`)
+
+export const getTagById = async (id: string): Promise<InnAPI.Tag> =>
+  request(`${base}/tag?id=${id}`)
+
+export const saveTag = async (tag: InnAPI.Tag): Promise<any> =>
+  request(`${base}/tag`, {
+    method: "post",
+    data: tag
+  })
+
+export const deleteTag = async (id: string): Promise<any> =>
+  request(`${base}/tag?id=${id}`, {
+    method: "delete"
+  })
+

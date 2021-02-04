@@ -24,7 +24,7 @@ import {UpdateController, TagController} from "./controller"
   ],
   controllers: [
     UpdateController,
-    TagController
+    TagController,
   ]
 })
 export class InnModule {}

@@ -29,9 +29,9 @@ export class Tag {
   @Column("varchar", {nullable: false})
   name!: string
 
-  @Column("text")
+  @Column("text", {nullable: true})
   description!: string
 
-  @Column("varchar")
+  @Column("varchar", {nullable: true})
   color!: string
 }

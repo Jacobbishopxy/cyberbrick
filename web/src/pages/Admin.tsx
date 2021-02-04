@@ -1,8 +1,10 @@
-import React from 'react'
-import {PageContainer} from '@ant-design/pro-layout'
+/**
+ * Created by Jacob Xie on 2/4/2020.
+ */
 
-export default (): React.ReactNode => (
-  <PageContainer>
-    constructing...
-  </PageContainer>
+import React from 'react'
+
+
+export default () => (
+  <>constructing...</>
 )
