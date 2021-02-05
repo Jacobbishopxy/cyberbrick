@@ -22,6 +22,7 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "新增",
   "component.fileUploadModal.fileInsertModal.fail": "失败",
 
-  "component.articleModal.articleModal.title": "请输入内容",
-  "component.articleModal.articleModal.select": "请选择标签",
+  "component.article.articleCreationModal.title": "请输入内容",
+  "component.article.articleCreationModal.select": "请选择标签",
+  "component.article.tagCreationModal.title": "创建一个新标签",
 }

@@ -17,14 +17,22 @@ export interface ArticleOutput {
   tagIds?: string[]
 }
 
-export interface ArticleCreationTriggerActions {
+export interface CreationTriggerActions {
   onClick: () => void
 }
 
 export interface ArticleCreationModalProps {
-  trigger: React.FC<ArticleCreationTriggerActions>
+  trigger: React.FC<CreationTriggerActions>
   tags?: GenericTag[]
   onSubmit: (value: ArticleOutput) => void
   modalWidth?: string | number
   modalHeight?: string | number
 }
+
+export interface TagCreationModalProps {
+  trigger: React.FC<CreationTriggerActions>
+  onSubmit: (value: GenericTag) => void
+  modalWidth?: string | number
+  modalHeight?: string | number
+}
+

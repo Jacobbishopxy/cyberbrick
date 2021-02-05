@@ -22,6 +22,7 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "Append",
   "component.fileUploadModal.fileInsertModal.fail": "Fail",
 
-  "component.articleModal.articleModal.title": "Please complete the content",
-  "component.articleModal.articleModal.select": "Please select tags",
+  "component.article.articleCreationModal.title": "Please complete the content",
+  "component.article.articleCreationModal.select": "Please select tags",
+  "component.article.tagCreationModal.title": "Create a new tag",
 }

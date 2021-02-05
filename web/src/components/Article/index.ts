@@ -3,5 +3,9 @@
  */
 
 import {ArticleCreationModal} from "./ArticleCreationModal"
+import {TagCreationModal} from "./TagCreationModal"
 
-export {ArticleCreationModal}
+export {
+  ArticleCreationModal,
+  TagCreationModal
+}

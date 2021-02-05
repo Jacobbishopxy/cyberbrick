@@ -7,9 +7,8 @@ import {Tag, Tooltip} from "antd"
 import ProList from "@ant-design/pro-list"
 
 import {Editor} from "@/components/Editor"
-import {CreationModal} from "@/components/Gallery/Misc/CreationModal"
 import {TextEditorPresenter} from "@/components/TextEditor"
-import {ArticleCreationModal} from "@/components/Article"
+import {ArticleCreationModal, TagCreationModal} from "@/components/Article"
 
 // import * as innService from "@/services/inn"
 
@@ -79,8 +78,6 @@ interface ToolbarProps {
 
 const Toolbar = (props: ToolbarProps) => {
 
-  const [visibleNewTag, setVisibleNewTag] = useState(false)
-
   return (
     <>
       {
@@ -99,16 +96,14 @@ const Toolbar = (props: ToolbarProps) => {
               modalWidth={"70vw"}
             />
 
-            <Editor
-              icons={{open: "🏷️", close: "🏷️"}}
-              onChange={() => setVisibleNewTag(true)}
-            />
-            <CreationModal
-              title={"new tag"}
-              visible={visibleNewTag}
-              onSubmit={() => setVisibleNewTag(false)}
-              onCancel={() => setVisibleNewTag(false)}
-              colorSelector
+            <TagCreationModal
+              trigger={c =>
+                <Editor
+                  icons={{open: "🏷️", close: "🏷️"}}
+                  onChange={() => c.onClick()}
+                />
+              }
+              onSubmit={v => console.log(v)}
             />
           </> : <></>
       }

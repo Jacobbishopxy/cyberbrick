@@ -36,7 +36,7 @@ export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
         {props.trigger({onClick: () => setVisible(true)})}
       </>
       <Modal
-        title={intl.formatMessage({id: "component.articleModal.articleModal.title"})}
+        title={intl.formatMessage({id: "component.article.articleCreationModal.title"})}
         visible={visible}
         onOk={onSubmit}
         onCancel={() => setVisible(false)}
@@ -55,7 +55,7 @@ export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
           style={{width: "100%"}}
           disabled={!data?.value}
           onChange={tagsOnChange}
-          placeholder={intl.formatMessage({id: "component.articleModal.articleModal.select"})}
+          placeholder={intl.formatMessage({id: "component.article.articleCreationModal.select"})}
           options={props.tags?.map(t => ({
             key: t.id,
             label: <Tag color={t.color}>{t.name}</Tag>,
