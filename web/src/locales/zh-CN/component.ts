@@ -21,4 +21,6 @@ export default {
   "component.fileUploadModal.fileInsertModal.replace": "替换",
   "component.fileUploadModal.fileInsertModal.append": "新增",
   "component.fileUploadModal.fileInsertModal.fail": "失败",
+
+  "component.textEditor.textEditorModifierModal.title": "请输入内容",
 }

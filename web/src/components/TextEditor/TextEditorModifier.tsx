@@ -100,7 +100,6 @@ export interface TextEditorModifierProps {
 export const TextEditorModifier = (props: TextEditorModifierProps) => {
 
   const style = props.styling ? props.styling : undefined
-  console.log("style", style)
 
   const [content, setContent] = useState<string | undefined>(props.content)
 

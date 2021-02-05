@@ -21,4 +21,6 @@ export default {
   "component.fileUploadModal.fileInsertModal.replace": "Replace",
   "component.fileUploadModal.fileInsertModal.append": "Append",
   "component.fileUploadModal.fileInsertModal.fail": "Fail",
+
+  "component.textEditor.textEditorModifierModal.title": "Please complete the content",
 }

@@ -8,7 +8,7 @@ import ProList from "@ant-design/pro-list"
 
 import {Editor} from "@/components/Editor"
 import {CreationModal} from "@/components/Gallery/Misc/CreationModal"
-import {TextEditorModifier, TextEditorPresenter} from "@/components/TextEditor"
+import {TextEditorModifierModal, TextEditorPresenter} from "@/components/TextEditor"
 
 // import * as innService from "@/services/inn"
 
@@ -74,6 +74,13 @@ const Toolbar = (props: ToolbarProps) => {
             <Editor
               icons={{open: "🧾", close: "🧾"}}
               onChange={() => setVisibleNewPost(true)}
+            />
+            <TextEditorModifierModal
+              visible={visibleNewPost}
+              onSubmit={() => setVisibleNewPost(false)}
+              onCancel={() => setVisibleNewPost(false)}
+              modalHeight={"70vh"}
+              modalWidth={"70vw"}
             />
             <Editor
               icons={{open: "🏷️", close: "🏷️"}}
