@@ -22,5 +22,6 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "新增",
   "component.fileUploadModal.fileInsertModal.fail": "失败",
 
-  "component.textEditor.textEditorModifierModal.title": "请输入内容",
+  "component.articleModal.articleModal.title": "请输入内容",
+  "component.articleModal.articleModal.select": "请选择标签",
 }

@@ -22,5 +22,6 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "Append",
   "component.fileUploadModal.fileInsertModal.fail": "Fail",
 
-  "component.textEditor.textEditorModifierModal.title": "Please complete the content",
+  "component.articleModal.articleModal.title": "Please complete the content",
+  "component.articleModal.articleModal.select": "Please select tags",
 }

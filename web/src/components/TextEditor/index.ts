@@ -4,10 +4,8 @@
 
 import {TextEditorPresenter} from "./TextEditorPresenter"
 import {TextEditorModifier} from "./TextEditorModifier"
-import {TextEditorModifierModal} from "./TextEditorModifierModal"
 
 export {
   TextEditorPresenter,
   TextEditorModifier,
-  TextEditorModifierModal
 }

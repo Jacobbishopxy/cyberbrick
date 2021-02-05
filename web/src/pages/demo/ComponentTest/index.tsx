@@ -8,7 +8,8 @@ import ProList from "@ant-design/pro-list"
 
 import {Editor} from "@/components/Editor"
 import {CreationModal} from "@/components/Gallery/Misc/CreationModal"
-import {TextEditorModifierModal, TextEditorPresenter} from "@/components/TextEditor"
+import {TextEditorPresenter} from "@/components/TextEditor"
+import {ArticleCreationModal} from "@/components/Article"
 
 // import * as innService from "@/services/inn"
 
@@ -50,6 +51,21 @@ const mock: InnAPI.Update[] = [
   },
 ]
 
+const mockTags: InnAPI.Tag[] = [
+  {
+    id: "1",
+    name: "dev",
+    description: "dev",
+    color: "#32a852"
+  },
+  {
+    id: "2",
+    name: "prod",
+    description: "prod",
+    color: "#cc1faf"
+  },
+]
+
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: true,
@@ -63,7 +79,6 @@ interface ToolbarProps {
 
 const Toolbar = (props: ToolbarProps) => {
 
-  const [visibleNewPost, setVisibleNewPost] = useState(false)
   const [visibleNewTag, setVisibleNewTag] = useState(false)
 
   return (
@@ -71,17 +86,19 @@ const Toolbar = (props: ToolbarProps) => {
       {
         props.editable ?
           <>
-            <Editor
-              icons={{open: "🧾", close: "🧾"}}
-              onChange={() => setVisibleNewPost(true)}
-            />
-            <TextEditorModifierModal
-              visible={visibleNewPost}
-              onSubmit={() => setVisibleNewPost(false)}
-              onCancel={() => setVisibleNewPost(false)}
+            <ArticleCreationModal
+              trigger={c =>
+                <Editor
+                  icons={{open: "🧾", close: "🧾"}}
+                  onChange={() => c.onClick()}
+                />
+              }
+              onSubmit={v => console.log(v)}
+              tags={mockTags}
               modalHeight={"70vh"}
               modalWidth={"70vw"}
             />
+
             <Editor
               icons={{open: "🏷️", close: "🏷️"}}
               onChange={() => setVisibleNewTag(true)}
