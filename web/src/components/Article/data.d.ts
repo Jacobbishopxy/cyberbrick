@@ -36,3 +36,11 @@ export interface TagCreationModalProps {
   modalHeight?: string | number
 }
 
+export interface TagModificationModalProps {
+  trigger: React.FC<CreationTriggerActions>
+  tags: GenericTag[]
+  onSubmit: (v: any) => void
+  modalWidth?: string | number
+  modalHeight?: string | number
+}
+

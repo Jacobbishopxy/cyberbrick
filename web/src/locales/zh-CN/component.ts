@@ -25,4 +25,5 @@ export default {
   "component.article.articleCreationModal.title": "请输入内容",
   "component.article.articleCreationModal.select": "请选择标签",
   "component.article.tagCreationModal.title": "创建一个新标签",
+  "component.article.tagModificationModal.title": "管理标签",
 }

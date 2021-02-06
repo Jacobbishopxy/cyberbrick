@@ -31,6 +31,7 @@ export interface EditableTagPanelProps<T extends GenericDataInput> {
   data: T[]
   editable: boolean
   elementOnChange: (data: T[]) => void
+  draggable?: boolean
 }
 
 export interface SearchableTagsProps<T extends GenericDataInput> {

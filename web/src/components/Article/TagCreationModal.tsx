@@ -3,7 +3,6 @@
  */
 
 import React, {useState} from "react"
-
 import {useIntl} from "umi"
 
 import {TagCreationModalProps, GenericTag} from "./data"

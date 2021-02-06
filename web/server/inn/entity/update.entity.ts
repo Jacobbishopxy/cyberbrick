@@ -14,7 +14,6 @@ import {update} from "../common"
 import {Tag} from "./tag.entity"
 
 
-
 @Entity(update)
 export class Update {
 

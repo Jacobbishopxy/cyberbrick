@@ -9,6 +9,7 @@ import ProList from "@ant-design/pro-list"
 import {Editor} from "@/components/Editor"
 import {TextEditorPresenter} from "@/components/TextEditor"
 import {ArticleCreationModal, TagCreationModal} from "@/components/Article"
+import {TagModificationModal} from "@/components/Article/TagModificationModal";
 
 // import * as innService from "@/services/inn"
 
@@ -104,6 +105,17 @@ const Toolbar = (props: ToolbarProps) => {
                 />
               }
               onSubmit={v => console.log(v)}
+            />
+
+            <TagModificationModal
+              trigger={c =>
+                <Editor
+                  icons={{open: "📜", close: "📜"}}
+                  onChange={() => c.onClick()}
+                />
+              }
+              onSubmit={v => console.log(v)}
+              tags={mockTags}
             />
           </> : <></>
       }

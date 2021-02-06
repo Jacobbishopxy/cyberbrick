@@ -62,7 +62,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
 
   const live = () =>
     <div style={{display: "flex", overflow: "auto"}}>
-      <DraggablePanel editable onChange={draggableOnChange}>
+      <DraggablePanel editable={props.draggable || true} onChange={draggableOnChange}>
         {
           items.map(t =>
             <Tag
@@ -129,5 +129,6 @@ EditableTagPanel.defaultProps = {
   textDeletion: "Are you sure to delete this tag?",
   editable: false,
   colorSelector: false,
+  draggable: true
 } as Partial<EditableTagPanelProps<GenericDataInput>>
 

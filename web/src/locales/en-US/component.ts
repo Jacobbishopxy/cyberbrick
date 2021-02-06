@@ -25,4 +25,5 @@ export default {
   "component.article.articleCreationModal.title": "Please complete the content",
   "component.article.articleCreationModal.select": "Please select tags",
   "component.article.tagCreationModal.title": "Create a new tag",
+  "component.article.tagModificationModal.title": "Manage tags",
 }
