@@ -36,6 +36,7 @@ export default () => {
           </Select>
         }}
         style={{height: "100%"}}
+        defaultActiveKey={"2"}
       >
         <Tabs.TabPane tab="Line & Scatter" key="1">
           <LineScatter chartHeight={chartHeight - 50} theme={theme}/>
