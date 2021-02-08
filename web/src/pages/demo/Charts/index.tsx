@@ -3,10 +3,11 @@
  */
 
 import React, {useState, useRef, useLayoutEffect} from 'react'
-import {Select} from "antd"
+import {Select, Tabs} from "antd"
 
 import {themeSelections} from "@/components/EchartsPro/themeSelections"
 import {LineScatter} from "./LineScatter"
+import {Candlestick} from "./Candlestick"
 
 
 export default () => {
@@ -20,18 +21,29 @@ export default () => {
   })
 
   return (
-    <div style={{height: "85vh"}} ref={chartRef}>
-      <Select
-        onChange={(t: string) => setTheme(t)}
-        style={{width: 250}}
+    <div style={{height: "90vh"}} ref={chartRef}>
+      <Tabs
+        tabBarExtraContent={{
+          right: <Select
+            onChange={(t: string) => setTheme(t)}
+            style={{width: 250}}
+          >
+            {
+              themeSelections.map(t =>
+                <Select.Option key={t.name} value={t.name}>{t.ele}</Select.Option>
+              )
+            }
+          </Select>
+        }}
+        style={{height: "100%"}}
       >
-        {
-          themeSelections.map(t =>
-            <Select.Option key={t.name} value={t.name}>{t.ele}</Select.Option>
-          )
-        }
-      </Select>
-      <LineScatter chartHeight={chartHeight} theme={theme}/>
+        <Tabs.TabPane tab="Line & Scatter" key="1">
+          <LineScatter chartHeight={chartHeight - 50} theme={theme}/>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Candlestick" key="2">
+          <Candlestick chartHeight={chartHeight - 50} theme={theme}/>
+        </Tabs.TabPane>
+      </Tabs>
     </div>
   )
 }

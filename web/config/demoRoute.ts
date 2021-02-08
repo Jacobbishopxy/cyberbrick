@@ -10,6 +10,9 @@ export const demoRoute = (env?: string) => env === "dev" ?
       name: 'demo',
       icon: 'ExperimentOutlined',
       component: "./demo",
+      layout: {
+        hideFooter: true
+      },
       routes: [
         {
           name: 'localstorage',

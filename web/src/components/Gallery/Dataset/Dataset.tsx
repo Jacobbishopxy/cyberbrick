@@ -107,7 +107,7 @@ export const Dataset = (props: DatasetProps) => {
       size="small"
       columns={columns}
       pagination={{
-        defaultPageSize: 15,
+        defaultPageSize: 20,
         showSizeChanger: true
       }}
       scroll={{x: true}}
