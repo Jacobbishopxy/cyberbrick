@@ -6,7 +6,7 @@ import React, {useRef, useState} from 'react'
 import {Button} from "antd"
 import {ModalForm, ProFormText} from "@ant-design/pro-form"
 import {FormattedMessage, useIntl} from "umi"
-import {FileManager, FileNavigator} from '@opuscapita/react-filemanager'
+import {FileManager, FileNavigator} from "@opuscapita/react-filemanager"
 import connectorNodeV1 from "@opuscapita/react-filemanager-connector-node-v1"
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"

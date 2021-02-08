@@ -168,6 +168,7 @@ export default {
   "gallery.component.module-panel.panel.header-controller1": "选择一个日期",
   "gallery.component.module-panel.panel.header-controller2": "创建新内容",
 
+  "gallery.component.module-panel.panel.module-panel1": "确认删除该模块？",
   "gallery.component.module-panel.panel.module-panel-header1": "请输入标题",
 
   "gallery.page.demo.module-test.title": "展览馆模板测试",

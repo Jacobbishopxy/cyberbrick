@@ -168,6 +168,7 @@ export default {
   "gallery.component.module-panel.panel.header-controller1": "Select a date",
   "gallery.component.module-panel.panel.header-controller2": "Create a new content",
 
+  "gallery.component.module-panel.panel.module-panel1": "Are you sure to delete this module?",
   "gallery.component.module-panel.panel.module-panel-header1": "please enter the title",
 
   "gallery.page.demo.module-test.title": "Gallery Module Test",
