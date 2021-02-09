@@ -84,6 +84,12 @@ export const mainRoutes = [
         component: './document/Manual'
       },
       {
+        name: 'project',
+        icon: "CodeOutlined",
+        path: '/document/project',
+        component: './document/Project'
+      },
+      {
         name: 'gallery',
         icon: "CodeOutlined",
         path: '/document/gallery',

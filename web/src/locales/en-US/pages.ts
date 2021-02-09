@@ -4,6 +4,6 @@
 
 export default {
   "pages.welcome.title1": "Update notice",
-  "pages.welcome.title2": "System menu",
+  "pages.document.project.title1": "System menu",
 }
 

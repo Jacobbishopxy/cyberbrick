@@ -66,6 +66,7 @@ export default {
 
   'menu.document': '文档',
   'menu.document.manual': '手册',
+  'menu.document.project': '项目',
   'menu.document.gallery': '展馆',
 
 }
