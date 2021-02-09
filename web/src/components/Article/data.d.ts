@@ -60,6 +60,7 @@ export interface ArticleProps {
   getArticles: (pagination?: [number, number]) => Promise<GenericArticle[]>
   getTags: () => Promise<GenericTag[]>
   modifyArticle: (value: GenericArticle) => Promise<any>
+  deleteArticle: (id: string) => Promise<any>
   modifyTags: (value: GenericTag[]) => Promise<any>
   defaultPageSize?: number
   title?: string

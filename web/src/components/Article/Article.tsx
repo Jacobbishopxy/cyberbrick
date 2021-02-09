@@ -3,7 +3,8 @@
  */
 
 import React, {useEffect, useState} from "react"
-import {Tag, Tooltip} from "antd"
+import {Modal, Tag, Tooltip} from "antd"
+import {ExclamationCircleOutlined} from "@ant-design/icons"
 import ProList from "@ant-design/pro-list"
 
 import {Editor} from "@/components/Editor"
@@ -12,6 +13,40 @@ import {ArticleToolbar} from "./ArticleToolbar"
 import {ArticleCreationModal} from "./ArticleCreationModal"
 
 import {ArticleProps, GenericTag, GenericArticle} from "./data"
+
+
+interface ArticleEditableProps {
+  editable: boolean
+  initialArticle: GenericArticle
+  tags: GenericTag[]
+  onSubmit: (value: GenericArticle) => void
+  onDelete: (id: string) => void
+}
+
+const ArticleEditable = (props: ArticleEditableProps) => {
+  return props.editable ?
+    <>
+      <ArticleCreationModal
+        initialValue={props.initialArticle}
+        trigger={c =>
+          <Editor
+            icons={{open: "✏️", close: "✏️"}}
+            onChange={() => c.onClick()}
+          />
+        }
+        onSubmit={props.onSubmit}
+        tags={props.tags}
+        modalHeight={"70vh"}
+        modalWidth={"70vw"}
+      />
+      {
+        Modal.confirm({
+          icon: <ExclamationCircleOutlined/>,
+          onOk: () => props.onDelete(props.initialArticle.id)
+        })
+      }
+    </> : <></>
+}
 
 
 export const Article = (props: ArticleProps) => {
@@ -70,20 +105,13 @@ export const Article = (props: ArticleProps) => {
         },
         extra: {
           render: (item, record) =>
-            editable ?
-              <ArticleCreationModal
-                initialValue={record}
-                trigger={c =>
-                  <Editor
-                    icons={{open: "✏️", close: "✏️"}}
-                    onChange={() => c.onClick()}
-                  />
-                }
-                onSubmit={props.modifyArticle}
-                tags={tags}
-                modalHeight={"70vh"}
-                modalWidth={"70vw"}
-              /> : <></>
+            <ArticleEditable
+              editable={editable}
+              initialArticle={record}
+              tags={tags}
+              onSubmit={props.modifyArticle}
+              onDelete={props.deleteArticle}
+            />
         },
       }}
       headerTitle={props.title}

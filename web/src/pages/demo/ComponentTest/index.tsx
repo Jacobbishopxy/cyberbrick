@@ -17,6 +17,9 @@ const getTags = () =>
 const modifyArticle = (v: GenericArticle) =>
   innService.saveUpdate(v as InnAPI.Update)
 
+const deleteArticle = (v: string) =>
+  innService.deleteUpdate(v)
+
 const modifyTags = (v: GenericTag[]) =>
   innService.modifyTags(v as InnAPI.Tag[])
 
@@ -27,6 +30,7 @@ export default () => {
       getArticles={getArticles}
       getTags={getTags}
       modifyArticle={modifyArticle}
+      deleteArticle={deleteArticle}
       modifyTags={modifyTags}
       title={"更新记录"}
     />
