@@ -5,6 +5,7 @@
 import React, {useState} from "react"
 import {message, Modal, Select, Tag} from "antd"
 import {useIntl} from "umi"
+import _ from "lodash"
 
 import {ArticleCreationModalProps, ArticleOutput} from "./data"
 import {TextEditorModifier} from "@/components/TextEditor"
@@ -13,14 +14,15 @@ import {TextEditorModifier} from "@/components/TextEditor"
 export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
   const intl = useIntl()
   const [visible, setVisible] = useState(false)
-  const [data, setData] = useState<ArticleOutput>()
+  const [data, setData] = useState<ArticleOutput | undefined>(props.initialValue)
 
   const textOnChange = (value: string) => {
     setData({...data, value})
   }
 
   const tagsOnChange = (tagIds: string[]) => {
-    setData({...data!, tagIds})
+    const tags = props.tags?.filter(t => tagIds.includes(t.id!))
+    setData({...data!, tags})
   }
 
   const onSubmit = () => {
@@ -56,12 +58,18 @@ export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
           disabled={!data?.value}
           onChange={tagsOnChange}
           placeholder={intl.formatMessage({id: "component.article.articleCreationModal.select"})}
-          options={props.tags?.map(t => ({
-            key: t.id,
-            label: <Tag color={t.color}>{t.name}</Tag>,
-            value: t.id
-          }))}
-        />
+          defaultValue={
+            _.reduce(props.tags, (acc: string[], v) =>
+              v.id ? [...acc, v.id] : acc, []
+            )
+          }
+        >
+          {props.tags?.map((t, idx) =>
+            <Select.Option key={idx} value={t.id!}>
+              <Tag color={t.color}>{t.name}</Tag>
+            </Select.Option>
+          )}
+        </Select>
       </Modal>
     </>
   )

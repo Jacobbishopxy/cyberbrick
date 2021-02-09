@@ -4,8 +4,10 @@
 
 import {ArticleCreationModal} from "./ArticleCreationModal"
 import {TagCreationModal} from "./TagCreationModal"
+import {TagModificationModal} from "./TagModificationModal"
 
 export {
   ArticleCreationModal,
-  TagCreationModal
+  TagCreationModal,
+  TagModificationModal,
 }

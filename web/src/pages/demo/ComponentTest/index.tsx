@@ -8,8 +8,8 @@ import ProList from "@ant-design/pro-list"
 
 import {Editor} from "@/components/Editor"
 import {TextEditorPresenter} from "@/components/TextEditor"
-import {ArticleCreationModal, TagCreationModal} from "@/components/Article"
-import {TagModificationModal} from "@/components/Article/TagModificationModal";
+import {ArticleCreationModal, TagModificationModal} from "@/components/Article"
+import {GenericTag} from "@/components/Article/data"
 
 // import * as innService from "@/services/inn"
 
@@ -75,6 +75,8 @@ const pagination = {
 interface ToolbarProps {
   editable: boolean
   onEdit: (v: boolean) => void
+  articleCreationOnSubmit: (v: any) => void
+  tagModificationModal: (v: any) => void
 }
 
 const Toolbar = (props: ToolbarProps) => {
@@ -91,30 +93,20 @@ const Toolbar = (props: ToolbarProps) => {
                   onChange={() => c.onClick()}
                 />
               }
-              onSubmit={v => console.log(v)}
+              onSubmit={props.articleCreationOnSubmit}
               tags={mockTags}
               modalHeight={"70vh"}
               modalWidth={"70vw"}
             />
 
-            <TagCreationModal
+            <TagModificationModal
               trigger={c =>
                 <Editor
                   icons={{open: "🏷️", close: "🏷️"}}
                   onChange={() => c.onClick()}
                 />
               }
-              onSubmit={v => console.log(v)}
-            />
-
-            <TagModificationModal
-              trigger={c =>
-                <Editor
-                  icons={{open: "📜", close: "📜"}}
-                  onChange={() => c.onClick()}
-                />
-              }
-              onSubmit={v => console.log(v)}
+              onSubmit={props.tagModificationModal}
               tags={mockTags}
             />
           </> : <></>
@@ -144,7 +136,12 @@ export default () => {
       itemLayout="vertical"
       split
       toolBarRender={() => [
-        <Toolbar editable={editable} onEdit={setEditable}/>
+        <Toolbar
+          editable={editable}
+          onEdit={setEditable}
+          articleCreationOnSubmit={v => console.log(v)}
+          tagModificationModal={v => console.log(v)}
+        />
       ]}
       metas={{
         title: {
@@ -166,9 +163,18 @@ export default () => {
         extra: {
           render: (item, record) =>
             editable ?
-              <Editor
-                icons={{open: "✏️", close: "✏️"}}
-                onChange={(v) => console.log(v)}
+              <ArticleCreationModal
+                initialValue={{tags: record.tags as GenericTag[], value: record.data}}
+                trigger={c =>
+                  <Editor
+                    icons={{open: "✏️", close: "✏️"}}
+                    onChange={() => c.onClick()}
+                  />
+                }
+                onSubmit={v => console.log(v)}
+                tags={mockTags}
+                modalHeight={"70vh"}
+                modalWidth={"70vw"}
               /> : <></>
         },
       }}

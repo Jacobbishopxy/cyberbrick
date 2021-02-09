@@ -6,7 +6,7 @@ import React from "react"
 
 
 export interface GenericTag {
-  id: string
+  id?: string
   name: string
   description?: string
   color?: string
@@ -14,7 +14,7 @@ export interface GenericTag {
 
 export interface ArticleOutput {
   value: string
-  tagIds?: string[]
+  tags?: GenericTag[]
 }
 
 export interface CreationTriggerActions {
@@ -24,6 +24,7 @@ export interface CreationTriggerActions {
 export interface ArticleCreationModalProps {
   trigger: React.FC<CreationTriggerActions>
   tags?: GenericTag[]
+  initialValue?: ArticleOutput
   onSubmit: (value: ArticleOutput) => void
   modalWidth?: string | number
   modalHeight?: string | number
