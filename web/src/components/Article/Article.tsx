@@ -3,9 +3,11 @@
  */
 
 import React, {useEffect, useState} from "react"
-import {Modal, Tag, Tooltip} from "antd"
+import {Modal, Space, Tag, Tooltip, Typography} from "antd"
 import {ExclamationCircleOutlined} from "@ant-design/icons"
 import ProList from "@ant-design/pro-list"
+import {useIntl} from "umi"
+import moment from "moment"
 
 import {Editor} from "@/components/Editor"
 import {TextEditorPresenter} from "@/components/TextEditor"
@@ -24,6 +26,14 @@ interface ArticleEditableProps {
 }
 
 const ArticleEditable = (props: ArticleEditableProps) => {
+  const intl = useIntl()
+  const configDelete = () =>
+    Modal.confirm({
+      title: intl.formatMessage({id: "component.article.articleEditable.confirmDelete"}),
+      icon: <ExclamationCircleOutlined/>,
+      onOk: () => props.onDelete(props.initialArticle.id)
+    })
+
   return props.editable ?
     <>
       <ArticleCreationModal
@@ -39,12 +49,10 @@ const ArticleEditable = (props: ArticleEditableProps) => {
         modalHeight={"70vh"}
         modalWidth={"70vw"}
       />
-      {
-        Modal.confirm({
-          icon: <ExclamationCircleOutlined/>,
-          onOk: () => props.onDelete(props.initialArticle.id)
-        })
-      }
+      <Editor
+        icons={{open: "🗑️", close: "🗑️"}}
+        onChange={() => configDelete()}
+      />
     </> : <></>
 }
 
@@ -57,14 +65,14 @@ export const Article = (props: ArticleProps) => {
 
   useEffect(() => {
     props.getTags().then(setTags)
-    props.getArticles([pageSize, 0]).then(setData)
+    props.getArticles([0, pageSize]).then(setData)
   }, [])
 
   const pagination = {
     defaultPageSize: pageSize,
     showSizeChanger: true,
     onChange: (page: number, pageSize?: number) => {
-      const pgn = [pageSize!, page * pageSize!] as [number, number]
+      const pgn = [(page - 1) * pageSize!, pageSize!] as [number, number]
       props.getArticles(pgn).then(setData)
     },
     onShowSizeChange: (current: number, size: number) => {
@@ -89,7 +97,10 @@ export const Article = (props: ArticleProps) => {
       metas={{
         title: {
           render: (item, record) =>
-            record.title
+            <Space>
+              <Typography.Text strong>{record.title}</Typography.Text>
+              <Typography.Text type="secondary">{moment(record.date).format("YYYY-MM-DD")}</Typography.Text>
+            </Space>
         },
         description: {
           render: (item, record) =>

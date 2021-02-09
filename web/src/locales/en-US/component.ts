@@ -1,3 +1,7 @@
+/**
+ * Created by Jacob Xie on 2/9/2021
+ */
+
 export default {
   "component.tagSelect.expand": "Expand",
   "component.tagSelect.collapse": "Collapse",
@@ -22,8 +26,10 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "Append",
   "component.fileUploadModal.fileInsertModal.fail": "Fail",
 
-  "component.article.articleCreationModal.title": "Please complete the content",
+  "component.article.articleCreationModal.head": "Please complete the content",
+  "component.article.articleCreationModal.title": "Please select tags",
   "component.article.articleCreationModal.select": "Please select tags",
+  "component.article.articleEditable.confirmDelete": "Are you sure to delete this article?",
   "component.article.tagCreationModal.title": "Create a new tag",
   "component.article.tagModificationModal.title": "Manage tags",
 }

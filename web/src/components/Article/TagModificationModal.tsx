@@ -44,6 +44,7 @@ export const TagModificationModal = (props: TagModificationModalProps) => {
           editable={true}
           elementOnChange={setData}
           draggable={false}
+          colorSelector
         />
       </Modal>
     </>

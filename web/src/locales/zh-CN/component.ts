@@ -1,3 +1,7 @@
+/**
+ * Created by Jacob Xie on 2/9/2021
+ */
+
 export default {
   "component.tagSelect.expand": "展开",
   'component.tagSelect.collapse': "收起",
@@ -22,8 +26,10 @@ export default {
   "component.fileUploadModal.fileInsertModal.append": "新增",
   "component.fileUploadModal.fileInsertModal.fail": "失败",
 
-  "component.article.articleCreationModal.title": "请输入内容",
+  "component.article.articleCreationModal.head": "请输入内容",
+  "component.article.articleCreationModal.title": "请输入标题",
   "component.article.articleCreationModal.select": "请选择标签",
+  "component.article.articleEditable.confirmDelete": "确认删除该文章？",
   "component.article.tagCreationModal.title": "创建一个新标签",
   "component.article.tagModificationModal.title": "管理标签",
 }

@@ -63,6 +63,6 @@ export interface ArticleProps {
   deleteArticle: (id: string) => Promise<any>
   modifyTags: (value: GenericTag[]) => Promise<any>
   defaultPageSize?: number
-  title?: string
+  title?: React.ReactNode
 }
 
