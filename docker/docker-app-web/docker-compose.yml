@@ -11,6 +11,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUME_CONF_EXT}:${VOLUME_CONF_INN}:ro
       - ${VOLUME_FILE_EXT}:${VOLUME_FILE_INN}:ro
+      - ${VOLUME_INN_DB_EXT}:${VOLUME_INN_DB_INN}:ro
     command:
       yarn serve
 
