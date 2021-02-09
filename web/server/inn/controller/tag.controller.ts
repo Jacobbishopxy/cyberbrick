@@ -47,5 +47,14 @@ export class TagController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Post("modifyTags")
+  modifyTags(@Body() tags: Tag[]) {
+    try {
+      return this.service.modifyTags(tags)
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

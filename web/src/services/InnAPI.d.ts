@@ -15,7 +15,7 @@ declare namespace InnAPI {
   }
 
   export interface Tag {
-    id: string
+    id?: string
     updates?: Update[]
     name: string
     description?: string

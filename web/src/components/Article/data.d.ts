@@ -12,9 +12,12 @@ export interface GenericTag {
   color?: string
 }
 
-export interface ArticleOutput {
-  value: string
-  tags?: GenericTag[]
+export interface GenericArticle {
+  id: string
+  date: string
+  title: string
+  data: string
+  tags: GenericTag[]
 }
 
 export interface CreationTriggerActions {
@@ -24,8 +27,8 @@ export interface CreationTriggerActions {
 export interface ArticleCreationModalProps {
   trigger: React.FC<CreationTriggerActions>
   tags?: GenericTag[]
-  initialValue?: ArticleOutput
-  onSubmit: (value: ArticleOutput) => void
+  initialValue?: GenericArticle
+  onSubmit: (value: GenericArticle) => void
   modalWidth?: string | number
   modalHeight?: string | number
 }
@@ -43,5 +46,22 @@ export interface TagModificationModalProps {
   onSubmit: (v: any) => void
   modalWidth?: string | number
   modalHeight?: string | number
+}
+
+interface ArticleToolbarProps {
+  tags: GenericTag[]
+  editable: boolean
+  onEdit: (v: boolean) => void
+  articleCreationOnSubmit: (v: any) => void
+  tagModificationModal: (v: any) => void
+}
+
+export interface ArticleProps {
+  getArticles: (pagination?: [number, number]) => Promise<GenericArticle[]>
+  getTags: () => Promise<GenericTag[]>
+  modifyArticle: (value: GenericArticle) => Promise<any>
+  modifyTags: (value: GenericTag[]) => Promise<any>
+  defaultPageSize?: number
+  title?: string
 }
 

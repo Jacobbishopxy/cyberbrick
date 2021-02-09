@@ -5,6 +5,7 @@
 import {Injectable} from "@nestjs/common"
 import {InjectRepository} from "@nestjs/typeorm"
 import {Repository} from "typeorm"
+import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
@@ -30,7 +31,24 @@ export class TagService {
     return this.repo.save(newTag)
   }
 
-  deleteTag(id: string) {
+  deleteTag(id: string | string[]) {
     return this.repo.delete(id)
   }
+
+  async modifyTags(tags: Tag[]) {
+    const ts = await this.getAllTags()
+
+    if (ts) {
+      const tsRemove = _.differenceWith(
+        ts, tags, (prev, curr) => prev.id === curr.id
+      )
+
+      if (tsRemove.length > 0)
+        await this.deleteTag(tsRemove.map(i => i.id))
+
+      const newTags = tags.map(t => this.repo.create(t))
+      await this.repo.save(newTags)
+    }
+  }
 }
+

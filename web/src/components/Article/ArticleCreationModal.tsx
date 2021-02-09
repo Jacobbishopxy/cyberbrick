@@ -59,7 +59,7 @@ export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
           onChange={tagsOnChange}
           placeholder={intl.formatMessage({id: "component.article.articleCreationModal.select"})}
           defaultValue={
-            _.reduce(props.tags, (acc: string[], v) =>
+            _.reduce(props.initialValue?.tags, (acc: string[], v) =>
               v.id ? [...acc, v.id] : acc, []
             )
           }

@@ -51,3 +51,9 @@ export const deleteTag = async (id: string): Promise<any> =>
     method: "delete"
   })
 
+export const modifyTags = async (tags: InnAPI.Tag[]): Promise<any> =>
+  request(`${base}/modifyTags`, {
+    method: "post",
+    data: tags
+  })
+
