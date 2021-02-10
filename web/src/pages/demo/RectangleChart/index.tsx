@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 9/10/2020.
  */
 
-import {PageContainer} from '@ant-design/pro-layout'
 import React, {useState, useRef, useLayoutEffect} from 'react'
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
@@ -110,13 +109,12 @@ export default () => {
   }, [])
 
   return (
-    <PageContainer>
-      <div style={{height: "85vh"}} ref={chartRef}>
-        <ReactEcharts
-          option={chartOption}
-          opts={{height: chartHeight}}
-        />
-      </div>
-    </PageContainer>
+    <div style={{height: "85vh"}} ref={chartRef}>
+      <ReactEcharts
+        option={chartOption}
+        opts={{height: chartHeight}}
+      />
+    </div>
   )
-};
+}
+

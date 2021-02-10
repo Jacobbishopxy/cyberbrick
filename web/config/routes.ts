@@ -84,10 +84,10 @@ export const mainRoutes = [
         component: './document/Manual'
       },
       {
-        name: 'project',
+        name: 'menu',
         icon: "CodeOutlined",
-        path: '/document/project',
-        component: './document/Project'
+        path: '/document/menu',
+        component: './document/Menu'
       },
       {
         name: 'gallery',

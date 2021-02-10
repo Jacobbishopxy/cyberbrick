@@ -7,6 +7,7 @@ import {Route, Switch} from "react-router-dom"
 
 import Document from "./Document"
 import Manual from "./Manual"
+import Menu from "./Menu"
 import Gallery from "./Gallery"
 
 
@@ -16,6 +17,7 @@ export default () => {
     <Switch>
       <Route path="/document/" component={Document} exact/>
       <Route path="/document/manual" component={Manual}/>
+      <Route path="/document/menu" component={Menu}/>
       <Route path="/document/gallery" component={Gallery}/>
     </Switch>
   )

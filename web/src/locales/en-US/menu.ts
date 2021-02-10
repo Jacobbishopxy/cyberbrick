@@ -66,7 +66,7 @@ export default {
 
   'menu.document': 'Document',
   'menu.document.manual': 'Manual',
-  'menu.document.project': 'Project',
+  'menu.document.menu': 'Menu',
   'menu.document.gallery': 'Gallery',
 
 }

@@ -3,7 +3,6 @@
  */
 
 import React from 'react'
-import {PageContainer} from '@ant-design/pro-layout'
 
 
 const srcGallery = "/api/document/gallery"
@@ -11,9 +10,12 @@ const srcGallery = "/api/document/gallery"
 export default () => {
 
   return (
-    <PageContainer>
-      <img src={srcGallery} alt="gallery" width="100%" height="100%"/>
-    </PageContainer>
+    <img
+      src={srcGallery}
+      alt="gallery"
+      width="100%"
+      height="100%"
+    />
   )
 }
 
