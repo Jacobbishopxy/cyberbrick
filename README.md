@@ -24,6 +24,18 @@
 
 ## Environment Prepare
 
+### Database
+
+Use PostgreSql as default project database (storing config etc.)
+
+version:
+* PostgreSql = 10.0
+
+docker commands:
+1. `cd docker/docker-database`
+2. `bash start.sh`
+3. `bash create_database.sh`
+
 ### Server
 
 versions:
