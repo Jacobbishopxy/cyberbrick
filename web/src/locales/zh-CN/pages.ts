@@ -4,6 +4,6 @@
 
 export default {
   "pages.welcome.title1": "更新公告",
-  "pages.welcome.title2": "系统目录",
+  "pages.document.project.title1": "系统目录",
 }
 
