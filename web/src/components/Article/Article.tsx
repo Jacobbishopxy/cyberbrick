@@ -98,8 +98,12 @@ export const Article = (props: ArticleProps) => {
         title: {
           render: (item, record) =>
             <Space>
-              <Typography.Text strong>{record.title}</Typography.Text>
-              <Typography.Text type="secondary">{moment(record.date).format("YYYY-MM-DD")}</Typography.Text>
+              <Typography.Text strong>
+                {record.title}
+              </Typography.Text>
+              <Typography.Text type="secondary">
+                {moment(record.date).format("YYYY-MM-DD")}
+              </Typography.Text>
             </Space>
         },
         description: {

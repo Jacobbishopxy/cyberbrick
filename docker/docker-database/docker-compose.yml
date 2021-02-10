@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  pgdb:
+    restart: always
+    container_name: ${CONTAINER_NAME}
+    image: postgres:${VERSION}
+    ports:
+      - ${PORT}:5432
+    environment:
+      - POSTGRES_PASSWORD=${PASSWORD}
+      - TZ=Asia/Shanghai
+      - PGTZ=Asia/Shanghai
+    volumes:
+      - ./data:/var/lib/postgresql/data:z
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  default:
+    external:
+      name: ${NETWORK_NAME}
+
