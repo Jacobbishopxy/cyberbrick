@@ -8,6 +8,7 @@ import {Select, Tabs} from "antd"
 import {themeSelections} from "@/components/EchartsPro/themeSelections"
 import {LineScatter} from "./LineScatter"
 import {Candlestick} from "./Candlestick"
+import {Treemap} from "./Treemap"
 
 
 export default () => {
@@ -43,6 +44,9 @@ export default () => {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Candlestick" key="2">
           <Candlestick chartHeight={chartHeight - 50} theme={theme}/>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Treemap" key="3">
+          <Treemap chartHeight={chartHeight - 70} theme={theme}/>
         </Tabs.TabPane>
       </Tabs>
     </div>

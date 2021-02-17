@@ -15,8 +15,8 @@ export const demoRoute = (env?: string) => env === "dev" ?
       },
       routes: [
         {
-          name: 'localstorage',
-          path: '/demo/localstorage',
+          name: 'local-storage',
+          path: '/demo/local-storage',
           component: './demo/LocalStorage',
         },
         {

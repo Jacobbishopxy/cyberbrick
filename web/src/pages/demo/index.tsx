@@ -19,7 +19,7 @@ export default () => {
   return (
     <Switch>
       <Route path="/demo/" component={Demo} exact/>
-      <Route path="/demo/localstorage" component={LocalStorage}/>
+      <Route path="/demo/local-storage" component={LocalStorage}/>
       <Route path="/demo/rectangle-chart" component={RectangleChart}/>
       <Route path="/demo/charts" component={Charts}/>
       <Route path="/demo/grid-layout" component={GridLayout}/>
