@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {message, Tabs} from "antd"
 import {DashboardOutlined, DatabaseOutlined, TagsOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

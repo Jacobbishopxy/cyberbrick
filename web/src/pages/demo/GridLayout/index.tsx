@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React from 'react'
 import RGL, {WidthProvider} from "react-grid-layout"
 
 const GridLayout = WidthProvider(RGL)

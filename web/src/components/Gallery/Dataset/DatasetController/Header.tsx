@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/20/2020
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Button, Select, Space} from "antd"
 import {DownloadOutlined, ExclamationCircleOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

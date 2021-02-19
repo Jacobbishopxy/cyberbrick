@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 10/29/2020.
  */
 
-import React from 'react'
 import {Button, Input, InputNumber, Select, Space} from "antd"
 import {FormattedMessage} from "umi"
 import {CheckCircleTwoTone, CloseCircleTwoTone, EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons'

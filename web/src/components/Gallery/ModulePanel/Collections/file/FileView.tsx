@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/13/2021
  */
 
-import React, {useRef, useState} from 'react'
+import {useRef, useState} from 'react'
 import {Button} from "antd"
 import {ModalForm, ProFormText} from "@ant-design/pro-form"
 import {FormattedMessage, useIntl} from "umi"

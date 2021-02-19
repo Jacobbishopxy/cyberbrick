@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/23/2020
  */
 
-import React, {useRef, useState} from 'react'
+import {useRef, useState} from 'react'
 import ProTable, {ActionType, ProColumns} from "@ant-design/pro-table"
 import {FormOutlined} from "@ant-design/icons"
 

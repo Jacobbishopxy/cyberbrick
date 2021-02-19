@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/9/2021
  */
 
-import React, {useEffect, useState} from "react"
+import {useEffect, useState} from "react"
 import {Modal, Space, Tag, Tooltip, Typography} from "antd"
 import {ExclamationCircleOutlined} from "@ant-design/icons"
 import ProList from "@ant-design/pro-list"

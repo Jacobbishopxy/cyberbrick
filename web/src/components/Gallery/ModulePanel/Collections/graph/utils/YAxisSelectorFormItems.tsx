@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 1/22/2021
  */
 
-import React from "react"
 import {Button, Form, Input, Radio, Select} from "antd"
 import ProForm from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"

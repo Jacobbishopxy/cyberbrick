@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 2/8/2021
  */
 
-import React from "react"
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/24/2020
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Button, Input, Space} from "antd"
 import {CaretRightOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

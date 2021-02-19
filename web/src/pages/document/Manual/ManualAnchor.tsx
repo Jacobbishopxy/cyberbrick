@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 1/20/2021
  */
 
-import React from 'react'
 import {Anchor} from "antd"
 
 import {anchorList, AnchorList} from "./anchorList"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Space} from "antd"
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons'
 

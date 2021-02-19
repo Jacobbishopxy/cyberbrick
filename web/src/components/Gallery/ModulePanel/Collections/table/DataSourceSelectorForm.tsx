@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/4/2021
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Button, Form, Radio, Space} from "antd"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/17/2020
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Tag} from "antd"
 import _ from "lodash"
 

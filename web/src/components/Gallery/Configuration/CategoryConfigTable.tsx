@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Table} from "antd"
 import {FormattedMessage} from "umi"
 

@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 1/19/2021
  */
 
-import React from 'react'
 import {Card, Col, Row} from "antd"
 
 import {ManualAnchor} from "./ManualAnchor"

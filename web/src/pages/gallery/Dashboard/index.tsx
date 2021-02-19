@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/28/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import {Dashboard} from "@/components/Gallery/Dashboard"
 import {GalleryDataType} from "@/components/Gallery"

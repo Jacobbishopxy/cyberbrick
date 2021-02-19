@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/2/2020
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import ProForm from "@ant-design/pro-form"
 import {Divider, Form, Input, Radio, Select} from "antd"
 import {FormattedMessage} from "umi"

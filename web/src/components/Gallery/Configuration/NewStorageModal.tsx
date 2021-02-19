@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 10/30/2020.
  */
 
-import React from 'react'
 import {Form, Input, InputNumber, Modal, Select} from "antd"
 import {EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons'
 

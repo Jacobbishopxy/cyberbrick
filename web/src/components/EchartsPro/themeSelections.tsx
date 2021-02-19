@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 1/27/2021
  */
 
-import React from 'react'
 import {Space} from "antd"
 
 import "@/components/EchartsPro/themes/chalk"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/6/2021
  */
 
-import React, {useState} from "react"
+import {useState} from "react"
 import { Modal} from "antd";
 import {useIntl} from "umi"
 

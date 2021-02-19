@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 2/9/2021
  */
 
-import React from "react"
 import {ArticleToolbarProps} from "./data"
 
 import {ArticleCreationModal} from "@/components/Article/ArticleCreationModal"

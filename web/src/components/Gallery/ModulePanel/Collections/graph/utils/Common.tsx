@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Button, message, Modal, Space} from "antd"
 import ProForm, {StepsForm} from "@ant-design/pro-form"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/12/2020.
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Select, Space} from "antd"
 import {SaveTwoTone, SettingTwoTone} from '@ant-design/icons'
 

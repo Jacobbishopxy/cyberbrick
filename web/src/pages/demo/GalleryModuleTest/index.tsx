@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import React, {useRef, useState} from "react"
+import {useRef, useState} from "react"
 import {Card, Switch} from "antd"
 import {FormattedMessage } from "umi"
 

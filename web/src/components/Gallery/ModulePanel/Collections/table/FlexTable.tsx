@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/23/2020
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Table} from "antd"
 import {ColumnsType} from "antd/lib/table/interface"
 import {HotTable} from "@handsontable/react"

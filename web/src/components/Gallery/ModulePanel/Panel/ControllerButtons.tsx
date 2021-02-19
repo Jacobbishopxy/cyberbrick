@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 10/15/2020.
  */
 
-import React from 'react'
 import {Button, Tooltip} from "antd"
 
 import {Emoji} from "@/components/Emoji"

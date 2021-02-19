@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/5/2021
  */
 
-import React, {useState} from "react"
+import {useState} from "react"
 import {DatePicker, Input, message, Modal, Select, Space, Tag} from "antd"
 import {useIntl} from "umi"
 import _ from "lodash"

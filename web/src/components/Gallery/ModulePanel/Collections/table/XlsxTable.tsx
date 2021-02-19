@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Button, message, Modal, Tabs} from "antd"
 import {HotTable} from "@handsontable/react"
 import {ProFormCheckbox, StepsForm} from "@ant-design/pro-form"

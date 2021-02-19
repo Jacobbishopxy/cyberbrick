@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import React from "react"
 import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"

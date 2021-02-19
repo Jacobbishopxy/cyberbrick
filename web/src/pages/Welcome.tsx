@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React from "react"
 import {Typography} from "antd"
 import {FormattedMessage} from "umi"
 

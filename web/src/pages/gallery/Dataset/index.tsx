@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 11/23/2020
  */
 
-import React from 'react'
 
 import {Dataset} from "@/components/Gallery/Dataset"
 import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"

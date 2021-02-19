@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 2/9/2021.
  */
 
-import React from "react"
 import {Typography} from "antd"
 import {FormattedMessage} from "umi"
 import connectorNodeV1 from "@opuscapita/react-filemanager-connector-node-v1"

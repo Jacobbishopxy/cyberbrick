@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Modal, Tag, Tooltip} from "antd"
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
 import {useIntl} from "umi"

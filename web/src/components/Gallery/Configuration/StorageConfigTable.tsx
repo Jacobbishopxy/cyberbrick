@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/28/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import {Editor} from "@/components/Editor"
 import {SpaceBetween} from "@/components/SpaceBetween"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/18/2021
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Button, Form, Select, Space} from "antd"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

@@ -2,10 +2,8 @@
  * Created by Jacob Xie on 9/17/2020.
  */
 
-import React from 'react'
 
-
-const srcGallery = "/api/document/gallery"
+ const srcGallery = "/api/document/gallery"
 
 export default () => {
 

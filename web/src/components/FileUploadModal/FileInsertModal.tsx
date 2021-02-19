@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/19/2020
  */
 
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Divider, Form, Input, Radio, Select} from "antd"
 import {FormattedMessage} from "umi"
 

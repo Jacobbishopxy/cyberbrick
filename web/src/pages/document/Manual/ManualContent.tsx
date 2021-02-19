@@ -2,7 +2,6 @@
  * Created by Jacob Xie on 1/20/2021
  */
 
-import React from 'react'
 import {Divider, Image, Space, Typography} from "antd"
 
 import {anchorList} from "./anchorList"

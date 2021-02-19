@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/27/2020.
  */
 
-import React, {useState} from "react"
+import {useState} from "react"
 import {Form, Input, Modal} from "antd"
 import {FormattedMessage} from "umi"
 import {ColorResult, BlockPicker} from "react-color"

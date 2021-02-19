@@ -57,7 +57,7 @@ export default {
   'menu.gallery.dashboard': '仪表板',
 
   'menu.demo': '样品',
-  'menu.demo.localstorage': 'Local Storage',
+  'menu.demo.local-storage': 'Local Storage',
   'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
   'menu.demo.grid-layout': 'Grid Layout',
