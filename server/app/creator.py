@@ -28,9 +28,9 @@ class PrefixMiddleware(object):
             return ["This url does not belong to the app.".encode()]
 
 
-def create_app(prefix: str,
-               app_cfg: AppConfig,
-               controller_list: List[Type[Controller]]):
+def assemble_app(prefix: str,
+                 app_cfg: AppConfig,
+                 controller_list: List[Type[Controller]]):
     app = Flask(__name__)
     app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
     # app.url_map.strict_slashes = False

@@ -7,7 +7,7 @@ from flask_cors import CORS
 import click
 from gevent.pywsgi import WSGIServer
 
-from app import create_app, AppConfig, controllers
+from app import assemble_app, AppConfig, controllers
 
 
 @click.command()
@@ -17,7 +17,7 @@ def start(env: str, debug: str):
     cfg = AppConfig.prod if env == "prod" else AppConfig.dev
     host, port = "0.0.0.0", cfg.value.server_port
 
-    app = create_app("/api", cfg, controllers)
+    app = assemble_app("/api", cfg, controllers)
     CORS(app)
 
     if env == "prod":
