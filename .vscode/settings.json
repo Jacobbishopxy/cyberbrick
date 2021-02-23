@@ -3,7 +3,9 @@
   "python.autoComplete.extraPaths": ["./server"],
   "eslint.workingDirectories": ["web"],
   "cSpell.words": [
-    "Echarts",
-    "Treemap"
+    "echarts",
+    "treemap",
+    "antd",
+    "coord"
   ]
 }

@@ -47,7 +47,7 @@ export interface Scatter {
   max?: number
 }
 
-export interface ChartConfig {
+export interface CartesianCoordSysChartConfig {
   bar?: string[]
   scatter?: Scatter[]
   x: XAxis
@@ -64,7 +64,11 @@ export interface ChartData {
 }
 
 export interface Chart {
-  config: ChartConfig,
+  config: CartesianCoordSysChartConfig,
   data: ChartData
+}
+
+export interface SeriesPieChartConfig {
+  seriesDies: "vertical" | "horizontal"
 }
 

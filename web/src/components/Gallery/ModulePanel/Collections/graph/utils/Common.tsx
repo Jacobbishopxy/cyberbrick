@@ -14,7 +14,7 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
-import {ChartConfig} from "../../../../Utils/data"
+import {CartesianCoordSysChartConfig} from "../../../../Utils/data"
 import {DisplayForm} from "./DisplayForm"
 import {Mixin} from "../utils/data"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
@@ -140,7 +140,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
   }
 
 export const generateCommonPresenterField =
-  (chartOptionGenerator: (data: any[], config: ChartConfig) => EChartOption) =>
+  (chartOptionGenerator: (data: any[], config: CartesianCoordSysChartConfig) => EChartOption) =>
     (props: ModulePresenterField) => {
 
       const [data, setData] = useState<any[]>()
@@ -155,7 +155,7 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config)
         return <ReactEcharts
-          option={chartOptionGenerator(data, props.content.config as ChartConfig)}
+          option={chartOptionGenerator(data, props.content.config as CartesianCoordSysChartConfig)}
           style={{height: props.contentHeight}}
           theme={props.content.config.style || "default"}
         />

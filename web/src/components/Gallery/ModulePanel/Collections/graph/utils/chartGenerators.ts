@@ -5,12 +5,12 @@
 import {EChartOption} from "echarts"
 import _ from "lodash"
 
-import {ChartConfig, Scatter} from "@/components/Gallery/Utils/data"
+import {CartesianCoordSysChartConfig, Scatter, SeriesPieChartConfig} from "@/components/Gallery/Utils/data"
 import {Mixin} from "./data"
 import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
 
 
-const generateXAxis = (config: ChartConfig): EChartOption.XAxis[] => {
+const generateXAxis = (config: CartesianCoordSysChartConfig): EChartOption.XAxis[] => {
   return [
     {
       type: config.x.type,
@@ -21,7 +21,7 @@ const generateXAxis = (config: ChartConfig): EChartOption.XAxis[] => {
   ]
 }
 
-const generateYAxis = (config: ChartConfig): EChartOption.YAxis[] => {
+const generateYAxis = (config: CartesianCoordSysChartConfig): EChartOption.YAxis[] => {
 
   let left = -1
   let right = -1
@@ -48,13 +48,13 @@ const generateYAxis = (config: ChartConfig): EChartOption.YAxis[] => {
   })
 }
 
-const getScatterMap = (config: ChartConfig, value: "size" | "min" | "max") =>
+const getScatterMap = (config: CartesianCoordSysChartConfig, value: "size" | "min" | "max") =>
   config.scatter ?
     _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
       return {...acc, [v.column]: v[value]}
     }, {}) : {}
 
-const generateSeries = (config: ChartConfig, chartType: Mixin): [EChartOption.Series[], string[]] => {
+const generateSeries = (config: CartesianCoordSysChartConfig, chartType: Mixin): [EChartOption.Series[], string[]] => {
   const series: EChartOption.Series[] = []
   const legend: string[] = []
 
@@ -117,7 +117,7 @@ const getDataSourceMinMax = (data: Record<string, any>[], column: string) => {
 
 const generateVisualMapForScatter = (
   data: Record<string, any>[],
-  config: ChartConfig,
+  config: CartesianCoordSysChartConfig,
   chartType: Mixin
 ): EChartOption.VisualMap[] => {
   const visualMap: any[] = []
@@ -173,7 +173,7 @@ const generateVisualMapForScatter = (
 
 const generateVisualMap = (
   data: Record<string, any>[],
-  config: ChartConfig,
+  config: CartesianCoordSysChartConfig,
   chartType: Mixin
 ): EChartOption.VisualMap[] => {
   switch (chartType) {
@@ -187,10 +187,10 @@ const generateVisualMap = (
 }
 
 /**
- * generate line, bar chart option
+ * generate line, bar, scatter chart option
  */
 export const generateCommonOption = (chartType: Mixin) =>
-  (data: any[], config: ChartConfig): EChartOption => {
+  (data: any[], config: CartesianCoordSysChartConfig): EChartOption => {
     const [series, legend] = generateSeries(config, chartType)
 
     let d
@@ -211,10 +211,48 @@ export const generateCommonOption = (chartType: Mixin) =>
     }
   }
 
+export const genPctRadius = (len: number) => `${1 / len * 100}%`
+export const genPctArr = (d: any[]) => {
+  const end = d.length + 3
+  const arr = _.range(1, end)
 
+  return arr.map((i: number) => `${i / end * 100}%`).slice(1, -1)
+}
+
+
+const genPieSeries = (data: any[][]) => {
+  const encodeName = data[0][0]
+  const encodeArr = data[0].slice(1)
+  const radius = genPctRadius(encodeArr.length)
+  const pctArr = genPctArr(data[0])
+
+  return _.range(encodeArr.length).map(i => ({
+    type: "pie",
+    radius,
+    center: [pctArr[i], "50%"],
+    label: {alignTo: 'labelLine'},
+    encode: {
+      itemName: encodeName,
+      value: encodeArr[i]
+    },
+  }))
+}
+
+const genPieSubText = () => {
+
+}
+
+/**
+* generate pie option
+*/
 export const generatePieOption = () =>
-  (data: any[], config: ChartConfig): EChartOption => {
+  (data: any[], config: SeriesPieChartConfig): EChartOption => {
 
-    return {}
+    return {
+      tooltip: {},
+      legend: {},
+      dataset: [{source: data}],
+      series: genPieSeries(data)
+    }
   }
 
