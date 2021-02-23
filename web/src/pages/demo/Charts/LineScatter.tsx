@@ -6,6 +6,7 @@ import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 
 import {data} from "./mock/ls"
+import {ChartsProps} from "./data"
 
 
 const chartOption: EChartOption = {
@@ -122,22 +123,13 @@ const chartOption: EChartOption = {
 }
 
 
-interface LineScatterProps {
-  chartHeight: number
-  theme: string
-}
-
 /**
  * multi y-axes line & scatter mixin plot
  */
-export const LineScatter = (props: LineScatterProps) => {
-
-  return (
-    <ReactEcharts
-      option={chartOption}
-      opts={{height: props.chartHeight}}
-      theme={props.theme}
-    />
-  )
-}
+export const LineScatter = (props: ChartsProps) =>
+  <ReactEcharts
+    option={chartOption}
+    opts={{height: props.chartHeight}}
+    theme={props.theme}
+  />
 

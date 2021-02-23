@@ -9,6 +9,7 @@ import {themeSelections} from "@/components/EchartsPro/themeSelections"
 import {LineScatter} from "./LineScatter"
 import {Candlestick} from "./Candlestick"
 import {Treemap} from "./Treemap"
+import {Pie} from "./Pie"
 
 
 export default () => {
@@ -37,16 +38,19 @@ export default () => {
           </Select>
         }}
         style={{height: "100%"}}
-        defaultActiveKey={"2"}
+        defaultActiveKey={"4"}
       >
         <Tabs.TabPane tab="Line & Scatter" key="1">
-          <LineScatter chartHeight={chartHeight - 50} theme={theme}/>
+          <LineScatter chartHeight={chartHeight - 50} theme={theme} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Candlestick" key="2">
-          <Candlestick chartHeight={chartHeight - 50} theme={theme}/>
+          <Candlestick chartHeight={chartHeight - 50} theme={theme} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Treemap" key="3">
-          <Treemap chartHeight={chartHeight - 70} theme={theme}/>
+          <Treemap chartHeight={chartHeight - 70} theme={theme} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Pie" key="4">
+          <Pie chartHeight={chartHeight - 50} theme={theme} />
         </Tabs.TabPane>
       </Tabs>
     </div>

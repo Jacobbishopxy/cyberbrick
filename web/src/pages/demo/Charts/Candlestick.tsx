@@ -6,6 +6,7 @@ import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 
 import {data} from "./mock/candlestick"
+import {ChartsProps} from "./data"
 
 
 const chartOption: EChartOption = {
@@ -96,19 +97,10 @@ const chartOption: EChartOption = {
   ]
 }
 
-interface CandlestickProps {
-  chartHeight: number
-  theme: string
-}
-
-export const Candlestick = (props: CandlestickProps) => {
-
-  return (
-    <ReactEcharts
-      option={chartOption}
-      opts={{height: props.chartHeight}}
-      theme={props.theme}
-    />
-  )
-}
+export const Candlestick = (props: ChartsProps) =>
+  <ReactEcharts
+    option={chartOption}
+    opts={{height: props.chartHeight}}
+    theme={props.theme}
+  />
 

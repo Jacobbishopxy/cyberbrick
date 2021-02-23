@@ -115,9 +115,11 @@ const getDataSourceMinMax = (data: Record<string, any>[], column: string) => {
   return [_.min(col), _.max(col)]
 }
 
-const generateVisualMapForScatter = (data: Record<string, any>[],
-                                     config: ChartConfig,
-                                     chartType: Mixin): EChartOption.VisualMap[] => {
+const generateVisualMapForScatter = (
+  data: Record<string, any>[],
+  config: ChartConfig,
+  chartType: Mixin
+): EChartOption.VisualMap[] => {
   const visualMap: any[] = []
   let seriesIndex = 0
 
@@ -169,9 +171,11 @@ const generateVisualMapForScatter = (data: Record<string, any>[],
   return visualMap
 }
 
-const generateVisualMap = (data: Record<string, any>[],
-                           config: ChartConfig,
-                           chartType: Mixin): EChartOption.VisualMap[] => {
+const generateVisualMap = (
+  data: Record<string, any>[],
+  config: ChartConfig,
+  chartType: Mixin
+): EChartOption.VisualMap[] => {
   switch (chartType) {
     case "scatter":
       return generateVisualMapForScatter(data, config, chartType)
@@ -205,5 +209,12 @@ export const generateCommonOption = (chartType: Mixin) =>
       visualMap: generateVisualMap(d, config, chartType),
       series
     }
+  }
+
+
+export const generatePieOption = () =>
+  (data: any[], config: ChartConfig): EChartOption => {
+
+    return {}
   }
 

@@ -1,5 +1,9 @@
 {
   "python.analysis.extraPaths": ["./server"],
   "python.autoComplete.extraPaths": ["./server"],
-  "eslint.workingDirectories": ["web"]
+  "eslint.workingDirectories": ["web"],
+  "cSpell.words": [
+    "Echarts",
+    "Treemap"
+  ]
 }

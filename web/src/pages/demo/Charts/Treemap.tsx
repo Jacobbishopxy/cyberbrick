@@ -6,6 +6,7 @@ import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 
 import {data} from "./mock/treemap"
+import {ChartsProps} from "./data"
 
 
 const chartOption: EChartOption = {
@@ -18,19 +19,11 @@ const chartOption: EChartOption = {
   ]
 }
 
-interface TreemapProps {
-  chartHeight: number
-  theme: string
-}
 
-export const Treemap = (props: TreemapProps) => {
-
-  return (
-    <ReactEcharts
-      option={chartOption}
-      opts={{height: props.chartHeight}}
-      theme={props.theme}
-    />
-  )
-}
+export const Treemap = (props: ChartsProps) =>
+  <ReactEcharts
+    option={chartOption}
+    opts={{height: props.chartHeight}}
+    theme={props.theme}
+  />
 
