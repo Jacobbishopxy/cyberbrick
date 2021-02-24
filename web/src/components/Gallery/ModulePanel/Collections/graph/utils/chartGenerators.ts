@@ -258,7 +258,6 @@ const genPieSeries = (seriesName: any[], config: SeriesPieChartConfig) => {
   return []
 }
 
-// todo: seriesName -> vertical: encodeArr; horizontal: each row's config.select value
 const genPieSubText = (seriesName: string[]) => {
   const centerArr = genPctArr(seriesName.length)
   const top = `${1 / (seriesName.length + 2) * 100 + 50}%`
@@ -276,7 +275,6 @@ const transformPieHorizontalData = (data: any[], select: string) =>
       name: k, value: v
     }))
   )
-
 
 const genPieDataset = (data: any[], config: SeriesPieChartConfig) => {
   if (config.seriesDir === "horizontal")

@@ -14,7 +14,6 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
-import {CartesianCoordSysChartConfig} from "../../../../Utils/data"
 import {DisplayForm} from "./DisplayForm"
 import {Mixin} from "../utils/data"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
@@ -67,7 +66,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           type="primary"
           onClick={() => setVisible(true)}
         >
-          <FormattedMessage id="gallery.component.general42"/>
+          <FormattedMessage id="gallery.component.general42" />
         </Button>
 
         <StepsForm
@@ -91,7 +90,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
             onFinish={dataSelectOnFinish}
           >
             <ProForm.Group
-              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3"/>}
+              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3" />}
             >
               <Space align="baseline">
                 <QuerySelectorModal
@@ -100,7 +99,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                       type='primary'
                       style={{marginBottom: 20}}
                     >
-                      <FormattedMessage id="gallery.component.module-panel.collections.file-view4"/>
+                      <FormattedMessage id="gallery.component.module-panel.collections.file-view4" />
                     </Button>
                   }
                   storagesOnFetch={props.fetchStorages!}
@@ -111,16 +110,16 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                 />
                 {
                   dataAvailable ?
-                    <CheckCircleTwoTone twoToneColor="green"/> :
-                    <CloseCircleTwoTone twoToneColor="red"/>
+                    <CheckCircleTwoTone twoToneColor="green" /> :
+                    <CloseCircleTwoTone twoToneColor="red" />
                 }
               </Space>
             </ProForm.Group>
 
             <ProForm.Group
-              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5"/>}
+              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5" />}
             >
-              <ColumnIdentifier columns={columns!}/>
+              <ColumnIdentifier columns={columns!} />
             </ProForm.Group>
           </StepsForm.StepForm>
 
@@ -140,7 +139,8 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
   }
 
 export const generateCommonPresenterField =
-  (chartOptionGenerator: (data: any[], config: CartesianCoordSysChartConfig) => EChartOption) =>
+  // todo: fix `config: any`
+  (chartOptionGenerator: (data: any[], config: any) => EChartOption) =>
     (props: ModulePresenterField) => {
 
       const [data, setData] = useState<any[]>()
@@ -155,7 +155,7 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config)
         return <ReactEcharts
-          option={chartOptionGenerator(data, props.content.config as CartesianCoordSysChartConfig)}
+          option={chartOptionGenerator(data, props.content.config)}
           style={{height: props.contentHeight}}
           theme={props.content.config.style || "default"}
         />

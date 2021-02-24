@@ -73,3 +73,5 @@ export interface SeriesPieChartConfig {
   seriesDir: "vertical" | "horizontal"
 }
 
+export type UnionChartConfig = CartesianCoordSysChartConfig | SeriesPieChartConfig
+
