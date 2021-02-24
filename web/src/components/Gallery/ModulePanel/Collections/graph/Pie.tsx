@@ -4,12 +4,13 @@
 
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {generateCommonEditorField, generateCommonPresenterField} from "./utils/Common"
-import {generatePieOption} from "./utils/chartGenerators"
+import {generateCommonEditorField, generateCommonPresenterField} from "./common/Common"
+import {generatePieOption} from "../../../Utils/chartGenerators"
+import {ChartOptionGenerator} from "@/components/Gallery/Utils/data"
 
 // todo: `generateCommonEditorField` needs new display setting interface for pie chart
 const EditorField = generateCommonEditorField()
-const PresenterField = generateCommonPresenterField(generatePieOption())
+const PresenterField = generateCommonPresenterField(generatePieOption() as ChartOptionGenerator)
 
 export const Pie = new ModuleGenerator(EditorField, PresenterField).generate()
 

@@ -7,11 +7,13 @@ import {Bar} from "./Bar"
 import {LineBar} from "./LineBar"
 import {Scatter} from "./Scatter"
 import {LineScatter} from "./LineScatter"
+import {Pie} from "./Pie"
 
 export {
   Line,
   Bar,
   LineBar,
   Scatter,
-  LineScatter
+  LineScatter,
+  Pie
 }

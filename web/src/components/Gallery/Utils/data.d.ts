@@ -2,6 +2,8 @@
  * Created by Jacob Xie on 12/4/2020
  */
 
+import {EChartOption} from "echarts"
+
 /**
  * Generic data type for table & chart
  */
@@ -74,4 +76,8 @@ export interface SeriesPieChartConfig {
 }
 
 export type UnionChartConfig = CartesianCoordSysChartConfig | SeriesPieChartConfig
+
+export type ChartOptionGenerator = (data: any[], config: UnionChartConfig) => EChartOption
+
+export type Mixin = "line" | "bar" | "scatter" | "lineBar" | "lineScatter" | "pie" | undefined
 

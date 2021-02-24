@@ -8,15 +8,14 @@ import ProForm, {StepsForm} from "@ant-design/pro-form"
 import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
 import {FormattedMessage, useIntl} from "umi"
 import ReactEcharts from "echarts-for-react"
-import {EChartOption} from "echarts"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
-import {DisplayForm} from "./DisplayForm"
-import {Mixin} from "../utils/data"
+import {DisplayFormCartesianCoord} from "./DisplayFormCartesianCoord"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
+import {ChartOptionGenerator, Mixin, UnionChartConfig} from "@/components/Gallery/Utils/data"
 
 
 export const generateCommonEditorField = (mixin?: Mixin) =>
@@ -128,7 +127,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
             title={intl.formatMessage({id: "gallery.component.general43"})}
             initialValues={{x: {type: "category"}}}
           >
-            <DisplayForm
+            <DisplayFormCartesianCoord
               mixin={mixin}
               columns={columns}
             />
@@ -140,7 +139,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
 export const generateCommonPresenterField =
   // todo: fix `config: any`
-  (chartOptionGenerator: (data: any[], config: any) => EChartOption) =>
+  (chartOptionGenerator: ChartOptionGenerator) =>
     (props: ModulePresenterField) => {
 
       const [data, setData] = useState<any[]>()
@@ -155,7 +154,7 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config)
         return <ReactEcharts
-          option={chartOptionGenerator(data, props.content.config)}
+          option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
           style={{height: props.contentHeight}}
           theme={props.content.config.style || "default"}
         />

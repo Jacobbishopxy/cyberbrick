@@ -2,24 +2,24 @@
  * Created by Jacob Xie on 12/2/2020
  */
 
-import {useState} from 'react'
+import {useState} from "react"
 import ProForm from "@ant-design/pro-form"
 import {Divider, Form, Input, Radio, Select} from "antd"
 import {FormattedMessage} from "umi"
 import _ from "lodash"
 
-import {Mixin} from "./data"
+import {Mixin} from "@/components/Gallery/Utils/data"
 import {MixinFormItems} from "./MixinFormItems"
 import {YAxisSelectorFormItems} from "./YAxisSelectorFormItems"
 import {themeSelections} from "@/components/EchartsPro/themeSelections"
 
 
-export interface DisplayFormProps {
+export interface DisplayFormCartesianCoordProps {
   mixin: Mixin
   columns?: string[]
 }
 
-export const DisplayForm = (props: DisplayFormProps) => {
+export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps) => {
 
   const [yAxis, setYAxis] = useState<string[] | undefined>(props.columns)
   const [yAxisRecord, setYAxisRecord] = useState<string[][]>([])
@@ -53,7 +53,7 @@ export const DisplayForm = (props: DisplayFormProps) => {
       <ProForm.Group title="X">
         <Form.Item
           name={["x", "column"]}
-          label={<FormattedMessage id="gallery.component.general33"/>}
+          label={<FormattedMessage id="gallery.component.general33" />}
           rules={[{required: true, message: "Select a column for xAxis!"}]}
         >
           <Select
@@ -67,34 +67,34 @@ export const DisplayForm = (props: DisplayFormProps) => {
 
         <Form.Item
           name={["x", "type"]}
-          label={<FormattedMessage id="gallery.component.general16"/>}
+          label={<FormattedMessage id="gallery.component.general16" />}
           rules={[{required: true, message: "Select a type for xAxis!"}]}
         >
           <Radio.Group>
             <Radio value="value">
-              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form2"/>
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form2" />
             </Radio>
             <Radio value="category">
-              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form3"/>
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form3" />
             </Radio>
             <Radio value="time">
-              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form4"/>
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form4" />
             </Radio>
             <Radio value="log">
-              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form5"/>
+              <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form5" />
             </Radio>
           </Radio.Group>
         </Form.Item>
 
         <Form.Item
           name={["x", "name"]}
-          label={<FormattedMessage id="gallery.component.general5"/>}
+          label={<FormattedMessage id="gallery.component.general5" />}
         >
-          <Input style={{width: 200}} placeholder="Name of X-axis"/>
+          <Input style={{width: 200}} placeholder="Name of X-axis" />
         </Form.Item>
       </ProForm.Group>
 
-      <Divider/>
+      <Divider />
 
       <ProForm.Group title="Y">
         <YAxisSelectorFormItems
@@ -104,16 +104,16 @@ export const DisplayForm = (props: DisplayFormProps) => {
         />
       </ProForm.Group>
 
-      <MixinFormItems mixin={props.mixin} columns={yAxis}/>
+      <MixinFormItems mixin={props.mixin} columns={yAxis} />
 
-      <Divider/>
+      <Divider />
 
       <ProForm.Group
-        title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form7"/>}
+        title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form7" />}
       >
         <Form.Item
           name="style"
-          label={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form6"/>}
+          label={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form6" />}
         >
           <Select
             placeholder="Select a theme for display"

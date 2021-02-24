@@ -7,7 +7,7 @@ import ProForm, {ProFormSelect} from "@ant-design/pro-form"
 import {DeleteTwoTone, PlusOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"
 
-import {Mixin} from "./data"
+import {Mixin} from "@/components/Gallery/Utils/data"
 
 
 export interface MixinFormItemsProps {

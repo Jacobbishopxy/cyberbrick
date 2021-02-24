@@ -5,8 +5,7 @@
 import {EChartOption} from "echarts"
 import _ from "lodash"
 
-import {CartesianCoordSysChartConfig, Scatter, SeriesPieChartConfig} from "@/components/Gallery/Utils/data"
-import {Mixin} from "./data"
+import {CartesianCoordSysChartConfig, Mixin, Scatter, SeriesPieChartConfig} from "./data"
 import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
 
 

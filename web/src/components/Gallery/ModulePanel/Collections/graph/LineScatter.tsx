@@ -3,11 +3,13 @@
  */
 
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {generateCommonEditorField, generateCommonPresenterField} from "./utils/Common"
-import {generateCommonOption} from "./utils/chartGenerators"
+import {generateCommonEditorField, generateCommonPresenterField} from "./common/Common"
+import {generateCommonOption} from "../../../Utils/chartGenerators"
+import {ChartOptionGenerator} from "@/components/Gallery/Utils/data"
+
 
 const EditorField = generateCommonEditorField("lineScatter")
-const PresenterField = generateCommonPresenterField(generateCommonOption("lineScatter"))
+const PresenterField = generateCommonPresenterField(generateCommonOption("lineScatter") as ChartOptionGenerator)
 
 export const LineScatter = new ModuleGenerator(EditorField, PresenterField).generate()
 
