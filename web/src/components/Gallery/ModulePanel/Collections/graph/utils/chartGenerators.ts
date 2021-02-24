@@ -211,36 +211,80 @@ export const generateCommonOption = (chartType: Mixin) =>
     }
   }
 
-export const genPctRadius = (len: number) => `${1 / len * 100}%`
-export const genPctArr = (d: any[]) => {
-  const end = d.length + 3
+const genPctRadius = (len: number) => `${1 / (len + 2) * 100}%`
+const genPctArr = (len: number) => {
+  const end = len + 3
   const arr = _.range(1, end)
 
   return arr.map((i: number) => `${i / end * 100}%`).slice(1, -1)
 }
 
+const getPieSeriesName = (data: any[], config: SeriesPieChartConfig) => {
+  if (config.seriesDir === "vertical")
+    return _.keys(_.omit(data[0], config.select))
+  if (config.seriesDir === "horizontal")
+    return _.map(data, i => i[config.select])
+  return []
+}
 
-const genPieSeries = (data: any[][]) => {
-  const encodeName = data[0][0]
-  const encodeArr = data[0].slice(1)
-  const radius = genPctRadius(encodeArr.length)
-  const pctArr = genPctArr(data[0])
+const genPieSeries = (seriesName: any[], config: SeriesPieChartConfig) => {
+  const radius = genPctRadius(seriesName.length)
+  const pctArr = genPctArr(seriesName.length)
 
-  return _.range(encodeArr.length).map(i => ({
+  const defaultOpt = (i: number) => ({
     type: "pie",
     radius,
     center: [pctArr[i], "50%"],
-    label: {alignTo: 'labelLine'},
-    encode: {
-      itemName: encodeName,
-      value: encodeArr[i]
-    },
+    label: {alignTo: "labelLine"},
+  })
+
+  const iter = _.range(seriesName.length)
+
+  if (config.seriesDir === "vertical")
+    return iter.map(i => ({
+      ...defaultOpt(i),
+      encode: {
+        itemName: config.select,
+        value: seriesName[i]
+      },
+    }))
+
+  if (config.seriesDir === "horizontal")
+    return iter.map(i => ({
+      ...defaultOpt(i),
+      datasetIndex: i
+    }))
+
+  return []
+}
+
+// todo: seriesName -> vertical: encodeArr; horizontal: each row's config.select value
+const genPieSubText = (seriesName: string[]) => {
+  const centerArr = genPctArr(seriesName.length)
+  const top = `${1 / (seriesName.length + 2) * 100 + 50}%`
+
+  return seriesName.map((n, idx) => ({
+    subtext: n,
+    left: centerArr[idx],
+    top
   }))
 }
 
-const genPieSubText = () => {
+const transformPieHorizontalData = (data: any[], select: string) =>
+  _.map(data, item =>
+    _.map(_.entries(_.omit(item, select)), ([k, v]) => ({
+      name: k, value: v
+    }))
+  )
 
+
+const genPieDataset = (data: any[], config: SeriesPieChartConfig) => {
+  if (config.seriesDir === "horizontal")
+    return transformPieHorizontalData(data, config.select).map(i => ({source: i}))
+  else
+    return [{source: data}]
 }
+
 
 /**
 * generate pie option
@@ -248,11 +292,14 @@ const genPieSubText = () => {
 export const generatePieOption = () =>
   (data: any[], config: SeriesPieChartConfig): EChartOption => {
 
+    const seriesName = getPieSeriesName(data, config)
+
     return {
       tooltip: {},
       legend: {},
-      dataset: [{source: data}],
-      series: genPieSeries(data)
+      title: genPieSubText(seriesName),
+      dataset: genPieDataset(data, config),
+      series: genPieSeries(seriesName, config)
     }
   }
 

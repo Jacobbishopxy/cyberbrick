@@ -69,6 +69,7 @@ export interface Chart {
 }
 
 export interface SeriesPieChartConfig {
-  seriesDies: "vertical" | "horizontal"
+  select: string
+  seriesDir: "vertical" | "horizontal"
 }
 
