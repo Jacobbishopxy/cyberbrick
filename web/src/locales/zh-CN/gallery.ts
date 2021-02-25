@@ -59,6 +59,8 @@ export default {
   "gallery.component.general54": "数据集",
   "gallery.component.general55": "文件",
   "gallery.component.general56": "选项",
+  "gallery.component.general57": "列式表达",
+  "gallery.component.general58": "行式表达",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -138,6 +140,9 @@ export default {
   "gallery.component.module-panel.graph.utils.display-form5": "对数轴",
   "gallery.component.module-panel.graph.utils.display-form6": "主题样式",
   "gallery.component.module-panel.graph.utils.display-form7": "样式",
+  "gallery.component.module-panel.graph.utils.display-form8": "图形设置",
+  "gallery.component.module-panel.graph.utils.display-form9": "选择一个列作为锚",
+  "gallery.component.module-panel.graph.utils.display-form10": "选择序列表现方式",
 
   "gallery.component.module-panel.graph.utils.mixin-form-items1": "面积列",
   "gallery.component.module-panel.graph.utils.mixin-form-items2": "视觉最小值",

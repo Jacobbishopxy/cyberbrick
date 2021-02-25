@@ -11,8 +11,7 @@ import _ from "lodash"
 import {Mixin} from "@/components/Gallery/Utils/data"
 import {MixinFormItems} from "./MixinFormItems"
 import {YAxisSelectorFormItems} from "./YAxisSelectorFormItems"
-import {themeSelections} from "@/components/EchartsPro/themeSelections"
-
+import {DisplayFormThemeSelector} from "./DisplayFormThemeSelector"
 
 export interface DisplayFormCartesianCoordProps {
   mixin: Mixin
@@ -108,21 +107,7 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
 
       <Divider />
 
-      <ProForm.Group
-        title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form7" />}
-      >
-        <Form.Item
-          name="style"
-          label={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form6" />}
-        >
-          <Select
-            placeholder="Select a theme for display"
-            style={{width: 250}}
-          >
-            {themeSelections.map(t => <Select.Option key={t.name} value={t.name}>{t.ele}</Select.Option>)}
-          </Select>
-        </Form.Item>
-      </ProForm.Group>
+      <DisplayFormThemeSelector />
     </>
   ) : <></>
 }

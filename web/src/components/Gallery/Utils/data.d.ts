@@ -55,7 +55,7 @@ export interface CartesianCoordSysChartConfig {
   x: XAxis
   y: YAxis[]
   display?: DisplayType[]
-  styling: string
+  styling?: string
 }
 
 export interface ChartData {
@@ -73,6 +73,8 @@ export interface Chart {
 export interface SeriesPieChartConfig {
   select: string
   seriesDir: "vertical" | "horizontal"
+  display?: DisplayType[]
+  styling?: string
 }
 
 export type UnionChartConfig = CartesianCoordSysChartConfig | SeriesPieChartConfig

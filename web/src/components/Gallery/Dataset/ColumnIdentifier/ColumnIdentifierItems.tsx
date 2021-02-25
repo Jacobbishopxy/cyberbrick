@@ -12,19 +12,19 @@ import _ from "lodash"
 const columnTypeOptions = [
   {
     type: "default",
-    view: <FormattedMessage id="gallery.component.general28"/>
-  },
-  {
-    type: "date",
     view: <FormattedMessage id="gallery.component.general29"/>
   },
   {
-    type: "number",
+    type: "date",
     view: <FormattedMessage id="gallery.component.general30"/>
   },
   {
-    type: "percent",
+    type: "number",
     view: <FormattedMessage id="gallery.component.general31"/>
+  },
+  {
+    type: "percent",
+    view: <FormattedMessage id="gallery.component.general32"/>
   },
 ]
 

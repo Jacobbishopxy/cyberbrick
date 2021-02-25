@@ -59,6 +59,8 @@ export default {
   "gallery.component.general54": "Dataset",
   "gallery.component.general55": "File",
   "gallery.component.general56": "Option",
+  "gallery.component.general57": "Vertical",
+  "gallery.component.general58": "Horizontal",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
@@ -138,6 +140,9 @@ export default {
   "gallery.component.module-panel.graph.utils.display-form5": "Log",
   "gallery.component.module-panel.graph.utils.display-form6": "Theme style",
   "gallery.component.module-panel.graph.utils.display-form7": "Style",
+  "gallery.component.module-panel.graph.utils.display-form8": "Graph setting",
+  "gallery.component.module-panel.graph.utils.display-form9": "Select a column as anchor",
+  "gallery.component.module-panel.graph.utils.display-form10": "Select series direction",
 
   "gallery.component.module-panel.graph.utils.mixin-form-items1": "Size column",
   "gallery.component.module-panel.graph.utils.mixin-form-items2": "Visual min",

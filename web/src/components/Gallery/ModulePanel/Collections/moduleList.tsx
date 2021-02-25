@@ -10,114 +10,114 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 export const moduleList = [
   {
     key: 'misc',
-    name: <FormattedMessage id="gallery.component.type.misc"/>,
+    name: <FormattedMessage id="gallery.component.type.misc" />,
     children: [
       {
         key: DataType.ElementType.EmbedLink,
-        name: <FormattedMessage id="gallery.component.type.link"/>,
+        name: <FormattedMessage id="gallery.component.type.link" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.Text,
-        name: <FormattedMessage id="gallery.component.type.text"/>,
+        name: <FormattedMessage id="gallery.component.type.text" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.TargetPrice,
-        name: <FormattedMessage id="gallery.component.type.targetPrice"/>,
+        name: <FormattedMessage id="gallery.component.type.targetPrice" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.Image,
-        name: <FormattedMessage id="gallery.component.type.image"/>,
+        name: <FormattedMessage id="gallery.component.type.image" />,
         disabled: true,
       },
     ]
   },
   {
     key: 'file',
-    name: <FormattedMessage id="gallery.component.type.file"/>,
+    name: <FormattedMessage id="gallery.component.type.file" />,
     children: [
       {
         key: DataType.ElementType.FileOverview,
-        name: <FormattedMessage id="gallery.component.type.fileOverview"/>,
+        name: <FormattedMessage id="gallery.component.type.fileOverview" />,
         disabled: true,
       },
       {
         key: DataType.ElementType.FileManager,
-        name: <FormattedMessage id="gallery.component.type.fileManager"/>,
+        name: <FormattedMessage id="gallery.component.type.fileManager" />,
         disabled: false,
       },
     ]
   },
   {
     key: 'table',
-    name: <FormattedMessage id="gallery.component.type.table"/>,
+    name: <FormattedMessage id="gallery.component.type.table" />,
     children: [
       {
         key: DataType.ElementType.XlsxTable,
-        name: <FormattedMessage id="gallery.component.type.xlsxTable"/>,
+        name: <FormattedMessage id="gallery.component.type.xlsxTable" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.FlexTable,
-        name: <FormattedMessage id="gallery.component.type.flexTable"/>,
+        name: <FormattedMessage id="gallery.component.type.flexTable" />,
         disabled: false,
       },
     ],
   },
   {
     key: 'graph',
-    name: <FormattedMessage id="gallery.component.type.graph"/>,
+    name: <FormattedMessage id="gallery.component.type.graph" />,
     children: [
       {
         key: DataType.ElementType.Line,
-        name: <FormattedMessage id="gallery.component.type.line"/>,
+        name: <FormattedMessage id="gallery.component.type.line" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.Bar,
-        name: <FormattedMessage id="gallery.component.type.bar"/>,
+        name: <FormattedMessage id="gallery.component.type.bar" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.LineBar,
-        name: <FormattedMessage id="gallery.component.type.lineBar"/>,
+        name: <FormattedMessage id="gallery.component.type.lineBar" />,
         disabled: false,
       },
       {
-        key: DataType.ElementType.Pie,
-        name: <FormattedMessage id="gallery.component.type.pie"/>,
-        disabled: true,
-      },
-      {
         key: DataType.ElementType.Scatter,
-        name: <FormattedMessage id="gallery.component.type.scatter"/>,
+        name: <FormattedMessage id="gallery.component.type.scatter" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.LineScatter,
-        name: <FormattedMessage id="gallery.component.type.lineScatter"/>,
+        name: <FormattedMessage id="gallery.component.type.lineScatter" />,
+        disabled: false,
+      },
+      {
+        key: DataType.ElementType.Pie,
+        name: <FormattedMessage id="gallery.component.type.pie" />,
         disabled: false,
       },
       {
         key: DataType.ElementType.Heatmap,
-        name: <FormattedMessage id="gallery.component.type.heatmap"/>,
+        name: <FormattedMessage id="gallery.component.type.heatmap" />,
         disabled: true,
       },
       {
         key: DataType.ElementType.Box,
-        name: <FormattedMessage id="gallery.component.type.box"/>,
+        name: <FormattedMessage id="gallery.component.type.box" />,
         disabled: true,
       },
       {
         key: DataType.ElementType.Tree,
-        name: <FormattedMessage id="gallery.component.type.tree"/>,
+        name: <FormattedMessage id="gallery.component.type.tree" />,
         disabled: true,
       },
       {
         key: DataType.ElementType.TreeMap,
-        name: <FormattedMessage id="gallery.component.type.treemap"/>,
+        name: <FormattedMessage id="gallery.component.type.treemap" />,
         disabled: true,
       },
     ]

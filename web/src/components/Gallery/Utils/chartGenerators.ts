@@ -264,7 +264,8 @@ const genPieSubText = (seriesName: string[]) => {
   return seriesName.map((n, idx) => ({
     subtext: n,
     left: centerArr[idx],
-    top
+    top,
+    textAlign: "center"
   }))
 }
 
@@ -288,14 +289,20 @@ const genPieDataset = (data: any[], config: SeriesPieChartConfig) => {
 */
 export const generatePieOption = () =>
   (data: any[], config: SeriesPieChartConfig): EChartOption => {
+    let d
+    if (config.display) {
+      const display = genDisplayConfig(data, config.display, "dataset")
+      d = data.map(i => transformRowDataForChart(i, display))
+    } else
+      d = data
 
-    const seriesName = getPieSeriesName(data, config)
+    const seriesName = getPieSeriesName(d, config)
 
     return {
       tooltip: {},
       legend: {},
       title: genPieSubText(seriesName),
-      dataset: genPieDataset(data, config),
+      dataset: genPieDataset(d, config),
       series: genPieSeries(seriesName, config)
     }
   }

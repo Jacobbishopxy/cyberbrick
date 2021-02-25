@@ -9,7 +9,7 @@ import _ from "lodash"
 
 import {data} from "./mock/pie"
 import {ChartsProps} from "./data"
-import {generatePieOption} from "@/components/Gallery/ModulePanel/Collections/graph/utils/chartGenerators"
+import {generatePieOption} from "@/components/Gallery/Utils/chartGenerators"
 
 
 const pieOpt = generatePieOption()

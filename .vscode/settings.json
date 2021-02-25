@@ -6,6 +6,7 @@
     "echarts",
     "treemap",
     "antd",
-    "coord"
+    "coord",
+    "sider"
   ]
 }

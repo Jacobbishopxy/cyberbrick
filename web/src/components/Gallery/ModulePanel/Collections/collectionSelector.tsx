@@ -17,7 +17,8 @@ import {
   Bar,
   LineBar,
   Scatter,
-  LineScatter
+  LineScatter,
+  Pie,
 } from "./graph"
 
 import styles from "../Panel/Common.less"
@@ -125,18 +126,6 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={props.forwardedRef}
     />
 
-    // const pie = <Pie
-    //   content={props.content}
-    //   fetchStorages={props.fetchStorages}
-    //   fetchTableList={props.fetchTableList}
-    //   fetchTableColumns={props.fetchTableColumns}
-    //   fetchQueryData={props.fetchQueryData}
-    //   contentHeight={props.contentHeight}
-    //   updateContent={props.updateContent}
-    //   styling={styles.contentPanel}
-    //   ref={props.forwardedRef}
-    // />
-
     const scatter = <Scatter
       content={props.content}
       fetchStorages={props.fetchStorages}
@@ -150,6 +139,18 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
     />
 
     const lineScatter = <LineScatter
+      content={props.content}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
+      contentHeight={props.contentHeight}
+      updateContent={props.updateContent}
+      styling={styles.contentPanel}
+      ref={props.forwardedRef}
+    />
+
+    const pie = <Pie
       content={props.content}
       fetchStorages={props.fetchStorages}
       fetchTableList={props.fetchTableList}
@@ -180,12 +181,12 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return bar
       case DataType.ElementType.LineBar:
         return lineBar
-      // case DataType.ElementType.Pie:
-      //   return pie
       case DataType.ElementType.Scatter:
         return scatter
       case DataType.ElementType.LineScatter:
         return lineScatter
+      case DataType.ElementType.Pie:
+        return pie
       default:
         return defaultModule
     }

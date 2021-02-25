@@ -11,7 +11,8 @@ import * as GalleryService from "@/services/gallery"
 import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import {LineScatter} from "@/components/Gallery/ModulePanel/Collections/graph"
+import {Pie} from "@/components/Gallery/ModulePanel/Collections/graph"
+
 
 export default () => {
 
@@ -49,14 +50,14 @@ export default () => {
       style={{height: "85vh"}}
       bodyStyle={{height: "100%"}}
     >
-      <LineScatter
+      <Pie
         content={content}
         fetchStorages={fetchStorages}
         fetchTableList={fetchTableList}
         fetchTableColumns={fetchTableColumns}
         fetchQueryData={fetchQueryData}
         updateContent={setContent}
-        contentHeight={800}
+        contentHeight={750}
         styling={styles}
         ref={moduleFwRef}
       />

@@ -13,7 +13,7 @@ import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 
 import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
-import {DisplayFormCartesianCoord} from "./DisplayFormCartesianCoord"
+import {DisplayForm} from "./DisplayForm"
 import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 import {ChartOptionGenerator, Mixin, UnionChartConfig} from "@/components/Gallery/Utils/data"
 
@@ -125,9 +125,9 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           <StepsForm.StepForm
             name="display"
             title={intl.formatMessage({id: "gallery.component.general43"})}
-            initialValues={{x: {type: "category"}}}
+            initialValues={{x: {type: "category"}, seriesDir: "vertical"}}
           >
-            <DisplayFormCartesianCoord
+            <DisplayForm
               mixin={mixin}
               columns={columns}
             />
