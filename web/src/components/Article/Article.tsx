@@ -30,7 +30,7 @@ const ArticleEditable = (props: ArticleEditableProps) => {
   const configDelete = () =>
     Modal.confirm({
       title: intl.formatMessage({id: "component.article.articleEditable.confirmDelete"}),
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       onOk: () => props.onDelete(props.initialArticle.id)
     })
 
@@ -100,14 +100,9 @@ export const Article = (props: ArticleProps) => {
       metas={{
         title: {
           render: (item, record) =>
-            <Space>
-              <Typography.Text strong>
-                {record.title}
-              </Typography.Text>
-              <Typography.Text type="secondary">
-                {moment(record.date).format("YYYY-MM-DD")}
-              </Typography.Text>
-            </Space>
+            <Typography.Text strong>
+              {record.title}
+            </Typography.Text>
         },
         description: {
           render: (item, record) =>
@@ -119,7 +114,13 @@ export const Article = (props: ArticleProps) => {
         },
         content: {
           render: (item, record) =>
-            <TextEditorPresenter content={record.data}/>
+            <TextEditorPresenter content={record.data} />
+        },
+        actions: {
+          render: (item, record) =>
+            <Typography.Text type="secondary">
+              {moment(record.date).format("YYYY-MM-DD")}
+            </Typography.Text>
         },
         extra: {
           render: (item, record) =>
