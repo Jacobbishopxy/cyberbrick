@@ -134,6 +134,7 @@ export const Article = (props: ArticleProps) => {
       }}
       headerTitle={props.title}
       dataSource={data}
+      size="large"
     />
   )
 }
