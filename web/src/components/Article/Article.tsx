@@ -59,6 +59,7 @@ const ArticleEditable = (props: ArticleEditableProps) => {
 
 export const Article = (props: ArticleProps) => {
   const [pageSize, setPageSize] = useState<number>(props.defaultPageSize || 5)
+  const [totalArticleNum, setTotalArticleNum] = useState<number>(0)
   const [data, setData] = useState<GenericArticle[]>()
   const [tags, setTags] = useState<GenericTag[]>([])
   const [editable, setEditable] = useState<boolean>(false)
@@ -66,11 +67,13 @@ export const Article = (props: ArticleProps) => {
   useEffect(() => {
     props.getTags().then(setTags)
     props.getArticles([0, pageSize]).then(setData)
+    props.getArticlesCount().then(setTotalArticleNum)
   }, [])
 
   const pagination = {
     defaultPageSize: pageSize,
     showSizeChanger: true,
+    total: totalArticleNum,
     onChange: (page: number, pageSize?: number) => {
       const pgn = [(page - 1) * pageSize!, pageSize!] as [number, number]
       props.getArticles(pgn).then(setData)

@@ -60,5 +60,14 @@ export class UpdateController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Get("getUpdateCount")
+  getUpdateCount() {
+    try {
+      return this.service.getUpdateCount()
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 

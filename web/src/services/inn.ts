@@ -32,6 +32,10 @@ export const getLatestUpdate = async (pagination?: [number, number]): Promise<In
   return request(path)
 }
 
+export const getUpdateCount = async (): Promise<number> =>
+  request(`${base}/getUpdateCount`)
+
+
 // Tag
 
 export const getAllTag = async (): Promise<InnAPI.Tag[]> =>

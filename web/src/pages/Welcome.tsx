@@ -12,6 +12,9 @@ import * as innService from "@/services/inn"
 const getArticles = (pagination?: [number, number]) =>
   innService.getLatestUpdate(pagination) as Promise<GenericArticle[]>
 
+const getArticlesCount = () =>
+  innService.getUpdateCount()
+
 const getTags = () =>
   innService.getAllTag() as Promise<GenericTag[]>
 
@@ -28,11 +31,12 @@ const modifyTags = (v: GenericTag[]) =>
 export default () =>
   <Typography>
     <Typography.Title>
-      <FormattedMessage id="pages.welcome.title1"/>
+      <FormattedMessage id="pages.welcome.title1" />
     </Typography.Title>
 
     <Article
       getArticles={getArticles}
+      getArticlesCount={getArticlesCount}
       getTags={getTags}
       modifyArticle={modifyArticle}
       deleteArticle={deleteArticle}

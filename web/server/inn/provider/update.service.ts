@@ -46,5 +46,9 @@ export class UpdateService {
       ...utils.paginationGet(pagination)
     })
   }
+
+  getUpdateCount() {
+    return this.repo.count()
+  }
 }
 

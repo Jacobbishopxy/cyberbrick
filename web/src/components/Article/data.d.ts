@@ -58,6 +58,7 @@ interface ArticleToolbarProps {
 
 export interface ArticleProps {
   getArticles: (pagination?: [number, number]) => Promise<GenericArticle[]>
+  getArticlesCount: () => Promise<number>
   getTags: () => Promise<GenericTag[]>
   modifyArticle: (value: GenericArticle) => Promise<any>
   deleteArticle: (id: string) => Promise<any>
