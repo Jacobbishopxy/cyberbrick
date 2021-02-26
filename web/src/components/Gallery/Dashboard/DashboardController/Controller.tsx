@@ -122,7 +122,7 @@ export const Controller = (props: ModuleControllerProps) => {
     <SpaceBetween>
       <SelectorPanel
         initValue={props.initialSelected}
-        onChange={props.selectedOnChange}
+        isMainController={true}
         categories={props.categories}
         categoryOnSelect={name => props.categoryOnSelect(name, false)}
         onSelectFinish={id => props.dashboardOnSelect(id, false)}

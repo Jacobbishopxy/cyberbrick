@@ -11,6 +11,7 @@ import * as DataType from "../../GalleryDataType"
 
 /**
  * initValue?: holding previous selected value (often used with local storage)
+ * isMainController?: if is main controller, cascader is able to generate 2nd level text
  * categories: list of category, 1st level of select options
  * categoryOnSelect: generate 2nd level of select options
  * dashboardOnSelect?: generate 3rd level of select options
@@ -21,6 +22,7 @@ import * as DataType from "../../GalleryDataType"
  */
 export interface SelectorPanelProps {
   initValue?: string[]
+  isMainController?: boolean
   categories: DataType.Category[]
   categoryOnSelect: (name: string) => Promise<DataType.Category>
   dashboardOnSelect?: (id: string) => Promise<DataType.Dashboard>
@@ -89,7 +91,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
   }
 
   const enhanceOptions = async (opt: CascaderOptionType[]) => {
-    if (value?.length === 2) {
+    if (props.isMainController) {
       const v = value ? value[0] : undefined
       const d = await setOptionsLevel2(v)
 
@@ -135,4 +137,8 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     size={props.size || "middle"}
   />
 }
+
+SelectorPanel.defaultProps = {
+  isMainController: false
+} as Partial<SelectorPanelProps>
 

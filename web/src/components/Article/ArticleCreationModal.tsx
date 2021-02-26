@@ -36,7 +36,6 @@ export const ArticleCreationModal = (props: ArticleCreationModalProps) => {
   }
 
   const onSubmit = () => {
-    console.log("data: ", data)
     if (data) {
       props.onSubmit(data)
       setVisible(false)

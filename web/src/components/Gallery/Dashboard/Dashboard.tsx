@@ -61,6 +61,7 @@ export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
 
   const [categories, setCategories] = useState<DataType.Category[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>()
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplate, setSelectedTemplate] = useState<string>()
   const [refresh, setRefresh] = useState<number>(0)
@@ -84,8 +85,16 @@ export const Dashboard = (props: DashboardProps) => {
     }
   }, [newestContent])
 
+  useEffect(() => {
+    if (props.selectedOnChange && selectedCategory && selectedDashboard && selectedTemplate)
+      props.selectedOnChange([selectedCategory, selectedDashboard.id!, selectedTemplate])
+  }, [selectedTemplate])
+
   const categoryOnSelect = async (name: string, isCopy: boolean = false) => {
-    if (!isCopy) setCanEdit(false)
+    if (!isCopy) {
+      setSelectedCategory(name)
+      setCanEdit(false)
+    }
     return props.fetchCategory(name)
   }
 
@@ -169,7 +178,6 @@ export const Dashboard = (props: DashboardProps) => {
 
   const genController = useMemo(() => <Controller
     initialSelected={props.initialSelected}
-    selectedOnChange={props.selectedOnChange}
     canEdit={canEdit}
     categories={categories}
     categoryOnSelect={categoryOnSelect}
@@ -183,6 +191,7 @@ export const Dashboard = (props: DashboardProps) => {
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
       dashboardInfo={selectedDashboard}
+      initialPaneId={props.initialSelected ? props.initialSelected[2] : undefined}
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}
@@ -202,8 +211,4 @@ export const Dashboard = (props: DashboardProps) => {
     </EditableContext.Provider>
   )
 }
-
-Dashboard.defaultProps = {
-  markAvailable: false
-} as Partial<DashboardProps>
 

@@ -12,6 +12,7 @@ import {ContainerTemplate, ContainerTemplateRef} from "./ContainerTemplate"
 
 export interface ContainerProps {
   dashboardInfo: DataType.Dashboard
+  initialPaneId?: string | undefined
   onSelectPane: (templateId: string) => void
   fetchElements: (templateId: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
@@ -37,9 +38,14 @@ interface SelectedPane {
   name: string
 }
 
-const initSelectedPane = (templates: DataType.Template[]) => {
-  if (templates && templates.length > 0)
+const getSelectedPane = (templates: DataType.Template[], initId?: string) => {
+  if (templates && templates.length > 0) {
+    if (initId) {
+      const r = _.find(templates, {id: initId})
+      if (r) return {id: r.id!, index: r.index!, name: r.name!}
+    }
     return {id: templates[0].id!, index: 0, name: templates[0].name}
+  }
   return undefined
 }
 
@@ -56,7 +62,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
 
-  useEffect(() => setSelectedPane(initSelectedPane(templates)), [props.dashboardInfo])
+  const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
+
+  useEffect(() => {
+    tabOnChange(props.initialPaneId)
+  }, [props.dashboardInfo])
 
   /**
    * fetch template (with elements) when switching dashboard or it's tabs
@@ -67,13 +77,6 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
       props.onSelectPane(selectedPane.id)
     }
   }, [selectedPane])
-
-
-  const tabOnChange = (name: string) => setSelectedPane({
-    id: _.find(templates, {name})!.id!,
-    name,
-    index: _.findIndex(templates, t => t.name === name)
-  })
 
   const startFetchElements = () => {
     if (selectedPane)
@@ -134,7 +137,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   }
 
   const genPane = (t: DataType.Template) => {
-    if (ctRef && t.name === selectedPane?.name && template)
+    if (ctRef && t.id === selectedPane?.id && template)
       return <ContainerTemplate
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
@@ -150,17 +153,26 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   }
 
   return useMemo(
-    () => (
-      <Tabs onChange={tabOnChange} destroyInactiveTabPane>
-        {
-          templates.map(t =>
-            <Tabs.TabPane tab={t.name} key={t.name}>
-              {genPane(t)}
-            </Tabs.TabPane>
-          )
-        }
-      </Tabs>)
-    , [props.dashboardInfo, template])
+    () => {
+      return (
+        <Tabs
+          onChange={tabOnChange}
+          activeKey={selectedPane?.id}
+          destroyInactiveTabPane
+        >
+          {
+            templates.map(t =>
+              <Tabs.TabPane
+                tab={t.name}
+                key={t.id}
+              >
+                {genPane(t)}
+              </Tabs.TabPane>
+            )
+          }
+        </Tabs>
+      )
+    }, [props.dashboardInfo, template])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>

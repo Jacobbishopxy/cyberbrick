@@ -7,6 +7,7 @@
     "treemap",
     "antd",
     "coord",
-    "sider"
+    "sider",
+    "cascader"
   ]
 }

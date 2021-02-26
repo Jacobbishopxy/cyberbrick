@@ -23,8 +23,8 @@ export default () => {
     if (i) setInitialSelected(JSON.parse(i.data))
   }, [])
 
-  const selectedOnChange = (v: string[]) => {
-    ls.add(lsKey, JSON.stringify(v))
+  const selectedOnChange = (v?: string[]) => {
+    if (v) ls.add(lsKey, JSON.stringify(v))
   }
 
   const fetchCategories = () =>
