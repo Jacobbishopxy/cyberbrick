@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/20/2020
  */
 
-import {useState} from 'react'
+import {useState} from "react"
 import {Button, Select, Space} from "antd"
 import {DownloadOutlined, ExclamationCircleOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons"
 import {FormattedMessage} from "umi"
@@ -14,10 +14,10 @@ import * as DataType from "../../GalleryDataType"
 import {QueryViewer, QueryField} from "./QueryField"
 
 
-const IdViewer = (props: { visible: boolean, onClick: (value: boolean) => void }) =>
+const IdViewer = (props: {visible: boolean, onClick: (value: boolean) => void}) =>
   props.visible ?
     <Editor
-      icons={{open: <ExclamationCircleOutlined/>, close: <MinusCircleOutlined/>}}
+      icons={{open: <ExclamationCircleOutlined />, close: <MinusCircleOutlined />}}
       onChange={props.onClick}
     /> : <></>
 
@@ -47,7 +47,7 @@ export const Header = (props: HeaderProps) => {
       <SpaceBetween>
         <Space>
           <span style={{fontWeight: "bold"}}>
-            <FormattedMessage id="gallery.component.general19"/>
+            <FormattedMessage id="gallery.component.general19" />
           </span>
           <Select
             style={{width: 200}}
@@ -62,7 +62,7 @@ export const Header = (props: HeaderProps) => {
             }
           </Select>
           <div>
-            <IdViewer visible={!!selectedDb} onClick={setIdVisible}/>
+            <IdViewer visible={!!selectedDb} onClick={setIdVisible} />
             {idVisible ? <span>ID: {selectedDb}</span> : <></>}
           </div>
         </Space>
@@ -71,21 +71,21 @@ export const Header = (props: HeaderProps) => {
           <Button
             type="primary"
             size="small"
-            icon={<UploadOutlined/>}
+            icon={<UploadOutlined />}
             disabled={!selectedDb}
             onClick={() => setUploadVisible(true)}
           >
-            <FormattedMessage id="gallery.component.general26"/>
+            <FormattedMessage id="gallery.component.general26" />
           </Button>
           <Button
             type="primary"
             size="small"
-            icon={<DownloadOutlined/>}
+            icon={<DownloadOutlined />}
             disabled
           >
-            <FormattedMessage id="gallery.component.general27"/>
+            <FormattedMessage id="gallery.component.general27" />
           </Button>
-          <QueryViewer onClick={setQueryVisible}/>
+          <QueryViewer onClick={setQueryVisible} />
         </Space>
       </SpaceBetween>
 

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {forwardRef, useImperativeHandle, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useState} from "react"
 
 import {ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField} from "./data"
 import styles from "./Common.less"

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/13/2020.
  */
 
-import {useState} from 'react'
+import {useState} from "react"
 import {Checkbox, DatePicker, Modal, Select, Space} from "antd"
 import {FormattedMessage, useIntl} from "umi"
 import moment from "moment"

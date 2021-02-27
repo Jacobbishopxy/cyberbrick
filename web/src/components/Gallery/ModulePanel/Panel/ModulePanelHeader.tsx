@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState} from "react"
 import {Button, Col, Input, message, Row} from "antd"
 import {FormattedMessage} from "umi"
 

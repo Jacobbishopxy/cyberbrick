@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/20/2020
  */
 
-import React, {useState} from 'react'
+import React, {useState} from "react"
 import {Button, Dropdown, Input, List, Menu, Modal, Space} from "antd"
 import {DeleteOutlined, EditOutlined, ExclamationCircleOutlined, ReadOutlined, SearchOutlined} from "@ant-design/icons"
 import {FormattedMessage, useIntl} from "umi"

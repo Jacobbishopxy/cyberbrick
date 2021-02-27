@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react"
 import {ProFormSelect} from "@ant-design/pro-form"
 import {Button, Form, Input, Radio, Select, Space} from "antd"
 import {DeleteTwoTone, PlusOutlined} from '@ant-design/icons'

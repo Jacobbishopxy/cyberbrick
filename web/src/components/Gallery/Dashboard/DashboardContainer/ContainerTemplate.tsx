@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react'
+import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from "react"
 import {message} from "antd"
 import _ from "lodash"
 import RGL, {Layout, WidthProvider} from "react-grid-layout"

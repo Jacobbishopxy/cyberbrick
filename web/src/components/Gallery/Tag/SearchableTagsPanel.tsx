@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/15/2020
  */
 
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from "react"
 import {Button, Divider, Space, Tag, Tooltip} from "antd"
 
 import {GenericDataInput, SelectableTagsRef} from "./data"

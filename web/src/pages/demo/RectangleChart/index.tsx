@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/10/2020.
  */
 
-import {useState, useRef, useLayoutEffect} from 'react'
+import {useState, useRef, useLayoutEffect} from "react"
 import {EChartOption} from "echarts"
 import ReactEcharts from "echarts-for-react"
 

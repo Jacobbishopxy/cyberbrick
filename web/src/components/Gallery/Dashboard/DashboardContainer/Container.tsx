@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react'
-import {Tabs} from 'antd'
+import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react"
+import {Tabs} from "antd"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"

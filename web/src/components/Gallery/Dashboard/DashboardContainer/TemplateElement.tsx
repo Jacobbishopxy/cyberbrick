@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from "react"
 
 import * as DataType from "../../GalleryDataType"
 import {ModulePanel} from "../../ModulePanel/Panel"

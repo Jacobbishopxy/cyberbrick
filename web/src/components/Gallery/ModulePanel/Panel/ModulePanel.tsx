@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from "react"
 import {Modal} from "antd"
 import {ExclamationCircleOutlined} from '@ant-design/icons'
 import {useIntl} from "umi"

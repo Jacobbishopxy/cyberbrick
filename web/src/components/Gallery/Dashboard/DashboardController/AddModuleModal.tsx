@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import {useState} from 'react'
+import {useState} from "react"
 import {Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip} from "antd"
 import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
 import {FormattedMessage} from "umi"

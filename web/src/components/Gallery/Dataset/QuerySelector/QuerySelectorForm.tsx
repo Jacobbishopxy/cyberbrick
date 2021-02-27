@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 11/26/2020
  */
 
-import React, {useRef} from 'react'
+import React, {useRef} from "react"
 import ProForm from "@ant-design/pro-form"
 
 import {QueryConditionFormItems, BaseFormItemsRef} from "./QueryConditionFormItems"

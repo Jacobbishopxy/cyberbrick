@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from "react"
 import {message} from "antd"
 import _ from "lodash"
 

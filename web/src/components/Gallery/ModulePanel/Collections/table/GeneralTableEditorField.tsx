@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/30/2020
  */
 
-import {useState} from 'react'
+import {useState} from "react"
 import {Button, message, Modal} from "antd"
 import {ProFormCheckbox, ProFormRadio, StepsForm} from "@ant-design/pro-form"
 import {FormattedMessage, useIntl} from "umi"
