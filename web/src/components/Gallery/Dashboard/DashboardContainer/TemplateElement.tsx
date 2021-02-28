@@ -62,8 +62,10 @@ export const TemplateElement =
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
+    const attachId = () => eleId ? {id: eleId} : {}
+
     return (
-      <div style={{height: "100%"}} ref={mpRef}>
+      <div style={{height: "100%"}} ref={mpRef} {...attachId()}>
         <ModulePanel
           headName={props.element.name}
           timeSeries={props.timeSeries}
