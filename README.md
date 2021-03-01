@@ -10,7 +10,7 @@
 
 4. [Start Project](#Start-Project)
 
-5. [Project Structure](#Porject-Sturcture)
+5. [Project Structure](#Project-Sturcture)
 
 6. [Details](#Details)
 

@@ -3,9 +3,10 @@
  */
 
 import {useLocation} from "react-router-dom"
+// import {Button} from "antd"
 
-const useQuery = () =>
-  new URLSearchParams(useLocation().search)
+
+const useQuery = () => new URLSearchParams(useLocation().search)
 
 
 export default () => {
@@ -13,7 +14,9 @@ export default () => {
   const query = useQuery()
 
   return (
-    <>{query.get("name")}</>
+    <>
+      {query.get("name")}
+    </>
   )
 }
 

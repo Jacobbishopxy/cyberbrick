@@ -12,7 +12,7 @@ import {ContainerTemplate, ContainerTemplateRef} from "./ContainerTemplate"
 
 export interface ContainerProps {
   dashboardInfo: DataType.Dashboard
-  initialPaneId?: string | undefined
+  initialSelected?: string[] | undefined
   onSelectPane: (templateId: string) => void
   fetchElements: (templateId: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
@@ -65,7 +65,9 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
   useEffect(() => {
-    tabOnChange(props.initialPaneId)
+    if (props.initialSelected && props.initialSelected?.length >= 2) {
+      tabOnChange(props.initialSelected[2])
+    }
   }, [props.dashboardInfo])
 
   /**
@@ -139,6 +141,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const genPane = (t: DataType.Template) => {
     if (ctRef && t.id === selectedPane?.id && template)
       return <ContainerTemplate
+        parentInfo={props.initialSelected}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}

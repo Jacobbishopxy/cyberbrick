@@ -19,6 +19,8 @@ import styles from "./Common.less"
 
 
 export interface ModulePanelProps {
+  parentInfo?: string[] | undefined
+  eleId?: string
   headName: string
   timeSeries?: boolean
   elementType: DataType.ElementType
@@ -66,7 +68,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const confirmDelete = () =>
     Modal.confirm({
       title: intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel1"}),
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       okType: 'danger',
       onOk: () => props.onRemove()
     })
@@ -145,15 +147,25 @@ export const ModulePanel = (props: ModulePanelProps) => {
     return <></>
   }, [content, props.contentHeight])
 
-  const genFooter = useMemo(() =>
-    <ModulePanelFooter
-      type={props.elementType}
-      id={content ? content.id : undefined}
-      {...footerDate()}
-    />, [content])
+  const genFooter = useMemo(() => {
+    const ei = props.eleId ? [props.eleId] : []
+    const pi = props.parentInfo ? [...props.parentInfo, ...ei] : undefined
 
+    return (
+      <ModulePanelFooter
+        parentInfo={pi}
+        type={props.elementType}
+        id={content ? content.id : undefined}
+        {...footerDate()}
+      />
+    )
+  }, [content])
+
+  const attachId = () => props.eleId ? {id: props.eleId} : {}
+
+  // todo: parentInfo + eleId to `Footer`, and make it copyable to clipboard
   return (
-    <div className={styles.modulePanel}>
+    <div className={styles.modulePanel} {...attachId()}>
       {genHeader}
       {genContext}
       {genFooter}

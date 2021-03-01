@@ -191,7 +191,7 @@ export const Dashboard = (props: DashboardProps) => {
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
       dashboardInfo={selectedDashboard}
-      initialPaneId={props.initialSelected ? props.initialSelected[2] : undefined}
+      initialSelected={props.initialSelected}
       onSelectPane={setSelectedTemplate}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}

@@ -25,6 +25,10 @@ export class Category {
   @PrimaryColumn("varchar")
   name!: string
 
+  // todo: different type (EnumType) of category, for example `Overview`/ `Dashboard`...
+  // @Column("varchar", {nullable: true})
+  // type!: string
+
   @Column("text", {nullable: true})
   description?: string
 
