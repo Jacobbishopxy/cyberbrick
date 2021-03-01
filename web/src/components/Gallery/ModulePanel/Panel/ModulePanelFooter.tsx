@@ -5,8 +5,7 @@
 import {useState} from "react"
 import {message, Space} from "antd"
 import {CopyOutlined, MinusOutlined, PlusOutlined} from '@ant-design/icons'
-import {CopyToClipboard} from "react-copy-to-clipboard"
-import {useIntl} from "umi"
+import {useIntl, useModel} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -22,6 +21,7 @@ const IdViewer = (props: {onClick: (value: boolean) => void}) =>
 
 export interface ModulePanelFooterProps {
   type: DataType.ElementType
+  eleId?: string | undefined
   parentInfo?: string[] | undefined
   id?: string
   date?: string
@@ -30,12 +30,17 @@ export interface ModulePanelFooterProps {
 export const ModulePanelFooter = (props: ModulePanelFooterProps) => {
   const intl = useIntl()
   const [viewId, setViewId] = useState<boolean>(false)
+  const {copy} = useModel("tempCopy", (t) => ({
+    copy: t.copy
+  }))
 
   const onCopyClick = () => {
-    if (props.parentInfo)
+    if (props.parentInfo && props.eleId) {
+      copy(JSON.stringify({info: props.parentInfo, eleId: props.eleId}))
       message.success(intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel-footer1"}))
-    else
+    } else {
       message.warn(intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel-footer2"}))
+    }
   }
 
   const showIdAndType = () =>
@@ -44,12 +49,10 @@ export const ModulePanelFooter = (props: ModulePanelFooterProps) => {
       {
         viewId ?
           <Space size={10}>
-            <CopyToClipboard
-              text={props.parentInfo ? JSON.stringify(props.parentInfo) : ""}
-              onCopy={onCopyClick}
-            >
-              <CopyOutlined style={{color: "#1890ff"}} />
-            </CopyToClipboard>
+            <CopyOutlined
+              onClick={onCopyClick}
+              style={{color: "#1890ff"}}
+            />
 
             <Space>
               <span>Type: {props.type}</span>

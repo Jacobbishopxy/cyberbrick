@@ -25,7 +25,9 @@ export default () => {
     const initialValue = query.get("anchor")
     if (initialValue) {
       console.log(initialValue)
-      setInitialSelected(JSON.parse(initialValue))
+      const {info, eleId} = JSON.parse(initialValue)
+      // todo: `eleId` redirection
+      setInitialSelected(info)
     } else {
       const i = ls.get(lsKey)
       if (i) setInitialSelected(JSON.parse(i.data))

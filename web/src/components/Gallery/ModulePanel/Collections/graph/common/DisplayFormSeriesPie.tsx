@@ -24,10 +24,8 @@ export interface DisplayFormSeriesPieProps {
   columns?: string[]
 }
 
-export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) => {
-
-  // todo: Form matches `SeriesPieChartConfig`
-  return props.columns ? (
+export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) =>
+  props.columns ? (
     <>
       <ProForm.Group
         title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form8" />}
@@ -50,5 +48,4 @@ export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) => {
       <DisplayFormThemeSelector />
     </>
   ) : <></>
-}
 

@@ -147,22 +147,14 @@ export const ModulePanel = (props: ModulePanelProps) => {
     return <></>
   }, [content, props.contentHeight])
 
-  const genFooter = useMemo(() => {
-    const ei = props.eleId ? [props.eleId] : []
-    const pi = props.parentInfo ? [...props.parentInfo, ...ei] : undefined
-
-    // todo: bug
-    console.log("pi: ", pi)
-
-    return (
-      <ModulePanelFooter
-        parentInfo={pi}
-        type={props.elementType}
-        id={content ? content.id : undefined}
-        {...footerDate()}
-      />
-    )
-  }, [content])
+  const genFooter = useMemo(() =>
+    <ModulePanelFooter
+      eleId={props.eleId}
+      parentInfo={props.parentInfo}
+      type={props.elementType}
+      id={content ? content.id : undefined}
+      {...footerDate()}
+    />, [content])
 
   const attachId = () => props.eleId ? {id: props.eleId} : {}
 
