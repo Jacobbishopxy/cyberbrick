@@ -24,7 +24,6 @@ export default () => {
   useEffect(() => {
     const initialValue = query.get("anchor")
     if (initialValue) {
-      console.log(initialValue)
       const {info, eleId} = JSON.parse(initialValue)
       // todo: `eleId` redirection
       setInitialSelected(info)

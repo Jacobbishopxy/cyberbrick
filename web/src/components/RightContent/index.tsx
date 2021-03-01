@@ -49,7 +49,7 @@ const GlobalHeaderRight = () => {
           },
         ]}
         // onSearch={value => {
-        //   //console.log('input', value);
+        //   // search handler
         // }}
       />
       <Tooltip title="使用文档">

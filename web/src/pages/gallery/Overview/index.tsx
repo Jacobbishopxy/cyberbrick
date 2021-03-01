@@ -34,8 +34,8 @@ export default () => {
       <Controller
         categoryNames={categoryNames}
         categoryOnSelect={categoryOnSelect}
-        markOnSelect={e => console.log(e)}
-        onEdit={e => console.log(e)}
+        markOnSelect={e => {}}
+        onEdit={e => {}}
       />
     </>
   )
