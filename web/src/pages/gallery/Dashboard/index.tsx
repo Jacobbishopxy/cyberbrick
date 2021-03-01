@@ -3,6 +3,7 @@
  */
 
 import {useEffect, useState} from "react"
+import {useLocation} from "react-router-dom"
 
 import {Dashboard} from "@/components/Gallery/Dashboard"
 import {GalleryDataType} from "@/components/Gallery"
@@ -13,14 +14,22 @@ import {LocalStorageHelper} from "@/utils/localStorageHelper"
 
 const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "week"]})
 const lsKey = "selected"
+const useQuery = () => new URLSearchParams(useLocation().search)
 
 export default () => {
 
   const [initialSelected, setInitialSelected] = useState<string[]>()
+  const query = useQuery()
 
   useEffect(() => {
-    const i = ls.get(lsKey)
-    if (i) setInitialSelected(JSON.parse(i.data))
+    const initialValue = query.get("anchor")
+    if (initialValue) {
+      console.log(initialValue)
+      setInitialSelected(JSON.parse(initialValue))
+    } else {
+      const i = ls.get(lsKey)
+      if (i) setInitialSelected(JSON.parse(i.data))
+    }
   }, [])
 
   const selectedOnChange = (v?: string[]) => {

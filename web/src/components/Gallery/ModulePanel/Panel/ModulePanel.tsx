@@ -151,6 +151,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
     const ei = props.eleId ? [props.eleId] : []
     const pi = props.parentInfo ? [...props.parentInfo, ...ei] : undefined
 
+    // todo: bug
+    console.log("pi: ", pi)
+
     return (
       <ModulePanelFooter
         parentInfo={pi}
