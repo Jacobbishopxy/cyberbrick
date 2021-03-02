@@ -50,7 +50,6 @@ const genDataGrid = (ele: DataType.Element) =>
 
 
 export interface ContainerTemplateProps {
-  parentInfo?: string[] | undefined
   elements: Elements
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -135,7 +134,6 @@ export const ContainerTemplate =
           elements.map((ele, i) =>
             <div key={ele.name} data-grid={genDataGrid(ele)}>
               <TemplateElement
-                parentInfo={props.parentInfo}
                 timeSeries={ele.timeSeries}
                 editable={editable}
                 element={ele}

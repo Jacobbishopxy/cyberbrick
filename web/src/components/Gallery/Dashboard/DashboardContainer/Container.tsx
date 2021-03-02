@@ -141,7 +141,6 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   const genPane = (t: DataType.Template) => {
     if (ctRef && t.id === selectedPane?.id && template)
       return <ContainerTemplate
-        parentInfo={props.initialSelected}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}

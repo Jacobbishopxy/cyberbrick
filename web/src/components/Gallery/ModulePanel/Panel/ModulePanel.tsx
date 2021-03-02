@@ -19,7 +19,6 @@ import styles from "./Common.less"
 
 
 export interface ModulePanelProps {
-  parentInfo?: string[] | undefined
   eleId?: string
   headName: string
   timeSeries?: boolean
@@ -150,7 +149,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const genFooter = useMemo(() =>
     <ModulePanelFooter
       eleId={props.eleId}
-      parentInfo={props.parentInfo}
       type={props.elementType}
       id={content ? content.id : undefined}
       {...footerDate()}
@@ -158,7 +156,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const attachId = () => props.eleId ? {id: props.eleId} : {}
 
-  // todo: parentInfo + eleId to `Footer`, and make it copyable to clipboard
   return (
     <div className={styles.modulePanel} {...attachId()}>
       {genHeader}

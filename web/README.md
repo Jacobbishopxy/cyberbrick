@@ -11,4 +11,3 @@ For some detailed project components.
 ### Gallery
 
 ![Data Structure](public/document/GalleryDataStructure.svg)
-

@@ -61,6 +61,7 @@ export default {
   'menu.demo.rectangle-chart': 'Rec Chart',
   'menu.demo.charts': 'Charts',
   'menu.demo.grid-layout': 'Grid Layout',
+  'menu.demo.redirect-test': 'Redirect Test',
   'menu.demo.module-test': 'Module Test',
   'menu.demo.component-test': 'Component Test',
 

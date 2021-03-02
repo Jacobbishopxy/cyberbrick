@@ -5,9 +5,11 @@
 import {useState, useCallback} from "react"
 
 export default () => {
-  const [text, setText] = useState<string | undefined>()
+  const [parentInfo, setParentInfo] = useState<string | undefined>()
+  const [redirectInfo, setRedirectInfo] = useState<string | undefined>()
 
-  const copy = useCallback((t: string) => setText(t), [])
+  const copyParentInfo = useCallback((t: string) => setParentInfo(t), [])
+  const copyRedirectInfo = useCallback((t: string) => setRedirectInfo(t), [])
 
-  return {text, copy}
+  return {parentInfo, redirectInfo, copyParentInfo, copyRedirectInfo}
 }

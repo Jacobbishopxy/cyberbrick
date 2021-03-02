@@ -4,6 +4,7 @@
 
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import {message} from "antd"
+import {useModel} from "umi"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
@@ -61,14 +62,17 @@ export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
 
   const [categories, setCategories] = useState<DataType.Category[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>()
+  const [selectedCategory, setSelectedCategoryName] = useState<string>()
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
-  const [selectedTemplate, setSelectedTemplate] = useState<string>()
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
   const [refresh, setRefresh] = useState<number>(0)
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [edit, setEdit] = useState<boolean>(false)
   const [newestContent, setNewestContent] = useState<DataType.Content>()
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
+  const {copyParentInfo} = useModel("tempCopy", (t) => ({
+    copyParentInfo: t.copyParentInfo
+  }))
 
   useEffect(() => {
     props.fetchCategories().then(res => setCategories(res))
@@ -86,13 +90,17 @@ export const Dashboard = (props: DashboardProps) => {
   }, [newestContent])
 
   useEffect(() => {
-    if (props.selectedOnChange && selectedCategory && selectedDashboard && selectedTemplate)
-      props.selectedOnChange([selectedCategory, selectedDashboard.id!, selectedTemplate])
-  }, [selectedTemplate])
+    if (props.selectedOnChange && selectedCategory && selectedDashboard && selectedTemplateId) {
+      const pi = [selectedCategory, selectedDashboard.id!, selectedTemplateId]
+      props.selectedOnChange(pi)
+      copyParentInfo(JSON.stringify(pi))
+      console.log("copyParentInfo", pi)
+    }
+  }, [selectedTemplateId])
 
   const categoryOnSelect = async (name: string, isCopy: boolean = false) => {
     if (!isCopy) {
-      setSelectedCategory(name)
+      setSelectedCategoryName(name)
       setCanEdit(false)
     }
     return props.fetchCategory(name)
@@ -123,10 +131,10 @@ export const Dashboard = (props: DashboardProps) => {
   }
 
   const onCopyTemplate = async (originTemplateId: string) => {
-    if (selectedDashboard && selectedTemplate) {
+    if (selectedDashboard && selectedTemplateId) {
       props.copyTemplate({
         originTemplateId,
-        targetTemplateId: selectedTemplate
+        targetTemplateId: selectedTemplateId
       }).then(() => {
         message.success("Copy template succeeded!")
         if (cRef.current) cRef.current.startFetchElements()
@@ -192,7 +200,7 @@ export const Dashboard = (props: DashboardProps) => {
     <Container
       dashboardInfo={selectedDashboard}
       initialSelected={props.initialSelected}
-      onSelectPane={setSelectedTemplate}
+      onSelectPane={setSelectedTemplateId}
       fetchElements={fetchElements}
       fetchElementContentFn={fetchElementContent}
       fetchElementContentDatesFn={fetchElementContentDates}

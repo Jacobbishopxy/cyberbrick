@@ -35,6 +35,11 @@ export const demoRoute = (env?: string) => env === "dev" ?
           component: './demo/GridLayout',
         },
         {
+          name: 'redirect-test',
+          path: '/demo/redirect-test',
+          component: './demo/RedirectTest',
+        },
+        {
           name: 'module-test',
           path: '/demo/module-test',
           component: './demo/GalleryModuleTest',

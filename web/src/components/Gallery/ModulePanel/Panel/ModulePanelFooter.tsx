@@ -22,7 +22,6 @@ const IdViewer = (props: {onClick: (value: boolean) => void}) =>
 export interface ModulePanelFooterProps {
   type: DataType.ElementType
   eleId?: string | undefined
-  parentInfo?: string[] | undefined
   id?: string
   date?: string
 }
@@ -30,13 +29,16 @@ export interface ModulePanelFooterProps {
 export const ModulePanelFooter = (props: ModulePanelFooterProps) => {
   const intl = useIntl()
   const [viewId, setViewId] = useState<boolean>(false)
-  const {copy} = useModel("tempCopy", (t) => ({
-    copy: t.copy
+  const {copyRedirectInfo} = useModel("tempCopy", (t) => ({
+    copyRedirectInfo: t.copyRedirectInfo,
   }))
+  const {parentInfo} = useModel("tempCopy")
 
   const onCopyClick = () => {
-    if (props.parentInfo && props.eleId) {
-      copy(JSON.stringify({info: props.parentInfo, eleId: props.eleId}))
+    if (props.eleId) {
+      const info = {parentInfo, eleId: props.eleId}
+      console.log("onCopyClick", info)
+      copyRedirectInfo(JSON.stringify(info))
       message.success(intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel-footer1"}))
     } else {
       message.warn(intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel-footer2"}))
