@@ -8,6 +8,7 @@ import * as DataType from "../../GalleryDataType"
 import {ModulePanel} from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
+  parentInfo: string[]
   timeSeries?: boolean
   editable: boolean
   element: DataType.Element
@@ -65,6 +66,7 @@ export const TemplateElement =
     return (
       <div style={{height: "100%"}} ref={mpRef} >
         <ModulePanel
+          parentInfo={props.parentInfo}
           eleId={eleId}
           headName={props.element.name}
           timeSeries={props.timeSeries}

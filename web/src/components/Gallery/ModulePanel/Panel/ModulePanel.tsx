@@ -19,6 +19,7 @@ import styles from "./Common.less"
 
 
 export interface ModulePanelProps {
+  parentInfo: string[]
   eleId?: string
   headName: string
   timeSeries?: boolean
@@ -148,6 +149,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
+      parentInfo={props.parentInfo}
       eleId={props.eleId}
       type={props.elementType}
       id={content ? content.id : undefined}

@@ -172,8 +172,8 @@ export default {
 
   "gallery.component.module-panel.panel.header-controller1": "选择一个日期",
   "gallery.component.module-panel.panel.header-controller2": "创建新内容",
-  "gallery.component.module-panel.panel.module-panel-footer1": "拷贝成功",
-  "gallery.component.module-panel.panel.module-panel-footer2": "拷贝失败",
+  "gallery.component.module-panel.panel.module-panel-footer1": "定位成功",
+  "gallery.component.module-panel.panel.module-panel-footer2": "定位失败",
 
   "gallery.component.module-panel.panel.module-panel1": "确认删除该模块？",
   "gallery.component.module-panel.panel.module-panel-header1": "请输入标题",

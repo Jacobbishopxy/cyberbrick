@@ -4,7 +4,6 @@
 
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import {message} from "antd"
-import {useModel} from "umi"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
@@ -62,7 +61,7 @@ export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
 
   const [categories, setCategories] = useState<DataType.Category[]>([])
-  const [selectedCategory, setSelectedCategoryName] = useState<string>()
+  const [selectedCategoryName, setSelectedCategoryName] = useState<string>()
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
   const [refresh, setRefresh] = useState<number>(0)
@@ -70,9 +69,8 @@ export const Dashboard = (props: DashboardProps) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [newestContent, setNewestContent] = useState<DataType.Content>()
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
-  const {copyParentInfo} = useModel("tempCopy", (t) => ({
-    copyParentInfo: t.copyParentInfo
-  }))
+
+  const [selected, setSelected] = useState<string[]>()
 
   useEffect(() => {
     props.fetchCategories().then(res => setCategories(res))
@@ -90,11 +88,10 @@ export const Dashboard = (props: DashboardProps) => {
   }, [newestContent])
 
   useEffect(() => {
-    if (props.selectedOnChange && selectedCategory && selectedDashboard && selectedTemplateId) {
-      const pi = [selectedCategory, selectedDashboard.id!, selectedTemplateId]
-      props.selectedOnChange(pi)
-      copyParentInfo(JSON.stringify(pi))
-      console.log("copyParentInfo", pi)
+    if (props.selectedOnChange && selected && selectedTemplateId) {
+      const t = [...selected, selectedTemplateId]
+      console.log(t)
+      props.selectedOnChange(t)
     }
   }, [selectedTemplateId])
 
@@ -190,6 +187,7 @@ export const Dashboard = (props: DashboardProps) => {
     categories={categories}
     categoryOnSelect={categoryOnSelect}
     dashboardOnSelect={dashboardOnSelect}
+    onSelectChange={setSelected}
     onAddModule={onAddModule}
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
@@ -198,6 +196,7 @@ export const Dashboard = (props: DashboardProps) => {
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container
+      selectedCategoryName={selectedCategoryName!}
       dashboardInfo={selectedDashboard}
       initialSelected={props.initialSelected}
       onSelectPane={setSelectedTemplateId}

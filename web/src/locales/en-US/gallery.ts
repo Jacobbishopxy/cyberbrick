@@ -172,8 +172,8 @@ export default {
 
   "gallery.component.module-panel.panel.header-controller1": "Select a date",
   "gallery.component.module-panel.panel.header-controller2": "Create a new content",
-  "gallery.component.module-panel.panel.module-panel-footer1": "Successfully copy anchor to clipboard",
-  "gallery.component.module-panel.panel.module-panel-footer2": "Failed to copy",
+  "gallery.component.module-panel.panel.module-panel-footer1": "Successfully save anchor",
+  "gallery.component.module-panel.panel.module-panel-footer2": "Failed to save anchor",
 
   "gallery.component.module-panel.panel.module-panel1": "Are you sure to delete this module?",
   "gallery.component.module-panel.panel.module-panel-header1": "please enter the title",

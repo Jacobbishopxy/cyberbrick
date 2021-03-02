@@ -26,7 +26,7 @@ export default () => {
     if (initialValue) {
       const {parentInfo, eleId} = JSON.parse(initialValue)
       // todo: `eleId` redirection
-      setInitialSelected(JSON.parse(parentInfo))
+      setInitialSelected(parentInfo)
     } else {
       const i = ls.get(lsKey)
       if (i) setInitialSelected(JSON.parse(i.data))

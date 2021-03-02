@@ -11,8 +11,10 @@ import {ContainerTemplate, ContainerTemplateRef} from "./ContainerTemplate"
 
 
 export interface ContainerProps {
-  dashboardInfo: DataType.Dashboard
   initialSelected?: string[] | undefined
+
+  selectedCategoryName: string
+  dashboardInfo: DataType.Dashboard
   onSelectPane: (templateId: string) => void
   fetchElements: (templateId: string) => Promise<DataType.Template>
   fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
@@ -139,8 +141,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   }
 
   const genPane = (t: DataType.Template) => {
-    if (ctRef && t.id === selectedPane?.id && template)
+    if (ctRef && t.id === selectedPane?.id && template) {
+      const parentInfo = [props.selectedCategoryName, props.dashboardInfo.id!, t.id!]
+
       return <ContainerTemplate
+        parentInfo={parentInfo}
         elements={template.elements!}
         elementFetchContentFn={props.fetchElementContentFn}
         elementFetchContentDatesFn={props.fetchElementContentDatesFn}
@@ -151,6 +156,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         elementFetchQueryDataFn={props.fetchQueryDataFn}
         ref={ctRef}
       />
+    }
     return <></>
   }
 
