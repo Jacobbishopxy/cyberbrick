@@ -2,25 +2,56 @@
  * Created by Jacob Xie on 11/25/2020
  */
 
-import {useModel} from "umi"
+import ProForm from "@ant-design/pro-form"
+
+import {SelectorConditionItems} from "@/components/Gallery/Dataset/QuerySelector/SelectorConditionItems"
+
+import {QuerySelectorForm} from "@/components/Gallery/Dataset"
+import {GalleryDataType} from "@/components/Gallery"
+import * as GalleryService from "@/services/gallery"
+import * as DataType from "@/components/Gallery/GalleryDataType"
 
 
-const Link = (props: {l: string | undefined}) =>
-  props.l ?
-    <a href={props.l}>
-      {props.l}
-    </a> : <span>Null</span>
+
+const mockColOpt = [
+  {
+    label: "Sam",
+    value: "Sam",
+  },
+  {
+    label: "MZ",
+    value: "MZ",
+  },
+  {
+    label: "Jacob",
+    value: "Jacob",
+  },
+]
+
 
 export default () => {
-  const {text} = useModel("tempCopy")
+  return (
+    <ProForm onFinish={async (v) => console.log(v)}>
+      <SelectorConditionItems columnOptions={mockColOpt} />
+    </ProForm>
+  )
 
-  const genHref = () => {
-    if (text)
-      return `/gallery/dashboard?anchor=${text}`
-    return undefined
-  }
+  // const fetchStorages = () =>
+  //   GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
 
-  return <Link l={genHref()} />
+  // const fetchTableList = (id: string) =>
+  //   GalleryService.databaseListTable(id)
 
+  // const fetchTableColumns = (storageId: string, tableName: string) =>
+  //   GalleryService.databaseGetTableColumns(storageId, tableName)
+
+  // return (
+  //   <QuerySelectorForm
+  //     storagesOnFetch={fetchStorages}
+  //     storageOnSelect={fetchTableList}
+  //     tableOnSelect={fetchTableColumns}
+  //     onSubmit={v => console.log(v)}
+  //   />
+  // )
 }
 

@@ -5,7 +5,7 @@
 import React, {useRef} from "react"
 import {ModalForm} from "@ant-design/pro-form"
 
-import {QueryConditionFormItems, BaseFormItemsRef} from "./QueryConditionFormItems"
+import {SelectorAssembledItems, SelectorAssembledItemsRef} from "./SelectorAssembledItems"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
 export interface QuerySelectorModalProps {
@@ -20,7 +20,7 @@ export interface QuerySelectorModalProps {
 }
 
 export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
-  const ref = useRef<BaseFormItemsRef>(null)
+  const ref = useRef<SelectorAssembledItemsRef>(null)
 
   const onValuesChange = (value: Record<string, any>) => {
     if (ref.current) ref.current.onValuesChange(value)
@@ -36,7 +36,7 @@ export const QuerySelectorModal = (props: QuerySelectorModalProps) => {
       initialValues={props.initialValues}
       style={props.style}
     >
-      <QueryConditionFormItems
+      <SelectorAssembledItems
         initialValues={props.initialValues}
         storagesOnFetch={props.storagesOnFetch}
         storageOnSelect={props.storageOnSelect}

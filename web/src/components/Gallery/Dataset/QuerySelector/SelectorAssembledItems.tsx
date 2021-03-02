@@ -24,7 +24,7 @@ const symbolOption = [
   "<=",
 ]
 
-export interface BaseFormItemsProps {
+export interface SelectorAssembledItemsProps {
   initialValues?: Record<string, any>
   storagesOnFetch: () => Promise<DataType.StorageSimple[]>
   storageOnSelect: (id: string) => Promise<string[]>
@@ -32,12 +32,12 @@ export interface BaseFormItemsProps {
   columnsRequired?: boolean
 }
 
-export interface BaseFormItemsRef {
+export interface SelectorAssembledItemsRef {
   onValuesChange: (values: Record<string, any>) => void
 }
 
-export const QueryConditionFormItems =
-  forwardRef((props: BaseFormItemsProps, ref: React.Ref<BaseFormItemsRef>) => {
+export const SelectorAssembledItems =
+  forwardRef((props: SelectorAssembledItemsProps, ref: React.Ref<SelectorAssembledItemsRef>) => {
 
     const [storage, setStorage] = useState<string>(props.initialValues?.id || undefined)
     const [table, setTable] = useState<string>(props.initialValues?.tableName || undefined)
@@ -78,7 +78,7 @@ export const QueryConditionFormItems =
       <>
         <ProFormSelect
           name="id"
-          label={<FormattedMessage id="gallery.component.general19"/>}
+          label={<FormattedMessage id="gallery.component.general19" />}
           placeholder="Please select a database"
           rules={[{required: true, message: 'Please select your database!'}]}
           request={getStorages}
@@ -86,7 +86,7 @@ export const QueryConditionFormItems =
 
         <ProFormSelect
           name="tableName"
-          label={<FormattedMessage id="gallery.component.general36"/>}
+          label={<FormattedMessage id="gallery.component.general36" />}
           placeholder="Please select a table"
           rules={[{required: true, message: 'Please select your table!'}]}
           options={tableSelects}
@@ -94,7 +94,7 @@ export const QueryConditionFormItems =
 
         <ProFormSelect
           name="selects"
-          label={<FormattedMessage id="gallery.component.general33"/>}
+          label={<FormattedMessage id="gallery.component.general33" />}
           fieldProps={{mode: "multiple"}}
           placeholder="Please select columns"
           rules={props.columnsRequired === true ? [{required: true, message: 'Please select your columns!'}] : []}
@@ -102,8 +102,9 @@ export const QueryConditionFormItems =
         />
 
         <div style={{marginBottom: 8}}>
-          <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1"/>
+          <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1" />
         </div>
+
         <Form.List name="conditions">
           {(fields, {add, remove}) =>
             <>
@@ -113,7 +114,7 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'field']}
                     fieldKey={[field.fieldKey, 'field']}
-                    label={<FormattedMessage id="gallery.component.general33"/>}
+                    label={<FormattedMessage id="gallery.component.general33" />}
                     rules={[{required: true, message: 'Missing field'}]}
                   >
                     <Select placeholder="Column" style={{width: 200}}>
@@ -129,7 +130,7 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'symbol']}
                     fieldKey={[field.fieldKey, 'symbol']}
-                    label={<FormattedMessage id="gallery.component.general37"/>}
+                    label={<FormattedMessage id="gallery.component.general37" />}
                     rules={[{required: true, message: 'Missing symbol'}]}
                   >
                     <Select placeholder="Symbol" style={{width: 100}}>
@@ -145,10 +146,10 @@ export const QueryConditionFormItems =
                     {...field}
                     name={[field.name, 'value']}
                     fieldKey={[field.fieldKey, 'value']}
-                    label={<FormattedMessage id="gallery.component.general38"/>}
+                    label={<FormattedMessage id="gallery.component.general38" />}
                     rules={[{required: true, message: 'Missing value'}]}
                   >
-                    <Input placeholder="Value"/>
+                    <Input placeholder="Value" />
                   </Form.Item>
 
                   {
@@ -157,16 +158,16 @@ export const QueryConditionFormItems =
                         {...field}
                         name={[field.name, 'junction']}
                         fieldKey={[field.fieldKey, 'junction']}
-                        label={<FormattedMessage id="gallery.component.general39"/>}
+                        label={<FormattedMessage id="gallery.component.general39" />}
                         rules={[{required: idx !== 0, message: 'Missing junction'}]}
                         initialValue="AND"
                       >
                         <Radio.Group>
                           <Radio value="AND">
-                            <FormattedMessage id="gallery.component.general40"/>
+                            <FormattedMessage id="gallery.component.general40" />
                           </Radio>
                           <Radio value="OR">
-                            <FormattedMessage id="gallery.component.general41"/>
+                            <FormattedMessage id="gallery.component.general41" />
                           </Radio>
                         </Radio.Group>
                       </Form.Item>
@@ -183,11 +184,11 @@ export const QueryConditionFormItems =
                 <Button
                   type="dashed"
                   block
-                  icon={<PlusOutlined/>}
+                  icon={<PlusOutlined />}
                   disabled={table === undefined}
                   onClick={() => add()}
                 >
-                  <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items2"/>
+                  <FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items2" />
                 </Button>
               </Form.Item>
             </>

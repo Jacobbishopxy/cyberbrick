@@ -88,11 +88,8 @@ export const Dashboard = (props: DashboardProps) => {
   }, [newestContent])
 
   useEffect(() => {
-    if (props.selectedOnChange && selected && selectedTemplateId) {
-      const t = [...selected, selectedTemplateId]
-      console.log(t)
-      props.selectedOnChange(t)
-    }
+    if (props.selectedOnChange && selected && selectedTemplateId)
+      props.selectedOnChange([...selected, selectedTemplateId])
   }, [selectedTemplateId])
 
   const categoryOnSelect = async (name: string, isCopy: boolean = false) => {
