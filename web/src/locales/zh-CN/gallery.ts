@@ -61,6 +61,8 @@ export default {
   "gallery.component.general56": "选项",
   "gallery.component.general57": "列式表达",
   "gallery.component.general58": "行式表达",
+  "gallery.component.general59": "升序",
+  "gallery.component.general60": "降序",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -122,8 +124,8 @@ export default {
   "gallery.component.dataset-controller-sider3": "全选",
   "gallery.component.dataset-controller-sider4": "表名列表",
 
-  "gallery.component.dataset-controller-query-condition-form-items1": "条件",
-  "gallery.component.dataset-controller-query-condition-form-items2": "添加条件",
+  "gallery.component.dataset.query-selector.selector-condition-items1": "条件",
+  "gallery.component.dataset.query-selector.selector-order-items1": "排序",
 
   "gallery.component.module-panel.collections.file-view1": "新建文件管理",
   "gallery.component.module-panel.collections.file-view2": "内部跳转链接",

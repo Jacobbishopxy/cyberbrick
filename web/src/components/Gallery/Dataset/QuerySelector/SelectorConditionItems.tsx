@@ -61,7 +61,7 @@ export const SelectorConditionItems = (props: SelectorConditionItemsProps) => {
     <>
       <ProFormList
         name="conditions"
-        label={<FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1" />}
+        label={<FormattedMessage id="gallery.component.dataset.query-selector.selector-condition-items1" />}
         itemRender={({listDom, action}, {field, fields}) => {
 
           const junction = field.fieldKey !== _.last(fields)?.fieldKey ?

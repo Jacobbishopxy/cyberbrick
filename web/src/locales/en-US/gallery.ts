@@ -61,6 +61,8 @@ export default {
   "gallery.component.general56": "Option",
   "gallery.component.general57": "Vertical",
   "gallery.component.general58": "Horizontal",
+  "gallery.component.general59": "ASC",
+  "gallery.component.general60": "DESC",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
@@ -122,8 +124,8 @@ export default {
   "gallery.component.dataset-controller-sider3": "Select all",
   "gallery.component.dataset-controller-sider4": "Table list",
 
-  "gallery.component.dataset-controller-query-condition-form-items1": "Conditions",
-  "gallery.component.dataset-controller-query-condition-form-items2": "Add condition",
+  "gallery.component.dataset.query-selector.selector-condition-items1": "Conditions",
+  "gallery.component.dataset.query-selector.selector-order-items1": "Sorting",
 
   "gallery.component.module-panel.collections.file-view1": "New file view",
   "gallery.component.module-panel.collections.file-view2": "External link",

@@ -20,6 +20,12 @@ export class ReadDto {
   @ValidateNested()
   @Type(() => ConditionDto)
   conditions?: ConditionDto[]
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OrderDto)
+  ordering?: OrderDto[]
 }
 
 export enum ConditionSymbol {

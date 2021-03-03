@@ -70,7 +70,12 @@ export class StorageService {
   }
 
   read = (id: string, readDto: ReadDto) => {
-    const query = genReadStr(readDto.selects, readDto.tableName, readDto.conditions)
+    const query = genReadStr(
+      readDto.selects,
+      readDto.tableName,
+      readDto.conditions,
+      readDto.ordering
+    )
     return this.executeSql(id, query)
   }
 }
@@ -85,10 +90,12 @@ const genConditionStr = (c: ConditionDto) => {
 const genOrderingStr = (o: OrderDto) =>
   `${o.field} ${o.direction} ,`
 
-const genReadStr = (selects: string[] | undefined,
+const genReadStr = (
+  selects: string[] | undefined,
   tableName: string,
   conditions?: ConditionDto[],
-  ordering?: OrderDto[]) => {
+  ordering?: OrderDto[]
+) => {
   const selection = selects ? selects.map(i => `"${i}"`).join(", ") : "*"
   let s = `SELECT ${selection} FROM "${tableName}"`
 

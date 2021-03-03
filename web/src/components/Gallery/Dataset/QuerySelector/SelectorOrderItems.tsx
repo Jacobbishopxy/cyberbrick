@@ -4,15 +4,16 @@
 
 import {ProFormGroup, ProFormList, ProFormRadio, ProFormSelect} from "@ant-design/pro-form"
 import {SelectProps} from "antd"
+import {FormattedMessage} from "umi"
 
 
 const directionOptions = [
   {
-    label: "ASC",
+    label: <FormattedMessage id="gallery.component.general59" />,
     value: "asc"
   },
   {
-    label: "DESC",
+    label: <FormattedMessage id="gallery.component.general60" />,
     value: "desc"
   },
 ]
@@ -26,22 +27,22 @@ interface SelectorOrderItemsProps {
 export const SelectorOrderItems = (props: SelectorOrderItemsProps) =>
   <>
     <ProFormList
-      name="sorting"
-      label="Sorting"
-      creatorRecord={{dir: "asc"}}
+      name="ordering"
+      label={<FormattedMessage id="gallery.component.dataset.query-selector.selector-order-items1" />}
+      creatorRecord={{direction: "asc"}}
     >
       <ProFormGroup>
         <ProFormSelect
           rules={[{required: true}]}
           name="field"
-          label="Field"
+          label={<FormattedMessage id="gallery.component.general33" />}
           options={props.columnOptions}
         />
 
         <ProFormRadio.Group
           rules={[{required: true}]}
-          name="dir"
-          label="Direction"
+          name="direction"
+          label={<FormattedMessage id="gallery.component.general48" />}
           options={directionOptions}
         />
       </ProFormGroup>
