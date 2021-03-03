@@ -74,6 +74,7 @@
     "moment": "^2.29.1",
     "nest-router": "^1.0.9",
     "pg": "^8.5.1",
+    "rc-util": "^5.8.1",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-color": "^2.19.3",

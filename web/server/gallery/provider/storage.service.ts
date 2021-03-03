@@ -78,13 +78,13 @@ export class StorageService {
 const genConditionStr = (c: ConditionDto) => {
   const rr = `"${c.field}" ${c.symbol} '${c.value}'`
   if (c.junction)
-    return `${c.junction} ${rr}`
+    return `${rr} ${c.junction}`
   return rr
 }
 
 const genReadStr = (selects: string[] | undefined,
-                    tableName: string,
-                    conditions?: ConditionDto[]) => {
+  tableName: string,
+  conditions?: ConditionDto[]) => {
   const selection = selects ? selects.map(i => `"${i}"`).join(", ") : "*"
   let s = `SELECT ${selection} FROM "${tableName}"`
 
