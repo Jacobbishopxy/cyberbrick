@@ -9,6 +9,7 @@ import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import {SelectorConditionItems} from "./SelectorConditionItems"
+import {SelectorOrderItems} from "./SelectorOrderItems"
 
 
 type OptionType = SelectProps<any>['options']
@@ -91,6 +92,10 @@ export const SelectorAssembledItems =
         />
 
         <SelectorConditionItems
+          columnOptions={columnSelects}
+        />
+
+        <SelectorOrderItems
           columnOptions={columnSelects}
         />
       </>

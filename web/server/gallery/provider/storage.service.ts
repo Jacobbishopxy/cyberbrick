@@ -10,7 +10,7 @@ import _ from "lodash"
 import * as common from "../common"
 import * as utils from "../../utils"
 import {Storage} from "../entity"
-import {ReadDto, ConditionDto} from "../dto"
+import {ReadDto, ConditionDto, OrderDto} from "../dto"
 
 
 @Injectable()
@@ -82,9 +82,13 @@ const genConditionStr = (c: ConditionDto) => {
   return rr
 }
 
+const genOrderingStr = (o: OrderDto) =>
+  `${o.field} ${o.direction} ,`
+
 const genReadStr = (selects: string[] | undefined,
   tableName: string,
-  conditions?: ConditionDto[]) => {
+  conditions?: ConditionDto[],
+  ordering?: OrderDto[]) => {
   const selection = selects ? selects.map(i => `"${i}"`).join(", ") : "*"
   let s = `SELECT ${selection} FROM "${tableName}"`
 
@@ -92,6 +96,12 @@ const genReadStr = (selects: string[] | undefined,
     s += _.reduce(conditions, (ans: string, item: ConditionDto) => {
       return `${ans} ${genConditionStr(item)}`
     }, " WHERE ")
+  }
+  if (ordering && ordering.length !== 0) {
+    s += _.reduce(ordering, (ans: string, item: OrderDto) => {
+      return `${ans} ${genOrderingStr(item)}`
+    }, " ORDER BY ")
+    s = s.slice(0, -1)
   }
   return s
 }

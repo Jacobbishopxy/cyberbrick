@@ -4,7 +4,7 @@
 
 import {CategoryPureDto} from "./category.dto"
 import {DashboardModifyDto} from "./dashboard.dto"
-import {ConditionSymbol, ConditionDto, ReadDto} from "./read.dto"
+import {ConditionSymbol, ConditionDto, OrderDto, ReadDto} from "./read.dto"
 import {TemplateCopyElementsDto} from "./template.dto"
 
 
@@ -13,6 +13,7 @@ export {
   DashboardModifyDto,
   ConditionSymbol,
   ConditionDto,
+  OrderDto,
   ReadDto,
   TemplateCopyElementsDto,
 }

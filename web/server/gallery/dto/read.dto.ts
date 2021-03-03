@@ -52,3 +52,17 @@ export class ConditionDto {
   junction?: Junction
 }
 
+export enum Order {
+  ASC = "ASC",
+  DESC = "DESC"
+}
+export class OrderDto {
+  @IsString()
+  @IsNotEmpty()
+  field!: string
+
+  @IsEnum(Order)
+  @IsNotEmpty()
+  direction!: Order
+}
+

@@ -29,61 +29,65 @@ const junctionOptions = [
   },
 ]
 
-interface GeneralProps {
+interface SelectorConditionItemsProps {
   columnOptions?: OptionType
 }
 
-const ConditionBase = (props: GeneralProps) =>
-  <>
-    <ProFormSelect
-      rules={[{required: true}]}
-      name="field"
-      label={<FormattedMessage id="gallery.component.general33" />}
-      options={props.columnOptions}
-    />
-    <ProFormSelect
-      rules={[{required: true}]}
-      name="symbol"
-      label={<FormattedMessage id="gallery.component.general37" />}
-      valueEnum={symbolOptions}
-    />
-    <ProFormText
-      rules={[{required: true}]}
-      name="value"
-      label={<FormattedMessage id="gallery.component.general38" />}
-    />
-  </>
+export const SelectorConditionItems = (props: SelectorConditionItemsProps) => {
 
-export const SelectorConditionItems = (props: GeneralProps) =>
-  <>
-    <ProFormList
-      name="conditions"
-      label={<FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1" />}
-      itemRender={({listDom, action}, {field, fields}) => {
+  const base = (
+    <>
+      <ProFormSelect
+        rules={[{required: true}]}
+        name="field"
+        label={<FormattedMessage id="gallery.component.general33" />}
+        options={props.columnOptions}
+      />
+      <ProFormSelect
+        rules={[{required: true}]}
+        name="symbol"
+        label={<FormattedMessage id="gallery.component.general37" />}
+        valueEnum={symbolOptions}
+      />
+      <ProFormText
+        rules={[{required: true}]}
+        name="value"
+        label={<FormattedMessage id="gallery.component.general38" />}
+      />
+    </>
+  )
 
-        const junction = field.fieldKey !== _.last(fields)?.fieldKey ?
-          <ProFormRadio.Group
-            rules={[{required: true}]}
-            name="junction"
-            label={<FormattedMessage id="gallery.component.general39" />}
-            options={junctionOptions}
-          /> : <></>
+  return (
+    <>
+      <ProFormList
+        name="conditions"
+        label={<FormattedMessage id="gallery.component.dataset-controller-query-condition-form-items1" />}
+        itemRender={({listDom, action}, {field, fields}) => {
 
-        return (
-          <>
-            <Space align="end">
-              {listDom}
-              {junction}
-              {action}
-            </Space>
-            <br />
-          </>
-        )
-      }}
-    >
-      <ProFormGroup>
-        <ConditionBase columnOptions={props.columnOptions} />
-      </ProFormGroup>
-    </ProFormList>
-  </>
+          const junction = field.fieldKey !== _.last(fields)?.fieldKey ?
+            <ProFormRadio.Group
+              rules={[{required: true}]}
+              name="junction"
+              label={<FormattedMessage id="gallery.component.general39" />}
+              options={junctionOptions}
+            /> : <></>
 
+          return (
+            <>
+              <Space align="end">
+                {listDom}
+                {junction}
+                {action}
+              </Space>
+              <br />
+            </>
+          )
+        }}
+      >
+        <ProFormGroup>
+          {base}
+        </ProFormGroup>
+      </ProFormList>
+    </>
+  )
+}
