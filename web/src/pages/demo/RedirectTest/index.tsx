@@ -15,8 +15,11 @@ export default () => {
   const {redirectInfo} = useModel("tempCopy")
 
   const genHref = () => {
-    if (redirectInfo){
-      return `/gallery/dashboard?anchor=${redirectInfo}`
+    if (redirectInfo) {
+      const {parentInfo, eleId} = JSON.parse(redirectInfo)
+
+      // todo: component all loaded then call `#id` redirect
+      return `/gallery/dashboard?anchor=${JSON.stringify(parentInfo)}#${eleId}`
     }
     return undefined
   }
