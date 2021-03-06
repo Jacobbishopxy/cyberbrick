@@ -3,6 +3,7 @@
   "python.autoComplete.extraPaths": ["./server"],
   "eslint.workingDirectories": ["web"],
   "cSpell.words": [
+    "cyberbrick",
     "echarts",
     "treemap",
     "antd",
