@@ -65,12 +65,13 @@ export const dateFormat = "YYYY-MM-DD"
 export enum ElementType {
   EmbedLink = "embedLink",
   Text = "text",
-  TargetPrice = "targetPrice",
   Image = "image",
   FileOverview = "fileOverview",
   FileManager = "fileManager",
   XlsxTable = "xlsxTable",
   FlexTable = "flexTable",
+  TargetPrice = "targetPrice",
+  Universe = "universe",
   Line = "line",
   Bar = "bar",
   LineBar = "lineBar",
@@ -89,8 +90,6 @@ export const getElementType = (v: string) => {
       return ElementType.EmbedLink
     case "text":
       return ElementType.Text
-    case "targetPrice":
-      return ElementType.TargetPrice
     case "image":
       return ElementType.Image
     case "fileOverview":
@@ -101,6 +100,10 @@ export const getElementType = (v: string) => {
       return ElementType.XlsxTable
     case "flexTable":
       return ElementType.FlexTable
+    case "targetPrice":
+      return ElementType.TargetPrice
+    case "universe":
+      return ElementType.Universe
     case "line":
       return ElementType.Line
     case "bar":
@@ -127,7 +130,9 @@ export const getElementType = (v: string) => {
 }
 
 export enum StorageType {
-  PG = "postgres"
+  PG = "postgres",
+  MYSQL = "mysql",
+  MSSQL = "mssql",
 }
 
 export const getStorageType = (v: string) => {

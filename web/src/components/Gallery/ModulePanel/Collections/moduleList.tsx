@@ -23,11 +23,6 @@ export const moduleList = [
         disabled: false,
       },
       {
-        key: DataType.ElementType.TargetPrice,
-        name: <FormattedMessage id="gallery.component.type.targetPrice" />,
-        disabled: false,
-      },
-      {
         key: DataType.ElementType.Image,
         name: <FormattedMessage id="gallery.component.type.image" />,
         disabled: true,
@@ -65,6 +60,22 @@ export const moduleList = [
         disabled: false,
       },
     ],
+  },
+  {
+    key: "investment",
+    name: <FormattedMessage id="gallery.component.type.investment"/>,
+    children: [
+      {
+        key: DataType.ElementType.TargetPrice,
+        name: <FormattedMessage id="gallery.component.type.targetPrice" />,
+        disabled: false,
+      },
+      {
+        key: DataType.ElementType.Universe,
+        name: <FormattedMessage id="gallery.component.type.universe" />,
+        disabled: true,
+      },
+    ]
   },
   {
     key: 'graph',
