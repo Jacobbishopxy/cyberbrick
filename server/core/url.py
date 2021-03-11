@@ -6,8 +6,6 @@
 from typing import Optional
 from dataclasses import dataclass
 from sqlalchemy.engine.url import URL
-from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.sql import Select
 
 
 @dataclass

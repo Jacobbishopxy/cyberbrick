@@ -6,13 +6,16 @@
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.engine.base import Engine, Connection
 from sqlalchemy.sql.schema import MetaData
+from sqlalchemy.orm import sessionmaker, scoped_session, Session
 
 from ..exceptions import CyberbrickException
 
 
 class Connector(object):
 
-    def __init__(self, engine: Engine) -> None:
+    def __init__(self,
+                 engine: Engine,
+                 session_safe: bool = False) -> None:
         self._engine = engine
         try:
             self._conn = self._engine.connect()
@@ -20,6 +23,9 @@ class Connector(object):
             raise CyberbrickException(e)
         self._meta = MetaData()
         self._meta.reflect(bind=self._engine)
+
+        self._session_safe = session_safe
+        self._session = None
 
     @property
     def closed(self) -> bool:
@@ -34,8 +40,23 @@ class Connector(object):
         return self._conn
 
     @property
+    def session(self) -> Session:
+        if self._session is None:
+            self.session_init()
+        return self._session
+
+    @property
     def meta(self) -> MetaData:
         return self._meta
+
+    @property
+    def db_type(self) -> str:
+        return self._engine.get_backend_name()
+
+    def session_init(self) -> None:
+        _s = sessionmaker(bind=self._engine)
+        Session = scoped_session(_s) if self._session_safe else _s
+        self._session = Session()
 
     def close(self):
         self._conn.close()

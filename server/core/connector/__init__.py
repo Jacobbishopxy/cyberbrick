@@ -4,3 +4,4 @@
 """
 
 from .connector import Connector
+from .loader import Loader
