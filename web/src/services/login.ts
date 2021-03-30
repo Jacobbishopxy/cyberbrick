@@ -1,22 +1,39 @@
 import {request} from "umi"
 
 export interface LoginParamsType {
-  username: string;
-  password: string;
-  mobile: string;
-  captcha: string;
-  type: string;
+  username: string
+  password: string
+  mobile: string
+  captcha: string
+  type: string
 }
 
-export async function fakeAccountLogin(params: LoginParamsType) {
-  return request<API.LoginStateType>('/api/login/account', {
+export async function login(body: API.LoginParams, options?: {[key: string]: any}) {
+  return request<API.LoginResult>('/api/login/account', {
     method: 'POST',
-    data: params,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
   })
 }
 
-export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`)
+export async function getFakeCaptcha(
+  params: {
+    // query
+    /** 手机号 */
+    phone?: string
+  },
+  options?: {[key: string]: any},
+) {
+  return request<API.FakeCaptcha>('/api/login/captcha', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  })
 }
 
 export async function outLogin() {

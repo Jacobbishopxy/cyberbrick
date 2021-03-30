@@ -1,8 +1,11 @@
 import {Settings as LayoutSettings} from '@ant-design/pro-layout'
 
-export default {
+const Settings: LayoutSettings & {
+  pwa?: boolean
+  logo?: string
+} = {
   navTheme: 'light',
-  primaryColor: '#1890ff',
+  primaryColor: '#722ED1',
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: true,
@@ -16,5 +19,7 @@ export default {
   iconfontUrl: '',
   splitMenus: true,
 } as LayoutSettings & {
-  pwa: boolean;
+  pwa: boolean
 }
+
+export default Settings
