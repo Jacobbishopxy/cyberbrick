@@ -18,7 +18,7 @@ import FormData from "form-data"
 
 @Controller("upload")
 export class UploadController {
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   private serverConfig = this.configService.get("server")
 
@@ -36,12 +36,14 @@ export class UploadController {
   @Post("extract")
   @UseInterceptors(FileInterceptor("file"))
   @Bind(UploadedFile())
-  async extractFile(file: Express.Multer.File,
-                    @Query("head") head: boolean,
-                    @Query("multiSheets") multiSheets: boolean | string,
-                    @Query('numberRounding') numberRounding: number,
-                    @Query('dateFormat') dateFormat: string,
-                    @Query("transpose") transpose: boolean) {
+  async extractFile(
+    file: any,
+    @Query("head") head: boolean,
+    @Query("multiSheets") multiSheets: boolean | string,
+    @Query('numberRounding') numberRounding: number,
+    @Query('dateFormat') dateFormat: string,
+    @Query("transpose") transpose: boolean
+  ) {
     let url = `${this.uploadPath}/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`

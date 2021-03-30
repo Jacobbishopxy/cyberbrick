@@ -54,9 +54,10 @@ class Connector(object):
         return self._engine.get_backend_name()
 
     def session_init(self) -> None:
-        _s = sessionmaker(bind=self._engine)
-        Session = scoped_session(_s) if self._session_safe else _s
-        self._session = Session()
+        if self._session is None:
+            _s = sessionmaker(bind=self._engine)
+            Session = scoped_session(_s) if self._session_safe else _s
+            self._session = Session()
 
     def close(self):
         self._conn.close()
