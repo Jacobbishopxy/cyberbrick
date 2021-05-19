@@ -8,8 +8,8 @@ import io
 import pandas as pd
 import json
 from enum import Enum
-import datetime
-import numpy as np
+
+from .util import df_float_cvt, df_datetime_cvt, df_column_name_fix
 
 
 class FileType(Enum):
@@ -23,32 +23,11 @@ class FileType(Enum):
     pdf = ".pdf"
 
 
-def datetime_to_str(value, date_format: str):
-    if isinstance(value, datetime.datetime):
-        return value.strftime(date_format)
-    return value
+def _df_fix(df: pd.DataFrame, rounding: Optional[int], transpose: bool) -> pd.DataFrame:
 
+    df = df.T if transpose is True else df
 
-def df_datetime_cvt(df: pd.DataFrame, date_format: Optional[str]):
-    df = df.fillna("")
-    if date_format is None:
-        return df
-
-    return df.applymap(lambda x: datetime_to_str(x, date_format))
-
-
-def float_rounding(value, rounding: int):
-    if isinstance(value, np.float):
-        return np.round(value, rounding)
-    return value
-
-
-def df_float_cvt(df: pd.DataFrame, rounding: Optional[int]):
-    df = df.fillna("")
-    if rounding is None:
-        return df
-
-    return df.applymap(lambda x: float_rounding(x, rounding))
+    return df_column_name_fix(df_float_cvt(df, rounding))
 
 
 def extract_xlsx(file: io,
@@ -66,9 +45,9 @@ def extract_xlsx(file: io,
 
     ans = pd.read_excel(file, header=hd, sheet_name=sheet_name)
     if isinstance(ans, dict):
-        return {k: df_float_cvt(v.T if transpose is True else v, rounding) for k, v in ans.items()}
+        return {k: _df_fix(v, rounding, transpose) for k, v in ans.items()}
     else:
-        return df_float_cvt(ans.T if transpose is True else ans, rounding)
+        return _df_fix(ans, rounding, transpose)
 
 
 def xlsx_to_json(d: Union[dict, pd.DataFrame], date_format: Optional[str] = None):
@@ -87,9 +66,8 @@ def extract_csv(file: io,
     hd = 0 if param_head is True else None
 
     ans = pd.read_csv(file, header=hd)
-    ans = ans if rounding is None else ans.round(rounding)
 
-    return ans.T if transpose is True else ans
+    return _df_fix(ans, rounding, transpose)
 
 
 def csv_to_json(d: pd.DataFrame, date_format: Optional[str] = None):

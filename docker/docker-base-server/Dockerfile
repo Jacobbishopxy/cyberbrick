@@ -8,16 +8,13 @@ ARG     FUND_IMAGE_VERSION
 FROM    $FUND_IMAGE_NAME:$FUND_IMAGE_VERSION
 
 #COPY    ./resources/.condarc /root/.condarc
-RUN     conda update -n base conda && conda install anaconda
+RUN     conda update -n base -c defaults conda && conda install anaconda
 RUN     pip install -U pip
-RUN     conda create -n py38 python=3.8 -y
-SHELL   ["conda", "run", "-n", "py38", "/bin/bash", "-c"]
-RUN     conda install pyodbc psycopg2 pymongo \
-        fastparquet pyarrow python-snappy libiconv
 
 RUN     apt-get update -y && apt-get install -y \
-        libc6 libstdc++6 libkrb5-3 \
+        apt-uitls libc6 libstdc++6 libkrb5-3 \
         openssl debconf unixodbc unixodbc-dev tzdata
+RUN     apt-get install -y default-libmysqlclient-dev libpq-dev
 
 ENV     DEBIAN_FRONTEND noninteractive
 ENV     TZ=Asia/Shanghai
@@ -28,5 +25,9 @@ RUN     apt-get install -y locales && \
         echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
         locale-gen
 RUN     apt-get install -y zip unzip
-RUN     apt-get install -y libpq-dev python3-dev
+RUN     apt-get install -y python3-dev
 
+RUN     conda create -n py38 python=3.8 -y
+SHELL   ["conda", "run", "-n", "py38", "/bin/bash", "-c"]
+RUN     conda install pyodbc psycopg2 pymongo \
+        fastparquet pyarrow python-snappy libiconv
