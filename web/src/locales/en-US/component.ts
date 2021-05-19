@@ -12,6 +12,7 @@ export default {
   "component.fileUploadModal.baseModal.upload": "Upload",
   "component.fileUploadModal.baseModal.transpose": "Transpose",
   "component.fileUploadModal.baseModal.transposeText": "Horizontal displayed data needs transpose",
+  "component.fileUploadModal.baseModal.sheetPrefix": "Sheet prefix",
 
   "component.fileUploadModal.fileExtractModal.fileOptions": "File options",
   "component.fileUploadModal.fileExtractModal.multiSheets": "Multiple sheets",

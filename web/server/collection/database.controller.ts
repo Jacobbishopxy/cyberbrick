@@ -79,12 +79,14 @@ export class DatabaseController {
     @Query("id") dbId: string,
     @Query("insertOption") insertOption: string,
     @Query("tableName") tableName: string,
-    @Query("transpose") transpose: boolean
+    @Query("transpose") transpose: boolean,
+    @Query("sheetPrefix") sheetPrefix: string,
   ) {
     let url = `${this.dbPath}/insertByFile?id=${dbId}`
     if (insertOption) url += `&insertOption=${insertOption}`
     if (tableName) url += `&tableName=${tableName}`
     if (transpose) url += `&transpose=${transpose}`
+    if (sheetPrefix) url += `&sheetPrefix=${sheetPrefix}`
 
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)

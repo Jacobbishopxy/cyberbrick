@@ -10,7 +10,8 @@ import {
   Form,
   message,
   Modal,
-  Upload
+  Upload,
+  Input,
 } from "antd"
 import {UploadOutlined} from '@ant-design/icons'
 import {FormattedMessage, useIntl} from "umi"
@@ -112,29 +113,36 @@ export const BaseModal = (props: BaseModalProps) => {
         initialValues={props.initialValues}
       >
         <Divider plain orientation="left" style={{color: "lightgray"}}>
-          <FormattedMessage id="component.fileUploadModal.baseModal.file"/>
+          <FormattedMessage id="component.fileUploadModal.baseModal.file" />
         </Divider>
 
         <Form.Item
           name="file"
-          label={<FormattedMessage id="component.fileUploadModal.baseModal.file"/>}
+          label={<FormattedMessage id="component.fileUploadModal.baseModal.file" />}
           rules={[{required: true, message: "File is required"}]}
         >
           <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined/>}>
-              <FormattedMessage id="component.fileUploadModal.baseModal.upload"/>
+            <Button icon={<UploadOutlined />}>
+              <FormattedMessage id="component.fileUploadModal.baseModal.upload" />
             </Button>
           </Upload>
         </Form.Item>
 
         <Form.Item
           name="transpose"
-          label={<FormattedMessage id="component.fileUploadModal.baseModal.transpose"/>}
+          label={<FormattedMessage id="component.fileUploadModal.baseModal.transpose" />}
           valuePropName="checked"
         >
           <Checkbox>
-            <FormattedMessage id="component.fileUploadModal.baseModal.transposeText"/>
+            <FormattedMessage id="component.fileUploadModal.baseModal.transposeText" />
           </Checkbox>
+        </Form.Item>
+
+        <Form.Item
+          name="sheetPrefix"
+          label={<FormattedMessage id="component.fileUploadModal.baseModal.sheetPrefix" />}
+        >
+          <Input />
         </Form.Item>
 
         {props.children}

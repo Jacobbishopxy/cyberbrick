@@ -9,6 +9,7 @@ import pandas as pd
 import json
 
 from .abstract_controller import Controller
+from .util import attach_prefix
 from ..config import AppConfig
 from ..util import Loader
 from ..provider.file_upload import FileType, extract_xlsx, extract_csv
@@ -114,6 +115,7 @@ class DatabaseManipulationController(Controller):
             number_rounding = request.args.get("numberRounding")
             nr = None if number_rounding is None else int(number_rounding)
             tp = True if request.args.get("transpose") == "true" else False
+            sheet_prefix = request.args.get("sheetPrefix")
 
             if f is None:
                 return abort(400, "Error: `file` is required in form data")
@@ -144,6 +146,7 @@ class DatabaseManipulationController(Controller):
                         return make_response(str(e), 400)
                     for key, value in d.items():
                         try:
+                            key = attach_prefix(key, sheet_prefix)
                             loader.insert(key, value, if_exists=insert_option)
                             if insert_option == "replace":
                                 loader.add_primary_uuid_key(key, "index")

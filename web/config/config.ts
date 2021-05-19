@@ -42,7 +42,13 @@ export default defineConfig({
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    'primary-color': defaultSettings.primaryColor,
+    'primary-color': '#5fa8d3',
+    'info-color': '#5fa8d3',
+    'link-color': '#5fa8d3',
+    'success-color': '#74b384',
+    'warning-color': '#e4a554',
+    'error-color': '#f55a4e',
+    'heading-color': '#212121',
   },
   title: false,
   ignoreMomentLocale: true,
