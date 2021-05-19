@@ -30,12 +30,14 @@ export interface FileInsertOption extends Record<string, any> {
   tableName?: string
   insertOption?: string
   transpose?: boolean
+  sheetPrefix?: string
 }
 
 export const fileInsert = (option: FileInsertOption, data: any): Promise<AxiosResponse> => {
   let u = `${fileInsertUrl}?id=${option.id}&tableName=${option.tableName}&`
   if (option.insertOption) u += `insertOption=${option.insertOption}&`
   if (option.transpose) u += `transpose=${option.transpose}&`
+  if (option.sheetPrefix) u += `sheetPrefix=${option.sheetPrefix}&`
 
   return axios.post(u, data)
 }
