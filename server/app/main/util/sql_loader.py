@@ -110,7 +110,7 @@ class Loader(object):
 
         q2 = f"""
         ALTER TABLE "{table_name}"
-        ADD CONSTRAINT "{table_name}_{key_col}_primary" PRIMARY KEY ("{key_col}")      
+        ADD CONSTRAINT "{table_name}_{key_col}_primary" PRIMARY KEY ("{key_col}")
         """
         self._engine.execute(q2)
 

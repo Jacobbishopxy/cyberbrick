@@ -38,5 +38,19 @@ def df_float_cvt(df: pd.DataFrame, rounding: Optional[int]):
 
 
 def df_column_name_fix(df: pd.DataFrame):
-    df.columns = [n.strip() for n in df.columns]
+
+    name_dict = {}
+    columns = []
+
+    for i, n in enumerate(df.columns):
+        temp_n = n.strip().replace("%", "％").replace("(", "（").replace(")", "）")
+        temp_n = temp_n[:50]
+        if temp_n in name_dict.keys():
+            name_dict[temp_n] += 1
+            temp_n = f"{name_dict[temp_n]}_{temp_n}"
+        else:
+            name_dict[temp_n] = 0
+        columns.append(temp_n)
+
+    df.columns = columns
     return df

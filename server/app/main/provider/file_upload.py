@@ -26,6 +26,7 @@ class FileType(Enum):
 def _df_fix(df: pd.DataFrame, rounding: Optional[int], transpose: bool) -> pd.DataFrame:
 
     df = df.T if transpose is True else df
+    df = df.dropna(how='all', axis=1)
 
     return df_column_name_fix(df_float_cvt(df, rounding))
 
