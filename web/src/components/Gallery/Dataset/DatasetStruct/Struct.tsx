@@ -19,6 +19,7 @@ export interface StructProps {
   tableOnSelect: (id: string, tableName: string) => Promise<string[]>
   querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any>
   sqlOnExecute: (id: string, sql: string) => void
+  uploadAddress?: String
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
 
@@ -94,6 +95,7 @@ export const Struct = (props: StructProps) => {
               storages={storages}
               storageOnSelect={setStorageId}
               onExecute={sqlOnExecute}
+              uploadAddress={props.uploadAddress}
               onUpload={props.fileOnUpload}
               onUploadFinished={storageOnSelect}
             />

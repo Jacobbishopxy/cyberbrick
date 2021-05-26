@@ -29,6 +29,7 @@ export interface BaseModalProps {
   setVisible: (value: boolean) => void
   visible: boolean
   beforeUpload?: (file: File) => boolean
+  uploadAddress?: any
   upload: (option: Record<string, any>, data: any) => Promise<any>
   uploadResHandle?: (value: any) => void
 }
@@ -42,6 +43,7 @@ export const BaseModal = (props: BaseModalProps) => {
 
   const uploadProps = {
     multiple: false,
+    // action: props.uploadAddress,
     beforeUpload: (file: File) => {
       if (props.beforeUpload) {
         if (props.beforeUpload(file)) {
@@ -56,7 +58,6 @@ export const BaseModal = (props: BaseModalProps) => {
       return false
     },
     onRemove: () => setUploadFiles([]),
-    fileList: uploadFiles.map((i, j) => ({...i, name: i.name, uid: String(j)}))
   }
 
   const clearData = () => {

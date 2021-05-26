@@ -26,6 +26,7 @@ export interface HeaderProps {
   storages: DataType.StorageSimple[]
   storageOnSelect: (id: string) => void
   onExecute: (sql: string) => void
+  uploadAddress?: String
   onUpload: (option: any, data: any) => Promise<any>
   onUploadFinished: () => void
 }
@@ -98,6 +99,7 @@ export const Header = (props: HeaderProps) => {
         idList={props.storages}
         setVisible={setUploadVisible}
         visible={uploadVisible}
+        uploadAddress={props.uploadAddress}
         upload={props.onUpload}
         uploadResHandle={props.onUploadFinished}
       />

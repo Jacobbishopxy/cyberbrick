@@ -68,22 +68,22 @@ export const CreationModal = (props: CreationModalProps) => {
       >
         <Form.Item
           name="name"
-          label={<FormattedMessage id="gallery.component.general5"/>}
+          label={<FormattedMessage id="gallery.component.general5" />}
           rules={[{required: true, message: "Name is required"}]}
         >
-          <Input placeholder="Place name here"/>
+          <Input placeholder="Place name here" />
         </Form.Item>
         <Form.Item
           name="description"
-          label={<FormattedMessage id="gallery.component.general6"/>}
+          label={<FormattedMessage id="gallery.component.general6" />}
         >
-          <Input placeholder="Place description here"/>
+          <Input placeholder="Place description here" />
         </Form.Item>
         {
           props.colorSelector ?
             <Form.Item
               name="color"
-              label={<FormattedMessage id="gallery.component.general15"/>}
+              label={<FormattedMessage id="gallery.component.general15" />}
             >
               <BlockPicker
                 color={color}

@@ -14,18 +14,18 @@ import {XlsxTableConfigInterface} from "@/components/Gallery/Utils/data"
 import {ModuleGenerator} from "../../Generator/ModuleGenerator"
 import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
-import {fileExtract} from "../../../Misc/FileUploadConfig"
+import {fileExtract, fileExtractUrl} from "../../../Misc/FileUploadConfig"
 
 import "handsontable/dist/handsontable.full.css"
 
 
 const viewOptionOptions = [
   {
-    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table1"/>,
+    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table1" />,
     value: "col"
   },
   {
-    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table2"/>,
+    label: <FormattedMessage id="gallery.component.module-panel.table.xlsx-table2" />,
     value: "row"
   }
 ]
@@ -79,7 +79,7 @@ const EditorField = (props: ModuleEditorField) => {
         type="primary"
         onClick={() => setVisible(true)}
       >
-        <FormattedMessage id="gallery.component.general42"/>
+        <FormattedMessage id="gallery.component.general42" />
       </Button>
 
       <StepsForm
@@ -106,11 +106,12 @@ const EditorField = (props: ModuleEditorField) => {
             type="primary"
             onClick={() => setUploadVisible(true)}
           >
-            <FormattedMessage id="gallery.component.general26"/>
+            <FormattedMessage id="gallery.component.general26" />
           </Button>
           <FileExtractModal
             setVisible={setUploadVisible}
             visible={uploadVisible}
+            uploadAddress={fileExtractUrl}
             upload={fileExtract}
             uploadResHandle={saveContentData}
           />
@@ -122,7 +123,7 @@ const EditorField = (props: ModuleEditorField) => {
         >
           <ProFormCheckbox.Group
             name="hideOptions"
-            label={<FormattedMessage id="gallery.component.module-panel.table.xlsx-table3"/>}
+            label={<FormattedMessage id="gallery.component.module-panel.table.xlsx-table3" />}
             options={viewOptionOptions}
           />
         </StepsForm.StepForm>

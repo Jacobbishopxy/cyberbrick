@@ -14,7 +14,7 @@ import {Category, Mark, Tag} from "../entity"
 
 const categoryFullRelations = {
   relations: [
-    common.dashboard,
+    common.dashboards,
     common.marks,
     common.tags,
     common.contents

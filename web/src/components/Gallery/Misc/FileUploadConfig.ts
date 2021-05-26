@@ -4,8 +4,8 @@
 
 import axios, {AxiosResponse} from "axios"
 
-const fileExtractUrl = "/api/upload/extract"
-const fileInsertUrl = "/api/database/insertByFile"
+export const fileExtractUrl = "/api/upload/extract"
+export const fileInsertUrl = "/api/database/insertByFile"
 
 
 export interface FileExtractOption extends Record<string, any> {

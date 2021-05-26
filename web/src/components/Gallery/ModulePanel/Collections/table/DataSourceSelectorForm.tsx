@@ -10,7 +10,7 @@ import _ from "lodash"
 
 import {QuerySelectorModal} from "@/components/Gallery/Dataset"
 import {FileExtractModal} from "@/components/FileUploadModal"
-import {fileExtract} from "@/components/Gallery/Misc/FileUploadConfig"
+import {fileExtract, fileExtractUrl} from "@/components/Gallery/Misc/FileUploadConfig"
 import * as DataType from "../../../GalleryDataType"
 import {DataSelectedType} from "@/components/Gallery/Utils/data"
 
@@ -69,12 +69,13 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
             type="primary"
             onClick={() => setUploadVisible(true)}
           >
-            <FormattedMessage id="gallery.component.general26"/>
+            <FormattedMessage id="gallery.component.general26" />
           </Button>
 
           <FileExtractModal
             setVisible={setUploadVisible}
             visible={uploadVisible}
+            uploadAddress={fileExtractUrl}
             upload={fileExtract}
             uploadResHandle={saveContentData}
             multiSheetDisable
@@ -83,7 +84,7 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
       )
     return (
       <Button type="primary" disabled>
-        <FormattedMessage id="gallery.component.general26"/>
+        <FormattedMessage id="gallery.component.general26" />
       </Button>
     )
   }
@@ -92,18 +93,18 @@ export const DataSourceSelectorForm = (props: DataSourceSelectorFormProps) => {
     <Form.Item label="Data type">
       <Radio.Group onChange={e => props.dataSelected(e.target.value)}>
         <Radio value="dataset">
-          <FormattedMessage id="gallery.component.general54"/>
+          <FormattedMessage id="gallery.component.general54" />
         </Radio>
         <Radio value="file">
-          <FormattedMessage id="gallery.component.general55"/>
+          <FormattedMessage id="gallery.component.general55" />
         </Radio>
       </Radio.Group>
       <Space>
         {dataSelect()}
         {
           dataAvailable ?
-            <CheckCircleTwoTone twoToneColor="green"/> :
-            <CloseCircleTwoTone twoToneColor="red"/>
+            <CheckCircleTwoTone twoToneColor="green" /> :
+            <CloseCircleTwoTone twoToneColor="red" />
         }
       </Space>
     </Form.Item>

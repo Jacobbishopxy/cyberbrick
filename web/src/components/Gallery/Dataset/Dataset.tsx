@@ -30,6 +30,7 @@ export interface DatasetProps {
   tableOnClick: (id: string, tableName: string) => Promise<any[]>
   querySelectorOnSubmit: (id: string, value: Record<string, any>) => Promise<any[]>
   sqlOnExecute: (id: string, sql: string) => Promise<any[]>
+  uploadAddress?: String
   fileOnUpload: (option: any, data: any) => Promise<any>
 }
 
@@ -131,6 +132,7 @@ export const Dataset = (props: DatasetProps) => {
           tableOnSelect={onSelectTable}
           querySelectorOnSubmit={onQuerySelect}
           sqlOnExecute={onExecuteSql}
+          uploadAddress={props.uploadAddress}
           fileOnUpload={props.fileOnUpload}
         >
           {dom}

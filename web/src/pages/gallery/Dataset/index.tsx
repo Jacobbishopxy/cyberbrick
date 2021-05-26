@@ -4,7 +4,7 @@
 
 
 import {Dataset} from "@/components/Gallery/Dataset"
-import {fileInsert} from "@/components/Gallery/Misc/FileUploadConfig"
+import {fileInsert, fileInsertUrl} from "@/components/Gallery/Misc/FileUploadConfig"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -45,6 +45,7 @@ export default () => {
       tableOnClick={tableOnClick}
       querySelectorOnSubmit={queryOnSelect}
       sqlOnExecute={sqlOnExecute}
+      uploadAddress={fileInsertUrl}
       fileOnUpload={fileInsert}
     />
   )

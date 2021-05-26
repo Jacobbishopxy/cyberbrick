@@ -18,6 +18,7 @@ export interface FileInsertModalProps {
   idList: IdType[]
   setVisible: (value: boolean) => void
   visible: boolean
+  uploadAddress?: String
   upload: (option: Record<string, any>, data: any) => Promise<any>
   uploadResHandle?: (value: any) => void
 }
@@ -43,16 +44,17 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
       setVisible={props.setVisible}
       visible={props.visible}
       beforeUpload={beforeUpload}
+      uploadAddress={props.uploadAddress}
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
       <Divider plain orientation="left" style={{color: "lightgray"}}>
-        <FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions"/>
+        <FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions" />
       </Divider>
 
       <Form.Item
         name="id"
-        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions"/>}
+        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions" />}
       >
         <Select>
           {
@@ -67,26 +69,26 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
         isCsv ?
           <Form.Item
             name="tableName"
-            label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.tableName"/>}
+            label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.tableName" />}
             rules={[{required: true, message: "File is required"}]}
           >
-            <Input placeholder="Table name"/>
+            <Input placeholder="Table name" />
           </Form.Item> : <></>
       }
 
       <Form.Item
         name="insertOption"
-        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.insertOption"/>}
+        label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.insertOption" />}
       >
         <Radio.Group>
           <Radio value="replace">
-            <FormattedMessage id="component.fileUploadModal.fileInsertModal.replace"/>
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.replace" />
           </Radio>
           <Radio value="append">
-            <FormattedMessage id="component.fileUploadModal.fileInsertModal.append"/>
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.append" />
           </Radio>
           <Radio value="fail">
-            <FormattedMessage id="component.fileUploadModal.fileInsertModal.fail"/>
+            <FormattedMessage id="component.fileUploadModal.fileInsertModal.fail" />
           </Radio>
         </Radio.Group>
       </Form.Item>

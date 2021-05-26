@@ -17,6 +17,7 @@ import {BaseModal} from "./BaseModal"
 export interface FileExtractModalProps {
   setVisible: (value: boolean) => void
   visible: boolean
+  uploadAddress?: String
   upload: (option: Record<string, any>, data: any) => Promise<any>
   uploadResHandle: (value: any) => void
   multiSheetDisable?: boolean
@@ -29,6 +30,7 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
       initialValues={{numberRounding: 2, dateFormat: "%Y-%m-%d"}}
       setVisible={props.setVisible}
       visible={props.visible}
+      uploadAddress={props.uploadAddress}
       upload={props.upload}
       uploadResHandle={props.uploadResHandle}
     >
@@ -36,18 +38,18 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
         props.multiSheetDisable ? <></> :
           <>
             <Divider plain orientation="left" style={{color: "lightgray"}}>
-              <FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions"/>
+              <FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions" />
             </Divider>
 
             <Form.Item
               name="fileOptions"
-              label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions"/>}
+              label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.fileOptions" />}
             >
               <Checkbox.Group>
                 <Checkbox
                   value="multiSheets"
                 >
-                  <FormattedMessage id="component.fileUploadModal.fileExtractModal.multiSheets"/>
+                  <FormattedMessage id="component.fileUploadModal.fileExtractModal.multiSheets" />
                 </Checkbox>
               </Checkbox.Group>
             </Form.Item>
@@ -55,12 +57,12 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
       }
 
       <Divider plain orientation="left" style={{color: "lightgray"}}>
-        <FormattedMessage id="component.fileUploadModal.fileExtractModal.cellOptions"/>
+        <FormattedMessage id="component.fileUploadModal.fileExtractModal.cellOptions" />
       </Divider>
 
       <Form.Item
         name="numberRounding"
-        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.rounding"/>}
+        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.rounding" />}
       >
         <InputNumber
           min={0}
@@ -70,7 +72,7 @@ export const FileExtractModal = (props: FileExtractModalProps) => {
       </Form.Item>
       <Form.Item
         name="dateFormat"
-        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.dateFormat"/>}
+        label={<FormattedMessage id="component.fileUploadModal.fileExtractModal.dateFormat" />}
       >
         <Select>
           <Select.Option value="%Y">
