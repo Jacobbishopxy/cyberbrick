@@ -11,8 +11,8 @@ FROM    $FUND_IMAGE_NAME:$FUND_IMAGE_VERSION
 RUN     conda update -n base -c defaults conda && conda install anaconda
 RUN     pip install -U pip
 
-RUN     apt-get update -y && apt-get install -y \
-        apt-uitls libc6 libstdc++6 libkrb5-3 \
+RUN     apt-get update && apt-get upgrade -y && apt-get install -y \
+        apt-utils libc6 libstdc++6 libkrb5-3 \
         openssl debconf unixodbc unixodbc-dev tzdata
 RUN     apt-get install -y default-libmysqlclient-dev libpq-dev
 

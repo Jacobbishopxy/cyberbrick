@@ -27,6 +27,7 @@ def _df_fix(df: pd.DataFrame, rounding: Optional[int], transpose: bool, if_heade
 
     df = df.T if transpose is True else df
     df = df.dropna(how='all', axis=1)
+    df = df.dropna(how='all')
 
     if if_header is True:
         return df_column_name_fix(df_float_cvt(df, rounding))
