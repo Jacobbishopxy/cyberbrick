@@ -15,16 +15,17 @@ import {FileInterceptor} from "@nestjs/platform-express"
 import axios from "axios"
 import FormData from "form-data"
 
-
 @Controller("upload")
 export class UploadController {
   constructor(private configService: ConfigService) {}
 
-  private serverConfig = this.configService.get("server")
+  private getUploadPath() {
+    const serverConfig = this.configService.get("server")
 
-  private uploadPath = process.env.NODE_ENV === "production" ?
-    `http://${this.serverConfig.serverHost}:${this.serverConfig.serverPort}/api/upload` :
-    "/api/upload"
+    return process.env.NODE_ENV === "production" ?
+      `http://${serverConfig.serverHost}:${serverConfig.serverPort}/api/upload` :
+      "/api/upload"
+  }
 
   private getProxy() {
     if (process.env.NODE_ENV === "production")
@@ -44,7 +45,7 @@ export class UploadController {
     @Query('dateFormat') dateFormat: string,
     @Query("transpose") transpose: boolean
   ) {
-    let url = `${this.uploadPath}/extract?head=${head}`
+    let url = `${this.getUploadPath()}/extract?head=${head}`
     if (multiSheets) url += `&multiSheets=${multiSheets}`
     if (numberRounding) url += `&numberRounding=${numberRounding}`
     if (dateFormat) url += `&dateFormat=${dateFormat}`

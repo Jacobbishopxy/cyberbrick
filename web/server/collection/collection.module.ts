@@ -17,7 +17,7 @@ import {FileCyberbrickMiddleware} from "./fileCyberbrick.middleware"
 @Module({
   providers: [
     FileManagerService,
-    CollectionService
+    CollectionService,
   ],
   controllers: [
     UploadController,

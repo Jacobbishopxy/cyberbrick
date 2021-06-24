@@ -34,11 +34,11 @@ export interface SelectorPanelProps {
 
 export const SelectorPanel = (props: SelectorPanelProps) => {
 
-  const [value, setValue] = useState<string[] | undefined>(props.initValue)
+  const [initValue, setInitValue] = useState<string[] | undefined>(props.initValue)
   const [options, setOptions] = useState<CascaderOptionType[]>()
   const [selected, setSelected] = useState<string>()
 
-  useEffect(() => setValue(props.initValue), [props.initValue])
+  useEffect(() => setInitValue(props.initValue), [props.initValue])
 
   useEffect(() => {
     if (props.onSelectFinish && selected) props.onSelectFinish(selected)
@@ -57,7 +57,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
   const onChange = (value: CascaderValueType) => {
     const v = value as string[]
-    setValue(v)
+    setInitValue(v)
     if (props.onChange) props.onChange(v)
     if (props.onSelectFinish) {
       if (props.dashboardOnSelect)
@@ -92,7 +92,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
   const enhanceOptions = async (opt: CascaderOptionType[]) => {
     if (props.isMainController) {
-      const v = value ? value[0] : undefined
+      const v = initValue ? initValue[0] : undefined
       const d = await setOptionsLevel2(v)
 
       return opt.map(i =>
@@ -128,7 +128,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
   }
 
   return <Cascader
-    value={value}
+    value={initValue}
     options={options}
     loadData={loadData}
     onChange={onChange}

@@ -40,6 +40,7 @@ interface SelectedPane {
   name: string
 }
 
+// get selected pane, default first template ID
 const getSelectedPane = (templates: DataType.Template[], initId?: string) => {
   if (templates && templates.length > 0) {
     if (initId) {
@@ -69,6 +70,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
   useEffect(() => {
     if (props.initialSelected && props.initialSelected?.length >= 2) {
       tabOnChange(props.initialSelected[2])
+    } else {
+      tabOnChange()
     }
   }, [props.dashboardInfo])
 

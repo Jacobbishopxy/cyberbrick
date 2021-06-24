@@ -13,11 +13,8 @@ import {FileManagerService} from "./fileManager.service"
 export class FileManagerMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService, private fmService: FileManagerService) {}
 
-  private serverConfig = this.configService.get("server")
-
   use(req: Request, res: Response) {
-
-    const fsRoot = this.serverConfig.fmRoot
+    const fsRoot = this.configService.get("server").fmRoot
     const fmm = this.fmService.generateFileManager(fsRoot)
 
     return fmm(req, res)

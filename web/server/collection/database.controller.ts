@@ -23,11 +23,13 @@ import FormData from "form-data"
 export class DatabaseController {
   constructor(private configService: ConfigService) {}
 
-  private serverConfig = this.configService.get("server")
+  private getDbPath() {
+    const serverConfig = this.configService.get("server")
 
-  private dbPath = process.env.NODE_ENV === "production" ?
-    `http://${this.serverConfig.serverHost}:${this.serverConfig.serverPort}/api/database` :
-    "/api/database"
+    return process.env.NODE_ENV === "production" ?
+      `http://${serverConfig.serverHost}:${serverConfig.serverPort}/api/database` :
+      "/api/database"
+  }
 
   private getProxy() {
     if (process.env.NODE_ENV === "production")
@@ -41,7 +43,7 @@ export class DatabaseController {
    */
   @Get("viewStorage")
   async viewStorage() {
-    const url = `${this.dbPath}/viewStorage`
+    const url = `${this.getDbPath()}/viewStorage`
     const ans = await axios.get(url, this.getProxy())
     return ans.data
   }
@@ -51,7 +53,7 @@ export class DatabaseController {
    */
   @Get("listTable")
   async listTable(@Query("id") dbId: string) {
-    const url = `${this.dbPath}/listTable?id=${dbId}`
+    const url = `${this.getDbPath()}/listTable?id=${dbId}`
     const ans = await axios.get(encodeURI(url), this.getProxy())
     return ans.data
   }
@@ -59,7 +61,7 @@ export class DatabaseController {
   @Get("getTableColumns")
   async getTableColumns(@Query("id") dbId: string,
     @Query("tableName") tableName: string) {
-    const url = `${this.dbPath}/getTableColumns?id=${dbId}&tableName=${tableName}`
+    const url = `${this.getDbPath()}/getTableColumns?id=${dbId}&tableName=${tableName}`
     const ans = await axios.get(encodeURI(url), this.getProxy())
     return ans.data
   }
@@ -82,7 +84,7 @@ export class DatabaseController {
     @Query("transpose") transpose: boolean,
     @Query("sheetPrefix") sheetPrefix: string,
   ) {
-    let url = `${this.dbPath}/insertByFile?id=${dbId}`
+    let url = `${this.getDbPath()}/insertByFile?id=${dbId}`
     if (insertOption) url += `&insertOption=${insertOption}`
     if (tableName) url += `&tableName=${tableName}`
     if (transpose) url += `&transpose=${transpose}`
@@ -102,7 +104,7 @@ export class DatabaseController {
     @Query("id") dbId: string,
     @Query("tableName") tableName: string
   ) {
-    const url = `${this.dbPath}/dropTable?id=${dbId}&tableName=${tableName}`
+    const url = `${this.getDbPath()}/dropTable?id=${dbId}&tableName=${tableName}`
     const ans = await axios.delete(encodeURI(url), this.getProxy())
     return ans.data
   }
@@ -110,7 +112,7 @@ export class DatabaseController {
   @Post("renameTable")
   async renameTable(@Query("id") dbId: string,
     @Body() data: {tableName: string, replacement: string}) {
-    const url = `${this.dbPath}/renameTable?id=${dbId}`
+    const url = `${this.getDbPath()}/renameTable?id=${dbId}`
     const ans = await axios.post(encodeURI(url), data, this.getProxy())
     return ans.data
   }
@@ -123,7 +125,7 @@ export class DatabaseController {
     @Query("tableName") tableName: string,
     @Query("insertOption") insertOption: string,
     @Body() data: Record<string, any>) {
-    let url = `${this.dbPath}/insert?id=${dbId}&tableName=${tableName}`
+    let url = `${this.getDbPath()}/insert?id=${dbId}&tableName=${tableName}`
     if (insertOption) url += `&insertOption=${insertOption}`
     const ans = await axios.post(encodeURI(url), data, this.getProxy())
     return ans.data
@@ -137,7 +139,7 @@ export class DatabaseController {
     @Query("tableName") tableName: string,
     @Query("itemId") itemId: string,
     @Body() data: Record<string, any>) {
-    const url = `${this.dbPath}/update?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
+    const url = `${this.getDbPath()}/update?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
     const ans = await axios.post(encodeURI(url), data, this.getProxy())
     return ans.data
   }
@@ -151,7 +153,7 @@ export class DatabaseController {
     @Query("tableName") tableName: string,
     @Query("itemId") itemId: string
   ) {
-    const url = `${this.dbPath}/delete?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
+    const url = `${this.getDbPath()}/delete?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
     const ans = await axios.delete(encodeURI(url), this.getProxy())
     return ans.data
   }
@@ -164,7 +166,7 @@ export class DatabaseController {
     @Query("id") dbId: string,
     @Body() data: Record<string, any>
   ) {
-    const url = `${this.dbPath}/read?id=${dbId}`
+    const url = `${this.getDbPath()}/read?id=${dbId}`
     const ans = await axios.post(encodeURI(url), data, this.getProxy())
     return ans.data
   }
