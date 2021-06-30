@@ -52,3 +52,4 @@ resources/config.json
 test
 
 *.pyc
+makefile.bak
