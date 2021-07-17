@@ -2,18 +2,18 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
-import {Modal} from "antd"
-import {ExclamationCircleOutlined} from '@ant-design/icons'
-import {useIntl} from "umi"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { Modal } from "antd"
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { useIntl } from "umi"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import {ConvertFwRef} from "../Generator/data"
-import {ModulePanelHeader} from "./ModulePanelHeader"
-import {ModulePanelFooter} from "./ModulePanelFooter"
-import {collectionSelector} from "../Collections"
-import {ModuleSelectorProps} from "../Collections/collectionSelector"
+import { ConvertFwRef } from "../Generator/data"
+import { ModulePanelHeader } from "./ModulePanelHeader"
+import { ModulePanelFooter } from "./ModulePanelFooter"
+import { collectionSelector } from "../Collections"
+import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 
@@ -90,8 +90,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const headerDate = (date: string) => {
     if (props.timeSeries) {
       const newContent = content ?
-        {...content, date} :
-        {date, data: {}} as DataType.Content
+        { ...content, date } :
+        { date, data: {} } as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }
@@ -133,6 +133,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     const rf = moduleRef.current
     if (rf) {
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
+      console.log(content, h)
       return rf({
         content,
         fetchStorages: props.fetchStorages,
@@ -156,7 +157,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       {...footerDate()}
     />, [content])
 
-  const attachId = () => props.eleId ? {id: props.eleId} : {}
+  const attachId = () => props.eleId ? { id: props.eleId } : {}
 
   return (
     <div className={styles.modulePanel} {...attachId()}>

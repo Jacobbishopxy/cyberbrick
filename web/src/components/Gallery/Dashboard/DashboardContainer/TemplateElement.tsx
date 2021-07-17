@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from "react"
+import React, { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
 import * as DataType from "../../GalleryDataType"
-import {ModulePanel} from "../../ModulePanel/Panel"
+import { ModulePanel } from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
   parentInfo: string[]
@@ -43,6 +43,7 @@ export const TemplateElement =
     })
 
     const fetchContent = (date?: string) => {
+      console.log(eleId)
       if (eleId) {
         if (date)
           props.fetchContentFn(eleId, date).then(res => setContent(res))
@@ -59,12 +60,12 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({fetchContent, fetchContentDates}))
+    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
     return (
-      <div style={{height: "100%"}} ref={mpRef} >
+      <div style={{ height: "100%" }} ref={mpRef} >
         <ModulePanel
           parentInfo={props.parentInfo}
           eleId={eleId}

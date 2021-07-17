@@ -64,6 +64,7 @@ export default {
   'menu.demo.redirect-test': 'Redirect Test',
   'menu.demo.module-test': 'Module Test',
   'menu.demo.component-test': 'Component Test',
+  'menu.demo.nested-module-test': 'NM Test',
 
   'menu.document': '文档',
   'menu.document.manual': '手册',
