@@ -128,6 +128,7 @@ export default () => {
     setModuleList(moduleList.filter(mod => mod.id !== id))
   }
   const newElement = (name: string, timeSeries: boolean, elementType: ElementType, tabId: string) => {
+
     const fetchContent = async (id: string, data?: string) => {
       console.log(id, data)
       return tempContent
@@ -135,7 +136,6 @@ export default () => {
     const updateContent = (c: Content) => {
       console.log(c)
     }
-
 
     const elements = [
       {
