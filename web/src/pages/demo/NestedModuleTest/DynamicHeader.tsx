@@ -6,7 +6,7 @@ import { CreateElement } from "./CreateItem";
 import { tabItem } from "./data"
 import { Button } from "antd";
 import ProCard from "@ant-design/pro-card";
-import { Category } from "@/components/Gallery/GalleryDataType";
+import { Category } from "../../../components/Gallery/GalleryDataType";
 
 
 const reactGridLayoutDefaultProps = {

@@ -1,14 +1,11 @@
 import './NestedModule.css';
 import DynamicHeader from './DynamicHeader';
 import { useEffect, useState } from 'react';
-import RGL, { WidthProvider } from 'react-grid-layout';
 import { ContentWithId, Module, tabItem } from './data';
 import { Button, Skeleton } from 'antd';
 import { Content, ElementType } from '@/components/Gallery/GalleryDataType';
+import { moduleTabPane } from './createModule';
 
-import { TemplateElement } from '@/components/Gallery/Dashboard/DashboardContainer/TemplateElement';
-
-const ReactGridLayout = WidthProvider(RGL)
 const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
   return {
     i: i.toString(),
@@ -23,13 +20,6 @@ const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
   };
 })
 
-let tempContent: Content = {
-  date: `${new Date()}`,
-  data: {
-    content: "content",
-    text: "text"
-  }
-}
 
 export default () => {
   const [moduleList, setModuleList] = useState<Module[]>([])
@@ -38,6 +28,7 @@ export default () => {
   const [items, setItems] = useState(defaultItems)
   const [newCounter, setNewCounter] = useState(0)
   const [editable, setEditable] = useState(false)
+  const setTabPaneLayout = useState<ReactGridLayout.Layout[]>([])[1]
   // const [updateCount, setUpdateCount] = useState(0)
   // const [currModule, setCurrModule] = useState<JSX.Element>()
   const [content, setContentList] = useState<ContentWithId[]>([])
@@ -102,24 +93,20 @@ export default () => {
 
   //called when the add a new module
   const onAddModule = (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => {
-    let data = { text: name, content: name }
+    let content = { date: `${new Date()}`, data: { text: name, content: name } }
     //replace existing module
     if (moduleList.find(mod => mod.id === tabId)) {
-      //update module content
+      //delete old module content
       onRemoveModule(tabId)
-      // console.log(data)
-      // setContentList(cts => cts.map(ct => {
-      //   if (ct.id === tabId) { return data }
-      //   return ct.content
-      // }))
-
     }
-
-    //else add new element
-    let newEle = newElement(name, timeSeries, moduleType, tabId)
+    // add new element
+    let newEle = moduleTabPane({
+      name, timeSeries, elementType: moduleType, tabId, content,
+      editable, onRemoveModule, setLayout: setTabPaneLayout
+    })
     let newModule: Module = { id: tabId, module: newEle }
     setModuleList(ml => ml.concat(newModule))
-    let newContent = { id: tabId, content: data }
+    let newContent: ContentWithId = { id: tabId, content: content }
     setContentList(ct => ct.concat(newContent))
     // setCurrModule(newEle)
 
@@ -127,60 +114,7 @@ export default () => {
   const onRemoveModule = (id: string) => {
     setModuleList(moduleList.filter(mod => mod.id !== id))
   }
-  const newElement = (name: string, timeSeries: boolean, elementType: ElementType, tabId: string) => {
-
-    const fetchContent = async (id: string, data?: string) => {
-      console.log(id, data)
-      return tempContent
-    }
-    const updateContent = (c: Content) => {
-      console.log(c)
-    }
-
-    const elements = [
-      {
-        id: tabId,
-        name: name,
-        type: elementType,
-        timeSeries: timeSeries,
-        x: 0,
-        y: 0,
-        h: 20,
-        w: 12,
-      }
-    ]
-
-    return (
-      <ReactGridLayout
-        rowHeight={10}
-        onLayoutChange={onLayoutChange}
-        isDraggable={editable}
-        isResizable={editable}
-      >
-        {
-          elements.map((ele, i) =>
-            <div key={ele.name} data-grid={elements[0]}>
-              <TemplateElement
-                parentInfo={[]}
-                timeSeries={timeSeries}
-                editable={editable}
-                element={elements[0]}
-                onRemove={() => onRemoveModule(tabId)}
-                fetchContentFn={fetchContent}
-                fetchContentDatesFn={async (id: string, markName?: string) => elements[0]}
-                updateContentFn={updateContent}
-                fetchStoragesFn={async () => []}
-                fetchTableListFn={async (id) => [id]}
-                fetchTableColumnsFn={async (storageId: string, tableName: string) => [storageId, tableName]}
-                fetchQueryDataFn={async (readOption) => { }}
-              />
-            </div>
-          )
-        }
-      </ReactGridLayout>
-    )
-  }
-
+  //get curr module tab pane
   const currModule = moduleList.find((mol => mol.id === currIndex))?.module
   return (
     <div className="App">
