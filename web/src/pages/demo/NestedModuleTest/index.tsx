@@ -1,10 +1,11 @@
 import './NestedModule.css';
 import DynamicHeader from './DynamicHeader';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ContentWithId, Module, tabItem } from './data';
 import { Button, Skeleton } from 'antd';
 import { Content, ElementType } from '@/components/Gallery/GalleryDataType';
-import { moduleTabPane } from './createModule';
+import { ModuleTabPane, ModuleTabPaneRef } from './createModule';
+import { ContainerElementRef } from '@/components/Gallery/Dashboard/DashboardContainer/TemplateElement';
 
 const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
   return {
@@ -29,25 +30,20 @@ export default () => {
   const [newCounter, setNewCounter] = useState(0)
   const [editable, setEditable] = useState(false)
   const setTabPaneLayout = useState<ReactGridLayout.Layout[]>([])[1]
-  // const [updateCount, setUpdateCount] = useState(0)
-  // const [currModule, setCurrModule] = useState<JSX.Element>()
   const [content, setContentList] = useState<ContentWithId[]>([])
 
+  const ref = useRef<ModuleTabPaneRef>(null)
+  const startFetchAllContents = () => {
+    console.log("in index, start fetch")
+    const rf = ref.current
+    if (rf) rf.startFetchAllContents()
+
+  }
   useEffect(() => {
     // effect
     // console.log(items)
     onLayoutChange(items)
   }, [items])
-
-  // useEffect(() => {
-  //   console.log("currmodule updated")
-  // }, [currModule])
-
-  // useEffect(() => {
-  //   //reset curr module when currIndex changed
-  //   console.log("module list updated");
-  //   setCurrModule((moduleList.find((mod) => mod.id === currIndex))?.module)
-  // }, [currIndex])
 
   useEffect(() => {
     setItems((item) => item.map(
@@ -96,18 +92,28 @@ export default () => {
     let content = { date: `${new Date()}`, data: { text: name, content: name } }
     //replace existing module
     if (moduleList.find(mod => mod.id === tabId)) {
+      console.log("removing old module...")
       //delete old module content
       onRemoveModule(tabId)
     }
     // add new element
-    let newEle = moduleTabPane({
-      name, timeSeries, elementType: moduleType, tabId, content,
-      editable, onRemoveModule, setLayout: setTabPaneLayout
-    })
-    let newModule: Module = { id: tabId, module: newEle }
+    let newEle =
+      <ModuleTabPane
+        name={name}
+        timeSeries={timeSeries}
+        elementType={moduleType}
+        tabId={tabId}
+        content={content}
+        editable={editable}
+        onRemoveModule={onRemoveModule}
+        setLayout={setTabPaneLayout}
+        ref={ref}
+      />
+    let newModule: Module = { id: tabId, module: newEle! }
     setModuleList(ml => ml.concat(newModule))
     let newContent: ContentWithId = { id: tabId, content: content }
     setContentList(ct => ct.concat(newContent))
+    startFetchAllContents()
     // setCurrModule(newEle)
 
   }

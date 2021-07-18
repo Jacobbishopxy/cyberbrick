@@ -1,6 +1,8 @@
 
-import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
+import { ContainerTemplateRef } from "@/components/Gallery/Dashboard/DashboardContainer/ContainerTemplate"
+import { ContainerElementRef, TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 import { Content, ElementType } from "@/components/Gallery/GalleryDataType"
+import { forwardRef, useImperativeHandle, useRef } from "react"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
 
@@ -15,6 +17,9 @@ interface ModuleTabPaneProps {
     setLayout: React.Dispatch<React.SetStateAction<Layout[]>>
 
 }
+export interface ModuleTabPaneRef {
+    startFetchAllContents: () => void;
+}
 const tempContent: Content = {
     date: `${new Date()}`,
     data: {
@@ -23,7 +28,23 @@ const tempContent: Content = {
     }
 }
 const ReactGridLayout = WidthProvider(RGL)
-export const moduleTabPane = (props: ModuleTabPaneProps) => {
+export const ModuleTabPane = forwardRef((props: ModuleTabPaneProps, ref: React.Ref<ModuleTabPaneRef>) => {
+
+    //fetch the content by calling props' method: fetchContent()
+    const teRefs = useRef<ContainerElementRef>(null)
+    const startFetchAllContents = () => {
+        console.log("in moduleTabPane, start fetching")
+        const rf = teRefs.current
+        console.log(rf)
+        if (rf) {
+            console.log("start fetching")
+            rf.fetchContent()
+        }
+    }
+    useImperativeHandle(ref, () => ({ startFetchAllContents }))
+    // const genRef = (i: number) => (el: ContainerElementRef) => {
+    //     if (el) teRefs.current=el
+    // }
     const { name, timeSeries, elementType, tabId, content } = props
 
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
@@ -34,7 +55,10 @@ export const moduleTabPane = (props: ModuleTabPaneProps) => {
 
     const fetchContent = async (id: string, data?: string) => {
         console.log(id, data)
-        if (content) return content
+        if (content) {
+            console.log("content is defined: ", content)
+            return content
+        }
         return tempContent
     }
     const updateContent = (c: Content) => {
@@ -78,6 +102,7 @@ export const moduleTabPane = (props: ModuleTabPaneProps) => {
                             fetchTableListFn={async (id) => [id]}
                             fetchTableColumnsFn={async (storageId: string, tableName: string) => [storageId, tableName]}
                             fetchQueryDataFn={async (readOption) => { }}
+                            ref={teRefs}
                         />
                     </div>
                 )
@@ -85,4 +110,4 @@ export const moduleTabPane = (props: ModuleTabPaneProps) => {
         </ReactGridLayout>
     )
 
-}
+})
