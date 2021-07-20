@@ -1,24 +1,28 @@
 
-import { ContainerTemplateRef } from "@/components/Gallery/Dashboard/DashboardContainer/ContainerTemplate"
-import { ContainerElementRef, TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
-import { Content, ElementType } from "@/components/Gallery/GalleryDataType"
-import { forwardRef, useImperativeHandle, useRef } from "react"
-import RGL, { Layout, WidthProvider } from "react-grid-layout"
-
+import { ContainerElementRef, TemplateElement } from "./TemplateElement"
+import { Content, ElementType, StorageSimple } from "@/components/Gallery/GalleryDataType"
+import { forwardRef, useImperativeHandle, useRef, useState } from "react"
+import { tabItem } from "./data"
 
 interface ModuleTabPaneProps {
+    //self custom
+    tabId: string,
+    content?: Content
+    //same as TemplateElementProps
     editable: boolean,
     name: string,
     timeSeries: boolean,
     elementType: ElementType,
-    tabId: string,
-    content?: Content
     onRemoveModule: (id: string) => void,
-    setLayout: React.Dispatch<React.SetStateAction<Layout[]>>
+    setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
+    fetchStoragesFn: () => Promise<StorageSimple[]>
+    fetchTableListFn: (id: string) => Promise<string[]>
+    fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
+    fetchQueryDataFn?: (readOption: Content) => Promise<any>
 
 }
 export interface ModuleTabPaneRef {
-    startFetchAllContents: () => void;
+    startFetchContent: () => void;
 }
 const tempContent: Content = {
     date: `${new Date()}`,
@@ -27,12 +31,12 @@ const tempContent: Content = {
         text: "text"
     }
 }
-const ReactGridLayout = WidthProvider(RGL)
+
 export const ModuleTabPane = forwardRef((props: ModuleTabPaneProps, ref: React.Ref<ModuleTabPaneRef>) => {
 
     //fetch the content by calling props' method: fetchContent()
     const teRefs = useRef<ContainerElementRef>(null)
-    const startFetchAllContents = () => {
+    const startFetchContent = () => {
         console.log("in moduleTabPane, start fetching")
         const rf = teRefs.current
         console.log(rf)
@@ -41,30 +45,33 @@ export const ModuleTabPane = forwardRef((props: ModuleTabPaneProps, ref: React.R
             rf.fetchContent()
         }
     }
-    useImperativeHandle(ref, () => ({ startFetchAllContents }))
-    // const genRef = (i: number) => (el: ContainerElementRef) => {
-    //     if (el) teRefs.current=el
-    // }
-    const { name, timeSeries, elementType, tabId, content } = props
+    //expose this method to parent component
+    useImperativeHandle(ref, () => ({ startFetchContent }))
 
-    const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
-        props.setLayout(layout);
-        // console.log(layout)
-    };
+    const { name, timeSeries, elementType, tabId } = props
+    const [content, setContent] = useState<Content | undefined>(props.content)
 
-
-    const fetchContent = async (id: string, data?: string) => {
+    //simply returned the content received from parent
+    //TODO: redesign
+    const fetchContent = (id: string, data?: string) => {
         console.log(id, data)
-        if (content) {
-            console.log("content is defined: ", content)
-            return content
+        if (!content) {
+            setContent(tempContent)
         }
-        return tempContent
+        return Promise.resolve(content)
     }
+
     const updateContent = (c: Content) => {
         console.log(c)
+        setContent(c)
+        //update the content in items list
+        props.setItems(items => items.map(item => {
+            if (item.i === tabId) return { ...item, content: c }
+            return item
+        }))
     }
 
+    //TODO: redesign
     //hardcode the single module layout
     const elements = [
         {
@@ -79,35 +86,26 @@ export const ModuleTabPane = forwardRef((props: ModuleTabPaneProps, ref: React.R
         }
     ]
 
+    //TODO: implement the details
+    //warning! hardcoded height
     return (
-        <ReactGridLayout
-            rowHeight={10}
-            onLayoutChange={onLayoutChange}
-            isDraggable={props.editable}
-            isResizable={props.editable}
-        >
-            {
-                elements.map((ele, i) =>
-                    <div key={ele.name} data-grid={elements[0]}>
-                        <TemplateElement
-                            parentInfo={[]}
-                            timeSeries={timeSeries}
-                            editable={props.editable}
-                            element={elements[0]}
-                            onRemove={() => props.onRemoveModule(tabId)}
-                            fetchContentFn={fetchContent}
-                            fetchContentDatesFn={async (id: string, markName?: string) => elements[0]}
-                            updateContentFn={updateContent}
-                            fetchStoragesFn={async () => []}
-                            fetchTableListFn={async (id) => [id]}
-                            fetchTableColumnsFn={async (storageId: string, tableName: string) => [storageId, tableName]}
-                            fetchQueryDataFn={async (readOption) => { }}
-                            ref={teRefs}
-                        />
-                    </div>
-                )
-            }
-        </ReactGridLayout>
+        <div style={{ height: "390px" }}>
+            <TemplateElement
+                parentInfo={[]}
+                timeSeries={timeSeries}
+                editable={props.editable}
+                element={elements[0]}
+                onRemove={() => props.onRemoveModule(tabId)}
+                fetchContentFn={fetchContent}
+                updateContentFn={updateContent}
+                fetchStoragesFn={props.fetchStoragesFn}
+                fetchTableListFn={props.fetchTableListFn}
+                fetchTableColumnsFn={props.fetchTableColumnsFn}
+                fetchQueryDataFn={props.fetchQueryDataFn}
+                ref={teRefs}
+            />
+        </div>
     )
+
 
 })

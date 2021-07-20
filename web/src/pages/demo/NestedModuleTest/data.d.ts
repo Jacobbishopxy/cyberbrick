@@ -1,14 +1,14 @@
 import { Layout } from "react-grid-layout";
-import { Content } from "../../../components/Gallery/GalleryDataType";
+import { Content, ElementType } from "../../../components/Gallery/GalleryDataType";
 
 export interface tabItem extends Layout {
     text: string,
+    module?: simpleEmbededModule
 }
-export interface Module {
-    id: string
-    module: JSX.Element
-}
-export interface ContentWithId {
-    id: string,
-    content: Content
+
+export interface SimpleEmbededModule {
+    name: string,
+    timeSeries: boolean,
+    elementType: ElementType,
+    content?: Content
 }

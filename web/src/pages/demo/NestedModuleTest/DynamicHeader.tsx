@@ -86,7 +86,3 @@ const DynamicHeader = (props: AddRemoveProps) => {
 
 }
 export default DynamicHeader
-
-// if (process.env.STATIC_EXAMPLES === true) {
-//     export default (makeLayout(AddRemoveLayout));
-// }

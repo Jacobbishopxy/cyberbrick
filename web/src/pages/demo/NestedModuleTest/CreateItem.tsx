@@ -86,21 +86,22 @@ export const CreateElement = (props: createElementProps) => {
                         />
                         {inputHeader}
 
+                        <CloseOutlined
+                            style={{
+                                position: 'absolute',
+                                right: 2,
+                                top: 2,
+                                cursor: "pointer",
+                            }}
+                            onClick={() => onRemoveItem(el.i)} />
+
+
                     </div>
                     :
                     displayHeader
                 }
             </div>
-            <div>
-                <CloseOutlined
-                    style={{
-                        position: 'absolute',
-                        right: 2,
-                        top: 2,
-                        cursor: "pointer",
-                    }}
-                    onClick={() => onRemoveItem(el.i)} />
-            </div>
+
 
             <AddModuleModal
                 onAddModule={onAddModule}
