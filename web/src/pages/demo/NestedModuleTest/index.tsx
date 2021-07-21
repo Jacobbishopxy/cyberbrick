@@ -1,81 +1,71 @@
-import { Content, today } from "@/components/Gallery/GalleryDataType"
-import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
-import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
-import { useEffect, useState } from "react"
-import { tabItem } from "./data"
-import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
-import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
+/**
+ * Created by Celia Xiao on 7/21/2021
+ */
 
-// interface NSMEditorProps extends ModuleEditorField {
-//   fetchContentFn: (id: string, date?: string) => Promise<Element>
-//   fetchContentDatesFn: (id: string, markName?: string) => Promise<Element>
-//   fetchQueryDataFn: (readOption: Content) => Promise<any>
-// }
-const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
-  return {
-    i: i.toString(),
-    x: i,
-    y: 0,
-    w: 1,
-    h: 1,
-    isResizable: false,
-    text: i.toString(),
-    autoSize: true,
-    static: true,
-  };
-})
-const EditorField = (props: ModuleEditorField) => {
-  //content type:tabItem[]
-  /* for each item
-  id: i
-  layout attribute: x y w h
-  module: SimpleEmbededModule {
-    name: string,
-    timeSeries: boolean,
-    elementType: ElementType,
-    content?: Content
-}
-  */
+import { useRef, useState } from "react"
+import { Card, Switch } from "antd"
+import { FormattedMessage } from "umi"
 
-  let tempContent: Content;
-  if (props.content) {
-    tempContent = props.content
+import * as DataType from "@/components/Gallery/GalleryDataType"
+import * as GalleryService from "@/services/gallery"
+import { ConvertFwRef } from "@/components/Gallery/ModulePanel/Generator/data"
+import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
+
+import { NestedSimpleModule } from "./NestedModule"
+
+
+export default () => {
+
+  const moduleFwRef = useRef<ConvertFwRef>(null)
+
+  const [content, setContent] = useState<DataType.Content>()
+
+  const switchOnClick = (v: boolean) => {
+    if (moduleFwRef.current) moduleFwRef.current.edit(v)
   }
-  const [items, setItems] = useState<tabItem[]>(tempContent!.data as tabItem[] || defaultItems)
-  const [saveCount, setSaveCount] = useState(0)
 
-  useEffect(() => {
-    props.updateContent({ ...props.content, date: today(), data: items })
-    return () => {
-      //
-    }
-  }, [saveCount])
+  const fetchStorages = () =>
+    GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
+
+  const fetchTableList = (id: string) =>
+    GalleryService.databaseListTable(id)
+
+  const fetchTableColumns = (storageId: string, tableName: string) =>
+    GalleryService.databaseGetTableColumns(storageId, tableName)
+
+  const fetchQueryData = (value: DataType.Content) => {
+    const id = value.data.id
+    const option = value.data as DataType.Read
+    return GalleryService.read(id, option)
+  }
+
+  const updateContent = (c: DataType.Content) => {
+    setContent(c)
+    console.log(c)
+  }
   return (
-    <div className={props.styling}>
-      <NestedSimpleModuleEditor
-        items={items as tabItem[]}
-        setItems={setItems}
-        setSaveCount={setSaveCount}
-        fetchStoragesFn={props.fetchStorages!}
-        fetchTableListFn={props.fetchTableList!}
-        fetchTableColumnsFn={props.fetchTableColumns!}
-        updateContentFn={props.updateContent}
-        editable={true}
-        styling={props.styling}
+    <Card
+      title={<FormattedMessage id="gallery.page.demo.module-test.title" />}
+      extra={
+        <Switch
+          onClick={switchOnClick}
+        />
+      }
+      // style={{ height: "85vh" }}
+      bodyStyle={{ height: "100%" }}
+    >
+      <NestedSimpleModule
+        content={content}
+        fetchStorages={fetchStorages}
+        fetchTableList={fetchTableList}
+        fetchTableColumns={fetchTableColumns}
+        fetchQueryData={fetchQueryData}
+        updateContent={updateContent}
+        contentHeight={750}
+        styling={styles}
+        ref={moduleFwRef}
       />
-    </div>
+    </Card>
   )
 }
 
-const PresenterField = (props: ModulePresenterField) =>
-  props.content ?
-    <div className={props.styling}>
-      <NestedSimpleModulePresentor
-        //  updateContentFn={props.updateContent} 
-        items={props.content?.data as tabItem[] || defaultItems}
-        editable={false}
-        styling={props.styling}
-      />
-    </div> : <></>
-
-export default new ModuleGenerator(EditorField, PresenterField).generate()

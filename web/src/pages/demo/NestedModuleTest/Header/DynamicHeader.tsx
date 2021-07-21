@@ -3,10 +3,10 @@ import { PlusOutlined } from "@ant-design/icons"
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
 import { CreateElement } from "./CreateItem";
-import { tabItem } from "./data"
+import { tabItem } from "../data"
 import { Button } from "antd";
 import ProCard from "@ant-design/pro-card";
-import { Category } from "../../../components/Gallery/GalleryDataType";
+import { Category } from "../../../../components/Gallery/GalleryDataType";
 
 
 const reactGridLayoutDefaultProps = {

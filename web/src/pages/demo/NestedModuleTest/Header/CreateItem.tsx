@@ -1,11 +1,11 @@
 
-import { Button, Input } from 'antd';
+import { Input } from 'antd';
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons"
 import React, { useEffect, useState } from 'react';
 import { CSSProperties } from 'react';
-import { tabItem } from './data';
-import { AddModuleModal } from './AddModuleModal';
-import { Category, ElementType } from '../../../components/Gallery/GalleryDataType';
+import { tabItem } from '../data';
+import { AddModuleModal } from '../EmbededModule/AddModuleModal';
+import { ElementType } from '../../../../components/Gallery/GalleryDataType';
 
 // type Props = ReactGridLayout.Layout & { children: React.ReactNode };
 interface createElementProps {
@@ -32,13 +32,16 @@ export const CreateElement = (props: createElementProps) => {
         if (editable) { setSubmitted(!submitted) }
     }
     //reset submitted once editable property changed
+
+
     useEffect(() => {
-        if (!editable) {
-            setSubmitted(false)
-        } else {
-            setSubmitted(false)
-        }
-    }, [editable])
+        props.setItems(items => items.map(item => {
+            if (item.i === el.i) {
+                return { ...el, text: input }
+            }
+            return item
+        }))
+    }, [submitted])
     const endEdit = () => setSubmitted(true)
     //update input value
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

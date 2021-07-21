@@ -1,60 +1,43 @@
 import './NestedModule.css';
-import DynamicHeader from './DynamicHeader';
-import { useEffect, useRef, useState } from 'react';
+import DynamicHeader from './Header/DynamicHeader';
+import { useEffect, useState } from 'react';
 import { tabItem } from './data';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 import { Content, ElementType, StorageSimple } from '@/components/Gallery/GalleryDataType';
-import { ModuleTabPane, ModuleTabPaneRef } from './createModule';
-
-const counterPostfix = new Date()
+import { ModuleTabPane } from './EmbededModule/CreateModule';
 
 interface NestedSimpleModuleProps {
+    //for temp cache
+    currIndex?: string,
+    setCurrIndex?: React.Dispatch<React.SetStateAction<string>>,
+
     items?: tabItem[]
     editable: boolean
     styling?: string//how to apply string as stying？
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     setSaveCount: React.Dispatch<React.SetStateAction<number>>
-    updateContentFn: (content: Content) => void //how to submit content to db?
+    updateContentFn: (content: Content) => void
     fetchStoragesFn: () => Promise<StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
     fetchQueryDataFn?: (readOption: Content) => Promise<any>
 }
 
-const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i,) {
-    return {
-        i: i.toString(),
-        x: i,
-        y: 0,
-        w: 1,
-        h: 1,
-        isResizable: false,
-        text: i.toString(),
-        autoSize: true,
-        static: true,
-    };
-})
 export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
-
+    const counterPostfix = new Date()
     const { items, setItems, setSaveCount } = props
     //makesure items not null
-    if (!items) {
-        setItems(defaultItems)
-    }
+    // if (!items) {
+    //     setItems(defaultItems)
+    // }
     const setLayout = useState<ReactGridLayout.Layout[]>([])[1]
-    const [currIndex, setCurrIndex] = useState("0")
+    const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
     // const [items, setItems] = useState(props.tabItems || [])
     const [newCounter, setNewCounter] = useState(0)
-    const [editable, setEditable] = useState(props.editable)
+    const editable = useState(props.editable)[0]
     const [updateCnt, setUpdateCnt] = useState(0)
 
-    const ref = useRef<ModuleTabPaneRef>(null)
-    const startFetchContent = () => {
-        console.log("in index, start fetch")
-        const rf = ref.current
-        if (rf) rf.startFetchContent()
-
-    }
+    //tabs layout updated
     useEffect(() => {
         // effect
         // console.log(items)
@@ -62,21 +45,19 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setSaveCount(cnt => cnt + 1)
     }, [items])
 
+    //embeded modulePanal updated
     useEffect(() => {
-        startFetchContent()
         setSaveCount(cnt => cnt + 1)
+        console.log(items?.map(it => it.module))
     }, [updateCnt])
 
+    //update curr index
     useEffect(() => {
-        setItems((items) => items.map(
-            (ele) => ele = { ...ele, isDraggable: editable, static: !editable }))
-        console.log(items)
-    }, [editable])
+        if (props.setCurrIndex) props.setCurrIndex(currIndex)
+    }, [currIndex])
 
     //add new tabs
     const onAddItem = () => {
-        /*eslint no-console: 0*/
-        console.log("adding", "n" + newCounter);
         setItems(items =>
             // Add a new item. It must have a unique key!
             items.concat({
@@ -94,8 +75,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //remove tabs
     const onRemoveItem = (i: string) => {
-        console.log("removing", i);
-        // setItems({ items: _.reject(items, { i: i }) });
         setItems(its => its.filter(el => el.i !== i))
     }
 
@@ -105,9 +84,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setUpdateCnt(updateCnt + 1)
     }
 
-    const toggleEdit = () => {
-        setEditable(!editable)
-    }
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
         setLayout(layout);
         // console.log(layout)
@@ -115,7 +91,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //called when the add a new module
     const onAddModule = (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => {
-        let content = { date: `${new Date()}`, data: { text: name, content: name } }
+        let content = { date: `${new Date()}`, data: { content: name } }
         //replace existing module
         if (items!.find(item => item.i === tabId && item.module)) {
             console.log("removing old module...")
@@ -146,11 +122,14 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //convert a module to reactNode based on id
     const moduleToReactNode = (id: string) => {
         let module = items!.find((item => item.i === id))?.module
+        // console.log(items, module)
         //cases for unintialized module
         if (!module) return null
         let { name, timeSeries, elementType, content } = module
+        console.log("switching module", content)
         return (
             <ModuleTabPane
+                key={id + elementType + name}
                 tabId={id}
                 content={content}
                 name={name}
@@ -163,7 +142,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 fetchTableColumnsFn={props.fetchTableColumnsFn}
                 fetchTableListFn={props.fetchTableListFn}
                 fetchQueryDataFn={props.fetchQueryDataFn}
-                ref={ref}
             />
         )
     }
@@ -171,8 +149,8 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //get curr module tab pane
     const currModule = moduleToReactNode(currIndex)
     return (
-        <div className="App" >
-            <Button onClick={toggleEdit} >{editable ? "Complete" : "Edit"}</Button>
+        <div >
+            {/* <Button onClick={toggleEdit} >{editable ? "Complete" : "Edit"}</Button> */}
             <DynamicHeader
                 items={items!}
                 editable={editable}

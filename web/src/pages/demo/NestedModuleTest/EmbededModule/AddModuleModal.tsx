@@ -7,11 +7,11 @@ import { Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip } 
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
 
-import * as DataType from "../../../components/Gallery/GalleryDataType"
-import { moduleList } from "../../../components/Gallery/ModulePanel/Collections"
-import { SelectorPanel } from "../../../components/Gallery/Dashboard/DashboardController/SelectorPanel"
+import * as DataType from "@/components/Gallery/GalleryDataType"
+import { moduleList } from "@/components/Gallery/ModulePanel/Collections"
+import { SelectorPanel } from "@/components/Gallery/Dashboard/DashboardController/SelectorPanel"
 
-import styles from "../../../components/Gallery/Dashboard/DashboardController/Common.less"
+import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 
 
 interface ModuleSelectionListProps {
