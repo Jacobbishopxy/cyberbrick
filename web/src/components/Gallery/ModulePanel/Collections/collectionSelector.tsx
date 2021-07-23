@@ -5,13 +5,13 @@
 import React from "react"
 
 import * as DataType from "../../GalleryDataType"
-import {ConvertFwRef} from "../Generator/data"
-import {XlsxTable} from "./table/XlsxTable"
-import {FlexTable} from "./table/FlexTable"
-import {EmbedLink} from "./miscellaneous/EmbedLink"
-import {Text} from "./miscellaneous/Text"
-import {TargetPrice} from "./miscellaneous/TargetPrice"
-import {FileView} from "./file/FileView"
+import { ConvertFwRef } from "../Generator/data"
+import { XlsxTable } from "./table/XlsxTable"
+import { FlexTable } from "./table/FlexTable"
+import { EmbedLink } from "./miscellaneous/EmbedLink"
+import { Text } from "./miscellaneous/Text"
+import { TargetPrice } from "./miscellaneous/TargetPrice"
+import { FileView } from "./file/FileView"
 import {
   Line,
   Bar,
@@ -22,6 +22,7 @@ import {
 } from "./graph"
 
 import styles from "../Panel/Common.less"
+import { NestedSimpleModule } from "./NestedModule/NestedModule"
 
 
 export interface ModuleSelectorProps {
@@ -162,6 +163,18 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={props.forwardedRef}
     />
 
+    const nestedModule = <NestedSimpleModule
+      content={props.content}
+      fetchStorages={props.fetchStorages}
+      fetchTableList={props.fetchTableList}
+      fetchTableColumns={props.fetchTableColumns}
+      fetchQueryData={props.fetchQueryData}
+      contentHeight={props.contentHeight}
+      updateContent={props.updateContent}
+      styling={styles.contentPanel}
+      ref={props.forwardedRef}
+    />
+
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
@@ -187,6 +200,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return lineScatter
       case DataType.ElementType.Pie:
         return pie
+      case DataType.ElementType.NestedModule:
+        return nestedModule
       default:
         return defaultModule
     }

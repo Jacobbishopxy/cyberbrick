@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import {FormattedMessage} from "umi"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -26,6 +26,11 @@ export const moduleList = [
         key: DataType.ElementType.Image,
         name: <FormattedMessage id="gallery.component.type.image" />,
         disabled: true,
+      },
+      {
+        key: DataType.ElementType.NestedModule,
+        name: <FormattedMessage id="gallery.component.type.nestedSimpleModule" />,
+        disabled: false,
       },
     ]
   },
@@ -63,7 +68,7 @@ export const moduleList = [
   },
   {
     key: "investment",
-    name: <FormattedMessage id="gallery.component.type.investment"/>,
+    name: <FormattedMessage id="gallery.component.type.investment" />,
     children: [
       {
         key: DataType.ElementType.TargetPrice,

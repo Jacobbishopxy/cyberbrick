@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from "react"
-import {message} from "antd"
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { message } from "antd"
 import _ from "lodash"
-import RGL, {Layout, WidthProvider} from "react-grid-layout"
+import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
 import * as DataType from "../../GalleryDataType"
-import {TemplateElement, ContainerElementRef} from "./TemplateElement"
-import {EditableContext} from "../Dashboard"
+import { TemplateElement, ContainerElementRef } from "./TemplateElement"
+import { EditableContext } from "../Dashboard"
 
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -46,7 +46,7 @@ const removeElementInLayout = (id: string, elements: Elements): Elements =>
   _.reject(elements, ele => (ele.id === id))
 
 const genDataGrid = (ele: DataType.Element) =>
-  ({x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w})
+  ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
 
 
 export interface ContainerTemplateProps {
@@ -112,12 +112,12 @@ export const ContainerTemplate =
 
     const saveElements = () => elements
 
-    useImperativeHandle(ref, () => ({startFetchAllContents, newElement, saveElements}))
+    useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveElements }))
 
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
         ...value,
-        element: {id: ele.id, name: ele.name} as DataType.Element
+        element: { id: ele.id, name: ele.name } as DataType.Element
       })
 
     const genRef = (i: number) => (el: ContainerElementRef) => {

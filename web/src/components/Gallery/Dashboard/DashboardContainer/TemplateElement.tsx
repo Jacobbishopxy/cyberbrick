@@ -43,7 +43,6 @@ export const TemplateElement =
     })
 
     const fetchContent = (date?: string) => {
-      console.log(eleId)
       if (eleId) {
         if (date)
           props.fetchContentFn(eleId, date).then(res => setContent(res))

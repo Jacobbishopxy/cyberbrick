@@ -26,14 +26,10 @@ interface NestedSimpleModuleProps {
 export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const counterPostfix = new Date()
     const { items, setItems, setSaveCount } = props
-    //makesure items not null
-    // if (!items) {
-    //     setItems(defaultItems)
-    // }
     const setLayout = useState<ReactGridLayout.Layout[]>([])[1]
     const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
-    // const [items, setItems] = useState(props.tabItems || [])
     const [newCounter, setNewCounter] = useState(0)
+    const editable = useState(props.editable)[0]
     const [updateCnt, setUpdateCnt] = useState(0)
 
     //tabs layout updated
@@ -47,7 +43,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //embeded modulePanal updated
     useEffect(() => {
         setSaveCount(cnt => cnt + 1)
-        console.log(items?.map(it => it.module))
+        // console.log(items?.map(it => it.module))
     }, [updateCnt])
 
     //update curr index
@@ -125,7 +121,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         //cases for unintialized module
         if (!module) return null
         let { name, timeSeries, elementType, content } = module
-        console.log("switching module", content)
+        // console.log("switching module", content)
         return (
             <ModuleTabPane
                 key={id + elementType + name}
@@ -134,7 +130,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 name={name}
                 timeSeries={timeSeries}
                 elementType={elementType}
-                editable={props.editable}
+                editable={editable}
                 setItems={setItems}
                 onRemoveModule={onRemoveModule}
                 fetchStoragesFn={props.fetchStoragesFn}
@@ -152,7 +148,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
             {/* <Button onClick={toggleEdit} >{editable ? "Complete" : "Edit"}</Button> */}
             <DynamicHeader
                 items={items!}
-                editable={props.editable}
+                editable={editable}
                 setItems={setItems}
                 onAddItem={onAddItem}
                 onRemoveItem={onRemoveItem}

@@ -54,6 +54,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   useEffect(() => setContent(props.content), [props.content])
 
+  //when dashboard is set to uneditable, make modulePanel unable to edit (by calling moduleFwRef.current.edit(false))
+  useEffect(() => {
+    if (!props.editable && moduleFwRef.current) moduleFwRef.current.edit(props.editable)
+  }, [props.editable])
+
   useEffect(() => {
     if (props.timeSeries && props.fetchContentDates && content && !props.editable) {
       props.fetchContentDates().then(res => setDates(res))
@@ -67,7 +72,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const confirmDelete = () =>
     Modal.confirm({
-      title: intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel1"}),
+      title: intl.formatMessage({ id: "gallery.component.module-panel.panel.module-panel1" }),
       icon: <ExclamationCircleOutlined />,
       okType: 'danger',
       onOk: () => props.onRemove()
@@ -75,15 +80,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const updateTitle = (title: string) => {
     const newContent = content ?
-      {...content, title} :
-      {title, date: DataType.today()} as DataType.Content
+      { ...content, title } :
+      { title, date: DataType.today() } as DataType.Content
     setContent(newContent)
     props.updateContent(newContent)
   }
 
   const footerDate = () => {
     if (props.timeSeries && content)
-      return {date: content.date}
+      return { date: content.date }
     return {}
   }
 
@@ -98,7 +103,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   }
 
   const updateModuleContent = (ctt: DataType.Content) => {
-    const newContent = {...content, ...ctt}
+    const newContent = { ...content, ...ctt }
     setContent(newContent)
     props.updateContent(newContent)
   }
@@ -133,7 +138,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
     const rf = moduleRef.current
     if (rf) {
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
-      console.log(content, h)
       return rf({
         content,
         fetchStorages: props.fetchStorages,

@@ -66,6 +66,7 @@ export default {
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
+  "gallery.component.type.embedLink": "链接",
   "gallery.component.type.text": "文章",
   "gallery.component.type.image": "图片",
   "gallery.component.type.file": "文件",
@@ -88,6 +89,7 @@ export default {
   "gallery.component.type.box": "箱图",
   "gallery.component.type.tree": "树图",
   "gallery.component.type.treemap": "矩形树图",
+  "gallery.component.type.nestedSimpleModule": "组件嵌套",
 
   "gallery.component.category-config-table1": "类型配置",
   "gallery.component.category-config-table2": "新建分类",

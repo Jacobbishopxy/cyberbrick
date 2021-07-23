@@ -66,6 +66,7 @@ export default {
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
+  "gallery.component.type.embedLink": "Link",
   "gallery.component.type.text": "Text",
   "gallery.component.type.image": "Image",
   "gallery.component.type.file": "File",
@@ -88,6 +89,7 @@ export default {
   "gallery.component.type.box": "Box",
   "gallery.component.type.tree": "Tree",
   "gallery.component.type.treemap": "Treemap",
+  "gallery.component.type.nestedSimpleModule": "Nested Module",
 
   "gallery.component.category-config-table1": "Category configuration",
   "gallery.component.category-config-table2": "New category",
