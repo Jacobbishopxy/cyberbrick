@@ -1,19 +1,15 @@
 
-import { Input } from 'antd';
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons"
 import React, { useEffect, useState } from 'react';
 import { CSSProperties } from 'react';
-import { tabItem } from '../data';
+import { tabContentChoice, tabItem, TabType } from '../data';
 import { AddModuleModal } from '../EmbededModule/AddModuleModal';
 import { ElementType } from '../../../../components/Gallery/GalleryDataType';
+import { TabItemSelection } from './TabItemSelection';
+import { getChoiceElement } from './TabChoice';
 
-// type Props = ReactGridLayout.Layout & { children: React.ReactNode };
 interface createElementProps {
     onAddModule: (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => void;
-    // categories: Category[];
-    // categoryOnSelect(name: string, arg1: boolean): Promise<import("../../../components/Gallery/GalleryDataType").Category>;
-    // dashboardOnSelect(id: string, arg1: boolean): Promise<import("../../../components/Gallery/GalleryDataType").Dashboard>;
-    // onCopyTemplate: (originTemplateId: string) => void;
     editable: boolean,
     style?: CSSProperties | undefined,
     className?: string | undefined,
@@ -25,54 +21,66 @@ interface createElementProps {
 export const CreateElement = (props: createElementProps) => {
     const { editable, el, onRemoveItem } = props
     const [submitted, setSubmitted] = useState(false)
-    const [input, setInput] = useState(el.text)
+    const [tabType, setTabType] = useState(el.tabType)
+    const [selected, setSelected] = useState('');
     const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
     // console.log(el)
     const toggleSubmitted = () => {
         if (editable) { setSubmitted(!submitted) }
     }
+
     //reset submitted once editable property changed
-
-
     useEffect(() => {
         props.setItems(items => items.map(item => {
-            if (item.i === el.i) {
-                return { ...el, text: input }
+            if (item.i === el.i && selected) {
+                return { ...el, tabContent: selected as tabContentChoice, tabType: tabType as TabType }
             }
             return item
         }))
     }, [submitted])
-    const endEdit = () => setSubmitted(true)
-    //update input value
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target
-        setInput(value)
+
+    const endEdit = (tabType: string, input?: string) => {
+        //not icon
+        if (tabType !== "icon") {
+            setSelected(input || '')
+        }
+        //update tab type
+        setTabType(tabType)
+        setSubmitted(true)
     }
+
     const quitAddModule = () => setAddModuleModalVisible(false)
 
     //pass 
     const onAddModule = (name: string, timeSeries: boolean, moduleType: ElementType) => {
         props.onAddModule(name, timeSeries, moduleType, el.i)
     }
-    const displayHeader = <span className="text" title="Double click to edit">{el.text}</span>
-    const inputHeader = (!submitted) ?
-        <div style={{
-            position: "absolute",
-            padding: 10
-        }}>
-            <Input
-                placeholder="input here"
-                style={{
-                    position: "relative",
-                    top: 10,
-                }}
-                value={input}
-                onChange={onChange}
-                onBlur={endEdit}
-                onPressEnter={endEdit}
 
-            />
-        </div> : displayHeader
+    const displayHeader = () => {
+        let headerContent: any = el.text
+
+        if (editable) {
+            //get content from newly created information
+            if (selected) headerContent = getChoiceElement(selected as tabContentChoice)
+        } else {
+            //get content from tabContent
+            if (el.tabContent) headerContent = getChoiceElement(el.tabContent)
+        }
+        // console.log(headerContent)
+        return (<span className={(tabType === "text") ? "tab-text" : "content"}
+            title={editable ? "Double click to edit" : ""}>
+            {headerContent}
+        </span>)
+    }
+
+    const inputHeader = (!submitted) ?
+        <div className="edit-button">
+            <TabItemSelection
+                selected={selected}
+                setSelected={setSelected}
+                endEdit={endEdit} />
+        </div> : displayHeader()
+
     return (
         <div onDoubleClick={toggleSubmitted}>
             <div>
@@ -88,7 +96,6 @@ export const CreateElement = (props: createElementProps) => {
                             onClick={() => setAddModuleModalVisible(true)}
                         />
                         {inputHeader}
-
                         <CloseOutlined
                             style={{
                                 position: 'absolute',
@@ -97,22 +104,14 @@ export const CreateElement = (props: createElementProps) => {
                                 cursor: "pointer",
                             }}
                             onClick={() => onRemoveItem(el.i)} />
-
-
                     </div>
                     :
-                    displayHeader
+                    displayHeader()
                 }
             </div>
 
-
             <AddModuleModal
                 onAddModule={onAddModule}
-                // categories={props.categories}
-                // categoryOnSelect={name => props.categoryOnSelect(name, true)}
-                // dashboardOnSelect={id => props.dashboardOnSelect(id, true)}
-                // copyTemplate={props.onCopyTemplate}
-
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
             />

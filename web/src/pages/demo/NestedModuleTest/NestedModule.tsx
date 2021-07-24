@@ -5,12 +5,8 @@ import { useEffect, useState } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
 import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
+import 'animate.css'
 
-// interface NSMEditorProps extends ModuleEditorField {
-//   fetchContentFn: (id: string, date?: string) => Promise<Element>
-//   fetchContentDatesFn: (id: string, markName?: string) => Promise<Element>
-//   fetchQueryDataFn: (readOption: Content) => Promise<any>
-// }
 const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
     return {
         i: i.toString(),
@@ -18,7 +14,6 @@ const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
         y: 0,
         w: 1,
         h: 1,
-        isResizable: false,
         text: i.toString(),
         autoSize: true,
         static: false,
@@ -81,6 +76,8 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
+    // const [items, setItems] = useState<tabItem[]>([])
+    // const [saveCount, setSaveCount] = useState(0)
     // console.log(props.content)
     return (props.content ?
         <div className={props.styling}>
@@ -90,6 +87,13 @@ const PresenterField = (props: ModulePresenterField) => {
                 currIndex={props.content?.data.currIndex}
                 editable={false}
                 styling={props.styling}
+            // fetchStoragesFn={() => Promise.resolve([])}
+            // fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
+            // fetchTableListFn={(id) => Promise.resolve([])}
+            // fetchQueryDataFn={props.fetchQueryData}
+            // updateContentFn={(content) => { }}
+            // setItems={setItems}
+            // setSaveCount={setSaveCount}
             />
         </div> : <></>)
 }

@@ -1,6 +1,6 @@
 import './NestedModule.css';
 import DynamicHeader from './Header/DynamicHeader';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tabItem } from './data';
 import { Skeleton } from 'antd';
 import { Content } from '@/components/Gallery/GalleryDataType';
@@ -47,11 +47,6 @@ export const NestedSimpleModulePresentor = (props: NestedSimpleModuleProps) => {
     useEffect(() => {
         if (props.setCurrIndex) props.setCurrIndex(currIndex)
     }, [currIndex])
-    useEffect(() => {
-        // effect
-        // console.log(items)
-        onLayoutChange(items!)
-    }, [items])
 
     //switch the module(template) corresponding to different tabs
     const onSwitch = (i: string) => {

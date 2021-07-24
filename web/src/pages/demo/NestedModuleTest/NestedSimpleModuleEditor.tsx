@@ -5,6 +5,7 @@ import { tabItem } from './data';
 import { Skeleton } from 'antd';
 import { Content, ElementType, StorageSimple } from '@/components/Gallery/GalleryDataType';
 import { ModuleTabPane } from './EmbededModule/CreateModule';
+import _ from 'lodash';
 
 interface NestedSimpleModuleProps {
     //for temp cache
@@ -30,7 +31,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     // if (!items) {
     //     setItems(defaultItems)
     // }
-    const setLayout = useState<ReactGridLayout.Layout[]>([])[1]
+    // const [layout, setLayout] = useState<ReactGridLayout.Layout[]>([])
     const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
     // const [items, setItems] = useState(props.tabItems || [])
     const [newCounter, setNewCounter] = useState(0)
@@ -39,15 +40,15 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //tabs layout updated
     useEffect(() => {
         // effect
-        // console.log(items)
-        onLayoutChange(items!)
+        console.log("items change")
+        // onLayoutChange(items!)
         setSaveCount(cnt => cnt + 1)
     }, [items])
 
     //embeded modulePanal updated
     useEffect(() => {
         setSaveCount(cnt => cnt + 1)
-        console.log(items?.map(it => it.module))
+        // console.log(items?.map(it => it.module))
     }, [updateCnt])
 
     //update curr index
@@ -61,11 +62,11 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
             // Add a new item. It must have a unique key!
             items.concat({
                 i: "" + counterPostfix + newCounter,
-                x: (items.length) % (12),
-                y: Math.floor((items.length) / (12)), // puts it at the bottom
+                //there's an "add tab"
+                x: (items.length ? items.length - 1 : 0) % (12),
+                y: Math.floor((items.length ? items.length - 1 : 0) / (12)), // puts it at the bottom
                 w: 1,
                 h: 1,
-                isResizable: false,
                 text: "n" + newCounter,
             }));
         // Increment the counter to ensure key is always unique.
@@ -84,8 +85,17 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     }
 
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
-        setLayout(layout);
-        // console.log(layout)
+        // setItems(updateElementInLayout(items!, layout))
+        console.log("items updated")
+        // setLayout(layout);
+        setItems(items => items.map(item => {
+            let layoutItem = layout.find(lay => lay.i === item.i)
+            if (layoutItem) return {
+                ...item, x: layoutItem.x, y: layoutItem.y,
+                w: layoutItem.w, h: layoutItem.h
+            }
+            return item
+        }))
     };
 
     //called when the add a new module
