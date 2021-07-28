@@ -185,5 +185,17 @@ export default {
   "gallery.component.module-panel.panel.module-panel-header1": "请输入标题",
 
   "gallery.page.demo.module-test.title": "展览馆模板测试",
+
+  "gallery.component.module-panel.nested-simple-module1": "添加标签",
+  "gallery.component.module-panel.nested-simple-module2": "编辑",
+  "gallery.component.module-panel.nested-simple-module3": "提交成功",
+  "gallery.component.module-panel.nested-simple-module4": "选择内容",
+  "gallery.component.module-panel.nested-simple-module5": "双击修改",
+
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "图标",
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "文章",
+  "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
+  "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
+
 }
 

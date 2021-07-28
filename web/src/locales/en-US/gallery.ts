@@ -185,5 +185,18 @@ export default {
   "gallery.component.module-panel.panel.module-panel-header1": "please enter the title",
 
   "gallery.page.demo.module-test.title": "Gallery Module Test",
+
+  "gallery.component.module-panel.nested-simple-module1": "Add Tabs",
+  "gallery.component.module-panel.nested-simple-module2": "Edit",
+  "gallery.component.module-panel.nested-simple-module3": "Saved",
+  "gallery.component.module-panel.nested-simple-module4": "Select the Content",
+  "gallery.component.module-panel.nested-simple-module5": "Double click to Edit",
+
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "Icon",
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "Article",
+  "gallery.component.module-panel.nested-simple-module.edit-tab3": "Text",
+  "gallery.component.module-panel.nested-simple-module.edit-tab4": "Number",
+
+
 }
 

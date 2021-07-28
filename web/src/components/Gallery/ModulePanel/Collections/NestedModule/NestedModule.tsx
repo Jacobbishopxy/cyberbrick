@@ -5,12 +5,8 @@ import { useEffect, useState } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
 import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
+import 'animate.css'
 
-// interface NSMEditorProps extends ModuleEditorField {
-//   fetchContentFn: (id: string, date?: string) => Promise<Element>
-//   fetchContentDatesFn: (id: string, markName?: string) => Promise<Element>
-//   fetchQueryDataFn: (readOption: Content) => Promise<any>
-// }
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {
         i: i.toString(),
@@ -18,19 +14,17 @@ const defaultItems: tabItem[] = [0].map(function (i, key, list) {
         y: 0,
         w: 1,
         h: 1,
-        isResizable: false,
         text: i.toString(),
         autoSize: true,
         static: false,
     };
 })
-
 const defaultData = { tabItems: defaultItems, currIndex: "0" }
 const EditorField = (props: ModuleEditorField) => {
-    //content type: 
-    //currIndex: string (used to indicate the tab when entering)
-    //tabItem: tabItem[]: 
-    /* for each item
+    /* content type: 
+    currIndex: string (used to indicate the tab when entering)
+    tabItem: tabItem[]: 
+    for each item
     id: i
     layout attribute: x y w h
     module: SimpleEmbededModule {
@@ -50,20 +44,17 @@ const EditorField = (props: ModuleEditorField) => {
     if (props.content) {
         tempIndex = props.content.data.currIndex
     }
-    // const [items, setItems] = useState<tabItem[]>(tempContent.data as tabItem[] || defaultItems)
+
     const [items, setItems] = useState<tabItem[]>(tempItems)
     const [currIndex, setCurrIndex] = useState(tempIndex)
     const [saveCount, setSaveCount] = useState(0)
 
     useEffect(() => {
         props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
-        // console.log(items)
-        return () => {
-            //
-        }
+
     }, [saveCount])
     return (
-        <div >
+        <div>
             <NestedSimpleModuleEditor
                 currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
@@ -82,11 +73,10 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-    // console.log(props.content)
+
     return (props.content ?
         <div className={props.styling}>
             <NestedSimpleModulePresentor
-                //  updateContentFn={props.updateContent} 
                 items={props.content?.data.tabItems as tabItem[]}
                 currIndex={props.content?.data.currIndex}
                 editable={false}

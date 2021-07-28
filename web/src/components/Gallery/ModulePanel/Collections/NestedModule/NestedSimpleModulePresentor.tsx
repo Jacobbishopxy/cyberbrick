@@ -47,11 +47,6 @@ export const NestedSimpleModulePresentor = (props: NestedSimpleModuleProps) => {
     useEffect(() => {
         if (props.setCurrIndex) props.setCurrIndex(currIndex)
     }, [currIndex])
-    useEffect(() => {
-        // effect
-        // console.log(items)
-        onLayoutChange(items!)
-    }, [items])
 
     //switch the module(template) corresponding to different tabs
     const onSwitch = (i: string) => {
@@ -119,8 +114,8 @@ export const NestedSimpleModulePresentor = (props: NestedSimpleModuleProps) => {
                 onAddModule={onAddModule}
                 onSwitch={onSwitch} />
 
-            <div>
-                {"on tab: " + currIndex}
+            <div className="align-header">
+                {/* {"on tab: " + currIndex} */}
                 {currModule || <Skeleton />}
 
             </div>
