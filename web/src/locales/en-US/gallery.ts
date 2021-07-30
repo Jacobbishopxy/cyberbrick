@@ -112,6 +112,7 @@ export default {
   "gallery.component.add-module-modal7": "Please select a template to copy:",
 
   "gallery.component.dashboard-controller1": "Save current layout and contents?",
+  "gallery.component.dashboard-controller2": "Template & contents saving successfully!",
 
   "gallery.component.dashboard-config-table1": "Dashboard configuration",
   "gallery.component.dashboard-config-table2": "New template",
@@ -198,6 +199,9 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "Text",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "Number",
 
+
+  "gallery.dashboard.copy-template1": "Copy template succeeded!",
+  "gallery.dashboard.copy-template2": "Copy template failed!",
 
 }
 

@@ -4,7 +4,6 @@ import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/Modu
 import { useEffect, useState } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./Editor"
-import { NestedSimpleModulePresentor } from "./Presentor"
 import 'animate.css'
 import './style.css';
 import { NSMid } from "./util"
@@ -82,13 +81,26 @@ const EditorField = (props: ModuleEditorField) => {
 
 const PresenterField = (props: ModulePresenterField) => {
 
+    const setItems = useState<tabItem[]>([])[1]
+    const setCurrIndex = useState("")[1]
+    const setSaveCount = useState(0)[1]
+    //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content ?
         <div className={props.styling}>
-            <NestedSimpleModulePresentor
+            <NestedSimpleModuleEditor
                 items={props.content?.data.tabItems as tabItem[]}
                 currIndex={props.content?.data.currIndex}
+                setCurrIndex={setCurrIndex}
+                setItems={setItems}
                 editable={false}
                 styling={props.styling}
+                NSMid={NSMid}
+                fetchStoragesFn={() => Promise.resolve([])}
+                fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
+                fetchTableListFn={(id) => Promise.resolve([])}
+                fetchQueryDataFn={props.fetchQueryData}
+                updateContentFn={(c) => { }}
+                setSaveCount={setSaveCount}
             />
         </div> : <></>)
 }

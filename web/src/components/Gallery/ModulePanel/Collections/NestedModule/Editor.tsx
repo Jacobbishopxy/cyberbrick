@@ -35,6 +35,7 @@ const updateElementInLayout = (elements: tabItem[], rawLayout: Layout[], contain
     _.zip(elements, rawLayout).map(zItem => {
         const ele: tabItem = zItem[0]!
         const rawEle: Layout = zItem[1]!
+        if (!rawEle) return ele
         let colMinSize = 64 //set defualt to 64 so that defualt font size is 32
         //if there's a containerWidth, calculate the minimal dimension among width and height
         if (containerWidth) {

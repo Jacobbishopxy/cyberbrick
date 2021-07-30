@@ -2,13 +2,14 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
-import {message} from "antd"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { message } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
-import {Controller} from "./DashboardController/Controller"
-import {Container, ContainerRef} from "./DashboardContainer/Container"
+import { Controller } from "./DashboardController/Controller"
+import { Container, ContainerRef } from "./DashboardContainer/Container"
+import { useIntl } from "umi"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -19,8 +20,8 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 
   return contents.map(c => {
     if (c.element!.id === undefined) {
-      const element = {...c.element!, id: elementNameIdMap[c.element!.name]}
-      return {...c, element}
+      const element = { ...c.element!, id: elementNameIdMap[c.element!.name] }
+      return { ...c, element }
     }
     return c
   })
@@ -72,9 +73,12 @@ export const Dashboard = (props: DashboardProps) => {
 
   const [selected, setSelected] = useState<string[]>()
 
+  const intl = useIntl()
+
   useEffect(() => {
     props.fetchCategories().then(res => setCategories(res))
   }, [])
+
 
   useEffect(() => {
     if (selectedDashboard && cRef.current) cRef.current.startFetchAllContents()
@@ -130,29 +134,32 @@ export const Dashboard = (props: DashboardProps) => {
         originTemplateId,
         targetTemplateId: selectedTemplateId
       }).then(() => {
-        message.success("Copy template succeeded!")
+        message.success(intl.formatMessage({ id: "gallery.dashboard.copy-template1" }))
         if (cRef.current) cRef.current.startFetchElements()
       })
     } else
-      message.warn("Copy template failed!")
+      message.warn(intl.formatMessage({ id: "gallery.dashboard.copy-template2" }))
   }
 
-  const onSaveTemplateAndContents = async () => {
+  const onRefresh = async (shouldSaveTemplateAndContents: boolean) => {
     if (cRef.current) {
-      const t = cRef.current.saveTemplate()
-      if (t) {
-        await props.saveTemplate(t)
-        if (updatedContents.length > 0) {
-          const updatedTemplate = await props.fetchTemplate(t.id!)
-          const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
-          await updateAllContents(contents)
-          setNewestContent(undefined)
-          setUpdatedContents([])
+      if (shouldSaveTemplateAndContents) {
+        const t = cRef.current.saveTemplate()
+        if (t) {
+          await props.saveTemplate(t)
+          if (updatedContents.length > 0) {
+            const updatedTemplate = await props.fetchTemplate(t.id!)
+            const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
+            await updateAllContents(contents)
+            setNewestContent(undefined)
+            setUpdatedContents([])
+          }
         }
-        cRef.current.fetchTemplate()
-        setRefresh(refresh + 1)
-        return Promise.resolve()
+
       }
+      cRef.current.fetchTemplate()
+      setRefresh(refresh + 1)
+      return Promise.resolve()
     }
     return Promise.reject(new Error("Invalid template!"))
   }
@@ -188,8 +195,8 @@ export const Dashboard = (props: DashboardProps) => {
     onAddModule={onAddModule}
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
-    onSaveTemplate={onSaveTemplateAndContents}
-  />, [canEdit, categories, onSaveTemplateAndContents])
+    onSaveTemplate={onRefresh}
+  />, [canEdit, categories, onRefresh])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

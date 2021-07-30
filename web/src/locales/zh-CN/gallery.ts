@@ -112,6 +112,8 @@ export default {
   "gallery.component.add-module-modal7": "请选择一个界面拷贝",
 
   "gallery.component.dashboard-controller1": "保存现有布局以及内容？",
+  "gallery.component.dashboard-controller2": "模块和内容保存成功！",
+
 
   "gallery.component.dashboard-config-table1": "仪表板配置",
   "gallery.component.dashboard-config-table2": "新建界面",
@@ -198,5 +200,7 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
 
+  "gallery.dashboard.copy-template1": "拷贝界面成功!",
+  "gallery.dashboard.copy-template2": "拷贝界面失败!",
 }
 
