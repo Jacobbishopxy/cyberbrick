@@ -3,10 +3,11 @@ import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/Mo
 import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
 import { useEffect, useState } from "react"
 import { tabItem } from "./data"
-import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
-import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
+import { NestedSimpleModuleEditor } from "./Editor"
+import { NestedSimpleModulePresentor } from "./Presentor"
 import 'animate.css'
-
+import './style.css';
+import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {
         i: i.toString(),
@@ -14,7 +15,6 @@ const defaultItems: tabItem[] = [0].map(function (i, key, list) {
         y: 0,
         w: 1,
         h: 1,
-        text: i.toString(),
         autoSize: true,
         static: false,
     };
@@ -24,15 +24,21 @@ const EditorField = (props: ModuleEditorField) => {
     /* content type: 
     currIndex: string (used to indicate the tab when entering)
     tabItem: tabItem[]: 
-    for each item
-    id: i
-    layout attribute: x y w h
-    module: SimpleEmbededModule {
-      name: string,
-      timeSeries: boolean,
-      elementType: ElementType,
-      content?: Content
-  }
+    for each item:
+        id: i
+        layout attribute: x y w h
+
+        tab content attribute:
+            tabContent: the content that will be displayed for a tab item
+            tabType: the type of the content
+            minDim: the minimal length between width and height. Used to calculate an item's font-size
+
+        module: SimpleEmbededModule {
+        name: string,
+        timeSeries: boolean,
+        elementType: ElementType,
+        content?: Content
+    }
     */
 
     let tempItems: tabItem[] = [];
@@ -49,12 +55,13 @@ const EditorField = (props: ModuleEditorField) => {
     const [currIndex, setCurrIndex] = useState(tempIndex)
     const [saveCount, setSaveCount] = useState(0)
 
+
     useEffect(() => {
         props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
-
+        // console.log(props.content)
     }, [saveCount])
     return (
-        <div>
+        <div id={NSMid}>
             <NestedSimpleModuleEditor
                 currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
@@ -67,6 +74,7 @@ const EditorField = (props: ModuleEditorField) => {
                 updateContentFn={props.updateContent}
                 editable={true}
                 styling={props.styling}
+                NSMid={NSMid}
             />
         </div>
     )

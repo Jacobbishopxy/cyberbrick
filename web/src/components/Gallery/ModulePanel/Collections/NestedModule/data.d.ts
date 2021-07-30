@@ -2,7 +2,8 @@ import { Layout } from "react-grid-layout";
 import { Content, ElementType } from "@/components/Gallery/GalleryDataType";
 
 export interface tabItem extends Layout {
-    text: string,
+    //minimal of the two (width and height) of a tab item; used to calculate font-size
+    minDim?: FontSize<string | number> | undefined;
     module?: simpleEmbededModule,
     tabContent?: tabContentChoice | string,
     tabType?: tabType

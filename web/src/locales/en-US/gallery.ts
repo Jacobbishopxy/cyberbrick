@@ -187,10 +187,11 @@ export default {
   "gallery.page.demo.module-test.title": "Gallery Module Test",
 
   "gallery.component.module-panel.nested-simple-module1": "Add Tabs",
-  "gallery.component.module-panel.nested-simple-module2": "Edit",
+  "gallery.component.module-panel.nested-simple-module2": "Edit Tab",
   "gallery.component.module-panel.nested-simple-module3": "Saved",
   "gallery.component.module-panel.nested-simple-module4": "Select the Content",
   "gallery.component.module-panel.nested-simple-module5": "Double click to Edit",
+  "gallery.component.module-panel.nested-simple-module6": "Edit corresponding Module",
 
   "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "Icon",
   "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "Article",

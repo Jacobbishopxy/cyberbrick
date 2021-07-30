@@ -1,11 +1,11 @@
-import {Settings as LayoutSettings} from '@ant-design/pro-layout'
+import { Settings as LayoutSettings } from '@ant-design/pro-layout'
 
 const Settings: LayoutSettings & {
   pwa?: boolean
   logo?: string
 } = {
   navTheme: 'light',
-  layout: 'mix',
+  layout: 'top',
   contentWidth: 'Fluid',
   fixedHeader: true,
   fixSiderbar: true,

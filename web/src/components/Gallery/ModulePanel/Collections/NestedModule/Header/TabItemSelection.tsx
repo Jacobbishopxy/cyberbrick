@@ -1,12 +1,13 @@
 import { ModalForm } from "@ant-design/pro-form";
-import { Button, Divider, Input, List, message } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Divider, Input, List, Tooltip } from "antd";
+import { useState } from "react";
 import { TabChoice } from "../data";
 
 import { tabSelectChunk } from "./TabChoice";
 
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 import { useIntl } from "umi";
+import { EditOutlined } from "@ant-design/icons";
 
 interface TabItemSelectionProps {
     selected: string,
@@ -14,13 +15,15 @@ interface TabItemSelectionProps {
     endEdit: (selectedType: string, input?: string) => void
 }
 
+/*
+This is the modal form for selecting tab item content. When submit, it update the
+tab choice (with 'selectedType'), selected icon (with 'selected') and input if it's given (with 'input')
+*/
 export const TabItemSelection = (props: TabItemSelectionProps) => {
-    const { selected, setSelected } = props
+    const [selected, setSelected] = useState(props.selected)
     const [input, setInput] = useState('')
     const [selectedType, setSelectedType] = useState('')
     const intl = useIntl()
-    useEffect(() => {
-    }, [selected])
 
     //update input value
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,22 +36,26 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
         setSelected(key)
     }
 
-    const singleChoiceContent = (choice: TabChoice) => {
-        return (choice.key === selected) ? //changed style when selected
-            <div onClick={() => onClick(choice.key, choice.tabType)}
-                className='tab-icon-selected'
-                key={choice.key}
-            >
-                {choice.icon}
-            </div> :
-            <div onClick={() => onClick(choice.key, choice.tabType)}
-                className='tab-icon'
-                key={choice.key}
-            >
-                {choice.icon}
-            </div>
+    const onFinish = async () => {
+        props.setSelected(selected)
+        // console.log(selected)
+        selectedType === 'icon' ? props.endEdit(selectedType) : props.endEdit(selectedType, input)
+        return true;
     }
 
+    //style of a single choice
+    const singleChoiceContent = (choice: TabChoice) => {
+        const className = (choice.key === selected) ? 'tab-icon-selected' : 'tab-icon'
+        return ( //changed style when selected
+            <div onClick={() => onClick(choice.key, choice.tabType)}
+                className={className}
+                key={choice.key}
+            >
+                {choice.icon}
+            </div>)
+    }
+
+    //display a list of tab choices of same type
     const choicesDisplay = (choice: TabChoice) => {
         //is icon
         if (choice.tabType === "icon") {
@@ -68,6 +75,7 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
         )
     }
 
+    //display tab choice of different types
     const tabChoiceChunk = () => {
         return tabSelectChunk.map(chunk => {
             return <div key={chunk.key}>
@@ -96,15 +104,13 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
         }>
             title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module4" })}
             trigger={
-                <Button size='small' type="primary">
-                    {intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module2" })}
-                </Button>
+                <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module2" })}>
+                    <Button size='small' icon className="tab-controller-button">
+                        <EditOutlined />
+                    </Button>
+                </Tooltip>
             }
-            onFinish={async (values) => {
-                // message.success(intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module3" }));
-                selectedType === 'icon' ? props.endEdit(selectedType) : props.endEdit(selectedType, input)
-                return true;
-            }}
+            onFinish={onFinish}
         >
 
             {tabChoiceChunk()}

@@ -1,4 +1,3 @@
-import './NestedModule.css';
 import DynamicHeader from './Header/DynamicHeader';
 import { useEffect, useState } from 'react';
 import { tabItem } from './data';
@@ -107,6 +106,7 @@ export const NestedSimpleModulePresentor = (props: NestedSimpleModuleProps) => {
             <DynamicHeader
                 items={items!}
                 editable={false}
+                currIndex={currIndex}
                 setItems={setItems}
                 onAddItem={onAddItem}
                 onRemoveItem={onRemoveItem}

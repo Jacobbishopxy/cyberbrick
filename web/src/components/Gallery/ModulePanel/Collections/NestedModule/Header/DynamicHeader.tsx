@@ -1,22 +1,18 @@
-import React, { } from "react";
+import React, { useState } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
-import { CreateElement } from "./CreateItem";
 import { tabItem } from "../data"
 import { Button } from "antd";
 import { useIntl } from "umi";
+import { TabController } from "./TabController";
+import { COLS_NUM, DEFAULT_ROW_HEIGHT, RGL_CLASSNAME } from "../util";
 
-const COLSNUM = 6
-const reactGridLayoutDefaultProps = {
-    className: "layout",
-    cols: COLSNUM,
-    rowHeight: 70,
-}
 
 const ReactGridLayout = WidthProvider(RGL);
-interface AddRemoveProps {
+interface DynamicHeaderProps {
     editable: boolean
     items: tabItem[],
+    currIndex: string,
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>,
     onAddItem: () => void,
     onRemoveItem: (i: string) => void,
@@ -29,42 +25,24 @@ interface AddRemoveProps {
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-const DynamicHeader = (props: AddRemoveProps) => {
+const DynamicHeader = (props: DynamicHeaderProps) => {
     const intl = useIntl()
-    const { items, setItems, onRemoveItem, onSwitch, onAddModule } = props
+    const { onRemoveItem, onSwitch, onAddModule } = props
+    const [isHover, setIsHover] = useState<string | null>(null)
 
-    // let addTabLayout = {
-    //     i: "add",
-    //     x: (items.length) % (COLSNUM),
-    //     y: Math.floor((items.length) / (COLSNUM)), // puts it at the bottom
-    //     w: 1,
-    //     h: 1,
-    //     text: "Add",
-    // }
+    /*
+    the following are helper method to determine which tab item the mouse is hovering over
+    */
+    const onMouseEnter = (id: string) => {
+        setIsHover(id)
+    }
 
-    // useEffect(() => {
+    const onMouseLeave = () => {
+        setIsHover(null)
+    }
 
-    //     addTabLayout = {
-    //         ...addTabLayout,
-    //         x: (items.length) % (COLSNUM),
-    //         y: Math.floor((items.length) / (COLSNUM)), // puts it at the bottom
-
-    //     }
-    //     console.log(addTabLayout)
-    // }, [items.length])
-
-
-
-    // const addTab = <div key={"add"}
-    //     data-grid={addTabLayout}
-    //     style={{ border: "1px dashed grey" }}
-    // >
-    //     <PlusOutlined
-    //         className="add-tab"
-    //         onClick={onAddItem}
-    //         style={{ cursor: "pointer", }}
-    //     />
-    // </div>
+    //determine style for selected and unselected items
+    const className = (id: string) => props.currIndex === id ? "tab-content-selected" : "tab-content"
 
     return (
         <div>
@@ -76,7 +54,9 @@ const DynamicHeader = (props: AddRemoveProps) => {
                 </div>
                 : <div />}
             <ReactGridLayout
-                {...reactGridLayoutDefaultProps}
+                rowHeight={DEFAULT_ROW_HEIGHT}
+                cols={COLS_NUM}
+                className={RGL_CLASSNAME}
                 isDraggable={props.editable}
                 isResizable={props.editable}
                 compactType={"horizontal"}
@@ -84,16 +64,23 @@ const DynamicHeader = (props: AddRemoveProps) => {
                 // {...props}
                 // layout={[addTabLayout]}
                 onLayoutChange={props.onLayoutChange}
-                style={{ minWidth: "100%" }}
+                style={{ minWidth: "100%", border: "0" }}
             >
-                {items.map(el =>
-                    <div key={el.i} data-grid={el} onClick={() => onSwitch(el.i)}>
-                        <CreateElement editable={props.editable} el={el}
+                {props.items.map(el =>
+                    <div key={el.i} data-grid={el} id={el.i}
+                        className={className(el.i)}
+                        onClick={() => onSwitch(el.i)}
+                        onMouseEnter={() => onMouseEnter(el.i)}
+                        onMouseLeave={onMouseLeave}>
+                        <TabController
+
+                            editable={props.editable} el={el}
+                            isHover={(isHover && isHover === el.i) ? true : false}
+                            isSelected={props.currIndex === el.i}
                             onRemoveItem={onRemoveItem}
-                            setItems={setItems}
+                            setItems={props.setItems}
                             onAddModule={onAddModule}
                         />
-
                     </div>)
                 }
             </ReactGridLayout>

@@ -1,11 +1,13 @@
 import { ModalForm } from "@ant-design/pro-form";
-import { Button, Divider, Input, List, message } from "antd";
+import { Button, Divider, Input, List, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { TabChoice } from "../data";
 
 import { tabSelectChunk } from "./TabChoice";
 
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
+import { useIntl } from "umi";
+import { EditOutlined } from "@ant-design/icons";
 
 interface TabItemSelectionProps {
     selected: string,
@@ -17,7 +19,7 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
     const { selected, setSelected } = props
     const [input, setInput] = useState('')
     const [selectedType, setSelectedType] = useState('')
-
+    const intl = useIntl()
     useEffect(() => {
     }, [selected])
 
@@ -69,14 +71,15 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
 
     const tabChoiceChunk = () => {
         return tabSelectChunk.map(chunk => {
-            return <div>
-                <Divider orientation="left">{chunk.key}</Divider>
+            return <div key={chunk.key}>
+                <Divider orientation="left">
+                    {intl.formatMessage({ id: `gallery.component.module-panel.nested-simple-module.edit-tab.${chunk.key}` })}</Divider>
                 <List //6 icons per row or 3 labels per row
                     grid={{ column: (chunk.key === "Icon") ? 6 : 3 }}
                     size="small"
                     dataSource={chunk.children}
                     renderItem={item => (
-                        <List.Item>
+                        <List.Item key={item.key}>
                             <label className={styles.moduleSelectionLabel}>
                                 {choicesDisplay(item)}
                             </label>
@@ -92,14 +95,16 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
             name: string;
             company: string;
         }>
-            title="Select the content"
+            title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module4" })}
             trigger={
-                <Button size='small'>
-                    Edit
-                </Button>
+                <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module2" })}>
+                    <Button size='small' icon className="tab-controller-button">
+                        <EditOutlined />
+                    </Button>
+                </Tooltip>
             }
             onFinish={async (values) => {
-                message.success('提交成功');
+                // message.success(intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module3" }));
                 selectedType === 'icon' ? props.endEdit(selectedType) : props.endEdit(selectedType, input)
                 return true;
             }}

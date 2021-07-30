@@ -44,7 +44,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     }
 
     const updateContent = (c: Content) => {
-        console.log(c)
+        // console.log(c)
         setContent(c)
         //update the content in items list
         props.setItems(items => items.map(item => {
@@ -54,14 +54,14 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
             }
             return item
         }))
-        console.log()
+        // console.log()
     }
 
     const onRemove = () => {
         props.onRemoveModule(tabId)
     }
+    //'xlsxTable' require 'data' is of type array
     const convertContent = elementType === "xlsxTable" ? { ...content, date: content?.date!, data: [content!.data] } : content
-    //TODO: implement the details
     //warning! hardcoded height
     return (
         <div style={{ height: "390px" }}>

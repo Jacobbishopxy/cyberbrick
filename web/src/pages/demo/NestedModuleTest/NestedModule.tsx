@@ -6,7 +6,7 @@ import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
 import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
 import 'animate.css'
-
+import './NestedModuleTest.css';
 const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
     return {
         i: i.toString(),
