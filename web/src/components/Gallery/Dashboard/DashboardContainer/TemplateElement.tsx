@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
@@ -27,6 +27,7 @@ export interface ContainerElementRef {
   fetchContentDates: () => Promise<string[]>
 }
 
+
 /**
  * Template's elements
  */
@@ -37,6 +38,10 @@ export const TemplateElement =
     const [mpHeight, setMpHeight] = useState<number>(0)
     const [content, setContent] = useState<DataType.Content>()
     const eleId = props.element.id as string | undefined
+
+    const [isLoading, setIsLoading] = useState(true);
+    // const [isError, setIsError] = useState(false);
+
     const [isMounted, setIsMounted] = useState(true);
 
     useLayoutEffect(() => {
@@ -44,18 +49,27 @@ export const TemplateElement =
     })
 
     //TODO: cancel can't refetch
-    const fetchContent = useCallback(
-      (date?: string) => {
-        console.log(isMounted, eleId)
-        if (eleId && isMounted) {
-          if (date)
-            props.fetchContentFn(eleId, date).then(res => setContent(res))
-          else
-            props.fetchContentFn(eleId).then(res => setContent(res))
+    const fetchContent = (date?: string) => {
+      // setIsLoading(true);
+      // console.log(isMounted, eleId)
+      if (eleId && isMounted) {
+        if (date) {
+          props.fetchContentFn(eleId, date).then(res => {
+            setContent(res)
+            setIsLoading(false);
+          })
+          // setIsLoading(false);
         }
-      },
-      [isMounted],
-    )
+        // props.fetchContentFn(eleId, date).then(res => setContent(res))
+        else {
+          props.fetchContentFn(eleId).then(res => {
+            setContent(res)
+            setIsLoading(false)
+          })
+
+        }
+      }
+    }
 
 
     //cancel subsription when this component is unmounted, so that fetchContent won't make a request
@@ -99,6 +113,7 @@ export const TemplateElement =
           onRemove={props.onRemove}
           editable={props.editable}
           settable={!!eleId}
+          isLoading={isLoading}
         />
       </div>
     )

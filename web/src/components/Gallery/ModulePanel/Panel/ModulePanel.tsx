@@ -3,10 +3,10 @@
  */
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Modal } from "antd"
+import { Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
-import _ from "lodash"
+import _, { floor } from "lodash"
 
 import * as DataType from "../../GalleryDataType"
 import { ConvertFwRef } from "../Generator/data"
@@ -36,7 +36,11 @@ export interface ModulePanelProps {
   onRemove: () => void
   editable: boolean
   settable: boolean
+  isLoading: boolean
 }
+
+const SKELETON_HEIGHT_TO_ROWS = 50
+const SKELETON_DEFAULT_ROWS = 5
 
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
@@ -48,6 +52,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const [content, setContent] = useState<DataType.Content>()
   const [dates, setDates] = useState<string[]>([])
 
+  const [loading, setIsLoading] = useState(props.isLoading)
+
+  useEffect(() => {
+    setIsLoading(props.isLoading)
+  }, [props.isLoading])
   useEffect(() => {
     moduleRef.current = collectionSelector(props.elementType)
   }, [])
@@ -137,6 +146,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const genContext = useMemo(() => {
     const rf = moduleRef.current
     if (rf) {
+      //if it's has id (so it's saved to db) and it's loading, display skeleton. 
+      //If we finish loading, display whatever content is, including a white board (for content undefined or null)
+      if (props.eleId && loading) {
+        const rows =
+          props.contentHeight ? floor(props.contentHeight / SKELETON_HEIGHT_TO_ROWS) : SKELETON_DEFAULT_ROWS
+        return <Skeleton className={styles.loadinSkeleton}
+          active paragraph={{ rows: rows }} />
+      }
+
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
       return rf({
         content,
@@ -150,7 +168,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       })
     }
     return <></>
-  }, [content, props.contentHeight])
+  }, [content, props.contentHeight, loading])
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter

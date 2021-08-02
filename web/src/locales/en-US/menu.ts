@@ -55,6 +55,7 @@ export default {
   'menu.gallery.dataset': 'Dataset',
   'menu.gallery.overview': 'Overview',
   'menu.gallery.dashboard': 'Dashboard',
+  'menu.gallery.dashboardTemplate': 'Template Library',
 
   'menu.demo': 'Demo',
   'menu.demo.local-storage': 'Local Storage',

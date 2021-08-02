@@ -55,6 +55,7 @@ export default {
   'menu.gallery.dataset': '数据集',
   'menu.gallery.overview': '总览',
   'menu.gallery.dashboard': '仪表板',
+  'menu.gallery.dashboardTemplate': '模板库',
 
   'menu.demo': '样品',
   'menu.demo.local-storage': 'Local Storage',
