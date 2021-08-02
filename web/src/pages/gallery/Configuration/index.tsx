@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import {useEffect, useState} from "react"
-import {message, Tabs} from "antd"
-import {DashboardOutlined, DatabaseOutlined, TagsOutlined} from "@ant-design/icons"
-import {FormattedMessage} from "umi"
+import { useEffect, useState } from "react"
+import { message, Tabs } from "antd"
+import { DashboardOutlined, DatabaseOutlined, TagsOutlined } from "@ant-design/icons"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import {CategoryConfigTable, DashboardConfigTable, StorageConfigTable} from "@/components/Gallery/Configuration"
+import { CategoryConfigTable, DashboardConfigTable, StorageConfigTable } from "@/components/Gallery/Configuration"
 
 
 const getAllCategories = () => GalleryService.getAllCategoriesWithoutContents()
@@ -53,9 +53,9 @@ export default () => {
 
   useEffect(() => tabPaneOnchange(activeKey), [activeKey])
 
-  const saveCategory = (name: string, description?: string) =>
+  const saveCategory = (name: string, type: string, description?: string) =>
     GalleryService
-      .saveCategory({name, description})
+      .saveCategory({ name, type, description })
       .then(refreshCat)
 
   const updateDashboards = (categoryName: string, dashboards: DataType.Dashboard[]) =>
@@ -114,7 +114,7 @@ export default () => {
       onChange={v => setActiveKey(v as TabPaneType)}
     >
       <Tabs.TabPane
-        tab={<span><TagsOutlined/><FormattedMessage id="gallery.component.general1"/></span>}
+        tab={<span><TagsOutlined /><FormattedMessage id="gallery.component.general1" /></span>}
         key="Category"
       >
         <CategoryConfigTable
@@ -127,7 +127,7 @@ export default () => {
       </Tabs.TabPane>
 
       <Tabs.TabPane
-        tab={<span><DashboardOutlined/><FormattedMessage id="gallery.component.general2"/></span>}
+        tab={<span><DashboardOutlined /><FormattedMessage id="gallery.component.general2" /></span>}
         key="Dashboard"
       >
         <DashboardConfigTable
@@ -137,7 +137,7 @@ export default () => {
       </Tabs.TabPane>
 
       <Tabs.TabPane
-        tab={<span><DatabaseOutlined/><FormattedMessage id="gallery.component.general8"/></span>}
+        tab={<span><DatabaseOutlined /><FormattedMessage id="gallery.component.general8" /></span>}
         key="Storage"
       >
         <StorageConfigTable

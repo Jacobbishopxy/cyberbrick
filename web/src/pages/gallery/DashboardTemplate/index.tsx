@@ -2,21 +2,21 @@
  * Created by Jacob Xie on 9/28/2020.
  */
 
-import {useEffect, useState} from "react"
-import {useLocation} from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 
-import {Dashboard} from "@/components/Gallery/Dashboard"
-import {GalleryDataType} from "@/components/Gallery"
+import { Dashboard } from "@/components/Gallery/Dashboard"
+import { GalleryDataType } from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
-import {LocalStorageHelper} from "@/utils/localStorageHelper"
+import { LocalStorageHelper } from "@/utils/localStorageHelper"
 import React from "react"
 
-const CATEGORY_TYPE = "temp-lib"
+const CATEGORY_TYPE = "temp_lib"
 
 export const IsTemplateContext = React.createContext<boolean>(false)
 
-const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "week"]})
+const ls = new LocalStorageHelper("gallery.dashboardTemplate", { expiry: [1, "week"] })
 const lsKey = "selected"
 const useQuery = () => new URLSearchParams(useLocation().search)
 
@@ -31,7 +31,7 @@ export default () => {
       try {
         const pi = JSON.parse(initialValue)
         setInitialSelected(pi)
-      } catch {}
+      } catch { }
     } else {
       const i = ls.get(lsKey)
       if (i) setInitialSelected(JSON.parse(i.data))
