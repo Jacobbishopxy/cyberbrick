@@ -11,6 +11,7 @@ export type QueryStr = string | undefined
 export const whereNameEqual = (v: string) => ({where: {name: Equal(v)}})
 export const whereIdEqual = (v: string) => ({where: {id: Equal(v)}})
 export const whereIdsIn = (v: string[]) => ({where: {id: In(v)}})
+export const whereTypeEqual = (v: string) => ({where: {type: Equal(v)}})
 
 // query orders
 export type OrderType = "ASC" | "DESC"

@@ -16,7 +16,7 @@ export class UpdateController {
   getAllUpdate() {
     try {
       return this.service.getAllUpdate()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -25,7 +25,7 @@ export class UpdateController {
   getUpdateById(@Query("id") id: string) {
     try {
       return this.service.getUpdateById(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -34,7 +34,7 @@ export class UpdateController {
   saveUpdate(@Body() update: Update) {
     try {
       return this.service.saveUpdate(update)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -43,7 +43,7 @@ export class UpdateController {
   deleteUpdate(@Query("id") id: string) {
     try {
       return this.service.deleteUpdate(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -56,7 +56,7 @@ export class UpdateController {
   })) pagination?: [number, number]) {
     try {
       return this.service.getLatestUpdate(pagination)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -65,7 +65,7 @@ export class UpdateController {
   getUpdateCount() {
     try {
       return this.service.getUpdateCount()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

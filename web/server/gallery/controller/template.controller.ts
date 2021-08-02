@@ -18,7 +18,7 @@ export class TemplateController {
   getAllTemplates() {
     try {
       return this.service.getAllTemplates()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -27,7 +27,7 @@ export class TemplateController {
   getTemplateById(@Query("id") id: string) {
     try {
       return this.service.getTemplateById(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -36,7 +36,7 @@ export class TemplateController {
   saveTemplate(@Body() template: Template) {
     try {
       return this.service.saveTemplate(template)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -45,7 +45,7 @@ export class TemplateController {
   deleteTemplate(@Query("id") id: string) {
     try {
       return this.service.deleteTemplate(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -56,7 +56,7 @@ export class TemplateController {
   getTemplateElementsContents(@Query("id") id: string) {
     try {
       return this.service.getTemplateElementsContents(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -65,27 +65,27 @@ export class TemplateController {
   getTemplateElements(@Query("id") id: string) {
     try {
       return this.service.getTemplateElements(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("saveTemplateInDashboard")
   saveTemplateInDashboard(@Query("id") id: string,
-                          @Body() template: Template) {
+    @Body() template: Template) {
     try {
       return this.service.saveTemplateInDashboard(id, template)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("saveTemplatesInDashboard")
   saveTemplatesInDashboard(@Query("id") id: string,
-                           @Body() templates: Template[]) {
+    @Body() templates: Template[]) {
     try {
       return this.service.saveTemplatesInDashboard(id, templates)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -94,27 +94,27 @@ export class TemplateController {
   deleteTemplatesInDashboard(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteTemplatesInDashboard(ids)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("updateTemplatesInDashboard")
   updateTemplatesInDashboard(@Query("id") dashboardId: string,
-                             @Body() templates: Template[]) {
+    @Body() templates: Template[]) {
     try {
       return this.service.updateTemplatesInDashboard(dashboardId, templates)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("modifyTemplate")
   modifyTemplate(@Query("id") id: string,
-                 @Body() template: Template) {
+    @Body() template: Template) {
     try {
       return this.service.modifyTemplate(id, template)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -127,7 +127,7 @@ export class TemplateController {
           cpy.originTemplateId,
           cpy.targetTemplateId,
         )
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -136,7 +136,7 @@ export class TemplateController {
   updateTemplateElements(@Body() template: Template) {
     try {
       return this.service.updateTemplateElements(template)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

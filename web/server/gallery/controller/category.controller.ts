@@ -18,7 +18,7 @@ export class CategoryController {
   getAllCategories() {
     try {
       return this.service.getAllCategories()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -27,7 +27,7 @@ export class CategoryController {
   getCategoryByName(@Query("name") name: string) {
     try {
       return this.service.getCategoryByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -36,7 +36,7 @@ export class CategoryController {
   saveCategory(@Body() category: Category) {
     try {
       return this.service.saveCategory(category)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -45,18 +45,27 @@ export class CategoryController {
   deleteCategory(@Query("name") name: string) {
     try {
       return this.service.deleteCategory(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   // ===================================================================================================================
 
+  @Get("getAllCategoriesByType")
+  getAllCategoriesByType(@Query("type") type: string) {
+    try {
+      return this.service.getAllCategoriesByType(type)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Get("getAllCategories")
   getAllCategoriesName() {
     try {
       return this.service.getAllCategoriesName()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -65,7 +74,7 @@ export class CategoryController {
   getAllCategoriesWithoutContents() {
     try {
       return this.service.getAllCategoriesWithoutContents()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -74,7 +83,7 @@ export class CategoryController {
   getCategoryMarkAndTagByName(@Query("name") name: string) {
     try {
       return this.service.getCategoryMarkAndTagByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -83,7 +92,7 @@ export class CategoryController {
   getCategoryContentByName(@Query("name") name: string) {
     try {
       return this.service.getCategoryContentByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -92,7 +101,7 @@ export class CategoryController {
   getCategoryDashboardByName(@Query("name") name: string) {
     try {
       return this.service.getCategoryDashboardByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -101,27 +110,27 @@ export class CategoryController {
   savePureCategory(@Body(CategoryPurePipe) category: CategoryPureDto) {
     try {
       return this.service.saveCategory(category as Category)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("saveCategoryMark")
   saveCategoryMark(@Query("name") name: string,
-                   @Body() mark: Mark) {
+    @Body() mark: Mark) {
     try {
       return this.service.saveCategoryMark(name, mark)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("saveCategoryTag")
   saveCategoryTag(@Query("name") name: string,
-                  @Body() tag: Tag) {
+    @Body() tag: Tag) {
     try {
       return this.service.saveCategoryTag(name, tag)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

@@ -17,7 +17,7 @@ export class TagController {
   getAllTags() {
     try {
       return this.service.getAllTags()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -26,7 +26,7 @@ export class TagController {
   getTagsByName(@Query("name") name: string) {
     try {
       return this.service.getTagsByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -35,7 +35,7 @@ export class TagController {
   saveTag(@Body() tag: Tag) {
     try {
       return this.service.saveTag(tag)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -44,7 +44,7 @@ export class TagController {
   deleteTag(@Query("id") id: string) {
     try {
       return this.service.deleteTag(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -55,7 +55,7 @@ export class TagController {
   getCategoriesByTagName(@Query("name") name: string) {
     try {
       return this.service.getCategoriesByTagName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -64,17 +64,17 @@ export class TagController {
   modifyTag(@Body() tag: Tag) {
     try {
       return this.service.modifyTag(tag)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Delete("deleteTagInCategory")
   deleteTagInCategory(@Query("categoryName") categoryName: string,
-                      @Query("tagName") tagName: string) {
+    @Query("tagName") tagName: string) {
     try {
       return this.service.deleteTagInCategory(categoryName, tagName)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -83,7 +83,7 @@ export class TagController {
   saveTags(@Body() tags: Tag[]) {
     try {
       return this.service.saveTags(tags)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -92,17 +92,17 @@ export class TagController {
   deleteTags(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteTags(ids)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("updateTagsInCategory")
   updateTagsInCategory(@Query("categoryName") categoryName: string,
-                       @Body() tags: Tag[]) {
+    @Body() tags: Tag[]) {
     try {
       return this.service.updateTagsInCategory(categoryName, tags)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

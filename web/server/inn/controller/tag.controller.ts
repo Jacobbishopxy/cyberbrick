@@ -16,7 +16,7 @@ export class TagController {
   getAllTags() {
     try {
       return this.service.getAllTags()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -25,7 +25,7 @@ export class TagController {
   getTagById(@Query("id") id: string) {
     try {
       return this.service.getTagById(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -34,7 +34,7 @@ export class TagController {
   saveTag(@Body() tag: Tag) {
     try {
       return this.service.saveTag(tag)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -43,7 +43,7 @@ export class TagController {
   deleteTag(@Query("id") id: string) {
     try {
       return this.service.deleteTag(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -52,7 +52,7 @@ export class TagController {
   modifyTags(@Body() tags: Tag[]) {
     try {
       return this.service.modifyTags(tags)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

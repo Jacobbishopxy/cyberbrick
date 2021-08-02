@@ -16,7 +16,7 @@ export class ElementController {
   getAllElements() {
     try {
       return this.service.getAllElements()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -25,7 +25,7 @@ export class ElementController {
   getElementsByIds(@Query("ids") ids: string) {
     try {
       return this.service.getElementsByIds(ids.split(","))
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -34,7 +34,7 @@ export class ElementController {
   saveElement(@Body() element: Element) {
     try {
       return this.service.saveElement(element)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -43,7 +43,7 @@ export class ElementController {
   deleteElement(@Query("id") id: string) {
     try {
       return this.service.deleteElement(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -52,31 +52,31 @@ export class ElementController {
 
   @Get("getElementContentDates")
   getElementContentDates(@Query("id") id: string,
-                         @Query("markName") markName?: string) {
+    @Query("markName") markName?: string) {
     try {
       return this.service.getElementContentDates(id, markName)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Get("getElementContent")
   getElementContent(@Query("id") id: string,
-                    @Query("date") date?: string,
-                    @Query("markName") markName?: string) {
+    @Query("date") date?: string,
+    @Query("markName") markName?: string) {
     try {
       return this.service.getElementContent(id, date, markName)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("modifyElement")
   modifyElement(@Query("id") id: string,
-                @Body() element: Element) {
+    @Body() element: Element) {
     try {
       return this.service.modifyElement(id, element)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

@@ -85,6 +85,13 @@ export class CategoryService {
 
   // ===================================================================================================================
 
+  getAllCategoriesByType(type: string) {
+    return this.repo.find({
+      ...categoryFullRelations,
+      ...utils.whereTypeEqual(type)
+    })
+  }
+
   getAllCategoriesName() {
     return this.repo.find({select: [common.name]})
   }

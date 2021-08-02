@@ -14,6 +14,9 @@ const baseDb = "/api/database"
 export const getAllCategories = async (): Promise<GalleryAPI.Category[]> =>
   request(`${base}/getAllCategories`)
 
+export const getAllCategoriesByType = async (type: string): Promise<GalleryAPI.Category[]> =>
+  request(`${base}/getAllCategoriesByType?type=${type}`)
+
 export const getAllCategoriesWithoutContents = async (): Promise<GalleryAPI.Category[]> =>
   request(`${base}/getAllCategoriesWithoutContents`)
 
@@ -116,10 +119,10 @@ export const updateTagsInCategory = async (categoryName: string, tags: GalleryAP
 
 export const getContentsInCategoryByElementTypeAndMarkAndTags =
   async (categoryName: string,
-         elementType?: string,
-         markName?: string,
-         tagNames?: string[],
-         pagination?: [number, number]): Promise<GalleryAPI.Content> => {
+    elementType?: string,
+    markName?: string,
+    tagNames?: string[],
+    pagination?: [number, number]): Promise<GalleryAPI.Content> => {
     let path = `${base}/getContentsInCategoryByElementTypeAndMarkAndTags?categoryName=${categoryName}`
     if (elementType)
       path += `&elementType=${elementType}`

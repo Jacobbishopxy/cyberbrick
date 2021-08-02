@@ -17,7 +17,7 @@ export class ContentController {
   getAllContents() {
     try {
       return this.service.getAllContents()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -26,7 +26,7 @@ export class ContentController {
   getContentById(@Query("id") id: string) {
     try {
       return this.service.getContentById(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -35,7 +35,7 @@ export class ContentController {
   saveContent(@Body() content: Content) {
     try {
       return this.service.saveContent(content)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -44,7 +44,7 @@ export class ContentController {
   deleteContent(@Query("id") id: string) {
     try {
       return this.service.deleteContent(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -53,14 +53,14 @@ export class ContentController {
 
   @Get("getContentsInCategoryByElementTypeAndMarkAndTags")
   getContentsInCategoryByElementTypeAndMarkAndTags(@Query("categoryName") categoryName: string,
-                                                   @Query("elementType") elementType?: common.ElementType,
-                                                   @Query("markName") markName?: string,
-                                                   @Query("tagNames") tagNames?: string[],
-                                                   @Query("pagination", new ParseArrayPipe({
-                                                     optional: true,
-                                                     items: Number,
-                                                     separator: ","
-                                                   })) pagination?: [number, number]) {
+    @Query("elementType") elementType?: common.ElementType,
+    @Query("markName") markName?: string,
+    @Query("tagNames") tagNames?: string[],
+    @Query("pagination", new ParseArrayPipe({
+      optional: true,
+      items: Number,
+      separator: ","
+    })) pagination?: [number, number]) {
     try {
       return this.service
         .getContentsInCategoryByElementTypeAndMarkAndTags(
@@ -70,7 +70,7 @@ export class ContentController {
           tagNames,
           pagination
         )
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -79,7 +79,7 @@ export class ContentController {
   saveContentInCategory(@Query("name") name: string, @Body() content: Content) {
     try {
       return this.service.saveContentInCategory(name, content)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

@@ -17,7 +17,7 @@ export class MarkController {
   getAllMarks() {
     try {
       return this.service.getAllMarks()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -26,7 +26,7 @@ export class MarkController {
   getMarksByName(@Query("name") name: string) {
     try {
       return this.service.getMarksByName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -35,7 +35,7 @@ export class MarkController {
   saveMark(@Body() mark: Mark) {
     try {
       return this.service.saveMark(mark)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -44,7 +44,7 @@ export class MarkController {
   deleteMark(@Query("id") id: string) {
     try {
       return this.service.deleteMark(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -55,7 +55,7 @@ export class MarkController {
   getCategoriesByMarkName(@Query("name") name: string) {
     try {
       return this.service.getCategoriesByMarkName(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -64,17 +64,17 @@ export class MarkController {
   modifyMark(@Body() mark: Mark) {
     try {
       return this.service.modifyMark(mark)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Delete("deleteMarkInCategory")
   deleteMarkInCategory(@Query("categoryName") categoryName: string,
-                       @Query("markName") markName: string) {
+    @Query("markName") markName: string) {
     try {
       return this.service.deleteMarkInCategory(categoryName, markName)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -83,7 +83,7 @@ export class MarkController {
   saveMarks(@Body() marks: Mark[]) {
     try {
       return this.service.saveMarks(marks)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -92,17 +92,17 @@ export class MarkController {
   deleteMarks(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteMarks(ids)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("updateMarksInCategory")
   updateMarksInCategory(@Query("categoryName") categoryName: string,
-                        @Body() marks: Mark[]) {
+    @Body() marks: Mark[]) {
     try {
       return this.service.updateMarksInCategory(categoryName, marks)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

@@ -11,6 +11,7 @@ import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import {LocalStorageHelper} from "@/utils/localStorageHelper"
 
+const CATEGORY_TYPE = "dashboard"
 
 const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "week"]})
 const lsKey = "selected"
@@ -39,7 +40,7 @@ export default () => {
   }
 
   const fetchCategories = () =>
-    GalleryService.getAllCategories() as Promise<DataType.Category[]>
+    GalleryService.getAllCategoriesByType(CATEGORY_TYPE) as Promise<DataType.Category[]>
 
   const fetchCategory = (name: string) =>
     GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>

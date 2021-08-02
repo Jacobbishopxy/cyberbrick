@@ -18,7 +18,7 @@ export class DashboardController {
   getAllDashboards() {
     try {
       return this.service.getAllDashboards()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -27,7 +27,7 @@ export class DashboardController {
   getDashboardByName(@Query("name") name: string) {
     try {
       return this.service.getDashboardById(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -36,7 +36,7 @@ export class DashboardController {
   saveDashboard(@Body() dashboard: Dashboard) {
     try {
       return this.service.saveDashboard(dashboard)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -45,7 +45,7 @@ export class DashboardController {
   deleteDashboard(@Query("name") name: string) {
     try {
       return this.service.deleteDashboard(name)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -56,7 +56,7 @@ export class DashboardController {
   getAllDashboardsTemplate() {
     try {
       return this.service.getAllDashboardsTemplate()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -65,7 +65,7 @@ export class DashboardController {
   getDashboardCategoryAndTemplate(@Query("id") id: string) {
     try {
       return this.service.getDashboardCategoryAndTemplate(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -74,27 +74,27 @@ export class DashboardController {
   modifyDashboard(@Body(DashboardModifyPipe) dashboard: DashboardModifyDto) {
     try {
       return this.service.modifyDashboard(dashboard as Dashboard)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("newDashboardAttachToCategory")
   newDashboardAttachToCategory(@Query("categoryName") categoryName: string,
-                               @Body() dashboard: Dashboard) {
+    @Body() dashboard: Dashboard) {
     try {
       return this.service.newDashboardAttachToCategory(categoryName, dashboard)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Delete("deleteDashboardInCategory")
   deleteDashboardInCategory(@Query("categoryName") categoryName: string,
-                            @Query("dashboardName") dashboardName: string) {
+    @Query("dashboardName") dashboardName: string) {
     try {
       return this.service.deleteDashboardInCategory(categoryName, dashboardName)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -103,7 +103,7 @@ export class DashboardController {
   saveDashboards(@Body() dashboards: Dashboard[]) {
     try {
       return this.service.saveDashboards(dashboards)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -112,17 +112,17 @@ export class DashboardController {
   deleteDashboards(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteDashboards(ids)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("updateDashboardsInCategory")
   updateDashboardsInCategory(@Query("categoryName") categoryName: string,
-                             @Body() dashboards: Dashboard[]) {
+    @Body() dashboards: Dashboard[]) {
     try {
       return this.service.updateDashboardsInCategory(categoryName, dashboards)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

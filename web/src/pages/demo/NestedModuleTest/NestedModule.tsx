@@ -1,12 +1,11 @@
-import { today } from "@/components/Gallery/GalleryDataType"
-import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
-import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
-import { useEffect, useState } from "react"
-import { tabItem } from "./data"
-import { NestedSimpleModuleEditor } from "./NestedSimpleModuleEditor"
-import { NestedSimpleModulePresentor } from "./NestedSimpleModulePresentor"
-import 'animate.css'
-import './NestedModuleTest.css';
+import {today} from "@/components/Gallery/GalleryDataType"
+import {ModuleEditorField, ModulePresenterField} from "@/components/Gallery/ModulePanel/Generator/data"
+import {ModuleGenerator} from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
+import {useEffect, useState} from "react"
+import {tabItem} from "./data"
+import {NestedSimpleModuleEditor} from "./NestedSimpleModuleEditor"
+import {NestedSimpleModulePresentor} from "./NestedSimpleModulePresentor"
+import './NestedModuleTest.css'
 const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
     return {
         i: i.toString(),
@@ -17,9 +16,9 @@ const defaultItems: tabItem[] = [0, 1, 2, 3, 4].map(function (i, key, list) {
         text: i.toString(),
         autoSize: true,
         static: false,
-    };
+    }
 })
-const defaultData = { tabItems: defaultItems, currIndex: "0" }
+const defaultData = {tabItems: defaultItems, currIndex: "0"}
 const EditorField = (props: ModuleEditorField) => {
     //content type: 
     //currIndex: string (used to indicate the tab when entering)
@@ -35,12 +34,12 @@ const EditorField = (props: ModuleEditorField) => {
   }
     */
 
-    let tempItems: tabItem[] = [];
+    let tempItems: tabItem[] = []
     if (props.content) {
         tempItems = props.content.data.tabItems as tabItem[]
     } else tempItems = defaultData.tabItems
 
-    let tempIndex = "0";
+    let tempIndex = "0"
     if (props.content) {
         tempIndex = props.content.data.currIndex
     }
@@ -50,7 +49,7 @@ const EditorField = (props: ModuleEditorField) => {
     const [saveCount, setSaveCount] = useState(0)
 
     useEffect(() => {
-        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
+        props.updateContent({...props.content, date: today(), data: {tabItems: items, currIndex: currIndex}})
         // console.log(items)
         return () => {
             //

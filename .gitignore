@@ -53,3 +53,4 @@ test
 
 *.pyc
 makefile.bak
+.myAppPID

@@ -18,7 +18,7 @@ export class StorageController {
   getAllStorages() {
     try {
       return this.service.getAllStorages()
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -27,7 +27,7 @@ export class StorageController {
   getStorageById(@Query("id") id: string) {
     try {
       return this.service.getStorageById(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -36,7 +36,7 @@ export class StorageController {
   saveStorage(@Body() storage: Storage) {
     try {
       return this.service.saveStorage(storage)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -45,7 +45,7 @@ export class StorageController {
   deleteStorage(@Query("id") id: string) {
     try {
       return this.service.deleteStorage(id)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -69,17 +69,17 @@ export class StorageController {
 
   @Get("executeSql")
   executeSql(@Query("id") id: string,
-             @Query("sqlString") sqlString: string) {
+    @Query("sqlString") sqlString: string) {
     try {
       return this.service.executeSql(id, sqlString)
-    } catch (err) {
+    } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @Post("read")
   read(@Query("id") id: string,
-       @Body(ReadPipe) readDto: ReadDto) {
+    @Body(ReadPipe) readDto: ReadDto) {
     return this.service.read(id, readDto)
   }
 }
