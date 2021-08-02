@@ -10,6 +10,7 @@ import RGL, { Layout, WidthProvider } from "react-grid-layout"
 import * as DataType from "../../GalleryDataType"
 import { TemplateElement, ContainerElementRef } from "./TemplateElement"
 import { EditableContext } from "../Dashboard"
+import { useIntl } from "umi"
 
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -74,6 +75,7 @@ export const ContainerTemplate =
   forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
     const teRefs = useRef<ContainerElementRef[]>([])
     const editable = useContext(EditableContext)
+    const intl = useIntl()
 
     const [elements, setElements] = useState<Elements>(props.elements)
 
@@ -95,7 +97,7 @@ export const ContainerTemplate =
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
       if (elements.map(e => e.name).includes(name)) {
-        message.warning("Please rename your element name because of duplicated!")
+        message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
       } else {
         const newEle = {
           name,

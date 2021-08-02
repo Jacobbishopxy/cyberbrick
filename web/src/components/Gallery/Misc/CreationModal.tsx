@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 8/27/2020.
  */
 
-import {useState} from "react"
-import {Form, Input, Modal} from "antd"
-import {FormattedMessage} from "umi"
-import {ColorResult, BlockPicker} from "react-color"
+import { useState } from "react"
+import { Form, Input, Modal, Select } from "antd"
+import { FormattedMessage, useIntl } from "umi"
+import { ColorResult, BlockPicker } from "react-color"
 
 export interface CreationModalValue {
   name: string
@@ -21,27 +21,35 @@ export interface CreationModalProps {
   onCancel: () => void
   colorSelector?: boolean
   initialValues?: CreationModalValue
+  typeSelector?: string[]
+  isTypeSelector?: boolean
 }
 
 const formItemLayout = {
-  labelCol: {offset: 2, span: 4},
-  wrapperCol: {span: 16},
+  labelCol: { offset: 2, span: 4 },
+  wrapperCol: { span: 16 },
 }
+
+const { Option } = Select;
 
 export const CreationModal = (props: CreationModalProps) => {
   const [form] = Form.useForm<CreationModalValue>()
   const [color, setColor] = useState<string>()
+
+  const intl = useIntl()
 
   const onCancel = () => {
     form.resetFields()
     props.onCancel()
   }
   const onOk = () => {
+
     form
       .validateFields()
       .then((values: any) => {
+        console.log(values)
         form.resetFields()
-        props.onSubmit(values)
+        // props.onSubmit(values)
       })
   }
 
@@ -49,7 +57,7 @@ export const CreationModal = (props: CreationModalProps) => {
     setColor(value.hex)
 
   const onSelectColorComplete = (value: ColorResult) =>
-    form.setFieldsValue({color: value.hex})
+    form.setFieldsValue({ color: value.hex })
 
   return (
     <Modal
@@ -69,16 +77,28 @@ export const CreationModal = (props: CreationModalProps) => {
         <Form.Item
           name="name"
           label={<FormattedMessage id="gallery.component.general5" />}
-          rules={[{required: true, message: "Name is required"}]}
+          rules={[{ required: true, message: intl.formatMessage({ id: "gallery.component.category-config-table18" }) }]}
         >
-          <Input placeholder="Place name here" />
+          <Input placeholder={intl.formatMessage({ id: "gallery.component.category-config-table20" })} />
         </Form.Item>
-        <Form.Item
-          name="description"
-          label={<FormattedMessage id="gallery.component.general6" />}
+        {props.isTypeSelector ? <Form.Item
+          name="type"
+          label={<FormattedMessage id="gallery.component.general61" />}
+          rules={[{ required: true, message: intl.formatMessage({ id: "gallery.component.category-config-table19" }) }]}
         >
-          <Input placeholder="Place description here" />
+          <Select placeholder={intl.formatMessage({ id: "gallery.component.category-config-table21" })} >
+            {props.typeSelector?.map(type => {
+              return <Option key={type} value={type}>
+                {intl.formatMessage({ id: `gallery.component.category-config-table_type-${type}` })} </Option>
+            })}
+          </Select>
         </Form.Item>
+          : <Form.Item
+            name="description"
+            label={<FormattedMessage id="gallery.component.general6" />}
+          >
+            <Input placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })} />
+          </Form.Item>}
         {
           props.colorSelector ?
             <Form.Item

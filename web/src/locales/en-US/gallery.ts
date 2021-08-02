@@ -63,6 +63,7 @@ export default {
   "gallery.component.general58": "Horizontal",
   "gallery.component.general59": "ASC",
   "gallery.component.general60": "DESC",
+  "gallery.component.general61": "Type",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
@@ -102,6 +103,14 @@ export default {
   "gallery.component.category-config-table15": "New tag",
   "gallery.component.category-config-table16": "Modify tag",
   "gallery.component.category-config-table17": "Are you sure to delete this tag?",
+  "gallery.component.category-config-table18": "Name is required",
+  "gallery.component.category-config-table19": "Type is required",
+  "gallery.component.category-config-table20": "Place name here",
+  "gallery.component.category-config-table21": "Select type here",
+  "gallery.component.category-config-table22": "Place description here",
+
+  "gallery.component.category-config-table_type-dashboard": "General",
+  "gallery.component.category-config-table_type-temp_lib": "Template",
 
   "gallery.component.add-module-modal1": "Select module or copy template",
   "gallery.component.add-module-modal2": "Copy elements to non-empty template is forbidden!",
@@ -110,6 +119,7 @@ export default {
   "gallery.component.add-module-modal5": "Please check options you need:",
   "gallery.component.add-module-modal6": "Time series",
   "gallery.component.add-module-modal7": "Please select a template to copy:",
+  "gallery.component.add-module-modal8": "Please rename your element name because of duplicated!",
 
   "gallery.component.dashboard-controller1": "Save current layout and contents?",
   "gallery.component.dashboard-controller2": "Template & contents saving successfully!",

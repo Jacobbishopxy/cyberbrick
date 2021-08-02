@@ -63,6 +63,7 @@ export default {
   "gallery.component.general58": "行式表达",
   "gallery.component.general59": "升序",
   "gallery.component.general60": "降序",
+  "gallery.component.general61": "类型",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -102,6 +103,14 @@ export default {
   "gallery.component.category-config-table15": "新建标签",
   "gallery.component.category-config-table16": "修改标签",
   "gallery.component.category-config-table17": "确认删除该标签？",
+  "gallery.component.category-config-table18": "请输入名称",
+  "gallery.component.category-config-table19": "请输入类型",
+  "gallery.component.category-config-table20": "在此输入名称",
+  "gallery.component.category-config-table21": "在此选择类型",
+  "gallery.component.category-config-table22": "在此输入描述",
+
+  "gallery.component.category-config-table_type-dashboard": "常规",
+  "gallery.component.category-config-table_type-temp_lib": "模板类",
 
   "gallery.component.add-module-modal1": "选择模块或拷贝界面",
   "gallery.component.add-module-modal2": "禁止拷贝界面至非空界面！",
@@ -110,6 +119,7 @@ export default {
   "gallery.component.add-module-modal5": "请确认模块选项：",
   "gallery.component.add-module-modal6": "时间序列",
   "gallery.component.add-module-modal7": "请选择一个界面拷贝",
+  "gallery.component.add-module-modal8": "模块名重复，请重新命名",
 
   "gallery.component.dashboard-controller1": "保存现有布局以及内容？",
   "gallery.component.dashboard-controller2": "模块和内容保存成功！",

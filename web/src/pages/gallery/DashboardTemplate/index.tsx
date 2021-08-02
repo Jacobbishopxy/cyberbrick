@@ -12,7 +12,7 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 import {LocalStorageHelper} from "@/utils/localStorageHelper"
 import React from "react"
 
-const CATEGORY_TYPE = "temp-lib"
+const CATEGORY_TYPE = "temp_lib"
 
 export const IsTemplateContext = React.createContext<boolean>(false)
 

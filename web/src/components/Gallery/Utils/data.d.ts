@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 12/4/2020
  */
 
-import {EChartOption} from "echarts"
+import { EChartOption } from "echarts"
 
 /**
  * Generic data type for table & chart

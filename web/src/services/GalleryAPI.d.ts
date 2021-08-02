@@ -6,11 +6,17 @@ declare namespace GalleryAPI {
 
   export interface Category {
     name: string
+    type: string
     description?: string
     dashboard?: Dashboard
     marks?: Mark[]
     tags?: Tag[]
     contents?: Content[]
+  }
+
+  export enum CategoryType {
+    dashboard = "dashboard",
+    temp_lib = "temp_lib"
   }
 
   export interface Mark {
