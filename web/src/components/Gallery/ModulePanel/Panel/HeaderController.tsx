@@ -2,12 +2,13 @@
  * Created by Jacob Xie on 10/13/2020.
  */
 
-import {useState} from "react"
-import {Checkbox, DatePicker, Modal, Select, Space} from "antd"
-import {FormattedMessage, useIntl} from "umi"
+import { useContext, useState } from "react"
+import { Checkbox, DatePicker, Modal, Select, Space } from "antd"
+import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
 
-import {DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton} from "./ControllerButtons"
+import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
+import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 interface TimeSetModalProps {
   intl: any
@@ -29,7 +30,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 
   return props.show ?
     <Modal
-      title={props.intl.formatMessage({id: "gallery.component.module-panel.panel.header-controller1"})}
+      title={props.intl.formatMessage({ id: "gallery.component.module-panel.panel.header-controller1" })}
       visible={props.visible}
       onOk={onOk}
       onCancel={props.onCancel}
@@ -40,7 +41,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
           defaultValue={moment()}
         />
         <Checkbox onChange={e => setIsNew(e.target.checked)}>
-          <FormattedMessage id="gallery.component.module-panel.panel.header-controller2"/>
+          <FormattedMessage id="gallery.component.module-panel.panel.header-controller2" />
         </Checkbox>
       </Space>
     </Modal> : <></>
@@ -64,14 +65,14 @@ const TimePickModal = (props: TimePickModalProps) => {
   }
 
   return <Modal
-    title={props.intl.formatMessage({id: "gallery.component.module-panel.panel.header-controller1"})}
+    title={props.intl.formatMessage({ id: "gallery.component.module-panel.panel.header-controller1" })}
     visible={props.visible}
     onOk={onOk}
     onCancel={props.onCancel}
   >
     <Select
       showSearch
-      style={{width: 200}}
+      style={{ width: 200 }}
       placeholder="Select a date"
       optionFilterProp="children"
       onChange={onChange}
@@ -109,34 +110,35 @@ export interface HeaderController {
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
 export const HeaderController = (props: HeaderController) => {
   const intl = useIntl()
-  const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({set: false, pick: false})
+  const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({ set: false, pick: false })
   const [selectedDate, setSelectedDate] = useState<string>()
+  const isTemplate = useContext(IsTemplateContext)
 
   const timeSetModalOnOk = (isNew: boolean) => {
     if (props.editDate && selectedDate) {
       if (isNew) props.newContent(selectedDate)
       else props.editDate(selectedDate)
     }
-    setDateModalVisible({...dateModalVisible, set: false})
+    setDateModalVisible({ ...dateModalVisible, set: false })
   }
 
   const timePickModalOnOk = (date: string) => {
     if (props.onSelectDate) props.onSelectDate(date)
-    setDateModalVisible({...dateModalVisible, pick: false})
+    setDateModalVisible({ ...dateModalVisible, pick: false })
   }
 
   const editableController = () =>
     <Space>
-      <DragButton/>
-      {
+      <DragButton />
+      {isTemplate ? null : (
         props.settable ?
           <>
             <TimeSetButton
               show={props.timeSeries}
-              onClick={() => setDateModalVisible({...dateModalVisible, set: true})}
+              onClick={() => setDateModalVisible({ ...dateModalVisible, set: true })}
             />
-            <EditButton editContent={props.editContent}/>
-          </> : <></>
+            <EditButton editContent={props.editContent} />
+          </> : <></>)
       }
       <DeleteButton
         confirmDelete={props.confirmDelete}
@@ -146,7 +148,7 @@ export const HeaderController = (props: HeaderController) => {
         show={props.timeSeries}
         visible={dateModalVisible.set}
         onOk={timeSetModalOnOk}
-        onCancel={() => setDateModalVisible({...dateModalVisible, set: false})}
+        onCancel={() => setDateModalVisible({ ...dateModalVisible, set: false })}
         editDate={setSelectedDate}
       />
     </Space>
@@ -155,13 +157,13 @@ export const HeaderController = (props: HeaderController) => {
     props.timeSeries && props.dateList ?
       <Space>
         <TimePickButton
-          onClick={() => setDateModalVisible({...dateModalVisible, pick: true})}
+          onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
         />
         <TimePickModal
           intl={intl}
           visible={dateModalVisible.pick}
           onOk={timePickModalOnOk}
-          onCancel={() => setDateModalVisible({...dateModalVisible, pick: false})}
+          onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
           dateList={props.dateList}
         />
       </Space> : <></>

@@ -52,6 +52,12 @@ export const mainRoutes = [
         component: "./gallery/Configuration"
       },
       {
+        name: "dashboardTemplate",
+        icon: 'DashboardOutlined',
+        path: "/gallery/dashboardTemplate",
+        component: "./gallery/DashboardTemplate"
+      },
+      {
         name: "dataset",
         icon: "DatabaseOutlined",
         path: "/gallery/dataset",

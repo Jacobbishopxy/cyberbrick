@@ -66,6 +66,7 @@ export default {
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
+  "gallery.component.type.embedLink": "链接",
   "gallery.component.type.text": "文章",
   "gallery.component.type.image": "图片",
   "gallery.component.type.file": "文件",
@@ -88,6 +89,7 @@ export default {
   "gallery.component.type.box": "箱图",
   "gallery.component.type.tree": "树图",
   "gallery.component.type.treemap": "矩形树图",
+  "gallery.component.type.nestedSimpleModule": "组件嵌套",
 
   "gallery.component.category-config-table1": "类型配置",
   "gallery.component.category-config-table2": "新建分类",
@@ -110,6 +112,8 @@ export default {
   "gallery.component.add-module-modal7": "请选择一个界面拷贝",
 
   "gallery.component.dashboard-controller1": "保存现有布局以及内容？",
+  "gallery.component.dashboard-controller2": "模块和内容保存成功！",
+
 
   "gallery.component.dashboard-config-table1": "仪表板配置",
   "gallery.component.dashboard-config-table2": "新建界面",
@@ -183,5 +187,20 @@ export default {
   "gallery.component.module-panel.panel.module-panel-header1": "请输入标题",
 
   "gallery.page.demo.module-test.title": "展览馆模板测试",
+
+  "gallery.component.module-panel.nested-simple-module1": "添加标签",
+  "gallery.component.module-panel.nested-simple-module2": "编辑标签",
+  "gallery.component.module-panel.nested-simple-module3": "提交成功",
+  "gallery.component.module-panel.nested-simple-module4": "选择内容",
+  "gallery.component.module-panel.nested-simple-module5": "双击修改",
+  "gallery.component.module-panel.nested-simple-module6": "编辑对应模块",
+
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "图标",
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "文章",
+  "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
+  "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
+
+  "gallery.dashboard.copy-template1": "拷贝界面成功!",
+  "gallery.dashboard.copy-template2": "拷贝界面失败!",
 }
 

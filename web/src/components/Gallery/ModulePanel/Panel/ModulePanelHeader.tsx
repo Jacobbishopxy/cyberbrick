@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useEffect, useState} from "react"
-import {Button, Col, Input, message, Row} from "antd"
-import {FormattedMessage} from "umi"
+import React, { useEffect, useState } from "react"
+import { Button, Col, Input, message, Row } from "antd"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
-import {HeaderController} from "./HeaderController"
+import { HeaderController } from "./HeaderController"
 
 
 interface ModulePanelHeaderProps {
@@ -34,7 +34,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
   useEffect(() => setTitle(props.title), [props.title])
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
+    const { value } = e.target
     if (value !== "") {
       setTitle(value)
       props.updateTitle(value)
@@ -50,14 +50,14 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         placeholder="Title"
         size="small"
         allowClear
-        style={{width: 200}}
+        style={{ width: 200 }}
         onBlur={changeTitle}
         defaultValue={title}
       />
-    const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`}/>
+    const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`} />
 
     if (props.editable && props.settable) {
-      const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1"/>
+      const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1" />
       return (
         <Button
           type="link"
@@ -69,7 +69,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       )
     }
     return (
-      <span style={{fontWeight: "bold"}}>
+      <span style={{ fontWeight: "bold" }}>
         {title ? title : eleType}
       </span>
     )
@@ -89,25 +89,25 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     />
 
   return (
-    <Row style={{paddingLeft: 10, paddingRight: 10, height: 25}}>
+    <Row style={{ paddingLeft: 10, paddingRight: 10, height: 25 }}>
       {
         props.headName ?
           <>
-            <Col span={8} style={{fontWeight: "bold"}}>
+            <Col span={8} style={{ fontWeight: "bold" }}>
               {props.headName}
             </Col>
-            <Col span={8} style={{textAlign: "center"}}>
+            <Col span={8} style={{ textAlign: "center" }}>
               {genTitle()}
             </Col>
-            <Col span={8} style={{textAlign: "right"}}>
+            <Col span={8} style={{ textAlign: "right" }}>
               {genController()}
             </Col>
           </> :
           <>
-            <Col span={12} style={{textAlign: "left"}}>
+            <Col span={12} style={{ textAlign: "left" }}>
               {genTitle()}
             </Col>
-            <Col span={12} style={{textAlign: "right"}}>
+            <Col span={12} style={{ textAlign: "right" }}>
               {genController()}
             </Col>
           </>

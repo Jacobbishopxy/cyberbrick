@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import {useEffect, useMemo, useState} from "react"
-import {Button, message, Modal, Space} from "antd"
+import { useEffect, useMemo, useState } from "react"
+import { Button, message, Modal, Space } from "antd"
 import {
   CheckCircleOutlined,
   ExclamationCircleOutlined,
@@ -11,12 +11,12 @@ import {
   PoweroffOutlined,
   SettingOutlined
 } from "@ant-design/icons"
-import {FormattedMessage, useIntl} from "umi"
+import { FormattedMessage, useIntl } from "umi"
 
-import {SpaceBetween} from "@/components/SpaceBetween"
+import { SpaceBetween } from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
-import {SelectorPanel} from "./SelectorPanel"
-import {AddModuleModal} from "./AddModuleModal"
+import { SelectorPanel } from "./SelectorPanel"
+import { AddModuleModal } from "./AddModuleModal"
 
 
 export interface ModuleControllerProps {
@@ -29,7 +29,7 @@ export interface ModuleControllerProps {
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
   onCopyTemplate: (originTemplateId: string) => void
   onEditTemplate: (value: boolean) => void
-  onSaveTemplate: () => Promise<void>
+  onSaveTemplate: (shouldSaveTemplateAndContents: boolean) => Promise<void>
 }
 
 export const Controller = (props: ModuleControllerProps) => {
@@ -47,13 +47,14 @@ export const Controller = (props: ModuleControllerProps) => {
 
   const saveTemplate = (exist: boolean) =>
     () => {
+      //exit: set edit to false; save: set edit to true and allow further edition.
       const quit = () => exist ? setEdit(false) : undefined
       return Modal.confirm({
-        title: intl.formatMessage({id: "gallery.component.dashboard-controller1"}),
-        icon: <ExclamationCircleOutlined/>,
-        onOk: () => props.onSaveTemplate()
+        title: intl.formatMessage({ id: "gallery.component.dashboard-controller1" }),
+        icon: <ExclamationCircleOutlined />,
+        onOk: () => props.onSaveTemplate(true)
           .then(() => {
-            message.success("Template & contents saving successfully!")
+            message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller2" }))
             quit()
           })
           .catch(err => {
@@ -61,7 +62,9 @@ export const Controller = (props: ModuleControllerProps) => {
             quit()
           })
         ,
-        onCancel: quit,
+        onCancel: () => {
+          exist && props.onSaveTemplate(false).then(quit)
+        },
       })
     }
 
@@ -73,24 +76,24 @@ export const Controller = (props: ModuleControllerProps) => {
           size="small"
           onClick={() => setAddModuleModalVisible(true)}
         >
-          <PlusCircleOutlined/>
-          <FormattedMessage id="gallery.component.general10"/>
+          <PlusCircleOutlined />
+          <FormattedMessage id="gallery.component.general10" />
         </Button>
         <Button
           type="primary"
           size="small"
           onClick={saveTemplate(false)}
         >
-          <CheckCircleOutlined/>
-          <FormattedMessage id="gallery.component.general11"/>
+          <CheckCircleOutlined />
+          <FormattedMessage id="gallery.component.general11" />
         </Button>
         <Button
           size="small"
           danger
           onClick={saveTemplate(true)}
         >
-          <PoweroffOutlined/>
-          <FormattedMessage id="gallery.component.general12"/>
+          <PoweroffOutlined />
+          <FormattedMessage id="gallery.component.general12" />
         </Button>
 
       </Space>
@@ -113,8 +116,8 @@ export const Controller = (props: ModuleControllerProps) => {
       onClick={() => setEdit(true)}
       disabled={!props.canEdit}
     >
-      <SettingOutlined/>
-      <FormattedMessage id="gallery.component.general14"/>
+      <SettingOutlined />
+      <FormattedMessage id="gallery.component.general14" />
     </Button>
   ), [props.canEdit])
 

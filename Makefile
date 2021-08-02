@@ -27,6 +27,9 @@ web-setup:
 dev-nodebug: clean
 	./start.sh &
 
+dev-debug:
+	./start.sh debug &
+
 prod: clean web-setup
 	./start.sh prod &
 

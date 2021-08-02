@@ -19,9 +19,15 @@ else
     yarn dev &
     echo "$!" >> ../.myAppPID
 
-    cd ../server
-    sh -c "conda run -n $PYTHON_VERSION python wsgi.py --debug=false" &
-    echo "$!" >> ../.myAppPID
 fi
+
+cd ../server
+if [ $1 == "debug" ]; then
+    sh -c "conda run -n $PYTHON_VERSION python wsgi.py" &
+    
+else
+    sh -c "conda run -n $PYTHON_VERSION python wsgi.py --debug=false" &
+fi
+echo "$!" >> ../.myAppPID
 # python3 wsgi.py --debug=false &
 # echo "$!" >> ../.myAppPID

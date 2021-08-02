@@ -66,6 +66,7 @@ export default {
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
+  "gallery.component.type.embedLink": "Link",
   "gallery.component.type.text": "Text",
   "gallery.component.type.image": "Image",
   "gallery.component.type.file": "File",
@@ -88,6 +89,7 @@ export default {
   "gallery.component.type.box": "Box",
   "gallery.component.type.tree": "Tree",
   "gallery.component.type.treemap": "Treemap",
+  "gallery.component.type.nestedSimpleModule": "Nested Module",
 
   "gallery.component.category-config-table1": "Category configuration",
   "gallery.component.category-config-table2": "New category",
@@ -110,6 +112,7 @@ export default {
   "gallery.component.add-module-modal7": "Please select a template to copy:",
 
   "gallery.component.dashboard-controller1": "Save current layout and contents?",
+  "gallery.component.dashboard-controller2": "Template & contents saving successfully!",
 
   "gallery.component.dashboard-config-table1": "Dashboard configuration",
   "gallery.component.dashboard-config-table2": "New template",
@@ -183,5 +186,22 @@ export default {
   "gallery.component.module-panel.panel.module-panel-header1": "please enter the title",
 
   "gallery.page.demo.module-test.title": "Gallery Module Test",
+
+  "gallery.component.module-panel.nested-simple-module1": "Add Tabs",
+  "gallery.component.module-panel.nested-simple-module2": "Edit Tab",
+  "gallery.component.module-panel.nested-simple-module3": "Saved",
+  "gallery.component.module-panel.nested-simple-module4": "Select the Content",
+  "gallery.component.module-panel.nested-simple-module5": "Double click to Edit",
+  "gallery.component.module-panel.nested-simple-module6": "Edit corresponding Module",
+
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "Icon",
+  "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "Article",
+  "gallery.component.module-panel.nested-simple-module.edit-tab3": "Text",
+  "gallery.component.module-panel.nested-simple-module.edit-tab4": "Number",
+
+
+  "gallery.dashboard.copy-template1": "Copy template succeeded!",
+  "gallery.dashboard.copy-template2": "Copy template failed!",
+
 }
 

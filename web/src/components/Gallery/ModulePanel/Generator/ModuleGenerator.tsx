@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {forwardRef, useImperativeHandle, useState} from "react"
+import React, { forwardRef, useImperativeHandle, useState } from "react"
 
-import {ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField} from "./data"
+import { ConvertProps, ConvertFwRef, ConvertRefProps, ModuleEditorField, ModulePresenterField } from "./data"
 import styles from "./Common.less"
 
 export class ModuleGenerator {
@@ -15,8 +15,8 @@ export class ModuleGenerator {
   private forceStyle: boolean
 
   constructor(editor: React.FC<ModuleEditorField>,
-              presenter: React.FC<ModulePresenterField>,
-              forceStyle: boolean = false) {
+    presenter: React.FC<ModulePresenterField>,
+    forceStyle: boolean = false) {
     this.editor = editor
     this.presenter = presenter
     this.forceStyle = forceStyle
@@ -25,7 +25,7 @@ export class ModuleGenerator {
   public generate = () => {
     const ConvertRef: React.FC<ConvertRefProps> = (crProps: ConvertRefProps) => {
       const [editable, setEditable] = useState<boolean>()
-      const {forceStyle} = this
+      const { forceStyle } = this
 
       useImperativeHandle(crProps.forwardedRef, () => ({
         edit: setEditable

@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import {useState} from "react"
-import {Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip} from "antd"
-import {ExclamationCircleTwoTone, RightOutlined, StarTwoTone} from "@ant-design/icons"
-import {FormattedMessage} from "umi"
+import { useState } from "react"
+import { Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip } from "antd"
+import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "../../GalleryDataType"
-import {moduleList} from "../../ModulePanel/Collections"
-import {SelectorPanel} from "./SelectorPanel"
+import { moduleList } from "../../ModulePanel/Collections"
+import { SelectorPanel } from "./SelectorPanel"
 
 import styles from "./Common.less"
 
@@ -24,13 +24,13 @@ const ModuleSelectionList = (props: ModuleSelectionListProps) =>
       <div key={chunk.key}>
         <Divider orientation="left">{chunk.name}</Divider>
         <List
-          grid={{column: 6}}
+          grid={{ column: 6 }}
           size="small"
           dataSource={chunk.children}
           renderItem={item => (
             <List.Item>
               <label className={styles.moduleSelectionLabel}>
-                <input type="radio" name="radio-name" disabled={item.disabled} id={item.key}/>
+                <input type="radio" name="radio-name" disabled={item.disabled} id={item.key} />
                 <div
                   id={item.key}
                   onClick={() => props.onSelect(item.key)}
@@ -56,34 +56,34 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
   <>
     <Space direction="vertical">
       <Space>
-        <StarTwoTone/>
-        <span style={{width: 250, fontSize: 15}}>
-          <FormattedMessage id="gallery.component.add-module-modal4"/>
+        <StarTwoTone />
+        <span style={{ width: 250, fontSize: 15 }}>
+          <FormattedMessage id="gallery.component.add-module-modal4" />
         </span>
       </Space>
       <Space>
-        <RightOutlined/>
-        <Input style={{width: 200}} onChange={e => props.setName(e.target.value)}/>
+        <RightOutlined />
+        <Input style={{ width: 200 }} onChange={e => props.setName(e.target.value)} />
         <Tooltip
-          title={<FormattedMessage id="gallery.component.add-module-modal3"/>}
+          title={<FormattedMessage id="gallery.component.add-module-modal3" />}
         >
-          <ExclamationCircleTwoTone twoToneColor="red"/>
+          <ExclamationCircleTwoTone twoToneColor="red" />
         </Tooltip>
       </Space>
       <Space>
-        <StarTwoTone/>
-        <span style={{width: 250, fontSize: 15}}>
-          <FormattedMessage id="gallery.component.add-module-modal5"/>
+        <StarTwoTone />
+        <span style={{ width: 250, fontSize: 15 }}>
+          <FormattedMessage id="gallery.component.add-module-modal5" />
         </span>
       </Space>
       <Space>
-        <RightOutlined/>
+        <RightOutlined />
         <Checkbox onChange={e => props.setTimeSeries(e.target.checked)}>
-          <FormattedMessage id="gallery.component.add-module-modal6"/>
+          <FormattedMessage id="gallery.component.add-module-modal6" />
         </Checkbox>
       </Space>
     </Space>
-    <ModuleSelectionList onSelect={props.setSelected}/>
+    <ModuleSelectionList onSelect={props.setSelected} />
   </>
 
 
@@ -95,15 +95,15 @@ interface TemplateSelectionViewProps {
 }
 
 const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
-  <Space direction="vertical" style={{marginBottom: 20}}>
+  <Space direction="vertical" style={{ marginBottom: 20 }}>
     <Space>
-      <StarTwoTone/>
-      <span style={{fontSize: 15}}>
-          <FormattedMessage id="gallery.component.add-module-modal7"/>
-        </span>
+      <StarTwoTone />
+      <span style={{ fontSize: 15 }}>
+        <FormattedMessage id="gallery.component.add-module-modal7" />
+      </span>
     </Space>
     <Space>
-      <RightOutlined/>
+      <RightOutlined />
       <SelectorPanel
         categories={props.categories}
         categoryOnSelect={props.categoryOnSelect}
@@ -112,9 +112,9 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
         size="small"
       />
       <Tooltip
-        title={<FormattedMessage id="gallery.component.add-module-modal2"/>}
+        title={<FormattedMessage id="gallery.component.add-module-modal2" />}
       >
-        <ExclamationCircleTwoTone twoToneColor="red"/>
+        <ExclamationCircleTwoTone twoToneColor="red" />
       </Tooltip>
     </Space>
   </Space>
@@ -155,20 +155,20 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
   return (
     <Modal
-      title={<FormattedMessage id="gallery.component.add-module-modal1"/>}
+      title={<FormattedMessage id="gallery.component.add-module-modal1" />}
       visible={props.visible}
       onOk={onSetOk}
       onCancel={props.onQuit}
       width="60%"
-      bodyStyle={{paddingTop: 0, paddingBottom: 0}}
-      style={{top: 40}}
+      bodyStyle={{ paddingTop: 0, paddingBottom: 0 }}
+      style={{ top: 40 }}
     >
       <Tabs
         defaultActiveKey={selectedPane}
         onChange={setSelectedPane}
       >
         <Tabs.TabPane
-          tab={<FormattedMessage id="gallery.component.general9"/>}
+          tab={<FormattedMessage id="gallery.component.general9" />}
           key="Module"
         >
           <ModuleSelectionView
@@ -178,7 +178,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
           />
         </Tabs.TabPane>
         <Tabs.TabPane
-          tab={<FormattedMessage id="gallery.component.general7"/>}
+          tab={<FormattedMessage id="gallery.component.general7" />}
           key="Template"
         >
           <TemplateSelectionView

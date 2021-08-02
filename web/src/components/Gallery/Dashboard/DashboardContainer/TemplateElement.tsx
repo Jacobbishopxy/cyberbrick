@@ -2,10 +2,10 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState} from "react"
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
 import * as DataType from "../../GalleryDataType"
-import {ModulePanel} from "../../ModulePanel/Panel"
+import { ModulePanel } from "../../ModulePanel/Panel"
 
 export interface ContainerElementProps {
   parentInfo: string[]
@@ -27,6 +27,7 @@ export interface ContainerElementRef {
   fetchContentDates: () => Promise<string[]>
 }
 
+
 /**
  * Template's elements
  */
@@ -38,18 +39,47 @@ export const TemplateElement =
     const [content, setContent] = useState<DataType.Content>()
     const eleId = props.element.id as string | undefined
 
+    const [isLoading, setIsLoading] = useState(true);
+    // const [isError, setIsError] = useState(false);
+
+    const [isMounted, setIsMounted] = useState(true);
+
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
+    //TODO: cancel can't refetch
     const fetchContent = (date?: string) => {
-      if (eleId) {
-        if (date)
-          props.fetchContentFn(eleId, date).then(res => setContent(res))
-        else
-          props.fetchContentFn(eleId).then(res => setContent(res))
+      // setIsLoading(true);
+      // console.log(isMounted, eleId)
+      if (eleId && isMounted) {
+        if (date) {
+          props.fetchContentFn(eleId, date).then(res => {
+            setContent(res)
+            setIsLoading(false);
+          })
+          // setIsLoading(false);
+        }
+        // props.fetchContentFn(eleId, date).then(res => setContent(res))
+        else {
+          props.fetchContentFn(eleId).then(res => {
+            setContent(res)
+            setIsLoading(false)
+          })
+
+        }
       }
     }
+
+
+    //cancel subsription when this component is unmounted, so that fetchContent won't make a request
+    useEffect(() => {
+      // console.log(content)
+      setIsMounted(true);
+      return () => {
+        setIsMounted(false);
+      };
+    }, [])
 
     const fetchContentDates = async () => {
       if (eleId && props.element.timeSeries) {
@@ -59,12 +89,12 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({fetchContent, fetchContentDates}))
+    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
     return (
-      <div style={{height: "100%"}} ref={mpRef} >
+      <div style={{ height: "100%" }} ref={mpRef} >
         <ModulePanel
           parentInfo={props.parentInfo}
           eleId={eleId}
@@ -83,6 +113,7 @@ export const TemplateElement =
           onRemove={props.onRemove}
           editable={props.editable}
           settable={!!eleId}
+          isLoading={isLoading}
         />
       </div>
     )

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import {Equal} from "typeorm"
+import { Equal } from "typeorm"
 
 // db name
 export const db = "gallery"
@@ -82,6 +82,7 @@ export enum ElementType {
   Box = "box",
   Tree = "tree",
   TreeMap = "treeMap",
+  NestedSimpleModule = "nestedSimpleModule"
 }
 
 export const getElementType = (v: string) => {
@@ -124,6 +125,8 @@ export const getElementType = (v: string) => {
       return ElementType.Tree
     case "treeMap":
       return ElementType.TreeMap
+    case "nestedSimpleModule":
+      return ElementType.NestedSimpleModule
     default:
       return undefined
   }
@@ -152,5 +155,5 @@ export const templatesElementsContents = `${templates}.${elements}.${contents}`
 
 // query filters
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
-  ({where: [{"dashboard.name": Equal(dn)}, {name: Equal(tn)}]})
+  ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 

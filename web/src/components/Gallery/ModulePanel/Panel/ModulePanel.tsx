@@ -2,18 +2,18 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
-import {Modal} from "antd"
-import {ExclamationCircleOutlined} from '@ant-design/icons'
-import {useIntl} from "umi"
-import _ from "lodash"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { Modal, Skeleton } from "antd"
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { useIntl } from "umi"
+import _, { floor } from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import {ConvertFwRef} from "../Generator/data"
-import {ModulePanelHeader} from "./ModulePanelHeader"
-import {ModulePanelFooter} from "./ModulePanelFooter"
-import {collectionSelector} from "../Collections"
-import {ModuleSelectorProps} from "../Collections/collectionSelector"
+import { ConvertFwRef } from "../Generator/data"
+import { ModulePanelHeader } from "./ModulePanelHeader"
+import { ModulePanelFooter } from "./ModulePanelFooter"
+import { collectionSelector } from "../Collections"
+import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 
@@ -36,7 +36,11 @@ export interface ModulePanelProps {
   onRemove: () => void
   editable: boolean
   settable: boolean
+  isLoading: boolean
 }
+
+const SKELETON_HEIGHT_TO_ROWS = 50
+const SKELETON_DEFAULT_ROWS = 5
 
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
@@ -48,11 +52,21 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const [content, setContent] = useState<DataType.Content>()
   const [dates, setDates] = useState<string[]>([])
 
+  const [loading, setIsLoading] = useState(props.isLoading)
+
+  useEffect(() => {
+    setIsLoading(props.isLoading)
+  }, [props.isLoading])
   useEffect(() => {
     moduleRef.current = collectionSelector(props.elementType)
   }, [])
 
   useEffect(() => setContent(props.content), [props.content])
+
+  //when dashboard is set to uneditable, make modulePanel unable to edit (by calling moduleFwRef.current.edit(false))
+  useEffect(() => {
+    if (!props.editable && moduleFwRef.current) moduleFwRef.current.edit(props.editable)
+  }, [props.editable])
 
   useEffect(() => {
     if (props.timeSeries && props.fetchContentDates && content && !props.editable) {
@@ -67,7 +81,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const confirmDelete = () =>
     Modal.confirm({
-      title: intl.formatMessage({id: "gallery.component.module-panel.panel.module-panel1"}),
+      title: intl.formatMessage({ id: "gallery.component.module-panel.panel.module-panel1" }),
       icon: <ExclamationCircleOutlined />,
       okType: 'danger',
       onOk: () => props.onRemove()
@@ -75,30 +89,30 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const updateTitle = (title: string) => {
     const newContent = content ?
-      {...content, title} :
-      {title, date: DataType.today()} as DataType.Content
+      { ...content, title } :
+      { title, date: DataType.today() } as DataType.Content
     setContent(newContent)
     props.updateContent(newContent)
   }
 
   const footerDate = () => {
     if (props.timeSeries && content)
-      return {date: content.date}
+      return { date: content.date }
     return {}
   }
 
   const headerDate = (date: string) => {
     if (props.timeSeries) {
       const newContent = content ?
-        {...content, date} :
-        {date, data: {}} as DataType.Content
+        { ...content, date } :
+        { date, data: {} } as DataType.Content
       setContent(newContent)
       props.updateContent(newContent)
     }
   }
 
   const updateModuleContent = (ctt: DataType.Content) => {
-    const newContent = {...content, ...ctt}
+    const newContent = { ...content, ...ctt }
     setContent(newContent)
     props.updateContent(newContent)
   }
@@ -132,6 +146,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const genContext = useMemo(() => {
     const rf = moduleRef.current
     if (rf) {
+      //if it's has id (so it's saved to db) and it's loading, display skeleton. 
+      //If we finish loading, display whatever content is, including a white board (for content undefined or null)
+      if (props.eleId && loading) {
+        const rows =
+          props.contentHeight ? floor(props.contentHeight / SKELETON_HEIGHT_TO_ROWS) : SKELETON_DEFAULT_ROWS
+        return <Skeleton className={styles.loadinSkeleton}
+          active paragraph={{ rows: rows }} />
+      }
+
       const h = props.contentHeight ? props.contentHeight - 50 : undefined
       return rf({
         content,
@@ -145,7 +168,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       })
     }
     return <></>
-  }, [content, props.contentHeight])
+  }, [content, props.contentHeight, loading])
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
@@ -156,7 +179,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       {...footerDate()}
     />, [content])
 
-  const attachId = () => props.eleId ? {id: props.eleId} : {}
+  const attachId = () => props.eleId ? { id: props.eleId } : {}
 
   return (
     <div className={styles.modulePanel} {...attachId()}>
