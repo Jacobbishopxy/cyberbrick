@@ -9,6 +9,7 @@ import { ColorResult, BlockPicker } from "react-color"
 
 export interface CreationModalValue {
   name: string
+  type?: string
   description?: string
   color?: string
 }
@@ -47,9 +48,9 @@ export const CreationModal = (props: CreationModalProps) => {
     form
       .validateFields()
       .then((values: any) => {
-        console.log(values)
+        // console.log(values)
         form.resetFields()
-        // props.onSubmit(values)
+        props.onSubmit(values)
       })
   }
 

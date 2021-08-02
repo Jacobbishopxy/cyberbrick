@@ -110,7 +110,7 @@ export default {
   "gallery.component.category-config-table22": "在此输入描述",
 
   "gallery.component.category-config-table_type-dashboard": "常规",
-  "gallery.component.category-config-table_type-temp_lib": "模板类",
+  "gallery.component.category-config-table_type-temp_lib": "模板",
 
   "gallery.component.add-module-modal1": "选择模块或拷贝界面",
   "gallery.component.add-module-modal2": "禁止拷贝界面至非空界面！",

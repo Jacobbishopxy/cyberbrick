@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 10/29/2020.
  */
 
-import {Button, Input, InputNumber, Select, Space} from "antd"
-import {FormattedMessage} from "umi"
-import {CheckCircleTwoTone, CloseCircleTwoTone, EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons'
+import { Button, Input, InputNumber, Select, Space } from "antd"
+import { FormattedMessage } from "umi"
+import { CheckCircleTwoTone, CloseCircleTwoTone, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
 
 interface EditFieldProps<T extends string | number> {
@@ -27,12 +27,21 @@ interface OperationFieldProps {
   onReloadClick: () => void
   disabled: boolean
 }
+export enum CategoryType {
+  dashboard = "dashboard",
+  temp_lib = "temp_lib"
+}
+
+export enum CategoryTypeColor {
+  dashboard = "rgba(131,137,150, 0.7)",
+  temp_lib = "#5fa8d3"
+}
 
 export const StringField = (props: EditFieldProps<string>) =>
   props.editable ?
     <Input
       size="small"
-      style={{width: 150}}
+      style={{ width: 150 }}
       placeholder={props.placeholder}
       defaultValue={props.defaultValue}
       onChange={e => props.onChange(e.target.value)}
@@ -43,7 +52,7 @@ export const NumberField = (props: EditFieldProps<number>) =>
   props.editable ?
     <InputNumber
       size="small"
-      style={{width: 150}}
+      style={{ width: 150 }}
       placeholder={props.placeholder}
       defaultValue={props.defaultValue}
       onChange={v => props.onChange(+v!)}
@@ -55,7 +64,7 @@ export const SelectionField = (props: EditFieldProps<string>) =>
   props.editable ?
     <Select
       size="small"
-      style={{width: 150}}
+      style={{ width: 150 }}
       defaultValue={props.defaultValue}
       onChange={e => props.onChange(e.toString())}
     >
@@ -69,17 +78,17 @@ export const SelectionField = (props: EditFieldProps<string>) =>
 
 export const StateField = (props: StateFieldProps) =>
   props.state ?
-    <CheckCircleTwoTone twoToneColor="green"/> :
-    <CloseCircleTwoTone twoToneColor="red"/>
+    <CheckCircleTwoTone twoToneColor="green" /> :
+    <CloseCircleTwoTone twoToneColor="red" />
 
 export const PasswordField = (props: EditFieldProps<string>) =>
   props.editable ?
     <Input.Password
       size="small"
-      style={{width: 150}}
+      style={{ width: 150 }}
       placeholder="password"
       defaultValue={props.defaultValue}
-      iconRender={visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
+      iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
       onChange={e => props.onChange(e.target.value)}
     /> :
     <span>******</span>
@@ -93,7 +102,7 @@ export const OperationField = (props: OperationFieldProps) =>
         onClick={props.onUpdateClick}
         disabled={props.disabled}
       >
-        <FormattedMessage id="gallery.component.general13"/>
+        <FormattedMessage id="gallery.component.general13" />
       </Button>
       <Button
         size="small"
@@ -101,7 +110,7 @@ export const OperationField = (props: OperationFieldProps) =>
         onClick={props.onDeleteClick}
         disabled={props.disabled}
       >
-        <FormattedMessage id="gallery.component.general23"/>
+        <FormattedMessage id="gallery.component.general23" />
       </Button>
     </Space> :
     <Space>
@@ -110,13 +119,13 @@ export const OperationField = (props: OperationFieldProps) =>
         type="primary"
         onClick={props.onCheckClick}
       >
-        <FormattedMessage id="gallery.component.general24"/>
+        <FormattedMessage id="gallery.component.general24" />
       </Button>
       <Button
         size="small"
         onClick={props.onReloadClick}
       >
-        <FormattedMessage id="gallery.component.general25"/>
+        <FormattedMessage id="gallery.component.general25" />
       </Button>
     </Space>
 

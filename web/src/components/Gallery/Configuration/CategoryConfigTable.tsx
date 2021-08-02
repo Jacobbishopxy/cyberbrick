@@ -3,7 +3,7 @@
  */
 
 import { useState } from "react"
-import { Table } from "antd"
+import { Table, Tag } from "antd"
 import { FormattedMessage } from "umi"
 
 import { Editor } from "@/components/Editor"
@@ -12,18 +12,15 @@ import * as DataType from "../GalleryDataType"
 import { TextBuilder } from "../Misc/TextBuilder"
 import { EditableTagPanel } from "../Tag"
 import { TagBuildModal } from "../Misc/TagBuildModal"
+import { CategoryType, CategoryTypeColor } from "./FieldView"
 
-export enum CategoryType {
-  dashboard = "dashboard",
-  temp_lib = "temp_lib"
-}
 
 const categoryTypeSelector = [CategoryType.dashboard, CategoryType.temp_lib]
 
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
 
-  saveCategory: (categoryName: string, description?: string) => void
+  saveCategory: (categoryName: string, type: string, description?: string) => void
   updateDashboards: (categoryName: string, dashboards: DataType.Dashboard[]) => void
   updateMarks: (categoryName: string, marks: DataType.Mark[]) => void
   updateTags: (categoryName: string, tags: DataType.Tag[]) => void
@@ -87,6 +84,14 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
             title={<FormattedMessage id="gallery.component.general5" />}
             dataIndex="name"
             key="name"
+          />
+          <Table.Column
+            title={<FormattedMessage id="gallery.component.general61" />}
+            dataIndex="type"
+            key="type"
+            render={(text) => <Tag color={CategoryTypeColor[text]}>
+              <FormattedMessage id={`gallery.component.category-config-table_type-${text}`} />
+            </Tag>}
           />
           <Table.Column
             title={<FormattedMessage id="gallery.component.general6" />}

@@ -5,31 +5,29 @@
 import React, { useState } from "react"
 import { Space, Tag } from "antd"
 import { EditOutlined, PlusOutlined } from '@ant-design/icons'
-import { CreationModal } from "./CreationModal"
+import { CreationModal, CreationModalValue } from "./CreationModal"
 
 export interface TextBuilderProps {
     create?: boolean
     text?: string | React.ReactNode
     name: string
     title: string | React.ReactNode
-    onSubmit: (value: string) => void
+    onSubmit: (name: string, type: string) => void
     colorSelector: boolean
     categoryTypeSelector: string[]
 }
 
+const DEFAULT_TYPE = "dashboard"
+
 export const TagBuildModal = (props: TextBuilderProps) => {
 
     const [modalVisible, setModalVisible] = useState<boolean>(false)
-    const [newText, setNewText] = useState<string>()
 
-    const onSubmit = () => {
-        if (newText) props.onSubmit(newText)
+    const onSubmit = (value: CreationModalValue) => {
+        props.onSubmit(value.name, value.type || DEFAULT_TYPE)
         setModalVisible(false)
     }
 
-    const edit = () =>
-        <Space>
-        </Space>
 
     const nonEdit = () =>
         props.create ?
@@ -46,7 +44,8 @@ export const TagBuildModal = (props: TextBuilderProps) => {
                 />
             </Space>
 
-    return <>{modalVisible ? edit() : nonEdit()}
+    return <>
+        {nonEdit()}
         <CreationModal
             name={props.name}
             title={props.title as string}
