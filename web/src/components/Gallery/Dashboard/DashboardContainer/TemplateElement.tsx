@@ -51,7 +51,7 @@ export const TemplateElement =
     //TODO: cancel can't refetch
     const fetchContent = (date?: string) => {
       // setIsLoading(true);
-      // console.log(isMounted, eleId)
+      console.log(isMounted, eleId)
       if (eleId && isMounted) {
         if (date) {
           props.fetchContentFn(eleId, date).then(res => {
@@ -65,6 +65,7 @@ export const TemplateElement =
           props.fetchContentFn(eleId).then(res => {
             setContent(res)
             setIsLoading(false)
+            // console.log("finish loading: ", eleId)
           })
 
         }
@@ -89,7 +90,7 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
+    useImperativeHandle(ref, () => ({ eleId, fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 

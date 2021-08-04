@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import {Typography} from "antd"
-import {FormattedMessage} from "umi"
+import { Typography } from "antd"
+import { FormattedMessage } from "umi"
 
-import {GenericArticle, GenericTag} from "@/components/Article/data"
-import {Article} from "@/components/Article"
+import { GenericArticle, GenericTag } from "@/components/Article/data"
+import { Article } from "@/components/Article"
 import * as innService from "@/services/inn"
 
 const getArticles = (pagination?: [number, number]) =>

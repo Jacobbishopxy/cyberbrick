@@ -2,19 +2,19 @@
  * Created by Jacob Xie on 2/9/2021
  */
 
-import {useEffect, useState} from "react"
-import {Modal, Space, Tag, Tooltip, Typography} from "antd"
-import {ExclamationCircleOutlined} from "@ant-design/icons"
+import { useEffect, useState } from "react"
+import { Modal, Tag, Tooltip, Typography } from "antd"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 import ProList from "@ant-design/pro-list"
-import {useIntl} from "umi"
+import { useIntl } from "umi"
 import moment from "moment"
 
-import {Editor} from "@/components/Editor"
-import {TextEditorPresenter} from "@/components/TextEditor"
-import {ArticleToolbar} from "./ArticleToolbar"
-import {ArticleCreationModal} from "./ArticleCreationModal"
+import { Editor } from "@/components/Editor"
+import { TextEditorPresenter } from "@/components/TextEditor"
+import { ArticleToolbar } from "./ArticleToolbar"
+import { ArticleCreationModal } from "./ArticleCreationModal"
 
-import {ArticleProps, GenericTag, GenericArticle} from "./data"
+import { ArticleProps, GenericTag, GenericArticle } from "./data"
 
 
 interface ArticleEditableProps {
@@ -29,7 +29,7 @@ const ArticleEditable = (props: ArticleEditableProps) => {
   const intl = useIntl()
   const configDelete = () =>
     Modal.confirm({
-      title: intl.formatMessage({id: "component.article.articleEditable.confirmDelete"}),
+      title: intl.formatMessage({ id: "component.article.articleEditable.confirmDelete" }),
       icon: <ExclamationCircleOutlined />,
       onOk: () => props.onDelete(props.initialArticle.id)
     })
@@ -40,7 +40,7 @@ const ArticleEditable = (props: ArticleEditableProps) => {
         initialValue={props.initialArticle}
         trigger={c =>
           <Editor
-            icons={{open: "✏️", close: "✏️"}}
+            icons={{ open: "✏️", close: "✏️" }}
             onChange={() => c.onClick()}
           />
         }
@@ -50,7 +50,7 @@ const ArticleEditable = (props: ArticleEditableProps) => {
         modalWidth={"70vw"}
       />
       <Editor
-        icons={{open: "🗑️", close: "🗑️"}}
+        icons={{ open: "🗑️", close: "🗑️" }}
         onChange={() => configDelete()}
       />
     </> : <></>

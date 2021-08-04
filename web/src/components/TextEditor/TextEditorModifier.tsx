@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 8/17/2020.
  */
 
-import React, {useEffect, useState} from 'react'
-import ReactQuill, {Quill} from 'react-quill'
+import React, { useEffect, useState } from 'react'
+import ReactQuill, { Quill } from 'react-quill'
 
 import 'react-quill/dist/quill.snow.css'
 
 const CustomToolbar = () => (
   <div id="toolbar">
-    <select className="ql-header" aria-label="ql-header"/>
+    <select className="ql-header" aria-label="ql-header" />
     <select className="ql-font">
       <option value="arial">Arial</option>
       <option value="comic-sans">Comic Sans</option>
@@ -27,24 +27,24 @@ const CustomToolbar = () => (
       <option value="150px">150px</option>
       <option value="200px">200px</option>
     </select>
-    <button className="ql-align" value='' aria-label="ql-align" type="button"/>
-    <button className="ql-align" value='center' aria-label="ql-align" type="button"/>
-    <button className="ql-align" value='right' aria-label="ql-align" type="button"/>
-    <button className="ql-align" value='justify' aria-label="ql-align" type="button"/>
-    <button className="ql-bold" aria-label="ql-bold" type="button"/>
-    <button className="ql-italic" aria-label="ql-italic" type="button"/>
-    <button className="ql-underline" aria-label="ql-underline" type="button"/>
-    <button className="ql-strike" aria-label="ql-strike" type="button"/>
-    <button className="ql-blockquote" aria-label="ql-blockquote" type="button"/>
-    <button className="ql-code-block" aria-label="ql-code-block" type="button"/>
-    <button className="ql-list" value='ordered' aria-label="ql-list" type="button"/>
-    <button className="ql-list" value='bullet' aria-label="ql-list" type="button"/>
-    <button className="ql-indent" value='-1' aria-label="ql-indent" type="button"/>
-    <button className="ql-indent" value='+1' aria-label="ql-indent" type="button"/>
-    <select className="ql-color" aria-label="ql-color"/>
-    <select className="ql-background" aria-label="ql-background"/>
-    <button className="ql-link" aria-label="ql-link" type="button"/>
-    <button className="ql-image" aria-label="ql-image" type="button"/>
+    <button className="ql-align" value='' aria-label="ql-align" type="button" />
+    <button className="ql-align" value='center' aria-label="ql-align" type="button" />
+    <button className="ql-align" value='right' aria-label="ql-align" type="button" />
+    <button className="ql-align" value='justify' aria-label="ql-align" type="button" />
+    <button className="ql-bold" aria-label="ql-bold" type="button" />
+    <button className="ql-italic" aria-label="ql-italic" type="button" />
+    <button className="ql-underline" aria-label="ql-underline" type="button" />
+    <button className="ql-strike" aria-label="ql-strike" type="button" />
+    <button className="ql-blockquote" aria-label="ql-blockquote" type="button" />
+    <button className="ql-code-block" aria-label="ql-code-block" type="button" />
+    <button className="ql-list" value='ordered' aria-label="ql-list" type="button" />
+    <button className="ql-list" value='bullet' aria-label="ql-list" type="button" />
+    <button className="ql-indent" value='-1' aria-label="ql-indent" type="button" />
+    <button className="ql-indent" value='+1' aria-label="ql-indent" type="button" />
+    <select className="ql-color" aria-label="ql-color" />
+    <select className="ql-background" aria-label="ql-background" />
+    <button className="ql-link" aria-label="ql-link" type="button" />
+    <button className="ql-image" aria-label="ql-image" type="button" />
   </div>
 )
 
@@ -109,7 +109,7 @@ export const TextEditorModifier = (props: TextEditorModifierProps) => {
 
   return (
     <div className={style} >
-      <CustomToolbar/>
+      <CustomToolbar />
       <ReactQuill
         theme="snow"
         modules={modules}

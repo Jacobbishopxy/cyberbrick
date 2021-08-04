@@ -43,8 +43,8 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
     }
   })
 
-const removeElementInLayout = (id: string, elements: Elements): Elements =>
-  _.reject(elements, ele => (ele.id === id))
+const removeElementInLayout = (name: string, elements: Elements): Elements =>
+  _.reject(elements, ele => (ele.name === name))
 
 const genDataGrid = (ele: DataType.Element) =>
   ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
@@ -82,17 +82,24 @@ export const ContainerTemplate =
     // update elements when adding a new element
     useEffect(() => setElements(props.elements), [props.elements])
 
-    const elementOnRemove = (id: string) => () => {
-      const newElements = removeElementInLayout(id, elements)
+    //since unsaved elements don't have id, and each element has a unique name, remove element by name
+    const elementOnRemove = (name: string) => () => {
+      const newElements = removeElementInLayout(name, elements)
       setElements(newElements)
+      //testing: manually remove ref from teRefs
+      let index = elements.findIndex(ele => ele.name === name)
+      teRefs.current.splice(index, 1)
     }
 
     const onLayoutChange = (layout: Layout[]) =>
       setElements(updateElementInLayout(elements, layout))
 
     const startFetchAllContents = () => {
+      console.log("ref list", teRefs.current)
       const rf = teRefs.current
       if (rf) rf.forEach(e => e.fetchContent())
+      //TODO: since we've refetch from db, there shouldn't be any element with undefined id
+
     }
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
@@ -144,7 +151,7 @@ export const ContainerTemplate =
                 fetchContentFn={props.elementFetchContentFn}
                 fetchContentDatesFn={props.elementFetchContentDatesFn}
                 updateContentFn={updateContent(ele)}
-                onRemove={elementOnRemove(ele.id!)}
+                onRemove={elementOnRemove(ele.name)}
                 fetchStoragesFn={props.elementFetchStoragesFn}
                 fetchTableListFn={props.elementFetchTableListFn}
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
