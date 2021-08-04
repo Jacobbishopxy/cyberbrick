@@ -34,6 +34,11 @@ export interface ContainerRef {
   saveTemplate: () => DataType.Template | undefined
 }
 
+export interface ShouldElementFetch {
+  eleId: string | undefined
+  shouldStartFetch: boolean
+}
+
 interface SelectedPane {
   id: string
   index: number
@@ -64,6 +69,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
+  const [shouldEleFetch, setShouldEleFetch] = useState<number[]>([])
 
   const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
@@ -92,8 +98,16 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const startFetchAllContents = () => {
     if (selectedPane) {
-      const rf = ctRef.current
-      if (rf) rf.startFetchAllContents()
+      // const rf = ctRef.current
+      // console.log(template?.elements)
+      // if (rf) rf.startFetchAllContents()
+      let length = template!.elements?.length || 0
+      let newArray = Array(length).fill(0)
+      for (let i = 0; i < length; i++) {
+        newArray[i] = shouldEleFetch[i] + 1 || 1
+      }
+      console.log(newArray)
+      setShouldEleFetch(newArray)
     }
   }
 
@@ -133,7 +147,10 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
    * template's changing triggers `startFetchAllContents`
    */
   useEffect(() => {
-    if (ctRef.current && template) startFetchAllContents()
+    if (ctRef.current && template) {
+      startFetchAllContents()
+
+    }
   }, [template])
 
   const elementUpdateContentFn = (ctt: DataType.Content) => {
@@ -158,6 +175,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         elementFetchTableColumnsFn={props.fetchTableColumnsFn}
         elementFetchQueryDataFn={props.fetchQueryDataFn}
         ref={ctRef}
+        shouldEleFetch={shouldEleFetch}
       />
     }
     return <></>

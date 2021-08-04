@@ -21,6 +21,8 @@ const reactGridLayoutDefaultProps = {
   rowHeight: 20,
   margin: [5, 5] as [number, number],
   containerPadding: [10, 10] as [number, number],
+  //prevent auto-position when an element is deleted
+  // compactType: null
 }
 
 type Element = DataType.Element
@@ -53,6 +55,7 @@ const genDataGrid = (ele: DataType.Element) =>
 export interface ContainerTemplateProps {
   parentInfo: string[]
   elements: Elements
+  shouldEleFetch: number[]
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
@@ -63,7 +66,6 @@ export interface ContainerTemplateProps {
 }
 
 export interface ContainerTemplateRef {
-  startFetchAllContents: () => void
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
   saveElements: () => DataType.Element[]
 }
@@ -78,6 +80,8 @@ export const ContainerTemplate =
     const intl = useIntl()
 
     const [elements, setElements] = useState<Elements>(props.elements)
+
+
 
     // update elements when adding a new element
     useEffect(() => setElements(props.elements), [props.elements])
@@ -94,13 +98,6 @@ export const ContainerTemplate =
     const onLayoutChange = (layout: Layout[]) =>
       setElements(updateElementInLayout(elements, layout))
 
-    const startFetchAllContents = () => {
-      console.log("ref list", teRefs.current)
-      const rf = teRefs.current
-      if (rf) rf.forEach(e => e.fetchContent())
-      //TODO: since we've refetch from db, there shouldn't be any element with undefined id
-
-    }
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
       if (elements.map(e => e.name).includes(name)) {
@@ -121,7 +118,7 @@ export const ContainerTemplate =
 
     const saveElements = () => elements
 
-    useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveElements }))
+    useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
@@ -139,6 +136,7 @@ export const ContainerTemplate =
         onLayoutChange={onLayoutChange}
         isDraggable={editable}
         isResizable={editable}
+        layout={elements.map(ele => { return { x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w, i: ele.name } })}
       >
         {
           elements.map((ele, i) =>
@@ -157,6 +155,8 @@ export const ContainerTemplate =
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
+                shouldStartFetch={props.shouldEleFetch[i]}
+
               />
             </div>
           )

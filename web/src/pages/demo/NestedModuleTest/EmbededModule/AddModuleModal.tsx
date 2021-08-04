@@ -1,15 +1,10 @@
-/**
- * Created by Jacob Xie on 9/24/2020.
- */
-
 import { useState } from "react"
-import { Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip } from "antd"
+import { Checkbox, Divider, Input, List, message, Modal, Space, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { moduleList } from "@/components/Gallery/ModulePanel/Collections"
-import { SelectorPanel } from "@/components/Gallery/Dashboard/DashboardController/SelectorPanel"
 
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 
@@ -87,38 +82,6 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
     </>
 
 
-interface TemplateSelectionViewProps {
-    categories: DataType.Category[]
-    categoryOnSelect: (categoryName: string) => Promise<DataType.Category>
-    dashboardOnSelect: (id: string) => Promise<DataType.Dashboard>
-    onSelectedTemplate: (templateId: string) => void
-}
-
-const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
-    <Space direction="vertical" style={{ marginBottom: 20 }}>
-        <Space>
-            <StarTwoTone />
-            <span style={{ fontSize: 15 }}>
-                <FormattedMessage id="gallery.component.add-module-modal7" />
-            </span>
-        </Space>
-        <Space>
-            <RightOutlined />
-            <SelectorPanel
-                categories={props.categories}
-                categoryOnSelect={props.categoryOnSelect}
-                dashboardOnSelect={props.dashboardOnSelect}
-                onSelectFinish={props.onSelectedTemplate}
-                size="small"
-            />
-            <Tooltip
-                title={<FormattedMessage id="gallery.component.add-module-modal2" />}
-            >
-                <ExclamationCircleTwoTone twoToneColor="red" />
-            </Tooltip>
-        </Space>
-    </Space>
-
 export interface AddModuleModalProps {
     onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
     // categories: DataType.Category[]
@@ -134,23 +97,13 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     const [selected, setSelected] = useState<string>()
     const [moduleName, setModuleName] = useState<string>()
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
-    const [selectedPane, setSelectedPane] = useState<string>("Module")
-    const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
 
     const onSetOk = () => {
-        if (selectedPane === "Module") {
-            if (selected && moduleName) {
-                props.onQuit()
-                props.onAddModule(moduleName, timeSeries, DataType.getElementType(selected))
-            } else
-                message.warn("Please enter your element name and select one module!")
-        }
-        if (selectedPane === "Template") {
-            if (selectedTemplateId) {
-                props.onQuit()
-                // props.copyTemplate(selectedTemplateId)
-            }
-        }
+        if (selected && moduleName) {
+            props.onQuit()
+            props.onAddModule(moduleName, timeSeries, DataType.getElementType(selected))
+        } else
+            message.warn("Please enter your element name and select one module!")
     }
 
     return (
@@ -163,33 +116,11 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
             bodyStyle={{ paddingTop: 0, paddingBottom: 0 }}
             style={{ top: 40 }}
         >
-            <Tabs
-                defaultActiveKey={selectedPane}
-                onChange={setSelectedPane}
-            >
-                <Tabs.TabPane
-                    tab={<FormattedMessage id="gallery.component.general9" />}
-                    key="Module"
-                >
-                    <ModuleSelectionView
-                        setName={setModuleName}
-                        setTimeSeries={setTimeSeries}
-                        setSelected={setSelected}
-                    />
-                </Tabs.TabPane>
-                <Tabs.TabPane
-                    tab={<FormattedMessage id="gallery.component.general7" />}
-                    key="Template"
-                >
-                    {/* <TemplateSelectionView
-                        categories={props.categories}
-                        categoryOnSelect={props.categoryOnSelect}
-                        dashboardOnSelect={props.dashboardOnSelect}
-                        onSelectedTemplate={setSelectedTemplateId}
-                    /> */}
-                </Tabs.TabPane>
-            </Tabs>
+            <ModuleSelectionView
+                setName={setModuleName}
+                setTimeSeries={setTimeSeries}
+                setSelected={setSelected}
+            />
         </Modal>
     )
 }
-

@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
-import { CreateElement } from "./DisplayHeader";
 import { tabItem } from "../data"
 import { Button } from "antd";
 import { useIntl } from "umi";
 import { TabController } from "./TabController";
+import { COLS_NUM, DEFAULT_ROW_HEIGHT, RGL_CLASSNAME } from "../util";
 
-const COLSNUM = 6
-const reactGridLayoutDefaultProps = {
-    className: "layout",
-    cols: COLSNUM,
-    rowHeight: 70,
-}
 
 const ReactGridLayout = WidthProvider(RGL);
-interface AddRemoveProps {
+interface DynamicHeaderProps {
     editable: boolean
     items: tabItem[],
     currIndex: string,
@@ -31,10 +25,25 @@ interface AddRemoveProps {
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-const DynamicHeader = (props: AddRemoveProps) => {
+const DynamicHeader = (props: DynamicHeaderProps) => {
     const intl = useIntl()
-    const { items, setItems, onRemoveItem, onSwitch, onAddModule } = props
+    const { onRemoveItem, onSwitch, onAddModule } = props
     const [isHover, setIsHover] = useState<string | null>(null)
+
+    /*
+    the following are helper method to determine which tab item the mouse is hovering over
+    */
+    const onMouseEnter = (id: string) => {
+        setIsHover(id)
+    }
+
+    const onMouseLeave = () => {
+        setIsHover(null)
+    }
+
+    //determine style for selected and unselected items
+    const className = (id: string) => props.currIndex === id ? "tab-content-selected" : "tab-content"
+
     return (
         <div>
             {props.editable ?
@@ -45,31 +54,33 @@ const DynamicHeader = (props: AddRemoveProps) => {
                 </div>
                 : <div />}
             <ReactGridLayout
-                {...reactGridLayoutDefaultProps}
+                rowHeight={DEFAULT_ROW_HEIGHT}
+                cols={COLS_NUM}
+                className={RGL_CLASSNAME}
                 isDraggable={props.editable}
                 isResizable={props.editable}
                 compactType={"horizontal"}
                 // onBreakpointChange={onBreakpointChange}
                 // {...props}
-                // layout={[addTabLayout]}
+                layout={props.items.map(it => { return { i: it.i, x: it.x, y: it.y, w: it.w, h: it.h } })}
                 onLayoutChange={props.onLayoutChange}
                 style={{ minWidth: "100%", border: "0" }}
             >
-                {items.map(el =>
-                    <div key={el.i} data-grid={el}
-                        className={props.currIndex === el.i ? "tab-content-selected" : "tab-content"}
+                {props.items.map(el =>
+                    <div key={el.i} data-grid={el} id={el.i}
+                        className={className(el.i)}
                         onClick={() => onSwitch(el.i)}
-                        onMouseEnter={() => setIsHover(el.i)}
-                        onMouseLeave={() => setIsHover(null)}
-                    >
-                        <TabController editable={props.editable} el={el}
+                        onMouseEnter={() => onMouseEnter(el.i)}
+                        onMouseLeave={onMouseLeave}>
+                        <TabController
+
+                            editable={props.editable} el={el}
                             isHover={(isHover && isHover === el.i) ? true : false}
                             isSelected={props.currIndex === el.i}
                             onRemoveItem={onRemoveItem}
-                            setItems={setItems}
+                            setItems={props.setItems}
                             onAddModule={onAddModule}
                         />
-
                     </div>)
                 }
             </ReactGridLayout>
