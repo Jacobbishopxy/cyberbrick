@@ -1,15 +1,15 @@
 /**
  * Created by Jacob Xie on 8/27/2020.
  */
-import {Body, Controller, Get, Res} from '@nestjs/common'
-import {Response} from "express"
+import { Body, Controller, Get, Res } from '@nestjs/common'
+import { Response } from "express"
 
-import {CollectionService} from "./collection.service"
+import { CollectionService } from "./collection.service"
 
 
 @Controller()
 export class HomeController {
-  constructor(private readonly service: CollectionService) {}
+  constructor(private readonly service: CollectionService) { }
 
   @Get("homeLogo")
   async getHomeLogo(@Res() res: Response) {
@@ -20,7 +20,7 @@ export class HomeController {
   async getCurrentUserAvatar(@Res() res: Response) {
     return res.sendFile(this.service.getAsset("favicon.ico"))
   }
-
+  // TODO: current user with cookies
   @Get("currentUser")
   async currentUser() {
     return {

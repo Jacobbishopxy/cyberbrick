@@ -4,7 +4,7 @@ import { AddModuleModal } from "@/components/Gallery/ModulePanel/Collections/Nes
 import { getChoiceElement } from "@/components/Gallery/ModulePanel/Collections/NestedModule/Header/TabChoice"
 import { FileAddOutlined, DeleteOutlined } from "@ant-design/icons"
 import { Tooltip, Button } from "antd"
-import { CSSProperties, useState } from "react"
+import { CSSProperties, useEffect, useState } from "react"
 import { useIntl } from "umi"
 import { TabItemSelection } from "./TabItemSelection"
 
@@ -19,22 +19,45 @@ interface TabControllerProps {
     el: tabItem,
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     onRemoveItem: (i: string) => void
-}
 
+}
+/*
+This is the controller for tab item. It receives a boolean type 'isHover' from parent.
+
+When 'isHover' is true, display 'editHeader', which is the controller of three buttons that used to
+edit corresponding module, edit current tab content, and remove current tab.
+
+'displayHeader' is used to display the content of the tab item.
+
+'selected' is the selected choice from modal triggered by editHeader
+*/
 export const TabController = (props: TabControllerProps) => {
     const { el } = props
     const [tabType, setTabType] = useState(el.tabType)
+    //used to store which
     const [selected, setSelected] = useState('');
     const [addModuleModalVisible, setAddModuleModalVisible] = useState(false)
     const intl = useIntl()
 
-    const endEdit = (tabType: string, input?: string) => {
+    //update items content to selected
+    useEffect(() => {
+        // console.log("selected change", selected)
+        if (selected && tabType) props.setItems(items => items.map(it => {
+            if (it.i === el.i) {
+                return { ...it, tabContent: selected, tabType: tabType }
+            }
+            return it
+        }))
+    }, [selected, tabType])
+
+    const endEdit = (type: string, input?: string) => {
         //not icon
-        if (tabType !== "icon") {
+        if (type !== "icon") {
             setSelected(input || '')
         }
         //update tab type
-        setTabType(tabType)
+        setTabType(type)
+        // console.log(tabType, input, selected)
     }
 
     const quitAddModule = () => setAddModuleModalVisible(false)
@@ -66,26 +89,27 @@ export const TabController = (props: TabControllerProps) => {
     </div>
 
     const displayHeader = () => {
-        let headerContent: any = el.text
+        //get content from tabContent
+        let headerContent: any = getChoiceElement(el.tabContent || "")
 
-        if (props.editable) {
+        const className = (tabType === "text") ? "tab-text" : "display-content"
+        //calculate fontSize based on the minimal of tab's dimension (width/height)
+        const fontSize = (tabType === "text") ? `${el.minDim / 4}px` : `${el.minDim / 2}px`
+        if (props.editable && selected) {
             //get content from newly created information
-            if (selected) headerContent = getChoiceElement(selected as tabContentChoice)
-        } else {
-            //get content from tabContent
-            if (el.tabContent) headerContent = getChoiceElement(el.tabContent)
+            headerContent = getChoiceElement(selected as tabContentChoice)
         }
-        // console.log(headerContent)
-        return (<span className={(tabType === "text") ? "tab-text" : "content"}
-        // title={editable ? "Double click to edit" : ""}
+        // console.log(el.i, selected)
+        return (<span className={className}
+            style={{ fontSize: fontSize }}
         >
             {headerContent}
         </span>)
     }
 
     return (
-        <div>
-            {props.editable && props.isHover ? editHeader : null}
+        <div style={{ bottom: 0, top: 0 }}>
+            {props.editable && props.isHover ? editHeader : <div style={{ marginTop: "-12px", height: "24px" }} />}
 
             <div>
                 {displayHeader()}

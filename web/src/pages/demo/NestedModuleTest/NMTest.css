@@ -2,8 +2,8 @@
 @import '~react-grid-layout/css/styles.css';
 
 
-.react-grid-item .content {
-  font-size: 24px;
+.display-content {
+  font-size: 32px;
   text-align: center;
   position: absolute;
   vertical-align: middle;
@@ -71,7 +71,6 @@
 }
 
 .tab-text {
-  font-size: 15px;
   position: absolute;
   vertical-align: center;
   left: 5%;

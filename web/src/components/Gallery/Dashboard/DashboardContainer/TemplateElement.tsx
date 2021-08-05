@@ -7,11 +7,14 @@ import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, use
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
 
+
 export interface ContainerElementProps {
   parentInfo: string[]
   timeSeries?: boolean
   editable: boolean
   element: DataType.Element
+  shouldStartFetch: number
+
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
@@ -40,46 +43,30 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     const [isLoading, setIsLoading] = useState(true);
-    // const [isError, setIsError] = useState(false);
-
-    const [isMounted, setIsMounted] = useState(true);
 
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
-    //TODO: cancel can't refetch
     const fetchContent = (date?: string) => {
       // setIsLoading(true);
-      // console.log(isMounted, eleId)
-      if (eleId && isMounted) {
-        if (date) {
-          props.fetchContentFn(eleId, date).then(res => {
-            setContent(res)
-            setIsLoading(false);
-          })
-          // setIsLoading(false);
-        }
-        // props.fetchContentFn(eleId, date).then(res => setContent(res))
-        else {
-          props.fetchContentFn(eleId).then(res => {
-            setContent(res)
-            setIsLoading(false)
-          })
+      if (eleId) {
+        //no need to check date since it's allowed date to be undefined
+        props.fetchContentFn(eleId, date).then(res => {
+          // console.log("fetching finish", eleId, res?.data)
 
-        }
+          //TODO: cannot set content to undefined
+          setContent(res || { data: {}, date: '' })
+          setIsLoading(false)
+        })
       }
     }
 
-
-    //cancel subsription when this component is unmounted, so that fetchContent won't make a request
+    //listen to props's shouldStartFetch. If it updates, fetchContent
     useEffect(() => {
-      // console.log(content)
-      setIsMounted(true);
-      return () => {
-        setIsMounted(false);
-      };
-    }, [])
+      //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
+      fetchContent()
+    }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
       if (eleId && props.element.timeSeries) {
@@ -89,7 +76,7 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
+    useImperativeHandle(ref, () => ({ eleId, fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 

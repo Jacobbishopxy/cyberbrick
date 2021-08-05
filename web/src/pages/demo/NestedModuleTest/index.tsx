@@ -41,7 +41,7 @@ export default () => {
 
   const updateContent = (c: DataType.Content) => {
     setContent(c)
-    console.log(c)
+    // console.log(c)
   }
   return (
     <Card

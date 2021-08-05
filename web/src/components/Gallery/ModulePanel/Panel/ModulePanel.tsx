@@ -144,11 +144,12 @@ export const ModulePanel = (props: ModulePanelProps) => {
   />
 
   const genContext = useMemo(() => {
+    // console.log(content?.data)
     const rf = moduleRef.current
     if (rf) {
       //if it's has id (so it's saved to db) and it's loading, display skeleton. 
       //If we finish loading, display whatever content is, including a white board (for content undefined or null)
-      if (props.eleId && loading) {
+      if (props.eleId && loading && !content) {
         const rows =
           props.contentHeight ? floor(props.contentHeight / SKELETON_HEIGHT_TO_ROWS) : SKELETON_DEFAULT_ROWS
         return <Skeleton className={styles.loadinSkeleton}

@@ -62,7 +62,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                 compactType={"horizontal"}
                 // onBreakpointChange={onBreakpointChange}
                 // {...props}
-                // layout={[addTabLayout]}
+                layout={props.items.map(it => { return { i: it.i, x: it.x, y: it.y, w: it.w, h: it.h } })}
                 onLayoutChange={props.onLayoutChange}
                 style={{ minWidth: "100%", border: "0" }}
             >

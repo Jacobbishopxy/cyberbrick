@@ -21,6 +21,8 @@ const reactGridLayoutDefaultProps = {
   rowHeight: 20,
   margin: [5, 5] as [number, number],
   containerPadding: [10, 10] as [number, number],
+  //prevent auto-position when an element is deleted
+  // compactType: null
 }
 
 type Element = DataType.Element
@@ -43,8 +45,8 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
     }
   })
 
-const removeElementInLayout = (id: string, elements: Elements): Elements =>
-  _.reject(elements, ele => (ele.id === id))
+const removeElementInLayout = (name: string, elements: Elements): Elements =>
+  _.reject(elements, ele => (ele.name === name))
 
 const genDataGrid = (ele: DataType.Element) =>
   ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
@@ -53,6 +55,7 @@ const genDataGrid = (ele: DataType.Element) =>
 export interface ContainerTemplateProps {
   parentInfo: string[]
   elements: Elements
+  shouldEleFetch: number
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
@@ -63,7 +66,6 @@ export interface ContainerTemplateProps {
 }
 
 export interface ContainerTemplateRef {
-  startFetchAllContents: () => void
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
   saveElements: () => DataType.Element[]
 }
@@ -79,21 +81,23 @@ export const ContainerTemplate =
 
     const [elements, setElements] = useState<Elements>(props.elements)
 
+
+
     // update elements when adding a new element
     useEffect(() => setElements(props.elements), [props.elements])
 
-    const elementOnRemove = (id: string) => () => {
-      const newElements = removeElementInLayout(id, elements)
+    //since unsaved elements don't have id, and each element has a unique name, remove element by name
+    const elementOnRemove = (name: string) => () => {
+      const newElements = removeElementInLayout(name, elements)
       setElements(newElements)
+      //testing: manually remove ref from teRefs
+      let index = elements.findIndex(ele => ele.name === name)
+      teRefs.current.splice(index, 1)
     }
 
     const onLayoutChange = (layout: Layout[]) =>
       setElements(updateElementInLayout(elements, layout))
 
-    const startFetchAllContents = () => {
-      const rf = teRefs.current
-      if (rf) rf.forEach(e => e.fetchContent())
-    }
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
       if (elements.map(e => e.name).includes(name)) {
@@ -114,7 +118,7 @@ export const ContainerTemplate =
 
     const saveElements = () => elements
 
-    useImperativeHandle(ref, () => ({ startFetchAllContents, newElement, saveElements }))
+    useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
@@ -132,6 +136,7 @@ export const ContainerTemplate =
         onLayoutChange={onLayoutChange}
         isDraggable={editable}
         isResizable={editable}
+        layout={elements.map(ele => { return { x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w, i: ele.name } })}
       >
         {
           elements.map((ele, i) =>
@@ -144,12 +149,14 @@ export const ContainerTemplate =
                 fetchContentFn={props.elementFetchContentFn}
                 fetchContentDatesFn={props.elementFetchContentDatesFn}
                 updateContentFn={updateContent(ele)}
-                onRemove={elementOnRemove(ele.id!)}
+                onRemove={elementOnRemove(ele.name)}
                 fetchStoragesFn={props.elementFetchStoragesFn}
                 fetchTableListFn={props.elementFetchTableListFn}
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
+                shouldStartFetch={props.shouldEleFetch}
+
               />
             </div>
           )
