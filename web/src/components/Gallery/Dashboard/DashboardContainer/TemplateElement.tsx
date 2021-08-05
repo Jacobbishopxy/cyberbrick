@@ -43,56 +43,28 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     const [isLoading, setIsLoading] = useState(true);
-    // const [isError, setIsError] = useState(false);
-
-    const [isMounted, setIsMounted] = useState(true);
 
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
-    //TODO: cancel can't refetch
     const fetchContent = (date?: string) => {
       // setIsLoading(true);
-      console.log(isMounted, eleId)
-      if (eleId && isMounted) {
-        if (date) {
-          props.fetchContentFn(eleId, date).then(res => {
-            setContent(res)
-            setIsLoading(false);
-          })
-        }
-        else {
-          props.fetchContentFn(eleId).then(res => {
-            console.log(res)
-            setContent(res)
-            setIsLoading(false)
-            //inform parent fetching end
-            // props.setShouldStartFetch(els => els.map(el => {
-            //   if (el.eleId === eleId) return { ...el, shouldStartFetch: false }
-            //   return el
-            // }))
-            // console.log("finish loading: ", eleId)
-          })
+      if (eleId) {
+        //no need to check date since it's allowed date to be undefined
+        props.fetchContentFn(eleId, date).then(res => {
+          // console.log("fetching finish", eleId, res?.data)
 
-        }
+          //TODO: cannot set content to undefined
+          setContent(res || { data: {}, date: '' })
+          setIsLoading(false)
+        })
       }
     }
 
-
-    //cancel subsription when this component is unmounted, so that fetchContent won't make a request
+    //listen to props's shouldStartFetch. If it updates, fetchContent
     useEffect(() => {
-      // console.log(content)
-      setIsMounted(true);
-      return () => {
-        setIsMounted(false);
-      };
-    }, [])
-
-    //listen to props's shouldStartFetch. If it turns to true, fetchContent
-    useEffect(() => {
-      console.log(eleId, props.shouldStartFetch)
-      // if (props.shouldStartFetch) fetchContent()
+      //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
       fetchContent()
     }, [props.shouldStartFetch])
 

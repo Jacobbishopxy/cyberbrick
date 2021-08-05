@@ -69,7 +69,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
-  const [shouldEleFetch, setShouldEleFetch] = useState<number[]>([])
+  const [shouldEleFetch, setShouldEleFetch] = useState<number>(0)
 
   const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
@@ -98,16 +98,15 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const startFetchAllContents = () => {
     if (selectedPane) {
-      // const rf = ctRef.current
-      // console.log(template?.elements)
-      // if (rf) rf.startFetchAllContents()
-      let length = template!.elements?.length || 0
-      let newArray = Array(length).fill(0)
-      for (let i = 0; i < length; i++) {
-        newArray[i] = shouldEleFetch[i] + 1 || 1
-      }
-      console.log(newArray)
-      setShouldEleFetch(newArray)
+      //update the shoudEleFetch count
+      // let length = template!.elements?.length || 0
+      // let newArray = Array(length).fill(0)
+      // for (let i = 0; i < length; i++) {
+      //   newArray[i] = shouldEleFetch[i] + 1 || 1
+      // }
+      // // console.log(newArray)
+      // setShouldEleFetch(newArray)
+      setShouldEleFetch(el => el + 1)
     }
   }
 

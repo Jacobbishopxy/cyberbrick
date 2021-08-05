@@ -144,7 +144,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   />
 
   const genContext = useMemo(() => {
-    console.log(content?.data)
+    // console.log(content?.data)
     const rf = moduleRef.current
     if (rf) {
       //if it's has id (so it's saved to db) and it's loading, display skeleton. 

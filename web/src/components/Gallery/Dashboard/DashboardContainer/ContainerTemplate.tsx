@@ -55,7 +55,7 @@ const genDataGrid = (ele: DataType.Element) =>
 export interface ContainerTemplateProps {
   parentInfo: string[]
   elements: Elements
-  shouldEleFetch: number[]
+  shouldEleFetch: number
   elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
@@ -155,7 +155,7 @@ export const ContainerTemplate =
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
-                shouldStartFetch={props.shouldEleFetch[i]}
+                shouldStartFetch={props.shouldEleFetch}
 
               />
             </div>
