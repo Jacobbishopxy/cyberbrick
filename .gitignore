@@ -54,3 +54,5 @@ test
 *.pyc
 makefile.bak
 .myAppPID
+
+server-go

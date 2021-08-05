@@ -1,11 +1,11 @@
-import {today} from "@/components/Gallery/GalleryDataType"
-import {ModuleEditorField, ModulePresenterField} from "@/components/Gallery/ModulePanel/Generator/data"
-import {ModuleGenerator} from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
-import {useEffect, useState} from "react"
-import {tabItem} from "./data"
-import {NestedSimpleModuleEditor} from "./Editor"
+import { today } from "@/components/Gallery/GalleryDataType"
+import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
+import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
+import { useEffect, useState } from "react"
+import { tabItem } from "./data"
+import { NestedSimpleModuleEditor } from "./Editor"
 import './style.css'
-import {NSMid} from "./util"
+import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {
         i: i.toString(),
@@ -17,7 +17,7 @@ const defaultItems: tabItem[] = [0].map(function (i, key, list) {
         static: false,
     }
 })
-const defaultData = {tabItems: defaultItems, currIndex: "0"}
+const defaultData = { tabItems: defaultItems, currIndex: "0" }
 const EditorField = (props: ModuleEditorField) => {
     /* content type: 
     currIndex: string (used to indicate the tab when entering)
@@ -55,7 +55,7 @@ const EditorField = (props: ModuleEditorField) => {
 
 
     useEffect(() => {
-        props.updateContent({...props.content, date: today(), data: {tabItems: items, currIndex: currIndex}})
+        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
         // console.log(props.content)
     }, [saveCount])
     return (
@@ -84,7 +84,7 @@ const PresenterField = (props: ModulePresenterField) => {
     const setCurrIndex = useState("")[1]
     const setSaveCount = useState(0)[1]
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
-    return (props.content ?
+    return (props.content?.data?.tabItems ?
         <div className={props.styling}>
             <NestedSimpleModuleEditor
                 items={props.content?.data.tabItems as tabItem[]}
@@ -97,8 +97,8 @@ const PresenterField = (props: ModulePresenterField) => {
                 fetchStoragesFn={() => Promise.resolve([])}
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
-                fetchQueryDataFn={props.fetchQueryData}
-                updateContentFn={(c) => {}}
+                // fetchQueryDataFn={props.fetchQueryData}
+                updateContentFn={(c) => { }}
                 setSaveCount={setSaveCount}
             />
         </div> : <></>)

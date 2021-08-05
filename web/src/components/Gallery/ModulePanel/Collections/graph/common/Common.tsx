@@ -2,21 +2,21 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import {useEffect, useState} from "react"
-import {Button, message, Modal, Space} from "antd"
-import ProForm, {StepsForm} from "@ant-design/pro-form"
-import {CheckCircleTwoTone, CloseCircleTwoTone} from "@ant-design/icons"
-import {FormattedMessage, useIntl} from "umi"
+import { useEffect, useState } from "react"
+import { Button, message, Modal, Space } from "antd"
+import ProForm, { StepsForm } from "@ant-design/pro-form"
+import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
+import { FormattedMessage, useIntl } from "umi"
 import ReactEcharts from "echarts-for-react"
 
-import {QuerySelectorModal} from "@/components/Gallery/Dataset"
+import { QuerySelectorModal } from "@/components/Gallery/Dataset"
 
-import {ModuleEditorField, ModulePresenterField} from "../../../Generator/data"
+import { ModuleEditorField, ModulePresenterField } from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
-import {DisplayForm} from "./DisplayForm"
-import {ColumnIdentifier} from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
-import {ChartOptionGenerator, Mixin, UnionChartConfig} from "@/components/Gallery/Utils/data"
-
+import { DisplayForm } from "./DisplayForm"
+import { ColumnIdentifier } from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
+import { ChartOptionGenerator, Mixin, UnionChartConfig } from "@/components/Gallery/Utils/data"
+import _ from "lodash";
 
 export const generateCommonEditorField = (mixin?: Mixin) =>
   (props: ModuleEditorField) => {
@@ -42,7 +42,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
     const saveContent = async (values: Record<string, any>) => {
       if (content) {
-        const ctt = {...content, config: values}
+        const ctt = { ...content, config: values }
         props.updateContent(ctt)
         message.success("Updating succeeded!")
       } else {
@@ -72,7 +72,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           onFinish={saveContent}
           stepsFormRender={(dom, submitter) =>
             <Modal
-              title={intl.formatMessage({id: "gallery.component.module-panel.graph.utils.common1"})}
+              title={intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common1" })}
               visible={visible}
               onCancel={() => setVisible(false)}
               footer={submitter}
@@ -85,7 +85,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         >
           <StepsForm.StepForm
             name="data"
-            title={intl.formatMessage({id: "gallery.component.general43"})}
+            title={intl.formatMessage({ id: "gallery.component.general43" })}
             onFinish={dataSelectOnFinish}
           >
             <ProForm.Group
@@ -96,7 +96,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                   trigger={
                     <Button
                       type='primary'
-                      style={{marginBottom: 20}}
+                      style={{ marginBottom: 20 }}
                     >
                       <FormattedMessage id="gallery.component.module-panel.collections.file-view4" />
                     </Button>
@@ -124,8 +124,8 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
           <StepsForm.StepForm
             name="display"
-            title={intl.formatMessage({id: "gallery.component.general43"})}
-            initialValues={{x: {type: "category"}, seriesDir: "vertical"}}
+            title={intl.formatMessage({ id: "gallery.component.general43" })}
+            initialValues={{ x: { type: "category" }, seriesDir: "vertical" }}
           >
             <DisplayForm
               mixin={mixin}
@@ -146,7 +146,8 @@ export const generateCommonPresenterField =
 
       useEffect(() => {
         if (props.fetchQueryData && props.content) {
-          if (props.content.data)
+          console.log(_.isEmpty(props.content.data))
+          if (!_.isEmpty(props.content.data))
             props.fetchQueryData(props.content).then(res => setData(res))
         }
       }, [props.content])
@@ -155,7 +156,7 @@ export const generateCommonPresenterField =
       if (data && props.content && props.content.config)
         return <ReactEcharts
           option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
-          style={{height: props.contentHeight}}
+          style={{ height: props.contentHeight }}
           theme={props.content.config.style || "default"}
         />
       return <></>
