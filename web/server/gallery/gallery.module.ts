@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 10/26/2020.
  */
 
-import {Module} from "@nestjs/common"
-import {TypeOrmModule} from "@nestjs/typeorm"
-import {db} from "./common"
+import { Module } from "@nestjs/common"
+import { TypeOrmModule } from "@nestjs/typeorm"
+import { db } from "./common"
 
 import {
   Author,
@@ -27,7 +27,7 @@ import {
   TagService,
   TemplateService,
 } from "./provider"
-import {StorageSubscriber} from "./subscriber"
+import { StorageSubscriber } from "./subscriber"
 import {
   CategoryController,
   ContentController,
@@ -38,6 +38,8 @@ import {
   TagController,
   TemplateController,
 } from "./controller"
+import { ContentMongoController } from "./controller/contentMongo.controller"
+import { MongoService } from "./provider/contentMongo.service"
 
 
 @Module({
@@ -64,6 +66,7 @@ import {
     TagService,
     TemplateService,
     StorageSubscriber,
+    MongoService,
   ],
   controllers: [
     CategoryController,
@@ -74,7 +77,11 @@ import {
     StorageController,
     TagController,
     TemplateController,
+    ContentMongoController,
   ],
+
 })
-export class GalleryModule {}
+export class GalleryModule {
+
+}
 

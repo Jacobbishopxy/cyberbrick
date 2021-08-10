@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import {request} from "umi"
+import { request } from "umi"
 
 
 const base = "/api/gallery"
@@ -136,8 +136,8 @@ export const getContentsInCategoryByElementTypeAndMarkAndTags =
     return request(path)
   }
 
-export const saveContentInCategory = async (categoryName: string, content: GalleryAPI.Content): Promise<void> =>
-  request(`${base}/saveContentInCategory?name=${categoryName}`, {
+export const saveContentInCategory = async (categoryName: string, type: string, content: GalleryAPI.Content): Promise<void> =>
+  request(`${base}/saveContentInCategory?name=${categoryName}&type=${type}`, {
     method: "post",
     data: content
   })

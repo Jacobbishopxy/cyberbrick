@@ -17,10 +17,11 @@ export const EditableContext = React.createContext<boolean>(false)
 const dashboardContentUpdate = (contents: DataType.Content[], template: DataType.Template) => {
 
   const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
+  const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
 
   return contents.map(c => {
     if (c.element!.id === undefined) {
-      const element = { ...c.element!, id: elementNameIdMap[c.element!.name] }
+      const element = { ...c.element!, id: elementNameIdMap[c.element!.name], type: elementNameTypeMap[c.element!.name] }
       return { ...c, element }
     }
     return c
@@ -51,7 +52,7 @@ export interface DashboardProps {
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
   fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
-  updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  updateElementContent: (categoryName: string, type: string, content: DataType.Content) => Promise<void>
   fetchStorages: () => Promise<DataType.StorageSimple[]>
   fetchTableList: (id: string) => Promise<string[]>
   fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
@@ -123,7 +124,7 @@ export const Dashboard = (props: DashboardProps) => {
   const updateAllContents = async (contents: DataType.Content[]) => {
     if (selectedDashboard)
       return Promise.all(
-        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c))
+        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c))
       )
     return Promise.reject(new Error("No dashboard selected!"))
   }

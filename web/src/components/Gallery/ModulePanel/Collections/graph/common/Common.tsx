@@ -146,7 +146,6 @@ export const generateCommonPresenterField =
 
       useEffect(() => {
         if (props.fetchQueryData && props.content) {
-          console.log(_.isEmpty(props.content.data))
           if (!_.isEmpty(props.content.data))
             props.fetchQueryData(props.content).then(res => setData(res))
         }
