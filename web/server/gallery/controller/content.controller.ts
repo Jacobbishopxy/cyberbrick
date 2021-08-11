@@ -80,7 +80,7 @@ export class ContentController {
   @Post("saveContentInCategory")
   saveContentInCategory(@Query("name") name: string, @Query("type") type: string,
     @Body() content: Content) {
-    // console.log(content)
+    // console.log(type, content)
     try {
       return this.service.saveContentToMongoOrPg(name, type, content)
     } catch (err: any) {

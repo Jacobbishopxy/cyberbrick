@@ -176,32 +176,11 @@ export class TemplateService {
 
       const removedIds = _.difference(originElementsId.map(i => i.id), targetElementsId)
       if (removedIds.length !== 0)
-        await this.repoElement.delete(removedIds)
+        // await this.repoElement.delete(removedIds)
+        await this.repoElement.softDelete(removedIds)
+
     }
-    // console.log(template)
-    // //wipe out content
-    // template.elements = template.elements.map(ele => {
-    //   switch (ele.type) {
-    //     case common.ElementType.Image:
-    //       return { ...ele, contents: [] }
-    //     case common.ElementType.Text:
-    //       // console.log("element type is", ele.type)
-    //       return { ...ele, contents: [] }
-    //     default:
-    //       return ele
-    //   }
-    // })
-    // console.log(template.elements)
     return this.saveTemplate(template)
-    //save to mongo
-    // const processedEle: Element[] = []
-    // template.elements.forEach(async ele => {
-    //   const res = await this.service.processElement(ele)
-    //   processedEle.push(res)
-    // })
-    // template.elements = processedEle
-    // //again, save to pg with updated mongo content and id
-    // return this.saveTemplate(template)
   }
 }
 

@@ -20,7 +20,7 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
   const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
 
   return contents.map(c => {
-    if (c.element!.id === undefined) {
+    if (c.element!.id === undefined || c.element!.type === undefined) {
       const element = { ...c.element!, id: elementNameIdMap[c.element!.name], type: elementNameTypeMap[c.element!.name] }
       return { ...c, element }
     }
