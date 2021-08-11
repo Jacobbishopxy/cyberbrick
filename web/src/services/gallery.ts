@@ -293,8 +293,8 @@ export const reloadConnection = async (id: string): Promise<string> =>
 export const executeSql = async (id: string, sqlString: string) =>
   request(`${base}/executeSql?id=${id}&sqlString=${sqlString}`)
 
-export const read = async (id: string, readOption: GalleryAPI.Read) =>
-  request(`${base}/read?id=${id}`, {
+export const read = async (id: string, readOption: GalleryAPI.Read, databaseType: GalleryAPI.StorageType) =>
+  request(`${base}/read?id=${id}&databaseType=${databaseType}`, {
     method: "post",
     data: readOption
   })

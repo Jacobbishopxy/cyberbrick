@@ -30,6 +30,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       const ctt = {
         ...content!,
         date: DataType.today(),
+        storageType: DataType.StorageType.PG,
         data
       }
       setContent(ctt)
@@ -42,7 +43,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
     const saveContent = async (values: Record<string, any>) => {
       if (content) {
-        const ctt = { ...content, config: values }
+        const ctt = { ...content, config: values, databaseType: DataType.StorageType.PG, }
         props.updateContent(ctt)
         message.success("Updating succeeded!")
       } else {

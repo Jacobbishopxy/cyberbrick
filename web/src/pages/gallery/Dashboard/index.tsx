@@ -75,8 +75,8 @@ export default () => {
   const fetchTableColumns = (storageId: string, tableName: string) =>
     GalleryService.databaseGetTableColumns(storageId, tableName)
 
-  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read) =>
-    GalleryService.read(storageId, readOption)
+  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read, databaseType: GalleryAPI.StorageType) =>
+    GalleryService.read(storageId, readOption, databaseType)
 
 
   return (

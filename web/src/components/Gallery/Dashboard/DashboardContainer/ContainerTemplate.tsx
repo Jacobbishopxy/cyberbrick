@@ -123,7 +123,7 @@ export const ContainerTemplate =
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
         ...value,
-        element: { id: ele.id, name: ele.name } as DataType.Element
+        element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
       })
 
     const genRef = (i: number) => (el: ContainerElementRef) => {

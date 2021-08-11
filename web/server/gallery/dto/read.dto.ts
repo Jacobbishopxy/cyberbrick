@@ -2,11 +2,17 @@
  * Created by Jacob Xie on 11/16/2020
  */
 
-import {IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested} from "class-validator"
-import {Type} from "class-transformer"
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator"
+import { Type } from "class-transformer"
 
+export type ReadDto = PostgresReadDto | MongoReadDto
 
-export class ReadDto {
+export class MongoReadDto {
+  @IsNotEmpty()
+  collection!: string
+}
+
+export class PostgresReadDto {
   @IsArray()
   @IsOptional()
   selects?: string[]

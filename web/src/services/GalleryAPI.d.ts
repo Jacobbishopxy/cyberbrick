@@ -112,7 +112,8 @@ declare namespace GalleryAPI {
   }
 
   export enum StorageType {
-    PG = "postgres"
+    PG = "postgres",
+    MONGO = "mongodb"
   }
 
   export const getStorageType = (v: string) => {
@@ -156,9 +157,15 @@ declare namespace GalleryAPI {
     symbol: ConditionSymbol
   }
 
-  export interface Read {
+  export type Read = PostgresRead | MongoRead
+
+  export interface PostgresRead {
     selects?: string[]
     tableName: string
     conditions?: Condition[]
+  }
+
+  export interface MongoRead {
+    collection: string
   }
 }

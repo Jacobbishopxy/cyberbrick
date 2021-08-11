@@ -49,6 +49,7 @@ export const TemplateElement =
     })
 
     const fetchContent = (date?: string) => {
+      // console.log(props.fetchQueryDataFn)
       // setIsLoading(true);
       if (eleId) {
         //no need to check date since it's allowed date to be undefined

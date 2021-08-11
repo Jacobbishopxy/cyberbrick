@@ -46,6 +46,7 @@ export interface Content {
   date: string
   title?: string
   data: Record<string, any>
+  storageType?: StorageType
   config?: Record<string, any>
 }
 
@@ -162,7 +163,8 @@ export const getElementType = (v: string) => {
 }
 
 export enum StorageType {
-  PG = "postgres"
+  PG = "postgres",
+  MONGO = "mongodb"
 }
 
 export const storageTypeList = [

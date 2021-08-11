@@ -56,7 +56,7 @@ export interface DashboardProps {
   fetchStorages: () => Promise<DataType.StorageSimple[]>
   fetchTableList: (id: string) => Promise<string[]>
   fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
-  fetchQueryData: (storageId: string, readOption: DataType.Read) => Promise<any>
+  fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
 }
 
 export const Dashboard = (props: DashboardProps) => {
@@ -175,10 +175,12 @@ export const Dashboard = (props: DashboardProps) => {
     props.fetchElementContentDates(id)
 
   const fetchQueryData = async (value: DataType.Content) => {
-    const id = value.data.id
+    const id = value.data?.id
     const option = value.data as DataType.Read
+    //default to pg
+    const dbType = value.storageType ? value.storageType : DataType.StorageType.PG
     if (id && option)
-      return props.fetchQueryData(id, option)
+      return props.fetchQueryData(id, option, dbType)
     return Promise.reject(new Error("content data is inappropriate!"))
   }
 

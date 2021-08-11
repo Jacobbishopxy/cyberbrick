@@ -9,7 +9,7 @@ import { ConvertFwRef } from "../Generator/data"
 import { XlsxTable } from "./table/XlsxTable"
 import { FlexTable } from "./table/FlexTable"
 import { EmbedLink } from "./miscellaneous/EmbedLink"
-import { Text } from "./miscellaneous/Text"
+import { Text } from "./multiMedia/Text"
 import { TargetPrice } from "./miscellaneous/TargetPrice"
 import { FileView } from "./file/FileView"
 import {
@@ -51,6 +51,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
+      fetchQueryData={props.fetchQueryData}
       styling={styles.contentPanel}
       ref={props.forwardedRef}
     />

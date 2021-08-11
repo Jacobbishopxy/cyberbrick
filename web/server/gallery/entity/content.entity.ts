@@ -54,5 +54,8 @@ export class Content {
 
   @Column("json", { nullable: true })
   config?: Record<string, any>
+
+  @Column("varchar", { nullable: true })
+  storageType?: string
 }
 

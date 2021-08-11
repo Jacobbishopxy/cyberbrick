@@ -100,6 +100,11 @@ export class MongoService {
         return ele
     }
 
+    async getContentData(type: string, id?: string, date?: string, elementId?: string) {
+        const res = await this.getContent(type, id, date, elementId)
+        return res.data
+    }
+
     async getContent(type: string, id?: string, date?: string, elementId?: string) {
         let url = `${base}?type=${type}`
         //get by mongo id
@@ -109,7 +114,6 @@ export class MongoService {
         else if (elementId) url += `&elementId=${elementId}`
         const ans = await axios.get(url)
         return ans.data
-
     }
 
     async createOrUpdateContentList(type: string, cts: ContentMongo[]) {

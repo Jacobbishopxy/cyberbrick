@@ -136,12 +136,15 @@ export enum StorageType {
   PG = "postgres",
   MYSQL = "mysql",
   MSSQL = "mssql",
+  MONGO = "mongodb"
 }
 
 export const getStorageType = (v: string) => {
   switch (v) {
     case "postgres":
       return StorageType.PG
+    case "mongodb":
+      return StorageType.MONGO
     default:
       return undefined
   }
