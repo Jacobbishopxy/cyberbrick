@@ -21,6 +21,9 @@ export interface ModulePresenterField {
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   styling?: string
+  updateContent: (c: DataType.Content) => void
+  shouldQuery?: boolean
+  setShouldQuery?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface ConvertFwRef {
@@ -36,6 +39,8 @@ export interface ConvertRefProps {
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
+  shouldQuery?: boolean
+  setShouldQuery?: React.Dispatch<React.SetStateAction<boolean>>
   forwardedRef: React.Ref<ConvertFwRef>
 }
 
@@ -47,6 +52,8 @@ export interface ConvertProps {
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
+  shouldQuery?: boolean
+  setShouldQuery?: React.Dispatch<React.SetStateAction<boolean>>
   styling?: string
 }
 

@@ -43,6 +43,7 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     const [isLoading, setIsLoading] = useState(true);
+    const [moduleShouldQuery, setModuleShouldQuery] = useState(false)
 
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
@@ -67,6 +68,7 @@ export const TemplateElement =
     useEffect(() => {
       //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
       fetchContent()
+      setModuleShouldQuery(true)
     }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
@@ -102,6 +104,8 @@ export const TemplateElement =
           editable={props.editable}
           settable={!!eleId}
           isLoading={isLoading}
+          shouldQuery={moduleShouldQuery/**note that presentor should re-query from db when content is newly fetched from db */}
+          setShouldQuery={setModuleShouldQuery}
         />
       </div>
     )

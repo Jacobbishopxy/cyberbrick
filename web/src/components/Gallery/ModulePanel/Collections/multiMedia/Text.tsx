@@ -9,6 +9,7 @@ import { ModuleGenerator } from "../../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 import _ from "lodash";
+import { MongoContentValidation } from "./mediaUtil"
 
 
 const EditorField = (props: ModuleEditorField) => {
@@ -44,23 +45,35 @@ const EditorField = (props: ModuleEditorField) => {
 
 const PresenterField = (props: ModulePresenterField) => {
 
-  const [data, setData] = useState<any>()
+  // const [data, setData] = useState<any>()
 
+  //TODO: when should we fetch?
   useEffect(() => {
-    console.log(props.content?.data)
-    if (props.fetchQueryData && props.content && props.content.data?.id) {
-      // console.log("line 51", !_.isEmpty(props.content.data))
-      if (!_.isEmpty(props.content.data))
-        props.fetchQueryData(props.content).then((res: any) => setData(res))
-    }
-  }, [props.content])
+    // console.log(props.setShouldQuery)
+    //if we should and could query from db, do the query
+    if (props.shouldQuery && props.setShouldQuery &&
+      props.fetchQueryData && props.content && MongoContentValidation(props.content?.data)) {
+      props.fetchQueryData(props.content).then((res: any) => {
+        // console.log(res)
+        //update content so that editor can share the default value
+        props.updateContent({
+          ...props.content, data: res,
+          date: props.content?.date || DataType.today() //create date if not exist
+        })
+      }).then(() => {
+        // console.log("setting should query to false...")
+        props.setShouldQuery!(false)
+      })
 
-  return props.content && props.content.data && data ?
-    <TextEditorPresenter
-      content={props.content.data?.text || data.text}
-      styling={props.styling}
-      style={{ height: props.contentHeight }}
-    /> : <></>
+      //no matter fetch query succeed or not, or what we've received, set shouldQuery to false to inform parent we've finish fetching
+    }
+  }, [props.shouldQuery])
+
+  return <TextEditorPresenter
+    content={props.content?.data?.text || ""}
+    styling={props.styling}
+    style={{ height: props.contentHeight }}
+  />
 }
 
 

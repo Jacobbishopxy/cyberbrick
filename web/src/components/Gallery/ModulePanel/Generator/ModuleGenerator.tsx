@@ -43,15 +43,20 @@ export class ModuleGenerator {
         /> :
         <this.presenter
           content={crProps.content}
+          shouldQuery={crProps.shouldQuery}
+          setShouldQuery={crProps.setShouldQuery}
           fetchQueryData={crProps.fetchQueryData}
           contentHeight={crProps.contentHeight}
           styling={crProps.styling}
+          updateContent={crProps.updateContent}
         />
     }
 
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={props.content}
+        shouldQuery={props.shouldQuery}
+        setShouldQuery={props.setShouldQuery}
         fetchStorages={props.fetchStorages}
         fetchTableList={props.fetchTableList}
         fetchTableColumns={props.fetchTableColumns}

@@ -33,6 +33,8 @@ export interface ModuleSelectorProps {
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
+  shouldQuery: boolean
+  setShouldQuery: React.Dispatch<React.SetStateAction<boolean>>
   forwardedRef: React.Ref<ConvertFwRef>
 }
 
@@ -51,6 +53,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
+      shouldQuery={props.shouldQuery}
+      setShouldQuery={props.setShouldQuery}
       fetchQueryData={props.fetchQueryData}
       styling={styles.contentPanel}
       ref={props.forwardedRef}
