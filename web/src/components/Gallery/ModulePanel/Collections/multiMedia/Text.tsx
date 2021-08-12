@@ -16,7 +16,7 @@ const EditorField = (props: ModuleEditorField) => {
 
   const onChangeContent = (value: string) => {
     // console.log(content)
-    const ctt = //only update data.text proprety
+    const ctt = //only update data.text property
       { ...content, data: { ...content?.data, text: value }, date: content?.date || DataType.today() }
     const ctWithDb = { ...ctt, storageType: DataType.StorageType.MONGO }
     // console.log(ctWithDb)
