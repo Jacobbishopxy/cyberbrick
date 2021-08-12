@@ -43,23 +43,46 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     const [isLoading, setIsLoading] = useState(true);
-    const [moduleShouldQuery, setModuleShouldQuery] = useState(false)
-
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
+    /** 1. determine whether the content is "pointer". 
+     * 2. If it is, fetch the actual data from 3rd party database by calling fetchQuery. 
+     * 3. update the content to make sure we have the actual content stored in React state.
+          */
+    const fetchQueryAndUpdateContent = (c: DataType.Content) => {
+      //if we should and could fetch query, fetch!
+      if (DataType.shouldQueryAfterRecevingContent(props.element.type)) {
+        if (DataType.MongoContentValidation(c?.data)) {
+          props.fetchQueryDataFn(c).then((res: any) => {
+            // console.log({ ...c?.data, ...res })
+            //update content so that editor can share the default value
+            setContent(ct => {
+              return {
+                ...ct, data: { ...c?.data, ...res },
+                date: ct?.date || DataType.today() //create date if not exist
+              }
+            })
+          })
+        }
+      }
+      //no matter we fetch or not, wait till if statement end to stop loading
+      setIsLoading(false)
+    }
+
     const fetchContent = (date?: string) => {
-      // console.log(props.fetchQueryDataFn)
-      // setIsLoading(true);
       if (eleId) {
         //no need to check date since it's allowed date to be undefined
         props.fetchContentFn(eleId, date).then(res => {
-          // console.log("fetching finish", eleId, res?.data)
-
           //TODO: cannot set content to undefined
           setContent(res || { data: {}, date: '' })
-          setIsLoading(false)
+          /**if we use 3rd party database to store the actual content, we just fetch the "pointer" 
+           * of those content. Now we need to determine whether the content is "pointer". If it is,
+           * fetch the actual data from 3rd party database by calling fetchQuery. And then update 
+           * the content to make sure we have the actual content stored in React state.
+          */
+          res && fetchQueryAndUpdateContent(res)
         })
       }
     }
@@ -68,7 +91,6 @@ export const TemplateElement =
     useEffect(() => {
       //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
       fetchContent()
-      setModuleShouldQuery(true)
     }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
@@ -104,8 +126,6 @@ export const TemplateElement =
           editable={props.editable}
           settable={!!eleId}
           isLoading={isLoading}
-          shouldQuery={moduleShouldQuery/**note that presentor should re-query from db when content is newly fetched from db */}
-          setShouldQuery={setModuleShouldQuery}
         />
       </div>
     )

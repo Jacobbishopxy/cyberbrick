@@ -80,7 +80,11 @@ export class StorageController {
   @Post("read")
   read(@Query("id") id: string, @Query("databaseType") databaseType: string,
     @Body(ReadPipe) readDto: ReadDto) {
-    return this.service.readFromDB(id, readDto, databaseType)
+    try {
+      return this.service.readFromDB(id, readDto, databaseType)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
 }
 

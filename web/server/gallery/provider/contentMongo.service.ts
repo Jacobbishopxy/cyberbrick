@@ -68,6 +68,7 @@ export class MongoService {
         return mongoct
     }
 
+    //@deprecated
     async processElement(ele: Element) {
         let cts: ContentMongo[] = []
         switch (ele.type) {
@@ -102,6 +103,7 @@ export class MongoService {
 
     async getContentData(type: string, id?: string, date?: string, elementId?: string) {
         const res = await this.getContent(type, id, date, elementId)
+        // console.log("receiving response from go api", res, res.data)
         return res.data
     }
 

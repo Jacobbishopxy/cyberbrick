@@ -111,6 +111,10 @@ declare namespace GalleryAPI {
     TreeMap = "treeMap",
   }
 
+  /**
+   * Warning: when update StorageType in GalleryAPI, make sure also update StorageType in web/src/components/Gallery/GalleryDataType,
+   * and the defualt databaseType in ./gallery.ts
+   */
   export enum StorageType {
     PG = "postgres",
     MONGO = "mongodb"

@@ -77,6 +77,7 @@ export class StorageService {
     switch (storageType) {
       case common.StorageType.PG:
         return this.readFromPostgres(id, readDto as PostgresReadDto)
+
       case common.StorageType.MONGO:
         const mongoReadDto = readDto as MongoReadDto
         return this.mongoService.getContentData(mongoReadDto.collection, id)
