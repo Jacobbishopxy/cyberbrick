@@ -37,8 +37,6 @@ export interface ModulePanelProps {
   editable: boolean
   settable: boolean
   isLoading: boolean
-  shouldQuery: boolean
-  setShouldQuery: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -164,8 +162,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
         fetchStorages: props.fetchStorages,
         fetchTableList: props.fetchTableList,
         fetchTableColumns: props.fetchTableColumns,
-        shouldQuery: props.shouldQuery,
-        setShouldQuery: props.setShouldQuery,
         fetchQueryData: props.fetchQueryData,
         contentHeight: h,
         updateContent: updateModuleContent,
