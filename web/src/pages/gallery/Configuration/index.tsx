@@ -53,10 +53,14 @@ export default () => {
 
   useEffect(() => tabPaneOnchange(activeKey), [activeKey])
 
-  const saveCategory = (name: string, type: string, description?: string) =>
-    GalleryService
-      .saveCategory({ name, type, description })
+  const saveCategory = (name: string, type: string, description?: string) => {
+    let category: any = { name: name }
+    if (type) category = { ...category, type: type }
+    if (description) category = { ...category, description: description }
+    return GalleryService
+      .saveCategory(category)
       .then(refreshCat)
+  }
 
   const updateDashboards = (categoryName: string, dashboards: DataType.Dashboard[]) =>
     GalleryService

@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/14/2020.
  */
 
-import {Injectable} from "@nestjs/common"
-import {InjectRepository} from "@nestjs/typeorm"
-import {Repository} from "typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Mark, Category} from "../entity"
+import { Mark, Category } from "../entity"
 
 
 const categoryMarkRelations = {
@@ -30,7 +30,7 @@ const markCategoryRelations = {
 @Injectable()
 export class MarkService {
   constructor(@InjectRepository(Mark, common.db) private repo: Repository<Mark>,
-              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
+    @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) { }
 
   getAllMarks() {
     return this.repo.find(markFullRelations)
@@ -67,7 +67,7 @@ export class MarkService {
 
   async modifyMark(mark: Mark) {
     if (mark.id) {
-      const mk = await this.repo.findOne({...utils.whereIdEqual(mark.id)})
+      const mk = await this.repo.findOne({ ...utils.whereIdEqual(mark.id) })
 
       if (mk) {
         const newMark = this.repo.create({
@@ -108,7 +108,6 @@ export class MarkService {
       ...categoryMarkRelations,
       ...utils.whereNameEqual(categoryName)
     })
-
     if (cat) {
       const marksRemove = _.differenceWith(
         cat.marks, marks, (prev, curr) => prev.id === curr.id
@@ -117,6 +116,8 @@ export class MarkService {
       if (marksRemove.length > 0)
         await this.deleteMarks(marksRemove.map(m => m.id))
 
+      //relate marks with category, otherwise Error: "null value in column "categoryName" violates not-null constraint" 
+      marks = marks.map(mk => { return { ...mk, category: cat } })
       await this.saveMarks(marks)
 
       return true

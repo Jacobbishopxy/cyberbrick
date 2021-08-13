@@ -11,12 +11,20 @@ export const timeToString = (v: string) => moment(v).format(dateFormat)
 
 export interface Category {
   name: string
+  type: string
   description?: string
   dashboards?: Dashboard[]
   marks?: Mark[]
   tags?: Tag[]
   contents?: Content[]
 }
+
+export enum CategoryTypeEnum {
+  dashboard = "dashboard",
+  temp_lib = "temp_lib"
+}
+
+export const categoryTypeSelector = [CategoryTypeEnum.dashboard, CategoryTypeEnum.temp_lib]
 
 export interface Mark {
   id?: string
@@ -169,7 +177,7 @@ export const shouldQueryAfterRecevingContent = (v: string) => {
     case "image":
       return true
     default:
-      return true
+      return false
   }
 }
 

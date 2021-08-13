@@ -12,7 +12,7 @@ export interface TextBuilderProps {
     text?: string | React.ReactNode
     name: string
     title: string | React.ReactNode
-    onSubmit: (name: string, type: string) => void
+    onSubmit: (name: string, type: string, description?: string) => void
     colorSelector: boolean
     categoryTypeSelector: string[]
 }
@@ -24,7 +24,7 @@ export const TagBuildModal = (props: TextBuilderProps) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     const onSubmit = (value: CreationModalValue) => {
-        props.onSubmit(value.name, value.type || DEFAULT_TYPE)
+        props.onSubmit(value.name, value.type || DEFAULT_TYPE, value.description)
         setModalVisible(false)
     }
 

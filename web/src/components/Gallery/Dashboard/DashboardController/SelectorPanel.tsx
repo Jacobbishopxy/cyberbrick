@@ -2,9 +2,9 @@
  * Created by Jacob Xie on 1/29/2021
  */
 
-import React, {useEffect, useState} from "react"
-import {Cascader} from "antd"
-import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader"
+import React, { useEffect, useState } from "react"
+import { Cascader } from "antd"
+import { CascaderOptionType, CascaderValueType } from "antd/lib/cascader"
 
 import * as DataType from "../../GalleryDataType"
 
@@ -56,6 +56,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
   }, [props.categories])
 
   const onChange = (value: CascaderValueType) => {
+    console.log(value)
     const v = value as string[]
     setInitValue(v)
     if (props.onChange) props.onChange(v)
@@ -96,13 +97,14 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
       const d = await setOptionsLevel2(v)
 
       return opt.map(i =>
-        i.value === v ? {...i, children: d} : i
+        i.value === v ? { ...i, children: d } : i
       )
     } else
       return opt
   }
 
   const loadData = async (selectedOptions?: CascaderOptionType[]) => {
+    console.log(selectedOptions)
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1]
       targetOption.loading = true
@@ -118,6 +120,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
       if (selectedOptions.length === 2) {
         const templateOptions = await setOptionsLevel3(targetOption.value as string)
+        console.log(templateOptions)
         if (templateOptions) {
           targetOption.loading = false
           targetOption.children = templateOptions

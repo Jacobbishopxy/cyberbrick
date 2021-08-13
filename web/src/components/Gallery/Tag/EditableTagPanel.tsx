@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import {useState} from "react"
-import {Modal, Tag, Tooltip} from "antd"
-import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons"
-import {useIntl} from "umi"
+import { useState } from "react"
+import { Modal, Tag, Tooltip } from "antd"
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons"
+import { useIntl } from "umi"
 import _ from "lodash"
 
-import {CreationModal, CreationModalValue} from "../Misc/CreationModal"
-import {DraggablePanel} from "@/components/DraggablePanel/DraggablePanel"
-import {GenericDataInput, EditableTagPanelProps} from "./data"
-import {useDidMountEffect} from "@/utilities/utils"
+import { CreationModal, CreationModalValue } from "../Misc/CreationModal"
+import { DraggablePanel } from "@/components/DraggablePanel/DraggablePanel"
+import { GenericDataInput, EditableTagPanelProps } from "./data"
+import { useDidMountEffect } from "@/utilities/utils"
 
 
 export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagPanelProps<T>) => {
@@ -41,8 +41,8 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
     if (modifiedValue) {
       setItems(items.map(i => {
         if (i.id)
-          return i.id === modifiedValue.id ? {...i, ...value} as T : i
-        return i.name === value.name ? {...i, ...value} as T : i
+          return i.id === modifiedValue.id ? { ...i, ...value } as T : i
+        return i.name === value.name ? { ...i, ...value } as T : i
       }))
     }
     setModificationVisible(false)
@@ -61,7 +61,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
     )
 
   const live = () =>
-    <div style={{display: "flex", overflow: "auto"}}>
+    <div style={{ display: "flex", overflow: "auto" }}>
       <DraggablePanel editable={props.draggable || true} onChange={draggableOnChange}>
         {
           items.map(t =>
@@ -72,8 +72,8 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
               onClose={e => {
                 e.preventDefault()
                 Modal.confirm({
-                  title: intl.formatMessage({id: props.textDeletion}),
-                  icon: <ExclamationCircleOutlined/>,
+                  title: intl.formatMessage({ id: props.textDeletion }),
+                  icon: <ExclamationCircleOutlined />,
                   onOk: elementOnRemove(t.name),
                 })
               }}
@@ -86,7 +86,7 @@ export const EditableTagPanel = <T extends GenericDataInput>(props: EditableTagP
         }
       </DraggablePanel>
       <Tag
-        icon={<PlusOutlined/>}
+        icon={<PlusOutlined />}
         onClick={() => setCreationVisible(true)}
       >
         {props.textCreation}

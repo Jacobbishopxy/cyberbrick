@@ -12,10 +12,7 @@ import * as DataType from "../GalleryDataType"
 import { TextBuilder } from "../Misc/TextBuilder"
 import { EditableTagPanel } from "../Tag"
 import { TagBuildModal } from "../Misc/TagBuildModal"
-import { CategoryType, CategoryTypeColor } from "./FieldView"
-
-
-const categoryTypeSelector = [CategoryType.dashboard, CategoryType.temp_lib]
+import { CategoryTypeColor } from "./FieldView"
 
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
@@ -33,17 +30,18 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
 
   const [editable, setEditable] = useState<boolean>(false)
 
-  const modifyCategoryDescription = (categoryName: string) =>
-    (description: string) => props.saveCategory(categoryName, description)
+  const modifyCategoryDescription = (categoryName: string, type: string) =>
+    (description: string) => props.saveCategory(categoryName, type, description)
+
 
   const dashboardsOnChange = (categoryName: string) => (dashboards: DataType.Dashboard[]) =>
     props.updateDashboards(categoryName, dashboards)
 
-  const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) =>
-    props.updateMarks(categoryName, marks)
+  // const marksOnChange = (categoryName: string) => (marks: DataType.Mark[]) =>
+  //   props.updateMarks(categoryName, marks)
 
-  const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) =>
-    props.updateTags(categoryName, tags)
+  // const tagsOnChange = (categoryName: string) => (tags: DataType.Tag[]) =>
+  //   props.updateTags(categoryName, tags)
 
   return (
     <div>
@@ -72,7 +70,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               create
               name={"createCategory"}
               title={<FormattedMessage id="gallery.component.category-config-table2" />}
-              categoryTypeSelector={categoryTypeSelector}
+              categoryTypeSelector={DataType.categoryTypeSelector}
               onSubmit={props.saveCategory}
             /> : undefined
         }
@@ -101,7 +99,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               editable ?
                 <TextBuilder
                   text={text}
-                  saveNewText={modifyCategoryDescription(record.name)}
+                  saveNewText={modifyCategoryDescription(record.name, record.type)}
                 /> : text
             }
           />
@@ -124,7 +122,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
           }
         />
 
-        <Table.Column
+        {/* <Table.Column
           title={<FormattedMessage id="gallery.component.general3" />}
           dataIndex="marks"
           key="marks"
@@ -157,7 +155,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
               colorSelector
             />
           }
-        />
+        /> */}
       </Table>
     </div>
   )

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { message } from "antd"
 import _ from "lodash"
 
@@ -10,6 +10,7 @@ import * as DataType from "../GalleryDataType"
 import { Controller } from "./DashboardController/Controller"
 import { Container, ContainerRef } from "./DashboardContainer/Container"
 import { useIntl } from "umi"
+import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -43,7 +44,7 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 export interface DashboardProps {
   initialSelected?: string[]
   selectedOnChange?: (v: string[]) => void
-
+  fetchCategoriesByType: () => Promise<DataType.Category[]>
   fetchCategories: () => Promise<DataType.Category[]>
   fetchCategory: (categoryName: string) => Promise<DataType.Category>
   fetchDashboard: (dashboardId: string) => Promise<DataType.Dashboard>
@@ -61,8 +62,8 @@ export interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
-
-  const [categories, setCategories] = useState<DataType.Category[]>([])
+  const [categoies, setCategories] = useState<DataType.Category[]>([])
+  const [dashboardCategories, setDbCategories] = useState<DataType.Category[]>([])
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>()
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
@@ -76,8 +77,19 @@ export const Dashboard = (props: DashboardProps) => {
 
   const intl = useIntl()
 
+  //this is for selecting categories' dashboard. We only need category of corresponding type
+  const isTemplate = useContext(IsTemplateContext)
+  const dashboardCategoryType = isTemplate ? DataType.CategoryTypeEnum.temp_lib : DataType.CategoryTypeEnum.dashboard
+
+  // const dashboardCategories = categories.filter(ct => ct.type === dashboardCategoryType)
+
   useEffect(() => {
-    props.fetchCategories().then(res => setCategories(res))
+    props.fetchCategories().then(res => {
+      // console.log(res)
+      setCategories(res)
+      setDbCategories(res.filter(ct => ct?.type === dashboardCategoryType))
+    })
+
   }, [])
 
 
@@ -112,6 +124,7 @@ export const Dashboard = (props: DashboardProps) => {
       setCanEdit(true)
       setRefresh(refresh + 1)
     }
+    console.log(dsb)
     return dsb
   }
 
@@ -191,7 +204,8 @@ export const Dashboard = (props: DashboardProps) => {
   const genController = useMemo(() => <Controller
     initialSelected={props.initialSelected}
     canEdit={canEdit}
-    categories={categories}
+    categoriesAllType={categoies}
+    dashboardCategories={dashboardCategories}
     categoryOnSelect={categoryOnSelect}
     dashboardOnSelect={dashboardOnSelect}
     onSelectChange={setSelected}
@@ -199,7 +213,7 @@ export const Dashboard = (props: DashboardProps) => {
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
     onSaveTemplate={onRefresh}
-  />, [canEdit, categories, onRefresh])
+  />, [canEdit, dashboardCategories, onRefresh])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

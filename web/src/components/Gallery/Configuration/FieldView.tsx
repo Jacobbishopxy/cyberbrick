@@ -27,10 +27,6 @@ interface OperationFieldProps {
   onReloadClick: () => void
   disabled: boolean
 }
-export enum CategoryType {
-  dashboard = "dashboard",
-  temp_lib = "temp_lib"
-}
 
 export enum CategoryTypeColor {
   dashboard = "rgba(131,137,150, 0.7)",

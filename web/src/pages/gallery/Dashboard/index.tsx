@@ -40,6 +40,9 @@ export default () => {
   }
 
   const fetchCategories = () =>
+    GalleryService.getAllCategories() as Promise<DataType.Category[]>
+
+  const fetchCategoriesByType = () =>
     GalleryService.getAllCategoriesByType(CATEGORY_TYPE) as Promise<DataType.Category[]>
 
   const fetchCategory = (name: string) =>
@@ -84,6 +87,7 @@ export default () => {
       initialSelected={initialSelected}
       selectedOnChange={selectedOnChange}
       fetchCategories={fetchCategories}
+      fetchCategoriesByType={fetchCategoriesByType}
       fetchCategory={fetchCategory}
       fetchDashboard={fetchDashboard}
       fetchTemplate={fetchTemplate}
