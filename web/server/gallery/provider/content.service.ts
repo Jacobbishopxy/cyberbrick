@@ -118,6 +118,7 @@ export class ContentService {
     if (content.author) ctn = { ...ctn, author: content.author }
     if (content.config) ctn = { ...ctn, config: content.config }
     if (content.storageType) ctn = { ...ctn, storageType: content.storageType }
+    if (content.tabId) ctn = { ...ctn, tabId: content.tabId }
     ctn = {
       ...ctn,
       category: { name },

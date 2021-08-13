@@ -57,5 +57,8 @@ export class Content {
 
   @Column("varchar", { nullable: true })
   storageType?: string
+
+  @Column("varchar", { nullable: true })
+  tabId?: string
 }
 

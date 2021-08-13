@@ -101,7 +101,7 @@ const PresenterField = (props: ModulePresenterField) => {
                 fetchStoragesFn={() => Promise.resolve([])}
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
-                // fetchQueryDataFn={props.fetchQueryData}
+                fetchQueryDataFn={props.fetchQueryData}
                 updateContentFn={props.updateContent}
                 setSaveCount={setSaveCount}
             />
