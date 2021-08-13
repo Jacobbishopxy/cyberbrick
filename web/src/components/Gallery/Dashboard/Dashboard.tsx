@@ -85,7 +85,6 @@ export const Dashboard = (props: DashboardProps) => {
 
   useEffect(() => {
     props.fetchCategories().then(res => {
-      // console.log(res)
       setCategories(res)
       setDbCategories(res.filter(ct => ct?.type === dashboardCategoryType))
     })
@@ -124,7 +123,6 @@ export const Dashboard = (props: DashboardProps) => {
       setCanEdit(true)
       setRefresh(refresh + 1)
     }
-    console.log(dsb)
     return dsb
   }
 

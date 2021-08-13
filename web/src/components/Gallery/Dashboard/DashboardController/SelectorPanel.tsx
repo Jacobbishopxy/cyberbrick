@@ -56,7 +56,6 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
   }, [props.categories])
 
   const onChange = (value: CascaderValueType) => {
-    console.log(value)
     const v = value as string[]
     setInitValue(v)
     if (props.onChange) props.onChange(v)

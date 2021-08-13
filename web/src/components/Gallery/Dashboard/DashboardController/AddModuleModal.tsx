@@ -99,7 +99,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
   const [categories, setCategories] = useState<DataType.Category[]>([])
 
   const typeOnChange = (e: any) => {
-    console.log(e.target.value, props.categories, categories)
+    // console.log(e.target.value, props.categories, categories)
     setCtType(e.target.value)
   }
 
