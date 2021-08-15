@@ -102,8 +102,12 @@ export class ContentService {
     return []
   }
 
-
-
+  /**
+   * TODO: WARNING: This function assumes that all content with "mongodb" as storage
+   * type will fetch data from 3rd party library (in this case mongodb)
+   * @param contentId content's id in postgres
+   * @returns the portion of content.data that stored in 3rd party library
+   */
   async getNestedElementContent(contentId: string) {
     let content = await this.getContentById(contentId)
     const queryData = await this.elementService.getQueryDataByStorageType(content)
@@ -112,9 +116,20 @@ export class ContentService {
     return content
   }
 
+  /**
+   * save content to pg. 
+   * 1. If element type is nestedSimple, first save all its modules' content
+   *    to 3rd party and/or to postgres. Then update the module to be a
+   *    pointer to the actual content inside postgres. Finally, save the 
+   *    nested module content to postgres.
+   * 2. Otherwise, directly save to 3rd party and/or to postgres
+   * @param name category name
+   * @param type element type
+   * @param content element's content
+   * @returns Promise<Content>
+   */
   async saveNestedOrSimpleContent(name: string, type: string, content: Content) {
-    const eleType = common.getElementType(type)
-    switch (eleType) {
+    switch (type) {
       case common.ElementType.NestedSimpleModule:
         /* content type: 
         currIndex: string (used to indicate the tab when entering)
@@ -137,9 +152,6 @@ export class ContentService {
         //first save each tabItem's module content separately.
         content?.data?.tabItems?.forEach(async (item: any) => {
           if (item?.module?.content) {
-
-            // console.log("saving nested module content data\n", item.module)
-
             try {
               const newCt = await this.saveContentToMongoOrPg(content.category.name, item.module.elementType, item.module.content)
               item.module.content = { id: newCt.id, tabId: newCt.tabId, date: newCt.date }
@@ -159,11 +171,16 @@ export class ContentService {
 
   }
 
+  /**
+   * save to 3rd party db (only supports mongodb for now) and/or to postgres
+   * @param name category name
+   * @param type element type
+   * @param content content to be saved
+   * @returns Promise<Content>, saved content
+   */
   async saveContentToMongoOrPg(name: string, type: string, content: Content) {
     try {
-      if (type === common.ElementType.Text && content.tabId) console.log("prior to save\n", content)
       const ct = await this.mongoService.saveContentToMongoOrPgByType(type, content)
-      if (type === common.ElementType.Text && ct.tabId) console.log(ct)
       return this.saveContentInCategory(name, ct)
     }
     catch (err: any) {
@@ -171,6 +188,12 @@ export class ContentService {
     }
   }
 
+  /**
+   * save content to postgres
+   * @param name category name
+   * @param content content to be saved
+   * @returns Promise<Content>, saved content
+   */
   saveContentInCategory(name: string, content: Content) {
     let ctn = {}
     if (content.id) ctn = { id: content.id }

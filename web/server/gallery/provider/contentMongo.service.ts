@@ -21,6 +21,12 @@ export class MongoService {
     constructor() {
     }
 
+    /**
+     * save content to mongodb for certain element type. 
+     * @param type collection name, also known as element type
+     * @param content content to be saved
+     * @returns the content that will be saved to pg
+     */
     async saveContentToMongoOrPgByType(type: string, content: Content) {
         switch (type) {
             case common.ElementType.Text:
@@ -32,12 +38,18 @@ export class MongoService {
         }
     }
 
+    /**
+     * save content to mongoDB
+     * @param type type collection name, also known as element type
+     * @param content content to be saved
+     * @returns the content w/ data as a pointer to actual data in mongoDB
+     */
     async saveContentToMongo(type: string, content: Content) {
         //if has req body, save to mongodb
         if (content && content.data) {
             //convert content to the form to save to mongodb
             const mongoCt: ContentMongo = this.pgContentToMongoContent(content)
-            console.log("querying go api with content\n", mongoCt)
+            // console.log("querying go api with content\n", mongoCt)
             //make query to go api
             try {
                 const res = await this.createContent(type, mongoCt);
@@ -51,6 +63,12 @@ export class MongoService {
         }
         return content
     }
+
+    /**
+     * convert the form of content to the request body datatype that could be processed by go-mongo-api
+     * @param ct content to be converted
+     * @returns converted content, the data will be sent to go-mongo-api
+     */
     pgContentToMongoContent(ct: Content) {
         //if content is nested inside a module, 
         //element is doesn't exits. Use tabId instead
@@ -59,7 +77,8 @@ export class MongoService {
         const mongoct: ContentMongo = {
             id: ct.data?.id, //mongodb object id, might not exist
             elementId: eleId,
-            date: ct.date ? moment(ct.date, moment.defaultFormat).format() : moment().format(), //make sure date is always defined
+            date: ct.date ? moment(ct.date, moment.defaultFormat).format()
+                : moment().format(), //make sure date is always defined
             data: ct.data,
             title: ct.title,
             category: ct.category?.name,
@@ -124,7 +143,6 @@ export class MongoService {
         const form = new formData()
         const ans = await axios.post(url, cts, { headers: form.getHeaders() })
         return ans.data
-
     }
 
     async createContent(type: string, content: ContentMongo) {

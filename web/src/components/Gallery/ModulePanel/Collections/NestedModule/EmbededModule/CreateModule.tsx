@@ -1,5 +1,4 @@
 import * as DataType from "../../../../GalleryDataType"
-import { useState } from "react"
 import { tabItem } from "../data"
 import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 
@@ -29,23 +28,20 @@ interface ModuleTabPaneProps {
 
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     const { name, timeSeries, elementType, tabId } = props
-    const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     //layout property is not important?
     const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
 
-
-    //TODO: only call props.fetchContent in the first call
     const fetchContent = async (id: string, date?: string) => {
-        if (content?.data) return props.content
+        //TODO: WARNING! Refetch logic only works when content received from db has not null data
+        if (props.content?.data) return props.content
         if (props.content?.id) {
-            console.log("fetch from db", props.content)
+            // console.log("fetch from db", props.content)
             return props.fetchContentFn(props.content?.id, date, true)
         }
         return props.content
     }
 
     const updateContent = (c: DataType.Content) => {
-        setContent(c)
         //update the content in items list
         props.setItems(items => items.map(item => {
             if (item.i === tabId) {

@@ -73,7 +73,7 @@ export class ElementService {
     const que = this.repo
       .createQueryBuilder(common.element)
       .select(common.elementId)
-      .addSelect(common.elementType)
+      .addSelect(common.elementType)//also return element type
       .leftJoinAndSelect(common.elementContents, common.content)
       .where(`${common.elementId} = :id AND ${common.contentDate} = :date`, { id, date })
 
@@ -89,7 +89,7 @@ export class ElementService {
     const que = this.repo
       .createQueryBuilder(common.element)
       .select(common.elementId)
-      .addSelect(common.elementType)
+      .addSelect(common.elementType)//also return element type
       .leftJoin(qb => {
         let raw = qb.from(Content, common.content)
         if (markName)
@@ -123,7 +123,7 @@ export class ElementService {
     return this.getElementLatestContent(id, markName) as unknown as Content
   }
 
-  //fetch from 3rd party database
+  //fetch data from 3rd party database
   async getQueryDataByStorageType(content: Content) {
     switch (content.storageType) {
       case common.StorageType.MONGO:
@@ -134,6 +134,15 @@ export class ElementService {
     }
   }
 
+  /**
+   * 1. fetch content from postgres by element id (and date if presented)
+   * 2. check if we need to fetch query from 3rd party database by element type
+   * 3. if yes, then fetch
+   * @param id element id
+   * @param date content date
+   * @param markName depreciated
+   * @returns content: Content
+   */
   async getElementContentAndFetchQuery(id: string, date?: string, markName?: string) {
     let EleContent
     if (date) EleContent = await this.getElementContentByDate(id, date, markName)
@@ -144,7 +153,6 @@ export class ElementService {
     let content = EleContent.contents[0] || undefined
     const elementType = EleContent.type
     //if we should and could fetch query, fetch!
-
     return this.onReceiveContentToFetchQuery(elementType, content)
   }
 
