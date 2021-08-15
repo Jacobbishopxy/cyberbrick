@@ -4,7 +4,7 @@ import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/Modu
 import { useEffect, useState } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./Editor"
-import './style.css'
+import './NMTest.css'
 import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {

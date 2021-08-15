@@ -9,7 +9,7 @@ import { Repository } from "typeorm"
 import * as common from "../common"
 import * as utils from "../../utils"
 import { Element, Content } from "../entity"
-
+import * as MongoService from "./contentMongo.service"
 
 const templateAndContentRelations = {
   relations: [
@@ -20,7 +20,8 @@ const templateAndContentRelations = {
 
 @Injectable()
 export class ElementService {
-  constructor(@InjectRepository(Element, common.db) private repo: Repository<Element>) { }
+  constructor(@InjectRepository(Element, common.db) private repo: Repository<Element>,
+    private readonly mongoService: MongoService.MongoService) { }
 
   getAllElements() {
     return this.repo.find(templateAndContentRelations)
@@ -30,6 +31,13 @@ export class ElementService {
     return this.repo.find({
       ...templateAndContentRelations,
       ...utils.whereIdsIn(ids)
+    })
+  }
+
+  getElementById(id: string) {
+    return this.repo.find({
+      ...templateAndContentRelations,
+      ...utils.whereIdEqual(id)
     })
   }
 
@@ -65,6 +73,7 @@ export class ElementService {
     const que = this.repo
       .createQueryBuilder(common.element)
       .select(common.elementId)
+      .addSelect(common.elementType)
       .leftJoinAndSelect(common.elementContents, common.content)
       .where(`${common.elementId} = :id AND ${common.contentDate} = :date`, { id, date })
 
@@ -80,6 +89,7 @@ export class ElementService {
     const que = this.repo
       .createQueryBuilder(common.element)
       .select(common.elementId)
+      .addSelect(common.elementType)
       .leftJoin(qb => {
         let raw = qb.from(Content, common.content)
         if (markName)
@@ -100,7 +110,6 @@ export class ElementService {
         `${common.contentDate} = last_date.date`
       )
       .where(`${common.elementId} = :id`, { id })
-
     return markName ?
       que
         .leftJoin(common.contentMark, common.mark)
@@ -109,9 +118,50 @@ export class ElementService {
       que.getOne()
   }
 
-  getElementContent(id: string, date?: string, markName?: string) {
-    if (date) return this.getElementContentByDate(id, date, markName)
-    return this.getElementLatestContent(id, markName)
+  async getElementContent(id: string, date?: string, markName?: string) {
+    if (date) return this.getElementContentByDate(id, date, markName) as unknown as Content
+    return this.getElementLatestContent(id, markName) as unknown as Content
+  }
+
+  //fetch from 3rd party database
+  async getQueryDataByStorageType(content: Content) {
+    switch (content.storageType) {
+      case common.StorageType.MONGO:
+        return this.mongoService.getContentData(content.data.collection, content.data.id)
+      default:
+        return undefined
+    }
+  }
+
+  async getElementContentAndFetchQuery(id: string, date?: string, markName?: string) {
+    let EleContent
+    if (date) EleContent = await this.getElementContentByDate(id, date, markName)
+    else EleContent = await this.getElementLatestContent(id, markName)
+    //can't find
+    if (!EleContent) return undefined
+
+    let content = EleContent.contents[0] || undefined
+    const elementType = EleContent.type
+    //if we should and could fetch query, fetch!
+
+    return this.onReceiveContentToFetchQuery(elementType, content)
+  }
+
+  /** 1. determine whether the content is "pointer". 
+       * 2. If it is, fetch the actual data from 3rd party database by calling fetchQuery. 
+       * 3. update the content to make sure we have the actual content stored in React state.
+     */
+  async onReceiveContentToFetchQuery(elementType: common.ElementType, content: Content) {
+    let ct = content
+    if (content
+      && common.shouldQueryAfterRecevingContent(elementType)
+      && common.ContentValidationByType(elementType, content.data)) {
+      const res = await this.getQueryDataByStorageType(content)
+
+      //update content's data with newly fetched data
+      ct = { ...content, data: { ...content.data, ...res } }
+    }
+    return ct
   }
 
   async modifyElement(id: string, element: Element) {

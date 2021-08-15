@@ -34,6 +34,9 @@ export interface ModuleSelectorProps {
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertFwRef>
+
+  fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
@@ -174,6 +177,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       updateContent={props.updateContent}
       styling={styles.contentPanel}
       ref={props.forwardedRef}
+
+      fetchContentFn={props.fetchContentFn}
+      fetchContentDatesFn={props.fetchContentDatesFn}
     />
 
     switch (moduleType) {

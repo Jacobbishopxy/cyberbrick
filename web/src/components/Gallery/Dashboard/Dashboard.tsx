@@ -51,7 +51,7 @@ export interface DashboardProps {
   fetchTemplate: (templateId: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
-  fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
+  fetchElementContent: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContent: (categoryName: string, type: string, content: DataType.Content) => Promise<void>
   fetchStorages: () => Promise<DataType.StorageSimple[]>
@@ -176,10 +176,18 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("Invalid template!"))
   }
 
-  const fetchElementContent = async (id: string, date?: string) => {
-    const ele = await props.fetchElementContent(id, date)
-    if (ele && ele.contents) return ele.contents[0]
-    return undefined
+  const fetchElementContent = async (id: string, date?: string, isNested?: boolean) => {
+    /**if the element is nested inside NestedSimpleModule, it doesn't belong to an element. Rather, it's part
+     * of the tabItem. So we only fetch the content from database
+    */
+    if (isNested) return fetchNestedElementContent(id, date)
+    const content = await props.fetchElementContent(id, date, isNested)
+    return content
+  }
+
+  const fetchNestedElementContent = async (id: string, date?: string) => {
+    const content = await props.fetchElementContent(id, date, true)
+    return content as unknown as DataType.Content
   }
 
   const fetchElementContentDates = async (id: string) =>

@@ -56,7 +56,7 @@ export interface ContainerTemplateProps {
   parentInfo: string[]
   elements: Elements
   shouldEleFetch: number
-  elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  elementFetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
   elementFetchStoragesFn: () => Promise<DataType.StorageSimple[]>
@@ -130,6 +130,40 @@ export const ContainerTemplate =
       if (el) teRefs.current[i] = el
     }
 
+    /** 1. determine whether the content is "pointer". 
+     * 2. If it is, fetch the actual data from 3rd party database by calling fetchQuery. 
+     * 3. update the content to make sure we have the actual content stored in React state.
+          */
+    const fetchQueryAndUpdateContent = (c: DataType.Content, elementType: DataType.ElementType) => {
+      let ct: DataType.Content = c
+      //if we should and could fetch query, fetch!
+      if (DataType.shouldQueryAfterRecevingContent(elementType)
+        && DataType.MongoContentValidation(c?.data)) {
+        props.elementFetchQueryDataFn(c).then(res => {
+          ct = {
+            ...ct, data: { ...c?.data, ...res },
+            date: ct?.date || DataType.today() //create date if not exist
+          }
+        })
+      }
+      return ct
+    }
+
+    /**
+     * Template Element may be nested in a module, so we have different fetch api
+     * If TemplateElment is nested, eleId is actually tabId.
+     */
+    const fetchContent = (eleId: string, elementType: DataType.ElementType, date?: string) => {
+      let ct: DataType.Content | undefined
+      //we need element's id to fetch
+      if (eleId) {
+        //no need to check date since it's allowed date to be undefined
+        return props.elementFetchContentFn(eleId, date).then(res =>
+          fetchQueryAndUpdateContent(res as DataType.Content, elementType))
+      }
+      return Promise.resolve(ct)
+    }
+
     return (
       <ReactGridLayout
         {...reactGridLayoutDefaultProps}
@@ -155,8 +189,9 @@ export const ContainerTemplate =
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
-                shouldStartFetch={props.shouldEleFetch}
 
+                shouldStartFetch={props.shouldEleFetch || 1}
+                onTEfetchContent={fetchContent}
               />
             </div>
           )

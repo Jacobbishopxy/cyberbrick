@@ -52,18 +52,19 @@ export class MongoService {
         return content
     }
     pgContentToMongoContent(ct: Content) {
-        // console.log("ct", ct.date)
+        //if content is nested inside a module, 
+        //element is doesn't exits. Use tabId instead
+        const eleId = ct.element?.id || ct.tabId
         //date format should match go api's date formate
         const mongoct: ContentMongo = {
             id: ct.data?.id, //mongodb object id, might not exist
-            elementId: ct.element?.id,
+            elementId: eleId,
             date: ct.date ? moment(ct.date, moment.defaultFormat).format() : moment().format(), //make sure date is always defined
             data: ct.data,
             title: ct.title,
             category: ct.category?.name,
             config: ct.config
         }
-        //  cts.push(mongoct)
         // console.log("mongoct", mongoct.date)
         return mongoct
     }

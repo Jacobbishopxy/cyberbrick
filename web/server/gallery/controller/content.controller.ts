@@ -77,12 +77,21 @@ export class ContentController {
     }
   }
 
+  @Get("getNestedElementContent")
+  getNestedElementContent(@Query("contentId") contentId: string) {
+    try {
+      return this.service.getNestedElementContent(contentId)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   @Post("saveContentInCategory")
   saveContentInCategory(@Query("name") name: string, @Query("type") type: string,
     @Body() content: Content) {
     // console.log(type, content)
     try {
-      return this.service.saveContentToMongoOrPg(name, type, content)
+      return this.service.saveNestedOrSimpleContent(name, type, content)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

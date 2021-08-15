@@ -9,11 +9,15 @@ import * as DataType from "../../GalleryDataType"
 export interface ModuleEditorField {
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
+  fetchQueryData?: (value: DataType.Content) => Promise<any>
   fetchTableList?: (id: string) => Promise<string[]>
   fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
+
+  fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 export interface ModulePresenterField {
@@ -22,6 +26,9 @@ export interface ModulePresenterField {
   contentHeight?: number
   styling?: string
   updateContent: (c: DataType.Content) => void
+
+  fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 export interface ConvertFwRef {
@@ -38,6 +45,9 @@ export interface ConvertRefProps {
   updateContent: (c: DataType.Content) => void
   styling?: string
   forwardedRef: React.Ref<ConvertFwRef>
+
+  fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 export interface ConvertProps {
@@ -49,5 +59,8 @@ export interface ConvertProps {
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   styling?: string
+
+  fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
 }
 

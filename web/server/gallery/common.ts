@@ -32,6 +32,7 @@ export const marks = "marks"
 export const tags = "tags"
 export const dashboards = "dashboards"
 export const type = "type"
+export const tabId = "tabId"
 
 // relations column & misc
 export const ids = "ids"
@@ -161,3 +162,30 @@ export const templatesElementsContents = `${templates}.${elements}.${contents}`
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 
+export const shouldQueryAfterRecevingContent = (v: string) => {
+  switch (v) {
+    case ElementType.Text:
+      return true
+    case ElementType.Image:
+      return true
+    default:
+      return false
+  }
+}
+
+export const ContentValidationByType = (v: string, data?: Record<string, any>) => {
+  switch (v) {
+    case ElementType.Text:
+      return MongoContentValidation(data)
+    case ElementType.Image:
+      return MongoContentValidation(data)
+    default:
+      return false
+  }
+}
+
+export function MongoContentValidation(data?: Record<string, any>) {
+  //to query a mongodb, we need mongo objectID and collection name
+  if (data?.id && data?.collection) return true
+  return false
+}

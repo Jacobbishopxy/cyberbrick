@@ -19,7 +19,7 @@ import { Mark } from "./mark.entity"
 import { Author } from "./author.entity"
 
 @Entity({ name: common.content })
-@Unique([common.category, common.element, common.date])
+@Unique([common.category, common.element, common.date, common.tabId])
 export class Content {
 
   @PrimaryGeneratedColumn("uuid")

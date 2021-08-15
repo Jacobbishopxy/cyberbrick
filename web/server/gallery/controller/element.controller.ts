@@ -2,15 +2,15 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 
 import * as elementService from "../provider/element.service"
-import {Element} from "../entity"
+import { Element } from "../entity"
 
 
 @Controller()
 export class ElementController {
-  constructor(private readonly service: elementService.ElementService) {}
+  constructor(private readonly service: elementService.ElementService) { }
 
   @Get("elements")
   getAllElements() {
@@ -65,7 +65,7 @@ export class ElementController {
     @Query("date") date?: string,
     @Query("markName") markName?: string) {
     try {
-      return this.service.getElementContent(id, date, markName)
+      return this.service.getElementContentAndFetchQuery(id, date, markName)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

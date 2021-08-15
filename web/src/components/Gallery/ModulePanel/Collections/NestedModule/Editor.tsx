@@ -2,11 +2,11 @@ import DynamicHeader from './Header/DynamicHeader';
 import { useEffect, useState } from 'react';
 import { tabItem } from './data';
 import { Skeleton } from 'antd';
-import { Content, ElementType, StorageSimple } from '@/components/Gallery/GalleryDataType';
 import { ModuleTabPane } from './EmbededModule/CreateModule';
 import _, { min } from 'lodash';
 import { Layout } from 'react-grid-layout';
 import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
+import * as DataType from "../../../GalleryDataType"
 
 interface NestedSimpleModuleProps {
     //for temp cache
@@ -18,11 +18,14 @@ interface NestedSimpleModuleProps {
     styling?: string//how to apply string as stying？
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     setSaveCount: React.Dispatch<React.SetStateAction<number>>
-    updateContentFn: (content: Content) => void
-    fetchStoragesFn: () => Promise<StorageSimple[]>
+    updateContentFn: (content: DataType.Content) => void
+    fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
-    fetchQueryDataFn?: (readOption: Content) => Promise<any>
+
+    fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+    fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+    fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 
@@ -65,6 +68,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //tabs layout updated
     useEffect(() => {
+        console.log("parent should update", props.items)
         setSaveCount(cnt => cnt + 1)
         // console.log(props.items)
     }, [props.items])
@@ -127,8 +131,8 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     };
 
     //callback to add a new module
-    const onAddModule = (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => {
-        let content = { date: `${new Date()}`, data: { content: name } }
+    const onAddModule = (name: string, timeSeries: boolean, moduleType: DataType.ElementType, tabId: string) => {
+        let content = { date: DataType.today(), data: { content: name } }
         //replace existing module
         if (props.items!.find(item => item.i === tabId && item.module)) {
             // console.log("removing old module...")
@@ -163,6 +167,9 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         //cases for unintialized module
         if (!module) return null
         let { name, timeSeries, elementType, content } = module
+        // console.log("did content receive id?", content)
+        //make sure content has tabId
+        content = { ...content, tabId: id }
         // console.log("switching module", content)
         return (
             <ModuleTabPane
@@ -179,6 +186,10 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 fetchTableColumnsFn={props.fetchTableColumnsFn}
                 fetchTableListFn={props.fetchTableListFn}
                 fetchQueryDataFn={props.fetchQueryDataFn}
+
+                fetchContentFn={props.fetchContentFn}
+                fetchContentDatesFn={props.fetchContentDatesFn}
+                shouldEleStartFetch={1 /** template element should fetch content only when it's mounted*/}
             />
         )
     }

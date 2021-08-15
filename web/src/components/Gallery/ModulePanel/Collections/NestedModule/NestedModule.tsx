@@ -8,7 +8,7 @@ import './style.css'
 import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {
-        i: i.toString(),
+        i: today(),
         x: i,
         y: 0,
         w: 1,
@@ -17,7 +17,7 @@ const defaultItems: tabItem[] = [0].map(function (i, key, list) {
         static: false,
     }
 })
-const defaultData = { tabItems: defaultItems, currIndex: "0" }
+const defaultData = { tabItems: defaultItems, currIndex: defaultItems[0].i }
 const EditorField = (props: ModuleEditorField) => {
     /* content type: 
     currIndex: string (used to indicate the tab when entering)
@@ -44,7 +44,7 @@ const EditorField = (props: ModuleEditorField) => {
         tempItems = props.content.data.tabItems as tabItem[]
     } else tempItems = defaultData.tabItems
 
-    let tempIndex = "0"
+    let tempIndex = defaultData.currIndex
     if (props.content) {
         tempIndex = props.content.data.currIndex
     }
@@ -69,10 +69,14 @@ const EditorField = (props: ModuleEditorField) => {
                 fetchStoragesFn={props.fetchStorages!}
                 fetchTableListFn={props.fetchTableList!}
                 fetchTableColumnsFn={props.fetchTableColumns!}
+                fetchQueryDataFn={props.fetchQueryData!}
                 updateContentFn={props.updateContent}
                 editable={true}
                 styling={props.styling}
                 NSMid={NSMid}
+
+                fetchContentFn={props.fetchContentFn!}
+                fetchContentDatesFn={props.fetchContentDatesFn!}
             />
         </div>
     )
@@ -98,12 +102,16 @@ const PresenterField = (props: ModulePresenterField) => {
                 editable={false}
                 styling={props.styling}
                 NSMid={NSMid}
+
                 fetchStoragesFn={() => Promise.resolve([])}
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
-                fetchQueryDataFn={props.fetchQueryData}
+                fetchQueryDataFn={props.fetchQueryData!}
                 updateContentFn={props.updateContent}
                 setSaveCount={setSaveCount}
+
+                fetchContentFn={props.fetchContentFn!}
+                fetchContentDatesFn={props.fetchContentDatesFn!}
             />
         </div> : <></>)
 }

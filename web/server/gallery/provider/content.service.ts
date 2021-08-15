@@ -12,6 +12,7 @@ import * as common from "../common"
 import * as utils from "../../utils"
 import { Content } from "../entity"
 import * as MongoService from "./contentMongo.service"
+import * as ElementService from "./element.service"
 
 const contentFullRelations = {
   relations: [
@@ -26,18 +27,20 @@ const contentFullRelations = {
 @Injectable()
 export class ContentService {
   constructor(@InjectRepository(Content, common.db) private repo: Repository<Content>,
-    private readonly mongoService: MongoService.MongoService
+    private readonly mongoService: MongoService.MongoService,
+    private readonly elementService: ElementService.ElementService
   ) { }
 
   getAllContents() {
     return this.repo.find(contentFullRelations)
   }
 
-  getContentById(id: string) {
-    return this.repo.find({
+  async getContentById(id: string) {
+    const ct = await this.repo.find({
       ...contentFullRelations,
       ...utils.whereIdEqual(id)
     })
+    return ct && ct[0]
   }
 
   saveContent(content: Content) {
@@ -99,9 +102,70 @@ export class ContentService {
     return []
   }
 
+
+
+  async getNestedElementContent(contentId: string) {
+    let content = await this.getContentById(contentId)
+    const queryData = await this.elementService.getQueryDataByStorageType(content)
+    content = { ...content, data: { ...content.data, ...queryData } }
+    return content
+  }
+
+  async saveNestedOrSimpleContent(name: string, type: string, content: Content) {
+    const eleType = common.getElementType(type)
+    switch (eleType) {
+      case common.ElementType.NestedSimpleModule:
+        /* content type: 
+        currIndex: string (used to indicate the tab when entering)
+        tabItem: tabItem[]: 
+        for each item:
+            id: i
+            layout attribute: x y w h
+
+            tab content attribute:
+                tabContent: the content that will be displayed for a tab item
+                tabType: the type of the content
+                minDim: the minimal length between width and height. Used to calculate an item's font-size
+
+            module: SimpleEmbededModule {
+              name: string,
+              timeSeries: boolean,
+              elementType: ElementType,
+              content?: Content (only leaves {id, date, tabId})
+        }*/
+        //first save each tabItem's module content separately.
+        // console.log("saving nested module content data", content.data?.tabItems)
+        content?.data?.tabItems?.forEach(async (item: any) => {
+          if (item?.module?.content) {
+
+            // console.log("saving nested module content data\n", item.module)
+
+            try {
+              const newCt = await this.saveContentToMongoOrPg(content.category.name, item.module.elementType, item.module.content)
+              item.module.content = { id: newCt.id, tabId: newCt.tabId, date: newCt.date }
+              console.log("nested content with id:\n", item.module.content)
+            } catch (err: any) {
+              throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+            finally {
+              //and then save nestedModuleContent to PG
+              this.saveContentToMongoOrPg(name, type, content)
+            }
+          }
+        })
+
+      // console.log("finish saving nested module content data", content.data)
+      default:
+        return this.saveContentToMongoOrPg(name, type, content)
+    }
+
+  }
+
   async saveContentToMongoOrPg(name: string, type: string, content: Content) {
     try {
+      // console.log("before saveContentToMongoOrPgByType", content)
       const ct = await this.mongoService.saveContentToMongoOrPgByType(type, content)
+      // console.log("after saveContentToMongoOrPgByType", ct)
       return this.saveContentInCategory(name, ct)
     }
     catch (err: any) {
@@ -126,7 +190,7 @@ export class ContentService {
       title: content.title,
       data: content.data,
     }
-
+    console.log("saving content to category: ", ctn)
     const newContent = this.repo.create(ctn)
     return this.repo.save(newContent)
   }

@@ -14,8 +14,8 @@ export interface ContainerElementProps {
   editable: boolean
   element: DataType.Element
   shouldStartFetch: number
-
-  fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  isNested?: boolean
+  fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
@@ -23,6 +23,8 @@ export interface ContainerElementProps {
   fetchTableListFn: (id: string) => Promise<string[]>
   fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+
+  // onTEfetchContent: (eleId: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
 }
 
 export interface ContainerElementRef {
@@ -47,50 +49,32 @@ export const TemplateElement =
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
-    /** 1. determine whether the content is "pointer". 
-     * 2. If it is, fetch the actual data from 3rd party database by calling fetchQuery. 
-     * 3. update the content to make sure we have the actual content stored in React state.
-          */
-    const fetchQueryAndUpdateContent = (c: DataType.Content) => {
-      //if we should and could fetch query, fetch!
-      if (DataType.shouldQueryAfterRecevingContent(props.element.type)) {
-        if (DataType.MongoContentValidation(c?.data)) {
-          props.fetchQueryDataFn(c).then((res: any) => {
-            // console.log({ ...c?.data, ...res })
-            //update content so that editor can share the default value
-            setContent(ct => {
-              return {
-                ...ct, data: { ...c?.data, ...res },
-                date: ct?.date || DataType.today() //create date if not exist
-              }
-            })
-          })
-        }
-      }
-      //no matter we fetch or not, wait till if statement end to stop loading
-      setIsLoading(false)
-    }
-
+    /**
+     * Template Element may be nested in a module, so we have different fetch api
+     * If TemplateElment is nested, eleId is actually tabId.
+     */
     const fetchContent = (date?: string) => {
+      // console.log(eleId, props.isNested)
       if (eleId) {
         //no need to check date since it's allowed date to be undefined
-        props.fetchContentFn(eleId, date).then(res => {
+        props.fetchContentFn(eleId, date, props.isNested).then(res => {
           //TODO: cannot set content to undefined
-          setContent(res || { data: {}, date: '' })
-          /**if we use 3rd party database to store the actual content, we just fetch the "pointer" 
-           * of those content. Now we need to determine whether the content is "pointer". If it is,
-           * fetch the actual data from 3rd party database by calling fetchQuery. And then update 
-           * the content to make sure we have the actual content stored in React state.
-          */
-          res && fetchQueryAndUpdateContent(res)
+          const ct = res || { data: {}, date: '' }
+          setContent(ct)
+          if (props.isNested) console.log(ct)
+          props.updateContentFn(ct)
+          // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
         })
+        //no matter what we receive, wait till if statement end to stop loading
+        setIsLoading(false)
       }
     }
+
 
     //listen to props's shouldStartFetch. If it updates, fetchContent
     useEffect(() => {
       //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
-      fetchContent()
+      if (props.shouldStartFetch) fetchContent()
     }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
@@ -101,7 +85,7 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({ eleId, fetchContent, fetchContentDates }))
+    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
@@ -126,6 +110,9 @@ export const TemplateElement =
           editable={props.editable}
           settable={!!eleId}
           isLoading={isLoading}
+
+          fetchContentFn={props.fetchContentFn}
+          fetchContentDatesFn={props.fetchContentDatesFn}
         />
       </div>
     )

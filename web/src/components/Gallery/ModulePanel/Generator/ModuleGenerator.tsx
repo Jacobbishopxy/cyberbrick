@@ -34,29 +34,32 @@ export class ModuleGenerator {
       return editable ?
         <this.editor
           content={crProps.content}
+          fetchQueryData={crProps.fetchQueryData}
           fetchStorages={crProps.fetchStorages}
           fetchTableList={crProps.fetchTableList}
           fetchTableColumns={crProps.fetchTableColumns}
           contentHeight={crProps.contentHeight}
           updateContent={crProps.updateContent}
           styling={forceStyle ? crProps.styling : styles.editorField}
+
+          fetchContentFn={crProps.fetchContentFn}
+          fetchContentDatesFn={crProps.fetchContentDatesFn}
         /> :
         <this.presenter
           content={crProps.content}
-          shouldQuery={crProps.shouldQuery}
-          setShouldQuery={crProps.setShouldQuery}
           fetchQueryData={crProps.fetchQueryData}
           contentHeight={crProps.contentHeight}
           styling={crProps.styling}
           updateContent={crProps.updateContent}
+
+          fetchContentFn={crProps.fetchContentFn}
+          fetchContentDatesFn={crProps.fetchContentDatesFn}
         />
     }
 
     return forwardRef((props: ConvertProps, ref: React.Ref<ConvertFwRef>) =>
       <ConvertRef
         content={props.content}
-        shouldQuery={props.shouldQuery}
-        setShouldQuery={props.setShouldQuery}
         fetchStorages={props.fetchStorages}
         fetchTableList={props.fetchTableList}
         fetchTableColumns={props.fetchTableColumns}
@@ -65,6 +68,9 @@ export class ModuleGenerator {
         updateContent={props.updateContent}
         styling={props.styling}
         forwardedRef={ref}
+
+        fetchContentFn={props.fetchContentFn}
+        fetchContentDatesFn={props.fetchContentDatesFn}
       />
     )
   }
