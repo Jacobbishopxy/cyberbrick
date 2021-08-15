@@ -87,20 +87,31 @@ const PresenterField = (props: ModulePresenterField) => {
     const [items, setItems] = useState<tabItem[]>(props.content?.data?.tabItems || tempItems)
     const [currIndex, setCurrIndex] = useState(props.content?.data?.currIndex)
     const [saveCount, setSaveCount] = useState(0)
+
+    /**
+     * when PresenterField first mounted, it's parent haven't mounted, so there's no
+     * content. When parent received content, update the items state for presentorField
+    */
     useEffect(() => {
         setItems(props.content?.data?.tabItems)
+        setCurrIndex(props.content?.data?.currIndex)
     }, [props.content?.data?.tabItems])
+
+    /**
+     * update currIndex
+     */
     useEffect(() => {
         // console.log(props.content)
         props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
         // console.log(props.content)
     }, [saveCount])
+
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
         <div className={props.styling}>
             <NestedSimpleModuleEditor
                 items={items}
-                currIndex={props.content?.data.currIndex}
+                currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
                 setItems={setItems}
                 editable={false}
