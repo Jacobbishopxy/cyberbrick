@@ -61,7 +61,7 @@ export const TemplateElement =
           //TODO: cannot set content to undefined
           const ct = res || { data: {}, date: '' }
           setContent(ct)
-          if (props.isNested) console.log(ct)
+          // console.log(ct)
           props.updateContentFn(ct)
           // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
         })

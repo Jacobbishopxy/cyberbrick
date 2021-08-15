@@ -108,6 +108,7 @@ export class ContentService {
     let content = await this.getContentById(contentId)
     const queryData = await this.elementService.getQueryDataByStorageType(content)
     content = { ...content, data: { ...content.data, ...queryData } }
+    // console.log(content)
     return content
   }
 
@@ -134,7 +135,6 @@ export class ContentService {
               content?: Content (only leaves {id, date, tabId})
         }*/
         //first save each tabItem's module content separately.
-        // console.log("saving nested module content data", content.data?.tabItems)
         content?.data?.tabItems?.forEach(async (item: any) => {
           if (item?.module?.content) {
 
@@ -143,7 +143,7 @@ export class ContentService {
             try {
               const newCt = await this.saveContentToMongoOrPg(content.category.name, item.module.elementType, item.module.content)
               item.module.content = { id: newCt.id, tabId: newCt.tabId, date: newCt.date }
-              console.log("nested content with id:\n", item.module.content)
+              // console.log("nested content with id:\n", item.module.content)
             } catch (err: any) {
               throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
             }
@@ -153,8 +153,6 @@ export class ContentService {
             }
           }
         })
-
-      // console.log("finish saving nested module content data", content.data)
       default:
         return this.saveContentToMongoOrPg(name, type, content)
     }
@@ -163,9 +161,9 @@ export class ContentService {
 
   async saveContentToMongoOrPg(name: string, type: string, content: Content) {
     try {
-      // console.log("before saveContentToMongoOrPgByType", content)
+      if (type === common.ElementType.Text && content.tabId) console.log("prior to save\n", content)
       const ct = await this.mongoService.saveContentToMongoOrPgByType(type, content)
-      // console.log("after saveContentToMongoOrPgByType", ct)
+      if (type === common.ElementType.Text && ct.tabId) console.log(ct)
       return this.saveContentInCategory(name, ct)
     }
     catch (err: any) {
@@ -190,7 +188,6 @@ export class ContentService {
       title: content.title,
       data: content.data,
     }
-    console.log("saving content to category: ", ctn)
     const newContent = this.repo.create(ctn)
     return this.repo.save(newContent)
   }

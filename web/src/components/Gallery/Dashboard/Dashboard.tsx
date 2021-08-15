@@ -194,6 +194,7 @@ export const Dashboard = (props: DashboardProps) => {
     props.fetchElementContentDates(id)
 
   const fetchQueryData = async (value: DataType.Content) => {
+    // if (!value?.data) return Promise.resolve(undefined)
     const id = value.data?.id
     const option = value.data as DataType.Read
     //default to pg

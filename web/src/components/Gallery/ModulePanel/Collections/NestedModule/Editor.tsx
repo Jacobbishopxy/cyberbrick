@@ -68,9 +68,8 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //tabs layout updated
     useEffect(() => {
-        console.log("parent should update", props.items)
+        // console.log("parent should update", props.items)
         setSaveCount(cnt => cnt + 1)
-        // console.log(props.items)
     }, [props.items])
 
     //embeded modulePanal updated
@@ -135,7 +134,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         let content = { date: DataType.today(), data: { content: name } }
         //replace existing module
         if (props.items!.find(item => item.i === tabId && item.module)) {
-            // console.log("removing old module...")
             //delete old module content
             onRemoveModule(tabId)
         }

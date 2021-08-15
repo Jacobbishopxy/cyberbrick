@@ -83,19 +83,23 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-
-    const setItems = useState<tabItem[]>([])[1]
-    const [currIndex, setCurrIndex] = useState("")
+    let tempItems: tabItem[] = []
+    const [items, setItems] = useState<tabItem[]>(props.content?.data?.tabItems || tempItems)
+    const [currIndex, setCurrIndex] = useState(props.content?.data?.currIndex)
     const [saveCount, setSaveCount] = useState(0)
     useEffect(() => {
-        props.updateContent({ ...props.content, date: today(), data: { ...props.content?.data, currIndex: currIndex } })
+        setItems(props.content?.data?.tabItems)
+    }, [props.content?.data?.tabItems])
+    useEffect(() => {
+        // console.log(props.content)
+        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
         // console.log(props.content)
     }, [saveCount])
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
         <div className={props.styling}>
             <NestedSimpleModuleEditor
-                items={props.content?.data.tabItems as tabItem[]}
+                items={items}
                 currIndex={props.content?.data.currIndex}
                 setCurrIndex={setCurrIndex}
                 setItems={setItems}

@@ -147,7 +147,8 @@ export const generateCommonPresenterField =
 
       useEffect(() => {
         if (props.fetchQueryData && props.content) {
-          if (!_.isEmpty(props.content.data))
+          //validate content
+          if (!_.isEmpty(props.content.data) && DataType.PgContentValidation(props.content.data))
             props.fetchQueryData(props.content).then(res => setData(res))
         }
       }, [props.content])

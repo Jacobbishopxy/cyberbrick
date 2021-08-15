@@ -188,6 +188,12 @@ export function MongoContentValidation(data?: Record<string, any>) {
   return false
 }
 
+export function PgContentValidation(data?: Record<string, any>) {
+  //to query a mongodb, we need mongo objectID and collection name
+  if (data?.id) return true
+  return false
+}
+
 export enum StorageType {
   PG = "postgres",
   MONGO = "mongodb"

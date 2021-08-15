@@ -34,10 +34,10 @@ export class MongoService {
 
     async saveContentToMongo(type: string, content: Content) {
         //if has req body, save to mongodb
-        if (content) {
+        if (content && content.data) {
             //convert content to the form to save to mongodb
             const mongoCt: ContentMongo = this.pgContentToMongoContent(content)
-            // console.log("querying go api with content", mongoCt)
+            console.log("querying go api with content\n", mongoCt)
             //make query to go api
             try {
                 const res = await this.createContent(type, mongoCt);

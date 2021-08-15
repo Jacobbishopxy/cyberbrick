@@ -1,7 +1,6 @@
 import * as DataType from "../../../../GalleryDataType"
 import { useState } from "react"
 import { tabItem } from "../data"
-import { ModulePanel } from "@/components/Gallery/ModulePanel/Panel"
 import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 
 interface ModuleTabPaneProps {
@@ -37,7 +36,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
     //TODO: only call props.fetchContent in the first call
     const fetchContent = async (id: string, date?: string) => {
-        if (props.content?.data) return props.content
+        if (content?.data) return props.content
         if (props.content?.id) {
             console.log("fetch from db", props.content)
             return props.fetchContentFn(props.content?.id, date, true)
@@ -46,8 +45,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     }
 
     const updateContent = (c: DataType.Content) => {
-        console.log(c)
-        // setContent(c)
+        setContent(c)
         //update the content in items list
         props.setItems(items => items.map(item => {
             if (item.i === tabId) {
@@ -81,8 +79,6 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
                 ref={null}
                 shouldStartFetch={props.shouldEleStartFetch}
                 isNested={true}
-
-
             />
         </div>
     )

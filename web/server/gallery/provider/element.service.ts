@@ -127,6 +127,7 @@ export class ElementService {
   async getQueryDataByStorageType(content: Content) {
     switch (content.storageType) {
       case common.StorageType.MONGO:
+        // console.log("query to mongo\n", content.data)
         return this.mongoService.getContentData(content.data.collection, content.data.id)
       default:
         return undefined
