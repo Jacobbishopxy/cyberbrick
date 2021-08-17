@@ -1,4 +1,4 @@
-package middleware
+package controller
 
 import (
 	"server-go/models"

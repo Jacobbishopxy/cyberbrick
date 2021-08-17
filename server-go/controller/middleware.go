@@ -1,4 +1,4 @@
-package middleware
+package controller
 
 import (
 	"context"
@@ -24,23 +24,32 @@ var api MongoApiDomain
 
 // create connection with mongo db
 func init() {
-	loadTheEnv()
+
 	createDBInstance()
 	api = new(MongoApi)
 }
-func loadTheEnv() {
+func loadTheEnv(path string) {
 	// load .env file
-	err := godotenv.Load(".env")
+	err := godotenv.Load(path)
 
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Print(err)
+		log.Fatalf("Error loading " + path + " file\n")
 	}
 }
 
 func createDBInstance() {
+	base := "../resources/"
+	//load connection string file
+	loadTheEnv(base + "mongo.connection.env")
 	// DB connection string
-	connectionString := os.Getenv("DB_URI")
+	connectionString := os.Getenv("DB_LOCALHOST_URL")
 
+	if len(os.Args) > 1 && os.Args[1] == "prod" {
+		connectionString = os.Getenv("DB_URL")
+	}
+
+	loadTheEnv(base + "go.env")
 	// Database Name
 	dbName := os.Getenv("DB_NAME")
 
@@ -54,6 +63,7 @@ func createDBInstance() {
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
+		log.Print(connectionString, dbName)
 		log.Fatal(err)
 	}
 
