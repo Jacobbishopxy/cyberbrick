@@ -1,51 +1,47 @@
-
-
-import { Content, ElementType, StorageSimple } from "@/components/Gallery/GalleryDataType"
-import { useState } from "react"
+import * as DataType from "../../../../GalleryDataType"
 import { tabItem } from "../data"
-import { ModulePanel } from "@/components/Gallery/ModulePanel/Panel"
+import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 
 interface ModuleTabPaneProps {
     //self custom
     tabId: string,
-    content?: Content
+    content?: DataType.Content
     //same as TemplateElementProps
     editable: boolean,
     name: string,
     timeSeries: boolean,
-    elementType: ElementType,
+    elementType: DataType.ElementType,
+
+    shouldEleStartFetch: number
     onRemoveModule: (id: string) => void,
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
-    fetchStoragesFn: () => Promise<StorageSimple[]>
+    fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
-    fetchQueryDataFn?: (readOption: Content) => Promise<any>
+    fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+    fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+    fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 
 }
 
-const tempContent: Content = {
-    date: `${new Date()}`,
-    data: {
-        content: "content",
-        text: "text"
-    }
-}
+
 
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     const { name, timeSeries, elementType, tabId } = props
-    const [content, setContent] = useState<Content | undefined>(props.content)
+    //layout property is not important?
+    const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
 
-    //simply returned the content received from parent
-    const fetchContent = (date?: string) => {
-        if (!content) {
-            setContent(tempContent)
+    const fetchContent = async (id: string, date?: string) => {
+        //TODO: WARNING! Refetch logic only works when content received from db has not null data
+        if (props.content?.data) return props.content
+        if (props.content?.id) {
+            // console.log("fetch from db", props.content)
+            return props.fetchContentFn(props.content?.id, date, true)
         }
-        // return Promise.resolve(content)
+        return props.content
     }
 
-    const updateContent = (c: Content) => {
-        // console.log(c)
-        setContent(c)
+    const updateContent = (c: DataType.Content) => {
         //update the content in items list
         props.setItems(items => items.map(item => {
             if (item.i === tabId) {
@@ -54,35 +50,32 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
             }
             return item
         }))
-        // console.log()
     }
 
     const onRemove = () => {
         props.onRemoveModule(tabId)
     }
-    //'xlsxTable' require 'data' is of type array
-    const convertContent = elementType === "xlsxTable" ? { ...content, date: content?.date!, data: [content!.data] } : content
-    //warning! hardcoded height
+
+    //TODO: WARINING! hardcoded height
     return (
         <div style={{ height: "390px" }}>
-            <ModulePanel key={tabId + elementType + name}
+            <TemplateElement key={tabId + elementType + name}
                 parentInfo={[]}
-                eleId={tabId}
-                headName={name}
                 timeSeries={timeSeries}
-                elementType={elementType}
-                content={convertContent}
-                fetchStorages={props.fetchStoragesFn}
-                fetchTableList={props.fetchTableListFn}
-                fetchTableColumns={props.fetchTableColumnsFn}
-                fetchQueryData={props.fetchQueryDataFn}
-                contentHeight={400}
-                fetchContent={fetchContent}
-                // fetchContentDates={fetchContentDates}
-                updateContent={updateContent}
-                onRemove={onRemove}
                 editable={props.editable}
-                settable={!!tabId} />
+                element={ele}
+                fetchContentFn={fetchContent}
+                fetchContentDatesFn={props.fetchContentDatesFn}
+                updateContentFn={updateContent}
+                onRemove={onRemove}
+                fetchStoragesFn={props.fetchStoragesFn}
+                fetchTableListFn={props.fetchTableListFn}
+                fetchTableColumnsFn={props.fetchTableColumnsFn}
+                fetchQueryDataFn={props.fetchQueryDataFn}
+                ref={null}
+                shouldStartFetch={props.shouldEleStartFetch}
+                isNested={true}
+            />
         </div>
     )
 

@@ -111,8 +111,13 @@ declare namespace GalleryAPI {
     TreeMap = "treeMap",
   }
 
+  /**
+   * Warning: when update StorageType in GalleryAPI, make sure also update StorageType in web/src/components/Gallery/GalleryDataType,
+   * and the defualt databaseType in ./gallery.ts
+   */
   export enum StorageType {
-    PG = "postgres"
+    PG = "postgres",
+    MONGO = "mongodb"
   }
 
   export const getStorageType = (v: string) => {
@@ -156,9 +161,15 @@ declare namespace GalleryAPI {
     symbol: ConditionSymbol
   }
 
-  export interface Read {
+  export type Read = PostgresRead | MongoRead
+
+  export interface PostgresRead {
     selects?: string[]
     tableName: string
     conditions?: Condition[]
+  }
+
+  export interface MongoRead {
+    collection: string
   }
 }

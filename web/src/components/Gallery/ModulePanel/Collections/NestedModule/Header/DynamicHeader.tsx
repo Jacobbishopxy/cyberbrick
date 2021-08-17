@@ -62,11 +62,11 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                 compactType={"horizontal"}
                 // onBreakpointChange={onBreakpointChange}
                 // {...props}
-                layout={props.items.map(it => { return { i: it.i, x: it.x, y: it.y, w: it.w, h: it.h } })}
+                layout={props.items?.map(it => { return { i: it.i, x: it.x, y: it.y, w: it.w, h: it.h } }) || []}
                 onLayoutChange={props.onLayoutChange}
                 style={{ minWidth: "100%", border: "0" }}
             >
-                {props.items.map(el =>
+                {props.items?.map(el =>
                     <div key={el.i} data-grid={el} id={el.i}
                         className={className(el.i)}
                         onClick={() => onSwitch(el.i)}

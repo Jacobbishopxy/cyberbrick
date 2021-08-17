@@ -9,7 +9,7 @@ import { ConvertFwRef } from "../Generator/data"
 import { XlsxTable } from "./table/XlsxTable"
 import { FlexTable } from "./table/FlexTable"
 import { EmbedLink } from "./miscellaneous/EmbedLink"
-import { Text } from "./miscellaneous/Text"
+import { Text } from "./multiMedia/Text"
 import { TargetPrice } from "./miscellaneous/TargetPrice"
 import { FileView } from "./file/FileView"
 import {
@@ -34,6 +34,9 @@ export interface ModuleSelectorProps {
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertFwRef>
+
+  fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
@@ -51,6 +54,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
+      fetchQueryData={props.fetchQueryData}
       styling={styles.contentPanel}
       ref={props.forwardedRef}
     />
@@ -173,6 +177,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       updateContent={props.updateContent}
       styling={styles.contentPanel}
       ref={props.forwardedRef}
+
+      fetchContentFn={props.fetchContentFn}
+      fetchContentDatesFn={props.fetchContentDatesFn}
     />
 
     switch (moduleType) {

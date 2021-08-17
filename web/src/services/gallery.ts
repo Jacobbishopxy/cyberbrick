@@ -2,12 +2,12 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import {request} from "umi"
+import { request } from "umi"
 
 
 const base = "/api/gallery"
 const baseDb = "/api/database"
-
+const defaultStorageType = "postgres"
 
 // Category
 
@@ -136,8 +136,8 @@ export const getContentsInCategoryByElementTypeAndMarkAndTags =
     return request(path)
   }
 
-export const saveContentInCategory = async (categoryName: string, content: GalleryAPI.Content): Promise<void> =>
-  request(`${base}/saveContentInCategory?name=${categoryName}`, {
+export const saveContentInCategory = async (categoryName: string, type: string, content: GalleryAPI.Content): Promise<void> =>
+  request(`${base}/saveContentInCategory?name=${categoryName}&type=${type}`, {
     method: "post",
     data: content
   })
@@ -250,12 +250,18 @@ export const getElementContentDates = async (id: string, markName?: string): Pro
   return request(path)
 }
 
-export const getElementContent = async (id: string, date?: string, markName?: string): Promise<GalleryAPI.Element> => {
+export const getElementContent = async (id: string, date?: string, isNested?: boolean): Promise<GalleryAPI.Content | undefined> => {
+  // console.log(id, isNested)
+  if (isNested) {
+    let nestedContentPath = `${base}/getNestedElementContent?contentId=${id}`
+    return request(nestedContentPath)
+  }
   let path = `${base}/getElementContent?id=${id}`
   if (date)
     path += `&date=${date}`
-  if (markName)
-    path += `&markName=${markName}`
+  //depreciated
+  // if (markName)
+  //   path += `&markName=${markName}`
 
   return request(path)
 }
@@ -293,11 +299,14 @@ export const reloadConnection = async (id: string): Promise<string> =>
 export const executeSql = async (id: string, sqlString: string) =>
   request(`${base}/executeSql?id=${id}&sqlString=${sqlString}`)
 
-export const read = async (id: string, readOption: GalleryAPI.Read) =>
-  request(`${base}/read?id=${id}`, {
+export const read = async (id: string, readOption: GalleryAPI.Read, databaseType: GalleryAPI.StorageType) => {
+  const dbType = databaseType || defaultStorageType //default to pg
+  return request(`${base}/read?id=${id}&databaseType=${dbType}`, {
     method: "post",
     data: readOption
   })
+}
+
 
 // Storage
 // server API (redirect)

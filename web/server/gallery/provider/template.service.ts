@@ -2,14 +2,15 @@
  * Created by Jacob Xie on 9/16/2020.
  */
 
-import {Injectable} from "@nestjs/common"
-import {InjectRepository} from "@nestjs/typeorm"
-import {Repository} from "typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Dashboard, Element, Template} from "../entity"
+import { Dashboard, Element, Template } from "../entity"
+// import * as MongoService from "../provider/contentMongo.service";
 
 const dashboardTemplatesRelations = {
   relations: [common.templates]
@@ -30,8 +31,10 @@ const elementsRelations = {
 @Injectable()
 export class TemplateService {
   constructor(@InjectRepository(Dashboard, common.db) private repoDashboard: Repository<Dashboard>,
-              @InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
-              @InjectRepository(Element, common.db) private repoElement: Repository<Element>) {}
+    @InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
+    @InjectRepository(Element, common.db) private repoElement: Repository<Element>,
+    // private readonly service: MongoService.MongoService
+  ) { }
 
   getAllTemplates() {
     return this.repoTemplate.find(templateFullRelations)
@@ -71,7 +74,7 @@ export class TemplateService {
 
   saveTemplateInDashboard(dashboardId: string, template: Template) {
     const newTmp = this.repoTemplate.create({
-      dashboard: {id: dashboardId},
+      dashboard: { id: dashboardId },
       name: template.name,
       description: template.description
     })
@@ -80,7 +83,7 @@ export class TemplateService {
 
   saveTemplatesInDashboard(dashboardId: string, templates: Template[]) {
     const newTemplates = templates.map(t => this.repoTemplate.create({
-      dashboard: {id: dashboardId},
+      dashboard: { id: dashboardId },
       id: t.id,
       name: t.name,
       index: t.index,
@@ -116,7 +119,7 @@ export class TemplateService {
   }
 
   async modifyTemplate(id: string, template: Template) {
-    const tp = await this.repoTemplate.findOne({...utils.whereIdEqual(id)})
+    const tp = await this.repoTemplate.findOne({ ...utils.whereIdEqual(id) })
 
     if (tp) {
       const newTemplate = this.repoTemplate.create({
@@ -130,7 +133,7 @@ export class TemplateService {
   }
 
   async copyTemplateElements(originTemplateId: string,
-                             targetTemplateId: string) {
+    targetTemplateId: string) {
 
     const originTemplate = await this.getTemplateElements(originTemplateId) as Template
 
@@ -165,7 +168,7 @@ export class TemplateService {
       .createQueryBuilder(common.element)
       .leftJoinAndSelect(common.elementTemplate, common.template)
       .select(common.elementId)
-      .where(`${common.templateId} = :targetTemplateId`, {targetTemplateId})
+      .where(`${common.templateId} = :targetTemplateId`, { targetTemplateId })
       .getMany()
 
     if (originElementsId) {
@@ -173,9 +176,10 @@ export class TemplateService {
 
       const removedIds = _.difference(originElementsId.map(i => i.id), targetElementsId)
       if (removedIds.length !== 0)
-        await this.repoElement.delete(removedIds)
-    }
+        // await this.repoElement.delete(removedIds)
+        await this.repoElement.softDelete(removedIds)
 
+    }
     return this.saveTemplate(template)
   }
 }

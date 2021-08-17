@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/15/2020.
  */
 
-import {Injectable} from "@nestjs/common"
-import {InjectRepository} from "@nestjs/typeorm"
-import {Repository} from "typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import {Tag, Category} from "../entity"
+import { Tag, Category } from "../entity"
 
 
 const categoryTagRelations = {
@@ -30,7 +30,7 @@ const tagCategoryRelations = {
 @Injectable()
 export class TagService {
   constructor(@InjectRepository(Tag, common.db) private repoTag: Repository<Tag>,
-              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
+    @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) { }
 
   getAllTags() {
     return this.repoTag.find(tagFullRelations)
@@ -67,7 +67,7 @@ export class TagService {
 
   async modifyTag(tag: Tag) {
     if (tag.id) {
-      const tg = await this.repoTag.findOne({...utils.whereIdEqual(tag.id)})
+      const tg = await this.repoTag.findOne({ ...utils.whereIdEqual(tag.id) })
 
       if (tg) {
         const newTag = this.repoTag.create({
@@ -115,7 +115,8 @@ export class TagService {
 
       if (tagsRemove.length > 0)
         await this.deleteTags(tagsRemove.map(t => t.id))
-
+      //relate tags with category, otherwise Error: "null value in column "categoryName" violates not-null constraint" 
+      tags = tags.map(tag => { return { ...tag, category: cat } })
       await this.saveTags(tags)
 
       return true

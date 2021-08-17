@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/25/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { message } from "antd"
 import _ from "lodash"
 
@@ -10,6 +10,7 @@ import * as DataType from "../GalleryDataType"
 import { Controller } from "./DashboardController/Controller"
 import { Container, ContainerRef } from "./DashboardContainer/Container"
 import { useIntl } from "umi"
+import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
 export const EditableContext = React.createContext<boolean>(false)
@@ -17,10 +18,11 @@ export const EditableContext = React.createContext<boolean>(false)
 const dashboardContentUpdate = (contents: DataType.Content[], template: DataType.Template) => {
 
   const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
+  const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
 
   return contents.map(c => {
-    if (c.element!.id === undefined) {
-      const element = { ...c.element!, id: elementNameIdMap[c.element!.name] }
+    if (c.element!.id === undefined || c.element!.type === undefined) {
+      const element = { ...c.element!, id: elementNameIdMap[c.element!.name], type: elementNameTypeMap[c.element!.name] }
       return { ...c, element }
     }
     return c
@@ -42,26 +44,26 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 export interface DashboardProps {
   initialSelected?: string[]
   selectedOnChange?: (v: string[]) => void
-
+  fetchCategoriesByType: () => Promise<DataType.Category[]>
   fetchCategories: () => Promise<DataType.Category[]>
   fetchCategory: (categoryName: string) => Promise<DataType.Category>
   fetchDashboard: (dashboardId: string) => Promise<DataType.Dashboard>
   fetchTemplate: (templateId: string) => Promise<DataType.Template>
   saveTemplate: (template: DataType.Template) => Promise<void>
   copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
-  fetchElementContent: (id: string, date?: string, markName?: string) => Promise<DataType.Element>
+  fetchElementContent: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchElementContentDates: (id: string, markName?: string) => Promise<DataType.Element>
-  updateElementContent: (categoryName: string, content: DataType.Content) => Promise<void>
+  updateElementContent: (categoryName: string, type: string, content: DataType.Content) => Promise<void>
   fetchStorages: () => Promise<DataType.StorageSimple[]>
   fetchTableList: (id: string) => Promise<string[]>
   fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
-  fetchQueryData: (storageId: string, readOption: DataType.Read) => Promise<any>
+  fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
 }
 
 export const Dashboard = (props: DashboardProps) => {
   const cRef = useRef<ContainerRef>(null)
-
-  const [categories, setCategories] = useState<DataType.Category[]>([])
+  const [categoies, setCategories] = useState<DataType.Category[]>([])
+  const [dashboardCategories, setDbCategories] = useState<DataType.Category[]>([])
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>()
   const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
@@ -75,8 +77,18 @@ export const Dashboard = (props: DashboardProps) => {
 
   const intl = useIntl()
 
+  //this is for selecting categories' dashboard. We only need category of corresponding type
+  const isTemplate = useContext(IsTemplateContext)
+  const dashboardCategoryType = isTemplate ? DataType.CategoryTypeEnum.temp_lib : DataType.CategoryTypeEnum.dashboard
+
+  // const dashboardCategories = categories.filter(ct => ct.type === dashboardCategoryType)
+
   useEffect(() => {
-    props.fetchCategories().then(res => setCategories(res))
+    props.fetchCategories().then(res => {
+      setCategories(res)
+      setDbCategories(res.filter(ct => ct?.type === dashboardCategoryType))
+    })
+
   }, [])
 
 
@@ -123,7 +135,7 @@ export const Dashboard = (props: DashboardProps) => {
   const updateAllContents = async (contents: DataType.Content[]) => {
     if (selectedDashboard)
       return Promise.all(
-        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c))
+        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c))
       )
     return Promise.reject(new Error("No dashboard selected!"))
   }
@@ -164,20 +176,31 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("Invalid template!"))
   }
 
-  const fetchElementContent = async (id: string, date?: string) => {
-    const ele = await props.fetchElementContent(id, date)
-    if (ele && ele.contents) return ele.contents[0]
-    return undefined
+  const fetchElementContent = async (id: string, date?: string, isNested?: boolean) => {
+    /**if the element is nested inside NestedSimpleModule, it doesn't belong to an element. Rather, it's part
+     * of the tabItem. So we only fetch the content from database
+    */
+    if (isNested) return fetchNestedElementContent(id, date)
+    const content = await props.fetchElementContent(id, date, isNested)
+    return content
+  }
+
+  const fetchNestedElementContent = async (id: string, date?: string) => {
+    const content = await props.fetchElementContent(id, date, true)
+    return content as unknown as DataType.Content
   }
 
   const fetchElementContentDates = async (id: string) =>
     props.fetchElementContentDates(id)
 
   const fetchQueryData = async (value: DataType.Content) => {
-    const id = value.data.id
+    // if (!value?.data) return Promise.resolve(undefined)
+    const id = value.data?.id
     const option = value.data as DataType.Read
+    //default to pg
+    const dbType = value.storageType ? value.storageType : DataType.StorageType.PG
     if (id && option)
-      return props.fetchQueryData(id, option)
+      return props.fetchQueryData(id, option, dbType)
     return Promise.reject(new Error("content data is inappropriate!"))
   }
 
@@ -188,7 +211,8 @@ export const Dashboard = (props: DashboardProps) => {
   const genController = useMemo(() => <Controller
     initialSelected={props.initialSelected}
     canEdit={canEdit}
-    categories={categories}
+    categoriesAllType={categoies}
+    dashboardCategories={dashboardCategories}
     categoryOnSelect={categoryOnSelect}
     dashboardOnSelect={dashboardOnSelect}
     onSelectChange={setSelected}
@@ -196,7 +220,7 @@ export const Dashboard = (props: DashboardProps) => {
     onCopyTemplate={onCopyTemplate}
     onEditTemplate={setEdit}
     onSaveTemplate={onRefresh}
-  />, [canEdit, categories, onRefresh])
+  />, [canEdit, dashboardCategories, onRefresh])
 
   const genContainer = useMemo(() => selectedDashboard ?
     <Container

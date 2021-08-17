@@ -1,5 +1,5 @@
 import { ModalForm } from "@ant-design/pro-form";
-import { Button, Divider, Input, List, Tooltip } from "antd";
+import { Button, Divider, List, Tooltip } from "antd";
 import { useState } from "react";
 import { TabChoice } from "../data";
 
@@ -8,6 +8,7 @@ import { tabSelectChunk } from "./TabChoice";
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 import { useIntl } from "umi";
 import { EditOutlined } from "@ant-design/icons";
+import { TabItemArticalInput } from "./TabItemArticaleInput";
 
 interface TabItemSelectionProps {
     selected: string,
@@ -64,13 +65,12 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
         //not icon, display label and click to enable input field
         return (
             (selected === choice.key) ?
-                <div className="tab-input" key={choice.key}>
-                    <Input
-                        placeholder={choice.tabType}
-                        value={input}
-                        onChange={onChange}
-                    />
-                </div>
+                <TabItemArticalInput
+                    key={choice.key}
+                    value={input}
+                    placeholder={choice.tabType}
+                    onChange={onChange}
+                />
                 : singleChoiceContent(choice)
         )
     }

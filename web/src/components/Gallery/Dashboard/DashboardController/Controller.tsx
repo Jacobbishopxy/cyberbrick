@@ -23,7 +23,8 @@ export interface ModuleControllerProps {
   initialSelected?: string[]
   onSelectChange?: (v: string[]) => void
   canEdit: boolean
-  categories: DataType.Category[]
+  categoriesAllType: DataType.Category[]
+  dashboardCategories: DataType.Category[]
   categoryOnSelect: (categoryName: string, isCopy: boolean) => Promise<DataType.Category>
   dashboardOnSelect: (id: string, isCopy: boolean) => Promise<DataType.Dashboard>
   onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
@@ -38,7 +39,9 @@ export const Controller = (props: ModuleControllerProps) => {
   const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
 
   useEffect(() => props.onEditTemplate(edit), [edit])
+
   useEffect(() => {
+    // console.log(props.initialSelected)
     if (props.initialSelected && props.initialSelected[1])
       props.dashboardOnSelect(props.initialSelected[1], false).finally()
   }, [props.initialSelected])
@@ -99,7 +102,7 @@ export const Controller = (props: ModuleControllerProps) => {
       </Space>
       <AddModuleModal
         onAddModule={props.onAddModule}
-        categories={props.categories}
+        categories={props.categoriesAllType}
         categoryOnSelect={name => props.categoryOnSelect(name, true)}
         dashboardOnSelect={id => props.dashboardOnSelect(id, true)}
         copyTemplate={props.onCopyTemplate}
@@ -126,7 +129,7 @@ export const Controller = (props: ModuleControllerProps) => {
       <SelectorPanel
         initValue={props.initialSelected}
         isMainController={true}
-        categories={props.categories}
+        categories={props.dashboardCategories}
         categoryOnSelect={name => props.categoryOnSelect(name, false)}
         onSelectFinish={id => props.dashboardOnSelect(id, false)}
         onChange={props.onSelectChange}

@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import { useState } from "react"
-import { Checkbox, Divider, Input, List, message, Modal, Space, Tabs, Tooltip } from "antd"
+import { useEffect, useState } from "react"
+import { Checkbox, Divider, Input, List, message, Modal, Radio, Space, Tabs, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
 
@@ -94,8 +94,21 @@ interface TemplateSelectionViewProps {
   onSelectedTemplate: (templateId: string) => void
 }
 
-const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
-  <Space direction="vertical" style={{ marginBottom: 20 }}>
+const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
+  const [ctType, setCtType] = useState(DataType.CategoryTypeEnum.temp_lib)
+  const [categories, setCategories] = useState<DataType.Category[]>([])
+
+  const typeOnChange = (e: any) => {
+    // console.log(e.target.value, props.categories, categories)
+    setCtType(e.target.value)
+  }
+
+  useEffect(() => {
+    setCategories(props.categories.filter(ct => ct.type === ctType))
+  }, [ctType])
+  // const categories = props.categories.filter(ct => ct.type === ctType)
+
+  return <Space direction="vertical" style={{ marginBottom: 20 }}>
     <Space>
       <StarTwoTone />
       <span style={{ fontSize: 15 }}>
@@ -104,8 +117,14 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
     </Space>
     <Space>
       <RightOutlined />
+      <Radio.Group onChange={typeOnChange}>
+        <Space>
+          {DataType.categoryTypeSelector.map(type =>
+            <Radio key={type} value={type}> <FormattedMessage id={`gallery.component.category-config-table_type-${type}`} /></Radio>)}
+        </Space>
+      </Radio.Group>
       <SelectorPanel
-        categories={props.categories}
+        categories={categories}
         categoryOnSelect={props.categoryOnSelect}
         dashboardOnSelect={props.dashboardOnSelect}
         onSelectFinish={props.onSelectedTemplate}
@@ -118,6 +137,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) =>
       </Tooltip>
     </Space>
   </Space>
+}
 
 export interface AddModuleModalProps {
   onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void

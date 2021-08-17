@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 10/22/2020.
  */
 
-import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 
 import * as storageService from "../provider/storage.service"
-import {Storage} from "../entity"
-import {ReadDto} from "../dto"
-import {ReadPipe} from "../pipe"
+import { Storage } from "../entity"
+import { ReadDto } from "../dto"
+import { ReadPipe } from "../pipe"
 
 
 @Controller()
 export class StorageController {
-  constructor(private readonly service: storageService.StorageService) {}
+  constructor(private readonly service: storageService.StorageService) { }
 
   @Get("storages")
   getAllStorages() {
@@ -78,9 +78,13 @@ export class StorageController {
   }
 
   @Post("read")
-  read(@Query("id") id: string,
+  read(@Query("id") id: string, @Query("databaseType") databaseType: string,
     @Body(ReadPipe) readDto: ReadDto) {
-    return this.service.read(id, readDto)
+    try {
+      return this.service.readFromDB(id, readDto, databaseType)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
 }
 

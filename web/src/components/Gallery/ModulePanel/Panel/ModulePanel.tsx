@@ -37,6 +37,9 @@ export interface ModulePanelProps {
   editable: boolean
   settable: boolean
   isLoading: boolean
+
+  fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+  fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -165,7 +168,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
         fetchQueryData: props.fetchQueryData,
         contentHeight: h,
         updateContent: updateModuleContent,
-        forwardedRef: moduleFwRef
+        forwardedRef: moduleFwRef,
+
+        fetchContentFn: props.fetchContentFn,
+        fetchContentDatesFn: props.fetchContentDatesFn
       })
     }
     return <></>

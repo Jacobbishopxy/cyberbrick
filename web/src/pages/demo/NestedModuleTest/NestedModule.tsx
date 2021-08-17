@@ -81,10 +81,14 @@ const EditorField = (props: ModuleEditorField) => {
 const PresenterField = (props: ModulePresenterField) => {
 
     const setItems = useState<tabItem[]>([])[1]
-    const setCurrIndex = useState("")[1]
-    const setSaveCount = useState(0)[1]
+    const [currIndex, setCurrIndex] = useState("")
+    const [saveCount, setSaveCount] = useState(0)
+    useEffect(() => {
+        props.updateContent({ ...props.content, date: today(), data: { ...props.content?.data, currIndex: currIndex } })
+        // console.log(props.content)
+    }, [saveCount])
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
-    return (props.content ?
+    return (props.content?.data?.tabItems ?
         <div className={props.styling}>
             <NestedSimpleModuleEditor
                 items={props.content?.data.tabItems as tabItem[]}
@@ -98,7 +102,7 @@ const PresenterField = (props: ModulePresenterField) => {
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
                 fetchQueryDataFn={props.fetchQueryData}
-                updateContentFn={(c) => { }}
+                updateContentFn={props.updateContent}
                 setSaveCount={setSaveCount}
             />
         </div> : <></>)

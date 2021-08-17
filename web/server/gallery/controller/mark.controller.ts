@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 9/8/2020.
  */
 
-import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
 
 import * as markService from "../provider/mark.service"
-import {Mark} from "../entity"
-import {ParseArray} from "../pipe"
+import { Mark } from "../entity"
+import { ParseArray } from "../pipe"
 
 
 @Controller()
 export class MarkController {
-  constructor(private readonly service: markService.MarkService) {}
+  constructor(private readonly service: markService.MarkService) { }
 
   @Get("marks")
   getAllMarks() {
@@ -89,7 +89,7 @@ export class MarkController {
   }
 
   @Delete("deleteMarks")
-  deleteMarks(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
+  deleteMarks(@Query("ids", new ParseArray({ type: String, separator: "," })) ids: string[]) {
     try {
       return this.service.deleteMarks(ids)
     } catch (err: any) {
@@ -101,6 +101,7 @@ export class MarkController {
   updateMarksInCategory(@Query("categoryName") categoryName: string,
     @Body() marks: Mark[]) {
     try {
+      console.log(marks)
       return this.service.updateMarksInCategory(categoryName, marks)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)

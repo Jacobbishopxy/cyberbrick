@@ -56,7 +56,7 @@ export interface ContainerTemplateProps {
   parentInfo: string[]
   elements: Elements
   shouldEleFetch: number
-  elementFetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  elementFetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   elementUpdateContentFn: (content: DataType.Content) => void
   elementFetchStoragesFn: () => Promise<DataType.StorageSimple[]>
@@ -123,7 +123,7 @@ export const ContainerTemplate =
     const updateContent = (ele: DataType.Element) =>
       (value: DataType.Content) => props.elementUpdateContentFn({
         ...value,
-        element: { id: ele.id, name: ele.name } as DataType.Element
+        element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
       })
 
     const genRef = (i: number) => (el: ContainerElementRef) => {
@@ -155,7 +155,8 @@ export const ContainerTemplate =
                 fetchTableColumnsFn={props.elementFetchTableColumnsFn}
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
-                shouldStartFetch={props.shouldEleFetch}
+
+                shouldStartFetch={props.shouldEleFetch || 1}
 
               />
             </div>

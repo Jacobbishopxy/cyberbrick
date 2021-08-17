@@ -1,5 +1,3 @@
-
-
 import { Content, ElementType, StorageSimple } from "@/components/Gallery/GalleryDataType"
 import { useState } from "react"
 import { tabItem } from "../data"

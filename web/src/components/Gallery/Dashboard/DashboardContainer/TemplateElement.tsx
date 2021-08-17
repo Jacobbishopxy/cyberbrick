@@ -14,8 +14,8 @@ export interface ContainerElementProps {
   editable: boolean
   element: DataType.Element
   shouldStartFetch: number
-
-  fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
+  isNested?: boolean
+  fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateContentFn: (content: DataType.Content) => void
   onRemove: () => void
@@ -23,6 +23,8 @@ export interface ContainerElementProps {
   fetchTableListFn: (id: string) => Promise<string[]>
   fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+
+  // onTEfetchContent: (eleId: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
 }
 
 export interface ContainerElementRef {
@@ -43,29 +45,36 @@ export const TemplateElement =
     const eleId = props.element.id as string | undefined
 
     const [isLoading, setIsLoading] = useState(true);
-
     useLayoutEffect(() => {
       if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
     })
 
+    /**
+     * Template Element may be nested in a module, so we have different fetch api
+     * If TemplateElment is nested, eleId is actually tabId.
+     */
     const fetchContent = (date?: string) => {
-      // setIsLoading(true);
+      // console.log(eleId, props.isNested)
       if (eleId) {
         //no need to check date since it's allowed date to be undefined
-        props.fetchContentFn(eleId, date).then(res => {
-          // console.log("fetching finish", eleId, res?.data)
-
+        props.fetchContentFn(eleId, date, props.isNested).then(res => {
           //TODO: cannot set content to undefined
-          setContent(res || { data: {}, date: '' })
-          setIsLoading(false)
+          const ct = res || { data: {}, date: '' }
+          setContent(ct)
+          // console.log(ct)
+          props.updateContentFn(ct)
+          // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
         })
+        //no matter what we receive, wait till if statement end to stop loading
+        setIsLoading(false)
       }
     }
+
 
     //listen to props's shouldStartFetch. If it updates, fetchContent
     useEffect(() => {
       //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
-      fetchContent()
+      if (props.shouldStartFetch) fetchContent()
     }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
@@ -76,7 +85,7 @@ export const TemplateElement =
       return []
     }
 
-    useImperativeHandle(ref, () => ({ eleId, fetchContent, fetchContentDates }))
+    useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
     const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
 
@@ -101,6 +110,9 @@ export const TemplateElement =
           editable={props.editable}
           settable={!!eleId}
           isLoading={isLoading}
+
+          fetchContentFn={props.fetchContentFn}
+          fetchContentDatesFn={props.fetchContentDatesFn}
         />
       </div>
     )

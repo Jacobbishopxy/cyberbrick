@@ -34,18 +34,26 @@ export class ModuleGenerator {
       return editable ?
         <this.editor
           content={crProps.content}
+          fetchQueryData={crProps.fetchQueryData}
           fetchStorages={crProps.fetchStorages}
           fetchTableList={crProps.fetchTableList}
           fetchTableColumns={crProps.fetchTableColumns}
           contentHeight={crProps.contentHeight}
           updateContent={crProps.updateContent}
           styling={forceStyle ? crProps.styling : styles.editorField}
+
+          fetchContentFn={crProps.fetchContentFn}
+          fetchContentDatesFn={crProps.fetchContentDatesFn}
         /> :
         <this.presenter
           content={crProps.content}
           fetchQueryData={crProps.fetchQueryData}
           contentHeight={crProps.contentHeight}
           styling={crProps.styling}
+          updateContent={crProps.updateContent}
+
+          fetchContentFn={crProps.fetchContentFn}
+          fetchContentDatesFn={crProps.fetchContentDatesFn}
         />
     }
 
@@ -60,6 +68,9 @@ export class ModuleGenerator {
         updateContent={props.updateContent}
         styling={props.styling}
         forwardedRef={ref}
+
+        fetchContentFn={props.fetchContentFn}
+        fetchContentDatesFn={props.fetchContentDatesFn}
       />
     )
   }

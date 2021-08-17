@@ -36,7 +36,8 @@ export default () => {
   const fetchQueryData = (value: DataType.Content) => {
     const id = value.data.id
     const option = value.data as DataType.Read
-    return GalleryService.read(id, option)
+    const storageType = value.storageType || DataType.StorageType.PG
+    return GalleryService.read(id, option, storageType)
   }
 
   const updateContent = (c: DataType.Content) => {

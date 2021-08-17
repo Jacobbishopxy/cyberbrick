@@ -82,6 +82,7 @@ export const CreationModal = (props: CreationModalProps) => {
         >
           <Input placeholder={intl.formatMessage({ id: "gallery.component.category-config-table20" })} />
         </Form.Item>
+
         {props.isTypeSelector ? <Form.Item
           name="type"
           label={<FormattedMessage id="gallery.component.general61" />}
@@ -94,12 +95,13 @@ export const CreationModal = (props: CreationModalProps) => {
             })}
           </Select>
         </Form.Item>
-          : <Form.Item
-            name="description"
-            label={<FormattedMessage id="gallery.component.general6" />}
-          >
-            <Input placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })} />
-          </Form.Item>}
+          : <></>}
+        <Form.Item
+          name="description"
+          label={<FormattedMessage id="gallery.component.general6" />}
+        >
+          <Input placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })} />
+        </Form.Item>
         {
           props.colorSelector ?
             <Form.Item

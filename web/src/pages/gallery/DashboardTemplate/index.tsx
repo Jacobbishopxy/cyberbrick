@@ -43,6 +43,9 @@ export default () => {
   }
 
   const fetchCategories = () =>
+    GalleryService.getAllCategories() as Promise<DataType.Category[]>
+
+  const fetchCategoriesByType = () =>
     GalleryService.getAllCategoriesByType(CATEGORY_TYPE) as Promise<DataType.Category[]>
 
   const fetchCategory = (name: string) =>
@@ -66,8 +69,8 @@ export default () => {
   const fetchElementContentDates = (id: string, markName?: string) =>
     GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>
 
-  const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
-    GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
+  const updateElementContent = (categoryName: string, type: string, content: GalleryDataType.Content) =>
+    GalleryService.saveContentInCategory(categoryName, type, content as GalleryAPI.Content)
 
   const fetchStorages = () =>
     GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
@@ -78,8 +81,8 @@ export default () => {
   const fetchTableColumns = (storageId: string, tableName: string) =>
     GalleryService.databaseGetTableColumns(storageId, tableName)
 
-  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read) =>
-    GalleryService.read(storageId, readOption)
+  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read, databaseType: GalleryAPI.StorageType) =>
+    GalleryService.read(storageId, readOption, databaseType)
 
 
   return (
@@ -88,6 +91,7 @@ export default () => {
         initialSelected={initialSelected}
         selectedOnChange={selectedOnChange}
         fetchCategories={fetchCategories}
+        fetchCategoriesByType={fetchCategoriesByType}
         fetchCategory={fetchCategory}
         fetchDashboard={fetchDashboard}
         fetchTemplate={fetchTemplate}

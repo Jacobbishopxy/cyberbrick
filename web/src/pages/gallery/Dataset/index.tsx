@@ -3,8 +3,8 @@
  */
 
 
-import {Dataset} from "@/components/Gallery/Dataset"
-import {fileInsert, fileInsertUrl} from "@/components/Gallery/Misc/FileUploadConfig"
+import { Dataset } from "@/components/Gallery/Dataset"
+import { fileInsert, fileInsertUrl } from "@/components/Gallery/Misc/FileUploadConfig"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
@@ -21,16 +21,16 @@ export default () => {
     GalleryService.databaseGetTableColumns(id, name)
 
   const tableOnClick = (id: string, tableName: string) =>
-    GalleryService.read(id, {tableName})
+    GalleryService.read(id, { tableName }, DataType.StorageType.PG)
 
   const tableOnRename = (id: string, tableName: string, replacement: string) =>
-    GalleryService.databaseRenameTable(id, {tableName, replacement})
+    GalleryService.databaseRenameTable(id, { tableName, replacement })
 
   const tableOnDelete = (id: string, tableName: string) =>
     GalleryService.databaseDropTable(id, tableName)
 
   const queryOnSelect = (id: string, value: Record<string, any>) =>
-    GalleryService.read(id, value as DataType.Read)
+    GalleryService.read(id, value as DataType.Read, DataType.StorageType.PG)
 
   const sqlOnExecute = (id: string, sql: string) =>
     GalleryService.executeSql(id, sql)

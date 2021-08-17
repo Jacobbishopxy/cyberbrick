@@ -11,12 +11,20 @@ export const timeToString = (v: string) => moment(v).format(dateFormat)
 
 export interface Category {
   name: string
+  type: string
   description?: string
   dashboards?: Dashboard[]
   marks?: Mark[]
   tags?: Tag[]
   contents?: Content[]
 }
+
+export enum CategoryTypeEnum {
+  dashboard = "dashboard",
+  temp_lib = "temp_lib"
+}
+
+export const categoryTypeSelector = [CategoryTypeEnum.dashboard, CategoryTypeEnum.temp_lib]
 
 export interface Mark {
   id?: string
@@ -46,7 +54,9 @@ export interface Content {
   date: string
   title?: string
   data: Record<string, any>
+  storageType?: StorageType //3rd party database type
   config?: Record<string, any>
+  tabId?: string //only use in NestedSimpleModule, indicates the corresponding header tab id
 }
 
 export interface Author {
@@ -161,8 +171,32 @@ export const getElementType = (v: string) => {
   }
 }
 
+export const shouldQueryAfterRecevingContent = (v: string) => {
+  switch (v) {
+    case "text":
+      return true
+    case "image":
+      return true
+    default:
+      return false
+  }
+}
+
+export function MongoContentValidation(data?: Record<string, any>) {
+  //to query a mongodb, we need mongo objectID and collection name
+  if (data?.id && data?.collection) return true
+  return false
+}
+
+export function PgContentValidation(data?: Record<string, any>) {
+  //to query a mongodb, we need mongo objectID and collection name
+  if (data?.id) return true
+  return false
+}
+
 export enum StorageType {
-  PG = "postgres"
+  PG = "postgres",
+  MONGO = "mongodb"
 }
 
 export const storageTypeList = [

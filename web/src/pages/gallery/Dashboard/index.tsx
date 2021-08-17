@@ -2,18 +2,18 @@
  * Created by Jacob Xie on 9/28/2020.
  */
 
-import {useEffect, useState} from "react"
-import {useLocation} from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 
-import {Dashboard} from "@/components/Gallery/Dashboard"
-import {GalleryDataType} from "@/components/Gallery"
+import { Dashboard } from "@/components/Gallery/Dashboard"
+import { GalleryDataType } from "@/components/Gallery"
 import * as GalleryService from "@/services/gallery"
 import * as DataType from "@/components/Gallery/GalleryDataType"
-import {LocalStorageHelper} from "@/utils/localStorageHelper"
+import { LocalStorageHelper } from "@/utils/localStorageHelper"
 
 const CATEGORY_TYPE = "dashboard"
 
-const ls = new LocalStorageHelper("gallery.dashboard", {expiry: [1, "week"]})
+const ls = new LocalStorageHelper("gallery.dashboard", { expiry: [1, "week"] })
 const lsKey = "selected"
 const useQuery = () => new URLSearchParams(useLocation().search)
 
@@ -28,7 +28,7 @@ export default () => {
       try {
         const pi = JSON.parse(initialValue)
         setInitialSelected(pi)
-      } catch {}
+      } catch { }
     } else {
       const i = ls.get(lsKey)
       if (i) setInitialSelected(JSON.parse(i.data))
@@ -40,6 +40,9 @@ export default () => {
   }
 
   const fetchCategories = () =>
+    GalleryService.getAllCategories() as Promise<DataType.Category[]>
+
+  const fetchCategoriesByType = () =>
     GalleryService.getAllCategoriesByType(CATEGORY_TYPE) as Promise<DataType.Category[]>
 
   const fetchCategory = (name: string) =>
@@ -57,14 +60,14 @@ export default () => {
   const copyTemplate = (copy: GalleryDataType.CopyTemplateElements) =>
     GalleryService.copyTemplateElements(copy)
 
-  const fetchElementContent = (id: string, date?: string, markName?: string) =>
-    GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
+  const fetchElementContent = (id: string, date?: string, isNested?: boolean) =>
+    GalleryService.getElementContent(id, date, isNested) as Promise<DataType.Content | undefined>
 
   const fetchElementContentDates = (id: string, markName?: string) =>
     GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>
 
-  const updateElementContent = (categoryName: string, content: GalleryDataType.Content) =>
-    GalleryService.saveContentInCategory(categoryName, content as GalleryAPI.Content)
+  const updateElementContent = (categoryName: string, type: string, content: GalleryDataType.Content) =>
+    GalleryService.saveContentInCategory(categoryName, type, content as GalleryAPI.Content)
 
   const fetchStorages = () =>
     GalleryService.getAllStorageSimple() as Promise<DataType.StorageSimple[]>
@@ -75,8 +78,8 @@ export default () => {
   const fetchTableColumns = (storageId: string, tableName: string) =>
     GalleryService.databaseGetTableColumns(storageId, tableName)
 
-  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read) =>
-    GalleryService.read(storageId, readOption)
+  const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read, databaseType: GalleryAPI.StorageType) =>
+    GalleryService.read(storageId, readOption, databaseType)
 
 
   return (
@@ -84,6 +87,7 @@ export default () => {
       initialSelected={initialSelected}
       selectedOnChange={selectedOnChange}
       fetchCategories={fetchCategories}
+      fetchCategoriesByType={fetchCategoriesByType}
       fetchCategory={fetchCategory}
       fetchDashboard={fetchDashboard}
       fetchTemplate={fetchTemplate}

@@ -1,14 +1,14 @@
-import {today} from "@/components/Gallery/GalleryDataType"
-import {ModuleEditorField, ModulePresenterField} from "@/components/Gallery/ModulePanel/Generator/data"
-import {ModuleGenerator} from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
-import {useEffect, useState} from "react"
-import {tabItem} from "./data"
-import {NestedSimpleModuleEditor} from "./Editor"
+import { today } from "@/components/Gallery/GalleryDataType"
+import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
+import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
+import { useEffect, useState } from "react"
+import { tabItem } from "./data"
+import { NestedSimpleModuleEditor } from "./Editor"
 import './style.css'
-import {NSMid} from "./util"
+import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i, key, list) {
     return {
-        i: i.toString(),
+        i: today(),
         x: i,
         y: 0,
         w: 1,
@@ -17,7 +17,7 @@ const defaultItems: tabItem[] = [0].map(function (i, key, list) {
         static: false,
     }
 })
-const defaultData = {tabItems: defaultItems, currIndex: "0"}
+const defaultData = { tabItems: defaultItems, currIndex: defaultItems[0].i }
 const EditorField = (props: ModuleEditorField) => {
     /* content type: 
     currIndex: string (used to indicate the tab when entering)
@@ -44,7 +44,7 @@ const EditorField = (props: ModuleEditorField) => {
         tempItems = props.content.data.tabItems as tabItem[]
     } else tempItems = defaultData.tabItems
 
-    let tempIndex = "0"
+    let tempIndex = defaultData.currIndex
     if (props.content) {
         tempIndex = props.content.data.currIndex
     }
@@ -55,7 +55,7 @@ const EditorField = (props: ModuleEditorField) => {
 
 
     useEffect(() => {
-        props.updateContent({...props.content, date: today(), data: {tabItems: items, currIndex: currIndex}})
+        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
         // console.log(props.content)
     }, [saveCount])
     return (
@@ -69,37 +69,64 @@ const EditorField = (props: ModuleEditorField) => {
                 fetchStoragesFn={props.fetchStorages!}
                 fetchTableListFn={props.fetchTableList!}
                 fetchTableColumnsFn={props.fetchTableColumns!}
+                fetchQueryDataFn={props.fetchQueryData!}
                 updateContentFn={props.updateContent}
                 editable={true}
                 styling={props.styling}
                 NSMid={NSMid}
+
+                fetchContentFn={props.fetchContentFn!}
+                fetchContentDatesFn={props.fetchContentDatesFn!}
             />
         </div>
     )
 }
 
 const PresenterField = (props: ModulePresenterField) => {
+    let tempItems: tabItem[] = []
+    const [items, setItems] = useState<tabItem[]>(props.content?.data?.tabItems || tempItems)
+    const [currIndex, setCurrIndex] = useState(props.content?.data?.currIndex)
+    const [saveCount, setSaveCount] = useState(0)
 
-    const setItems = useState<tabItem[]>([])[1]
-    const setCurrIndex = useState("")[1]
-    const setSaveCount = useState(0)[1]
+    /**
+     * when PresenterField first mounted, it's parent haven't mounted, so there's no
+     * content. When parent received content, update the items state for presentorField
+    */
+    useEffect(() => {
+        setItems(props.content?.data?.tabItems)
+        setCurrIndex(props.content?.data?.currIndex)
+    }, [props.content?.data?.tabItems])
+
+    /**
+     * update currIndex
+     */
+    useEffect(() => {
+        // console.log(props.content)
+        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
+        // console.log(props.content)
+    }, [saveCount])
+
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
-    return (props.content ?
+    return (props.content?.data?.tabItems ?
         <div className={props.styling}>
             <NestedSimpleModuleEditor
-                items={props.content?.data.tabItems as tabItem[]}
-                currIndex={props.content?.data.currIndex}
+                items={items}
+                currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
                 setItems={setItems}
                 editable={false}
                 styling={props.styling}
                 NSMid={NSMid}
+
                 fetchStoragesFn={() => Promise.resolve([])}
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
-                fetchQueryDataFn={props.fetchQueryData}
-                updateContentFn={(c) => {}}
+                fetchQueryDataFn={props.fetchQueryData!}
+                updateContentFn={props.updateContent}
                 setSaveCount={setSaveCount}
+
+                fetchContentFn={props.fetchContentFn!}
+                fetchContentDatesFn={props.fetchContentDatesFn!}
             />
         </div> : <></>)
 }

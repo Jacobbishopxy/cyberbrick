@@ -158,7 +158,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //convert a module to reactNode based on id
     const moduleToReactNode = (id: string) => {
-        let module = props.items!.find((item => item.i === id))?.module
+        let module = props.items?.find((item => item.i === id))?.module
         // console.log(items, module)
         //cases for unintialized module
         if (!module) return null

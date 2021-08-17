@@ -17,7 +17,7 @@ export interface ContainerProps {
   dashboardInfo: DataType.Dashboard
   onSelectPane: (templateId: string) => void
   fetchElements: (templateId: string) => Promise<DataType.Template>
-  fetchElementContentFn: (id: string, date?: string, markName?: string) => Promise<DataType.Content | undefined>
+  fetchElementContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   updateElementContentFn: (content: DataType.Content) => void
   fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
@@ -69,7 +69,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
   const [selectedPane, setSelectedPane] = useState<SelectedPane>()
   const [template, setTemplate] = useState<DataType.Template>()
-  const [shouldEleFetch, setShouldEleFetch] = useState<number>(0)
+  const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
 
   const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
