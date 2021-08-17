@@ -49,6 +49,8 @@ cache
 data
 !data/.gitkeep
 resources/config.json
+resources/go.env
+resources/mongo.connection.env
 test
 
 *.pyc

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"server-go/middleware"
+	"server-go/controller"
 
 	"github.com/gorilla/mux"
 )
@@ -13,14 +13,14 @@ func Router() *mux.Router {
 	router := mux.NewRouter()
 	//GET method. In Methods the first parameter is Method in this case,
 	//it is GET and second OPTIONS, this is to tackle cors .
-	router.HandleFunc("/api/mongo", middleware.GetContent).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/mongo", controller.GetContent).Methods("GET", "OPTIONS")
 
-	router.HandleFunc("/api/mongo", middleware.CreateOrUpdateContent).Methods("POST", "OPTIONS")
-	router.HandleFunc("/api/mongo/saveUpdate", middleware.CreateOrUpdateContentList).Methods("POST", "OPTIONS")
-	router.HandleFunc("/api/mongo", middleware.UpdateContent).Methods("PUT", "OPTIONS")
+	router.HandleFunc("/api/mongo", controller.CreateOrUpdateContent).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/mongo/saveUpdate", controller.CreateOrUpdateContentList).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/mongo", controller.UpdateContent).Methods("PUT", "OPTIONS")
 
-	router.HandleFunc("/api/mongo", middleware.DeleteContent).Methods("DELETE", "OPTIONS")
-	router.HandleFunc("/api/mongo/many", middleware.DeleteAllContent).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/api/mongo", controller.DeleteContent).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/api/mongo/many", controller.DeleteAllContent).Methods("DELETE", "OPTIONS")
 	//Return the router instance. This router will be served in the main.go
 	return router
 }

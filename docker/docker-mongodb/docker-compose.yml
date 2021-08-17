@@ -3,7 +3,7 @@ version: '3.6'
 services:
   mongo-prod:
     restart: always
-    container_name: mongodb
+    container_name: ${MONGODB_CONTAINER_NAME}
     image: mongo:latest
     ports:
       - ${PORT}:27017

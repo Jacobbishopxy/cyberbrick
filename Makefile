@@ -19,7 +19,8 @@ setup: web-setup
 	chmod +x setup.sh start.sh clean.sh
 	./setup.sh
 	cd docker/docker-database && bash start.sh && bash create_database.sh
-	
+	cd docker/docker-mongodb && chmod +x start.sh && bash start.sh
+	cd docker/docker-mongodb create_unique_index.sh
 #the following are for production in localhost (testing)
 web-setup:
 	cd web && yarn
@@ -36,7 +37,12 @@ prod: clean web-setup
 prod-noset: clean
 	./start.sh prod &
 
+docker-go:
+	cd docker/docker-go && chmod +x setup.sh && bash setup.sh
 
+docker-biz-server:
+	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
+	cd docker/docker-biz-server && start.sh
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker

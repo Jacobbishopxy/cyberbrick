@@ -79,6 +79,8 @@ commands:
 ## Configuration
 
 In `resources` folder, new `config.json` (see [config.template.json](resources/config.template.json)).
+In `resources` folder, new `go.env` (see [go.template.env](resources/go.template.env).
+In `resources` folder, if mongodb is running in another machine, new `mongo.connection.env` (see [mongo.connection.template.env](resources/mongo.connection.template.env).
 
 ### Server [Configuration]
 
