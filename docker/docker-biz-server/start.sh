@@ -13,4 +13,4 @@ export DB_COLLECTION_NAME=${DB_COLLECTION_NAME}
 
 # echo `ls $VOLUME_CONF_EXT`
 docker-compose down
-docker-compose up
+docker-compose up -d

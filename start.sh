@@ -24,7 +24,6 @@ fi
 cd ../server
 if [ $1 == "debug" ]; then
     sh -c "conda run -n $PYTHON_VERSION python wsgi.py" &
-    
 else
     sh -c "conda run -n $PYTHON_VERSION python wsgi.py --debug=false" &
 fi
