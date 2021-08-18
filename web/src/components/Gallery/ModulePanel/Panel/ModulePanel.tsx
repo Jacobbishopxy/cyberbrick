@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
@@ -16,6 +16,7 @@ import { collectionSelector } from "../Collections"
 import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
+import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
 export interface ModulePanelProps {
@@ -57,6 +58,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const [dates, setDates] = useState<string[]>([])
 
   const [loading, setIsLoading] = useState(props.isLoading)
+  const isTemplate = useContext(IsTemplateContext)
 
   useEffect(() => {
     setIsLoading(props.isLoading)
@@ -189,8 +191,13 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const attachId = () => props.eleId ? { id: props.eleId } : {}
 
+  const style = () => {
+    if (isTemplate) return styles.templatePanel
+    if (props.isNested) return styles.nestedModulePanel
+    return styles.modulePanel
+  }
   return (
-    <div className={props.isNested ? styles.nestedModulePanel : styles.modulePanel} {...attachId()}>
+    <div className={style()} {...attachId()}>
       {genHeader}
       {genContext}
       {genFooter}

@@ -47,7 +47,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
     type: DataSelectedType) => {
     //TODO: can't get collumn name
     if (rawData && rawConfig) {
-      console.log(rawData)
+      // console.log(rawData)
       const col = getColumnsFromRawData(rawData[0], type)
       const d = transformRawDataBySourceType(rawData, rawConfig, type)
       setColumns(col)
