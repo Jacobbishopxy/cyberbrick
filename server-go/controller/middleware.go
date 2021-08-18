@@ -18,7 +18,7 @@ import (
 )
 
 // collection object/instance
-var collections []*mongo.Collection
+var collections map[string]*mongo.Collection
 var collNames []string
 var api MongoApiDomain
 
@@ -76,10 +76,10 @@ func createDBInstance() {
 
 	fmt.Println("Connected to MongoDB!")
 
-	collections = make([]*mongo.Collection, len(collNames))
+	collections = make(map[string]*mongo.Collection, len(collNames))
 
 	for i := 0; i < len(collNames); i++ {
-		collections[i] = client.Database(dbName).Collection(collNames[i])
+		collections[collNames[i]] = client.Database(dbName).Collection(collNames[i])
 	}
 	// collection = client.Database(dbName).Collection(collName)
 

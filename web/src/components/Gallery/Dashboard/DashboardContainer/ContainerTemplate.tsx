@@ -156,7 +156,7 @@ export const ContainerTemplate =
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
 
-                shouldStartFetch={props.shouldEleFetch || 1}
+                shouldStartFetch={props.shouldEleFetch}
 
               />
             </div>

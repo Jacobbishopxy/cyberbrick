@@ -52,7 +52,7 @@ def extract_xlsx(file: io,
     if isinstance(ans, dict):
         return {k: _df_fix(v, rounding, transpose, param_head) for k, v in ans.items()}
     else:
-        return _df_fix(ans, rounding, transpose, param_head)
+        return {"0":_df_fix(ans, rounding, transpose, param_head)}
 
 
 def xlsx_to_json(d: Union[dict, pd.DataFrame], date_format: Optional[str] = None):
@@ -72,7 +72,7 @@ def extract_csv(file: io,
 
     ans = pd.read_csv(file, header=hd)
 
-    return _df_fix(ans, rounding, transpose, param_head)
+    return {"0": _df_fix(ans, rounding, transpose, param_head)}
 
 
 def csv_to_json(d: pd.DataFrame, date_format: Optional[str] = None):

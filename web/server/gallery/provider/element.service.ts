@@ -152,6 +152,7 @@ export class ElementService {
 
     let content = EleContent.contents[0] || undefined
     const elementType = EleContent.type
+    // console.log(elementType, id)
     //if we should and could fetch query, fetch!
     return this.onReceiveContentToFetchQuery(elementType, content)
   }
@@ -162,11 +163,15 @@ export class ElementService {
      */
   async onReceiveContentToFetchQuery(elementType: common.ElementType, content: Content) {
     let ct = content
+    // console.log(content
+    //   && common.shouldQueryAfterRecevingContent(elementType)
+    //   && common.ContentValidationByType(elementType, content.data))
     if (content
-      && common.shouldQueryAfterRecevingContent(elementType)
+      && common.shouldQueryAfterRecevingContent(elementType, content)
       && common.ContentValidationByType(elementType, content.data)) {
-      const res = await this.getQueryDataByStorageType(content)
 
+      const res = await this.getQueryDataByStorageType(content)
+      // console.log(content, res)
       //update content's data with newly fetched data
       ct = { ...content, data: { ...content.data, ...res } }
     }

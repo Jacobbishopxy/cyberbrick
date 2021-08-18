@@ -1,6 +1,8 @@
 import * as DataType from "../../../../GalleryDataType"
 import { tabItem } from "../data"
 import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
+import { useEffect, useState } from "react"
+
 
 interface ModuleTabPaneProps {
     //self custom
@@ -25,17 +27,29 @@ interface ModuleTabPaneProps {
 }
 
 
+export interface ModuleTabPaneRef {
+    fetched: boolean
+}
 
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     const { name, timeSeries, elementType, tabId } = props
     //layout property is not important?
     const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
+    const [shouldFetch, setShouldFetch] = useState(0)
+
+
+    useEffect(() => {
+        if (!props.content?.data) setShouldFetch(s => s + 1)
+    }, [props.content?.data])
+
 
     const fetchContent = async (id: string, date?: string) => {
+        // console.log("restarting?", props.content?.data)
         //TODO: WARNING! Refetch logic only works when content received from db has not null data
         if (props.content?.data) return props.content
         if (props.content?.id) {
             // console.log("fetch from db", props.content)
+
             return props.fetchContentFn(props.content?.id, date, true)
         }
         return props.content
@@ -58,7 +72,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
     //TODO: WARINING! hardcoded height
     return (
-        <div style={{ height: "390px" }}>
+        <div style={{ height: "350px" }} >
             <TemplateElement key={tabId + elementType + name}
                 parentInfo={[]}
                 timeSeries={timeSeries}
@@ -73,7 +87,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
                 fetchTableColumnsFn={props.fetchTableColumnsFn}
                 fetchQueryDataFn={props.fetchQueryDataFn}
                 ref={null}
-                shouldStartFetch={props.shouldEleStartFetch}
+                shouldStartFetch={shouldFetch}
                 isNested={true}
             />
         </div>

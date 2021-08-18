@@ -10,8 +10,8 @@ import * as DataType from "../../../GalleryDataType"
 
 interface NestedSimpleModuleProps {
     //for temp cache
-    currIndex?: string,
-    setCurrIndex?: React.Dispatch<React.SetStateAction<string>>,
+    currIndex: string,
+    setCurrIndex: React.Dispatch<React.SetStateAction<string>>,
     NSMid: string,
     items?: tabItem[]
     editable: boolean
@@ -58,10 +58,10 @@ const updateElementInLayout = (elements: tabItem[], rawLayout: Layout[], contain
 
 export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //used to make sure the generated tab id is unique
-    const counterPrefix = new Date()
-    const { setItems, setSaveCount } = props
+    const counterPrefix = DataType.now()
+    const { setItems, setSaveCount, currIndex, setCurrIndex } = props
 
-    const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
+    // const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
     const [newCounter, setNewCounter] = useState(0)
     //determined when to ask parent to update content
     const [updateCnt, setUpdateCnt] = useState(0)
@@ -156,6 +156,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
             }
             return item
         }))
+        setCurrIndex
     }
 
     //convert a module to reactNode based on id

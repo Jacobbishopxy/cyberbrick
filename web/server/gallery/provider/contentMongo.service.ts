@@ -33,6 +33,12 @@ export class MongoService {
                 return this.saveContentToMongo(type, content)
             case common.ElementType.Image:
                 return this.saveContentToMongo(type, content)
+            case common.ElementType.FlexTable:
+                if (content?.config?.type === common.flexTableType.file)
+                    return this.saveContentToMongo(type, content)
+                else return content
+            case common.ElementType.XlsxTable:
+                return this.saveContentToMongo(type, content)
             default:
                 return content
         }
@@ -49,12 +55,13 @@ export class MongoService {
         if (content && content.data) {
             //convert content to the form to save to mongodb
             const mongoCt: ContentMongo = this.pgContentToMongoContent(content)
-            // console.log("querying go api with content\n", mongoCt)
+            console.log("querying go api with content\n", mongoCt)
             //make query to go api
             try {
                 const res = await this.createContent(type, mongoCt);
                 // console.log("receving go api response", res);
                 content.data = { id: res.id, collection: type };
+                content.storageType = common.StorageType.MONGO
             } catch (error) {
                 console.log(error);
             } finally {

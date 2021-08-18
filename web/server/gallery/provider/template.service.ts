@@ -177,7 +177,7 @@ export class TemplateService {
       const removedIds = _.difference(originElementsId.map(i => i.id), targetElementsId)
       if (removedIds.length !== 0)
         // await this.repoElement.delete(removedIds)
-        await this.repoElement.softDelete(removedIds)
+        await this.repoElement.delete(removedIds)
 
     }
     return this.saveTemplate(template)

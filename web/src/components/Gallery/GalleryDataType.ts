@@ -7,6 +7,7 @@ import moment from "moment"
 // export const dateFormat = "YYYY-MM-DD HH:mm:ss"
 export const dateFormat = "YYYY-MM-DD"
 export const today = () => moment().format(dateFormat)
+export const now = () => moment().format()
 export const timeToString = (v: string) => moment(v).format(dateFormat)
 
 export interface Category {
@@ -171,11 +172,20 @@ export const getElementType = (v: string) => {
   }
 }
 
+export enum flexTableType {
+  file = "file",
+  dataset = "dataset"
+}
+
 export const shouldQueryAfterRecevingContent = (v: string) => {
   switch (v) {
-    case "text":
+    case ElementType.Text:
       return true
-    case "image":
+    case ElementType.Image:
+      return true
+    case ElementType.FlexTable:
+      return true
+    case ElementType.XlsxTable:
       return true
     default:
       return false

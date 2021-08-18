@@ -59,9 +59,9 @@ export const TemplateElement =
         //no need to check date since it's allowed date to be undefined
         props.fetchContentFn(eleId, date, props.isNested).then(res => {
           //TODO: cannot set content to undefined
-          const ct = res || { data: {}, date: '' }
+          const ct = res || { data: {}, date: DataType.today() }
           setContent(ct)
-          // console.log(ct)
+          // if (props.isNested) console.log(ct)
           props.updateContentFn(ct)
           // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
         })
@@ -74,7 +74,7 @@ export const TemplateElement =
     //listen to props's shouldStartFetch. If it updates, fetchContent
     useEffect(() => {
       //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
-      if (props.shouldStartFetch) fetchContent()
+      fetchContent()
     }, [props.shouldStartFetch])
 
     const fetchContentDates = async () => {
@@ -113,6 +113,7 @@ export const TemplateElement =
 
           fetchContentFn={props.fetchContentFn}
           fetchContentDatesFn={props.fetchContentDatesFn}
+          isNested={props.isNested}
         />
       </div>
     )

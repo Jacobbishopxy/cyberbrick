@@ -40,6 +40,7 @@ export interface ModulePanelProps {
 
   fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
+  isNested?: boolean
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -189,7 +190,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const attachId = () => props.eleId ? { id: props.eleId } : {}
 
   return (
-    <div className={styles.modulePanel} {...attachId()}>
+    <div className={props.isNested ? styles.nestedModulePanel : styles.modulePanel} {...attachId()}>
       {genHeader}
       {genContext}
       {genFooter}

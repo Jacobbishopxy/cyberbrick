@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"server-go/models"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -47,12 +46,7 @@ func getCollectionFromQuery(r *http.Request) *mongo.Collection {
 }
 
 func getCollectionByType(collectionType string) *mongo.Collection {
-	for i := 0; i < len(collNames); i++ {
-		if strings.Compare(collNames[i], collectionType) == 0 {
-			return collections[i]
-		}
-	}
-	return nil
+	return collections[collectionType]
 }
 
 func insertOrUpdateSingleContent(collection *mongo.Collection, body models.Content) models.Content {
