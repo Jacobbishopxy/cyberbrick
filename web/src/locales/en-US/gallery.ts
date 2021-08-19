@@ -64,6 +64,7 @@ export default {
   "gallery.component.general59": "ASC",
   "gallery.component.general60": "DESC",
   "gallery.component.general61": "Type",
+  "gallery.component.general62": "Title",
 
   "gallery.component.type.misc": "Misc",
   "gallery.component.type.link": "Link",
@@ -216,6 +217,8 @@ export default {
   "gallery.component.module-panel.field-header.4": "center",
   "gallery.component.module-panel.field-header.5": "right",
   "gallery.component.module-panel.field-header.6": "Text",
+
+  "gallery.component.module-panel.description": "Click to edit the description",
 
   "gallery.dashboard.copy-template1": "Copy template succeeded!",
   "gallery.dashboard.copy-template2": "Copy template failed!",

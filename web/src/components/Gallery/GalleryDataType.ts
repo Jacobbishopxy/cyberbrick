@@ -90,6 +90,7 @@ export interface CopyTemplateElements {
 
 export interface Element {
   id?: string
+  description?: string
   template?: Template
   contents?: Content[]
   name: string

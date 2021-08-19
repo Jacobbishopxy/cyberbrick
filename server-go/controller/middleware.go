@@ -141,7 +141,7 @@ func GetContent(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateOrUpdateContent(w http.ResponseWriter, r *http.Request) {
-	// setGetServiceHeader(w)
+	setGetServiceHeader(w)
 	collection := getCollectionFromQuery(r)
 	//check collection exist
 	if collection == nil {

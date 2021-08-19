@@ -152,7 +152,7 @@ export class ElementService {
 
     let content = EleContent.contents[0] || undefined
     const elementType = EleContent.type
-    // console.log(elementType, id)
+    // if (elementType === common.ElementType.XlsxTable) console.log(elementType, content)
     //if we should and could fetch query, fetch!
     return this.onReceiveContentToFetchQuery(elementType, content)
   }

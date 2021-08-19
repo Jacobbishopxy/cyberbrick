@@ -2,13 +2,12 @@
  * Created by Jacob Xie on 10/13/2020.
  */
 
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { Checkbox, DatePicker, Modal, Select, Space } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
 
 import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
-import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 interface TimeSetModalProps {
   intl: any
@@ -112,7 +111,7 @@ export const HeaderController = (props: HeaderController) => {
   const intl = useIntl()
   const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({ set: false, pick: false })
   const [selectedDate, setSelectedDate] = useState<string>()
-  const isTemplate = useContext(IsTemplateContext)
+  // const isTemplate = useContext(IsTemplateContext)
 
   const timeSetModalOnOk = (isNew: boolean) => {
     if (props.editDate && selectedDate) {
@@ -130,16 +129,16 @@ export const HeaderController = (props: HeaderController) => {
   const editableController = () =>
     <Space>
       <DragButton />
-      {isTemplate ? null : (
-        props.settable ?
-          <>
-            <TimeSetButton
-              show={props.timeSeries}
-              onClick={() => setDateModalVisible({ ...dateModalVisible, set: true })}
-            />
-            <EditButton editContent={props.editContent} />
-          </> : <></>)
-      }
+      {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
+      {props.settable ?
+        <>
+          <TimeSetButton
+            show={props.timeSeries}
+            onClick={() => setDateModalVisible({ ...dateModalVisible, set: true })}
+          />
+          <EditButton editContent={props.editContent} />
+        </> : <></>}
+      {/* } */}
       <DeleteButton
         confirmDelete={props.confirmDelete}
       />

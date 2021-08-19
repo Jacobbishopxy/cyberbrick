@@ -128,6 +128,13 @@ export const ContainerTemplate =
         element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
       })
 
+    const updateDescription = (ele: DataType.Element) =>
+      (value: string) => setElements(els => els.map(el => {
+        if (el.id === ele.id) return { ...el, description: value }
+        return el
+      }))
+
+
     const genRef = (i: number) => (el: ContainerElementRef) => {
       if (el) teRefs.current[i] = el
     }
@@ -159,6 +166,7 @@ export const ContainerTemplate =
                 ref={genRef(i)}
 
                 shouldStartFetch={props.shouldEleFetch}
+                updateDescription={updateDescription(ele)}
 
               />
             </div>

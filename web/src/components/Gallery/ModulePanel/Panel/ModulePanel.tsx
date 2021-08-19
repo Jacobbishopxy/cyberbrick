@@ -17,14 +17,16 @@ import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
+import { ModuleDescirption } from "./ModuleDescription"
 
 
 export interface ModulePanelProps {
   parentInfo: string[]
-  eleId?: string
+  eleId: string
   headName: string
   timeSeries?: boolean
   elementType: DataType.ElementType
+  description?: string
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
   fetchTableList?: (id: string) => Promise<string[]>
@@ -39,6 +41,7 @@ export interface ModulePanelProps {
   settable: boolean
   isLoading: boolean
 
+  updateDescription: (ele: string) => void
   fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
   isNested?: boolean
@@ -149,6 +152,19 @@ export const ModulePanel = (props: ModulePanelProps) => {
     onSelectDate={props.fetchContent}
   />
 
+  const genDescription = useMemo(() => {
+    if (isTemplate) {
+      if (!props.editable && !props.description) return <></>
+      return <ModuleDescirption
+        editable={props.editable}
+        initialValue={props.description || ''}
+        onSave={props.updateDescription}
+      />
+
+    }
+    return <></>
+  }, [props.editable, isTemplate])
+
   const genContext = useMemo(() => {
     // console.log(content?.data)
     const rf = moduleRef.current
@@ -200,11 +216,18 @@ export const ModulePanel = (props: ModulePanelProps) => {
     if (props.isNested) return styles.nestedModulePanel
     return styles.modulePanel
   }
+
+  const displayFooter = () => {
+    if (props.elementType === DataType.ElementType.FieldHeader) return <></>
+    if (isTemplate) return <></>
+    return genFooter
+  }
   return (
     <div className={style()} {...attachId()}>
       {genHeader}
+      {genDescription}
       {genContext}
-      {props.elementType === DataType.ElementType.FieldHeader ? <></> : genFooter}
+      {displayFooter()}
     </div>
   )
 }

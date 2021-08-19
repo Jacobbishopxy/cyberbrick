@@ -36,6 +36,9 @@ export class Element {
   @Column("varchar", { nullable: false })
   name!: string
 
+  @Column("varchar", { nullable: true })
+  description?: string
+
   @Column("enum", { nullable: false, enum: common.ElementType })
   type!: common.ElementType
 
