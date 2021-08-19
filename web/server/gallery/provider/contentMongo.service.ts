@@ -4,7 +4,7 @@ import formData from 'form-data';
 import moment from 'moment';
 import * as common from "../common"
 import { Content, Element } from "../entity"
-
+import { ConfigService } from "@nestjs/config"
 export interface ContentMongo {
     id: string
     elementId?: string
@@ -15,11 +15,21 @@ export interface ContentMongo {
     config?: Record<string, any>
 }
 
-const base = 'http://localhost:8089/api/mongo'
+// const base = 'http://localhost:8089/api/mongo'
 @Injectable()
 export class MongoService {
-    constructor() {
+    constructor(private configService: ConfigService) {
     }
+
+    private getGoMongoApiPath() {
+        const serverConfig = this.configService.get("server")
+
+        return process.env.NODE_ENV === "production" ?
+            `http://${serverConfig.serverGoHost}:${serverConfig.serverGoPort}/api/mongo` :
+            `http://localhost:${serverConfig.serverGoPort}/api/mongo`
+    }
+
+    base = this.getGoMongoApiPath()
 
     /**
      * save content to mongodb for certain element type. 
@@ -135,7 +145,7 @@ export class MongoService {
     }
 
     async getContent(type: string, id?: string, date?: string, elementId?: string) {
-        let url = `${base}?type=${type}`
+        let url = `${this.base}?type=${type}`
         //get by mongo id
         if (id) url += `&id=${id}`
         //get by elementId and date
@@ -146,14 +156,14 @@ export class MongoService {
     }
 
     async createOrUpdateContentList(type: string, cts: ContentMongo[]) {
-        let url = `${base}/saveUpdate?type=${type}`
+        let url = `${this.base}/saveUpdate?type=${type}`
         const form = new formData()
         const ans = await axios.post(url, cts, { headers: form.getHeaders() })
         return ans.data
     }
 
     async createContent(type: string, content: ContentMongo) {
-        let url = `${base}?type=${type}`
+        let url = `${this.base}?type=${type}`
         const form = new formData()
         const ans = await axios.post(url, content, { headers: form.getHeaders() })
         return ans.data
@@ -161,14 +171,14 @@ export class MongoService {
 
 
     async updateContent(type: string, content: ContentMongo) {
-        let url = `${base}?type=${type}`
+        let url = `${this.base}?type=${type}`
         const form = new formData()
         const ans = await axios.put(url, content, { headers: form.getHeaders() })
         return ans.data
     }
 
     async deleteContent(type: string, id: string) {
-        let url = `${base}?type=${type}&id=${id}`
+        let url = `${this.base}?type=${type}&id=${id}`
         const ans = await axios.delete(url)
         return ans.data
 
