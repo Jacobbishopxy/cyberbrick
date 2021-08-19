@@ -29,8 +29,6 @@ export class MongoService {
             `http://localhost:${serverConfig.serverGoPort}/api/mongo`
     }
 
-    base = this.getGoMongoApiPath()
-
     /**
      * save content to mongodb for certain element type. 
      * @param type collection name, also known as element type
@@ -145,7 +143,8 @@ export class MongoService {
     }
 
     async getContent(type: string, id?: string, date?: string, elementId?: string) {
-        let url = `${this.base}?type=${type}`
+        const base = this.getGoMongoApiPath()
+        let url = `${base}?type=${type}`
         //get by mongo id
         if (id) url += `&id=${id}`
         //get by elementId and date
@@ -156,14 +155,16 @@ export class MongoService {
     }
 
     async createOrUpdateContentList(type: string, cts: ContentMongo[]) {
-        let url = `${this.base}/saveUpdate?type=${type}`
+        const base = this.getGoMongoApiPath()
+        let url = `${base}/saveUpdate?type=${type}`
         const form = new formData()
         const ans = await axios.post(url, cts, { headers: form.getHeaders() })
         return ans.data
     }
 
     async createContent(type: string, content: ContentMongo) {
-        let url = `${this.base}?type=${type}`
+        const base = this.getGoMongoApiPath()
+        let url = `${base}?type=${type}`
         const form = new formData()
         const ans = await axios.post(url, content, { headers: form.getHeaders() })
         return ans.data
@@ -171,14 +172,16 @@ export class MongoService {
 
 
     async updateContent(type: string, content: ContentMongo) {
-        let url = `${this.base}?type=${type}`
+        const base = this.getGoMongoApiPath()
+        let url = `${base}?type=${type}`
         const form = new formData()
         const ans = await axios.put(url, content, { headers: form.getHeaders() })
         return ans.data
     }
 
     async deleteContent(type: string, id: string) {
-        let url = `${this.base}?type=${type}&id=${id}`
+        const base = this.getGoMongoApiPath()
+        let url = `${base}?type=${type}&id=${id}`
         const ans = await axios.delete(url)
         return ans.data
 
