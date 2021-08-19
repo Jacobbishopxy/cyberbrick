@@ -19,4 +19,4 @@ SHELL   ["conda", "run", "-n", "py38", "/bin/bash", "-c"]
 RUN     pip install -r requirements.txt
 
 # copy source code to workdir
-COPY    ./server .
+COPY    ./server-py .
