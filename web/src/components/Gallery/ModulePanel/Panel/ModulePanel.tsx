@@ -192,6 +192,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const attachId = () => props.eleId ? { id: props.eleId } : {}
 
   const style = () => {
+    if (props.elementType === DataType.ElementType.FieldHeader) {
+      if (props.editable) return styles.separatorModule
+      return styles.separatorModulePresentor
+    }
     if (isTemplate) return styles.templatePanel
     if (props.isNested) return styles.nestedModulePanel
     return styles.modulePanel
@@ -200,7 +204,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     <div className={style()} {...attachId()}>
       {genHeader}
       {genContext}
-      {genFooter}
+      {props.elementType === DataType.ElementType.FieldHeader ? <></> : genFooter}
     </div>
   )
 }

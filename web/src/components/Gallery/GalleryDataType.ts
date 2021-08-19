@@ -123,6 +123,7 @@ export enum ElementType {
   TreeMap = "treeMap",
 
   NestedModule = "nestedSimpleModule",
+  FieldHeader = "fieldHeader"
 }
 
 export const getElementType = (v: string) => {
@@ -167,6 +168,8 @@ export const getElementType = (v: string) => {
       return ElementType.TreeMap
     case "nestedSimpleModule":
       return ElementType.NestedModule
+    case "fieldHeader":
+      return ElementType.FieldHeader
     default:
       return ElementType.EmbedLink
   }

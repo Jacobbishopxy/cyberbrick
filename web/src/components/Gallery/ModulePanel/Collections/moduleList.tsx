@@ -32,6 +32,11 @@ export const moduleList = [
         name: <FormattedMessage id="gallery.component.type.nestedSimpleModule" />,
         disabled: false,
       },
+      {
+        key: DataType.ElementType.FieldHeader,
+        name: <FormattedMessage id="gallery.component.type.fieldHeader" />,
+        disabled: false,
+      },
     ]
   },
   {

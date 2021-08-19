@@ -45,6 +45,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
   }
 
   const genTitle = () => {
+    //don't display title since header separator is a "title" by itself
+    if (props.type === DataType.ElementType.FieldHeader) return <></>
     if (titleEditable)
       return <Input
         placeholder="Title"
@@ -94,7 +96,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         props.headName ?
           <>
             <Col span={8} style={{ fontWeight: "bold" }}>
-              {props.headName}
+              {props.type === DataType.ElementType.FieldHeader ? '' : props.headName}
             </Col>
             <Col span={8} style={{ textAlign: "center" }}>
               {genTitle()}
