@@ -10,7 +10,7 @@ FROM    $BASE_IMAGE_NAME:$BASE_IMAGE_VERSION
 RUN     mkdir /server
 
 # copy requirements
-COPY    ./server/requirements.txt server/requirements.txt
+COPY    ./server-py/requirements.txt server/requirements.txt
 
 WORKDIR /server
 

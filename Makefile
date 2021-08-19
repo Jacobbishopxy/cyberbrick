@@ -44,11 +44,12 @@ docker-mongodb:
 
 docker-biz-server-setup: docker-go docker-mongodb
 	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
-	cd docker/docker-biz-server && start.sh
+	cd docker/docker-biz-server && ./setup.sh
 
 docker-biz-server-start:
 	cd docker/docker-mongodb && ./create_unique_index.sh
-	cd docker/docker-biz-server && ./start
+	cd docker/docker-biz-server && ./start.sh
+
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker
@@ -81,7 +82,7 @@ docker-biz-server-start:
 # 	cd docker/docker-base-server && bash setup.sh
 
 # #setup built app image and start a container:
-# serverStart: $(SOURCESERVER) $(SERVERENV) ServerImage ServerSetDepend 
+# serverStart: $(SOURCESERVER) $(SERVERENV) ServerImage ServerSetDepend
 # 	cd docker/docker-app-server && bash setup.sh && bash start.sh
 
 clean:
@@ -89,6 +90,6 @@ clean:
 
 checkPID:
 	@echo "double check your PID for server"
-	ps -ef | grep "python3 wsgi.py --debug=false" 
+	ps -ef | grep "python3 wsgi.py --debug=false"
 	@echo "double check your PID for web"
 	ps -ef | grep yarn
