@@ -91,6 +91,7 @@ export default {
   "gallery.component.type.tree": "Tree",
   "gallery.component.type.treemap": "Treemap",
   "gallery.component.type.nestedSimpleModule": "Nested Module",
+  "gallery.component.type.fieldHeader": "Separator Header",
 
   "gallery.component.category-config-table1": "Category configuration",
   "gallery.component.category-config-table2": "New category",
@@ -209,6 +210,12 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "Text",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "Number",
 
+  "gallery.component.module-panel.field-header.1": "Font Size",
+  "gallery.component.module-panel.field-header.2": "Alignment",
+  "gallery.component.module-panel.field-header.3": "left",
+  "gallery.component.module-panel.field-header.4": "center",
+  "gallery.component.module-panel.field-header.5": "right",
+  "gallery.component.module-panel.field-header.6": "Text",
 
   "gallery.dashboard.copy-template1": "Copy template succeeded!",
   "gallery.dashboard.copy-template2": "Copy template failed!",

@@ -63,8 +63,8 @@ export default () => {
   const copyTemplate = (copy: GalleryDataType.CopyTemplateElements) =>
     GalleryService.copyTemplateElements(copy)
 
-  const fetchElementContent = (id: string, date?: string, markName?: string) =>
-    GalleryService.getElementContent(id, date, markName) as Promise<DataType.Element>
+  const fetchElementContent = (id: string, date?: string, isNested?: boolean) =>
+    GalleryService.getElementContent(id, date, isNested) as Promise<DataType.Content>
 
   const fetchElementContentDates = (id: string, markName?: string) =>
     GalleryService.getElementContentDates(id, markName) as Promise<DataType.Element>

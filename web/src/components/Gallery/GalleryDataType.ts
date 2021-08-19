@@ -7,6 +7,7 @@ import moment from "moment"
 // export const dateFormat = "YYYY-MM-DD HH:mm:ss"
 export const dateFormat = "YYYY-MM-DD"
 export const today = () => moment().format(dateFormat)
+export const now = () => moment().format()
 export const timeToString = (v: string) => moment(v).format(dateFormat)
 
 export interface Category {
@@ -122,6 +123,7 @@ export enum ElementType {
   TreeMap = "treeMap",
 
   NestedModule = "nestedSimpleModule",
+  FieldHeader = "fieldHeader"
 }
 
 export const getElementType = (v: string) => {
@@ -166,16 +168,27 @@ export const getElementType = (v: string) => {
       return ElementType.TreeMap
     case "nestedSimpleModule":
       return ElementType.NestedModule
+    case "fieldHeader":
+      return ElementType.FieldHeader
     default:
       return ElementType.EmbedLink
   }
 }
 
+export enum flexTableType {
+  file = "file",
+  dataset = "dataset"
+}
+
 export const shouldQueryAfterRecevingContent = (v: string) => {
   switch (v) {
-    case "text":
+    case ElementType.Text:
       return true
-    case "image":
+    case ElementType.Image:
+      return true
+    case ElementType.FlexTable:
+      return true
+    case ElementType.XlsxTable:
       return true
     default:
       return false

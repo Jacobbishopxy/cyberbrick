@@ -103,7 +103,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
   }
 
   const loadData = async (selectedOptions?: CascaderOptionType[]) => {
-    console.log(selectedOptions)
+    // console.log(selectedOptions)
     if (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1]
       targetOption.loading = true

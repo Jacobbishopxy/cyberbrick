@@ -2,18 +2,18 @@
  * Created by Jacob Xie on 12/23/2020
  */
 
-import {useEffect, useState} from "react"
-import {Table} from "antd"
-import {ColumnsType} from "antd/lib/table/interface"
-import {HotTable} from "@handsontable/react"
+import { useEffect, useState } from "react"
+import { Table } from "antd"
+import { ColumnsType } from "antd/lib/table/interface"
+import { HotTable } from "@handsontable/react"
 
 import * as DataType from "../../../GalleryDataType"
-import {DataSelectedType, GeneralTableConfigInterface} from "@/components/Gallery/Utils/data"
-import {getColumnsFromRawData, transformRawDataBySourceType} from "../../../Utils/rawDataTransform"
-import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {ModulePresenterField} from "../../Generator/data"
-import {GeneralTableEditorField} from "./GeneralTableEditorField"
-import {genHotTableProps} from "./XlsxTable"
+import { DataSelectedType, GeneralTableConfigInterface } from "@/components/Gallery/Utils/data"
+import { getColumnsFromRawData, transformRawDataBySourceType } from "../../../Utils/rawDataTransform"
+import { ModuleGenerator } from "../../Generator/ModuleGenerator"
+import { ModulePresenterField } from "../../Generator/data"
+import { GeneralTableEditorField } from "./GeneralTableEditorField"
+import { genHotTableProps } from "./XlsxTable"
 
 import "handsontable/dist/handsontable.full.css"
 
@@ -23,7 +23,17 @@ interface FlexTableViewProps {
   fetchQueryData: (value: DataType.Content) => Promise<any>
   contentHeight?: number
 }
-
+/**
+ * Table Content data structure:{
+ * ...content,
+ * storageType: pg/mongodb
+ * data{
+ *    source: Record(string, any) //this is for the json object to display table, or to query from pg
+ *    id?: mongodb object id // if storageType is mongodb
+ *    collection?: mongodb collection name // if storageType is mongodb
+ *    }
+ * }
+ */
 const FlexTableView = (props: FlexTableViewProps) => {
 
   const [config, setConfig] = useState<GeneralTableConfigInterface>()
@@ -33,9 +43,11 @@ const FlexTableView = (props: FlexTableViewProps) => {
 
 
   const genColumnsAndData = (rawData: Record<string, any>[],
-                             rawConfig: GeneralTableConfigInterface,
-                             type: DataSelectedType) => {
+    rawConfig: GeneralTableConfigInterface,
+    type: DataSelectedType) => {
+    //TODO: can't get collumn name
     if (rawData && rawConfig) {
+      // console.log(rawData)
       const col = getColumnsFromRawData(rawData[0], type)
       const d = transformRawDataBySourceType(rawData, rawConfig, type)
       setColumns(col)
@@ -47,10 +59,12 @@ const FlexTableView = (props: FlexTableViewProps) => {
     const c = props.content.config as GeneralTableConfigInterface
     setConfig(c)
     if (c) {
-      if (c.type === "dataset")
-        props.fetchQueryData(props.content).then(res => genColumnsAndData(res, c, "dataset"))
+      if (c.type === "dataset") {
+        const content: DataType.Content = { data: props?.content?.data?.source, date: props.content.date }
+        props.fetchQueryData(content).then(res => genColumnsAndData(res, c, "dataset"))
+      }
       if (c.type === "file")
-        genColumnsAndData(props.content.data[0], c, "file")
+        genColumnsAndData(props.content?.data?.source[0], c, "file")
     }
   }, [props.content])
 
@@ -62,7 +76,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
       showHeader={!cfg.view.includes("header")}
       bordered={!cfg.view.includes("border")}
       size="small"
-      scroll={{x: true, y: props.contentHeight ? props.contentHeight - 60 : undefined}}
+      scroll={{ x: true, y: props.contentHeight ? props.contentHeight - 60 : undefined }}
       pagination={false}
     />
 

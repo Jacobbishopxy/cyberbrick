@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/14/2021
  */
 
-import {ColumnsType} from "antd/lib/table/interface"
+import { ColumnsType } from "antd/lib/table/interface"
 import _ from "lodash"
 import moment from "moment"
 
@@ -14,7 +14,7 @@ import {
 
 
 export const getColumnsFromRawData = (data0: Record<string, any>,
-                                      type: DataSelectedType): ColumnsType<any> => {
+  type: DataSelectedType): ColumnsType<any> => {
   switch (type) {
     case "dataset":
       return _.keys(data0).map((k: string) => ({
@@ -33,17 +33,17 @@ export const getColumnsFromRawData = (data0: Record<string, any>,
 
 
 export const genDisplayConfig = (data: Record<string, any>[],
-                                 display: DisplayType[],
-                                 type: DataSelectedType) => {
+  display: DisplayType[],
+  type: DataSelectedType) => {
   switch (type) {
     case "dataset":
       return _.reduce(display, (acc: Record<string, any>, v: DisplayType) => {
-        return {...acc, [v.column]: v.type}
+        return { ...acc, [v.column]: v.type }
       }, {})
     case "file":
       const fileKeyMap = _.invert(data[0])
       return _.reduce(display, (acc: Record<string, any>, v: DisplayType) => {
-        return {...acc, [fileKeyMap[v.column]]: v.type}
+        return { ...acc, [fileKeyMap[v.column]]: v.type }
       }, {})
   }
 }
@@ -75,8 +75,8 @@ export const transformRowDataForChart = (row: Record<string, any>, display: Reco
 }
 
 export const transformRawDataBySourceType = (data: Record<string, any>[],
-                                             config: GeneralTableConfigInterface,
-                                             type: DataSelectedType): Record<string, any>[] => {
+  config: GeneralTableConfigInterface,
+  type: DataSelectedType): Record<string, any>[] => {
   const display = genDisplayConfig(data, config.display, type)
 
   return data.map((i, idx) => {
@@ -85,7 +85,7 @@ export const transformRawDataBySourceType = (data: Record<string, any>[],
     }
     const trans = transformRowDataForTable(i, display)
 
-    return {...trans, key: idx}
+    return { ...trans, key: idx }
   })
 }
 

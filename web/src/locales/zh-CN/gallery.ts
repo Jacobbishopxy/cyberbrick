@@ -91,6 +91,7 @@ export default {
   "gallery.component.type.tree": "树图",
   "gallery.component.type.treemap": "矩形树图",
   "gallery.component.type.nestedSimpleModule": "组件嵌套",
+  "gallery.component.type.fieldHeader": "分隔标题",
 
   "gallery.component.category-config-table1": "类型配置",
   "gallery.component.category-config-table2": "新建分类",
@@ -209,6 +210,13 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "文章",
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
+
+  "gallery.component.module-panel.field-header.1": "字号",
+  "gallery.component.module-panel.field-header.2": "对齐",
+  "gallery.component.module-panel.field-header.3": "左对齐",
+  "gallery.component.module-panel.field-header.4": "居中",
+  "gallery.component.module-panel.field-header.5": "右对齐",
+  "gallery.component.module-panel.field-header.6": "输入分隔标题",
 
   "gallery.dashboard.copy-template1": "拷贝界面成功!",
   "gallery.dashboard.copy-template2": "拷贝界面失败!",

@@ -3,6 +3,7 @@
  */
 
 import { Equal } from "typeorm"
+import { Content } from "./entity/content.entity"
 
 // db name
 export const db = "gallery"
@@ -84,9 +85,14 @@ export enum ElementType {
   Box = "box",
   Tree = "tree",
   TreeMap = "treeMap",
-  NestedSimpleModule = "nestedSimpleModule"
+  NestedSimpleModule = "nestedSimpleModule",
+  FieldHeader = "fieldHeader"
 }
 
+export enum flexTableType {
+  file = "file",
+  dataset = "dataset"
+}
 export const getElementType = (v: string) => {
   switch (v) {
     case "embedLink":
@@ -129,6 +135,8 @@ export const getElementType = (v: string) => {
       return ElementType.TreeMap
     case "nestedSimpleModule":
       return ElementType.NestedSimpleModule
+    case "fieldHeader":
+      return ElementType.FieldHeader
     default:
       return undefined
   }
@@ -162,12 +170,18 @@ export const templatesElementsContents = `${templates}.${elements}.${contents}`
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 
-export const shouldQueryAfterRecevingContent = (v: string) => {
+export const shouldQueryAfterRecevingContent = (v: string, content: Content) => {
   switch (v) {
     case ElementType.Text:
       return true
     case ElementType.Image:
       return true
+    case ElementType.XlsxTable:
+      return true
+    case ElementType.FlexTable:
+      if (content?.config?.type === flexTableType.file)
+        return true
+      else return false
     default:
       return false
   }
@@ -178,6 +192,10 @@ export const ContentValidationByType = (v: string, data?: Record<string, any>) =
     case ElementType.Text:
       return MongoContentValidation(data)
     case ElementType.Image:
+      return MongoContentValidation(data)
+    case ElementType.FlexTable:
+      return MongoContentValidation(data)
+    case ElementType.XlsxTable:
       return MongoContentValidation(data)
     default:
       return false

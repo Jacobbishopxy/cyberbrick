@@ -2,19 +2,19 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import {useState} from "react"
-import {Button, message, Modal, Tabs} from "antd"
-import {HotTable} from "@handsontable/react"
-import {ProFormCheckbox, StepsForm} from "@ant-design/pro-form"
-import {FormattedMessage, useIntl} from "umi"
+import { useState } from "react"
+import { Button, message, Modal, Tabs } from "antd"
+import { HotTable } from "@handsontable/react"
+import { ProFormCheckbox, StepsForm } from "@ant-design/pro-form"
+import { FormattedMessage, useIntl } from "umi"
 import _ from "lodash"
 
-import {FileExtractModal} from "@/components/FileUploadModal"
-import {XlsxTableConfigInterface} from "@/components/Gallery/Utils/data"
-import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
+import { FileExtractModal } from "@/components/FileUploadModal"
+import { XlsxTableConfigInterface } from "@/components/Gallery/Utils/data"
+import { ModuleGenerator } from "../../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
-import {fileExtract, fileExtractUrl} from "../../../Misc/FileUploadConfig"
+import { fileExtract, fileExtractUrl } from "../../../Misc/FileUploadConfig"
 
 import "handsontable/dist/handsontable.full.css"
 
@@ -41,10 +41,10 @@ const EditorField = (props: ModuleEditorField) => {
   const saveContentData = (data: any) => {
     const ctt = content ? {
       ...content,
-      data
+      data: { ...content.data, source: data },
     } : {
       date: DataType.today(),
-      data
+      data: { source: data },
     }
     setContent(ctt)
   }
@@ -55,7 +55,7 @@ const EditorField = (props: ModuleEditorField) => {
       const ctt = {
         ...content,
         date: content.date || DataType.today(),
-        config: {...c, hideOptions: c.hideOptions || []}
+        config: { ...c, hideOptions: c.hideOptions || [] }
       }
       props.updateContent(ctt)
       message.success("Updating succeeded!")
@@ -66,7 +66,7 @@ const EditorField = (props: ModuleEditorField) => {
   }
 
   const dataSelectOnFinish = async () => {
-    if (content?.data === undefined || _.isEmpty(content.data)) {
+    if (!content?.data?.source || _.isEmpty(content.data.source)) {
       message.warn("Please check your data if is empty!")
       return false
     }
@@ -99,7 +99,7 @@ const EditorField = (props: ModuleEditorField) => {
       >
         <StepsForm.StepForm
           name="data"
-          title={intl.formatMessage({id: "gallery.component.general43"})}
+          title={intl.formatMessage({ id: "gallery.component.general43" })}
           onFinish={dataSelectOnFinish}
         >
           <Button
@@ -119,7 +119,7 @@ const EditorField = (props: ModuleEditorField) => {
 
         <StepsForm.StepForm
           name="option"
-          title={intl.formatMessage({id: "gallery.component.general56"})}
+          title={intl.formatMessage({ id: "gallery.component.general56" })}
         >
           <ProFormCheckbox.Group
             name="hideOptions"
@@ -161,7 +161,7 @@ const PresenterField = (props: ModulePresenterField) => {
     _.mapValues(data, (v: any[], k: string) => {
       d.push(
         <Tabs.TabPane tab={k} key={k}>
-          <HotTable
+          <HotTable key={k}
             {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
             data={v}
           />
@@ -173,11 +173,23 @@ const PresenterField = (props: ModulePresenterField) => {
   }
 
   const view = (content: DataType.Content) => {
-    const d = _.keys(content.data)
-    if (d) {
+    const d = _.keys(content?.data?.source)
+    // console.log(content?.data, d?.length)
+    if (d && d.length != 0) {
       if (d.length === 1)
-        return singleS(content.data)
-      return multiS(content.data)
+        return singleS(content.data?.source)
+      return multiS(content.data?.source)
+    }
+    //TODO: this is to accomodate older content type. When all
+    //content.data has been saved to mongo, disregard this.
+    if (content?.data) {
+      const dNoSource = _.keys(content.data)
+      // console.log(dNoSource?.length)
+      if (dNoSource) {
+        if (dNoSource.length === 1)
+          return singleS(content.data)
+        return multiS(content.data)
+      }
     }
     return <></>
   }

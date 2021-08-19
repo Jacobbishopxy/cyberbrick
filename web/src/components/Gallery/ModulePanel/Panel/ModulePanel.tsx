@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
@@ -16,6 +16,7 @@ import { collectionSelector } from "../Collections"
 import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
+import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
 export interface ModulePanelProps {
@@ -40,6 +41,7 @@ export interface ModulePanelProps {
 
   fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
+  isNested?: boolean
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -56,6 +58,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   const [dates, setDates] = useState<string[]>([])
 
   const [loading, setIsLoading] = useState(props.isLoading)
+  const isTemplate = useContext(IsTemplateContext)
 
   useEffect(() => {
     setIsLoading(props.isLoading)
@@ -188,11 +191,20 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   const attachId = () => props.eleId ? { id: props.eleId } : {}
 
+  const style = () => {
+    if (props.elementType === DataType.ElementType.FieldHeader) {
+      if (props.editable) return styles.separatorModule
+      return styles.separatorModulePresentor
+    }
+    if (isTemplate) return styles.templatePanel
+    if (props.isNested) return styles.nestedModulePanel
+    return styles.modulePanel
+  }
   return (
-    <div className={styles.modulePanel} {...attachId()}>
+    <div className={style()} {...attachId()}>
       {genHeader}
       {genContext}
-      {genFooter}
+      {props.elementType === DataType.ElementType.FieldHeader ? <></> : genFooter}
     </div>
   )
 }

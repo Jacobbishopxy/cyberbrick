@@ -100,6 +100,8 @@ export const ContainerTemplate =
 
 
     const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+      const height = elementType === DataType.ElementType.FieldHeader ? 8 : 20
+      const width = elementType === DataType.ElementType.FieldHeader ? 24 : 12
       if (elements.map(e => e.name).includes(name)) {
         message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
       } else {
@@ -109,8 +111,8 @@ export const ContainerTemplate =
           timeSeries,
           x: 0,
           y: Infinity,
-          h: 20,
-          w: 12,
+          h: height,
+          w: width,
         } as Element
         setElements(newElementInLayout(elements, newEle))
       }
@@ -156,7 +158,7 @@ export const ContainerTemplate =
                 fetchQueryDataFn={props.elementFetchQueryDataFn}
                 ref={genRef(i)}
 
-                shouldStartFetch={props.shouldEleFetch || 1}
+                shouldStartFetch={props.shouldEleFetch}
 
               />
             </div>

@@ -6,7 +6,7 @@ import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./Editor"
 import './style.css'
 import { NSMid } from "./util"
-const defaultItems: tabItem[] = [0].map(function (i, key, list) {
+const defaultItems: tabItem[] = [0].map(function (i) {
     return {
         i: today(),
         x: i,
@@ -38,15 +38,15 @@ const EditorField = (props: ModuleEditorField) => {
         content?: Content
     }
     */
+    let tempIndex = props.content?.data?.currIndex
+    if (!tempIndex) {
+        tempIndex = defaultData.currIndex
+    }
 
-    let tempItems: tabItem[] = []
-    if (props.content) {
-        tempItems = props.content.data.tabItems as tabItem[]
-    } else tempItems = defaultData.tabItems
-
-    let tempIndex = defaultData.currIndex
-    if (props.content) {
-        tempIndex = props.content.data.currIndex
+    let tempItems: tabItem[] = props.content?.data?.tabItems
+    if (!tempItems || tempItems.length === 0) {
+        tempItems = defaultData.tabItems
+        tempIndex = defaultData.currIndex
     }
 
     const [items, setItems] = useState<tabItem[]>(tempItems)
@@ -55,7 +55,10 @@ const EditorField = (props: ModuleEditorField) => {
 
 
     useEffect(() => {
-        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
+        props.updateContent({
+            ...props.content, date: props.content?.date || today(),
+            data: { tabItems: items, currIndex: currIndex }
+        })
         // console.log(props.content)
     }, [saveCount])
     return (
@@ -84,8 +87,17 @@ const EditorField = (props: ModuleEditorField) => {
 
 const PresenterField = (props: ModulePresenterField) => {
     let tempItems: tabItem[] = []
-    const [items, setItems] = useState<tabItem[]>(props.content?.data?.tabItems || tempItems)
-    const [currIndex, setCurrIndex] = useState(props.content?.data?.currIndex)
+    if (props.content) {
+        tempItems = props.content.data.tabItems as tabItem[]
+    } else tempItems = []
+
+    let tempIndex = ""
+    if (props.content) {
+        tempIndex = props.content.data.currIndex
+    }
+
+    const [items, setItems] = useState<tabItem[]>(tempItems)
+    const [currIndex, setCurrIndex] = useState(tempIndex)
     const [saveCount, setSaveCount] = useState(0)
 
     /**
@@ -93,9 +105,13 @@ const PresenterField = (props: ModulePresenterField) => {
      * content. When parent received content, update the items state for presentorField
     */
     useEffect(() => {
+        // console.log(props.content?.data?.tabItems)
         setItems(props.content?.data?.tabItems)
-        setCurrIndex(props.content?.data?.currIndex)
     }, [props.content?.data?.tabItems])
+
+    useEffect(() => {
+        setCurrIndex(props.content?.data?.currIndex)
+    }, [props.content?.data?.currIndex])
 
     /**
      * update currIndex

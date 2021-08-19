@@ -23,6 +23,7 @@ import {
 
 import styles from "../Panel/Common.less"
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
+import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
 
 export interface ModuleSelectorProps {
@@ -182,6 +183,13 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchContentDatesFn={props.fetchContentDatesFn}
     />
 
+    const fieldHeader = <FieldHeader
+      content={props.content}
+      contentHeight={props.contentHeight}
+      updateContent={props.updateContent}
+      styling={styles.contentPanel}
+      ref={props.forwardedRef}
+    />
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
@@ -209,6 +217,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return pie
       case DataType.ElementType.NestedModule:
         return nestedModule
+      case DataType.ElementType.FieldHeader:
+        return fieldHeader
       default:
         return defaultModule
     }

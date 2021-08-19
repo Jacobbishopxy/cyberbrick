@@ -162,11 +162,13 @@ export class ContentService {
             finally {
               //and then save nestedModuleContent to PG
               this.saveContentToMongoOrPg(name, type, content)
+
             }
           }
         })
+        break
       default:
-        return this.saveContentToMongoOrPg(name, type, content)
+        this.saveContentToMongoOrPg(name, type, content)
     }
 
   }
