@@ -211,6 +211,13 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
 
+  "gallery.component.module-panel.field-header.1": "字号",
+  "gallery.component.module-panel.field-header.2": "对齐",
+  "gallery.component.module-panel.field-header.3": "左对齐",
+  "gallery.component.module-panel.field-header.4": "居中",
+  "gallery.component.module-panel.field-header.5": "右对齐",
+  "gallery.component.module-panel.field-header.6": "输入分隔标题",
+
   "gallery.dashboard.copy-template1": "拷贝界面成功!",
   "gallery.dashboard.copy-template2": "拷贝界面失败!",
 }

@@ -210,6 +210,12 @@ export default {
   "gallery.component.module-panel.nested-simple-module.edit-tab3": "Text",
   "gallery.component.module-panel.nested-simple-module.edit-tab4": "Number",
 
+  "gallery.component.module-panel.field-header.1": "Font Size",
+  "gallery.component.module-panel.field-header.2": "Alignment",
+  "gallery.component.module-panel.field-header.3": "left",
+  "gallery.component.module-panel.field-header.4": "center",
+  "gallery.component.module-panel.field-header.5": "right",
+  "gallery.component.module-panel.field-header.6": "Text",
 
   "gallery.dashboard.copy-template1": "Copy template succeeded!",
   "gallery.dashboard.copy-template2": "Copy template failed!",

@@ -12,6 +12,15 @@ import * as DataType from "../../../GalleryDataType"
 import { ModalForm, ProFormRadio, ProFormSelect, ProFormText } from "@ant-design/pro-form"
 
 const fontList = [48, 60, 72, 84]
+enum alignEnum {
+    left = 'left',
+    center = 'center',
+    right = 'right'
+}
+const defaultSetting = {
+    fontSize: fontList[0],
+    textAlign: alignEnum.center
+}
 /**
  * Content data structure:
  * ..content,
@@ -40,40 +49,40 @@ const EditorField = (props: ModuleEditorField) => {
     return (
         <div className={props.styling}>
             <ModalForm
-                title={intl.formatMessage({ id: "gallery.component.module-panel.miscellaneous.embed-link1" })}
-                trigger={<Button type="primary">Update</Button>}
-                initialValues={{ link: content?.data?.link }}
+                title={intl.formatMessage({ id: "gallery.component.general14" })}
+                trigger={<Button type="primary">{intl.formatMessage({ id: "gallery.component.general13" })}</Button>}
+                initialValues={content?.data || defaultSetting}
                 onFinish={onSubmit}
             >
                 <ProFormSelect
                     name="fontSize"
-                    label="fontSize"
+                    label={intl.formatMessage({ id: "gallery.component.module-panel.field-header.1" })}
                     options={fontList.map(size => { return { value: size, label: size } })}
                     fieldProps={{
                         optionItemRender(item) {
-                            return <p style={{ fontSize: item.value }}>text</p>
+                            return <p style={{ fontSize: item.value, verticalAlign: "middle" }}>text</p>
                         }
                     }}
                 />
                 <ProFormRadio.Group
                     name="textAlign"
-                    label="alignment"
+                    label={intl.formatMessage({ id: "gallery.component.module-panel.field-header.2" })}
                     options={[
                         {
-                            label: 'left',
-                            value: 'left',
+                            label: intl.formatMessage({ id: "gallery.component.module-panel.field-header.3" }),
+                            value: alignEnum.left,
                         },
                         {
-                            label: 'center',
-                            value: 'center',
+                            label: intl.formatMessage({ id: "gallery.component.module-panel.field-header.4" }),
+                            value: alignEnum.center,
                         },
                         {
-                            label: 'right',
-                            value: 'right',
+                            label: intl.formatMessage({ id: "gallery.component.module-panel.field-header.5" }),
+                            value: alignEnum.right,
                         },
                     ]}
                 />
-                <ProFormText name="text" label="text" />
+                <ProFormText name="text" label={intl.formatMessage({ id: "gallery.component.module-panel.field-header.6" })} />
             </ModalForm>
         </div>
     )
