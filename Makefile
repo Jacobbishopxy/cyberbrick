@@ -11,7 +11,7 @@ instruction:
 dev-nodebug prod \
 instruction web-setup \
 run-docker nodeImage setDepend buildContainer webStart \
-ServerImage ServerSetDepend serverStart
+ServerImage ServerSetDepend serverStart 
 
 
 #set up environment
@@ -19,8 +19,7 @@ setup: web-setup
 	chmod +x setup.sh start.sh clean.sh
 	./setup.sh
 	cd docker/docker-database && bash start.sh && bash create_database.sh
-	cd docker/docker-mongodb && chmod +x start.sh && bash start.sh
-	cd docker/docker-mongodb create_unique_index.sh
+
 #the following are for production in localhost (testing)
 web-setup:
 	cd web && yarn
@@ -40,9 +39,16 @@ prod-noset: clean
 docker-go:
 	cd docker/docker-go && chmod +x setup.sh && bash setup.sh
 
-docker-biz-server:
+docker-mongodb:
+	cd docker/docker-mongodb && chmod +x start.sh && bash start.sh
+
+docker-biz-server-setup: docker-go docker-mongodb
 	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
 	cd docker/docker-biz-server && start.sh
+
+docker-biz-server-start:
+	cd docker/docker-mongodb && ./create_unique_index.sh
+	cd docker/docker-biz-server && ./start
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker
