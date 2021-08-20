@@ -110,15 +110,15 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
             <Editor
               onChange={setEditable}
               icons={{
-                open: <FormattedMessage id="gallery.component.general14"/>,
-                close: <FormattedMessage id="gallery.component.general11"/>,
+                open: <FormattedMessage id="gallery.component.general14" />,
+                close: <FormattedMessage id="gallery.component.general11" />,
               }}
             />
           </SpaceBetween>
         }
         size="small"
         bordered
-        pagination={{pageSize: 10}}
+        pagination={false}
         expandable={{
           expandedRowRender: (record: DataType.Storage) => <span>ID: {record.id}</span>
         }}
@@ -131,7 +131,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
         {...tableFooter()}
       >
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general5"/>}
+          title={<FormattedMessage id="gallery.component.general5" />}
           dataIndex="name"
           key="name"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -143,7 +143,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general6"/>}
+          title={<FormattedMessage id="gallery.component.general6" />}
           dataIndex="description"
           key="description"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -155,7 +155,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general16"/>}
+          title={<FormattedMessage id="gallery.component.general16" />}
           dataIndex="type"
           key="type"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -168,7 +168,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general17"/>}
+          title={<FormattedMessage id="gallery.component.general17" />}
           dataIndex="host"
           key="host"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -180,7 +180,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general18"/>}
+          title={<FormattedMessage id="gallery.component.general18" />}
           dataIndex="port"
           key="port"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -192,7 +192,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general19"/>}
+          title={<FormattedMessage id="gallery.component.general19" />}
           dataIndex="database"
           key="database"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -204,7 +204,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general20"/>}
+          title={<FormattedMessage id="gallery.component.general20" />}
           dataIndex="username"
           key="username"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -216,7 +216,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general21"/>}
+          title={<FormattedMessage id="gallery.component.general21" />}
           dataIndex="password"
           key="password"
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
@@ -228,7 +228,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
           }
         />
         <Table.Column
-          title={<FormattedMessage id="gallery.component.general22"/>}
+          title={<FormattedMessage id="gallery.component.general22" />}
           render={(storages: DataType.Storage[], record: DataType.Storage) =>
             <OperationField
               editable={editable}
@@ -236,7 +236,7 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
               onDeleteClick={() => deleteStorage(record.id!)}
               onCheckClick={() => props.checkConnection(record.id!)}
               onReloadClick={() => props.reloadConnection(record.id!)}
-              disabled={record.id !== selectedStorage?.id}/>
+              disabled={record.id !== selectedStorage?.id} />
           }
         />
       </Table>

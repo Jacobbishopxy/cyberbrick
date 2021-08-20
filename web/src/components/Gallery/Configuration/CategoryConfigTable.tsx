@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import { useState } from "react"
-import { Table, Tag } from "antd"
-import { FormattedMessage } from "umi"
+import {useState} from "react"
+import {Table, Tag} from "antd"
+import {FormattedMessage} from "umi"
 
-import { Editor } from "@/components/Editor"
-import { SpaceBetween } from "@/components/SpaceBetween"
+import {Editor} from "@/components/Editor"
+import {SpaceBetween} from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
-import { TextBuilder } from "../Misc/TextBuilder"
-import { EditableTagPanel } from "../Tag"
-import { TagBuildModal } from "../Misc/TagBuildModal"
-import { CategoryTypeColor } from "./FieldView"
+import {TextBuilder} from "../Misc/TextBuilder"
+import {EditableTagPanel} from "../Tag"
+import {TagBuildModal} from "../Misc/TagBuildModal"
+import {CategoryTypeColor} from "./FieldView"
 
 export interface CategoryConfigTableProps {
   data: DataType.Category[]
@@ -46,10 +46,10 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={props.data.map(i => ({ ...i, key: i.name }))}
+        dataSource={props.data.map(i => ({...i, key: i.name}))}
         title={() =>
           <SpaceBetween>
-            <span style={{ fontWeight: "bold" }}>
+            <span style={{fontWeight: "bold"}}>
               <FormattedMessage id="gallery.component.category-config-table1" />
             </span>
             <Editor
@@ -63,7 +63,7 @@ export const CategoryConfigTable = (props: CategoryConfigTableProps) => {
         }
         size="small"
         bordered
-        pagination={{ pageSize: 10 }}
+        pagination={false}
         footer={
           editable ?
             () => <TagBuildModal
