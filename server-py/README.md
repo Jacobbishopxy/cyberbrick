@@ -1,6 +1,7 @@
 # Cyber Brick Server
 
-## TODO
+## Prerequisites
 
-1. database manipulations
-1. production mode
+```sh
+sudo apt-get install libmysqlclient-dev libpq-dev
+```

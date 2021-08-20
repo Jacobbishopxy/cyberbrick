@@ -16,13 +16,19 @@
 
 ## Prerequisites
 
-### Server [Prerequisites]
+### Server Py [Prerequisites]
 
 1. [Flask](https://palletsprojects.com/p/flask/) Web framework
 
 2. [SqlAlchemy](https://www.sqlalchemy.org/) Database ORM
 
 3. [Pandas](https://pandas.pydata.org/) Data Analysis Library
+
+### Server Go [Prerequisites]
+
+1. [Mux]
+
+1. [Mongo]
 
 ### Web [Prerequisites]
 
@@ -42,15 +48,23 @@
 
 Use PostgreSql as default project database (storing config etc.)
 
-version:
+- PostgreSql = 10.0, docker commands:
 
-- PostgreSql = 10.0
+  1. `cd docker/docker-database`
 
-docker commands:
+  1. `bash start.sh`
 
-1. `cd docker/docker-database`
-2. `bash start.sh`
-3. `bash create_database.sh`
+  1. `bash create_database.sh`
+
+Use MongoDB for default non-schema data persistence
+
+- MongoDB, docker commands:
+
+  1. `cd docker-mongodb`
+
+  1. `bash start.sh`
+
+  1. `bash create_unique_index.sh`
 
 ### Server [Environment]
 
@@ -92,9 +106,9 @@ todo
 
 ## Start Project
 
-### Server [Start Project]
+### Server Py [Start Project]
 
-Please `cd server` first then do the following commands.
+Please `cd server-py` first then run the following commands.
 
 1. development:
 
@@ -129,6 +143,20 @@ Please `cd server` first then do the following commands.
      bash setup.sh
      bash start.sh
      ```
+
+### Server Go [Start Project]
+
+Please `cd server-go` first then run the following commands.
+
+1. development:
+
+   - `go mod tidy` download deps
+
+   - `go run .` start server
+
+1. production (docker):
+
+   TODO
 
 ### Web [Start Project]
 
