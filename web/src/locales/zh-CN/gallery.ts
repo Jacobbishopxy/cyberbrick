@@ -64,6 +64,7 @@ export default {
   "gallery.component.general59": "升序",
   "gallery.component.general60": "降序",
   "gallery.component.general61": "类型",
+  "gallery.component.general62": "标题",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -217,6 +218,8 @@ export default {
   "gallery.component.module-panel.field-header.4": "居中",
   "gallery.component.module-panel.field-header.5": "右对齐",
   "gallery.component.module-panel.field-header.6": "输入分隔标题",
+
+  "gallery.component.module-panel.description": "点此编辑备注",
 
   "gallery.dashboard.copy-template1": "拷贝界面成功!",
   "gallery.dashboard.copy-template2": "拷贝界面失败!",

@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from "react"
 import { Button, Col, Input, message, Row } from "antd"
-import { FormattedMessage } from "umi"
+import { FormattedMessage, useIntl } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { HeaderController } from "./HeaderController"
@@ -30,6 +30,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
   const [title, setTitle] = useState<string | undefined>(props.title)
+  const intl = useIntl()
 
   useEffect(() => setTitle(props.title), [props.title])
 
@@ -49,7 +50,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     if (props.type === DataType.ElementType.FieldHeader) return <></>
     if (titleEditable)
       return <Input
-        placeholder="Title"
+        placeholder={intl.formatMessage({ id: "gallery.component.general62" })}
         size="small"
         allowClear
         style={{ width: 200 }}

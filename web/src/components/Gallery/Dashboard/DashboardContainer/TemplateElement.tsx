@@ -23,7 +23,7 @@ export interface ContainerElementProps {
   fetchTableListFn: (id: string) => Promise<string[]>
   fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
-
+  updateDescription: (ele: string) => void
   // onTEfetchContent: (eleId: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
 }
 
@@ -97,6 +97,7 @@ export const TemplateElement =
           headName={props.element.name}
           timeSeries={props.timeSeries}
           elementType={props.element.type}
+          description={props.element.description}
           content={content}
           fetchStorages={props.fetchStoragesFn}
           fetchTableList={props.fetchTableListFn}
@@ -111,6 +112,7 @@ export const TemplateElement =
           settable={!!eleId}
           isLoading={isLoading}
 
+          updateDescription={props.updateDescription}
           fetchContentFn={props.fetchContentFn}
           fetchContentDatesFn={props.fetchContentDatesFn}
           isNested={props.isNested}
