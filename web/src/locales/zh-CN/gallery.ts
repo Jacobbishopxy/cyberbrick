@@ -126,6 +126,10 @@ export default {
   "gallery.component.dashboard-controller1": "保存现有布局以及内容？",
   "gallery.component.dashboard-controller2": "模块和内容保存成功！",
 
+  "gallery.component.dashboard-container1": "请选择一个仪表板",
+  "gallery.component.dashboard-container2": "界面列表为空，请前往",
+  "gallery.component.dashboard-container3": "创建界面",
+
 
   "gallery.component.dashboard-config-table1": "仪表板配置",
   "gallery.component.dashboard-config-table2": "新建界面",

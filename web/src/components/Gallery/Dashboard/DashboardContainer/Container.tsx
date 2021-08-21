@@ -3,13 +3,15 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
-import { Tabs } from "antd"
+import { Empty, Tabs } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
 import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
+import { FormattedMessage } from "@/.umi/plugin-locale/localeExports"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
-
+const routeConfiguration = "/gallery/configuration"
 export interface ContainerProps {
   initialSelected?: string[] | undefined
 
@@ -180,6 +182,31 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     return <></>
   }
 
+  const DisplayTabPane = templates.map(t =>
+    <Tabs.TabPane
+      tab={t.name}
+      key={t.id}
+    >
+      {genPane(t)}
+    </Tabs.TabPane>
+  )
+
+  const EmptyPane = <Empty
+    image={null}
+    description={
+      <span>
+        <ExclamationCircleOutlined />
+        <FormattedMessage id="gallery.component.dashboard-container2" />
+        <a href={`${routeConfiguration}`}>
+          <FormattedMessage id="gallery.component.dashboard-config-table1" /></a>
+        <FormattedMessage id="gallery.component.dashboard-container3" />
+
+      </span>
+    }
+  >
+
+  </Empty>
+
   return useMemo(
     () => {
       return (
@@ -189,14 +216,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
           destroyInactiveTabPane
         >
           {
-            templates.map(t =>
-              <Tabs.TabPane
-                tab={t.name}
-                key={t.id}
-              >
-                {genPane(t)}
-              </Tabs.TabPane>
-            )
+            templates.length ? DisplayTabPane : EmptyPane
           }
         </Tabs>
       )
