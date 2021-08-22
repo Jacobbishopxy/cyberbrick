@@ -1,18 +1,18 @@
-package controller
+package application
 
 import (
 	"context"
 	"errors"
 	"fmt"
 	"log"
-	"server-go/models"
+	"server-go/domain"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Insert multiple Content in the DB; return the generated objectId; nilObjectId if fails
-func (api *MongoApi) insertOneContent(collection *mongo.Collection, content *models.Content) (primitive.ObjectID, error) {
+func (api *MongoApi) InsertOneContent(collection *mongo.Collection, content *domain.Content) (primitive.ObjectID, error) {
 	//only insert when content is validated
 	if !contentValidation(content) {
 		fmt.Println("date or elementId is undefined!")
@@ -22,7 +22,7 @@ func (api *MongoApi) insertOneContent(collection *mongo.Collection, content *mod
 	if err != nil {
 		log.Println(err)
 		//insert error, try update
-		return api.updateById(collection, content.Id, content)
+		return api.UpdateById(collection, content.Id, content)
 		// return primitive.NilObjectID, err
 	}
 	fmt.Println("Inserted a single Record with id", insertResult.InsertedID)
@@ -35,7 +35,7 @@ func (api *MongoApi) insertOneContent(collection *mongo.Collection, content *mod
 }
 
 //TODO: how to match eleId and date with generated id?
-func (api *MongoApi) insertManyContent(collection *mongo.Collection, contents *[]models.Content) ([]interface{}, error) {
+func (api *MongoApi) InsertManyContent(collection *mongo.Collection, contents *[]domain.Content) ([]interface{}, error) {
 	//validation
 	var ctSlice []interface{}
 	for _, ct := range *contents {
