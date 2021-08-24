@@ -30,8 +30,7 @@ func main() {
 	mongoApp := application.NewMongoApp()
 	mongoHandler := interfaces.NewMongoApiHandler(*mongoApp, collections)
 	r := mongoHandler.Router()
-	// fs := http.FileServer(http.Dir("build"))
-	// http.Handle("/", fs)
+
 	fmt.Println("Starting server on the port 8089...")
 	log.Fatal(http.ListenAndServe(port, r))
 }

@@ -60,7 +60,7 @@ func (mh *MongoApiHandler) GetContent(w http.ResponseWriter, r *http.Request) {
 		if hasDate {
 			singlePayload, _ = mh.mongoApp.GetContentByElementIdAndDate(collection, elementId[0], date[0])
 		} else {
-			singlePayload, _ = mh.mongoApp.GetContentByElementId(collection, elementId[0])
+			singlePayload, _ = mh.mongoApp.GetLatestContentByElementId(collection, elementId[0])
 		}
 		json.NewEncoder(w).Encode(singlePayload)
 		//get by Type

@@ -44,11 +44,12 @@ func parseRequestContentList(r *http.Request) ([]domain.Content, error) {
 	return body, nil
 }
 
-func parseRequestBody(r *http.Request) domain.Request {
-	var body domain.Request
-	err := json.NewDecoder(r.Body).Decode(&body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return body
-}
+//@depreciated
+// func parseRequestBody(r *http.Request) domain.Request {
+// 	var body domain.Request
+// 	err := json.NewDecoder(r.Body).Decode(&body)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	return body
+// }

@@ -10,7 +10,6 @@ export interface ContentMongo {
     elementId?: string
     category?: string
     date: string
-    title: string
     data: Record<string, any>
     config?: Record<string, any>
 }
@@ -95,7 +94,6 @@ export class MongoService {
             date: ct.date ? moment(ct.date, moment.defaultFormat).format()
                 : moment().format(), //make sure date is always defined
             data: ct.data,
-            title: ct.title,
             category: ct.category?.name,
             config: ct.config
         }
@@ -118,7 +116,6 @@ export class MongoService {
                         elementId: ele.id,
                         date: ct.date ? ct.date : moment().toString(), //make sure date is always defined
                         data: ct.data,
-                        title: ct.title,
                         category: ct.category.name,
                         config: ct.config
                     }

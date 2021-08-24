@@ -3,7 +3,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Modal, Skeleton } from "antd"
+import { Col, Modal, Row, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
 import _, { floor } from "lodash"
@@ -225,8 +225,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
   return (
     <div className={style()} {...attachId()}>
       {genHeader}
-      {genDescription}
-      {genContext}
+      <Row style={{ marginInline: 0 }}>
+        <Col span={24}>{genDescription}</Col>
+        <Col>{genContext}</Col>
+      </Row>
+
       {displayFooter()}
     </div>
   )

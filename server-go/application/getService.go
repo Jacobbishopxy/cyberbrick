@@ -32,7 +32,7 @@ func (api *MongoApi) GetContentByMongoId(collection *mongo.Collection, mongoId s
 	}
 	return result, nil
 }
-func (api *MongoApi) GetContentByElementId(collection *mongo.Collection, id string) (domain.Content, error) {
+func (api *MongoApi) GetLatestContentByElementId(collection *mongo.Collection, id string) (domain.Content, error) {
 	findOptions := options.Find()
 	findOptions.SetSort(bson.D{{Key: date, Value: -1}})
 	findOptions.SetLimit(1)
