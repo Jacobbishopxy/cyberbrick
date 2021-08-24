@@ -3,7 +3,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Col, Modal, Row, Skeleton } from "antd"
+import { Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
 import _, { floor } from "lodash"

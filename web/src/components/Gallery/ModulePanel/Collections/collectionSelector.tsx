@@ -21,7 +21,6 @@ import {
   Pie,
 } from "./graph"
 
-import styles from "../Panel/Common.less"
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
 import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
