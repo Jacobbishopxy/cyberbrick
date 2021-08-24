@@ -178,7 +178,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
           active paragraph={{ rows: rows }} />
       }
 
-      const h = props.contentHeight ? props.contentHeight - 50 : undefined
+      let h = props.contentHeight ? props.contentHeight - 80 : undefined
+      h = isTemplate && h ? h - 60 : h
       return rf({
         content,
         fetchStorages: props.fetchStorages,
@@ -188,7 +189,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         contentHeight: h,
         updateContent: updateModuleContent,
         forwardedRef: moduleFwRef,
-
+        styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
         fetchContentFn: props.fetchContentFn,
         fetchContentDatesFn: props.fetchContentDatesFn
       })
@@ -225,11 +226,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
   return (
     <div className={style()} {...attachId()}>
       {genHeader}
-      <Row style={{ marginInline: 0 }}>
-        <Col span={24}>{genDescription}</Col>
-        <Col>{genContext}</Col>
-      </Row>
-
+      {genDescription}
+      {genContext}
       {displayFooter()}
     </div>
   )
