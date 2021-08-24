@@ -1,4 +1,4 @@
-package controller
+package application
 
 import (
 	"context"
@@ -11,10 +11,10 @@ import (
 )
 
 // delete one Content from the DB, delete by ID
-func (api *MongoApi) deleteOneContent(collection *mongo.Collection, contentId string) (succeed bool, err error) {
+func (api *MongoApi) DeleteOneContent(collection *mongo.Collection, contentId string) (succeed bool, err error) {
 	// fmt.Println(contentId)
 	id, _ := primitive.ObjectIDFromHex(contentId)
-	filter := bson.M{"_id": id}
+	filter := bson.M{idKey: id}
 	var d *mongo.DeleteResult
 	d, err = collection.DeleteOne(context.Background(), filter)
 	if err != nil {
@@ -28,9 +28,9 @@ func (api *MongoApi) deleteOneContent(collection *mongo.Collection, contentId st
 }
 
 // delete all the Contents from the DB
-func (api *MongoApi) deleteAllContent(collection *mongo.Collection, ids []string) {
+func (api *MongoApi) DeleteAllContent(collection *mongo.Collection, ids []string) {
 	for i := 0; i < len(ids); i++ {
-		api.deleteOneContent(collection, ids[i])
+		api.DeleteOneContent(collection, ids[i])
 	}
 
 	// d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)

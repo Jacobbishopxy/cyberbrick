@@ -4,6 +4,12 @@
   padding: 0 5px 0 5px;
 }
 
+.templateContentPanel {
+  width: 100%;
+  height: 70%;
+  padding: 0 5px 0 5px;
+}
+
 .modulePanelFooter {
   display: flex;
   justify-content: space-between;
@@ -29,6 +35,8 @@
 }
 
 .templatePanel {
+  width: 100%;
+  padding: 0 5px 0 5px;
   height: 100%;
    // source: https://www.w3cplus.com/css3/css-secrets/striped-backgrounds.html © w3cplus.com
   background: linear-gradient(45deg, #fff 25%, #f1f2f6 0, #f1f2f6 50%, #fff 0, #fff 75%, #f1f2f6 0); background-size: 30px 30px;
@@ -49,32 +57,3 @@
 .loadinSkeleton {
   margin-inline: 5%;
 }
-
-// .templatePanel {
-//   height:100%;
-//   margin-top: 40px auto;
-//   box-shadow: 1px 1px 8px grey;
-//   position: relative;
-//   overflow: hidden;
-// }
-// .templatePanel:after {
-//   --lineStart: 4%;
-//   --lineEnd: 96%;
-//   --bgStart: 25%;
-//   --bgEnd: 75%;
-//   --color: #ddd;
-//   content: '';
-//   position: absolute;
-//   left: 0%;
-//   top: 5%;
-//   width: 100%;
-//   height: 100%;
-  
-//   background-size: 15px 15px;
-//   background-image: 
-//     /* 前两个渐变是为了防止 rotate 之后的分割线 */
-//     linear-gradient( 0deg, var(--color) var(--lineStart), transparent var(--lineStart), transparent var(--lineEnd), var(--color) var(--lineEnd) ),
-//     linear-gradient( -90deg, var(--color) var(--lineStart), transparent var(--lineStart), transparent var(--lineEnd), var(--color) var(--lineEnd) ),
-//     linear-gradient( 45deg, var(--color) var(--bgStart), transparent var(--bgStart), transparent var(--bgEnd), var(--color) var(--bgEnd) ),
-//     linear-gradient( -45deg, var(--color) var(--bgStart), transparent var(--bgStart), transparent var(--bgEnd), var(--color) var(--bgEnd) );
-// }

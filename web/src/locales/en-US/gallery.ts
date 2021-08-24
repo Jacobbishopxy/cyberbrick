@@ -126,6 +126,11 @@ export default {
   "gallery.component.dashboard-controller1": "Save current layout and contents?",
   "gallery.component.dashboard-controller2": "Template & contents saving successfully!",
 
+  "gallery.component.dashboard-container1": "Please select a dashboard to view!",
+  "gallery.component.dashboard-container2": "Template List is empty. Please go to ",
+  "gallery.component.dashboard-container3": "to create a new template.",
+
+
   "gallery.component.dashboard-config-table1": "Dashboard configuration",
   "gallery.component.dashboard-config-table2": "New template",
   "gallery.component.dashboard-config-table3": "Modify template",

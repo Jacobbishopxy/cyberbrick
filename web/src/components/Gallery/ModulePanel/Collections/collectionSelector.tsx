@@ -21,7 +21,6 @@ import {
   Pie,
 } from "./graph"
 
-import styles from "../Panel/Common.less"
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
 import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
@@ -35,7 +34,7 @@ export interface ModuleSelectorProps {
   contentHeight?: number
   updateContent: (c: DataType.Content) => void
   forwardedRef: React.Ref<ConvertFwRef>
-
+  styling: string
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 }
@@ -47,7 +46,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -56,7 +55,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
       fetchQueryData={props.fetchQueryData}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -64,7 +63,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -76,7 +75,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -84,7 +83,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -92,7 +91,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -104,7 +103,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -116,7 +115,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -128,7 +127,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -140,7 +139,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -152,7 +151,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -164,7 +163,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
 
@@ -176,7 +175,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       fetchQueryData={props.fetchQueryData}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
 
       fetchContentFn={props.fetchContentFn}
@@ -187,7 +186,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       content={props.content}
       contentHeight={props.contentHeight}
       updateContent={props.updateContent}
-      styling={styles.contentPanel}
+      styling={props.styling}
       ref={props.forwardedRef}
     />
     switch (moduleType) {
