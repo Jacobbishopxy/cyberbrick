@@ -1,6 +1,5 @@
 
 instruction:
-	@echo "enter 'make docker' to start both web and server in docker"
 	@echo "enter 'make dev-nodebug' to start project in development no-debug mode"
 	@echo "enter 'make prod' to start app in production mode"
 	@echo "enter 'make prod-noset' to start app in production mode without installing dependencies"
@@ -10,8 +9,7 @@ instruction:
 .PHONY: setup clean checkPID \
 dev-nodebug prod \
 instruction web-setup \
-run-docker nodeImage setDepend buildContainer webStart \
-ServerImage ServerSetDepend serverStart 
+
 
 
 #set up environment
@@ -42,12 +40,15 @@ docker-go:
 docker-mongodb:
 	cd docker/docker-mongodb && chmod +x start.sh && bash start.sh
 
-docker-biz-server-setup: docker-go docker-mongodb
+docker-biz-server-base: docker-go docker-mongodb
+	cd docker/docker-mongodb && ./create_unique_index.sh
 	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
+	
+docker-biz-server-setup:
 	cd docker/docker-biz-server && ./setup.sh
 
 docker-biz-server-start:
-	cd docker/docker-mongodb && ./create_unique_index.sh
+	
 	cd docker/docker-biz-server && ./start.sh
 
 #The following are for docker production, not working because of unmatched dependencies
