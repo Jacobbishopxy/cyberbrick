@@ -19,6 +19,7 @@ const CustomToolbar = () => (
       <option value="lucida">Lucida</option>
     </select>
     <select className="ql-size">
+      <option value="14px">14px</option>
       <option value="16px">16px</option>
       <option value="24px">24px</option>
       <option value="32px">32px</option>
@@ -50,6 +51,7 @@ const CustomToolbar = () => (
 
 const Size = Quill.import('attributors/style/size')
 Size.whitelist = [
+  "14px",
   "16px",
   "24px",
   "32px",
