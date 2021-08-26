@@ -7,14 +7,14 @@ declare namespace API {
     signature?: string
     title?: string
     group?: string
-    tags?: {key?: string; label?: string}[]
+    tags?: { key?: string; label?: string }[]
     notifyCount?: number
     unreadCount?: number
     country?: string
     access?: string
     geographic?: {
-      province?: {label?: string; key?: string}
-      city?: {label?: string; key?: string}
+      province?: { label?: string; key?: string }
+      city?: { label?: string; key?: string }
     }
     address?: string
     phone?: string
@@ -95,5 +95,30 @@ declare namespace API {
     description?: string
     type?: NoticeIconItemType
   }
+
+  interface Invitation {
+    nickname: string,
+    email: string,
+    password: string,
+  }
+  interface Registration {
+    email: string,
+  }
+
+  interface Login {
+    email: string,
+    password: string,
+  }
+
+  interface LoginCheck {
+    data: LoginCheckData
+  }
+
+  interface LoginCheckData {
+    email: string,
+    role: string,
+    nickname: string,
+  }
 }
+
 
