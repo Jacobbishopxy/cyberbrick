@@ -1,5 +1,5 @@
-import * as auth from "../services/auth"
-import { Registration } from "../components/Login"
+import * as auth from "@/services/auth"
+import { Registration } from "@/components/Login"
 import { useState } from "react"
 
 // TODO: API from services
@@ -7,7 +7,7 @@ export const RegisterPage = () => {
     const [registerSuccess, setRegisterSuccess] = useState(false)
     const onRegister = async (value: API.Invitation) => {
         return auth.sendInvitation({ email: value.email, nickname: value.nickname, password: value.password })
-            .then(_ => setRegisterSuccess(true))
+            .then((_: any) => setRegisterSuccess(true))
     }
     const onRegisterFailed = (errorInfo: any) => {
         // console.log('Failed:', errorInfo)

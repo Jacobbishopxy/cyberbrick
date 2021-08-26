@@ -34,13 +34,18 @@
   // box-shadow: 1px 1px 2px #bfbfbf, -1px -1px 2px #cacaca;
 }
 
-.templatePanel {
+.templateNestedPanel {
   width: 100%;
   padding: 0 5px 0 5px;
   height: 100%;
    // source: https://www.w3cplus.com/css3/css-secrets/striped-backgrounds.html © w3cplus.com
-  background: linear-gradient(45deg, #fff 25%, #f1f2f6 0, #f1f2f6 50%, #fff 0, #fff 75%, #f1f2f6 0); background-size: 30px 30px;
+  background: transparent;
   border-radius: 5px;
+}
+
+.templatePanel {
+  .templateNestedPanel;
+  background: linear-gradient(45deg, #fff 25%, #f1f2f6 0, #f1f2f6 50%, #fff 0, #fff 75%, #f1f2f6 0); background-size: 30px 30px;
   box-shadow: 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
 }
 

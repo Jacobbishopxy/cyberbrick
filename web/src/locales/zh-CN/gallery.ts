@@ -156,6 +156,7 @@ export default {
   "gallery.component.module-panel.collections.file-view5": "数据修整",
 
   "gallery.component.module-panel.graph.utils.common1": "构建过程",
+  "gallery.component.module-panel.graph.utils.common2": "保存备注",
 
   "gallery.component.module-panel.graph.utils.display-form1": "选择一个列作为X轴",
   "gallery.component.module-panel.graph.utils.display-form2": "数值轴",

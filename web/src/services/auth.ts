@@ -1,22 +1,27 @@
-import axios from "axios"
+
+import { request } from "umi"
 
 
+const base = `/gateway`
 export const sendInvitation = async (param: API.Invitation): Promise<void> => {
-    return axios.post("/api/auth/invitation", param)
+    return request(`${base}/api/auth/invitation`, {
+        method: "post",
+        data: param
+    })
 }
 
 export const register = async (id: string): Promise<void> => {
-    return axios.get(`/api/auth/register/${id}`)
+    return request(`${base}/api/auth/register/${id}`, { method: "post", })
 }
 
 export const login = async (param: API.Login): Promise<void> => {
-    return axios.post("/api/auth", param, { withCredentials: true })
+    return request(`${base}/api/auth`, { credentials: 'include', data: param })
 }
 
 export const check = async (): Promise<API.LoginCheck> => {
-    return axios.get("/api/auth", { withCredentials: true })
+    return request(`${base}/api/auth`, { credentials: 'include' })
 }
 
 export const logout = async (): Promise<void> => {
-    return axios.delete("/api/auth", { withCredentials: true })
+    return request(`${base}/api/auth`, { credentials: 'include', method: "delete" })
 }

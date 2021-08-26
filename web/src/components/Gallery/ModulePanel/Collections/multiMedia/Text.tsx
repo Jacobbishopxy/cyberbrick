@@ -39,7 +39,7 @@ const PresenterField = (props: ModulePresenterField) => {
   return <TextEditorPresenter
     content={props.content?.data?.text || ""}
     styling={props.styling}
-    style={{ height: props.contentHeight }}
+  // styling has taken care of height! style={{ height: props.contentHeight }}
   />
 }
 

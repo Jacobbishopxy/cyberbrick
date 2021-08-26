@@ -156,6 +156,7 @@ export default {
   "gallery.component.module-panel.collections.file-view5": "Data trim",
 
   "gallery.component.module-panel.graph.utils.common1": "Setup process",
+  "gallery.component.module-panel.graph.utils.common2": "Submit Description",
 
   "gallery.component.module-panel.graph.utils.display-form1": "Select a column for xAxis",
   "gallery.component.module-panel.graph.utils.display-form2": "Value",

@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react"
-import * as auth from "../services/auth"
+
+import { logout } from "@/services/auth"
+
 interface LogoutPageProps {
-    setLogined: React.Dispatch<React.SetStateAction<boolean>>
+    setLoginState: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 export const LogoutPage = (props: LogoutPageProps) => {
+
+    const { setLoginState } = props
+
     const [succeeded, setSucceeded] = useState(false)
 
     useEffect(() => {
-        auth.logout().then(_ => {
-            props.setLogined(false)
+        logout().then(_ => {
+            setLoginState(false)
             setSucceeded(true)
-        }
-        )
+        })
+    }, [setLoginState])
 
-    }, [])
     return succeeded ?
         <>
             You've successfully logged out!

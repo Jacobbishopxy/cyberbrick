@@ -1,18 +1,18 @@
-import { Modal } from "antd"
 import { useState } from "react"
 import { Redirect } from "react-router-dom"
-import { Login } from "../components"
-import * as auth from "../services/auth"
+
+import { Login } from "@/components/Login"
+import { login } from "@/services/auth"
 interface LoginPageProps {
-    setLogined: React.Dispatch<React.SetStateAction<boolean>>
+    setLoginState: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const LoginPage = (props: LoginPageProps) => {
     const [succeeded, setSucceeded] = useState(false)
 
     const onFinish = async (value: API.Login) => {
-        return auth.login({ email: value.email, password: value.password })
+        return login({ email: value.email, password: value.password })
             .then(_ => {
-                props.setLogined(true)
+                props.setLoginState(true)
                 setSucceeded(true)
             })
     }

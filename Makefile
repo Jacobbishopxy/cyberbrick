@@ -5,12 +5,15 @@ instruction:
 	@echo "enter 'make prod-noset' to start app in production mode without installing dependencies"
 	@echo "enter 'make clean' to clean the PID and unbind ports"
 	@echo "enter 'make checkPID' to check your running command's PID"
+	@echo "enter 'make api-gateway' to start golang api-gateway service"
 
 .PHONY: setup clean checkPID \
 dev-nodebug prod \
 instruction web-setup \
+api-gateway
 
-
+LURA_PATH=../../resources/lura.json
+UA_PATH=ubiquitous-alchemy
 
 #set up environment
 setup: web-setup
@@ -51,6 +54,14 @@ docker-biz-server-start:
 	
 	cd docker/docker-biz-server && ./start.sh
 
+api-gateway:
+	cd ${UA_PATH}/ubiquitous-api-gateway && go run main.go -c ${LURA_PATH}
+
+api-gateway-prod:
+	cd ${UA_PATH}/ubiquitous-api-gateway && ./ubiquitous-api-gateway -c ${LURA_PATH}
+
+auth-service:
+	cd ${UA_PATH}/ubiquitous-auth-server && cargo run
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker

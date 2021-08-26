@@ -33,7 +33,8 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
         setValue(value);
     };
 
-    const descriptionStyle = { paddingLeft: 10, paddingRight: 10, height: 100, overflow: "auto" }
+    const defaultStyle = { paddingLeft: 10, paddingRight: 10, height: "20%", maxHeight: 100 }
+    const descriptionStyle = { ...defaultStyle, overflow: "auto" }
 
     const editableyDescription = <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.description" })}>
         <Row onClick={() => setEditable(true)}
@@ -49,16 +50,17 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
     return (
         props.editable ?
             editable ?
-                <Row style={{ paddingLeft: 10, paddingRight: 10, height: 100 }}>
+                <Row style={defaultStyle}>
                     <Col span={24}>
                         <TextArea value={value}
                             style={{ border: "2px solid #cacaca" }}
-                            autoSize={{ minRows: 2, maxRows: 2 }}
+                            autoSize={{ minRows: 1, maxRows: 2 }}
                             onChange={onChange}
                             placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })}
                         /></Col>
                     <Col span={24}> <Button style={{ paddingTop: 5 }} onClick={onSave} block type="primary">
-                        Submit Description
+
+                        {intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common2" })}
                     </Button></Col>
                 </Row>
                 : editableyDescription

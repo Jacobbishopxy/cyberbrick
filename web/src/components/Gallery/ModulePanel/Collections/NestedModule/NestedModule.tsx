@@ -77,7 +77,7 @@ const EditorField = (props: ModuleEditorField) => {
                 editable={true}
                 styling={props.styling}
                 NSMid={NSMid}
-
+                contentHeight={props.contentHeight}
                 fetchContentFn={props.fetchContentFn!}
                 fetchContentDatesFn={props.fetchContentDatesFn!}
             />
@@ -133,7 +133,7 @@ const PresenterField = (props: ModulePresenterField) => {
                 editable={false}
                 styling={props.styling}
                 NSMid={NSMid}
-
+                contentHeight={props.contentHeight}
                 fetchStoragesFn={() => Promise.resolve([])}
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
