@@ -1,7 +1,9 @@
 import * as auth from "@/services/auth"
 import { Registration } from "@/components/Login"
 import { useState } from "react"
-
+import { Link, SelectLang } from "umi"
+import Footer from "@/components/Footer"
+import styles from './index.less'
 // TODO: API from services
 export const RegisterPage = () => {
     const [registerSuccess, setRegisterSuccess] = useState(false)
@@ -17,9 +19,29 @@ export const RegisterPage = () => {
         onFinishFailed={onRegisterFailed}
     />
 
-    const registerSuccessPage = <>
+
+    const registerSuccessPage = <div className={styles.info}>
         Register Succeed! Please check your email to confirm the invitation!
-    </>
-    return (registerSuccess ? registerSuccessPage : register)
+    </div>
+
+    return <div className={styles.container}>
+        <div className={styles.lang}>{SelectLang && <SelectLang />}</div>
+        <div className={styles.content}>
+            <div className={styles.top}>
+                <div className={styles.header}>
+                    <Link to="/">
+                        <span className={styles.title}>Registration</span>
+                    </Link>
+                </div>
+                <div className={styles.desc}>@Infore</div>
+            </div>
+
+            <div className={styles.main}>
+
+            </div>
+            {registerSuccess ? registerSuccessPage : register}
+        </div>
+        <Footer />
+    </div>
 
 }

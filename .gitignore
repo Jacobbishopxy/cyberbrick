@@ -51,7 +51,7 @@ data
 resources/config.json
 resources/go.env
 resources/mongo.connection.env
-resources/ua.env
+resources/ua.auth.env
 test
 
 *.pyc

@@ -1,7 +1,8 @@
-import { Form, Input, Button, Checkbox } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
 import './Login.less'
+// import { useIntl } from 'umi'
 
 
 // TODO:
@@ -13,7 +14,7 @@ export interface LoginProps {
 }
 
 export const Login = (props: LoginProps) => {
-
+	// const intl = useIntl()
 	return (
 		<Form
 			name="normal-login"
@@ -42,7 +43,7 @@ export const Login = (props: LoginProps) => {
 				/>
 			</Form.Item>
 
-			<Form.Item
+			{/* <Form.Item
 				wrapperCol={{ offset: 8, span: 8 }}
 			>
 				<Form.Item name="remember" valuePropName="checked" noStyle>
@@ -52,7 +53,7 @@ export const Login = (props: LoginProps) => {
 				<a href={props.forgetPasswordHref} className="login-form-forgot">
 					Forgot password
 				</a>
-			</Form.Item>
+			</Form.Item> */}
 
 			<Form.Item
 				wrapperCol={{ offset: 8, span: 8 }}

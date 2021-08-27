@@ -13,6 +13,7 @@ instruction web-setup \
 api-gateway
 
 LURA_PATH=../../resources/lura.json
+AUTH_ENV_PATH=../../resources/ua.auth.env
 UA_PATH=ubiquitous-alchemy
 
 #set up environment
@@ -61,7 +62,7 @@ api-gateway-prod:
 	cd ${UA_PATH}/ubiquitous-api-gateway && ./ubiquitous-api-gateway -c ${LURA_PATH}
 
 auth-service:
-	cd ${UA_PATH}/ubiquitous-auth-server && cargo run
+	cd ${UA_PATH}/ubiquitous-auth-server && cargo run -- ${AUTH_ENV_PATH}
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker

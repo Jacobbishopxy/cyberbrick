@@ -67,7 +67,7 @@
       ]
     },
     {
-      "endpoint": "/api/cfg/conn",
+      "endpoint": "/gateway/api/cfg/conn",
       "method": "DELETE",
       "querystring_params": [
         "db_id"
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "endpoint": "/api/auth/invitation",
+      "endpoint": "/gateway/api/auth/invitation",
       "method": "POST",
       "output_encoding": "no-op",
       "backend": [
@@ -100,7 +100,7 @@
       ]
     },
     {
-      "endpoint": "/api/auth/register/{id}",
+      "endpoint": "/gateway/api/auth/register/{id}",
       "method": "GET",
       "output_encoding": "no-op",
       "backend": [
@@ -114,7 +114,7 @@
       ]
     },
     {
-      "endpoint": "/api/auth",
+      "endpoint": "/gateway/api/auth",
       "method": "POST",
       "output_encoding": "no-op",
       "backend": [
@@ -128,7 +128,7 @@
       ]
     },
     {
-      "endpoint": "/api/auth",
+      "endpoint": "/gateway/api/auth",
       "method": "GET",
       "output_encoding": "no-op",
       "headers_to_pass": [
@@ -145,7 +145,7 @@
       ]
     },
     {
-      "endpoint": "/api/auth",
+      "endpoint": "/gateway/api/auth",
       "method": "DELETE",
       "output_encoding": "no-op",
       "headers_to_pass": [

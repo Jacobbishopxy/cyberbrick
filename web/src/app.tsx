@@ -1,19 +1,21 @@
 
-import type {Settings as LayoutSettings} from '@ant-design/pro-layout';
-import {PageLoading} from '@ant-design/pro-layout';
-import {notification} from 'antd';
-import type {RequestConfig, RunTimeLayoutConfig} from 'umi';
-import {history, Link} from 'umi';
+import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
+import { PageLoading } from '@ant-design/pro-layout';
+import { notification } from 'antd';
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
+import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import type {ResponseError} from 'umi-request';
+import type { ResponseError } from 'umi-request';
 // import {currentUser as queryCurrentUser} from './services/ant-design-pro/api';
-import {BookOutlined, LinkOutlined} from '@ant-design/icons';
+import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 
-import {queryCurrent} from './services/user'
+import { queryCurrent } from './services/user'
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const registerPath = '/user/registration';
+const invitationPath = '/user/invitation/register';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -31,14 +33,20 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrent();
-      return currentUser;
+      const user = {
+        name: currentUser.nickname, email: currentUser.email, access: currentUser.role,
+        avatar: '/api/misc/random-unicorn'
+      }
+      return user;
     } catch (error) {
       history.push(loginPath);
     }
     return undefined;
   };
   // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
+  if (history.location.pathname !== loginPath
+    && history.location.pathname !== registerPath
+    && history.location.pathname !== invitationPath) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -53,7 +61,7 @@ export async function getInitialState(): Promise<{
 }
 
 // https://umijs.org/zh-CN/plugins/plugin-layout
-export const layout: RunTimeLayoutConfig = ({initialState}) => {
+export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
@@ -62,9 +70,11 @@ export const layout: RunTimeLayoutConfig = ({initialState}) => {
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const {location} = history;
+      const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser && location.pathname !== loginPath
+        && location.pathname !== registerPath
+        && location.pathname !== invitationPath) {
         history.push(loginPath);
       }
     },
@@ -84,6 +94,7 @@ export const layout: RunTimeLayoutConfig = ({initialState}) => {
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
+    ...initialState?.currentUser
   };
 };
 
@@ -110,10 +121,10 @@ const codeMessage = {
  * @see https://beta-pro.ant.design/docs/request-cn
  */
 const errorHandler = (error: ResponseError) => {
-  const {response} = error;
+  const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const {status, url} = response;
+    const { status, url } = response;
 
     notification.error({
       message: `请求错误 ${status}: ${url}`,

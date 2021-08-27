@@ -11,14 +11,14 @@ export const sendInvitation = async (param: API.Invitation): Promise<void> => {
 }
 
 export const register = async (id: string): Promise<void> => {
-    return request(`${base}/api/auth/register/${id}`, { method: "post", })
+    return request(`${base}/api/auth/register/${id}`)
 }
 
-export const login = async (param: API.Login): Promise<void> => {
-    return request(`${base}/api/auth`, { credentials: 'include', data: param })
+export const login = async (param: API.Login) => {
+    return request(`${base}/api/auth`, { method: "post", credentials: 'include', data: param })
 }
 
-export const check = async (): Promise<API.LoginCheck> => {
+export const check = async (): Promise<API.LoginCheckData> => {
     return request(`${base}/api/auth`, { credentials: 'include' })
 }
 
