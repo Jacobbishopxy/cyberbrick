@@ -1,3 +1,3 @@
 [submodule "ubiquitous-alchemy"]
 	path = ubiquitous-alchemy
-	url = https://github.com/Jacobbishopxy/ubiquitous-alchemy.git
+	url = git@github.com:Jacobbishopxy/ubiquitous-alchemy.git
