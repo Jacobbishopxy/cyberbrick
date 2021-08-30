@@ -5,7 +5,15 @@ instruction:
 	@echo "enter 'make prod-noset' to start app in production mode without installing dependencies"
 	@echo "enter 'make clean' to clean the PID and unbind ports"
 	@echo "enter 'make checkPID' to check your running command's PID"
-	@echo "enter 'make api-gateway' to start golang api-gateway service"
+	@echo "enter 'make ua-help' to see the instruction for making ubiquitous-alchemy submodule"
+
+ua-help:
+	@echo "enter 'make submodule-init' to initialize submodule for the first time"
+	@echo "enter 'make submodule-update' to update submodule"
+	@echo "enter 'make docker-auth-base' to deploy auth-server base image"
+	@echo "enter 'make docker-auth' to deploy auth-server app image"
+	@echo "enter 'make docker-api-gateway-base' to deploy api-gateway base image"
+	@echo "enter 'make docker-api-gateway' to deploy api-gatewayr app image"
 
 .PHONY: setup clean checkPID \
 dev-nodebug prod \
@@ -55,14 +63,57 @@ docker-biz-server-start:
 	
 	cd docker/docker-biz-server && ./start.sh
 
+# the following are targets for submodule ubiquitous-alchemy
+# initialize or update submodule
+submodule-init:
+	git submodule init
+	git submodule update
+	cd ${UA_PATH}/resources && cp auth.template.env auth.env && cp go.template.env go.env
+
+submodule-update:
+	cd ${UA_PATH} && git pull origin main
+
+# CAUTIOUS! May override your current env config
+env-setup:
+	cp ./resources/lura.json ${UA_PATH}/resources/lura.json
+	cp ./resources/ua.auth.env ${UA_PATH}/resources/auth.env
+
+# for dev mode, running api-gateway
 api-gateway:
 	cd ${UA_PATH}/ubiquitous-api-gateway && go run main.go -c ${LURA_PATH}
 
 api-gateway-prod:
 	cd ${UA_PATH}/ubiquitous-api-gateway && ./ubiquitous-api-gateway -c ${LURA_PATH}
 
+# docker file to deploy api-gateway on docker
+# if you have deployed server-go before, there's no need to run this base image
+docker-api-gateway-base:
+	cd ${UA_PATH}/docker/docker-go && ./setup.sh
+
+docker-api-gateway: docker-api-gateway-setup docker-api-gateway-start
+
+docker-api-gateway-setup:
+	cd ${UA_PATH}/docker/docker-api-gateway && ./setup.sh
+
+docker-api-gateway-start:
+	cd ${UA_PATH}/docker/docker-api-gateway && ./start.sh
+
+# docker file to deploy auth-server on docker
+docker-auth-base:
+	cd ${UA_PATH}/docker/docker-rust && ./setup.sh
+
+docker-auth: docker-auth-setup docker-auth-start
+
+docker-auth-setup:
+	cd ${UA_PATH}/docker/docker-auth-server && ./setup.sh
+
+docker-auth-start:
+	cd ${UA_PATH}/docker/docker-auth-server && ./start.sh
+
+# running auth-server on dev mode
 auth-service:
 	cd ${UA_PATH}/ubiquitous-auth-server && cargo run -- ${AUTH_ENV_PATH}
+
 #The following are for docker production, not working because of unmatched dependencies
 
 # # the following are for production in docker
