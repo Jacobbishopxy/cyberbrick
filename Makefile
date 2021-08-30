@@ -55,12 +55,11 @@ docker-mongodb:
 docker-biz-server-base: docker-go docker-mongodb
 	cd docker/docker-mongodb && ./create_unique_index.sh
 	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
-	
+
 docker-biz-server-setup:
 	cd docker/docker-biz-server && ./setup.sh
 
 docker-biz-server-start:
-	
 	cd docker/docker-biz-server && ./start.sh
 
 # the following are targets for submodule ubiquitous-alchemy
@@ -77,6 +76,7 @@ submodule-update:
 env-setup:
 	cp ./resources/lura.json ${UA_PATH}/resources/lura.json
 	cp ./resources/ua.auth.env ${UA_PATH}/resources/auth.env
+	cp ./resources/gateway.env ${UA_PATH}/resources/gateway.env
 
 # for dev mode, running api-gateway
 api-gateway:
