@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "name": "Ubiquitous API Gateway",
+  "port": 8080,
+  "timeout": "10s",
+  "cache_ttl": "3600s",
+  "endpoints": [
+    {
+      "endpoint": "/api/cfg/check_connection",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "method": "POST",
+          "url_pattern": "/api/cfg/check_connection",
+          "host": [
+            "localhost:8070"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/cfg/conn",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "url_pattern": "/api/cfg/conn",
+          "host": [
+            "localhost:8070"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/cfg/conn",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "method": "POST",
+          "url_pattern": "/api/cfg/conn",
+          "host": [
+            "localhost:8070"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/cfg/conn",
+      "method": "PUT",
+      "querystring_params": [
+        "db_id"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "method": "PUT",
+          "url_pattern": "/api/cfg/conn",
+          "host": [
+            "localhost:8070"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/cfg/conn",
+      "method": "DELETE",
+      "querystring_params": [
+        "db_id"
+      ],
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "method": "DELETE",
+          "url_pattern": "/api/cfg/conn",
+          "host": [
+            "localhost:8070"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/auth/invitation",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "method": "POST",
+          "url_pattern": "/api/invitation",
+          "host": [
+            "localhost:8072"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/auth/register/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "url_pattern": "/api/register/{id}",
+          "host": [
+            "localhost:8072"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/auth",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "url_pattern": "/api/auth",
+          "host": [
+            "localhost:8072"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/auth",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "headers_to_pass": [
+        "Cookie"
+      ],
+      "backend": [
+        {
+          "encoding": "no-op",
+          "url_pattern": "/api/auth",
+          "host": [
+            "localhost:8072"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/gateway/api/auth",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "headers_to_pass": [
+        "Cookie"
+      ],
+      "backend": [
+        {
+          "encoding": "no-op",
+          "url_pattern": "/api/auth",
+          "host": [
+            "localhost:8072"
+          ],
+          "headers_to_pass": [
+            "Cookie"
+          ]
+        }
+      ]
+    }
+  ]
+}

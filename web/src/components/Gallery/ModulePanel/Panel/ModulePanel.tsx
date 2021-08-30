@@ -153,7 +153,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   />
 
   const genDescription = useMemo(() => {
-    if (isTemplate) {
+    if (isTemplate && !props.isNested) {
       if (!props.editable && !props.description) return <></>
       return <ModuleDescirption
         editable={props.editable}
@@ -180,6 +180,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
       let h = props.contentHeight ? props.contentHeight - 80 : undefined
       h = isTemplate && h ? h - 60 : h
+      h = props.isNested ? props.contentHeight : h
+      // console.log(props.eleId, h)
       return rf({
         content,
         fetchStorages: props.fetchStorages,
@@ -213,14 +215,16 @@ export const ModulePanel = (props: ModulePanelProps) => {
       if (props.editable) return styles.separatorModule
       return styles.separatorModulePresentor
     }
-    if (isTemplate) return styles.templatePanel
+    if (props.isNested && isTemplate) return styles.templateNestedPanel
     if (props.isNested) return styles.nestedModulePanel
+    if (isTemplate) return styles.templatePanel
     return styles.modulePanel
   }
 
   const displayFooter = () => {
     if (props.elementType === DataType.ElementType.FieldHeader) return <></>
     if (isTemplate) return <></>
+    if (props.isNested) return <></>
     return genFooter
   }
   return (

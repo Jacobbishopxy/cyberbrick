@@ -13,7 +13,7 @@ interface ModuleTabPaneProps {
     name: string,
     timeSeries: boolean,
     elementType: DataType.ElementType,
-
+    contentHeight?: number
     shouldEleStartFetch: number
     onRemoveModule: (id: string) => void,
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
@@ -72,7 +72,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
     //TODO: WARINING! hardcoded height
     return (
-        <div style={{ height: "350px" }} >
+        <div style={{ height: props.contentHeight }} >
             <TemplateElement key={tabId + elementType + name}
                 parentInfo={[]}
                 timeSeries={timeSeries}
@@ -89,6 +89,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
                 ref={null}
                 shouldStartFetch={shouldFetch}
                 isNested={true}
+                updateDescription={(ele: string) => { }}
             />
         </div>
     )

@@ -155,8 +155,11 @@ Please `cd server-go` first then run the following commands.
    - `go run .` start server
 
 1. production (docker):
-
-   TODO
+   - make sure you have a running `mongoDB` and have executed the bash file `create_unique_index.sh` inside docker-mongodb; a base image built from `docker-go`, a `resources/go.env` file with config similar to `go.template.env`; and a `resources/mongo.connection.env` file with similar config as `mongo.connection.template.env`.
+   - You can simply run `make docker-biz-server-setup` and then `make docker-biz-server-start` or:
+     - cd docker/docker-biz-server
+     - ./setup.sh
+     - ./start.sh
 
 ### Web [Start Project]
 

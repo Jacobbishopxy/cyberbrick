@@ -8,11 +8,30 @@ export const mainRoutes = [
     layout: false,
     routes: [
       {
-        name: 'login',
-        path: '/user/login',
-        component: './user/login',
+        name: "login",
+        icon: "SettingOutlined",
+        path: "/user/login",
+        component: "./user/login"
       },
-    ],
+      {
+        name: "registration",
+        icon: 'DashboardOutlined',
+        path: "/user/registration",
+        component: "./user/login"
+      },
+      {
+        name: "logout",
+        icon: "DatabaseOutlined",
+        path: "/user/logout",
+        component: "./user/login"
+      },
+      {
+        name: "invitation",
+        icon: "DatabaseOutlined",
+        path: "/user/invitation/register",
+        component: "./user/login"
+      },
+    ]
   },
   {
     path: '/welcome',

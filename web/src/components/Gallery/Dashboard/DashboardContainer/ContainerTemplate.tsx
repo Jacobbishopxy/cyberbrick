@@ -145,7 +145,13 @@ export const ContainerTemplate =
         onLayoutChange={onLayoutChange}
         isDraggable={editable}
         isResizable={editable}
-        layout={elements.map(ele => { return { x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w, i: ele.name } })}
+        layout={elements.map(ele => {
+          return {
+            x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w, i: ele.name,
+            minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+            minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 6
+          }
+        })}
       >
         {
           elements.map((ele, i) =>

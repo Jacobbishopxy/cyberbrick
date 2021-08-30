@@ -16,6 +16,7 @@ interface NestedSimpleModuleProps {
     items?: tabItem[]
     editable: boolean
     styling?: string//how to apply string as stying？
+    contentHeight?: number
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     setSaveCount: React.Dispatch<React.SetStateAction<number>>
     updateContentFn: (content: DataType.Content) => void
@@ -113,7 +114,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setCurrIndex(i)
         setUpdateCnt(updateCnt + 1)
     }
-
+    const container = document.getElementById(props.NSMid)
     /*
     callback method responsing for resizing, adding, removing, and dragging elements in
     react-grid-layout. This method does 2 things:
@@ -124,7 +125,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
 
         //get container width
-        const container = document.getElementById(props.NSMid)
         // console.log(container?.clientWidth)
         setItems(items => updateElementInLayout(items, layout, container?.clientWidth))
     };
@@ -159,6 +159,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setCurrIndex
     }
 
+    const nestedModuleHeight = (props.contentHeight || 350) - (container?.clientHeight || 0) - 35 //35 is title's height
     //convert a module to reactNode based on id
     const moduleToReactNode = (id: string) => {
         let module = props.items?.find((item => item.i === id))?.module
@@ -179,6 +180,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 timeSeries={timeSeries}
                 elementType={elementType}
                 editable={props.editable}
+                contentHeight={nestedModuleHeight}
                 setItems={setItems}
                 onRemoveModule={onRemoveModule}
                 fetchStoragesFn={props.fetchStoragesFn}
@@ -208,7 +210,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 onAddModule={onAddModule}
                 onSwitch={onSwitch} />
 
-            <div className="align-header">
+            <div style={{ bottom: 0 }}>
                 {/* {"on tab: " + currIndex} */}
                 {currModule || <Skeleton />}
 

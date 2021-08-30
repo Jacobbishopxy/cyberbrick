@@ -1,3 +1,4 @@
+import { check } from "./auth"
 import { request } from "umi"
 
 export async function query() {
@@ -5,7 +6,8 @@ export async function query() {
 }
 //TODO: query with cookies; how to get cookie from server
 export async function queryCurrent() {
-  return request<API.CurrentUser>('/api/currentUser')
+  // return request<API.CurrentUser>('/api/auth')
+  return check()
 }
 
 export async function queryNotices(): Promise<any> {
