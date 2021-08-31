@@ -11,12 +11,12 @@ import {
   UpdateEvent,
   RemoveEvent,
 } from "typeorm"
-import {Injectable} from "@nestjs/common"
-import {InjectConnection} from "@nestjs/typeorm"
+import { Injectable } from "@nestjs/common"
+import { InjectConnection } from "@nestjs/typeorm"
 
-import {Storage} from "../entity"
-import {DynamicConnections} from "./DynamicConnections"
-import {db} from "../common"
+import { Storage } from "../entity"
+import { DynamicConnections } from "./DynamicConnections"
+import { db } from "../common"
 
 @Injectable()
 @EventSubscriber()
@@ -40,7 +40,7 @@ export class StorageSubscriber implements EntitySubscriberInterface<Storage> {
     this.dynamicConnections.newConnection(event.entity).finally()
 
   afterUpdate = (event: UpdateEvent<Storage>) =>
-    this.dynamicConnections.updateConnection(event.entity).finally()
+    this.dynamicConnections.updateConnection(event.entity as Storage).finally()
 
   afterRemove = (event: RemoveEvent<Storage>) =>
     this.dynamicConnections.removeConnection(event.entityId).finally()

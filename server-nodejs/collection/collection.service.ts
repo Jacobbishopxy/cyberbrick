@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 10/26/2020.
  */
 
-import {Injectable} from "@nestjs/common"
-import {join} from "path"
+import { Injectable } from "@nestjs/common"
+import { join } from "path"
 import fs from "fs"
 
-const publicPath = "../../public"
+const publicPath = "../public"
 const assetsPath = "../assets"
 const unicorns = fs.readdirSync(join(__dirname, `${publicPath}/unicorn`))
 

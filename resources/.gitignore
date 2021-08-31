@@ -4,3 +4,4 @@ go.env
 mongo.connection.env
 ua.auth.env
 gateway.env
+lura.json
