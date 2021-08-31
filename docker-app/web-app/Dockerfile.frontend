@@ -4,7 +4,7 @@ ARG     FRONTEND_BASE_NAME
 ARG     FRONTEND_BASE_VERSION
 
 # base
-FROM    $FRONTEND_BASE_NAME:$FRONTEND_BASE_VERSION AS build
+FROM    $FRONTEND_BASE_NAME:$FRONTEND_BASE_VERSION
 
 # copy source code to workdir
 COPY    ./web /app
@@ -14,5 +14,3 @@ WORKDIR /app
 
 # build app
 RUN     yarn build
-
-COPY    --from=build /frontend /frontend
