@@ -101,6 +101,7 @@ If you haven't initialized the submodule before, run `make submodule-init`.
 Otherwise, update submodule by running `make submodule-update`.
 Then, config the `lura.json` and `ua.auth.env` based on `ua.auth.template.env` (you can simply copy template and rename it).
 In `ua.auth.env`, Make sure `DATABASE_URL` is your database connection string. If the database is also running in docker and share the same network with auth-server container, rename the hostname to database's container name. Make sure `INVITATION_PAGE` is the link of cyberbrick frontend link (hostname is localhost in dev mode and the ip-address of server in production mode).
+In `lura.json`, rename the endpoints-backends host to the real ip-address.
 ### Server [Configuration]
 
 todo

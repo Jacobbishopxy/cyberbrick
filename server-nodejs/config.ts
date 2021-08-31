@@ -3,11 +3,11 @@
  */
 
 import fs from "fs"
-import path, {join} from "path"
-import {Routes, RouterModule} from "nest-router"
-import {ServeStaticModule} from "@nestjs/serve-static"
-import {TypeOrmModule} from "@nestjs/typeorm"
-import {ConfigModule, registerAs} from "@nestjs/config"
+import path, { join } from "path"
+import { Routes, RouterModule } from "nest-router"
+import { ServeStaticModule } from "@nestjs/serve-static"
+import { TypeOrmModule } from "@nestjs/typeorm"
+import { ConfigModule, registerAs } from "@nestjs/config"
 
 import {
   Author,
@@ -20,13 +20,13 @@ import {
   Tag,
   Template
 } from "./gallery/entity"
-import {CollectionModule} from "./collection/collection.module"
-import {GalleryModule} from "./gallery/gallery.module"
+import { CollectionModule } from "./collection/collection.module"
+import { GalleryModule } from "./gallery/gallery.module"
 import {
   Update,
   Tag as UpdateTag
 } from "./inn/entity"
-import {InnModule} from "./inn/inn.module"
+import { InnModule } from "./inn/inn.module"
 
 const isProd = process.env.NODE_ENV === "production"
 
@@ -34,12 +34,12 @@ const isProd = process.env.NODE_ENV === "production"
  * read config file. If `config.json` not existed, use `config.template.json`
  */
 const readConfig = () => {
-  const configFile = path.join(__dirname, "../..", "./resources/config.json")
+  const configFile = path.join(__dirname, "..", "./resources/config.json")
   let f
   if (fs.existsSync(configFile)) {
     f = fs.readFileSync(configFile)
   } else {
-    const templateConfigFile = path.join(__dirname, "../..", "./resources/config.template.json")
+    const templateConfigFile = path.join(__dirname, "..", "./resources/config.template.json")
     f = fs.readFileSync(templateConfigFile)
   }
 
@@ -84,7 +84,7 @@ const routerImports = RouterModule.forRoutes(routes)
 /**
  * frontend static HTML
  */
-const staticHTML = isProd ? {rootPath: join(__dirname, "../frontend")} : {}
+const staticHTML = isProd ? { rootPath: join(__dirname, "../frontend") } : {}
 const frontendImports = ServeStaticModule.forRoot(staticHTML)
 
 /**
@@ -118,7 +118,7 @@ const innEntities = [
 const databaseInnImports = TypeOrmModule.forRoot({
   ...databaseInnConfig,
   entities: innEntities,
-  database: `${path.resolve(__dirname, "..", "..")}/inn/inn.sqlite`
+  database: `${path.resolve(__dirname, "..")}/inn/inn.sqlite`
 })
 
 export {
