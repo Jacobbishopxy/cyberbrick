@@ -23,7 +23,7 @@ const prodConnString = "DB_URL"
 const dbEnvName = "go.env"
 const databaseName = "DB_NAME"
 const collectionsList = "DB_COLLECTION_NAME"
-const port = ":8089"
+const port = ":8040"
 
 func main() {
 	collections := createDBInstance()
@@ -31,7 +31,7 @@ func main() {
 	mongoHandler := interfaces.NewMongoApiHandler(*mongoApp, collections)
 	r := mongoHandler.Router()
 
-	fmt.Println("Starting server on the port 8089...")
+	fmt.Println(`Starting server on the port ${port}...`)
 	log.Fatal(http.ListenAndServe(port, r))
 }
 

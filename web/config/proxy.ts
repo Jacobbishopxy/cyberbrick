@@ -8,28 +8,14 @@
 export default {
   dev: {
     '/api/': {
-      target: 'http://localhost:7999',
+      target: 'http://localhost:8030',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
+      pathRewrite: {'^': ''},
     },
     '/gateway/': {
-      target: 'http://localhost:8080',
+      target: 'http://localhost:8010',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
-  test: {
-    '/api/': {
-      target: 'http://localhost:7999',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
+      pathRewrite: {'^': ''},
     },
   },
 }

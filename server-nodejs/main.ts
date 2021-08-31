@@ -9,7 +9,7 @@ import {BadRequestException, ValidationError, ValidationPipe} from "@nestjs/comm
 import {AppModule} from "./app.module"
 
 
-const port = 7999
+const port = 8030
 
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)

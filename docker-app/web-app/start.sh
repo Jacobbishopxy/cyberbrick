@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# author: Jacob Bishop
+
+source ../../resources/docker.web.env
+
+export FRONTEND_WEB_NAME=${FRONTEND_WEB_NAME}
+export FRONTEND_WEB_VERSION=${FRONTEND_WEB_VERSION}
+export WEB_CONTAINER_NAME=${WEB_CONTAINER_NAME}
+export WEB_CONTAINER_PORT=${WEB_CONTAINER_PORT}
+export VOLUME_FRONTEND_EXT=${VOLUME_FRONTEND_EXT}
+export VOLUME_FRONTEND_INN=${VOLUME_FRONTEND_INN}
+export API_ADDRESS=${API_ADDRESS}
+export GATEWAY_ADDRESS=${GATEWAY_ADDRESS}
+
+docker-compose down
+docker-compose -p "${PROJECT_NAME_WEB}" up -d

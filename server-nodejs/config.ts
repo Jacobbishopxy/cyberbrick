@@ -3,11 +3,10 @@
  */
 
 import fs from "fs"
-import path, { join } from "path"
-import { Routes, RouterModule } from "nest-router"
-import { ServeStaticModule } from "@nestjs/serve-static"
-import { TypeOrmModule } from "@nestjs/typeorm"
-import { ConfigModule, registerAs } from "@nestjs/config"
+import path from "path"
+import {Routes, RouterModule} from "nest-router"
+import {TypeOrmModule} from "@nestjs/typeorm"
+import {ConfigModule, registerAs} from "@nestjs/config"
 
 import {
   Author,
@@ -20,13 +19,13 @@ import {
   Tag,
   Template
 } from "./gallery/entity"
-import { CollectionModule } from "./collection/collection.module"
-import { GalleryModule } from "./gallery/gallery.module"
+import {CollectionModule} from "./collection/collection.module"
+import {GalleryModule} from "./gallery/gallery.module"
 import {
   Update,
   Tag as UpdateTag
 } from "./inn/entity"
-import { InnModule } from "./inn/inn.module"
+import {InnModule} from "./inn/inn.module"
 
 const isProd = process.env.NODE_ENV === "production"
 
@@ -82,12 +81,6 @@ const routes: Routes = [
 const routerImports = RouterModule.forRoutes(routes)
 
 /**
- * frontend static HTML
- */
-const staticHTML = isProd ? { rootPath: join(__dirname, "../frontend") } : {}
-const frontendImports = ServeStaticModule.forRoot(staticHTML)
-
-/**
  * database gallery module
  */
 const databaseGalleryConfig = isProd ? config.connProdGallery : config.connDevGallery
@@ -124,7 +117,6 @@ const databaseInnImports = TypeOrmModule.forRoot({
 export {
   configImport,
   routerImports,
-  frontendImports,
   databaseGalleryImports,
   databaseInnImports
 }

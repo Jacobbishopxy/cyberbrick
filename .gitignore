@@ -41,8 +41,8 @@ screenshot
 .eslintcache
 
 out
-web/frontend
-web/backend
+**/frontend
+**/backend
 
 cache
 !cache/.gitkeep

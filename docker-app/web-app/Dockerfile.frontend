@@ -1,0 +1,18 @@
+# Author: Jacob Bishop
+
+ARG     FRONTEND_BASE_NAME
+ARG     FRONTEND_BASE_VERSION
+
+# base
+FROM    $FRONTEND_BASE_NAME:$FRONTEND_BASE_VERSION AS build
+
+# copy source code to workdir
+COPY    ./web /app
+
+# change the active directory
+WORKDIR /app
+
+# build app
+RUN     yarn build
+
+COPY    --from=build /frontend /frontend

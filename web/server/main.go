@@ -89,19 +89,24 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Arguments given by command line
 	apiHost = flag.String("a", "http://localhost:7999", "Host of the server-nodejs")
-	gatewayHost = flag.String("g", "http://172.19.234.86:8080", "Host of the api-gate")
+	gatewayHost = flag.String("g", "http://localhost:8080", "Host of the api-gate")
+
+	// mux router
 	router := mux.NewRouter()
-	//wildcard to match url path
+
+	// wildcard to match url path
 	router.HandleFunc("/api/{rest:.*}", apiHandler)
 	router.HandleFunc("/gateway/{rest:.*}", gatewayHandler)
 
+	// serve static HTML file
 	spa := spaHandler{staticPath: "../frontend", indexPath: "../frontend/index.html"}
 	router.PathPrefix("/").Handler(spa)
 
 	srv := &http.Server{
 		Handler: router,
-		Addr:    "127.0.0.1:8000",
+		Addr:    "0.0.0.0:8000",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

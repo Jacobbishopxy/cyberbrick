@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# author: Jacob Bishop
+
+source ../../resources/docker.web.env
+
+export API_APP_V1_NAME=${API_APP_V1_NAME}
+export API_APP_V1_VERSION=${API_APP_V1_VERSION}
+export API_CONTAINER_NAME=${API_CONTAINER_NAME}
+export API_CONTAINER_PORT=${API_CONTAINER_PORT}
+export VOLUME_CONF_EXT=${VOLUME_CONF_EXT}
+export VOLUME_CONF_INN=${VOLUME_CONF_INN}
+export VOLUME_FILE_EXT=${VOLUME_FILE_EXT}
+export VOLUME_FILE_INN=${VOLUME_FILE_INN}
+export VOLUME_INN_DB_EXT=${VOLUME_INN_DB_EXT}
+export VOLUME_INN_DB_INN=${VOLUME_INN_DB_INN}
+
+docker-compose down
+docker-compose -p "${PROJECT_NAME_API}" up -d

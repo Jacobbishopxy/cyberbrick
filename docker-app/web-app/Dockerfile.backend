@@ -1,0 +1,16 @@
+# Author: Jacob Bishop
+
+ARG     GO_IMAGE_NAME
+ARG     GO_IMAGE_VERSION
+
+# base
+FROM    $GO_IMAGE_NAME:$GO_IMAGE_VERSION
+
+# copy source code to workdir
+COPY    ./web/server /app
+
+# change the active directory
+WORKDIR /app
+
+# build app
+RUN     go build

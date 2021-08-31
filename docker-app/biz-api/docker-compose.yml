@@ -1,0 +1,22 @@
+version: "3.6"
+
+services:
+  go-mongo-api:
+    restart: always
+    container_name: ${CONTAINER_NAME}
+    image: ${APP_IMAGE_NAME}:${APP_IMAGE_VERSION}
+    ports:
+      - ${CONTAINER_PORT}:8089
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${VOLUME_CONF_EXT}:${VOLUME_CONF_INN}:ro
+    environment:
+      DB_URI: ${DB_URI}
+      DB_NAME: ${DB_NAME}
+      DB_COLLECTION_NAME: ${DB_COLLECTION_NAME}
+    command: ./server-go prod
+
+networks:
+  default:
+    external:
+      name: prod

@@ -23,13 +23,15 @@ api-gateway
 LURA_PATH=../../resources/lura.json
 AUTH_ENV_PATH=../../resources/ua.auth.env
 UA_PATH=ubiquitous-alchemy
-
+DOCKER_APP_PATH=docker-app
+DOCKER_BASE_PATH=docker-base
+DOCKER_GO_MONGO=biz-api
 #set up environment
 setup: web-setup
 	chmod +x setup.sh start.sh clean.sh
 	./setup.sh
-	cd docker/docker-database && bash start.sh && bash create_database.sh
-
+	cd ${DOCKER_BASE_PATH}/postgres && bash start.sh && bash create_database.sh
+	cd ${DOCKER_BASE_PATH}/postgres && bash grant_read_all.sh
 #the following are for production in localhost (testing)
 web-setup:
 	cd web && yarn
@@ -45,22 +47,54 @@ prod: clean web-setup
 
 prod-noset: clean
 	./start.sh prod &
-
+# building base image
 docker-go:
-	cd docker/docker-go && chmod +x setup.sh && bash setup.sh
+	cd ${DOCKER_BASE_PATH}/go && chmod +x setup.sh && bash setup.sh
 
 docker-mongodb:
-	cd docker/docker-mongodb && chmod +x start.sh && bash start.sh
+	cd ${DOCKER_BASE_PATH}/mongodb && chmod +x start.sh && bash start.sh
 
+docker-node:
+	cd ${DOCKER_BASE_PATH}/nodejs && chmod +x setup.sh && bash setup.sh
+
+docker-python:
+	cd ${DOCKER_BASE_PATH}/py && chmod +x setup.sh && bash setup.sh
+
+# building app image
+# biz api (go-mongo-api)
 docker-biz-server-base: docker-go docker-mongodb
-	cd docker/docker-mongodb && ./create_unique_index.sh
-	cd docker/docker-biz-server && chmod +x setup.sh start.sh && ./setup.sh
+	cd ${DOCKER_BASE_PATH}/mongodb && ./create_unique_index.sh
+	cd ${DOCKER_APP_PATH}/${DOCKER_GO_MONGO} && chmod +x setup.sh start.sh && ./setup.sh
+
+docker-biz-server: docker-biz-server-setup docker-biz-server-start
 
 docker-biz-server-setup:
-	cd docker/docker-biz-server && ./setup.sh
+	cd ${DOCKER_APP_PATH}/${DOCKER_GO_MONGO} && ./setup.sh
 
 docker-biz-server-start:
-	cd docker/docker-biz-server && ./start.sh
+	cd ${DOCKER_APP_PATH}/${DOCKER_GO_MONGO} && ./start.sh
+
+docker-py-base:
+	cd ${DOCKER_APP_PATH}/py-base && chmod +x setup.sh && ./setup.sh
+
+docker-py-api: docker-py-api-setup docker-py-api-start
+
+docker-py-api-setup:
+	cd ${DOCKER_APP_PATH}/py-api && chmod +x setup.sh && ./setup.sh
+
+docker-py-api-start:
+	cd ${DOCKER_APP_PATH}/py-api && chmod +x start.sh && ./start.sh
+
+docker-biz-v1-base:
+	cd ${DOCKER_APP_PATH}/biz-base-v1 && chmod +x setup.sh && ./setup.sh
+
+docker-biz-v1: docker-biz-v1-setup docker-biz-v1-start
+
+docker-biz-v1-setup:
+	cd ${DOCKER_APP_PATH}/biz-api-v1 && chmod +x setup.sh && bash setup.sh
+	
+docker-biz-v1-start:
+	cd ${DOCKER_APP_PATH}/biz-api-v1 && chmod +x start.sh && ./start.sh
 
 # the following are targets for submodule ubiquitous-alchemy
 # initialize or update submodule
@@ -113,41 +147,6 @@ docker-auth-start:
 # running auth-server on dev mode
 auth-service:
 	cd ${UA_PATH}/ubiquitous-auth-server && cargo run -- ${AUTH_ENV_PATH}
-
-#The following are for docker production, not working because of unmatched dependencies
-
-# # the following are for production in docker
-# docker: serverStart webStart
-
-
-# #setup node image, only for the first time:
-# nodeImage:
-# 	cd docker/docker-node && bash setup.sh
-
-# #setup dependencies installed image, rerun if dependencies updated:
-# setDepend: $(SOURCEWEB) $(WEBENV)
-# 	cd docker/docker-base-web && bash setup.sh
-
-# #setup built app image and start a container:
-# webImage: $(SOURCEWEB) $(WEBENV)
-# 	cd ./docker/docker-app-web && bash setup.sh && bash start.sh
-
-# #this is the target to start the production in docker
-# webStart: setDepend webImage
-# 	yarn build:backend
-# 	yarn build:frontend
-
-# #setup python image, only for the first time:
-# ServerImage:
-# 	cd docker/docker-python && bash setup.sh
-
-# #setup dependencies installed image, rerun if dependencies updated:
-# ServerSetDepend: $(SOURCESERVER) $(SERVERENV)
-# 	cd docker/docker-base-server && bash setup.sh
-
-# #setup built app image and start a container:
-# serverStart: $(SOURCESERVER) $(SERVERENV) ServerImage ServerSetDepend
-# 	cd docker/docker-app-server && bash setup.sh && bash start.sh
 
 clean:
 	./clean.sh

@@ -1,38 +1,38 @@
 {
-  "serverHost": "0.0.0.0",
-  "serverPort": 2009,
-  "connDevGallery": {
-    "name": "gallery",
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "admin",
-    "password": "admin",
-    "database": "dev",
-    "synchronize": true,
-    "autoLoadEntities": true,
-    "logging": false,
-    "uuidExtension": "uuid-ossp"
-  },
-  "connProdGallery": {
-    "name": "gallery",
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "admin",
-    "password": "admin",
-    "database": "dev",
-    "synchronize": true,
-    "autoLoadEntities": true,
-    "logging": false,
-    "uuidExtension": "uuid-ossp"
-  },
-  "connInn": {
-    "name": "inn",
-    "type": "sqlite",
-    "synchronize": true,
-    "autoLoadEntities": true,
-    "logging": false
-  },
-  "fmRoot": "/mnt/win_share/ei"
+	"serverHost": "0.0.0.0",
+	"serverPort": 8020,
+	"connDevGallery": {
+		"name": "gallery",
+		"type": "postgres",
+		"host": "localhost",
+		"port": 5432,
+		"username": "admin",
+		"password": "admin",
+		"database": "dev",
+		"synchronize": true,
+		"autoLoadEntities": true,
+		"logging": false,
+		"uuidExtension": "uuid-ossp"
+	},
+	"connProdGallery": {
+		"name": "gallery",
+		"type": "postgres",
+		"host": "localhost",
+		"port": 5432,
+		"username": "admin",
+		"password": "admin",
+		"database": "dev",
+		"synchronize": true,
+		"autoLoadEntities": true,
+		"logging": false,
+		"uuidExtension": "uuid-ossp"
+	},
+	"connInn": {
+		"name": "inn",
+		"type": "sqlite",
+		"synchronize": true,
+		"autoLoadEntities": true,
+		"logging": false
+	},
+	"fmRoot": "/mnt/win_share/ei"
 }
