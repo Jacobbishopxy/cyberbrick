@@ -2,31 +2,35 @@
  * Created by Jacob Xie on 10/26/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { join } from "path"
+import {Injectable} from "@nestjs/common"
+import {ConfigService} from "@nestjs/config"
+import {resolve} from "path"
 import fs from "fs"
 
-const publicPath = "../public"
-const assetsPath = "../assets"
-const unicorns = fs.readdirSync(join(__dirname, `${publicPath}/unicorn`))
 
 @Injectable()
 export class CollectionService {
+  constructor(private configService: ConfigService) {}
+
+  private getPublicPath = () =>
+    this.configService.get("general").path
 
   getDocument = (name: string) =>
-    join(__dirname, `${publicPath}/document`, name)
+    resolve(__dirname, `${this.getPublicPath()}/document`, name)
 
   getUnicorn = (name: string) =>
-    join(__dirname, `${publicPath}/unicorn`, name)
+    resolve(__dirname, `${this.getPublicPath()}/unicorn`, name)
 
   getRandomUnicorn = () => {
+    const pp = this.getPublicPath()
+    const unicorns = fs.readdirSync(resolve(pp, "unicorn"))
     const name = unicorns[Math.floor(Math.random() * unicorns.length)]
     return this.getUnicorn(name)
   }
 
-  getAsset = (name: string) =>
-    join(__dirname, assetsPath, name)
+  getFavicon = () =>
+    resolve(__dirname, `${this.getPublicPath()}/favicon.ico`)
 
   getManualImage = (name: string) =>
-    join(__dirname, `${publicPath}/manual`, name)
+    resolve(__dirname, `${this.getPublicPath()}/manual`, name)
 }

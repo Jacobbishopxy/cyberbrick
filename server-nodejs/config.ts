@@ -27,18 +27,21 @@ import {
 } from "./inn/entity"
 import {InnModule} from "./inn/inn.module"
 
+// since production mode's main file is under /server-nodejs/backend/ directory,
+// rootDir is relatively 1 layer higher than dev mode.
 const isProd = process.env.NODE_ENV === "production"
+const rootDir = isProd ? path.join(__dirname, "../..") : path.join(__dirname, "..")
 
 /**
  * read config file. If `config.json` not existed, use `config.template.json`
  */
 const readConfig = () => {
-  const configFile = path.join(__dirname, "..", "./resources/config.json")
+  const configFile = path.join(rootDir, "./resources/config.json")
   let f
   if (fs.existsSync(configFile)) {
     f = fs.readFileSync(configFile)
   } else {
-    const templateConfigFile = path.join(__dirname, "..", "./resources/config.template.json")
+    const templateConfigFile = path.join(rootDir, "./resources/config.template.json")
     f = fs.readFileSync(templateConfigFile)
   }
 
@@ -47,13 +50,15 @@ const readConfig = () => {
 
 const config = readConfig()
 
-
 /**
  * Global configuration
  */
 const configLoad = registerAs("server", () => config)
+const generalConfig = registerAs("general", () => ({
+  path: path.join(rootDir, "./public")
+}))
 const configImport = ConfigModule.forRoot({
-  load: [configLoad],
+  load: [configLoad, generalConfig],
   isGlobal: true,
   ignoreEnvFile: true,
 })
@@ -111,7 +116,7 @@ const innEntities = [
 const databaseInnImports = TypeOrmModule.forRoot({
   ...databaseInnConfig,
   entities: innEntities,
-  database: `${path.resolve(__dirname, "..")}/inn/inn.sqlite`
+  database: `${rootDir}/inn/inn.sqlite`
 })
 
 export {

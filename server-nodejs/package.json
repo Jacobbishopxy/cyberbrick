@@ -5,7 +5,7 @@
 	"description": "Cyberbrick",
 	"scripts": {
 		"build": "nest build",
-		"start:dev": "cross-env ts-node-dev --project tsconfig.server.json main.ts",
+		"dev": "cross-env ts-node-dev --project tsconfig.server.json main.ts",
 		"start": "cross-env NODE_ENV=production ts-node backend/main"
 	},
 	"browserslist": [
@@ -19,7 +19,7 @@
 		"@nestjs/core": "^7.6.18",
 		"@nestjs/platform-express": "^7.6.18",
 		"@nestjs/typeorm": "^7.1.5",
-		"@opuscapita/filemanager-server": "^1.1.7",
+		"@opuscapita/filemanager-server": "^1.1.10",
 		"axios": "^0.21.1",
 		"class-transformer": "^0.4.0",
 		"class-validator": "^0.13.1",
