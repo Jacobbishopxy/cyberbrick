@@ -3,14 +3,24 @@ version: "3.6"
 services:
   cyberbrick:
     restart: always
-    image: ${FRONTEND_WEB_NAME}:${FRONTEND_WEB_VERSION}
+    image: ${BACKEND_WEB_NAME}:${BACKEND_WEB_VERSION}
     container_name: ${WEB_CONTAINER_NAME}
     ports:
       - ${WEB_CONTAINER_PORT}:${WEB_CONTAINER_PORT}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUME_FRONTEND_EXT}:${VOLUME_FRONTEND_INN}:ro
-    command: ./cyberbrick-web-server -a ${API_ADDRESS} -g ${GATEWAY_ADDRESS}
+    command:
+      [
+        ./cyberbrick-web-server,
+        -a,
+        $API_ADDRESS,
+        -g,
+        $GATEWAY_ADDRESS,
+        -p,
+        ../frontend,
+      ]
+    tty: true
 
 networks:
   default:

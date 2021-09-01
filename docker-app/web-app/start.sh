@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # author: Jacob Bishop
 
-source ../../resources/docker.web.env
+source ../../resources/go.env
 
-export FRONTEND_WEB_NAME=${FRONTEND_WEB_NAME}
-export FRONTEND_WEB_VERSION=${FRONTEND_WEB_VERSION}
+export BACKEND_WEB_NAME=${BACKEND_WEB_NAME}
+export BACKEND_WEB_VERSION=${BACKEND_WEB_VERSION}
 export WEB_CONTAINER_NAME=${WEB_CONTAINER_NAME}
 export WEB_CONTAINER_PORT=${WEB_CONTAINER_PORT}
 export VOLUME_FRONTEND_EXT=${VOLUME_FRONTEND_EXT}

@@ -6,7 +6,7 @@ services:
     container_name: ${CONTAINER_NAME}
     image: ${APP_IMAGE_NAME}:${APP_IMAGE_VERSION}
     ports:
-      - ${CONTAINER_PORT}:8089
+      - ${CONTAINER_PORT}:8040
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUME_CONF_EXT}:${VOLUME_CONF_INN}:ro

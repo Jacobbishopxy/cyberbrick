@@ -90,18 +90,17 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Arguments given by command line
-	apiHost = flag.String("a", "http://localhost:7999", "Host of the server-nodejs")
-	gatewayHost = flag.String("g", "http://localhost:8080", "Host of the api-gate")
-
+	apiHost = flag.String("a", "http://localhost:8030", "Host of the server-nodejs")
+	gatewayHost = flag.String("g", "http://localhost:8010", "Host of the api-gate")
+	staticPath := flag.String("p", "../frontend", "The path to the static directory")
 	// mux router
 	router := mux.NewRouter()
 
 	// wildcard to match url path
 	router.HandleFunc("/api/{rest:.*}", apiHandler)
 	router.HandleFunc("/gateway/{rest:.*}", gatewayHandler)
-
 	// serve static HTML file
-	spa := spaHandler{staticPath: "../frontend", indexPath: "../frontend/index.html"}
+	spa := spaHandler{staticPath: *staticPath, indexPath: *staticPath + `/index.html`}
 	router.PathPrefix("/").Handler(spa)
 
 	srv := &http.Server{
