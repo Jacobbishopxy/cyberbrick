@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 
 services:
   cyberbrick-api:
@@ -10,9 +10,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUME_CONF_EXT}:${VOLUME_CONF_INN}:ro
-    command:
-      sh -c "conda run -n py38 python wsgi.py --env=prod"
-
+    command: sh -c "conda run -n py39 python wsgi.py --env=prod"
 
 networks:
   default:

@@ -15,7 +15,7 @@ COPY    ./server-py/requirements.txt server/requirements.txt
 WORKDIR /server
 
 # install requirements
-SHELL   ["conda", "run", "-n", "py38", "/bin/bash", "-c"]
+SHELL   ["conda", "run", "-n", "py39", "/bin/bash", "-c"]
 RUN     pip install -r requirements.txt
 
 # copy source code to workdir

@@ -2,17 +2,33 @@
 
 ## Menu
 
+1. [Port occupation](#Port-occupations)
+
 1. [Prerequisites](#Prerequisites)
 
-2. [Environment](#Environment)
+1. [Environment](#Environment)
 
-3. [Configuration](#Configuration)
+1. [Configuration](#Configuration)
 
-4. [Start Project](#Start-Project)
+1. [Start Project](#Start-Project)
 
-5. [Project Structure](#Project-Sturcture)
+1. [Project Structure](#Project-Sturcture)
 
-6. [Details](#Details)
+1. [Details](#Details)
+
+## Port occupation
+
+| Server                 | Port |
+| ---------------------- | ---- |
+| Web (Typescript)       | 8000 |
+| Api gateway (Golang)   | 8010 |
+| Py API (Python)        | 8020 |
+| Biz-v1 (NodeJs)        | 8030 |
+| Biz API (Golang)       | 8040 |
+| FS server (Golang)     | -    |
+| DGraph server (Golang) | -    |
+| Auth server (Rust)     | 8050 |
+| Data server (Rust)     | 8051 |
 
 ## Prerequisites
 
@@ -97,11 +113,13 @@ In `resources` folder, new `go.env` (see [go.template.env](resources/go.template
 In `resources` folder, if mongodb is running in another machine, new `mongo.connection.env` (see [mongo.connection.template.env](resources/mongo.connection.template.env).
 
 ### ubiquitous-alchemy submodule
+
 If you haven't initialized the submodule before, run `make submodule-init`.
 Otherwise, update submodule by running `make submodule-update`.
 Then, config the `lura.json` and `ua.auth.env` based on `ua.auth.template.env` (you can simply copy template and rename it).
 In `ua.auth.env`, Make sure `DATABASE_URL` is your database connection string. If the database is also running in docker and share the same network with auth-server container, rename the hostname to database's container name. Make sure `INVITATION_PAGE` is the link of cyberbrick frontend link (hostname is localhost in dev mode and the ip-address of server in production mode).
 In `lura.json`, rename the endpoints-backends host to the real ip-address.
+
 ### Server [Configuration]
 
 todo
@@ -207,7 +225,9 @@ Please `cd web` first then do the following commands.
 
 ## Project Structure
 
-![Project Structure](doc/ProjectStructure.svg)
+TODO: updating...
+
+<!-- ![Project Structure](doc/ProjectStructure.svg) -->
 
 ## Detail
 

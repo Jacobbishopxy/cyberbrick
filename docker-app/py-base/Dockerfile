@@ -27,7 +27,7 @@ RUN     apt-get install -y locales && \
 RUN     apt-get install -y zip unzip
 RUN     apt-get install -y python3-dev
 
-RUN     conda create -n py38 python=3.8 -y
-SHELL   ["conda", "run", "-n", "py38", "/bin/bash", "-c"]
+RUN     conda create -n py39 python=3.9 -y
+SHELL   ["conda", "run", "-n", "py39", "/bin/bash", "-c"]
 RUN     conda install pyodbc psycopg2 pymongo \
         fastparquet pyarrow python-snappy libiconv

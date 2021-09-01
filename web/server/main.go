@@ -93,6 +93,7 @@ func main() {
 	apiHost = flag.String("a", "http://localhost:8030", "Host of the server-nodejs")
 	gatewayHost = flag.String("g", "http://localhost:8010", "Host of the api-gate")
 	staticPath := flag.String("p", "../frontend", "The path to the static directory")
+	flag.Parse()
 	// mux router
 	router := mux.NewRouter()
 

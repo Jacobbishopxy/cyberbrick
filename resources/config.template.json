@@ -1,5 +1,5 @@
 {
-	"serverHost": "0.0.0.0",
+	"serverHost": "host.docker.internal",
 	"serverPort": 8020,
 	"connDevGallery": {
 		"name": "gallery",

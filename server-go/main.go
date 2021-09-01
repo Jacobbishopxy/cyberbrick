@@ -31,7 +31,7 @@ func main() {
 	mongoHandler := interfaces.NewMongoApiHandler(*mongoApp, collections)
 	r := mongoHandler.Router()
 
-	fmt.Println(`Starting server on the port ${port}...`)
+	fmt.Println("Starting server on the port" + port)
 	log.Fatal(http.ListenAndServe(port, r))
 }
 

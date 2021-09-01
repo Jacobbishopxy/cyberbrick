@@ -20,7 +20,7 @@ services:
         -p,
         ../frontend,
       ]
-    tty: true
+    # tty: true
 
 networks:
   default:
