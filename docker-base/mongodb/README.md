@@ -1,5 +1,7 @@
 # MongoDB
 
+Shouldn't use this dockerfile directly in production mode. A normal usage is copy this folder to another directory.
+
 ## Mongo client
 
 [Download Robo 3T](https://robomongo.org/download), Studio 3T is charged and unnecessary.

@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 
 services:
   mongo-prod:
@@ -12,8 +12,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     volumes:
-      - mongodb:/data/db
-      - mongoconfig:/data/configdb
+      - ./data:/data/db
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
@@ -22,9 +21,7 @@ volumes:
   mongodb:
   mongoconfig:
 
-
 networks:
   default:
     external:
       name: prod
-
