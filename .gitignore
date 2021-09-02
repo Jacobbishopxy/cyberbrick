@@ -53,5 +53,3 @@ test
 *.pyc
 makefile.bak
 .myAppPID
-
-documentation
