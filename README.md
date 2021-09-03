@@ -227,8 +227,6 @@ Please `cd web` first then do the following commands.
 
 TODO: updating...
 
-<!-- ![Project Structure](doc/ProjectStructure.svg) -->
-
 ## Detail
 
 ### Server [Detail]

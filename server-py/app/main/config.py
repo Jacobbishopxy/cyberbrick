@@ -38,14 +38,12 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEBUG = True
     conn = Config.CFG['connDevGallery']
-    server_host = Config.CFG["serverHost"]
     server_port = Config.CFG["serverPort"]
 
 
 class ProductionConfig(Config):
     DEBUG = False
     conn = Config.CFG['connProdGallery']
-    server_host = Config.CFG["serverHost"]
     server_port = Config.CFG["serverPort"]
 
 

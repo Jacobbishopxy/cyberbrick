@@ -1,5 +1,4 @@
+# Please make sure the following files are available when running any server.
 
 config.json
-mongo.connection.env
 ua.auth.env
-lura.json

@@ -109,9 +109,9 @@ submodule-update:
 
 # CAUTIOUS! May override your current env config
 env-setup:
-	cp ./resources/lura.json ${UA_PATH}/resources/lura.json
+	cp ./resources/lura.env ${UA_PATH}/resources/lura.env
 	cp ./resources/ua.auth.env ${UA_PATH}/resources/auth.env
-	cp ./resources/gateway.env ${UA_PATH}/resources/gateway.env
+	cp ./resources/ua.gateway.env ${UA_PATH}/resources/gateway.env
 
 # for dev mode, running api-gateway
 api-gateway:

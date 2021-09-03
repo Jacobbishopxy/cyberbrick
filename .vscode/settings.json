@@ -1,14 +1,15 @@
 {
-  "python.analysis.extraPaths": ["./server"],
-  "python.autoComplete.extraPaths": ["./server"],
-  "eslint.workingDirectories": ["web"],
-  "cSpell.words": [
-    "cyberbrick",
-    "echarts",
-    "treemap",
-    "antd",
-    "coord",
-    "sider",
-    "cascader"
-  ]
+	"python.analysis.extraPaths": ["./server"],
+	"python.autoComplete.extraPaths": ["./server"],
+	"eslint.workingDirectories": ["web"],
+	"cSpell.words": [
+		"antd",
+		"cascader",
+		"coord",
+		"cyberbrick",
+		"echarts",
+		"lura",
+		"sider",
+		"treemap"
+	]
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
+
 #if file exist, kill all the PID stored inside
 if [ -f "./.myAppPID" ]; then
     for serverPID in `cat ./.myAppPID`
     do
-        
         kill -9 $serverPID
     done
     rm ./.myAppPID
