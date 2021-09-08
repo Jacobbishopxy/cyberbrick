@@ -114,6 +114,16 @@ class Loader(object):
         """
         self._engine.execute(q2)
 
+    def add_auto_increment_primary_key(self, table_name: str, key_col: str):
+        """
+        alter an existing column to uuid column, only worked for PostgresSql
+        """
+
+        q = f"""
+        ALTER TABLE "{table_name}" ADD COLUMN {key_col} SERIAL PRIMARY KEY
+        """
+        self._engine.execute(q)
+
     def list_all_constraint(self, table_name: str) -> List[str]:
         """
         list all constraint from a table

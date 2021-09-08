@@ -83,6 +83,8 @@ class DatabaseManipulationController(Controller):
         def gen_uuid_key_api():
             """
             generate a primary uuid key fow a raw table in a database (id specified in storage)
+
+            CAUTIOUS! this API shouldn't be used while we've already got `add_auto_increment_primary_key`
             """
             db_id = request.args.get("id")
             table_name = request.json.get("tableName")
@@ -134,7 +136,8 @@ class DatabaseManipulationController(Controller):
                     try:
                         loader.insert(table_name, d, if_exists=insert_option)
                         if insert_option == "replace":
-                            loader.add_primary_uuid_key(table_name, "index")
+                            # add auto increment primary key
+                            loader.add_auto_increment_primary_key(table_name, "_id")
                     except Exception as e:
                         return make_response(str(e), 400)
 
@@ -149,7 +152,8 @@ class DatabaseManipulationController(Controller):
                             key = attach_prefix(key, sheet_prefix)
                             loader.insert(key, value, if_exists=insert_option)
                             if insert_option == "replace":
-                                loader.add_primary_uuid_key(key, "index")
+                                # add auto increment primary key
+                                loader.add_auto_increment_primary_key(key, "_id")
                         except Exception as e:
                             return make_response(str(e), 400)
             else:
