@@ -9,7 +9,7 @@ import {generateCommonOption} from "../../../Utils/chartGenerators"
 import {ChartOptionGenerator} from "@/components/Gallery/Utils/data"
 
 
-const EditorField = generateCommonEditorField("pie")
+const EditorField = generateCommonEditorField()
 const PresenterField = generateCommonPresenterField(generateCommonOption("bar") as ChartOptionGenerator)
 
 export const Bar = new ModuleGenerator(EditorField, PresenterField).generate()

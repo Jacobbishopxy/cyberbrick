@@ -134,7 +134,7 @@ class DatabaseManipulationController(Controller):
                     except Exception as e:
                         return make_response(str(e), 400)
                     try:
-                        loader.insert(table_name, d, if_exists=insert_option)
+                        loader.insert(table_name, d, if_exists=insert_option, index=False)
                         if insert_option == "replace":
                             # add auto increment primary key
                             loader.add_auto_increment_primary_key(table_name, "_id")
@@ -150,7 +150,7 @@ class DatabaseManipulationController(Controller):
                     for key, value in d.items():
                         try:
                             key = attach_prefix(key, sheet_prefix)
-                            loader.insert(key, value, if_exists=insert_option)
+                            loader.insert(key, value, if_exists=insert_option, index=False)
                             if insert_option == "replace":
                                 # add auto increment primary key
                                 loader.add_auto_increment_primary_key(key, "_id")

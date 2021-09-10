@@ -10,7 +10,7 @@ if [ -f "./.myAppPID" ]; then
 fi
 
 #unbind port 2009 from localhost
-for serverPID in `lsof -i :2009,8000,7999 |awk '{print $2}'`
+for serverPID in `lsof -i :8000,8020,8030 |awk '{print $2}'`
 do
     if [ $serverPID != "PID" ]; then
         kill $serverPID

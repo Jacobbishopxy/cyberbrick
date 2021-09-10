@@ -1,5 +1,7 @@
 {
 	"serverPort": 8020,
+	"serverGoHost": "localhost",
+	"serverGoPort": 8040,
 	"connDevGallery": {
 		"name": "gallery",
 		"type": "postgres",

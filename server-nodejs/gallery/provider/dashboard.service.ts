@@ -42,7 +42,7 @@ const categoryDashboardRelations = {
 @Injectable()
 export class DashboardService {
   constructor(@InjectRepository(Dashboard, common.db) private repoDashboard: Repository<Dashboard>,
-              @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
+    @InjectRepository(Category, common.db) private repoCategory: Repository<Category>) {}
 
   getAllDashboards() {
     return this.repoDashboard.find(dashboardFullRelations)

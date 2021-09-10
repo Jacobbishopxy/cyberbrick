@@ -6,16 +6,18 @@ source .env
 if [ $1 == "prod" ]; then
     cd web
     yarn build
-    yarn serve &
+    cd server
+    go run . &
     echo -n "$! " > ../.myAppPID
-    cd ../server
+    cd ../server-py
     sh -c "conda run -n $PYTHON_VERSION python wsgi.py --env=prod" &
     echo "$!" >> ../.myAppPID
 # default to development mode
 else
     cd web
-    yarn serve:dev &
+    yarn dev &
     echo -n "$! " > ../.myAppPID
+    cd ../server-nodejs
     yarn dev &
     echo "$!" >> ../.myAppPID
 
