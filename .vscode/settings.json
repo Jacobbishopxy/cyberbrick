@@ -11,5 +11,8 @@
 		"lura",
 		"sider",
 		"treemap"
-	]
+	],
+	"files.watcherExclude": {
+		"**/target": true
+	}
 }
