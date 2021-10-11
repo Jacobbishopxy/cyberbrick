@@ -99,16 +99,18 @@ docker-biz-v1-start:
 
 # the following are targets for submodule ubiquitous-alchemy
 # initialize or update submodule
-submodule-init:
+submodule-init: submodule-config-init
 	git submodule init
 	git submodule update
-	cd ${UA_PATH}/resources && cp auth.template.env auth.env && cp go.template.env go.env
+
+submodule-config-init:
+	cp ./resources/ua.auth.template.env ua.auth.env
 
 submodule-update:
 	cd ${UA_PATH} && git pull origin main
 
-# CAUTIOUS! May override your current env config
-env-setup:
+# CAUTIOUS! Will override your current env config
+submodule-config:
 	cp ./resources/lura.env ${UA_PATH}/resources/lura.env
 	cp ./resources/ua.auth.env ${UA_PATH}/resources/auth.env
 	cp ./resources/ua.gateway.env ${UA_PATH}/resources/gateway.env
