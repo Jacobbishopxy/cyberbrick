@@ -113,6 +113,7 @@ submodule-config:
 	cp ./resources/lura.env ${UA_PATH}/resources/lura.env
 	cp ./resources/ua.auth.env ${UA_PATH}/resources/auth.env
 	cp ./resources/ua.gateway.env ${UA_PATH}/resources/gateway.env
+	cd ${UA_PATH}/ubiquitous-api-gateway && make env-setup
 
 # for dev mode, running api-gateway
 api-gateway:
