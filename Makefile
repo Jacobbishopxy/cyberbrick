@@ -99,12 +99,11 @@ docker-biz-v1-start:
 
 # the following are targets for submodule ubiquitous-alchemy
 # initialize or update submodule
-submodule-init: submodule-config-init
+submodule-init:
+	cp ./resources/ua.auth.template.env ./resources/ua.auth.env
 	git submodule init
 	git submodule update
-
-submodule-config-init:
-	cp ./resources/ua.auth.template.env ua.auth.env
+	make submodule-config
 
 submodule-update:
 	cd ${UA_PATH} && git pull origin main
