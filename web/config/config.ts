@@ -1,11 +1,11 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi'
+import {defineConfig} from 'umi'
 import defaultSettings from './defaultSettings'
 import proxy from './proxy'
-import { mainRoutes, errorRoutes } from "./routes"
-import { demoRoute } from "./demoRoute"
+import {mainRoutes, errorRoutes} from "./routes"
+import {demoRoute} from "./demoRoute"
 
-const { REACT_APP_ENV } = process.env
+const {REACT_APP_ENV} = process.env
 
 
 export default defineConfig({

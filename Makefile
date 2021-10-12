@@ -26,14 +26,19 @@ UA_PATH=ubiquitous-alchemy
 DOCKER_APP_PATH=docker-app
 DOCKER_BASE_PATH=docker-base
 DOCKER_GO_MONGO=biz-api
+NETWORK=prod
 
-#set up environment
+# setup docker network
+docker-network-init:
+	docker network create ${NETWORK}
+
+# setup environment
 setup: web-setup
 	./setup.sh
 	cd ${DOCKER_BASE_PATH}/postgres && bash start.sh && bash create_database.sh
 	cd ${DOCKER_BASE_PATH}/postgres && bash grant_read_all.sh
 
-#the following are for production in localhost (testing)
+# the following are for production in localhost (testing)
 web-setup:
 	cd web && yarn
 

@@ -15,7 +15,7 @@ export default {
     '/gateway/': {
       target: 'http://localhost:8010',
       changeOrigin: true,
-      pathRewrite: {'^': ''},
+      pathRewrite: {'/gateway': ''},
     },
   },
 }
