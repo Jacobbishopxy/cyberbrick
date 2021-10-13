@@ -14,7 +14,7 @@ export interface ContentMongo {
   config?: Record<string, any>
 }
 
-interface MData {
+export interface MData {
   id: string
   data: Record<string, any>
 }
