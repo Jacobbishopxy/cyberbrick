@@ -1,4 +1,5 @@
 {
+	"serverHost": "localhost",
 	"serverPort": 8020,
 	"serverGoHost": "localhost",
 	"serverGoPort": 8040,

@@ -27,7 +27,7 @@ export class DatabaseController {
     const serverConfig = this.configService.get("server")
 
     return process.env.NODE_ENV === "production" ?
-      `http://${serverConfig.serverHost}:${serverConfig.serverPort}/api/database` :
+      `http://${serverConfig.serverPyHost}:${serverConfig.serverPyPort}/api/database` :
       "/api/database"
   }
 
@@ -35,7 +35,7 @@ export class DatabaseController {
     if (process.env.NODE_ENV === "production")
       return {}
     const server = this.configService.get("server")
-    return {proxy: {host: server.serverHost, port: server.serverPort, protocol: "http"}}
+    return {proxy: {host: server.serverPyHost, port: server.serverPyPort, protocol: "http"}}
   }
 
   /**
