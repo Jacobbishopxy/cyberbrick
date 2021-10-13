@@ -26,17 +26,9 @@ export class DatabaseController {
   private getDbPath() {
     const serverConfig = this.configService.get("server")
 
-    return process.env.NODE_ENV === "production" ?
-      `http://${serverConfig.serverPyHost}:${serverConfig.serverPyPort}/api/database` :
-      "/api/database"
+    return `http://${serverConfig.serverPyHost}:${serverConfig.serverPyPort}/api/database`
   }
 
-  private getProxy() {
-    if (process.env.NODE_ENV === "production")
-      return {}
-    const server = this.configService.get("server")
-    return {proxy: {host: server.serverPyHost, port: server.serverPyPort, protocol: "http"}}
-  }
 
   /**
    * get all database connection config information
@@ -44,7 +36,7 @@ export class DatabaseController {
   @Get("viewStorage")
   async viewStorage() {
     const url = `${this.getDbPath()}/viewStorage`
-    const ans = await axios.get(url, this.getProxy())
+    const ans = await axios.get(url)
     return ans.data
   }
 
@@ -54,7 +46,7 @@ export class DatabaseController {
   @Get("listTable")
   async listTable(@Query("id") dbId: string) {
     const url = `${this.getDbPath()}/listTable?id=${dbId}`
-    const ans = await axios.get(encodeURI(url), this.getProxy())
+    const ans = await axios.get(encodeURI(url))
     return ans.data
   }
 
@@ -62,7 +54,7 @@ export class DatabaseController {
   async getTableColumns(@Query("id") dbId: string,
     @Query("tableName") tableName: string) {
     const url = `${this.getDbPath()}/getTableColumns?id=${dbId}&tableName=${tableName}`
-    const ans = await axios.get(encodeURI(url), this.getProxy())
+    const ans = await axios.get(encodeURI(url))
     return ans.data
   }
 
@@ -92,7 +84,7 @@ export class DatabaseController {
 
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
-    const ans = await axios.post(encodeURI(url), form, {...this.getProxy(), headers: form.getHeaders()})
+    const ans = await axios.post(encodeURI(url), form, {headers: form.getHeaders()})
     return ans.data
   }
 
@@ -105,7 +97,7 @@ export class DatabaseController {
     @Query("tableName") tableName: string
   ) {
     const url = `${this.getDbPath()}/dropTable?id=${dbId}&tableName=${tableName}`
-    const ans = await axios.delete(encodeURI(url), this.getProxy())
+    const ans = await axios.delete(encodeURI(url))
     return ans.data
   }
 
@@ -113,7 +105,7 @@ export class DatabaseController {
   async renameTable(@Query("id") dbId: string,
     @Body() data: {tableName: string, replacement: string}) {
     const url = `${this.getDbPath()}/renameTable?id=${dbId}`
-    const ans = await axios.post(encodeURI(url), data, this.getProxy())
+    const ans = await axios.post(encodeURI(url), data)
     return ans.data
   }
 
@@ -127,7 +119,7 @@ export class DatabaseController {
     @Body() data: Record<string, any>) {
     let url = `${this.getDbPath()}/insert?id=${dbId}&tableName=${tableName}`
     if (insertOption) url += `&insertOption=${insertOption}`
-    const ans = await axios.post(encodeURI(url), data, this.getProxy())
+    const ans = await axios.post(encodeURI(url), data)
     return ans.data
   }
 
@@ -140,7 +132,7 @@ export class DatabaseController {
     @Query("itemId") itemId: string,
     @Body() data: Record<string, any>) {
     const url = `${this.getDbPath()}/update?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
-    const ans = await axios.post(encodeURI(url), data, this.getProxy())
+    const ans = await axios.post(encodeURI(url), data)
     return ans.data
   }
 
@@ -154,7 +146,7 @@ export class DatabaseController {
     @Query("itemId") itemId: string
   ) {
     const url = `${this.getDbPath()}/delete?id=${dbId}&tableName=${tableName}&itemId=${itemId}`
-    const ans = await axios.delete(encodeURI(url), this.getProxy())
+    const ans = await axios.delete(encodeURI(url))
     return ans.data
   }
 
@@ -167,7 +159,7 @@ export class DatabaseController {
     @Body() data: Record<string, any>
   ) {
     const url = `${this.getDbPath()}/read?id=${dbId}`
-    const ans = await axios.post(encodeURI(url), data, this.getProxy())
+    const ans = await axios.post(encodeURI(url), data)
     return ans.data
   }
 }

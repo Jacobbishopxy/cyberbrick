@@ -14,6 +14,11 @@ export interface ContentMongo {
   config?: Record<string, any>
 }
 
+interface MData {
+  id: string
+  data: Record<string, any>
+}
+
 // const base = 'http://localhost:8089/api/mongo'
 @Injectable()
 export class MongoService {
@@ -65,7 +70,7 @@ export class MongoService {
       // console.log("querying go api with content\n", mongoCt)
       //make query to go api
       try {
-        const res = await this.createContent(type, mongoCt)
+        const res = await this.createContent(type, mongoCt) as MData
         // console.log("receving go api response", res);
         content.data = {id: res.id, collection: type}
         content.storageType = common.StorageType.MONGO
@@ -84,8 +89,7 @@ export class MongoService {
    * @returns converted content, the data will be sent to go-mongo-api
    */
   pgContentToMongoContent(ct: Content) {
-    //if content is nested inside a module, 
-    //element is doesn't exits. Use tabId instead
+    //if content is nested inside a module, element is doesn't exits. Use tabId instead
     const eleId = ct.element?.id || ct.tabId
     //date format should match go api's date formate
     const mongoct: ContentMongo = {
@@ -126,15 +130,13 @@ export class MongoService {
       default://save to pg
         break
     }
-    const res = await this.createOrUpdateContentList(ele.type, cts)
-    ele.contents = res.map((r: {id: string}) => {
-      return {...ele.contents, data: {id: r.id, type: ele.type}}
-    })
+    const res = await this.createOrUpdateContentList(ele.type, cts) as MData[]
+    ele.contents = res.map((r: {id: string}) => ({...ele.contents, data: {id: r.id, type: ele.type}}) as unknown) as Content[]
     return ele
   }
 
   async getContentData(type: string, id?: string, date?: string, elementId?: string) {
-    const res = await this.getContent(type, id, date, elementId)
+    const res = await this.getContent(type, id, date, elementId) as MData
     // console.log("receiving response from go api", res, res.data)
     return res.data
   }

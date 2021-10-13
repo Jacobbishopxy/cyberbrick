@@ -22,16 +22,8 @@ export class UploadController {
   private getUploadPath() {
     const serverConfig = this.configService.get("server")
 
-    return process.env.NODE_ENV === "production" ?
-      `http://${serverConfig.serverPyHost}:${serverConfig.serverPyPort}/api/upload` :
-      "/api/upload"
-  }
+    return `http://${serverConfig.serverPyHost}:${serverConfig.serverPyPort}/api/upload`
 
-  private getProxy() {
-    if (process.env.NODE_ENV === "production")
-      return {}
-    const server = this.configService.get("server")
-    return {proxy: {host: server.serverPyHost, port: server.serverPyPort, protocol: "http"}}
   }
 
   @Post("extract")
@@ -54,7 +46,7 @@ export class UploadController {
     const form = new FormData()
     form.append("file", file.buffer, file.originalname)
 
-    const ans = await axios.post(url, form, {...this.getProxy(), headers: form.getHeaders()})
+    const ans = await axios.post(url, form, {headers: form.getHeaders()})
 
     return ans.data
   }
