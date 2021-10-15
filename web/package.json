@@ -51,6 +51,7 @@
     "@nestjs/typeorm": "^7.1.5",
     "@opuscapita/react-filemanager": "^1.1.10",
     "@opuscapita/react-filemanager-connector-node-v1": "^1.1.10",
+    "@reduxjs/toolkit": "^1.6.2",
     "antd": "^4.16.5",
     "axios": "^0.21.1",
     "class-transformer": "^0.4.0",

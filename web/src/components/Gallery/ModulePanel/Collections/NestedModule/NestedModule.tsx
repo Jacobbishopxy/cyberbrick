@@ -147,3 +147,8 @@ const PresenterField = (props: ModulePresenterField) => {
         </div> : <></>)
 }
 export const NestedSimpleModule = new ModuleGenerator(EditorField, PresenterField).generate()
+// export const NestedSimpleModule = () => {
+//     return (
+//         <div>789</div>
+//     )
+// }

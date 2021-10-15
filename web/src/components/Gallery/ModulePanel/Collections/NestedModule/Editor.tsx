@@ -111,6 +111,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //switch the module(template) corresponding to different tabs
     const onSwitch = (i: string) => {
+        console.log(114)
         setCurrIndex(i)
         setUpdateCnt(updateCnt + 1)
     }
@@ -160,12 +161,14 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     }
 
     const nestedModuleHeight = (props.contentHeight || 350) - (container?.clientHeight || 0) - 35 //35 is title's height
+
     //convert a module to reactNode based on id
     const moduleToReactNode = (id: string) => {
         let module = props.items?.find((item => item.i === id))?.module
         // console.log(items, module)
         //cases for unintialized module
-        if (!module) return null
+        if (!module)
+            return null
         let { name, timeSeries, elementType, content } = module
         // console.log("did content receive id?", content)
         //make sure content has tabId
@@ -212,7 +215,8 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
             <div style={{ bottom: 0 }}>
                 {/* {"on tab: " + currIndex} */}
-                {currModule || <Skeleton />}
+
+                {currModule || <Skeleton active />}
 
             </div>
         </div>

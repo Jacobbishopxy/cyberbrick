@@ -112,6 +112,7 @@ export const TabController = (props: TabControllerProps) => {
             {props.editable && props.isHover ? editHeader : <div style={{ marginTop: "-12px", height: "24px" }} />}
 
             <div>
+                {/* icon图标 */}
                 {displayHeader()}
             </div>
             <AddModuleModal

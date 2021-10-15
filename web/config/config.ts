@@ -4,7 +4,6 @@ import defaultSettings from './defaultSettings'
 import proxy from './proxy'
 import {mainRoutes, errorRoutes} from "./routes"
 import {demoRoute} from "./demoRoute"
-
 const {REACT_APP_ENV} = process.env
 
 
@@ -14,6 +13,7 @@ export default defineConfig({
   antd: {},
   dva: {
     hmr: true,
+    immer: true,
   },
   layout: {
     name: 'CyberBrick',
