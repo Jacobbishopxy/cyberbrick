@@ -63,6 +63,7 @@ const TimePickModal = (props: TimePickModalProps) => {
 
     const onOk = () => {
         if (selectedDate) props.onOk(selectedDate)
+
     }
 
     return <Modal
@@ -128,8 +129,8 @@ export const HeaderController = (props: HeaderController) => {
         setDateModalVisible({ ...dateModalVisible, pick: false })
     }
 
-    const editableController = () =>
-        <Space>
+    const editableController = () => {
+        return (<Space>
             <DragButton />
             {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
             {props.settable ?
@@ -152,23 +153,26 @@ export const HeaderController = (props: HeaderController) => {
                 onCancel={() => setDateModalVisible({ ...dateModalVisible, set: false })}
                 editDate={setSelectedDate}
             />
-        </Space>
+        </Space>)
+    }
+    const nonEditableController = () => {
+        return (
+            props.timeSeries && props.dateList ?
+                <Space>
+                    <TimePickButton
+                        onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
+                    />
+                    <TimePickModal
+                        intl={intl}
+                        visible={dateModalVisible.pick}
+                        onOk={timePickModalOnOk}
+                        onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
+                        dateList={props.dateList}
+                    />
+                </Space> : <></>
 
-    const nonEditableController = () =>
-        props.timeSeries && props.dateList ?
-            <Space>
-                <TimePickButton
-                    onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
-                />
-                <TimePickModal
-                    intl={intl}
-                    visible={dateModalVisible.pick}
-                    onOk={timePickModalOnOk}
-                    onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
-                    dateList={props.dateList}
-                />
-            </Space> : <></>
-
+        )
+    }
     const genController = () =>
         props.editable ? editableController() : nonEditableController()
 

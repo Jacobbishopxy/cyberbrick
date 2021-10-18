@@ -14,133 +14,134 @@ import { max, min } from "lodash"
 
 
 const EditorField = (props: ModuleEditorField) => {
-  const intl = useIntl()
-  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
+    const intl = useIntl()
+    const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
-  const onSubmit = async (values: Record<string, any>) => {
-    const ctt = {
-      ...content,
-      date: content?.date || DataType.today(),
-      data: { ...content?.data, ...values }
-    }
-    setContent(ctt)
-    props.updateContent(ctt)
-
-    return true
-  }
-
-  return (
-    <div className={props.styling}>
-      <ModalForm
-        title={intl.formatMessage({ id: "gallery.component.module-panel.miscellaneous.target-price1" })}
-        trigger={
-          <Button type="primary">
-            <FormattedMessage id="gallery.component.general42" />
-          </Button>
+    const onSubmit = async (values: Record<string, any>) => {
+        const ctt = {
+            ...content,
+            date: content?.date || DataType.today(),
+            data: { ...content?.data, ...values }
         }
-        initialValues={{ direction: "B" }}
-        onFinish={onSubmit}
-        modalProps={{ width: "30vw" }}
-      >
-        <ProFormRadio.Group
-          name="direction"
-          label={<FormattedMessage id="gallery.component.general48" />}
-          options={[
-            { label: <FormattedMessage id="gallery.component.general49" />, value: "B" },
-            { label: <FormattedMessage id="gallery.component.general50" />, value: "N" },
-            { label: <FormattedMessage id="gallery.component.general51" />, value: "S" },
-          ]}
-          rules={[{ required: true, message: "Please choose a direction" }]}
-        />
-        <ProFormDigit
-          name="price"
-          label={<FormattedMessage id="gallery.component.general52" />}
-          min={0}
-          fieldProps={{ step: 0.01 }}
-          placeholder="Please enter your target price"
-          width="md"
-          rules={[{ required: true, message: "Please enter target price" }]}
-        />
-        <ProFormText
-          name="note"
-          label={<FormattedMessage id="gallery.component.general53" />}
-          placeholder="Please enter your note, this is optional"
-        />
-      </ModalForm>
-    </div>
-  )
+        setContent(ctt)
+        props.updateContent(ctt)
+
+        return true
+    }
+
+    return (
+        <div className={props.styling}>
+            <ModalForm
+                title={intl.formatMessage({ id: "gallery.component.module-panel.miscellaneous.target-price1" })}
+                trigger={
+                    <Button type="primary">
+                        <FormattedMessage id="gallery.component.general42" />
+                    </Button>
+                }
+                initialValues={{ direction: "B" }}
+                onFinish={onSubmit}
+                modalProps={{ width: "30vw" }}
+            >
+                <ProFormRadio.Group
+                    name="direction"
+                    label={<FormattedMessage id="gallery.component.general48" />}
+                    options={[
+                        { label: <FormattedMessage id="gallery.component.general49" />, value: "B" },
+                        { label: <FormattedMessage id="gallery.component.general50" />, value: "N" },
+                        { label: <FormattedMessage id="gallery.component.general51" />, value: "S" },
+                    ]}
+                    rules={[{ required: true, message: "Please choose a direction" }]}
+                />
+                <ProFormDigit
+                    name="price"
+                    label={<FormattedMessage id="gallery.component.general52" />}
+                    min={0}
+                    fieldProps={{ step: 0.01 }}
+                    placeholder="Please enter your target price"
+                    width="md"
+                    rules={[{ required: true, message: "Please enter target price" }]}
+                />
+                <ProFormText
+                    name="note"
+                    label={<FormattedMessage id="gallery.component.general53" />}
+                    placeholder="Please enter your note, this is optional"
+                />
+            </ModalForm>
+        </div>
+    )
 }
 
 const showDirection = (dir: string, pr: number, fontSize: number) => {
-  switch (dir) {
-    case "B":
-      return (
-        <Row>
-          <Col span={9} offset={2}>
-            <span style={{ color: "white", background: "red", fontSize: fontSize }}>
-              <FormattedMessage id="gallery.component.general49" />
-            </span>
-          </Col>
-          <Col span={9} offset={4}>
-            <span style={{ color: "red", fontSize: fontSize }}>{pr}</span>
-          </Col>
-        </Row>
-      )
-    case "S":
-      return (
-        <Row>
-          <Col span={9} offset={2}>
-            <span style={{ color: "white", background: "green", fontSize: fontSize }}>
-              <FormattedMessage id="gallery.component.general51" />
-            </span>
-          </Col>
-          <Col span={9} offset={4}>
-            <span style={{ color: "green", fontSize: fontSize }}>{pr}</span>
-          </Col>
-        </Row>
-      )
-    default:
-      return (
-        <Row>
-          <Col span={9} offset={2}>
-            <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
-              <FormattedMessage id="gallery.component.general50" />
-            </span>
-          </Col>
-          <Col span={9} offset={4}>
-            <span style={{ color: "gray", fontSize: fontSize }}>{pr}</span>
-          </Col>
-        </Row>
-      )
-  }
+    switch (dir) {
+        case "B":
+            return (
+                <Row>
+                    <Col span={9} offset={2}>
+                        <span style={{ color: "white", background: "red", fontSize: fontSize }}>
+                            <FormattedMessage id="gallery.component.general49" />
+                        </span>
+                    </Col>
+                    <Col span={9} offset={4}>
+                        <span style={{ color: "red", fontSize: fontSize }}>{pr}</span>
+                    </Col>
+                </Row>
+            )
+        case "S":
+            return (
+                <Row>
+                    <Col span={9} offset={2}>
+                        <span style={{ color: "white", background: "green", fontSize: fontSize }}>
+                            <FormattedMessage id="gallery.component.general51" />
+                        </span>
+                    </Col>
+                    <Col span={9} offset={4}>
+                        <span style={{ color: "green", fontSize: fontSize }}>{pr}</span>
+                    </Col>
+                </Row>
+            )
+        default:
+            return (
+                <Row>
+                    <Col span={9} offset={2}>
+                        <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
+                            <FormattedMessage id="gallery.component.general50" />
+                        </span>
+                    </Col>
+                    <Col span={9} offset={4}>
+                        <span style={{ color: "gray", fontSize: fontSize }}>{pr}</span>
+                    </Col>
+                </Row>
+            )
+    }
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-  //responsive font-size
-  const fontSize = max([50, min([props.contentHeight ? props.contentHeight / 4 : 100])])
-  const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])
+    //responsive font-size
+    const fontSize = max([50, min([props.contentHeight ? props.contentHeight / 4 : 100])])
+    const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])
 
-  return props.content ?
-    <Space direction="vertical" style={{ width: "100%", overflow: "auto" }} className={props.styling}>
-      <Row>
-        <Col span={9} offset={2}>
-          <span style={{ fontWeight: "bold", fontSize: textSize }}>
-            <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
-          </span>
-        </Col>
-        <Col span={9} offset={4}>
-          <span style={{ fontWeight: "bold", fontSize: textSize }}>
-            <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
-          </span>
-        </Col>
-      </Row>
+    return props.content ?
+        <Space direction="vertical" style={{ width: "100%", overflow: "auto" }} className={props.styling}>
+            <Row>
+                <Col span={9} offset={2}>
+                    <span style={{ fontWeight: "bold", fontSize: textSize }}>
+                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
+                    </span>
+                </Col>
+                <Col span={9} offset={4}>
+                    <span style={{ fontWeight: "bold", fontSize: textSize }}>
+                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
+                    </span>
+                </Col>
+            </Row>
 
-      {showDirection(props.content?.data?.direction, props.content?.data?.price, fontSize!)}
+            {showDirection(props.content?.data?.direction, props.content?.data?.price, fontSize!)}
 
-      <Row>
-        <Col offset={2}>{props.content?.data?.note}</Col>
-      </Row>
-    </Space> : <></>
+            <Row>
+                <Col offset={2}>{props.content?.data?.note}</Col>
+            </Row>
+        </Space>
+        : <></>
 }
 
 

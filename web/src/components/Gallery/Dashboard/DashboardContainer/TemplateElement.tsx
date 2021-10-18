@@ -2,11 +2,12 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, useContext } from "react"
 
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
 
+import { PropsContext } from "../Dashboard"
 
 export interface ContainerElementProps {
     parentInfo: string[]
@@ -15,7 +16,7 @@ export interface ContainerElementProps {
     element: DataType.Element
     shouldStartFetch: number
     isNested?: boolean
-    fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+    fetchContentFn?: (id: string | undefined, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
     updateContentFn: (content: DataType.Content) => void
     onRemove: () => void
@@ -38,6 +39,10 @@ export interface ContainerElementRef {
  */
 export const TemplateElement =
     forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
+
+        const DashboardProps = useContext(PropsContext)
+        console.log(44, DashboardProps, props.isNested)
+
         const mpRef = useRef<HTMLDivElement>(null)
 
         const [mpHeight, setMpHeight] = useState<number>(0)
@@ -58,10 +63,13 @@ export const TemplateElement =
             DynamicHeader组件需要的数据从这里网络请求回来
         */
         const fetchContent = (date?: string) => {
-            // console.log(eleId, props.isNested)
+            console.log(66, eleId, props.isNested)
             if (eleId) {
                 //no need to check date since it's allowed date to be undefined
-                props.fetchContentFn(eleId, date, props.isNested).then(res => {
+                // props.fetchContentFn(eleId, date, props.isNested).then(res => {
+                DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
+                    // fetchElementContent(eleId, date, props.isNested).then(res => {
+                    console.log(71, eleId)
                     //TODO: cannot set content to undefined
                     const ct = res || { data: {}, date: DataType.today() }
 
@@ -76,9 +84,14 @@ export const TemplateElement =
         }
 
 
+
+
+
+
+
         //listen to props's shouldStartFetch. If it updates, fetchContent
+        //获取content内容，依赖项是
         useEffect(() => {
-            //first mount: should fetch; After mount: when props.shouldStartFetch update, do the fetching
             fetchContent()
         }, [props.shouldStartFetch])
 
@@ -109,6 +122,8 @@ export const TemplateElement =
                     fetchTableColumns={props.fetchTableColumnsFn}
                     fetchQueryData={props.fetchQueryDataFn}
                     contentHeight={mpHeight}
+                    /* head 点击日历按钮获取数据的方法 */
+                    //!改
                     fetchContent={fetchContent}
                     fetchContentDates={fetchContentDates}
                     updateContent={updateContent}
@@ -118,7 +133,9 @@ export const TemplateElement =
                     isLoading={isLoading}
 
                     updateDescription={props.updateDescription}
-                    fetchContentFn={props.fetchContentFn}
+                    /* 嵌套模块也需要获得content，就通过这个传入的这个函数获得 */
+                    //!改
+                    fetchContentFn={DashboardProps?.fetchElementContent}
                     fetchContentDatesFn={props.fetchContentDatesFn}
                     isNested={props.isNested}
                 />

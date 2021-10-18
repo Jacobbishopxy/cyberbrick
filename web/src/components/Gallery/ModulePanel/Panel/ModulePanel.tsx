@@ -19,7 +19,7 @@ import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 import { ModuleDescirption } from "./ModuleDescription"
 
-
+import { PropsContext } from "../../Dashboard/Dashboard"
 export interface ModulePanelProps {
     parentInfo: string[]
     eleId: string
@@ -227,6 +227,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         if (props.isNested) return <></>
         return genFooter
     }
+
     return (
         <div className={style()} {...attachId()}>
             {genHeader}

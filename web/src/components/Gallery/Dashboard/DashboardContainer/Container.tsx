@@ -2,61 +2,61 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react"
-import {Empty, Tabs} from "antd"
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import { Empty, Tabs } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
-import {ContainerTemplate, ContainerTemplateRef} from "./ContainerTemplate"
-import {FormattedMessage} from "umi"
-import {ExclamationCircleOutlined} from "@ant-design/icons"
+import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
+import { FormattedMessage } from "umi"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 const routeConfiguration = "/gallery/configuration"
 export interface ContainerProps {
-  initialSelected?: string[] | undefined
+    initialSelected?: string[] | undefined
 
-  selectedCategoryName: string
-  dashboardInfo: DataType.Dashboard
-  onSelectPane: (templateId: string) => void
-  fetchElements: (templateId: string) => Promise<DataType.Template>
-  fetchElementContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
-  fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
-  updateElementContentFn: (content: DataType.Content) => void
-  fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
-  fetchTableListFn: (id: string) => Promise<string[]>
-  fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
-  fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+    selectedCategoryName: string
+    dashboardInfo: DataType.Dashboard
+    onSelectPane: (templateId: string) => void
+    fetchElements: (templateId: string) => Promise<DataType.Template>
+    // fetchElementContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+    fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
+    updateElementContentFn: (content: DataType.Content) => void
+    fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
+    fetchTableListFn: (id: string) => Promise<string[]>
+    fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
+    fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
 }
 
 export interface ContainerRef {
-  startFetchElements: () => void
-  startFetchAllContents: () => void
-  newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
-  fetchTemplate: () => void
-  saveTemplate: () => DataType.Template | undefined
+    startFetchElements: () => void
+    startFetchAllContents: () => void
+    newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
+    fetchTemplate: () => void
+    saveTemplate: () => DataType.Template | undefined
 }
 
 export interface ShouldElementFetch {
-  eleId: string | undefined
-  shouldStartFetch: boolean
+    eleId: string | undefined
+    shouldStartFetch: boolean
 }
 
 interface SelectedPane {
-  id: string
-  index: number
-  name: string
+    id: string
+    index: number
+    name: string
 }
 
 // get selected pane, default first template ID
 const getSelectedPane = (templates: DataType.Template[], initId?: string) => {
-  if (templates && templates.length > 0) {
-    if (initId) {
-      const r = _.find(templates, {id: initId})
-      if (r) return {id: r.id!, index: r.index!, name: r.name!}
+    if (templates && templates.length > 0) {
+        if (initId) {
+            const r = _.find(templates, { id: initId })
+            if (r) return { id: r.id!, index: r.index!, name: r.name! }
+        }
+        return { id: templates[0].id!, index: 0, name: templates[0].name }
     }
-    return {id: templates[0].id!, index: 0, name: templates[0].name}
-  }
-  return undefined
+    return undefined
 }
 
 /**
@@ -65,162 +65,163 @@ const getSelectedPane = (templates: DataType.Template[], initId?: string) => {
  * container: [...template[]]; template: [...element[]]; element: module
  */
 export const Container = forwardRef((props: ContainerProps, ref: React.Ref<ContainerRef>) => {
-  const ctRef = useRef<ContainerTemplateRef>(null)
+    const ctRef = useRef<ContainerTemplateRef>(null)
 
-  const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
+    const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
 
-  const [selectedPane, setSelectedPane] = useState<SelectedPane>()
-  const [template, setTemplate] = useState<DataType.Template>()
-  const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
+    const [selectedPane, setSelectedPane] = useState<SelectedPane>()
+    const [template, setTemplate] = useState<DataType.Template>()
+    const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
 
-  const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
+    const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
-  useEffect(() => {
-    if (props.initialSelected && props.initialSelected?.length >= 2) {
-      tabOnChange(props.initialSelected[2])
-    } else {
-      tabOnChange()
+    useEffect(() => {
+        if (props.initialSelected && props.initialSelected?.length >= 2) {
+            tabOnChange(props.initialSelected[2])
+        } else {
+            tabOnChange()
+        }
+    }, [props.dashboardInfo])
+
+    /**
+     * fetch template (with elements) when switching dashboard or it's tabs
+     */
+    useEffect(() => {
+        if (selectedPane) {
+            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
+            props.onSelectPane(selectedPane.id)
+        }
+    }, [selectedPane])
+
+    const startFetchElements = () => {
+        if (selectedPane)
+            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
     }
-  }, [props.dashboardInfo])
 
-  /**
-   * fetch template (with elements) when switching dashboard or it's tabs
-   */
-  useEffect(() => {
-    if (selectedPane) {
-      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
-      props.onSelectPane(selectedPane.id)
+    const startFetchAllContents = () => {
+        if (selectedPane) {
+            //update the shoudEleFetch count
+            // let length = template!.elements?.length || 0
+            // let newArray = Array(length).fill(0)
+            // for (let i = 0; i < length; i++) {
+            //   newArray[i] = shouldEleFetch[i] + 1 || 1
+            // }
+            // // console.log(newArray)
+            // setShouldEleFetch(newArray)
+            setShouldEleFetch(el => el + 1)
+        }
     }
-  }, [selectedPane])
 
-  const startFetchElements = () => {
-    if (selectedPane)
-      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
-  }
-
-  const startFetchAllContents = () => {
-    if (selectedPane) {
-      //update the shoudEleFetch count
-      // let length = template!.elements?.length || 0
-      // let newArray = Array(length).fill(0)
-      // for (let i = 0; i < length; i++) {
-      //   newArray[i] = shouldEleFetch[i] + 1 || 1
-      // }
-      // // console.log(newArray)
-      // setShouldEleFetch(newArray)
-      setShouldEleFetch(el => el + 1)
+    const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+        if (selectedPane) {
+            const rf = ctRef.current
+            if (rf) rf.newElement(name, timeSeries, elementType)
+        }
     }
-  }
 
-  const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
-    if (selectedPane) {
-      const rf = ctRef.current
-      if (rf) rf.newElement(name, timeSeries, elementType)
+    const fetchTemplate = () => {
+        if (selectedPane)
+            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
     }
-  }
 
-  const fetchTemplate = () => {
-    if (selectedPane)
-      props.fetchElements(selectedPane.id).then(res => setTemplate(res))
-  }
+    const saveTemplate = () => {
+        if (selectedPane) {
+            const rf = ctRef.current
 
-  const saveTemplate = () => {
-    if (selectedPane) {
-      const rf = ctRef.current
-
-      if (rf && template) {
-        const e = rf.saveElements()
-        return {...template, elements: e}
-      }
+            if (rf && template) {
+                const e = rf.saveElements()
+                return { ...template, elements: e }
+            }
+        }
+        return template
     }
-    return template
-  }
 
-  useImperativeHandle(ref, () => ({
-    startFetchElements,
-    startFetchAllContents,
-    newElement,
-    fetchTemplate,
-    saveTemplate
-  }))
+    useImperativeHandle(ref, () => ({
+        startFetchElements,
+        startFetchAllContents,
+        newElement,
+        fetchTemplate,
+        saveTemplate
+    }))
 
-  /**
-   * template's changing triggers `startFetchAllContents`
-   */
-  useEffect(() => {
-    if (ctRef.current && template) {
-      startFetchAllContents()
+    /**
+     * template's changing triggers `startFetchAllContents`
+     */
+    useEffect(() => {
+        if (ctRef.current && template) {
+            startFetchAllContents()
 
+        }
+    }, [template])
+
+    const elementUpdateContentFn = (ctt: DataType.Content) => {
+        const category = {
+            name: props.dashboardInfo.category!.name
+        } as DataType.Category
+        props.updateElementContentFn({ ...ctt, category })
     }
-  }, [template])
 
-  const elementUpdateContentFn = (ctt: DataType.Content) => {
-    const category = {
-      name: props.dashboardInfo.category!.name
-    } as DataType.Category
-    props.updateElementContentFn({...ctt, category})
-  }
+    const genPane = (t: DataType.Template) => {
+        if (ctRef && t.id === selectedPane?.id && template) {
+            const parentInfo = [props.selectedCategoryName, props.dashboardInfo.id!, t.id!]
 
-  const genPane = (t: DataType.Template) => {
-    if (ctRef && t.id === selectedPane?.id && template) {
-      const parentInfo = [props.selectedCategoryName, props.dashboardInfo.id!, t.id!]
-
-      return <ContainerTemplate
-        parentInfo={parentInfo}
-        elements={template.elements!}
-        elementFetchContentFn={props.fetchElementContentFn}
-        elementFetchContentDatesFn={props.fetchElementContentDatesFn}
-        elementUpdateContentFn={elementUpdateContentFn}
-        elementFetchStoragesFn={props.fetchStoragesFn}
-        elementFetchTableListFn={props.fetchTableListFn}
-        elementFetchTableColumnsFn={props.fetchTableColumnsFn}
-        elementFetchQueryDataFn={props.fetchQueryDataFn}
-        ref={ctRef}
-        shouldEleFetch={shouldEleFetch}
-      />
+            return <ContainerTemplate
+                parentInfo={parentInfo}
+                elements={template.elements!}
+                //网络请求获取模板具体内容。
+                // elementFetchContentFn={props.fetchElementContentFn}
+                elementFetchContentDatesFn={props.fetchElementContentDatesFn}
+                elementUpdateContentFn={elementUpdateContentFn}
+                elementFetchStoragesFn={props.fetchStoragesFn}
+                elementFetchTableListFn={props.fetchTableListFn}
+                elementFetchTableColumnsFn={props.fetchTableColumnsFn}
+                elementFetchQueryDataFn={props.fetchQueryDataFn}
+                ref={ctRef}
+                shouldEleFetch={shouldEleFetch}
+            />
+        }
+        return <></>
     }
-    return <></>
-  }
 
-  const DisplayTabPane = templates.map(t =>
-    <Tabs.TabPane
-      tab={t.name}
-      key={t.id}
-    >
-      {genPane(t)}
-    </Tabs.TabPane>
-  )
-
-  const EmptyPane = <Empty
-    image={null}
-    description={
-      <span>
-        <ExclamationCircleOutlined />
-        <FormattedMessage id="gallery.component.dashboard-container2" />
-        <a href={`${routeConfiguration}`}>
-          <FormattedMessage id="gallery.component.dashboard-config-table1" /></a>
-        <FormattedMessage id="gallery.component.dashboard-container3" />
-
-      </span>
-    }
-  >
-
-  </Empty>
-
-  return useMemo(
-    () => {
-      return (
-        <Tabs
-          onChange={tabOnChange}
-          activeKey={selectedPane?.id}
-          destroyInactiveTabPane
+    const DisplayTabPane = templates.map(t =>
+        <Tabs.TabPane
+            tab={t.name}
+            key={t.id}
         >
-          {
-            templates.length ? DisplayTabPane : EmptyPane
-          }
-        </Tabs>
-      )
-    }, [props.dashboardInfo, template])
+            {genPane(t)}
+        </Tabs.TabPane>
+    )
+
+    const EmptyPane = <Empty
+        image={null}
+        description={
+            <span>
+                <ExclamationCircleOutlined />
+                <FormattedMessage id="gallery.component.dashboard-container2" />
+                <a href={`${routeConfiguration}`}>
+                    <FormattedMessage id="gallery.component.dashboard-config-table1" /></a>
+                <FormattedMessage id="gallery.component.dashboard-container3" />
+
+            </span>
+        }
+    >
+
+    </Empty>
+
+    return useMemo(
+        () => {
+            return (
+                <Tabs
+                    onChange={tabOnChange}
+                    activeKey={selectedPane?.id}
+                    destroyInactiveTabPane
+                >
+                    {
+                        templates.length ? DisplayTabPane : EmptyPane
+                    }
+                </Tabs>
+            )
+        }, [props.dashboardInfo, template])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>

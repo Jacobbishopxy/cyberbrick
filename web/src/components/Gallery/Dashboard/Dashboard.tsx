@@ -14,7 +14,7 @@ import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
 export const EditableContext = React.createContext<boolean>(false)
-export const PropsContext = React.createContext<DashboardProps | undefined>(undefined)
+export const PropsContext = React.createContext<DashboardContent | undefined>(undefined)
 
 const dashboardContentUpdate = (contents: DataType.Content[], template: DataType.Template) => {
 
@@ -42,7 +42,13 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
     return newContents
 }
 
+//Dashboard上下文类型，快速传递属性。
+export interface DashboardContent {
+    fetchElementContent: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
+}
 export interface DashboardProps {
+    // fn: any
+
     initialSelected?: string[]
     selectedOnChange?: (v: string[]) => void
     fetchCategoriesByType: () => Promise<DataType.Category[]>
@@ -181,6 +187,7 @@ export const Dashboard = (props: DashboardProps) => {
         /**if the element is nested inside NestedSimpleModule, it doesn't belong to an element. Rather, it's part
          * of the tabItem. So we only fetch the content from database
         */
+        console.log(184, isNested, id)
         if (isNested) return fetchNestedElementContent(id, date)
         const content = await props.fetchElementContent(id, date, isNested)
         return content
@@ -230,7 +237,7 @@ export const Dashboard = (props: DashboardProps) => {
             initialSelected={props.initialSelected}
             onSelectPane={setSelectedTemplateId}
             fetchElements={fetchElements}
-            fetchElementContentFn={fetchElementContent}
+            // fetchElementContentFn={fetchElementContent}
             fetchElementContentDatesFn={fetchElementContentDates}
             updateElementContentFn={setNewestContent}
             fetchStoragesFn={props.fetchStorages}
@@ -242,7 +249,9 @@ export const Dashboard = (props: DashboardProps) => {
 
     return (
         <EditableContext.Provider value={edit}>
-            <PropsContext.Provider value={props}>
+            <PropsContext.Provider value={{
+                fetchElementContent
+            }}>
                 {genController}
                 {genContainer}
             </PropsContext.Provider>

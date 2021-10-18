@@ -3,7 +3,7 @@ import { tabItem } from "../data"
 import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 import { useEffect, useState } from "react"
 
-
+import { PropsContext } from "@/components/Gallery/Dashboard/Dashboard"
 interface ModuleTabPaneProps {
     //self custom
     tabId: string,
@@ -36,6 +36,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     //layout property is not important?
     const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
     const [shouldFetch, setShouldFetch] = useState(0)
+    console.log("🚀 ~ file: CreateModule.tsx ~ line 39 ~ ModuleTabPane ~ ele", ele)
 
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     }, [props.content?.data])
 
 
-    const fetchContent = async (id: string, date?: string) => {
+    const fetchContent = async (id: string, date?: string, isNested?: boolean) => {
         // console.log("restarting?", props.content?.data)
         //TODO: WARNING! Refetch logic only works when content received from db has not null data
         if (props.content?.data) return props.content
@@ -69,28 +70,32 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     const onRemove = () => {
         props.onRemoveModule(tabId)
     }
-
     //TODO: WARINING! hardcoded height
     return (
         <div style={{ height: props.contentHeight }} >
-            <TemplateElement key={tabId + elementType + name}
-                parentInfo={[]}
-                timeSeries={timeSeries}
-                editable={props.editable}
-                element={ele}
-                fetchContentFn={fetchContent}
-                fetchContentDatesFn={props.fetchContentDatesFn}
-                updateContentFn={updateContent}
-                onRemove={onRemove}
-                fetchStoragesFn={props.fetchStoragesFn}
-                fetchTableListFn={props.fetchTableListFn}
-                fetchTableColumnsFn={props.fetchTableColumnsFn}
-                fetchQueryDataFn={props.fetchQueryDataFn}
-                ref={null}
-                shouldStartFetch={shouldFetch}
-                isNested={true}
-                updateDescription={(ele: string) => { }}
-            />
+            <PropsContext.Provider value={{
+                fetchElementContent: fetchContent
+            }}>
+                <TemplateElement key={tabId + elementType + name}
+                    parentInfo={[]}
+                    timeSeries={timeSeries}
+                    editable={props.editable}
+                    element={ele}
+                    // fetchContentFn={fetchContent}
+                    fetchContentDatesFn={props.fetchContentDatesFn}
+                    updateContentFn={updateContent}
+                    onRemove={onRemove}
+                    fetchStoragesFn={props.fetchStoragesFn}
+                    fetchTableListFn={props.fetchTableListFn}
+                    fetchTableColumnsFn={props.fetchTableColumnsFn}
+                    fetchQueryDataFn={props.fetchQueryDataFn}
+                    ref={null}
+                    shouldStartFetch={shouldFetch}
+                    isNested={true}
+                    updateDescription={(ele: string) => { }}
+                />
+            </PropsContext.Provider>
+
         </div>
     )
 

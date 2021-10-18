@@ -36,7 +36,7 @@ export default () => {
     return (
         <Provider store={store}>
             <Typography>
-                <Test></Test>
+                {/* <Test></Test> */}
                 <Typography.Title>
                     <FormattedMessage id="pages.welcome.title1" />
                 </Typography.Title>
