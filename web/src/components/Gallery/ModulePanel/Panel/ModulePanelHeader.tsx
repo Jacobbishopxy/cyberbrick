@@ -11,115 +11,117 @@ import { HeaderController } from "./HeaderController"
 
 
 interface ModulePanelHeaderProps {
-  editable: boolean
-  settable: boolean
-  timeSeries?: boolean
-  headName?: string
-  type: DataType.ElementType
-  title: string | undefined
-  updateTitle: (v: string) => void
-  editContent: (value: boolean) => void
-  newContent: (date: string) => void
-  confirmDelete: () => void
-  dateList?: string[]
-  editDate?: (date: string) => void
-  onSelectDate?: (date: string) => void
+    editable: boolean
+    settable: boolean
+    timeSeries?: boolean
+    headName?: string
+    type: DataType.ElementType
+    title: string | undefined
+    updateTitle: (v: string) => void
+    editContent: (value: boolean) => void
+    newContent: (date: string) => void
+    confirmDelete: () => void
+    dateList?: string[]
+    editDate?: (date: string) => void
+    onSelectDate?: (date: string) => void
+    //!样式对象类型定义
+    styles?: any
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
-  const [titleEditable, setTitleEditable] = useState<boolean>(false)
-  const [title, setTitle] = useState<string | undefined>(props.title)
-  const intl = useIntl()
+    const [titleEditable, setTitleEditable] = useState<boolean>(false)
+    const [title, setTitle] = useState<string | undefined>(props.title)
+    const intl = useIntl()
 
-  useEffect(() => setTitle(props.title), [props.title])
+    useEffect(() => setTitle(props.title), [props.title])
 
-  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    if (value !== "") {
-      setTitle(value)
-      props.updateTitle(value)
-    } else
-      message.warning("title cannot be empty!")
+    const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        if (value !== "") {
+            setTitle(value)
+            props.updateTitle(value)
+        } else
+            message.warning("title cannot be empty!")
 
-    setTitleEditable(false)
-  }
-
-  const genTitle = () => {
-    //don't display title since header separator is a "title" by itself
-    if (props.type === DataType.ElementType.FieldHeader) return <></>
-    if (titleEditable)
-      return <Input
-        placeholder={intl.formatMessage({ id: "gallery.component.general62" })}
-        size="small"
-        allowClear
-        style={{ width: 200 }}
-        onBlur={changeTitle}
-        defaultValue={title}
-      />
-    const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`} />
-
-    if (props.editable && props.settable) {
-      const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1" />
-      return (
-        <Button
-          type="link"
-          size="small"
-          onClick={() => setTitleEditable(true)}
-        >
-          {title ? title : <>{eleType} - {txt}</>}
-        </Button>
-      )
+        setTitleEditable(false)
     }
+
+    const genTitle = () => {
+        //don't display title since header separator is a "title" by itself
+        if (props.type === DataType.ElementType.FieldHeader) return <></>
+        if (titleEditable)
+            return <Input
+                placeholder={intl.formatMessage({ id: "gallery.component.general62" })}
+                size="small"
+                allowClear
+                style={{ width: 200 }}
+                onBlur={changeTitle}
+                defaultValue={title}
+            />
+        const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`} />
+
+        if (props.editable && props.settable) {
+            const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1" />
+            return (
+                <Button
+                    type="link"
+                    size="small"
+                    onClick={() => setTitleEditable(true)}
+                >
+                    {title ? title : <>{eleType} - {txt}</>}
+                </Button>
+            )
+        }
+        return (
+            <span style={{ fontWeight: "bold" }}>
+                {title ? title : eleType}
+            </span>
+        )
+    }
+
+    const genController = () =>
+        <HeaderController
+            editable={props.editable}
+            settable={props.settable}
+            timeSeries={props.timeSeries}
+            dateList={props.dateList}
+            editDate={props.editDate}
+            editContent={props.editContent}
+            newContent={props.newContent}
+            confirmDelete={props.confirmDelete}
+            onSelectDate={props.onSelectDate}
+        />
+    console.log(95, props.styles)
     return (
-      <span style={{ fontWeight: "bold" }}>
-        {title ? title : eleType}
-      </span>
+        <Row >
+            {
+                props.headName ?
+                    <>
+                        <Col span={8} style={{ fontWeight: "bold" }}>
+                            {props.type === DataType.ElementType.FieldHeader ? '' : props.headName}
+                        </Col>
+                        <Col span={8} style={{ textAlign: "center" }}>
+                            {genTitle()}
+                        </Col>
+                        <Col span={8} style={{ textAlign: "right" }}>
+                            {genController()}
+                        </Col>
+                    </> :
+                    <>
+                        <Col span={12} style={{ textAlign: "left" }}>
+                            {genTitle()}
+                        </Col>
+                        <Col span={12} style={{ textAlign: "right" }}>
+                            {genController()}
+                        </Col>
+                    </>
+            }
+        </Row>
     )
-  }
-
-  const genController = () =>
-    <HeaderController
-      editable={props.editable}
-      settable={props.settable}
-      timeSeries={props.timeSeries}
-      dateList={props.dateList}
-      editDate={props.editDate}
-      editContent={props.editContent}
-      newContent={props.newContent}
-      confirmDelete={props.confirmDelete}
-      onSelectDate={props.onSelectDate}
-    />
-
-  return (
-    <Row style={{ paddingLeft: 10, paddingRight: 10, height: 25 }}>
-      {
-        props.headName ?
-          <>
-            <Col span={8} style={{ fontWeight: "bold" }}>
-              {props.type === DataType.ElementType.FieldHeader ? '' : props.headName}
-            </Col>
-            <Col span={8} style={{ textAlign: "center" }}>
-              {genTitle()}
-            </Col>
-            <Col span={8} style={{ textAlign: "right" }}>
-              {genController()}
-            </Col>
-          </> :
-          <>
-            <Col span={12} style={{ textAlign: "left" }}>
-              {genTitle()}
-            </Col>
-            <Col span={12} style={{ textAlign: "right" }}>
-              {genController()}
-            </Col>
-          </>
-      }
-    </Row>
-  )
 }
 
 ModulePanelHeader.defaultProps = {
-  timeSeries: false
+    timeSeries: false
 } as Partial<ModulePanelHeaderProps>
 

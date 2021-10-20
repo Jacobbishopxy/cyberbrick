@@ -3,7 +3,7 @@ import { tabItem } from "../data"
 import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContainer/TemplateElement"
 import { useEffect, useState } from "react"
 
-import { PropsContext } from "@/components/Gallery/Dashboard/Dashboard"
+import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 interface ModuleTabPaneProps {
     //self custom
     tabId: string,
@@ -36,7 +36,6 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     //layout property is not important?
     const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
     const [shouldFetch, setShouldFetch] = useState(0)
-    console.log("🚀 ~ file: CreateModule.tsx ~ line 39 ~ ModuleTabPane ~ ele", ele)
 
 
     useEffect(() => {
@@ -72,8 +71,9 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     }
     //TODO: WARINING! hardcoded height
     return (
-        <div style={{ height: props.contentHeight }} >
-            <PropsContext.Provider value={{
+        // <div style={{ height: props.contentHeight }} >
+        <div style={{ height: '100%' }} >
+            <DashboardContext.Provider value={{
                 fetchElementContent: fetchContent
             }}>
                 <TemplateElement key={tabId + elementType + name}
@@ -94,7 +94,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
                     isNested={true}
                     updateDescription={(ele: string) => { }}
                 />
-            </PropsContext.Provider>
+            </DashboardContext.Provider>
 
         </div>
     )

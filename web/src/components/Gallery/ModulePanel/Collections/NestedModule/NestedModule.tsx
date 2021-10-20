@@ -1,10 +1,11 @@
 import { today } from "@/components/Gallery/GalleryDataType"
 import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
 import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
+import { useRef } from "dva/node_modules/@types/react"
 import { useEffect, useState } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./Editor"
-import './style.css'
+import './style.less'
 import { NSMid } from "./util"
 const defaultItems: tabItem[] = [0].map(function (i) {
     return {
@@ -59,7 +60,6 @@ const EditorField = (props: ModuleEditorField) => {
             ...props.content, date: props.content?.date || today(),
             data: { tabItems: items, currIndex: currIndex }
         })
-        // console.log(props.content)
     }, [saveCount])
     return (
         <div id={NSMid}>
@@ -86,6 +86,7 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
+    console.log(88, props.contentHeight)
     let tempItems: tabItem[] = []
     if (props.content) {
         tempItems = props.content.data.tabItems as tabItem[]
@@ -105,7 +106,6 @@ const PresenterField = (props: ModulePresenterField) => {
      * content. When parent received content, update the items state for presentorField
     */
     useEffect(() => {
-        // console.log(props.content?.data?.tabItems)
         setItems(props.content?.data?.tabItems)
     }, [props.content?.data?.tabItems])
 
@@ -117,14 +117,13 @@ const PresenterField = (props: ModulePresenterField) => {
      * update currIndex
      */
     useEffect(() => {
-        // console.log(props.content)
         props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
-        // console.log(props.content)
+
     }, [saveCount])
 
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
-        <div className={props.styling}>
+        <div className={props.styling} >
             <NestedSimpleModuleEditor
                 items={items}
                 currIndex={currIndex}

@@ -6,20 +6,25 @@ import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, 
 import { message } from "antd"
 import _ from "lodash"
 import RGL, { Layout, WidthProvider } from "react-grid-layout"
+// import GridLayout, { Layout, WidthProvider } from "react-grid-layout"
 
 import * as DataType from "../../GalleryDataType"
 import { TemplateElement, ContainerElementRef } from "./TemplateElement"
 import { EditableContext } from "../Dashboard"
 import { useIntl } from "umi"
+import { template } from "@umijs/deps/compiled/lodash"
 
-
+//样式
+import "./style.less"
 const ReactGridLayout = WidthProvider(RGL)
+console.log(202020)
+// const ReactGridLayout = GridLayout
 const reactGridLayoutDefaultProps = {
     draggableHandle: ".draggableHandler",
     className: "layout",
     cols: 24,
     rowHeight: 20,
-    margin: [5, 5] as [number, number],
+    margin: [7, 7] as [number, number],
     containerPadding: [10, 10] as [number, number],
     //prevent auto-position when an element is deleted
     // compactType: null
@@ -33,6 +38,7 @@ const newElementInLayout = (elements: Elements, element: Element): Elements =>
 
 const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements =>
     _.zip(elements, rawLayout).map(zItem => {
+        console.log(41, elements, rawLayout)
         const ele: Element = zItem[0]!
         const rawEle: Layout = zItem[1]!
 
@@ -95,8 +101,12 @@ export const ContainerTemplate =
             teRefs.current.splice(index, 1)
         }
 
-        const onLayoutChange = (layout: Layout[]) =>
+        // 把elements数组重写。
+        const onLayoutChange = (layout: Layout[]) => {
+
+            console.log("🚀 ~ file: ContainerTemplate.tsx ~ line 108 ~ onLayoutChange ~ Layout", layout)
             setElements(updateElementInLayout(elements, layout))
+        }
 
 
         const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
@@ -145,10 +155,15 @@ export const ContainerTemplate =
                 onLayoutChange={onLayoutChange}
                 isDraggable={editable}
                 isResizable={editable}
+                autoSize={true}
                 layout={elements.map(ele => {
                     return {
-                        x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w, i: ele.name,
-                        minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+                        x: +ele.x,
+                        y: +ele.y,
+                        h: +ele.h,
+                        w: +ele.w,
+                        i: ele.name,
+                        // minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
                         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 6
                     }
                 })}
@@ -156,6 +171,7 @@ export const ContainerTemplate =
                 {
                     elements.map((ele, i) =>
                         <div key={ele.name} data-grid={genDataGrid(ele)}>
+                            {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
                             <TemplateElement
                                 parentInfo={props.parentInfo}
                                 timeSeries={ele.timeSeries}
@@ -175,6 +191,7 @@ export const ContainerTemplate =
                                 updateDescription={updateDescription(ele)}
 
                             />
+                            {/* </div> */}
                         </div>
                     )
                 }

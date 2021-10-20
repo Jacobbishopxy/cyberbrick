@@ -33,24 +33,25 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
         setValue(value);
     };
 
-    const defaultStyle = { paddingLeft: 10, paddingRight: 10, height: "20%", maxHeight: 100 }
-    const descriptionStyle = { ...defaultStyle, overflow: "auto" }
+    // const defaultStyle = { paddingLeft: 10, paddingRight: 10, height: "5%", maxHeight: 100 }
+
+    // const descriptionStyle = { ...defaultStyle, overflow: "auto" }
 
     const editableyDescription = <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.description" })}>
         <Row onClick={() => setEditable(true)}
-            style={descriptionStyle}>
+            /* style={descriptionStyle} */>
             <Col span={24}> {genDescriptionText()} </Col>
         </Row>
     </Tooltip>
 
-    const displayDescription = <Row style={descriptionStyle}>
+    const displayDescription = <Row /* style={descriptionStyle} */>
         <Col span={24}> {genDescriptionText()} </Col>
     </Row>
 
     return (
         props.editable ?
             editable ?
-                <Row style={defaultStyle}>
+                <Row >
                     <Col span={24}>
                         <TextArea value={value}
                             style={{ border: "2px solid #cacaca" }}

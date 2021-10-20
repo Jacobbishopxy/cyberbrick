@@ -18,8 +18,8 @@ import { ModuleSelectorProps } from "../Collections/collectionSelector"
 import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 import { ModuleDescirption } from "./ModuleDescription"
+// import test from './style'
 
-import { PropsContext } from "../../Dashboard/Dashboard"
 export interface ModulePanelProps {
     parentInfo: string[]
     eleId: string
@@ -53,6 +53,7 @@ const SKELETON_DEFAULT_ROWS = 5
 // todo: add Tags presenting
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
 export const ModulePanel = (props: ModulePanelProps) => {
+
     const intl = useIntl()
     const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
     const moduleFwRef = useRef<ConvertFwRef>(null)
@@ -178,17 +179,19 @@ export const ModulePanel = (props: ModulePanelProps) => {
                     active paragraph={{ rows: rows }} />
             }
 
-            let h = props.contentHeight ? props.contentHeight - 80 : undefined
-            h = isTemplate && h ? h - 60 : h
-            h = props.isNested ? props.contentHeight : h
-            // console.log(props.eleId, h)
+            // let h = props.contentHeight ? props.contentHeight - 80 : undefined
+            //h=模块高度-标题高度-描述高度
+            // let h = props.contentHeight! - parseInt(styles.genHeaderH) - parseInt(styles.genDescriptionH)
+            // // h = isTemplate && h ? h - 60 : h
+            // h = props.isNested ? props.contentHeight! : h
+            // console.log(183, props.isNested, h, props.contentHeight, styles)
             return rf({
                 content,
                 fetchStorages: props.fetchStorages,
                 fetchTableList: props.fetchTableList,
                 fetchTableColumns: props.fetchTableColumns,
                 fetchQueryData: props.fetchQueryData,
-                contentHeight: h,
+                // contentHeight: h,
                 updateContent: updateModuleContent,
                 forwardedRef: moduleFwRef,
                 styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
@@ -229,10 +232,22 @@ export const ModulePanel = (props: ModulePanelProps) => {
     }
 
     return (
-        <div className={style()} {...attachId()}>
-            {genHeader}
-            {genDescription}
-            {genContext}
+        <div className={
+            `${style()} ${styles.ModulePanel}`
+        } {...attachId()}>
+            <div className={styles.genHeader}>
+                {genHeader}
+            </div>
+            {
+                !props.isNested
+                    ? <div className={styles.genDescription}>
+                        {genDescription}
+                    </div>
+                    : <></>
+            }
+            <div className={styles.genContext}>
+                {genContext}
+            </div>
             {displayFooter()}
         </div>
     )

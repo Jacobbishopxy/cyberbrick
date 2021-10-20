@@ -13,8 +13,9 @@ import { useIntl } from "umi"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
 
+import { DashboardContext } from "./DashboardContext"
 export const EditableContext = React.createContext<boolean>(false)
-export const PropsContext = React.createContext<DashboardContent | undefined>(undefined)
+
 
 const dashboardContentUpdate = (contents: DataType.Content[], template: DataType.Template) => {
 
@@ -42,10 +43,7 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
     return newContents
 }
 
-//Dashboard上下文类型，快速传递属性。
-export interface DashboardContent {
-    fetchElementContent: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
-}
+
 export interface DashboardProps {
     // fn: any
 
@@ -249,12 +247,12 @@ export const Dashboard = (props: DashboardProps) => {
 
     return (
         <EditableContext.Provider value={edit}>
-            <PropsContext.Provider value={{
+            <DashboardContext.Provider value={{
                 fetchElementContent
             }}>
                 {genController}
                 {genContainer}
-            </PropsContext.Provider>
+            </DashboardContext.Provider>
 
         </EditableContext.Provider>
     )

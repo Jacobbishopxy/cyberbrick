@@ -15,6 +15,11 @@ export default defineConfig({
     hmr: true,
     immer: true,
   },
+  lessLoader:{
+    options:{
+        javascriptEnabled:true
+    }
+  },
   layout: {
     name: 'CyberBrick',
     locale: true,

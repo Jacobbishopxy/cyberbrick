@@ -8,6 +8,7 @@ import { Layout } from 'react-grid-layout';
 import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
 import * as DataType from "../../../GalleryDataType"
 
+import styles from './style.less'
 interface NestedSimpleModuleProps {
     //for temp cache
     currIndex: string,
@@ -69,14 +70,12 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //tabs layout updated
     useEffect(() => {
-        // console.log("parent should update", props.items)
         setSaveCount(cnt => cnt + 1)
     }, [props.items])
 
     //embeded modulePanal updated
     useEffect(() => {
         setSaveCount(cnt => cnt + 1)
-        // console.log(items?.map(it => it.module))
     }, [updateCnt])
 
     //update curr index
@@ -111,7 +110,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
 
     //switch the module(template) corresponding to different tabs
     const onSwitch = (i: string) => {
-        console.log(114)
         setCurrIndex(i)
         setUpdateCnt(updateCnt + 1)
     }
@@ -126,7 +124,6 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
 
         //get container width
-        // console.log(container?.clientWidth)
         setItems(items => updateElementInLayout(items, layout, container?.clientWidth))
     };
 
@@ -160,12 +157,14 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setCurrIndex
     }
 
-    const nestedModuleHeight = (props.contentHeight || 350) - (container?.clientHeight || 0) - 35 //35 is title's height
+    // const nestedModuleHeight = (props.contentHeight || 350) - (container?.clientHeight || 0) - 35 //35 is title's height
+
+    //nestedModuleHeight=嵌套模块高度-icon图标高度-icon上下边距
+    const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
 
     //convert a module to reactNode based on id
     const moduleToReactNode = (id: string) => {
         let module = props.items?.find((item => item.i === id))?.module
-        // console.log(items, module)
         //cases for unintialized module
         if (!module)
             return null
@@ -183,7 +182,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 timeSeries={timeSeries}
                 elementType={elementType}
                 editable={props.editable}
-                contentHeight={nestedModuleHeight}
+                // contentHeight={nestedModuleHeight}
                 setItems={setItems}
                 onRemoveModule={onRemoveModule}
                 fetchStoragesFn={props.fetchStoragesFn}
@@ -201,19 +200,21 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //get curr module tab pane
     const currModule = moduleToReactNode(currIndex)
     return (
-        <div >
-            <DynamicHeader
-                items={props.items!}
-                editable={props.editable}
-                currIndex={currIndex}
-                setItems={setItems}
-                onAddItem={onAddItem}
-                onRemoveItem={onRemoveItem}
-                onLayoutChange={onLayoutChange}
-                onAddModule={onAddModule}
-                onSwitch={onSwitch} />
+        <div className={styles.Editor}>
+            <div className={styles.DynamicHeader}>
+                <DynamicHeader
+                    items={props.items!}
+                    editable={props.editable}
+                    currIndex={currIndex}
+                    setItems={setItems}
+                    onAddItem={onAddItem}
+                    onRemoveItem={onRemoveItem}
+                    onLayoutChange={onLayoutChange}
+                    onAddModule={onAddModule}
+                    onSwitch={onSwitch} />
 
-            <div style={{ bottom: 0 }}>
+            </div>
+            <div className={styles.currModule}>
                 {/* {"on tab: " + currIndex} */}
 
                 {currModule || <Skeleton active />}

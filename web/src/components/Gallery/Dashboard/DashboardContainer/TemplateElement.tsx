@@ -7,7 +7,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, use
 import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
 
-import { PropsContext } from "../Dashboard"
+import { DashboardContext } from "../DashboardContext"
 
 export interface ContainerElementProps {
     parentInfo: string[]
@@ -40,8 +40,7 @@ export interface ContainerElementRef {
 export const TemplateElement =
     forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
 
-        const DashboardProps = useContext(PropsContext)
-        console.log(44, DashboardProps, props.isNested)
+        const DashboardProps = useContext(DashboardContext)
 
         const mpRef = useRef<HTMLDivElement>(null)
 
@@ -53,7 +52,7 @@ export const TemplateElement =
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
         })
-
+        console.log(55, mpHeight)
         /**
          * Template Element may be nested in a module, so we have different fetch api
          * If TemplateElment is nested, eleId is actually tabId.
@@ -63,13 +62,11 @@ export const TemplateElement =
             DynamicHeader组件需要的数据从这里网络请求回来
         */
         const fetchContent = (date?: string) => {
-            console.log(66, eleId, props.isNested)
             if (eleId) {
                 //no need to check date since it's allowed date to be undefined
                 // props.fetchContentFn(eleId, date, props.isNested).then(res => {
                 DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
                     // fetchElementContent(eleId, date, props.isNested).then(res => {
-                    console.log(71, eleId)
                     //TODO: cannot set content to undefined
                     const ct = res || { data: {}, date: DataType.today() }
 

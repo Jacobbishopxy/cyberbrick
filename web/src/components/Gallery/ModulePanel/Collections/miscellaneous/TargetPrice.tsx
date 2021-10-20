@@ -14,6 +14,7 @@ import { max, min } from "lodash"
 
 
 const EditorField = (props: ModuleEditorField) => {
+    console.log('ed')
     const intl = useIntl()
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
@@ -116,6 +117,7 @@ const showDirection = (dir: string, pr: number, fontSize: number) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
+    console.log('PresenterField')
     //responsive font-size
     const fontSize = max([50, min([props.contentHeight ? props.contentHeight / 4 : 100])])
     const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])

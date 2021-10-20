@@ -24,8 +24,6 @@ import {
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
 import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
-import { PropsContext } from "../../Dashboard/Dashboard"
-// const dashboardProps = useContext(PropsContext);
 
 export interface ModuleSelectorProps {
     content?: DataType.Content
@@ -80,7 +78,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             styling={props.styling}
             ref={props.forwardedRef}
         />
-
+        //目标价
         const targetPrice = <TargetPrice
             content={props.content}
             contentHeight={props.contentHeight}
@@ -169,6 +167,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             ref={props.forwardedRef}
         />
 
+        //嵌套模块
         const nestedModule = <NestedSimpleModule
             content={props.content}
             fetchStorages={props.fetchStorages}
