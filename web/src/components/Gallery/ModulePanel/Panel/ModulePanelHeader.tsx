@@ -24,8 +24,6 @@ interface ModulePanelHeaderProps {
     dateList?: string[]
     editDate?: (date: string) => void
     onSelectDate?: (date: string) => void
-    //!样式对象类型定义
-    styles?: any
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
@@ -92,7 +90,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             confirmDelete={props.confirmDelete}
             onSelectDate={props.onSelectDate}
         />
-    console.log(95, props.styles)
     return (
         <Row >
             {

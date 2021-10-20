@@ -16,7 +16,7 @@ interface NestedSimpleModuleProps {
     NSMid: string,
     items?: tabItem[]
     editable: boolean
-    styling?: string//how to apply string as stying？
+    // styling?: string//how to apply string as stying？
     contentHeight?: number
     setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     setSaveCount: React.Dispatch<React.SetStateAction<number>>

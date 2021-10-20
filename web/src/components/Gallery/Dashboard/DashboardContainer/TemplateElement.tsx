@@ -52,7 +52,6 @@ export const TemplateElement =
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
         })
-        console.log(55, mpHeight)
         /**
          * Template Element may be nested in a module, so we have different fetch api
          * If TemplateElment is nested, eleId is actually tabId.

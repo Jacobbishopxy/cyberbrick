@@ -75,7 +75,6 @@ const EditorField = (props: ModuleEditorField) => {
                 fetchQueryDataFn={props.fetchQueryData!}
                 updateContentFn={props.updateContent}
                 editable={true}
-                styling={props.styling}
                 NSMid={NSMid}
                 contentHeight={props.contentHeight}
                 fetchContentFn={props.fetchContentFn!}
@@ -123,14 +122,13 @@ const PresenterField = (props: ModulePresenterField) => {
 
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
-        <div className={props.styling} >
+        <div style={{ height: '100%' }}>
             <NestedSimpleModuleEditor
                 items={items}
                 currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
                 setItems={setItems}
                 editable={false}
-                styling={props.styling}
                 NSMid={NSMid}
                 contentHeight={props.contentHeight}
                 fetchStoragesFn={() => Promise.resolve([])}

@@ -72,46 +72,84 @@ const EditorField = (props: ModuleEditorField) => {
     )
 }
 
-const showDirection = (dir: string, pr: number, fontSize: number) => {
+// const showDirection = (dir: string, pr: number, fontSize: number) => {
+//     switch (dir) {
+//         case "B":
+//             return (
+//                 <Row>
+//                     <Col span={9} offset={2}>
+//                         <span style={{ color: "white", background: "red", fontSize: fontSize }}>
+//                             <FormattedMessage id="gallery.component.general49" />
+//                         </span>
+//                     </Col>
+//                     <Col span={9} offset={4}>
+//                         <span style={{ color: "red", fontSize: fontSize }}>{pr}</span>
+//                     </Col>
+//                 </Row>
+//             )
+//         case "S":
+//             return (
+//                 <Row>
+//                     <Col span={9} offset={2}>
+//                         <span style={{ color: "white", background: "green", fontSize: fontSize }}>
+//                             <FormattedMessage id="gallery.component.general51" />
+//                         </span>
+//                     </Col>
+//                     <Col span={9} offset={4}>
+//                         <span style={{ color: "green", fontSize: fontSize }}>{pr}</span>
+//                     </Col>
+//                 </Row>
+//             )
+//         default:
+//             return (
+//                 <Row>
+//                     <Col span={9} offset={2}>
+//                         <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
+//                             <FormattedMessage id="gallery.component.general50" />
+//                         </span>
+//                     </Col>
+//                     <Col span={9} offset={4}>
+//                         <span style={{ color: "gray", fontSize: fontSize }}>{pr}</span>
+//                     </Col>
+//                 </Row>
+//             )
+//     }
+// }
+const showSuggest = (dir: string, pr: number, fontSize: number) => {
     switch (dir) {
         case "B":
             return (
-                <Row>
-                    <Col span={9} offset={2}>
-                        <span style={{ color: "white", background: "red", fontSize: fontSize }}>
-                            <FormattedMessage id="gallery.component.general49" />
-                        </span>
-                    </Col>
-                    <Col span={9} offset={4}>
-                        <span style={{ color: "red", fontSize: fontSize }}>{pr}</span>
-                    </Col>
-                </Row>
+                <span style={{ color: "white", background: "red", fontSize: fontSize }}>
+                    <FormattedMessage id="gallery.component.general49" />
+                </span>
             )
         case "S":
             return (
-                <Row>
-                    <Col span={9} offset={2}>
-                        <span style={{ color: "white", background: "green", fontSize: fontSize }}>
-                            <FormattedMessage id="gallery.component.general51" />
-                        </span>
-                    </Col>
-                    <Col span={9} offset={4}>
-                        <span style={{ color: "green", fontSize: fontSize }}>{pr}</span>
-                    </Col>
-                </Row>
+                <span style={{ color: "white", background: "green", fontSize: fontSize }}>
+                    <FormattedMessage id="gallery.component.general51" />
+                </span>
             )
         default:
             return (
-                <Row>
-                    <Col span={9} offset={2}>
-                        <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
-                            <FormattedMessage id="gallery.component.general50" />
-                        </span>
-                    </Col>
-                    <Col span={9} offset={4}>
-                        <span style={{ color: "gray", fontSize: fontSize }}>{pr}</span>
-                    </Col>
-                </Row>
+                <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
+                    <FormattedMessage id="gallery.component.general50" />
+                </span>
+            )
+    }
+}
+const showTarget = (dir: string, pr: number, fontSize: number) => {
+    switch (dir) {
+        case "B":
+            return (
+                <span style={{ color: "red", fontSize: fontSize, fontWeight: "bold" }}>{pr}</span>
+            )
+        case "S":
+            return (
+                <span style={{ color: "green", fontSize: fontSize, fontWeight: "bold", }}>{pr}</span>
+            )
+        default:
+            return (
+                <span style={{ color: "gray", fontSize: fontSize, fontWeight: "bold", }}>{pr}</span>
             )
     }
 }
@@ -124,7 +162,7 @@ const PresenterField = (props: ModulePresenterField) => {
 
     return props.content ?
         <Space direction="vertical" style={{ width: "100%", overflow: "auto" }} className={props.styling}>
-            <Row>
+            {/* <Row>
                 <Col span={9} offset={2}>
                     <span style={{ fontWeight: "bold", fontSize: textSize }}>
                         <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
@@ -135,9 +173,31 @@ const PresenterField = (props: ModulePresenterField) => {
                         <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
                     </span>
                 </Col>
+            </Row> */}
+            <Row align="middle">
+                <Col span={4} offset={1}>
+                    <span style={{ fontSize: textSize }}>
+                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
+                    </span>
+                </Col>
+                <Col span={7} >
+                    {
+                        showSuggest(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
+                    }
+                </Col>
+                <Col span={4} offset={1}>
+                    <span style={{ fontSize: textSize }}>
+                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
+                    </span>
+                </Col>
+                <Col span={7} >
+                    {
+                        showTarget(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
+                    }
+                </Col>
             </Row>
 
-            {showDirection(props.content?.data?.direction, props.content?.data?.price, fontSize!)}
+            {/* {showDirection(props.content?.data?.direction, props.content?.data?.price, fontSize!)} */}
 
             <Row>
                 <Col offset={2}>{props.content?.data?.note}</Col>

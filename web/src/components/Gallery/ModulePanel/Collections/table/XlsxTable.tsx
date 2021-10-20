@@ -74,7 +74,7 @@ const EditorField = (props: ModuleEditorField) => {
     }
 
     return (
-        <div className={props.styling}>
+        <div >
             <Button
                 type="primary"
                 onClick={() => setVisible(true)}

@@ -194,7 +194,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
                 // contentHeight: h,
                 updateContent: updateModuleContent,
                 forwardedRef: moduleFwRef,
-                styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
+                // styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
                 fetchContentFn: props.fetchContentFn,
                 fetchContentDatesFn: props.fetchContentDatesFn
             })
@@ -230,22 +230,25 @@ export const ModulePanel = (props: ModulePanelProps) => {
         if (props.isNested) return <></>
         return genFooter
     }
-
+    console.log(233, props.elementType)
     return (
-        <div className={
-            `${style()} ${styles.ModulePanel}`
-        } {...attachId()}>
+        <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
             <div className={styles.genHeader}>
                 {genHeader}
             </div>
             {
+                //如果是嵌套模板，则不需要genDescription
                 !props.isNested
-                    ? <div className={styles.genDescription}>
+                    ? <div className={props.elementType === 'targetPrice' ? styles.isTargPriceGenDescription : styles.genDescription}>
                         {genDescription}
                     </div>
                     : <></>
             }
-            <div className={styles.genContext}>
+
+            {/* 根据是模板或仪表盘给予样式 */}
+            <div className={
+                `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}>
+
                 {genContext}
             </div>
             {displayFooter()}
