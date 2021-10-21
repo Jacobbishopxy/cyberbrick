@@ -42,20 +42,17 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
     const editableyDescription = <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.description" })}>
         <Row onClick={() => {
             setEditable(true);
-            TextAreaREF.current?.focus({
-                cursor: 'start'
-            })
-            console.log(43, TextAreaREF)
+
         }}
             /* style={descriptionStyle} */>
             <Col span={24}> {genDescriptionText()} </Col>
         </Row>
     </Tooltip>
 
+    
     const displayDescription = <Row /* style={descriptionStyle} */>
         <Col span={24}> {genDescriptionText()} </Col>
     </Row>
-    console.log(50, props.editable)
     return (
         props.editable ?
             editable ?
@@ -71,6 +68,7 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
                             placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })}
                             allowClear
                         /></Col>
+                    {/*'保存备注'按钮 */}
                     {/* <Col span={24}> <Button style={{ paddingTop: 5 }} onClick={onSave} block type="primary">
 
                         {intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common2" })}

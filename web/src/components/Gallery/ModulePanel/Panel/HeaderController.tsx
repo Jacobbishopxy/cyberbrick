@@ -3,7 +3,7 @@
  */
 
 import { useState } from "react"
-import { Checkbox, DatePicker, Modal, Select, Space } from "antd"
+import { Checkbox, Col, DatePicker, Modal, Row, Select, Space } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
 
@@ -157,19 +157,28 @@ export const HeaderController = (props: HeaderController) => {
     }
     const nonEditableController = () => {
         return (
-            props.timeSeries && props.dateList ?
-                <Space>
-                    <TimePickButton
-                        onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
-                    />
-                    <TimePickModal
-                        intl={intl}
-                        visible={dateModalVisible.pick}
-                        onOk={timePickModalOnOk}
-                        onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
-                        dateList={props.dateList}
-                    />
-                </Space> : <></>
+            <Row justify={'end'}>
+                <Col>
+                    {
+
+                        props.timeSeries && props.dateList ?
+                            <Space>
+                                <TimePickButton
+                                    onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
+                                />
+                                <TimePickModal
+                                    intl={intl}
+                                    visible={dateModalVisible.pick}
+                                    onOk={timePickModalOnOk}
+                                    onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
+                                    dateList={props.dateList}
+                                />
+                            </Space> : <></>
+                    }
+                </Col>
+
+
+            </Row>
 
         )
     }

@@ -18,6 +18,7 @@ import { ModuleSelectorProps } from "../Collections/collectionSelector"
 import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 import { ModuleDescirption } from "./ModuleDescription"
+import { TestModuleDescirption } from './testModuleDescription'
 // import test from './style'
 
 export interface ModulePanelProps {
@@ -144,6 +145,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         headName={props.headName}
         type={props.elementType}
         title={content ? content.title : undefined}
+        date={content ? content.date : undefined}
         updateTitle={updateTitle}
         editContent={editContent}
         newContent={newDateWithContent}
@@ -153,19 +155,59 @@ export const ModulePanel = (props: ModulePanelProps) => {
         onSelectDate={props.fetchContent}
     />
 
-    const genDescription = useMemo(() => {
-        if (isTemplate && !props.isNested) {
-            if (!props.editable && !props.description) return <></>
-            return <ModuleDescirption
-                editable={props.editable}
-                initialValue={props.description || ''}
-                onSave={props.updateDescription}
-            />
+    // const genDescription = useMemo(() => {
+    //     if (isTemplate && !props.isNested) {
+    //         if (!props.editable && !props.description) return <></>
+    //         return <ModuleDescirption
+    //             editable={props.editable}
+    //             initialValue={props.description || ''}
+    //             onSave={props.updateDescription}
+    //         />
 
+    //     }
+    //     return <></>
+    // }, [props.editable, isTemplate])
+    const genDescription = useMemo(() => {
+        //如果是嵌套模板或仪表盘，则不需要genDescription
+        if (isTemplate && !props.isNested) {
+            if (!props.editable && !props.description)
+                return <></>
+            return (
+                //!特殊样式，待改
+                <div className={props.elementType === 'targetPrice'
+                    ? styles.isTargPriceGenDescription
+                    : styles.genDescription}>
+                    {console.log(180180, props.elementType)}
+                    {
+                        props.elementType === 'targetPrice'
+                            ? <TestModuleDescirption
+                                editable={props.editable}
+                                initialValue={props.description || ''}
+                                onSave={props.updateDescription}
+                            />
+                            : <ModuleDescirption
+                                editable={props.editable}
+                                initialValue={props.description || ''}
+                                onSave={props.updateDescription}
+                            />
+                    }
+                </div>
+            )
         }
         return <></>
     }, [props.editable, isTemplate])
+    // const testGenDescription = useMemo(() => {
+    //     if (isTemplate && !props.isNested) {
+    //         if (!props.editable && !props.description) return <></>
+    //         return <TestModuleDescirption
+    //             editable={props.editable}
+    //             initialValue={props.description || ''}
+    //             onSave={props.updateDescription}
+    //         />
 
+    //     }
+    //     return <></>
+    // }, [props.editable, isTemplate])
     const genContext = useMemo(() => {
         // console.log(content?.data)
         const rf = moduleRef.current
@@ -230,20 +272,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
         if (props.isNested) return <></>
         return genFooter
     }
-    console.log(233, props.elementType)
+
+
+
     return (
         <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
             <div className={styles.genHeader}>
                 {genHeader}
             </div>
-            {
-                //如果是嵌套模板，则不需要genDescription
-                !props.isNested
-                    ? <div className={props.elementType === 'targetPrice' ? styles.isTargPriceGenDescription : styles.genDescription}>
-                        {genDescription}
-                    </div>
-                    : <></>
-            }
+            {genDescription}
 
             {/* 根据是模板或仪表盘给予样式 */}
             <div className={

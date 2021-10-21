@@ -17,6 +17,7 @@ interface ModulePanelHeaderProps {
     headName?: string
     type: DataType.ElementType
     title: string | undefined
+    date: string | undefined
     updateTitle: (v: string) => void
     editContent: (value: boolean) => void
     newContent: (date: string) => void
@@ -27,7 +28,6 @@ interface ModulePanelHeaderProps {
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
-
     const [titleEditable, setTitleEditable] = useState<boolean>(false)
     const [title, setTitle] = useState<string | undefined>(props.title)
     const intl = useIntl()
@@ -73,7 +73,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         }
         return (
             <span style={{ fontWeight: "bold" }}>
-                {title ? title : eleType}
+                {/* {title ? title : eleType} */}
+                {title ? title : ''}
             </span>
         )
     }
@@ -101,9 +102,19 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
                         <Col span={8} style={{ textAlign: "center" }}>
                             {genTitle()}
                         </Col>
-                        <Col span={8} style={{ textAlign: "right" }}>
-                            {genController()}
+
+                        <Col span={8}>
+                            <Row justify='end'>
+                                <Col  >
+                                    {DataType.timeToString(props.date!)}
+                                </Col>
+                                <Col  >
+
+                                    {genController()}
+                                </Col>
+                            </Row>
                         </Col>
+
                     </> :
                     <>
                         <Col span={12} style={{ textAlign: "left" }}>

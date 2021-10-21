@@ -68,7 +68,7 @@ export const TemplateElement =
                     // fetchElementContent(eleId, date, props.isNested).then(res => {
                     //TODO: cannot set content to undefined
                     const ct = res || { data: {}, date: DataType.today() }
-
+                    console.log(71, DataType.timeToString(ct.date))
                     setContent(ct)
                     // if (props.isNested) console.log(ct)
                     props.updateContentFn(ct)

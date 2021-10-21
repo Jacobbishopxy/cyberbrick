@@ -73,7 +73,7 @@ export const Dashboard = (props: DashboardProps) => {
     const [selectedDashboard, setSelectedDashboard] = useState<DataType.Dashboard>()
     const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
     const [refresh, setRefresh] = useState<number>(0)
-    const [canEdit, setCanEdit] = useState<boolean>(false)
+    const [canEdit, setCanEdit] = useState<boolean>(true)
     const [edit, setEdit] = useState<boolean>(false)
     const [newestContent, setNewestContent] = useState<DataType.Content>()
     const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
@@ -117,20 +117,26 @@ export const Dashboard = (props: DashboardProps) => {
         if (!isCopy) {
             setSelectedCategoryName(name)
             setCanEdit(false)
+            console.log(137, canEdit, 'categoryOnSelect')
         }
-        return props.fetchCategory(name)
+        return await props.fetchCategory(name)
     }
 
     const dashboardOnSelect = async (dashboardId: string, isCopy: boolean = false) => {
         const dsb = await props.fetchDashboard(dashboardId)
+        console.log("🚀 ~ file: Dashboard.tsx ~ line 127 ~ dashboardOnSelect ~ dsb", dsb)
         if (!isCopy) {
+
             setSelectedDashboard(dsb)
             setCanEdit(true)
+
             setRefresh(refresh + 1)
         }
         return dsb
     }
-
+    useEffect(() => {
+        console.log(137, canEdit)
+    }, [canEdit])
     const fetchElements = async (templateId: string) => {
         if (selectedDashboard)
             return props.fetchTemplate(templateId)

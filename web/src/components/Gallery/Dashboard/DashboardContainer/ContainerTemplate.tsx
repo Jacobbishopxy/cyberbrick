@@ -17,7 +17,6 @@ import { template } from "@umijs/deps/compiled/lodash"
 //样式
 import "./style.less"
 const ReactGridLayout = WidthProvider(RGL)
-console.log(202020)
 // const ReactGridLayout = GridLayout
 const reactGridLayoutDefaultProps = {
     draggableHandle: ".draggableHandler",
@@ -38,7 +37,6 @@ const newElementInLayout = (elements: Elements, element: Element): Elements =>
 
 const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements =>
     _.zip(elements, rawLayout).map(zItem => {
-        console.log(41, elements, rawLayout)
         const ele: Element = zItem[0]!
         const rawEle: Layout = zItem[1]!
 
@@ -104,7 +102,6 @@ export const ContainerTemplate =
         // 把elements数组重写。
         const onLayoutChange = (layout: Layout[]) => {
 
-            console.log("🚀 ~ file: ContainerTemplate.tsx ~ line 108 ~ onLayoutChange ~ Layout", layout)
             setElements(updateElementInLayout(elements, layout))
         }
 

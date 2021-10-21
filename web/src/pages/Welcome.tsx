@@ -31,7 +31,6 @@ const deleteArticle = (v: string) =>
 const modifyTags = (v: GenericTag[]) =>
     innService.modifyTags(v as InnAPI.Tag[])
 
-
 export default () => {
     return (
         <Provider store={store}>

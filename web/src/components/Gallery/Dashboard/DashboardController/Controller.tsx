@@ -17,7 +17,6 @@ import { SpaceBetween } from "@/components/SpaceBetween"
 import * as DataType from "../../GalleryDataType"
 import { SelectorPanel } from "./SelectorPanel"
 import { AddModuleModal } from "./AddModuleModal"
-import { EditableContext, PropsContext } from '../Dashboard'
 
 export interface ModuleControllerProps {
     initialSelected?: string[]
@@ -34,8 +33,6 @@ export interface ModuleControllerProps {
 }
 
 export const Controller = (props: ModuleControllerProps) => {
-    // console.log(37, useContext(EditableContext))
-    // console.log(38, useContext(PropsContext))
     const intl = useIntl()
     const [edit, setEdit] = useState<boolean>(false)
     const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
@@ -43,7 +40,6 @@ export const Controller = (props: ModuleControllerProps) => {
     useEffect(() => props.onEditTemplate(edit), [edit])
 
     useEffect(() => {
-        // console.log(props.initialSelected)
         if (props.initialSelected && props.initialSelected[1])
             props.dashboardOnSelect(props.initialSelected[1], false).finally()
     }, [props.initialSelected])
@@ -114,6 +110,7 @@ export const Controller = (props: ModuleControllerProps) => {
         </>
     ), [addModuleModalVisible, props.onSaveTemplate])
 
+    //使能状态
     const idleMode = useMemo(() => (
         <Button
             type="primary"
