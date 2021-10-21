@@ -53,7 +53,12 @@ export const demoRoute = (env?: string) => env === "dev" ?
           name: 'nested-module-test',
           path: '/demo/nested-module-test',
           component: './demo/NestedModuleTest',
-        }
+        },
+        {
+          name: 'consensus-distribution-chart',
+          path: '/demo/consensus-distribution-chart',
+          component: './demo/ConsensusDistributionChart',
+        },
       ],
     },
   ] : []

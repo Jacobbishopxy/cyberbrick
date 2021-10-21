@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/1/2021
  */
 
-import { Route, Switch } from "react-router-dom"
+import {Route, Switch} from "react-router-dom"
 
 import Demo from "./Demo"
 import Charts from "./Charts"
@@ -13,6 +13,7 @@ import RedirectTest from "./RedirectTest"
 import LocalStorage from "./LocalStorage"
 import RectangleChart from "./RectangleChart"
 import NestedModuleTest from "./NestedModuleTest"
+import ConsensusDistributionChart from "./ConsensusDistributionChart"
 
 
 export default () => {
@@ -28,6 +29,7 @@ export default () => {
       <Route path="/demo/module-test" component={GalleryModuleTest} />
       <Route path="/demo/component-test" component={ComponentTest} />
       <Route path="/demo/nested-module-test" component={NestedModuleTest} />
+      <Route path="/demo/consensus-distribution-chart" component={ConsensusDistributionChart} />
     </Switch>
   )
 }

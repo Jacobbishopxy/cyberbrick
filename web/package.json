@@ -61,6 +61,8 @@
     "express": "^4.17.1",
     "form-data": "^4.0.0",
     "handsontable": "^9.0.1",
+    "highcharts": "^9.2.2",
+    "highcharts-react-official": "^3.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "nest-router": "^1.0.9",
