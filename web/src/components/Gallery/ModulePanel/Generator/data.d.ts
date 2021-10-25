@@ -6,6 +6,7 @@ import React from "react"
 
 import * as DataType from "../../GalleryDataType"
 
+//模板编辑时内容type
 export interface ModuleEditorField {
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
@@ -20,7 +21,11 @@ export interface ModuleEditorField {
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
 }
 
+//模板内容type
 export interface ModulePresenterField {
+    editable: boolean
+    initialValue: string
+  onSave:(v: string) => void
   content?: DataType.Content
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
@@ -36,6 +41,9 @@ export interface ConvertFwRef {
 }
 
 export interface ConvertRefProps {
+    editable: boolean
+    initialValue: string
+    onSave:(v:string)=>void
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
   fetchTableList?: (id: string) => Promise<string[]>
@@ -51,6 +59,9 @@ export interface ConvertRefProps {
 }
 
 export interface ConvertProps {
+    editable: boolean
+    initialValue: string
+    onSave:(v:string)=>void
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
   fetchTableList?: (id: string) => Promise<string[]>

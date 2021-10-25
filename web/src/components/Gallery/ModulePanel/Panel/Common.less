@@ -12,7 +12,8 @@
     @genHeaderH   : 20px;
 
     .genHeader {
-        height: @genHeaderH;
+        height : @genHeaderH;
+        z-index: 10;
     }
 
     @genDescriptionH: 30px;
@@ -37,6 +38,8 @@
     .genContext {
         // height:calc(100%  - @genHeaderH - @genDescriptionH);
         flex-grow: 1;
+
+        // pointer-events: none;
     }
 }
 

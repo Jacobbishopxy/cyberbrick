@@ -81,10 +81,6 @@ export const TemplateElement =
 
 
 
-
-
-
-
         //listen to props's shouldStartFetch. If it updates, fetchContent
         //获取content内容，依赖项是
         useEffect(() => {
@@ -102,7 +98,7 @@ export const TemplateElement =
         useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
         const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
-
+        console.log(105, props.editable)
         return (
             <div style={{ height: "100%" }} ref={mpRef} >
                 <ModulePanel

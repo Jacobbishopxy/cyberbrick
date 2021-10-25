@@ -22,12 +22,13 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
     const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
     const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
 
+    //此处将要传递给后端的内容做调整,注意,这里是all操作.
     return contents.map(c => {
         if (c.element!.id === undefined || c.element!.type === undefined) {
             const element = { ...c.element!, id: elementNameIdMap[c.element!.name], type: elementNameTypeMap[c.element!.name] }
             return { ...c, element }
         }
-        return c
+        return { ...c }
     })
 }
 

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Button, Col, Input, message, Row } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 
@@ -44,12 +44,20 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
         setTitleEditable(false)
     }
+    const titleInputRef = useRef<any>(null)
 
+    //点击标题聚焦
+    useEffect(() => {
+        if (titleEditable) {
+            titleInputRef.current?.focus();
+        }
+    }, [titleEditable])
     const genTitle = () => {
         //don't display title since header separator is a "title" by itself
         if (props.type === DataType.ElementType.FieldHeader) return <></>
         if (titleEditable)
             return <Input
+                ref={titleInputRef}
                 placeholder={intl.formatMessage({ id: "gallery.component.general62" })}
                 size="small"
                 allowClear
@@ -91,6 +99,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             confirmDelete={props.confirmDelete}
             onSelectDate={props.onSelectDate}
         />
+
     return (
         <Row >
             {

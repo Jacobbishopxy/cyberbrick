@@ -46,6 +46,7 @@ export const Controller = (props: ModuleControllerProps) => {
 
     const quitAddModule = () => setAddModuleModalVisible(false)
 
+    //模板保存事件。
     const saveTemplate = (exist: boolean) =>
         () => {
             //exit: set edit to false; save: set edit to true and allow further edition.

@@ -65,6 +65,8 @@ export default {
   "gallery.component.general60": "降序",
   "gallery.component.general61": "类型",
   "gallery.component.general62": "标题",
+  "gallery.component.general63": "标的",
+  "gallery.component.general64": "概述",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -110,6 +112,8 @@ export default {
   "gallery.component.category-config-table20": "在此输入名称",
   "gallery.component.category-config-table21": "在此选择类型",
   "gallery.component.category-config-table22": "在此输入描述",
+  "gallery.component.category-config-table23": "在此输入标的名称",
+
 
   "gallery.component.category-config-table_type-dashboard": "常规",
   "gallery.component.category-config-table_type-temp_lib": "模板",

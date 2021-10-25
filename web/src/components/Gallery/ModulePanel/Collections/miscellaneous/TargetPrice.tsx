@@ -2,8 +2,9 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import { useState } from "react"
-import { Button, Col, Row, Space } from "antd"
+import { useState, useMemo, useRef, useEffect } from "react"
+import { Button, Col, Row, Space, Tooltip, Input } from "antd"
+import TextArea from "antd/lib/input/TextArea"
 import { FormattedMessage, useIntl } from "umi"
 
 import { ModuleGenerator } from "../../Generator/ModuleGenerator"
@@ -12,16 +13,17 @@ import * as DataType from "../../../GalleryDataType"
 import { ModalForm, ProFormDigit, ProFormRadio, ProFormText } from "@ant-design/pro-form"
 import { max, min } from "lodash"
 
-
+import './Common.less'
 const EditorField = (props: ModuleEditorField) => {
-    console.log('ed')
+    console.log(181818)
     const intl = useIntl()
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
     const onSubmit = async (values: Record<string, any>) => {
+        console.log(23, values, content)
         const ctt = {
             ...content,
-            date: content?.date || DataType.today(),
+            date: DataType.today(),
             data: { ...content?.data, ...values }
         }
         setContent(ctt)
@@ -43,6 +45,17 @@ const EditorField = (props: ModuleEditorField) => {
                 onFinish={onSubmit}
                 modalProps={{ width: "30vw" }}
             >
+                <ProFormText
+                    name="stock"
+                    label={<FormattedMessage id="gallery.component.general63" />}
+                    placeholder="标的名称和代码,空格分隔"
+                    rules={[{ required: true, message: "此处不能为空" }]}
+                />
+                <ProFormText
+                    name="describe"
+                    label={<FormattedMessage id="gallery.component.general64" />}
+                    placeholder="简短概述"
+                />
                 <ProFormRadio.Group
                     name="direction"
                     label={<FormattedMessage id="gallery.component.general48" />}
@@ -62,11 +75,11 @@ const EditorField = (props: ModuleEditorField) => {
                     width="md"
                     rules={[{ required: true, message: "Please enter target price" }]}
                 />
-                <ProFormText
+                {/* <ProFormText
                     name="note"
                     label={<FormattedMessage id="gallery.component.general53" />}
                     placeholder="Please enter your note, this is optional"
-                />
+                /> */}
             </ModalForm>
         </div>
     )
@@ -154,26 +167,153 @@ const showTarget = (dir: string, pr: number, fontSize: number) => {
     }
 }
 
+
+
+
 const PresenterField = (props: ModulePresenterField) => {
-    console.log('PresenterField')
-    //responsive font-size
+    console.log(173, props.content)
     const fontSize = max([50, min([props.contentHeight ? props.contentHeight / 4 : 100])])
     const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])
 
+    const [value, setValue] = useState(props.initialValue)
+    const [stock, setStock] = useState(props.content?.data.stock)
+    const [describe, setDescribe] = useState(props.content?.data.describe)
+    const [editStock, setEditStock] = useState<boolean>(false)
+    const [editDescribe, setEditDescribe] = useState<boolean>(false)
+    const intl = useIntl()
+    //!ts类型待修正
+    const TextAreaREF = useRef<any>(null);
+    const inputREF = useRef<any>(null)
+    const onSave = () => {
+        props.onSave(value)
+        setEditStock(false)
+        setEditDescribe(false)
+    }
+    const genDescriptionText = () => {
+        let arr: any[] = [];
+        describe?.split('\n').forEach((item, index) => arr.push(<p key={index} style={{ textAlign: "left" }}>{item.trim()}</p>));
+        return arr;
+    }
+
+    const onChange = ({ target: { value } }: any) => {
+        setValue(value);
+    }
+
+
+    //获得焦点事件
+    useEffect(() => {
+        console.log(210, editStock)
+        if (editStock) {
+            inputREF.current?.focus({
+                cursor: 'end'
+            })
+        }
+        if (editDescribe) {
+            TextAreaREF.current?.focus({
+                cursor: 'end'
+            })
+        }
+    }, [editStock, editDescribe])
+    //点击编辑后设置textArea出现
+    useEffect(() => {
+        if (props.editable) {
+            setEditDescribe(true)
+        }
+    }, [props.editable])
+
+    useEffect(() => {
+        setStock(props.content?.data.stock)
+        setDescribe(props.content?.data.describe)
+    }, [props.content?.data])
+
+
+
+
+    const stockAndDescription = useMemo(() => {
+        return (
+
+            <div>
+
+                {/* 标的名字 */}
+                <Row className={'targetPrice-stock'}>
+                    <Col span={22} offset={1}>
+                        {stock}
+                    </Col>
+                </Row>
+                {/* 描述 */}
+                <Row style={{
+                    fontSize: '20px',
+                }} >
+
+                    <Col span={24} offset={1}> {genDescriptionText()} </Col>
+                </Row>
+
+
+                {
+                    //         // {/* 标的名字 */}
+                    //         editStock
+                    //             ? <Row className='targetPrice-stock-input'>
+                    //                 <Col span={24}>
+                    //                     <Input
+                    //                         ref={inputREF}
+                    //                         value={stock}
+                    //                         onBlur={onSave}
+                    //                         onChange={onChange}
+                    //                         placeholder={intl.formatMessage({ id: "gallery.component.category-config-table23" })}
+                    //                         allowClear
+                    //                     /></Col>
+                    //             </Row>
+                    //             : <Row style={{
+                    //                 fontSize: '26px',
+                    //                 paddingBottom: '6px',
+                    //                 borderBottom: '1px #ccc solid',
+                    //                 marginBottom: '12px'
+                    //             }} onClick={() => {
+                    //                 console.log(272)
+                    //                 setEditStock(true);
+                    //             }}>
+                    //                 <Col span={22} offset={1}>
+                    //                     {stock}
+                    //                 </Col>
+                    //             </Row>
+
+                    //     }
+                    //     {
+                    //         // 描述 
+                    //         editDescribe
+                    //             ? <Row style={{ height: '100%' }}>
+                    //                 <Col span={24}>
+                    //                     <TextArea
+                    //                         ref={TextAreaREF}
+                    //                         value={describe}
+                    //                         onBlur={onSave}
+                    //                         style={{ border: "2px solid #cacaca" }}
+                    //                         autoSize={{ minRows: 1, maxRows: 2 }}
+                    //                         onChange={onChange}
+                    //                         placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })}
+                    //                         allowClear
+                    //                     /></Col>
+                    //             </Row>
+                    //             : <Row style={{
+                    //                 fontSize: '20px',
+                    //             }} onClick={() => {
+                    //                 setEditDescribe(true);
+                    //             }}>
+
+                    //                 <Col span={24} offset={1}> {genDescriptionText()} </Col>
+                    //             </Row>
+                    //     }
+                    // </>
+                }
+
+            </div>
+        )
+    }, [props.editable, editStock, editDescribe, stock, describe])
+
+
     return props.content ?
-        <Space direction="vertical" style={{ width: "100%", overflow: "auto" }} className={props.styling}>
-            {/* <Row>
-                <Col span={9} offset={2}>
-                    <span style={{ fontWeight: "bold", fontSize: textSize }}>
-                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
-                    </span>
-                </Col>
-                <Col span={9} offset={4}>
-                    <span style={{ fontWeight: "bold", fontSize: textSize }}>
-                        <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
-                    </span>
-                </Col>
-            </Row> */}
+        <div >
+            {stockAndDescription}
             <Row align="middle">
                 <Col span={4} offset={1}>
                     <span style={{ fontSize: textSize }}>
@@ -202,10 +342,12 @@ const PresenterField = (props: ModulePresenterField) => {
             <Row>
                 <Col offset={2}>{props.content?.data?.note}</Col>
             </Row>
-        </Space>
+        </div>
+        // </Space>
         : <></>
 }
 
 
 export const TargetPrice = new ModuleGenerator(EditorField, PresenterField).generate()
 
+// 

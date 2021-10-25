@@ -3,7 +3,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Modal, Skeleton } from "antd"
+import { DatePicker, Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
 import _, { floor } from "lodash"
@@ -72,7 +72,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
         moduleRef.current = collectionSelector(props.elementType)
     }, [])
 
-    useEffect(() => setContent(props.content), [props.content])
+    useEffect(() => {
+        console.log(76, props.content, props.content?.title)
+        setContent(props.content)
+    }, [props.content])
 
     //when dashboard is set to uneditable, make modulePanel unable to edit (by calling moduleFwRef.current.edit(false))
     useEffect(() => {
@@ -84,11 +87,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
             props.fetchContentDates().then(res => setDates(res))
         }
     }, [content, props.editable])
-
-
-    const editContent = (value: boolean) => {
-        if (props.editable && moduleFwRef.current) moduleFwRef.current.edit(value)
-    }
 
     const confirmDelete = () =>
         Modal.confirm({
@@ -124,7 +122,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
     const updateModuleContent = (ctt: DataType.Content) => {
         const newContent = { ...content, ...ctt }
+
         setContent(newContent)
+        console.log(124, content, ctt)
         props.updateContent(newContent)
     }
 
@@ -138,22 +138,58 @@ export const ModulePanel = (props: ModulePanelProps) => {
         props.updateContent(newContent)
     }
 
-    const genHeader = <ModulePanelHeader
-        editable={props.editable}
-        settable={props.settable}
-        timeSeries={props.timeSeries}
-        headName={props.headName}
-        type={props.elementType}
-        title={content ? content.title : undefined}
-        date={content ? content.date : undefined}
-        updateTitle={updateTitle}
-        editContent={editContent}
-        newContent={newDateWithContent}
-        confirmDelete={confirmDelete}
-        dateList={dates}
-        editDate={headerDate}
-        onSelectDate={props.fetchContent}
-    />
+    /* 点击右上角设置或对勾的函数{
+        更新模块内容时间；
+        !更新父组件的content。
+    } */
+    const editContent = (value: boolean) => {
+        if (props.editable && moduleFwRef.current) moduleFwRef.current.edit(value)
+
+        if (content?.date && !value) {
+
+            setContent(content => {
+                let newContent = { ...content, date: DataType.today() } as DataType.Content
+                props.updateContent(newContent)
+                return newContent
+            })
+            console.log(93, content)
+        }
+
+    }
+    const genHeader = useMemo(() => {
+        return <ModulePanelHeader
+            editable={props.editable}
+            settable={props.settable}
+            timeSeries={props.timeSeries}
+            headName={props.headName}
+            type={props.elementType}
+            title={content ? content.title : undefined}
+            date={content ? content.date : undefined}
+            updateTitle={updateTitle}
+            editContent={editContent}
+            newContent={newDateWithContent}
+            confirmDelete={confirmDelete}
+            dateList={dates}
+            editDate={headerDate}
+            onSelectDate={props.fetchContent}
+        />
+    }, [content?.date, props.editable])
+    // const genHeader = <ModulePanelHeader
+    //     editable={props.editable}
+    //     settable={props.settable}
+    //     timeSeries={props.timeSeries}
+    //     headName={props.headName}
+    //     type={props.elementType}
+    //     title={content ? content.title : undefined}
+    //     date={content ? content.date : undefined}
+    //     updateTitle={updateTitle}
+    //     editContent={editContent}
+    //     newContent={newDateWithContent}
+    //     confirmDelete={confirmDelete}
+    //     dateList={dates}
+    //     editDate={headerDate}
+    //     onSelectDate={props.fetchContent}
+    // />
 
     // const genDescription = useMemo(() => {
     //     if (isTemplate && !props.isNested) {
@@ -167,35 +203,35 @@ export const ModulePanel = (props: ModulePanelProps) => {
     //     }
     //     return <></>
     // }, [props.editable, isTemplate])
-    const genDescription = useMemo(() => {
-        //如果是嵌套模板或仪表盘，则不需要genDescription
-        if (isTemplate && !props.isNested) {
-            if (!props.editable && !props.description)
-                return <></>
-            return (
-                //!特殊样式，待改
-                <div className={props.elementType === 'targetPrice'
-                    ? styles.isTargPriceGenDescription
-                    : styles.genDescription}>
-                    {console.log(180180, props.elementType)}
-                    {
-                        props.elementType === 'targetPrice'
-                            ? <TestModuleDescirption
-                                editable={props.editable}
-                                initialValue={props.description || ''}
-                                onSave={props.updateDescription}
-                            />
-                            : <ModuleDescirption
-                                editable={props.editable}
-                                initialValue={props.description || ''}
-                                onSave={props.updateDescription}
-                            />
-                    }
-                </div>
-            )
-        }
-        return <></>
-    }, [props.editable, isTemplate])
+    // const genDescription = useMemo(() => {
+    //     //如果是嵌套模板或仪表盘，则不需要genDescription
+    //     if (isTemplate && !props.isNested) {
+    //         if (!props.editable && !props.description)
+    //             return <></>
+    //         return (
+    //             //!特殊样式，待改
+    //             <div className={props.elementType === 'targetPrice'
+    //                 ? styles.isTargPriceGenDescription
+    //                 : styles.genDescription}>
+    //                 {console.log(180180, props.elementType)}
+    //                 {
+    //                     props.elementType === 'targetPrice'
+    //                         ? <TestModuleDescirption
+    //                             editable={props.editable}
+    //                             initialValue={props.description || ''}
+    //                             onSave={props.updateDescription}
+    //                         />
+    //                         : <ModuleDescirption
+    //                             editable={props.editable}
+    //                             initialValue={props.description || ''}
+    //                             onSave={props.updateDescription}
+    //                         />
+    //                 }
+    //             </div>
+    //         )
+    //     }
+    //     return <></>
+    // }, [props.editable, isTemplate])
     // const testGenDescription = useMemo(() => {
     //     if (isTemplate && !props.isNested) {
     //         if (!props.editable && !props.description) return <></>
@@ -208,8 +244,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
     //     }
     //     return <></>
     // }, [props.editable, isTemplate])
+
+    //依赖项必须有editable
     const genContext = useMemo(() => {
-        // console.log(content?.data)
+        console.log(212, props.editable)
         const rf = moduleRef.current
         if (rf) {
             //if it's has id (so it's saved to db) and it's loading, display skeleton. 
@@ -238,11 +276,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
                 forwardedRef: moduleFwRef,
                 // styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
                 fetchContentFn: props.fetchContentFn,
-                fetchContentDatesFn: props.fetchContentDatesFn
+                fetchContentDatesFn: props.fetchContentDatesFn,
+
+                editable: props.editable,
+                initialValue: props.description || '',
+                onSave: props.updateDescription
             })
         }
         return <></>
-    }, [content, props.contentHeight, loading])
+    }, [content, props.contentHeight, loading, props.editable])
 
     const genFooter = useMemo(() =>
         <ModulePanelFooter
@@ -280,7 +322,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             <div className={styles.genHeader}>
                 {genHeader}
             </div>
-            {genDescription}
+            {/* {genDescription} */}
 
             {/* 根据是模板或仪表盘给予样式 */}
             <div className={

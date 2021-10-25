@@ -37,12 +37,19 @@ export interface ModuleSelectorProps {
     // styling: string
     fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
+
+    editable: boolean
+    initialValue: string
+    onSave: (v: string) => void
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
     (props: ModuleSelectorProps) => {
 
         const defaultModule = <EmbedLink
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
@@ -51,6 +58,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const text = <Text
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
@@ -60,6 +70,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const xlsxTable = <XlsxTable
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
@@ -68,6 +81,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const flexTable = <FlexTable
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -80,6 +96,10 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
         //目标价
         const targetPrice = <TargetPrice
+
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
@@ -88,6 +108,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const fileView = <FileView
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
@@ -96,6 +119,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const line = <Line
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -108,6 +134,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const bar = <Bar
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -120,6 +149,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const lineBar = <LineBar
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -132,6 +164,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const scatter = <Scatter
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -144,6 +179,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const lineScatter = <LineScatter
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -156,6 +194,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const pie = <Pie
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -169,6 +210,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
         //嵌套模块
         const nestedModule = <NestedSimpleModule
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
@@ -184,6 +228,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         const fieldHeader = <FieldHeader
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
             updateContent={props.updateContent}
