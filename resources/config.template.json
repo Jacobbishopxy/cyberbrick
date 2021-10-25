@@ -1,5 +1,6 @@
 {
-	"serverPort": 8020,
+	"serverPyHost": "localhost",
+	"serverPyPort": 8020,
 	"serverGoHost": "localhost",
 	"serverGoPort": 8040,
 	"connDevGallery": {

@@ -18,11 +18,11 @@ export class ContentMiddleware implements NestMiddleware {
         if (req.body) {
           //convert content to the form to save to mongodb
           const mongoCt: MongoService.ContentMongo = this.service.pgContentToMongoContent(req.body as any)
-          console.log("querying go api with content", mongoCt)
+          // console.log("querying go api with content", mongoCt)
           //make query to go api
           try {
-            const res = await this.service.createContent(type, mongoCt)
-            console.log("receving go api response", res);
+            const res = await this.service.createContent(type, mongoCt) as MongoService.MData
+            // console.log("receving go api response", res);
             (req.body as any).data = {id: res.id, collection: type}
           } catch (error) {
             console.log(error)

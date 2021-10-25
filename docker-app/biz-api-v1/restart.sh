@@ -2,4 +2,6 @@
 # author: Jacob Bishop
 
 source ../../resources/docker.web.env
-docker restart "${API_CONTAINER_NAME}"
+docker stop "${API_CONTAINER_NAME}"
+docker rm "${API_CONTAINER_NAME}"
+docker-compose -p "${PROJECT_NAME_API}" up -d
