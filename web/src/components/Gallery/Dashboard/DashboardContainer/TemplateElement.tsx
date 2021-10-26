@@ -61,22 +61,25 @@ export const TemplateElement =
             DynamicHeader组件需要的数据从这里网络请求回来
         */
         const fetchContent = (date?: string) => {
-            if (eleId) {
-                //no need to check date since it's allowed date to be undefined
-                // props.fetchContentFn(eleId, date, props.isNested).then(res => {
-                DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
-                    // fetchElementContent(eleId, date, props.isNested).then(res => {
-                    //TODO: cannot set content to undefined
-                    const ct = res || { data: {}, date: DataType.today() }
-                    console.log(71, DataType.timeToString(ct.date))
-                    setContent(ct)
-                    // if (props.isNested) console.log(ct)
-                    props.updateContentFn(ct)
-                    // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
-                })
-                //no matter what we receive, wait till if statement end to stop loading
-                setIsLoading(false)
-            }
+            return new Promise((resoleve, reject) => {
+                if (eleId) {
+                    //no need to check date since it's allowed date to be undefined
+                    // props.fetchContentFn(eleId, date, props.isNested).then(res => {
+                    console.log(67, eleId, date)
+                    DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
+                        // fetchElementContent(eleId, date, props.isNested).then(res => {
+                        //TODO: cannot set content to undefined
+                        const ct = res || { data: {}, date: DataType.today() }
+                        setContent(ct)
+                        // if (props.isNested) console.log(ct)
+                        props.updateContentFn(ct)
+                        resoleve(ct)
+                        // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
+                    })
+                    //no matter what we receive, wait till if statement end to stop loading
+                    setIsLoading(false)
+                }
+            })
         }
 
 
@@ -90,7 +93,7 @@ export const TemplateElement =
         const fetchContentDates = async () => {
             if (eleId && props.element.timeSeries) {
                 const ele = await props.fetchContentDatesFn(eleId)
-                return ele.contents!.map(c => DataType.timeToString(c.date))
+                return ele.contents!.map(c => (c.date))
             }
             return []
         }
@@ -98,7 +101,7 @@ export const TemplateElement =
         useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
         const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
-        console.log(105, props.editable)
+
         return (
             <div style={{ height: "100%" }} ref={mpRef} >
                 <ModulePanel

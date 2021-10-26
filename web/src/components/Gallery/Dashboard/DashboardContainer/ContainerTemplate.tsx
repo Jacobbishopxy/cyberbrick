@@ -129,11 +129,16 @@ export const ContainerTemplate =
 
         useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
-        const updateContent = (ele: DataType.Element) =>
-            (value: DataType.Content) => props.elementUpdateContentFn({
-                ...value,
-                element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
-            })
+
+        const updateContent = (ele: DataType.Element) => {
+            return (value: DataType.Content) => {
+                return props.elementUpdateContentFn({
+                    ...value,
+                    element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
+                })
+            }
+        }
+
 
         const updateDescription = (ele: DataType.Element) =>
             (value: string) => setElements(els => els.map(el => {

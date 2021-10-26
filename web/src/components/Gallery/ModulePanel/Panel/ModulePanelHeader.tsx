@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { HeaderController } from "./HeaderController"
+import { data } from "@/pages/demo/Charts/mock/ls"
 
 
 interface ModulePanelHeaderProps {
@@ -23,8 +24,10 @@ interface ModulePanelHeaderProps {
     newContent: (date: string) => void
     confirmDelete: () => void
     dateList?: string[]
-    editDate?: (date: string) => void
+    editDate?: (date: string, isMessage?: boolean) => void
     onSelectDate?: (date: string) => void
+    updateContent: (content: DataType.Content) => void
+    content: DataType.Content
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
@@ -98,8 +101,20 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             newContent={props.newContent}
             confirmDelete={props.confirmDelete}
             onSelectDate={props.onSelectDate}
+            setTitle={setTitle}
+            updateContent={props.updateContent}
+            content={props.content}
         />
+    console.log(107, props.content)
 
+    function getDate() {
+        if (props.content) {
+            if (Object.keys(props.content.data).length !== 0) {
+                return DataType.timeToString(props.date!)
+            }
+        }
+        return '';
+    }
     return (
         <Row >
             {
@@ -108,6 +123,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
                         <Col span={8} style={{ fontWeight: "bold" }}>
                             {props.type === DataType.ElementType.FieldHeader ? '' : props.headName}
                         </Col>
+
                         <Col span={8} style={{ textAlign: "center" }}>
                             {genTitle()}
                         </Col>
@@ -115,7 +131,10 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
                         <Col span={8}>
                             <Row justify='end'>
                                 <Col  >
-                                    {DataType.timeToString(props.date!)}
+                                    {
+                                        getDate()
+                                    }
+
                                 </Col>
                                 <Col  >
 

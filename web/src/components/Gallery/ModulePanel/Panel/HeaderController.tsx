@@ -3,12 +3,13 @@
  */
 
 import { useState } from "react"
-import { Checkbox, Col, DatePicker, Modal, Row, Select, Space } from "antd"
+import { Tooltip, Alert, Checkbox, Col, DatePicker, Modal, Row, Select, Space } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
 
 import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
 
+import * as DataType from "../../GalleryDataType"
 interface TimeSetModalProps {
     intl: any
     show: boolean | undefined,
@@ -16,13 +17,20 @@ interface TimeSetModalProps {
     onOk: (isNew: boolean) => void,
     onCancel: () => void,
     editDate: (date: string) => void
+    dateList: string[]
 }
-
 const TimeSetModal = (props: TimeSetModalProps) => {
     const [isNew, setIsNew] = useState<boolean>(false)
-
+    const [isCheckBox, setIsCheckBox] = useState<boolean>(false)
     const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
-        if (date !== null) props.editDate(dateStr)
+        console.log(26, props.dateList, dateStr)
+        const dateFormDB = moment(dateStr).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
+        if (date !== null) props.editDate(dateFormDB)
+        if (props.dateList.includes(dateFormDB)) {
+            setIsCheckBox(true);
+        } else {
+            setIsCheckBox(false);
+        }
     }
 
     const onOk = () => props.onOk(isNew)
@@ -40,13 +48,22 @@ const TimeSetModal = (props: TimeSetModalProps) => {
                     onChange={dateOnChange}
                     defaultValue={moment()}
                 />
-                <Checkbox onChange={e => setIsNew(e.target.checked)}>
+                <Checkbox
+                    disabled={isCheckBox}
+                    onChange={e => setIsNew(e.target.checked)}>
                     <FormattedMessage id="gallery.component.module-panel.panel.header-controller2" />
                 </Checkbox>
+                {
+                    isCheckBox
+                        ? <Alert message='该日期已有内容，不可新建，只能修改' type='error'></Alert>
+                        : <></>
+                }
             </Space>
         </Modal>
         : <></>
 }
+
+
 
 interface TimePickModalProps {
     intl: any
@@ -55,7 +72,6 @@ interface TimePickModalProps {
     onCancel: () => void
     dateList: string[]
 }
-
 const TimePickModal = (props: TimePickModalProps) => {
     const [selectedDate, setSelectedDate] = useState<string>()
 
@@ -85,7 +101,9 @@ const TimePickModal = (props: TimePickModalProps) => {
         >
             {
                 props.dateList.map(d =>
-                    <Select.Option value={d} key={d}>{d}</Select.Option>
+                    <Select.Option value={d} key={d}>
+                        {DataType.timeToString(d)}
+                    </Select.Option>
                 )
             }
         </Select>
@@ -102,11 +120,14 @@ export interface HeaderController {
     settable: boolean
     timeSeries?: boolean
     dateList?: string[]
-    editDate?: (date: string) => void
+    editDate?: (date: string, isMessage?: boolean) => void
     editContent: (value: boolean) => void
     newContent: (date: string) => void
     confirmDelete: () => void
     onSelectDate?: (date: string) => void
+    setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
+    updateContent: (content: DataType.Content) => void
+    content: DataType.Content
 }
 
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
@@ -116,15 +137,22 @@ export const HeaderController = (props: HeaderController) => {
     const [selectedDate, setSelectedDate] = useState<string>()
     // const isTemplate = useContext(IsTemplateContext)
 
+
+
+    //日期Modal的【确认】回调
     const timeSetModalOnOk = (isNew: boolean) => {
         if (props.editDate && selectedDate) {
             if (isNew) props.newContent(selectedDate)
-            else props.editDate(selectedDate)
+            else {
+                props.editDate(selectedDate, true)
+            }
         }
         setDateModalVisible({ ...dateModalVisible, set: false })
     }
 
     const timePickModalOnOk = (date: string) => {
+
+        console.log(128, date)
         if (props.onSelectDate) props.onSelectDate(date)
         setDateModalVisible({ ...dateModalVisible, pick: false })
     }
@@ -152,19 +180,21 @@ export const HeaderController = (props: HeaderController) => {
                 onOk={timeSetModalOnOk}
                 onCancel={() => setDateModalVisible({ ...dateModalVisible, set: false })}
                 editDate={setSelectedDate}
+                dateList={props.dateList}
             />
         </Space>)
     }
     const nonEditableController = () => {
+        console.log(159, props.dateList)
         return (
             <Row justify={'end'}>
                 <Col>
                     {
-
                         props.timeSeries && props.dateList ?
                             <Space>
                                 <TimePickButton
-                                    onClick={() => setDateModalVisible({ ...dateModalVisible, pick: true })}
+                                    onClick={() =>
+                                        setDateModalVisible({ ...dateModalVisible, pick: true })}
                                 />
                                 <TimePickModal
                                     intl={intl}
@@ -176,8 +206,6 @@ export const HeaderController = (props: HeaderController) => {
                             </Space> : <></>
                     }
                 </Col>
-
-
             </Row>
 
         )

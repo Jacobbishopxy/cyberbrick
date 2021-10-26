@@ -102,6 +102,7 @@ export const Dashboard = (props: DashboardProps) => {
         if (selectedDashboard && cRef.current) cRef.current.startFetchAllContents()
     }, [selectedDashboard])
 
+    //如果content有变化
     useEffect(() => {
         if (newestContent) {
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)

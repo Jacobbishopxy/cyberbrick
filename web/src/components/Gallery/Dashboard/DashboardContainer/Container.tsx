@@ -156,7 +156,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
     const elementUpdateContentFn = (ctt: DataType.Content) => {
         const category = {
-            name: props.dashboardInfo.category!.name
+            name: props.dashboardInfo.category?.name
         } as DataType.Category
         props.updateElementContentFn({ ...ctt, category })
     }
