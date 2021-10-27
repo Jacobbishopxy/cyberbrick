@@ -87,6 +87,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
             props.fetchContentDates().then(res => setDates(res))
         }
     }, [content, props.editable])
+
+    //模块删除函数
     const confirmDelete = () =>
         Modal.confirm({
             title: intl.formatMessage({ id: "gallery.component.module-panel.panel.module-panel1" }),

@@ -126,9 +126,7 @@ export const Dashboard = (props: DashboardProps) => {
 
     const dashboardOnSelect = async (dashboardId: string, isCopy: boolean = false) => {
         const dsb = await props.fetchDashboard(dashboardId)
-        console.log("🚀 ~ file: Dashboard.tsx ~ line 127 ~ dashboardOnSelect ~ dsb", dsb)
         if (!isCopy) {
-
             setSelectedDashboard(dsb)
             setCanEdit(true)
 
@@ -219,6 +217,7 @@ export const Dashboard = (props: DashboardProps) => {
     }
 
     const onAddModule = (n: string, ts: boolean, et: DataType.ElementType) => {
+        console.log(220, n, ts, et)
         if (cRef.current) cRef.current.newElement(n, ts, et)
     }
 

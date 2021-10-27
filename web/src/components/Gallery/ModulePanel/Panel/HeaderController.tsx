@@ -10,6 +10,11 @@ import moment from "moment"
 import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
 
 import * as DataType from "../../GalleryDataType"
+
+
+
+
+//编辑时的head
 interface TimeSetModalProps {
     intl: any
     show: boolean | undefined,
@@ -17,8 +22,9 @@ interface TimeSetModalProps {
     onOk: (isNew: boolean) => void,
     onCancel: () => void,
     editDate: (date: string) => void
-    dateList: string[]
+    dateList: string[] | undefined
 }
+
 const TimeSetModal = (props: TimeSetModalProps) => {
     const [isNew, setIsNew] = useState<boolean>(false)
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false)
@@ -26,7 +32,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
         console.log(26, props.dateList, dateStr)
         const dateFormDB = moment(dateStr).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
         if (date !== null) props.editDate(dateFormDB)
-        if (props.dateList.includes(dateFormDB)) {
+        if (props.dateList?.includes(dateFormDB)) {
             setIsCheckBox(true);
         } else {
             setIsCheckBox(false);
@@ -64,7 +70,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 }
 
 
-
+//无编辑时的head
 interface TimePickModalProps {
     intl: any
     visible: boolean
@@ -119,7 +125,7 @@ export interface HeaderController {
     editable: boolean
     settable: boolean
     timeSeries?: boolean
-    dateList?: string[]
+    dateList?: string[] | undefined
     editDate?: (date: string, isMessage?: boolean) => void
     editContent: (value: boolean) => void
     newContent: (date: string) => void
@@ -157,6 +163,7 @@ export const HeaderController = (props: HeaderController) => {
         setDateModalVisible({ ...dateModalVisible, pick: false })
     }
 
+    //编辑时
     const editableController = () => {
         return (<Space>
             <DragButton />
@@ -184,6 +191,7 @@ export const HeaderController = (props: HeaderController) => {
             />
         </Space>)
     }
+    //无编辑时
     const nonEditableController = () => {
         console.log(159, props.dateList)
         return (

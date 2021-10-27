@@ -59,6 +59,7 @@ const genDataGrid = (ele: DataType.Element) =>
 export interface ContainerTemplateProps {
     parentInfo: string[]
     elements: Elements
+    setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>
     shouldEleFetch: number
     // elementFetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -83,33 +84,47 @@ export const ContainerTemplate =
         const editable = useContext(EditableContext)
         const intl = useIntl()
 
-        const [elements, setElements] = useState<Elements>(props.elements)
+        // const [elements, setElements] = useState<Elements>(props.elements)
 
 
 
         // update elements when adding a new element
-        useEffect(() => setElements(props.elements), [props.elements])
+        //在添加新元素时更新元素
+        // useEffect(
+        //     () => {
+        //         console.log(94, props.elements)
+        //         setElements(props.elements)
+        //     },
+        //     [props.elements])
 
-        //since unsaved elements don't have id, and each element has a unique name, remove element by name
+        //按照模块名字删除
         const elementOnRemove = (name: string) => () => {
-            const newElements = removeElementInLayout(name, elements)
-            setElements(newElements)
+            console.log(95)
+            // const newElements = removeElementInLayout(name, elements)
+
+            //
+            props.setElements((elements) => {
+                const newElements = _.reject(elements, (e) => e.name === name)
+                return newElements
+            })
+            console.log(97)
             //testing: manually remove ref from teRefs
-            let index = elements.findIndex(ele => ele.name === name)
-            teRefs.current.splice(index, 1)
+            let index = props.elements.findIndex(ele => ele.name === name)
+            console.log(99, index)
+            // teRefs.current.splice(index, 1)
         }
 
         // 把elements数组重写。
         const onLayoutChange = (layout: Layout[]) => {
-
-            setElements(updateElementInLayout(elements, layout))
+            props.setElements(updateElementInLayout(props.elements, layout))
         }
 
 
         const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+
             const height = elementType === DataType.ElementType.FieldHeader ? 8 : 20
             const width = elementType === DataType.ElementType.FieldHeader ? 24 : 12
-            if (elements.map(e => e.name).includes(name)) {
+            if (props.elements.map(e => e.name).includes(name)) {
                 message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
             } else {
                 const newEle = {
@@ -121,11 +136,10 @@ export const ContainerTemplate =
                     h: height,
                     w: width,
                 } as Element
-                setElements(newElementInLayout(elements, newEle))
+                props.setElements(newElementInLayout(props.elements, newEle))
             }
         }
-
-        const saveElements = () => elements
+        const saveElements = () => props.elements
 
         useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
@@ -141,7 +155,7 @@ export const ContainerTemplate =
 
 
         const updateDescription = (ele: DataType.Element) =>
-            (value: string) => setElements(els => els.map(el => {
+            (value: string) => props.setElements(els => els.map(el => {
                 if (el.id === ele.id) return { ...el, description: value }
                 return el
             }))
@@ -158,7 +172,7 @@ export const ContainerTemplate =
                 isDraggable={editable}
                 isResizable={editable}
                 autoSize={true}
-                layout={elements.map(ele => {
+                layout={props.elements.map(ele => {
                     return {
                         x: +ele.x,
                         y: +ele.y,
@@ -171,7 +185,7 @@ export const ContainerTemplate =
                 })}
             >
                 {
-                    elements.map((ele, i) =>
+                    props.elements.map((ele, i) =>
                         <div key={ele.name} data-grid={genDataGrid(ele)}>
                             {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
                             <TemplateElement

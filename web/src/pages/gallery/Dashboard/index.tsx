@@ -89,9 +89,11 @@ export default () => {
             fetchCategoriesByType={fetchCategoriesByType}
             fetchCategory={fetchCategory}
             fetchDashboard={fetchDashboard}
+            //获得该模板的所有模块
             fetchTemplate={fetchTemplate}
             saveTemplate={saveTemplate}
             copyTemplate={copyTemplate}
+            //获得模块的内容
             fetchElementContent={fetchElementContent}
             fetchElementContentDates={fetchElementContentDates}
             updateElementContent={updateElementContent}

@@ -10,6 +10,7 @@ import * as DataType from "../../GalleryDataType"
 import { ContainerTemplate, ContainerTemplateRef } from "./ContainerTemplate"
 import { FormattedMessage } from "umi"
 import { ExclamationCircleOutlined } from "@ant-design/icons"
+import { useForm } from "antd/es/form/Form"
 
 const routeConfiguration = "/gallery/configuration"
 export interface ContainerProps {
@@ -72,8 +73,12 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     const [selectedPane, setSelectedPane] = useState<SelectedPane>()
     const [template, setTemplate] = useState<DataType.Template>()
     const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
+    const [elements, setElements] = useState<DataType.Element[]>([])
 
     const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
+
+    useEffect(() => {
+    }, [elements])
 
     useEffect(() => {
         if (props.initialSelected && props.initialSelected?.length >= 2) {
@@ -86,16 +91,27 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     /**
      * fetch template (with elements) when switching dashboard or it's tabs
      */
+    //切换仪表盘时，会获得默认的第一个templates（维度）
     useEffect(() => {
         if (selectedPane) {
-            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
+            props.fetchElements(selectedPane.id).then(res => {
+                setTemplate(res)
+                setElements(res.elements)
+                console.log(92, res)
+            })
             props.onSelectPane(selectedPane.id)
         }
     }, [selectedPane])
 
+    //仪表盘从模板copy时使用
     const startFetchElements = () => {
         if (selectedPane)
-            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
+            props.fetchElements(selectedPane.id).then(res => {
+                setTemplate(res)
+                setElements(res.elements)
+            }
+            )
+
     }
 
     const startFetchAllContents = () => {
@@ -121,7 +137,10 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
     const fetchTemplate = () => {
         if (selectedPane)
-            props.fetchElements(selectedPane.id).then(res => setTemplate(res))
+            props.fetchElements(selectedPane.id).then(res => {
+                setTemplate(res)
+                setElements(res.elements)
+            })
     }
 
     const saveTemplate = () => {
@@ -167,7 +186,8 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
             return <ContainerTemplate
                 parentInfo={parentInfo}
-                elements={template.elements!}
+                elements={elements}
+                setElements={setElements}
                 //网络请求获取模板具体内容。
                 // elementFetchContentFn={props.fetchElementContentFn}
                 elementFetchContentDatesFn={props.fetchElementContentDatesFn}
@@ -221,7 +241,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                     }
                 </Tabs>
             )
-        }, [props.dashboardInfo, template])
+        }, [props.dashboardInfo, template, elements])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>
