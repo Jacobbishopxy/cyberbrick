@@ -21,7 +21,7 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 
     const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
     const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
-
+    console.log('contents', contents)
     //此处将要传递给后端的内容做调整,注意,这里是all操作.
     return contents.map(c => {
         if (c.element!.id === undefined || c.element!.type === undefined) {
@@ -173,6 +173,7 @@ export const Dashboard = (props: DashboardProps) => {
                     if (updatedContents.length > 0) {
                         const updatedTemplate = await props.fetchTemplate(t.id!)
                         const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
+                        console.log('contents', contents)
                         await updateAllContents(contents)
                         setNewestContent(undefined)
                         setUpdatedContents([])
@@ -255,7 +256,8 @@ export const Dashboard = (props: DashboardProps) => {
     return (
         <EditableContext.Provider value={edit}>
             <DashboardContext.Provider value={{
-                fetchElementContent
+                fetchElementContent,
+                saveTemplate: props.saveTemplate
             }}>
                 {genController}
                 {genContainer}

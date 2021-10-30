@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/13/2020.
  */
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Tooltip, Alert, Checkbox, Col, DatePicker, Modal, Row, Select, Space } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
@@ -10,8 +10,6 @@ import moment from "moment"
 import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
 
 import * as DataType from "../../GalleryDataType"
-
-
 
 
 //编辑时的head
@@ -28,18 +26,28 @@ interface TimeSetModalProps {
 const TimeSetModal = (props: TimeSetModalProps) => {
     const [isNew, setIsNew] = useState<boolean>(false)
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false)
+
+    //判断"yyyy-MM-DDTHH:mm:ss.SSSZ"格式的字符串是否在数组中
+    function isTimeInArray(time: string, arr: string[] | undefined) {
+        const dateFormDB = moment(time).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
+        return props.dateList?.includes(dateFormDB)
+    }
+
+    //日期组件的时间变化回调
     const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
-        console.log(26, props.dateList, dateStr)
         const dateFormDB = moment(dateStr).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
         if (date !== null) props.editDate(dateFormDB)
-        if (props.dateList?.includes(dateFormDB)) {
-            setIsCheckBox(true);
-        } else {
-            setIsCheckBox(false);
-        }
+        isTimeInArray(dateStr, props.dateList)
+            ? setIsCheckBox(true) : setIsCheckBox(false);
+
     }
 
     const onOk = () => props.onOk(isNew)
+
+    //初始化设置：是否能新建当前日期的内容。
+    useEffect(() => {
+        isTimeInArray(moment().format('yyyy-MM-DD'), props.dateList) ? setIsCheckBox(true) : setIsCheckBox(false)
+    }, [])
 
     return props.show ?
         <Modal
@@ -134,6 +142,7 @@ export interface HeaderController {
     setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
     updateContent: (content: DataType.Content) => void
     content: DataType.Content
+    elementType: DataType.ElementType
 }
 
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
@@ -168,15 +177,23 @@ export const HeaderController = (props: HeaderController) => {
         return (<Space>
             <DragButton />
             {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
-            {props.settable ?
+            {true ?
                 <>
+                    {/* 【日历】🗓️ */}
                     <TimeSetButton
                         show={props.timeSeries}
                         onClick={() => setDateModalVisible({ ...dateModalVisible, set: true })}
                     />
-                    <EditButton editContent={props.editContent} />
+                    {/* 【小齿轮⚙️】 */}
+                    <EditButton
+                        editContent={props.editContent}
+                        timeSeries={props.timeSeries}
+                        content={props.content}
+                        elementType={props.elementType}
+                    />
                 </> : <></>}
             {/* } */}
+            {/* 【垃圾箱🗑️】 */}
             <DeleteButton
                 confirmDelete={props.confirmDelete}
             />

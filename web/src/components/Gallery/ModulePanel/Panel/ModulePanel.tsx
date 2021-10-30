@@ -74,6 +74,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
     }, [])
 
     useEffect(() => {
+        if (!props.isNested) {
+
+            console.log(58, props.content)
+        }
         setContent(props.content)
     }, [props.content])
 
@@ -98,6 +102,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         })
 
     const updateTitle = (title: string) => {
+        console.log(58, content)
         const newContent = content ?
             { ...content, title } :
             { title, date: DataType.today() } as DataType.Content
@@ -110,7 +115,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
             return { date: content.date }
         return {}
     }
-
+    useEffect(() => {
+        console.log(5858, props.isNested, content)
+    }, [content])
     //设置date
     const headerDate = async (date: string, isMessage?: boolean) => {
 
@@ -137,9 +144,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
         const newContent = { ...content, ...ctt }
         setContent(newContent)
         props.updateContent(newContent)
+        console.log(58, props.isNested, 'updateModuleContent')
     }
 
-    //新建日期
+    //!新建日期,text=''逻辑是否适用全部类型模块
     const newDateWithContent = (d: string) => {
         //! 后端根据是否有id新建或修改。
         const prevContentWithoutId = _.omit(content?.data, "id")
@@ -151,6 +159,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             title: '',
             data: { ...prevContentWithoutId.data, text: '' }
         } as DataType.Content
+        console.log(58, props.isNested, 'newDateWithContent')
         setContent(newContent)
         props.updateContent(newContent)
     }
@@ -190,7 +199,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             updateContent={updateModuleContent}
             content={content}
         />
-    }, [content?.date, props.editable, dates])
+    }, [content?.date, props.editable, dates, content])
     // const genHeader = <ModulePanelHeader
     //     editable={props.editable}
     //     settable={props.settable}
@@ -331,8 +340,13 @@ export const ModulePanel = (props: ModulePanelProps) => {
         return genFooter
     }
 
-
-
+    function getTabItem() {
+        if (props.isNested) {
+            if (moduleFwRef && moduleFwRef.current && moduleFwRef.current.items) {
+                return moduleFwRef.current.items()
+            }
+        }
+    }
     return (
         <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
             <div className={styles.genHeader}>
@@ -341,8 +355,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
             {/* {genDescription} */}
 
             {/* 根据是模板或仪表盘给予样式 */}
-            <div className={
-                `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}>
+            <div
+
+                className={
+                    `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}
+            >
 
                 {genContext}
             </div>

@@ -14,6 +14,7 @@ import { EditableContext } from "../Dashboard"
 import { useIntl } from "umi"
 import { template } from "@umijs/deps/compiled/lodash"
 
+import { ElementType } from "../../GalleryDataType"
 //样式
 import "./style.less"
 const ReactGridLayout = WidthProvider(RGL)
@@ -52,8 +53,19 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
 const removeElementInLayout = (name: string, elements: Elements): Elements =>
     _.reject(elements, ele => (ele.name === name))
 
-const genDataGrid = (ele: DataType.Element) =>
-    ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
+// const genDataGrid = (ele: DataType.Element) => {
+//     console.log(57, ele)
+//     if (ele.type === ElementType.TargetPrice) {
+
+//         return ({
+//             x: +ele.x,
+//             y: +ele.y,
+//             h: 10,
+//             w: +ele.w
+//         })
+//     }
+// }
+
 
 
 export interface ContainerTemplateProps {
@@ -121,9 +133,23 @@ export const ContainerTemplate =
 
 
         const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+            let height = 0;
+            let width = 0;
+            switch (elementType) {
+                case DataType.ElementType.FieldHeader:
+                    height = 8;
+                    width = 24
+                    break;
+                case DataType.ElementType.XlsxTable:
+                    height = 20
+                    width = 24
+                    break
 
-            const height = elementType === DataType.ElementType.FieldHeader ? 8 : 20
-            const width = elementType === DataType.ElementType.FieldHeader ? 24 : 12
+                default:
+                    height = 20;
+                    width = 12;
+                    break;
+            }
             if (props.elements.map(e => e.name).includes(name)) {
                 message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
             } else {
@@ -164,6 +190,35 @@ export const ContainerTemplate =
         const genRef = (i: number) => (el: ContainerElementRef) => {
             if (el) teRefs.current[i] = el
         }
+        const genDataGrid = (ele: DataType.Element) => {
+            console.log(180, ele)
+            // let h = 0;
+            // let w = 0;
+            // switch (ele.type) {
+            //     case ElementType.TargetPrice:
+            //         h = 9;
+            //         w = +ele.w;
+            //         break;
+            //     case ElementType.XlsxTable:
+            //         h = 20;
+            //         w = 20;
+            //         break;
+            //     default:
+            //         h = +ele.h
+            //         w = +ele.w
+            //         break;
+            // }
+
+            return {
+                x: +ele.x,
+                y: +ele.y,
+                h: +ele.h,
+                w: +ele.w,
+                i: ele.name,
+                // minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+                // minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
+            }
+        }
 
         return (
             <ReactGridLayout
@@ -172,21 +227,26 @@ export const ContainerTemplate =
                 isDraggable={editable}
                 isResizable={editable}
                 autoSize={true}
-                layout={props.elements.map(ele => {
-                    return {
-                        x: +ele.x,
-                        y: +ele.y,
-                        h: +ele.h,
-                        w: +ele.w,
-                        i: ele.name,
-                        // minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
-                        minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 6
-                    }
-                })}
+            // layout={props.elements.map(ele => {
+
+
+            //     return {
+            //         x: +ele.x,
+            //         y: +ele.y,
+            //         h: ele.type === ElementType.TargetPrice ? 9 : ele.h,
+            //         w: +ele.w,
+            //         i: ele.name,
+            //         minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+            //         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
+            //     }
+            // })}
             >
                 {
                     props.elements.map((ele, i) =>
-                        <div key={ele.name} data-grid={genDataGrid(ele)}>
+                        <div
+                            key={ele.name}
+                            data-grid={genDataGrid(ele)}
+                        >
                             {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
                             <TemplateElement
                                 parentInfo={props.parentInfo}

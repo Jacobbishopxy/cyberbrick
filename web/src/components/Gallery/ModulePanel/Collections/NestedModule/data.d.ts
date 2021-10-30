@@ -40,3 +40,7 @@ export enum tabContentChoice {
     AccountBookOutlined = "AccountBookOutlined",
     BellOutlined = "BellOutlined",
 }
+
+export interface prRef {
+    getTabItem: () => tabItem[]
+}

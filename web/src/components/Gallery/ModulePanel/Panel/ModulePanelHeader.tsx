@@ -47,8 +47,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
         setTitleEditable(false)
     }
-    const titleInputRef = useRef<any>(null)
 
+    const titleInputRef = useRef<any>(null)
     //点击标题聚焦
     useEffect(() => {
         if (titleEditable) {
@@ -104,17 +104,27 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             setTitle={setTitle}
             updateContent={props.updateContent}
             content={props.content}
+            elementType={props.type}
         />
-    console.log(107, props.content)
 
     function getDate() {
-        if (props.content) {
-            if (Object.keys(props.content.data).length !== 0) {
-                return DataType.timeToString(props.date!)
+        if (props.timeSeries) {
+            if (props.content) {
+                // if (Object.keys(props.content.data).length !== 0) {
+                //     return DataType.timeToString(props.date!)
+                // }
+                if (props.content.date !== '') {
+                    return DataType.timeToString(props.date!)
+                }
             }
+        } else {
+            return DataType.timeToString(props.date!)
         }
+
         return '';
     }
+
+    console.log(126, props.content)
     return (
         <Row >
             {

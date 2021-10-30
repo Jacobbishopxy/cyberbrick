@@ -15,17 +15,15 @@ import { max, min } from "lodash"
 
 import './Common.less'
 const EditorField = (props: ModuleEditorField) => {
-    console.log(181818)
     const intl = useIntl()
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
     const onSubmit = async (values: Record<string, any>) => {
-        console.log(23, values, content)
         const ctt = {
             ...content,
-            date: DataType.today(),
             data: { ...content?.data, ...values }
-        }
+        } as DataType.Content
+        console.log(22, content, ctt)
         setContent(ctt)
         props.updateContent(ctt)
 
@@ -192,7 +190,8 @@ const PresenterField = (props: ModulePresenterField) => {
     const genDescriptionText = () => {
         let arr: any[] = [];
         describe?.split('\n').forEach((item, index) => arr.push(<p key={index} style={{ textAlign: "left" }}>{item.trim()}</p>));
-        return arr;
+        console.log(195, arr)
+        return arr.length ? arr : '一句话概述';
     }
 
     const onChange = ({ target: { value } }: any) => {
@@ -237,15 +236,18 @@ const PresenterField = (props: ModulePresenterField) => {
                 {/* 标的名字 */}
                 <Row className={'targetPrice-stock'}>
                     <Col span={22} offset={1}>
-                        {stock}
+                        {stock ? stock : '标的名称'}
                     </Col>
                 </Row>
                 {/* 描述 */}
                 <Row style={{
+                    marginBottom: '10px',
                     fontSize: '20px',
                 }} >
 
-                    <Col span={24} offset={1}> {genDescriptionText()} </Col>
+                    <Col span={24} offset={1}>
+                        {genDescriptionText() ? genDescriptionText() : '一句话概述'}
+                    </Col>
                 </Row>
 
 
@@ -313,24 +315,30 @@ const PresenterField = (props: ModulePresenterField) => {
 
     return props.content ?
         <div >
+            {/* 标的和描述 */}
             {stockAndDescription}
+
             <Row align="middle">
-                <Col span={4} offset={1}>
+                {/* 投资建议 */}
+                <Col span={6} offset={1}>
                     <span style={{ fontSize: textSize }}>
                         <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
                     </span>
                 </Col>
-                <Col span={7} >
+                {/* 方向 */}
+                <Col span={5} >
                     {
                         showSuggest(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
                     }
                 </Col>
-                <Col span={4} offset={1}>
+                {/* 【目标价】 */}
+                <Col span={6} offset={1}>
                     <span style={{ fontSize: textSize }}>
                         <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
                     </span>
                 </Col>
-                <Col span={7} >
+                {/* 价格 */}
+                <Col span={5} >
                     {
                         showTarget(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
                     }
