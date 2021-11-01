@@ -23,7 +23,6 @@ interface ModuleTabPaneProps {
     fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
-
 }
 
 
@@ -98,6 +97,4 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
         </div>
     )
-
-
 }

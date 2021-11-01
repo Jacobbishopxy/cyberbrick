@@ -8,7 +8,8 @@ import * as DataType from "../../GalleryDataType"
 import { ModulePanel } from "../../ModulePanel/Panel"
 
 import { DashboardContext } from "../DashboardContext"
-
+import { message } from "antd"
+import _ from 'lodash'
 export interface ContainerElementProps {
     parentInfo: string[]
     timeSeries?: boolean
@@ -60,23 +61,49 @@ export const TemplateElement =
         /* 
             DynamicHeader组件需要的数据从这里网络请求回来
         */
-        const fetchContent = (date?: string) => {
-            if (eleId) {
-                //no need to check date since it's allowed date to be undefined
-                // props.fetchContentFn(eleId, date, props.isNested).then(res => {
-                DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
-                    // fetchElementContent(eleId, date, props.isNested).then(res => {
-                    //TODO: cannot set content to undefined
-                    const ct = res || { data: {}, date: DataType.today() }
-                    console.log(71, DataType.timeToString(ct.date))
-                    setContent(ct)
-                    // if (props.isNested) console.log(ct)
-                    props.updateContentFn(ct)
-                    // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
-                })
-                //no matter what we receive, wait till if statement end to stop loading
-                setIsLoading(false)
+        function getInitContent() {
+            if (props.timeSeries) {
+                console.log(6464)
+                return {
+                    data: {},
+                    date: '',
+                }
+            } else {
+                return {
+                    data: {},
+                    date: DataType.today()
+                }
             }
+        }
+        const fetchContent = (date?: string) => {
+            return new Promise((resoleve, reject) => {
+                if (eleId) {
+                    //no need to check date since it's allowed date to be undefined
+                    // props.fetchContentFn(eleId, date, props.isNested).then(res => {
+                    DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
+                        // fetchElementContent(eleId, date, props.isNested).then(res => {
+                        //TODO: cannot set content to undefined
+                        const ct = res || getInitContent()
+                        //  { data: {}, date: DataType.today() }
+                        console.log(6767, props.isNested, ct)
+
+
+                        try {
+                            setContent(ct)
+                            // if (props.isNested) console.log(ct)
+
+                            props.updateContentFn(ct)
+                            resoleve(ct)
+                        } catch (error) {
+                            // setContent(_.omit(ct, 'text'))
+                            message.error('数据加载错误:' + error)
+                        }
+                        // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
+                    })
+                    //no matter what we receive, wait till if statement end to stop loading
+                    setIsLoading(false)
+                }
+            })
         }
 
 
@@ -87,10 +114,14 @@ export const TemplateElement =
             fetchContent()
         }, [props.shouldStartFetch])
 
+        //获取模块的时间序列
         const fetchContentDates = async () => {
             if (eleId && props.element.timeSeries) {
+
+                console.log(119, props.isNested, props.element)
+
                 const ele = await props.fetchContentDatesFn(eleId)
-                return ele.contents!.map(c => DataType.timeToString(c.date))
+                return ele.contents!.map(c => (c.date))
             }
             return []
         }
@@ -98,14 +129,22 @@ export const TemplateElement =
         useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
         const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
-        console.log(105, props.editable)
+        if (props.isNested) {
+            console.log(104, props.isNested, props)
+        }
         return (
-            <div style={{ height: "100%" }} ref={mpRef} >
+            <div
+                style={{ height: '99%' }
+                }
+                ref={mpRef} >
                 <ModulePanel
                     parentInfo={props.parentInfo}
                     eleId={eleId}
+                    //模块的名字
                     headName={props.element.name}
+                    //是否时间序列
                     timeSeries={props.timeSeries}
+                    //模块类型
                     elementType={props.element.type}
                     description={props.element.description}
                     content={content}

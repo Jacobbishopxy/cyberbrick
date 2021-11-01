@@ -33,6 +33,7 @@ const licenseKey = "non-commercial-and-evaluation"
 
 // todo: editing in two ways: 1. upload file, 2. edit cell
 const EditorField = (props: ModuleEditorField) => {
+    console.log(36, props)
     const intl = useIntl()
     const [visible, setVisible] = useState<boolean>(false)
     const [uploadVisible, setUploadVisible] = useState<boolean>(false)
@@ -148,8 +149,8 @@ export const genHotTableProps = (height: number | undefined, hideOptions?: strin
     }
 }
 
+//没有点击【小齿轮】时的显示
 const PresenterField = (props: ModulePresenterField) => {
-    console.log(151, props.styling)
     const singleS = (data: Record<string, any[]>) => (
         <HotTable
             {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
@@ -166,6 +167,7 @@ const PresenterField = (props: ModulePresenterField) => {
                         {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
                         data={v}
                     />
+
                 </Tabs.TabPane>
             )
         })
@@ -194,12 +196,13 @@ const PresenterField = (props: ModulePresenterField) => {
         }
         return <></>
     }
-
-    return props.content && props.content.data ?
-        // <div className={props.styling}>{view(props.content)}</div> : <></>
-        <div style={{
-            height: '95%'
-        }}>{view(props.content)}</div> : <></>
+    return props.content && props.content.data
+        ?
+        <div
+            style={{ height: '95%' }}
+        >
+            {view(props.content)}</div>
+        : <></>
 }
 
 export const XlsxTable = new ModuleGenerator(EditorField, PresenterField).generate()

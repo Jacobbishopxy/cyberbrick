@@ -2,15 +2,15 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as elementService from "../provider/element.service"
-import { Element } from "../entity"
+import {Element} from "../entity"
 
 
 @Controller()
 export class ElementController {
-  constructor(private readonly service: elementService.ElementService) { }
+  constructor(private readonly service: elementService.ElementService) {}
 
   @Get("elements")
   getAllElements() {
@@ -76,6 +76,15 @@ export class ElementController {
     @Body() element: Element) {
     try {
       return this.service.modifyElement(id, element)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Post("updateElements")
+  updateElements(@Body() elements: Element[]) {
+    try {
+      return this.service.saveElements(elements)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

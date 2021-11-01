@@ -2,14 +2,14 @@
  * Created by Jacob Xie on 9/16/2020.
  */
 
-import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import {Injectable} from "@nestjs/common"
+import {InjectRepository} from "@nestjs/typeorm"
+import {Repository} from "typeorm"
 import _ from "lodash"
 
 import * as common from "../common"
 import * as utils from "../../utils"
-import { Dashboard, Element, Template } from "../entity"
+import {Dashboard, Element, Template} from "../entity"
 // import * as MongoService from "../provider/contentMongo.service";
 
 const dashboardTemplatesRelations = {
@@ -24,9 +24,9 @@ const templateFullRelations = {
     common.elementsContentsMark,
   ]
 }
-const elementsRelations = {
-  relations: [common.elements]
-}
+// const elementsRelations = {
+//   relations: [common.elements]
+// }
 
 @Injectable()
 export class TemplateService {
@@ -34,7 +34,7 @@ export class TemplateService {
     @InjectRepository(Template, common.db) private repoTemplate: Repository<Template>,
     @InjectRepository(Element, common.db) private repoElement: Repository<Element>,
     // private readonly service: MongoService.MongoService
-  ) { }
+  ) {}
 
   getAllTemplates() {
     return this.repoTemplate.find(templateFullRelations)
@@ -65,16 +65,22 @@ export class TemplateService {
     })
   }
 
-  getTemplateElements(templateId: string) {
-    return this.repoTemplate.findOne({
-      ...elementsRelations,
-      ...utils.whereIdEqual(templateId)
-    })
+  getTemplateElements(templateId: string, isSubmodule?: boolean) {
+
+    let que = this.repoTemplate
+      .createQueryBuilder(common.template)
+      .leftJoinAndSelect(common.templateElements, common.elements)
+      .where(`${common.templateId} = :templateId`, {templateId})
+
+    if (isSubmodule)
+      que = que.andWhere(`${common.elements}.isSubmodule = :isSubmodule`, {isSubmodule})
+
+    return que.getOne()
   }
 
   saveTemplateInDashboard(dashboardId: string, template: Template) {
     const newTmp = this.repoTemplate.create({
-      dashboard: { id: dashboardId },
+      dashboard: {id: dashboardId},
       name: template.name,
       description: template.description
     })
@@ -83,7 +89,7 @@ export class TemplateService {
 
   saveTemplatesInDashboard(dashboardId: string, templates: Template[]) {
     const newTemplates = templates.map(t => this.repoTemplate.create({
-      dashboard: { id: dashboardId },
+      dashboard: {id: dashboardId},
       id: t.id,
       name: t.name,
       index: t.index,
@@ -119,7 +125,7 @@ export class TemplateService {
   }
 
   async modifyTemplate(id: string, template: Template) {
-    const tp = await this.repoTemplate.findOne({ ...utils.whereIdEqual(id) })
+    const tp = await this.repoTemplate.findOne({...utils.whereIdEqual(id)})
 
     if (tp) {
       const newTemplate = this.repoTemplate.create({
@@ -162,13 +168,15 @@ export class TemplateService {
   }
 
   async updateTemplateElements(template: Template) {
+    // take template id from `Template`
     const targetTemplateId = template.id
 
+    // get all element ids from `Element`
     const originElementsId = await this.repoElement
       .createQueryBuilder(common.element)
       .leftJoinAndSelect(common.elementTemplate, common.template)
       .select(common.elementId)
-      .where(`${common.templateId} = :targetTemplateId`, { targetTemplateId })
+      .where(`${common.templateId} = :targetTemplateId`, {targetTemplateId})
       .getMany()
 
     if (originElementsId) {

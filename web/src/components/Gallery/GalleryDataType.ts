@@ -77,7 +77,7 @@ export interface Dashboard {
 export interface Template {
   id?: string
   dashboard?: Dashboard
-  elements?: Element[]
+  elements: Element[]
   index?: number
   name: string
   description?: string

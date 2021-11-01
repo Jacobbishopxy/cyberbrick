@@ -1,12 +1,12 @@
 import { today } from "@/components/Gallery/GalleryDataType"
 import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
 import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
-import { useRef } from "dva/node_modules/@types/react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useImperativeHandle, forwardRef } from "react"
 import { tabItem } from "./data"
 import { NestedSimpleModuleEditor } from "./Editor"
 import './style.less'
 import { NSMid } from "./util"
+import { prRef } from './data'
 const defaultItems: tabItem[] = [0].map(function (i) {
     return {
         i: today(),
@@ -84,8 +84,7 @@ const EditorField = (props: ModuleEditorField) => {
     )
 }
 
-const PresenterField = (props: ModulePresenterField) => {
-    console.log(88, props.contentHeight)
+const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<prRef>) => {
     let tempItems: tabItem[] = []
     if (props.content) {
         tempItems = props.content.data.tabItems as tabItem[]
@@ -104,6 +103,13 @@ const PresenterField = (props: ModulePresenterField) => {
      * when PresenterField first mounted, it's parent haven't mounted, so there's no
      * content. When parent received content, update the items state for presentorField
     */
+    useImperativeHandle(ref, () => {
+        return {
+            getTabItem: () => {
+                return items
+            }
+        }
+    })
     useEffect(() => {
         setItems(props.content?.data?.tabItems)
     }, [props.content?.data?.tabItems])
@@ -117,14 +123,19 @@ const PresenterField = (props: ModulePresenterField) => {
      */
     useEffect(() => {
         props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
-
     }, [saveCount])
+    useEffect(() => {
+        console.log(123, items)
+    }, [items])
+
+    // useImperativeHandle(crProps.forwardedRef, () => ({
+    //     items: items
+    // }))
 
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
         <div style={{ height: '100%' }}>
             <NestedSimpleModuleEditor
-                items={items}
                 currIndex={currIndex}
                 setCurrIndex={setCurrIndex}
                 setItems={setItems}
@@ -142,7 +153,8 @@ const PresenterField = (props: ModulePresenterField) => {
                 fetchContentDatesFn={props.fetchContentDatesFn!}
             />
         </div> : <></>)
-}
+
+})
 export const NestedSimpleModule = new ModuleGenerator(EditorField, PresenterField).generate()
 // export const NestedSimpleModule = () => {
 //     return (

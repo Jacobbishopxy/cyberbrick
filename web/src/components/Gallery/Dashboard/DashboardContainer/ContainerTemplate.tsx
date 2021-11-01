@@ -14,6 +14,7 @@ import { EditableContext } from "../Dashboard"
 import { useIntl } from "umi"
 import { template } from "@umijs/deps/compiled/lodash"
 
+import { ElementType } from "../../GalleryDataType"
 //样式
 import "./style.less"
 const ReactGridLayout = WidthProvider(RGL)
@@ -52,13 +53,25 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
 const removeElementInLayout = (name: string, elements: Elements): Elements =>
     _.reject(elements, ele => (ele.name === name))
 
-const genDataGrid = (ele: DataType.Element) =>
-    ({ x: +ele.x, y: +ele.y, h: +ele.h, w: +ele.w })
+// const genDataGrid = (ele: DataType.Element) => {
+//     console.log(57, ele)
+//     if (ele.type === ElementType.TargetPrice) {
+
+//         return ({
+//             x: +ele.x,
+//             y: +ele.y,
+//             h: 10,
+//             w: +ele.w
+//         })
+//     }
+// }
+
 
 
 export interface ContainerTemplateProps {
     parentInfo: string[]
     elements: Elements
+    setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>
     shouldEleFetch: number
     // elementFetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
@@ -83,33 +96,61 @@ export const ContainerTemplate =
         const editable = useContext(EditableContext)
         const intl = useIntl()
 
-        const [elements, setElements] = useState<Elements>(props.elements)
+        // const [elements, setElements] = useState<Elements>(props.elements)
 
 
 
         // update elements when adding a new element
-        useEffect(() => setElements(props.elements), [props.elements])
+        //在添加新元素时更新元素
+        // useEffect(
+        //     () => {
+        //         console.log(94, props.elements)
+        //         setElements(props.elements)
+        //     },
+        //     [props.elements])
 
-        //since unsaved elements don't have id, and each element has a unique name, remove element by name
+        //按照模块名字删除
         const elementOnRemove = (name: string) => () => {
-            const newElements = removeElementInLayout(name, elements)
-            setElements(newElements)
+            console.log(95)
+            // const newElements = removeElementInLayout(name, elements)
+
+            //
+            props.setElements((elements) => {
+                const newElements = _.reject(elements, (e) => e.name === name)
+                return newElements
+            })
+            console.log(97)
             //testing: manually remove ref from teRefs
-            let index = elements.findIndex(ele => ele.name === name)
-            teRefs.current.splice(index, 1)
+            let index = props.elements.findIndex(ele => ele.name === name)
+            console.log(99, index)
+            // teRefs.current.splice(index, 1)
         }
 
         // 把elements数组重写。
         const onLayoutChange = (layout: Layout[]) => {
-
-            setElements(updateElementInLayout(elements, layout))
+            props.setElements(updateElementInLayout(props.elements, layout))
         }
 
 
         const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
-            const height = elementType === DataType.ElementType.FieldHeader ? 8 : 20
-            const width = elementType === DataType.ElementType.FieldHeader ? 24 : 12
-            if (elements.map(e => e.name).includes(name)) {
+            let height = 0;
+            let width = 0;
+            switch (elementType) {
+                case DataType.ElementType.FieldHeader:
+                    height = 8;
+                    width = 24
+                    break;
+                case DataType.ElementType.XlsxTable:
+                    height = 20
+                    width = 24
+                    break
+
+                default:
+                    height = 20;
+                    width = 12;
+                    break;
+            }
+            if (props.elements.map(e => e.name).includes(name)) {
                 message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
             } else {
                 const newEle = {
@@ -121,22 +162,26 @@ export const ContainerTemplate =
                     h: height,
                     w: width,
                 } as Element
-                setElements(newElementInLayout(elements, newEle))
+                props.setElements(newElementInLayout(props.elements, newEle))
             }
         }
-
-        const saveElements = () => elements
+        const saveElements = () => props.elements
 
         useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
-        const updateContent = (ele: DataType.Element) =>
-            (value: DataType.Content) => props.elementUpdateContentFn({
-                ...value,
-                element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
-            })
+
+        const updateContent = (ele: DataType.Element) => {
+            return (value: DataType.Content) => {
+                return props.elementUpdateContentFn({
+                    ...value,
+                    element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
+                })
+            }
+        }
+
 
         const updateDescription = (ele: DataType.Element) =>
-            (value: string) => setElements(els => els.map(el => {
+            (value: string) => props.setElements(els => els.map(el => {
                 if (el.id === ele.id) return { ...el, description: value }
                 return el
             }))
@@ -144,6 +189,35 @@ export const ContainerTemplate =
 
         const genRef = (i: number) => (el: ContainerElementRef) => {
             if (el) teRefs.current[i] = el
+        }
+        const genDataGrid = (ele: DataType.Element) => {
+            console.log(180, ele)
+            // let h = 0;
+            // let w = 0;
+            // switch (ele.type) {
+            //     case ElementType.TargetPrice:
+            //         h = 9;
+            //         w = +ele.w;
+            //         break;
+            //     case ElementType.XlsxTable:
+            //         h = 20;
+            //         w = 20;
+            //         break;
+            //     default:
+            //         h = +ele.h
+            //         w = +ele.w
+            //         break;
+            // }
+
+            return {
+                x: +ele.x,
+                y: +ele.y,
+                h: +ele.h,
+                w: +ele.w,
+                i: ele.name,
+                // minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+                // minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
+            }
         }
 
         return (
@@ -153,21 +227,26 @@ export const ContainerTemplate =
                 isDraggable={editable}
                 isResizable={editable}
                 autoSize={true}
-                layout={elements.map(ele => {
-                    return {
-                        x: +ele.x,
-                        y: +ele.y,
-                        h: +ele.h,
-                        w: +ele.w,
-                        i: ele.name,
-                        // minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
-                        minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 6
-                    }
-                })}
+            // layout={props.elements.map(ele => {
+
+
+            //     return {
+            //         x: +ele.x,
+            //         y: +ele.y,
+            //         h: ele.type === ElementType.TargetPrice ? 9 : ele.h,
+            //         w: +ele.w,
+            //         i: ele.name,
+            //         minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+            //         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
+            //     }
+            // })}
             >
                 {
-                    elements.map((ele, i) =>
-                        <div key={ele.name} data-grid={genDataGrid(ele)}>
+                    props.elements.map((ele, i) =>
+                        <div
+                            key={ele.name}
+                            data-grid={genDataGrid(ele)}
+                        >
                             {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
                             <TemplateElement
                                 parentInfo={props.parentInfo}

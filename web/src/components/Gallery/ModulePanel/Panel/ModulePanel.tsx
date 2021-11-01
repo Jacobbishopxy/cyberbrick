@@ -3,7 +3,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { DatePicker, Modal, Skeleton } from "antd"
+import { DatePicker, message, Modal, Skeleton } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
 import _, { floor } from "lodash"
@@ -21,6 +21,7 @@ import { ModuleDescirption } from "./ModuleDescription"
 import { TestModuleDescirption } from './testModuleDescription'
 // import test from './style'
 
+import { DashboardContext } from "../../Dashboard/DashboardContext"
 export interface ModulePanelProps {
     parentInfo: string[]
     eleId: string
@@ -34,7 +35,7 @@ export interface ModulePanelProps {
     fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
     fetchQueryData?: (value: DataType.Content) => Promise<any>
     contentHeight?: number
-    fetchContent: (date?: string) => void
+    fetchContent: (date?: string) => Promise<any>
     fetchContentDates?: () => Promise<string[]>
     updateContent: (c: DataType.Content) => void
     onRemove: () => void
@@ -64,7 +65,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
     const [loading, setIsLoading] = useState(props.isLoading)
     const isTemplate = useContext(IsTemplateContext)
-
+    const DashboardProps = useContext(DashboardContext)
     useEffect(() => {
         setIsLoading(props.isLoading)
     }, [props.isLoading])
@@ -73,7 +74,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
     }, [])
 
     useEffect(() => {
-        console.log(76, props.content, props.content?.title)
+        if (!props.isNested) {
+
+            console.log(58, props.content)
+        }
         setContent(props.content)
     }, [props.content])
 
@@ -88,6 +92,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         }
     }, [content, props.editable])
 
+    //模块删除函数
     const confirmDelete = () =>
         Modal.confirm({
             title: intl.formatMessage({ id: "gallery.component.module-panel.panel.module-panel1" }),
@@ -97,6 +102,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         })
 
     const updateTitle = (title: string) => {
+        console.log(58, content)
         const newContent = content ?
             { ...content, title } :
             { title, date: DataType.today() } as DataType.Content
@@ -109,31 +115,51 @@ export const ModulePanel = (props: ModulePanelProps) => {
             return { date: content.date }
         return {}
     }
+    useEffect(() => {
+        console.log(5858, props.isNested, content)
+    }, [content])
+    //设置date
+    const headerDate = async (date: string, isMessage?: boolean) => {
 
-    const headerDate = (date: string) => {
         if (props.timeSeries) {
-            const newContent = content ?
-                { ...content, date } :
-                { date, data: {} } as DataType.Content
-            setContent(newContent)
-            props.updateContent(newContent)
+            //如果返回的data为空则提示错误。
+            props.fetchContent(date).then((res) => {
+                if (Object.keys(res.data).length === 0) {
+                    message.error('该日期无内容！')
+                }
+
+            })
+
+            // const newContent = content ?
+            //     { ...content, date } :
+            //     { date, data: {} } as DataType.Content
+
+            // props.updateContent(newContent)
+            // setContent(newContent)
         }
     }
 
+    //更新content
     const updateModuleContent = (ctt: DataType.Content) => {
         const newContent = { ...content, ...ctt }
-
         setContent(newContent)
-        console.log(124, content, ctt)
         props.updateContent(newContent)
+        console.log(58, props.isNested, 'updateModuleContent')
     }
 
+    //!新建日期,text=''逻辑是否适用全部类型模块
     const newDateWithContent = (d: string) => {
-        const prevContentWithoutId = _.omit(content, "id")
+        //! 后端根据是否有id新建或修改。
+        const prevContentWithoutId = _.omit(content?.data, "id")
+        // 重置标题
+        //重置内容
         const newContent = {
             ...prevContentWithoutId,
-            date: d
+            date: d,
+            title: '',
+            data: { ...prevContentWithoutId.data, text: '' }
         } as DataType.Content
+        console.log(58, props.isNested, 'newDateWithContent')
         setContent(newContent)
         props.updateContent(newContent)
     }
@@ -144,16 +170,14 @@ export const ModulePanel = (props: ModulePanelProps) => {
     } */
     const editContent = (value: boolean) => {
         if (props.editable && moduleFwRef.current) moduleFwRef.current.edit(value)
+        // if (content?.date && !value) {
 
-        if (content?.date && !value) {
-
-            setContent(content => {
-                let newContent = { ...content, date: DataType.today() } as DataType.Content
-                props.updateContent(newContent)
-                return newContent
-            })
-            console.log(93, content)
-        }
+        //     setContent(content => {
+        //         let newContent = { ...content, date: DataType.today() } as DataType.Content
+        //         props.updateContent(newContent)
+        //         return newContent
+        //     })
+        // }
 
     }
     const genHeader = useMemo(() => {
@@ -172,8 +196,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
             dateList={dates}
             editDate={headerDate}
             onSelectDate={props.fetchContent}
+            updateContent={updateModuleContent}
+            content={content}
         />
-    }, [content?.date, props.editable])
+    }, [content?.date, props.editable, dates, content])
     // const genHeader = <ModulePanelHeader
     //     editable={props.editable}
     //     settable={props.settable}
@@ -247,7 +273,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
     //依赖项必须有editable
     const genContext = useMemo(() => {
-        console.log(212, props.editable)
         const rf = moduleRef.current
         if (rf) {
             //if it's has id (so it's saved to db) and it's loading, display skeleton. 
@@ -315,8 +340,13 @@ export const ModulePanel = (props: ModulePanelProps) => {
         return genFooter
     }
 
-
-
+    function getTabItem() {
+        if (props.isNested) {
+            if (moduleFwRef && moduleFwRef.current && moduleFwRef.current.items) {
+                return moduleFwRef.current.items()
+            }
+        }
+    }
     return (
         <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
             <div className={styles.genHeader}>
@@ -325,8 +355,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
             {/* {genDescription} */}
 
             {/* 根据是模板或仪表盘给予样式 */}
-            <div className={
-                `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}>
+            <div
+
+                className={
+                    `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}
+            >
 
                 {genContext}
             </div>

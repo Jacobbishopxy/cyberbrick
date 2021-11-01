@@ -70,6 +70,7 @@ export default {
   'menu.demo.module-test': 'Module Test',
   'menu.demo.component-test': 'Component Test',
   'menu.demo.nested-module-test': 'NM Test',
+  'menu.demo.consensus-distribution-chart': 'Consensus Distribution',
 
   'menu.document': 'Document',
   'menu.document.manual': 'Manual',

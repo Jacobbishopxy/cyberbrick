@@ -108,7 +108,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         setItems(its => its.filter(el => el.i !== i))
     }
 
-    //switch the module(template) corresponding to different tabs
+    //tabs点击事件
     const onSwitch = (i: string) => {
         setCurrIndex(i)
         setUpdateCnt(updateCnt + 1)
@@ -141,6 +141,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
             if (item.i === tabId) {
                 return { ...item, module: { name: name, timeSeries: timeSeries, elementType: moduleType, content: content } }
             }
+            console.log(144, item)
             return item
         }))
         setUpdateCnt(updateCnt + 1)

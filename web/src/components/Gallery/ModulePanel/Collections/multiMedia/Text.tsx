@@ -39,7 +39,7 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-
+    console.log(42, props.content)
     return <div style={{ marginTop: '2em' }}>
         <TextEditorPresenter
             content={props.content?.data?.text || ""}
