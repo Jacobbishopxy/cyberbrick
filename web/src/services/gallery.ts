@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import { request } from "umi"
+import {request} from "umi"
 
 
 const base = "/api/gallery"
@@ -194,8 +194,13 @@ export const updateDashboardsInCategory = async (categoryName: string, dashboard
 
 // Template
 
-export const getTemplateElements = async (templateId: string): Promise<GalleryAPI.Template> =>
-  request(`${base}/getTemplateElements?id=${templateId}`)
+export const getTemplateElements = async (templateId: string, isSubmodule?: boolean): Promise<GalleryAPI.Template> => {
+
+  let url = `${base}/getTemplateElements?id=${templateId}`
+  if (isSubmodule)
+    url += `&isSubmodule=${isSubmodule}`
+  return request(url)
+}
 
 export const saveTemplateInDashboard = async (id: string, template: GalleryAPI.Template): Promise<void> =>
   request(`${base}/saveTemplateInDashboard?id=${id}`, {

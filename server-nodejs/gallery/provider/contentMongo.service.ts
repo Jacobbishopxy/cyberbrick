@@ -28,9 +28,7 @@ export class MongoService {
   private getGoMongoApiPath() {
     const serverConfig = this.configService.get("server")
 
-    return process.env.NODE_ENV === "production" ?
-      `http://${serverConfig.serverGoHost}:${serverConfig.serverGoPort}/api/mongo` :
-      `http://localhost:${serverConfig.serverGoPort}/api/mongo`
+    return `http://${serverConfig.serverGoHost}:${serverConfig.serverGoPort}/api/mongo`
   }
 
   /**
