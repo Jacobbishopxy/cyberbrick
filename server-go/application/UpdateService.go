@@ -62,6 +62,7 @@ func (api *MongoApi) UpdateById(collection *mongo.Collection, id primitive.Objec
 
 /*
 prereq: content must be validated by contentValidation(content)
+if id (inside content) is null, then create a new record; otherwise, update an existing record
 */
 func (api *MongoApi) UpsertByType(collection *mongo.Collection, id primitive.ObjectID,
 	content *domain.Content) (primitive.ObjectID, error) {

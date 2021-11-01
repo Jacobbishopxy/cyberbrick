@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as templateService from "../provider/template.service"
-import { Template } from "../entity"
-import { TemplateCopyElementsDto } from "../dto"
-import { TemplateCopyElementsPipe, ParseArray } from "../pipe"
+import {Template} from "../entity"
+import {TemplateCopyElementsDto} from "../dto"
+import {TemplateCopyElementsPipe, ParseArray} from "../pipe"
 
 
 @Controller()
 export class TemplateController {
-  constructor(private readonly service: templateService.TemplateService) { }
+  constructor(private readonly service: templateService.TemplateService) {}
 
   @Get("templates")
   getAllTemplates() {
@@ -62,9 +62,9 @@ export class TemplateController {
   }
 
   @Get("getTemplateElements")
-  getTemplateElements(@Query("id") id: string) {
+  getTemplateElements(@Query("id") id: string, @Query("isSubmodule") isSubmodule?: boolean) {
     try {
-      return this.service.getTemplateElements(id)
+      return this.service.getTemplateElements(id, isSubmodule)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -91,7 +91,7 @@ export class TemplateController {
   }
 
   @Delete("deleteTemplatesInDashboard")
-  deleteTemplatesInDashboard(@Query("ids", new ParseArray({ type: String, separator: "," })) ids: string[]) {
+  deleteTemplatesInDashboard(@Query("ids", new ParseArray({type: String, separator: ","})) ids: string[]) {
     try {
       return this.service.deleteTemplatesInDashboard(ids)
     } catch (err: any) {
@@ -140,6 +140,5 @@ export class TemplateController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
-
 }
 

@@ -13,11 +13,11 @@ import {
 } from "typeorm"
 
 import * as common from "../common"
-import { Template } from "./template.entity"
-import { Content } from "./content.entity"
+import {Template} from "./template.entity"
+import {Content} from "./content.entity"
 
 
-@Entity({ name: common.element })
+@Entity({name: common.element})
 @Unique([common.template, common.name])
 export class Element {
 
@@ -27,39 +27,39 @@ export class Element {
   /**
    * if a template is deleted, its' element would be deleted as well (element's contents still remain, see `Content.ts`)
    */
-  @ManyToOne(() => Template, tmp => tmp.elements, { nullable: true, onDelete: "CASCADE" })
+  @ManyToOne(() => Template, tmp => tmp.elements, {nullable: true, onDelete: "CASCADE"})
   template!: Template
 
-  @OneToMany(() => Content, ct => ct.element, { cascade: true, nullable: true })
+  @OneToMany(() => Content, ct => ct.element, {cascade: true, nullable: true})
   contents!: Content[]
 
-  @Column("varchar", { nullable: false })
+  @Column("varchar", {nullable: false})
   name!: string
 
-  @Column("varchar", { nullable: true })
+  @Column("varchar", {nullable: true})
   description?: string
 
-  @Column("enum", { nullable: false, enum: common.ElementType })
+  @Column("enum", {nullable: false, enum: common.ElementType})
   type!: common.ElementType
 
-  @Column("bool", { nullable: true })
+  @Column("bool", {nullable: true})
   timeSeries!: boolean
 
-  @Column("bool", { nullable: true })
+  @Column("bool", {nullable: true})
   isSubmodule!: boolean
 
-  @Column("bigint", { nullable: false })
+  @Column("bigint", {nullable: false})
   x!: number
 
-  @Column("bigint", { nullable: false })
+  @Column("bigint", {nullable: false})
   y!: number
 
-  @Column("bigint", { nullable: false })
+  @Column("bigint", {nullable: false})
   h!: number
 
-  @Column("bigint", { nullable: false })
+  @Column("bigint", {nullable: false})
   w!: number
 
   @DeleteDateColumn()
-  deletedAt?: Date;
+  deletedAt?: Date
 }
