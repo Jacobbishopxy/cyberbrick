@@ -105,6 +105,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             updateContent={props.updateContent}
             content={props.content}
             elementType={props.type}
+            headName={props.headName}
         />
 
     function getDate() {

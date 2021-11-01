@@ -143,6 +143,7 @@ export interface HeaderController {
     updateContent: (content: DataType.Content) => void
     content: DataType.Content
     elementType: DataType.ElementType
+    headName?: string
 }
 
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
@@ -190,6 +191,7 @@ export const HeaderController = (props: HeaderController) => {
                         timeSeries={props.timeSeries}
                         content={props.content}
                         elementType={props.elementType}
+                        headName={props.headName}
                     />
                 </> : <></>}
             {/* } */}

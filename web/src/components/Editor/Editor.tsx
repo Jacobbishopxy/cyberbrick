@@ -17,6 +17,7 @@ interface EditorProps {
     timeSeries: string
     content: DataType.Content
     elementType: DataType.ElementType
+    headName: string
 }
 
 export const Editor = (props: EditorProps) => {
@@ -25,13 +26,31 @@ export const Editor = (props: EditorProps) => {
 
     const Dashboard = useContext(DashboardContext)
 
-
+    // "⚙️", "✔️"点击事件 
     const editableOnChange = () => {
         console.log(202020, editable, props.elementType)
         if (props.elementType === DataType.ElementType.NestedModule) {
+            //Nested模板的content格式转化成template
+            const template: DataType.Template = {
+                name: props.headName,
+                elements: props.content.data.tabItems.map((element) => {
+                    return {
+                        name: element.module.name,
+                        x: element.x,
+                        y: element.y,
+                        h: element.h,
+                        w: element.w,
+                        type: element.module.elementType,
+                        timeSeries: element.module.timeSeries
+                    }
+                }),
+                id: '236ce4e8-bbb7-427e-98a4-efa4b04a29eb'
+            }
+
+
             if (Dashboard?.saveTemplate) {
-                const t = Dashboard?.saveTemplate(props.content)
-                console.log(3434, t)
+                const t = Dashboard?.saveTemplate(template)
+                console.log(3434, props.content, template, t)
             }
 
         }

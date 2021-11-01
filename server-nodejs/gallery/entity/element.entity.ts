@@ -45,6 +45,9 @@ export class Element {
   @Column("bool", { nullable: true })
   timeSeries!: boolean
 
+  @Column("bool", { nullable: true })
+  isSubmodule!: boolean
+
   @Column("bigint", { nullable: false })
   x!: number
 

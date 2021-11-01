@@ -140,6 +140,7 @@ export const TemplateElement =
                 <ModulePanel
                     parentInfo={props.parentInfo}
                     eleId={eleId}
+                    //模块的名字
                     headName={props.element.name}
                     //是否时间序列
                     timeSeries={props.timeSeries}

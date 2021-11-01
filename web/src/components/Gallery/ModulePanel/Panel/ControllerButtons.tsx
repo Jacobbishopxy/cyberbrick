@@ -41,6 +41,7 @@ export const EditButton = (props) =>
             timeSeries={props.timeSeries}
             content={props.content}
             elementType={props.elementType}
+            headName={props.headName}
         />
     </Tooltip>
 
