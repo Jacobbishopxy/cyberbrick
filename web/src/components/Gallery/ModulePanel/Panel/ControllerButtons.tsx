@@ -33,17 +33,23 @@ export const TimeSetButton = (props: { show: boolean | undefined, onClick: () =>
             </Button>
         </Tooltip> : <></>
 
-export const EditButton = (props) =>
-    <Tooltip title="Edit">
-        <Editor
-            icons={{ open: "⚙️", close: "✔️" }}
-            onChange={props.editContent}
-            timeSeries={props.timeSeries}
-            content={props.content}
-            elementType={props.elementType}
-            headName={props.headName}
-        />
-    </Tooltip>
+export const EditButton = (props) => {
+    console.log(3737, props.setContent)
+    return (
+        <Tooltip title="Edit">
+            <Editor
+                icons={{ open: "⚙️", close: "✔️" }}
+                onChange={props.editContent}
+                timeSeries={props.timeSeries}
+                elementType={props.elementType}
+                headName={props.headName}
+
+                content={props.content}
+                setContent={props.setContent}
+            />
+        </Tooltip>
+    )
+}
 
 export const DeleteButton = (props: { confirmDelete: () => void }) =>
     <Tooltip title="Delete">

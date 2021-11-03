@@ -41,6 +41,7 @@ export interface ModuleSelectorProps {
     editable: boolean
     initialValue: string
     onSave: (v: string) => void
+    setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
@@ -214,6 +215,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             initialValue={props.initialValue}
             editable={props.editable}
             content={props.content}
+            setContent={props.setContent}
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
             fetchTableColumns={props.fetchTableColumns}

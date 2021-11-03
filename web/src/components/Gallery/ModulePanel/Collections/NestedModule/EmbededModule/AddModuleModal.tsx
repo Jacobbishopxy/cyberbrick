@@ -83,7 +83,7 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) =>
 
 
 export interface AddModuleModalProps {
-    onAddModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
+    onAddSubModule: (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => void
     // categories: DataType.Category[]
     // categoryOnSelect: (categoryName: string) => Promise<DataType.Category>
     // dashboardOnSelect: (id: string) => Promise<DataType.Dashboard>
@@ -101,7 +101,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     const onSetOk = () => {
         if (selected && moduleName) {
             props.onQuit()
-            props.onAddModule(moduleName, timeSeries, DataType.getElementType(selected))
+            props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
         } else
             message.warn("Please enter your element name and select one module!")
     }

@@ -16,7 +16,7 @@ interface ModuleTabPaneProps {
     contentHeight?: number
     shouldEleStartFetch: number
     onRemoveModule: (id: string) => void,
-    setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
+    // setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
@@ -56,13 +56,13 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
     const updateContent = (c: DataType.Content) => {
         //update the content in items list
-        props.setItems(items => items.map(item => {
-            if (item.i === tabId) {
-                let mod = item.module
-                return { ...item, module: { ...mod, content: c } }
-            }
-            return item
-        }))
+        // props.setItems(items => items.map(item => {
+        //     if (item.i === tabId) {
+        //         let mod = item.module
+        //         return { ...item, module: { ...mod, content: c } }
+        //     }
+        //     return item
+        // }))
     }
 
     const onRemove = () => {
@@ -73,7 +73,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
         // <div style={{ height: props.contentHeight }} >
         <div style={{ height: '100%' }} >
             <DashboardContext.Provider value={{
-                fetchElementContent: fetchContent
+                fetchElementContent: fetchContent,
             }}>
                 <TemplateElement key={tabId + elementType + name}
                     parentInfo={[]}

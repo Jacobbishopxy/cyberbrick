@@ -54,7 +54,7 @@ export interface Content {
   author?: Author
   date: string
   title?: string
-  data: Record<string, any>
+  data: Record<string, any>|undefined
   storageType?: StorageType //3rd party database type
   config?: Record<string, any>
   tabId?: string //only use in NestedSimpleModule, indicates the corresponding header tab id

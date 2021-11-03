@@ -11,15 +11,15 @@ import * as DataType from "../../../GalleryDataType"
 import styles from './style.less'
 interface NestedSimpleModuleProps {
     //for temp cache
-    currIndex: string,
-    setCurrIndex: React.Dispatch<React.SetStateAction<string>>,
+    // currIndex: number,
+    // setCurrIndex: React.Dispatch<React.SetStateAction<number>>,
     NSMid: string,
-    items?: tabItem[]
+    // items?: tabItem[]
     editable: boolean
     // styling?: string//how to apply string as stying？
     contentHeight?: number
-    setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
-    setSaveCount: React.Dispatch<React.SetStateAction<number>>
+    // setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
+    // setSaveCount: React.Dispatch<React.SetStateAction<number>>
     updateContentFn: (content: DataType.Content) => void
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
@@ -28,6 +28,8 @@ interface NestedSimpleModuleProps {
     fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
+    content?: DataType.Content
+    setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 
@@ -61,7 +63,7 @@ const updateElementInLayout = (elements: tabItem[], rawLayout: Layout[], contain
 export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //used to make sure the generated tab id is unique
     const counterPrefix = DataType.now()
-    const { setItems, setSaveCount, currIndex, setCurrIndex } = props
+    // const { setSaveCount, currIndex, setCurrIndex } = props
 
     // const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
     const [newCounter, setNewCounter] = useState(0)
@@ -69,50 +71,32 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const [updateCnt, setUpdateCnt] = useState(0)
 
     //tabs layout updated
-    useEffect(() => {
-        setSaveCount(cnt => cnt + 1)
-    }, [props.items])
+    // useEffect(() => {
+    //     setSaveCount(cnt => cnt + 1)
+    // }, [props.items])
 
     //embeded modulePanal updated
-    useEffect(() => {
-        setSaveCount(cnt => cnt + 1)
-    }, [updateCnt])
+    // useEffect(() => {
+    //     setSaveCount(cnt => cnt + 1)
+    // }, [updateCnt])
 
     //update curr index
-    useEffect(() => {
-        if (props.setCurrIndex) props.setCurrIndex(currIndex)
-    }, [currIndex])
+    // useEffect(() => {
+    //     if (props.setCurrIndex) props.setCurrIndex(currIndex)
+    // }, [currIndex])
 
-    //add new tabs
-    const onAddItem = () => {
 
-        let length = props.items?.length
-        ////calculate new position
-        let xPos = (length ? length : 0) % COLS_NUM
-        let yPos = Math.floor((length ? length : 0) / COLS_NUM)
-        setItems(items =>
-            // Add a new item. It must have a unique key!
-            items.concat({
-                i: "" + counterPrefix + newCounter,
-                x: xPos,
-                y: yPos,
-                w: 1,
-                h: 1,
-            }));
-        // Increment the counter to ensure key is always unique.
-        setNewCounter(cnt => cnt + 1)
-    }
 
     //remove tabs
-    const onRemoveItem = (i: string) => {
-        setItems(its => its.filter(el => el.i !== i))
-    }
+    // const onRemoveItem = (i: string) => {
+    //     setItems(its => its.filter(el => el.i !== i))
+    // }
 
     //tabs点击事件
-    const onSwitch = (i: string) => {
-        setCurrIndex(i)
-        setUpdateCnt(updateCnt + 1)
-    }
+    // const onSwitch = (i: string) => {
+    //     setCurrIndex(parseInt(i))
+    //     setUpdateCnt(updateCnt + 1)
+    // }
     const container = document.getElementById(props.NSMid)
     /*
     callback method responsing for resizing, adding, removing, and dragging elements in
@@ -124,38 +108,38 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
 
         //get container width
-        setItems(items => updateElementInLayout(items, layout, container?.clientWidth))
+        // setItems(items => updateElementInLayout(items, layout, container?.clientWidth))
     };
 
     //callback to add a new module
-    const onAddModule = (name: string, timeSeries: boolean, moduleType: DataType.ElementType, tabId: string) => {
+    const onAddModule = (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => {
         let content = { date: DataType.today(), data: { content: name } }
         //replace existing module
-        if (props.items!.find(item => item.i === tabId && item.module)) {
-            //delete old module content
-            onRemoveModule(tabId)
-        }
+        // if (props.items!.find(item => item.i === tabId && item.module)) {
+        //     //delete old module content
+        //     onRemoveModule(tabId)
+        // }
         //add the new module to items list
-        setItems(items => items.map((item) => {
-            //update the json object
-            if (item.i === tabId) {
-                return { ...item, module: { name: name, timeSeries: timeSeries, elementType: moduleType, content: content } }
-            }
-            console.log(144, item)
-            return item
-        }))
+        // setItems(items => items.map((item) => {
+        //     //update the json object
+        //     if (item.i === tabId) {
+        //         return { ...item, module: { name: name, timeSeries: timeSeries, elementType: moduleType, content: content } }
+        //     }
+        //     console.log(144, item)
+        //     return item
+        // }))
         setUpdateCnt(updateCnt + 1)
 
     }
 
     const onRemoveModule = (id: string) => {
-        setItems(items => items.map(item => {
-            if (item.i === id) {
-                return { ...item, module: null }
-            }
-            return item
-        }))
-        setCurrIndex
+        // setItems(items => items.map(item => {
+        //     if (item.i === id) {
+        //         return { ...item, module: null }
+        //     }
+        //     return item
+        // }))
+        // setCurrIndex
     }
 
     // const nestedModuleHeight = (props.contentHeight || 350) - (container?.clientHeight || 0) - 35 //35 is title's height
@@ -164,27 +148,28 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
 
     //convert a module to reactNode based on id
-    const moduleToReactNode = (id: string) => {
-        let module = props.items?.find((item => item.i === id))?.module
-        //cases for unintialized module
-        if (!module)
+    const moduleToReactNode = (currIndex: string) => {
+        let Submodule = props.content?.data?.tabItems.find((item, i) => i === currIndex)
+
+        if (!Submodule)
             return null
-        let { name, timeSeries, elementType, content } = module
-        // console.log("did content receive id?", content)
-        //make sure content has tabId
-        content = { ...content, tabId: id }
-        // console.log("switching module", content)
+
+
+        let { name, timeSeries, elementType, content } = Submodule
+        console.log("did content receive currIndex?", content)
+        content = { ...content, tabId: currIndex }
+        console.log("switching module", content)
         return (
             <ModuleTabPane
-                key={id + elementType + name}
-                tabId={id}
-                content={content}
+                key={currIndex + elementType + name}
+                tabId={currIndex}
+                content={props.content}
                 name={name}
                 timeSeries={timeSeries}
                 elementType={elementType}
                 editable={props.editable}
                 // contentHeight={nestedModuleHeight}
-                setItems={setItems}
+                // setItems={setItems}
                 onRemoveModule={onRemoveModule}
                 fetchStoragesFn={props.fetchStoragesFn}
                 fetchTableColumnsFn={props.fetchTableColumnsFn}
@@ -199,20 +184,24 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     }
 
     //get curr module tab pane
-    const currModule = moduleToReactNode(currIndex)
+    const currModule = moduleToReactNode(props.content?.data?.currIndex)
     return (
         <div className={styles.Editor}>
             <div className={styles.DynamicHeader}>
                 <DynamicHeader
-                    items={props.items!}
+
+                    // items={props.items!}
                     editable={props.editable}
-                    currIndex={currIndex}
-                    setItems={setItems}
-                    onAddItem={onAddItem}
-                    onRemoveItem={onRemoveItem}
+                    // currIndex={currIndex}
+                    // setItems={setItems}
+                    // onAddItem={onAddItem}
+                    // onRemoveItem={onRemoveItem}
                     onLayoutChange={onLayoutChange}
                     onAddModule={onAddModule}
-                    onSwitch={onSwitch} />
+                    content={props.content}
+                    setContent={props.setContent}
+                // onSwitch={onSwitch} 
+                />
 
             </div>
             <div className={styles.currModule}>

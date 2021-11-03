@@ -7,18 +7,21 @@ import { NestedSimpleModuleEditor } from "./Editor"
 import './style.less'
 import { NSMid } from "./util"
 import { prRef } from './data'
-const defaultItems: tabItem[] = [0].map(function (i) {
-    return {
-        i: today(),
-        x: i,
-        y: 0,
-        w: 1,
-        h: 1,
-        autoSize: true,
-        static: false,
-    }
-})
-const defaultData = { tabItems: defaultItems, currIndex: defaultItems[0].i }
+
+// const defaultItems: tabItem[] = [0].map(function (i) {
+//     return {
+//         i: today(),
+//         x: i,
+//         y: 0,
+//         w: 1,
+//         h: 1,
+//         autoSize: true,
+//         static: false,
+//     }
+// })
+// const defaultData = { tabItems: defaultItems, currIndex: defaultItems[0].i }
+
+//【小齿轮】编辑时
 const EditorField = (props: ModuleEditorField) => {
     /* content type: 
     currIndex: string (used to indicate the tab when entering)
@@ -39,36 +42,38 @@ const EditorField = (props: ModuleEditorField) => {
         content?: Content
     }
     */
-    let tempIndex = props.content?.data?.currIndex
-    if (!tempIndex) {
-        tempIndex = defaultData.currIndex
-    }
+    // let tempIndex = props.content?.data?.currIndex
+    // if (!tempIndex) {
+    //     tempIndex = defaultData.currIndex
+    // }
 
-    let tempItems: tabItem[] = props.content?.data?.tabItems
-    if (!tempItems || tempItems.length === 0) {
-        tempItems = defaultData.tabItems
-        tempIndex = defaultData.currIndex
-    }
+    // let tempItems: tabItem[] = props.content?.data?.tabItems
+    // if (!tempItems || tempItems.length === 0) {
+    //     tempItems = defaultData.tabItems
+    //     tempIndex = defaultData.currIndex
+    // }
 
-    const [items, setItems] = useState<tabItem[]>(tempItems)
-    const [currIndex, setCurrIndex] = useState(tempIndex)
-    const [saveCount, setSaveCount] = useState(0)
+    // const [items, setItems] = useState<tabItem[]>(tempItems)
+    // const [currIndex, setCurrIndex] = useState(tempIndex)
+    // const [saveCount, setSaveCount] = useState(0)
 
 
-    useEffect(() => {
-        props.updateContent({
-            ...props.content, date: props.content?.date || today(),
-            data: { tabItems: items, currIndex: currIndex }
-        })
-    }, [saveCount])
+    // useEffect(() => {
+    // props.updateContent({
+    //     ...props.content, date: props.content?.date || today(),
+    //     data: { tabItems: items, currIndex: currIndex }
+    // })
+    // }, [saveCount])
     return (
         <div id={NSMid}>
             <NestedSimpleModuleEditor
-                currIndex={currIndex}
-                setCurrIndex={setCurrIndex}
-                items={items as tabItem[]}
-                setItems={setItems}
-                setSaveCount={setSaveCount}
+                content={props.content}
+                setContent={props.setContent}
+                // currIndex={currIndex}
+                // setCurrIndex={setCurrIndex}
+                // items={items as tabItem[]}
+                // setItems={setItems}
+                // setSaveCount={setSaveCount}
                 fetchStoragesFn={props.fetchStorages!}
                 fetchTableListFn={props.fetchTableList!}
                 fetchTableColumnsFn={props.fetchTableColumns!}
@@ -85,34 +90,36 @@ const EditorField = (props: ModuleEditorField) => {
 }
 
 const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<prRef>) => {
-    let tempItems: tabItem[] = []
-    if (props.content) {
-        tempItems = props.content.data.tabItems as tabItem[]
-    } else tempItems = []
+    // let tempItems: tabItem[] = []
+    // if (props.content) {
+    //     tempItems = props.content.data.tabItems as tabItem[]
+    // } else tempItems = []
 
-    let tempIndex = ""
-    if (props.content) {
-        tempIndex = props.content.data.currIndex
-    }
+    // let tempIndex = ""
+    // if (props.content) {
+    //     tempIndex = props.content.data.currIndex
+    // }
 
-    const [items, setItems] = useState<tabItem[]>(tempItems)
-    const [currIndex, setCurrIndex] = useState(tempIndex)
+    // const [items, setItems] = useState<tabItem[]>(tempItems)
+    const [currIndex, setCurrIndex] = useState(0)
     const [saveCount, setSaveCount] = useState(0)
 
     /**
      * when PresenterField first mounted, it's parent haven't mounted, so there's no
      * content. When parent received content, update the items state for presentorField
     */
-    useImperativeHandle(ref, () => {
-        return {
-            getTabItem: () => {
-                return items
-            }
-        }
-    })
-    useEffect(() => {
-        setItems(props.content?.data?.tabItems)
-    }, [props.content?.data?.tabItems])
+
+    // 获取
+    // useImperativeHandle(ref, () => {
+    //     return {
+    //         getTabItem: () => {
+    //             return items
+    //         }
+    //     }
+    // })
+    // useEffect(() => {
+    //     setItems(props.content?.data?.tabItems)
+    // }, [props.content?.data?.tabItems])
 
     useEffect(() => {
         setCurrIndex(props.content?.data?.currIndex)
@@ -121,12 +128,12 @@ const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<p
     /**
      * update currIndex
      */
-    useEffect(() => {
-        props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
-    }, [saveCount])
-    useEffect(() => {
-        console.log(123, items)
-    }, [items])
+    // useEffect(() => {
+    //     props.updateContent({ ...props.content, date: today(), data: { tabItems: items, currIndex: currIndex } })
+    // }, [saveCount])
+    // useEffect(() => {
+    //     console.log(123, items)
+    // }, [items])
 
     // useImperativeHandle(crProps.forwardedRef, () => ({
     //     items: items
@@ -136,9 +143,11 @@ const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<p
     return (props.content?.data?.tabItems ?
         <div style={{ height: '100%' }}>
             <NestedSimpleModuleEditor
-                currIndex={currIndex}
-                setCurrIndex={setCurrIndex}
-                setItems={setItems}
+                content={props.content}
+                setContent={props.setContent}
+                // currIndex={currIndex}
+                // setCurrIndex={setCurrIndex}
+                // setItems={setItems}
                 editable={false}
                 NSMid={NSMid}
                 contentHeight={props.contentHeight}
@@ -147,7 +156,7 @@ const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<p
                 fetchTableListFn={(id) => Promise.resolve([])}
                 fetchQueryDataFn={props.fetchQueryData!}
                 updateContentFn={props.updateContent}
-                setSaveCount={setSaveCount}
+                // setSaveCount={setSaveCount}
 
                 fetchContentFn={props.fetchContentFn!}
                 fetchContentDatesFn={props.fetchContentDatesFn!}

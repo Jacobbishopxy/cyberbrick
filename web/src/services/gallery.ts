@@ -272,7 +272,13 @@ export const getElementContent = async (id: string, date?: string, isNested?: bo
   return request(path)
 }
 
-
+export const updateElements=async (elements:GalleryAPI.Element[]) :Promise<any>=>{
+    const path=`${base}/updateElements`
+    return request(path,{
+        method:'post',
+        data:elements
+    })
+}
 // Storage
 // web server API
 

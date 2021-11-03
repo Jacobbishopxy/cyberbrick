@@ -29,7 +29,6 @@ export interface ModulePanelProps {
     timeSeries?: boolean
     elementType: DataType.ElementType
     description?: string
-    content?: DataType.Content
     fetchStorages?: () => Promise<DataType.StorageSimple[]>
     fetchTableList?: (id: string) => Promise<string[]>
     fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
@@ -47,6 +46,9 @@ export interface ModulePanelProps {
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
     isNested?: boolean
+
+    content?: DataType.Content
+    setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -197,7 +199,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
             editDate={headerDate}
             onSelectDate={props.fetchContent}
             updateContent={updateModuleContent}
+
             content={content}
+            setContent={props.setContent}
         />
     }, [content?.date, props.editable, dates, content])
     // const genHeader = <ModulePanelHeader
@@ -292,6 +296,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             // console.log(183, props.isNested, h, props.contentHeight, styles)
             return rf({
                 content,
+                setContent: props.setContent,
                 fetchStorages: props.fetchStorages,
                 fetchTableList: props.fetchTableList,
                 fetchTableColumns: props.fetchTableColumns,
@@ -305,7 +310,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
                 editable: props.editable,
                 initialValue: props.description || '',
-                onSave: props.updateDescription
+                onSave: props.updateDescription,
+
             })
         }
         return <></>

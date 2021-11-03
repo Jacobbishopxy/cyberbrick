@@ -19,7 +19,7 @@ export interface ContainerProps {
     selectedCategoryName: string
     dashboardInfo: DataType.Dashboard
     onSelectPane: (templateId: string) => void
-    fetchElements: (templateId: string) => Promise<DataType.Template>
+    fetchElements: (templateId: string, isSubmodule?: boolean) => Promise<DataType.Template>
     // fetchElementContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
     updateElementContentFn: (content: DataType.Content) => void
@@ -94,7 +94,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     //切换仪表盘时，会获得默认的第一个templates（维度）
     useEffect(() => {
         if (selectedPane) {
-            props.fetchElements(selectedPane.id).then(res => {
+            props.fetchElements(selectedPane.id, true).then(res => {
                 setTemplate(res)
                 setElements(res.elements)
                 console.log(92, res)

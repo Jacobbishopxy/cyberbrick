@@ -27,7 +27,9 @@ interface ModulePanelHeaderProps {
     editDate?: (date: string, isMessage?: boolean) => void
     onSelectDate?: (date: string) => void
     updateContent: (content: DataType.Content) => void
+
     content: DataType.Content
+    setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
@@ -103,7 +105,9 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             onSelectDate={props.onSelectDate}
             setTitle={setTitle}
             updateContent={props.updateContent}
+
             content={props.content}
+            setContent={props.setContent}
             elementType={props.type}
             headName={props.headName}
         />
@@ -125,7 +129,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         return '';
     }
 
-    console.log(126, props.content)
+    console.log(126, props.setContent)
     return (
         <Row >
             {

@@ -15,8 +15,8 @@ export class ModuleGenerator {
     private forceStyle: boolean
 
     constructor(editor: React.FC<ModuleEditorField>,
-        // presenter: React.FC<ModulePresenterField>,
-        presenter: any,
+        presenter: React.FC<ModulePresenterField>,
+        // presenter: any,
         forceStyle: boolean = false) {
         this.editor = editor
         this.presenter = presenter
@@ -56,6 +56,7 @@ export class ModuleGenerator {
                         editable ?
                             <this.editor
                                 content={crProps.content}
+                                setContent={crProps.setContent}
                                 fetchQueryData={crProps.fetchQueryData}
                                 fetchStorages={crProps.fetchStorages}
                                 fetchTableList={crProps.fetchTableList}
@@ -72,11 +73,12 @@ export class ModuleGenerator {
                                 initialValue={crProps.initialValue}
                                 onSave={crProps.onSave}
                                 content={crProps.content}
+                                setContent={crProps.setContent}
                                 fetchQueryData={crProps.fetchQueryData}
                                 contentHeight={crProps.contentHeight}
                                 styling={crProps.styling}
                                 updateContent={crProps.updateContent}
-                                ref={prRef}
+                                // ref={prRef}
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
                             />
@@ -92,6 +94,7 @@ export class ModuleGenerator {
                 initialValue={props.initialValue}
                 onSave={props.onSave}
                 content={props.content}
+                setContent={props.setContent}
                 fetchStorages={props.fetchStorages}
                 fetchTableList={props.fetchTableList}
                 fetchTableColumns={props.fetchTableColumns}

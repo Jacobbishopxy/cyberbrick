@@ -141,9 +141,11 @@ export interface HeaderController {
     onSelectDate?: (date: string) => void
     setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
     updateContent: (content: DataType.Content) => void
-    content: DataType.Content
     elementType: DataType.ElementType
     headName?: string
+
+    content: DataType.Content
+    setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
@@ -173,6 +175,8 @@ export const HeaderController = (props: HeaderController) => {
         setDateModalVisible({ ...dateModalVisible, pick: false })
     }
 
+
+    console.log(179, props.setContent)
     //编辑时
     const editableController = () => {
         return (<Space>
@@ -189,9 +193,11 @@ export const HeaderController = (props: HeaderController) => {
                     <EditButton
                         editContent={props.editContent}
                         timeSeries={props.timeSeries}
-                        content={props.content}
                         elementType={props.elementType}
                         headName={props.headName}
+
+                        content={props.content}
+                        setContent={props.setContent}
                     />
                 </> : <></>}
             {/* } */}

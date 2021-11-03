@@ -86,12 +86,14 @@ export class ContentController {
     }
   }
 
+  //   
   @Post("saveContentInCategory")
-  saveContentInCategory(@Query("name") name: string, @Query("type") type: string,
+  saveContentInCategory(@Query("name") name: string, /* @Query("type") type: string, */
     @Body() content: Content) {
     // console.log(type, content)
     try {
-      return this.service.saveNestedOrSimpleContent(name, type, content)
+    //   return this.service.saveNestedOrSimpleContent(name, type, content)
+    return this.service.saveContentInCategory(name, content)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -6,7 +6,8 @@ import React from "react"
 
 import * as DataType from "../../GalleryDataType"
 import {tabItem} from '../Collections/NestedModule/data'
-//模板编辑时内容type
+
+//模板编辑时内容props
 export interface ModuleEditorField {
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
@@ -19,12 +20,14 @@ export interface ModuleEditorField {
 
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
+  setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
+  
 }
 
-//模板内容type
+//模板内容props
 export interface ModulePresenterField {
-    editable: boolean
-    initialValue: string
+  editable: boolean
+  initialValue: string
   onSave:(v: string) => void
   content?: DataType.Content
   fetchQueryData?: (value: DataType.Content) => Promise<any>
@@ -33,6 +36,7 @@ export interface ModulePresenterField {
   updateContent: (c: DataType.Content) => void
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
+  setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
 }
 
 export interface ConvertFwRef {
@@ -56,6 +60,7 @@ export interface ConvertRefProps {
 
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
+  setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
 }
 
 export interface ConvertProps {
@@ -73,5 +78,6 @@ export interface ConvertProps {
 
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
+  setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
 }
 

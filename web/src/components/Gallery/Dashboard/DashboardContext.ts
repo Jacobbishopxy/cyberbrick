@@ -5,6 +5,7 @@ import * as DataType from "../GalleryDataType"
 export interface DashboardContextType {
     fetchElementContent?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     saveTemplate?:(template: DataType.Template) => Promise<void>
+    updateElements?:(ele:DataType.Element[])=>any
 }
 
 export const DashboardContext = React.createContext<DashboardContextType | undefined>(undefined)

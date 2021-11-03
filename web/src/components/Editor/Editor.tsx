@@ -10,14 +10,17 @@ import { Emoji } from "@/components/Emoji"
 import { Tooltip } from 'antd';
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { DashboardContext } from '@/components/Gallery/Dashboard/DashboardContext'
+import { await } from "signale";
 interface EditorProps {
     icons?: { open: string | React.ReactNode, close: string | React.ReactNode } | boolean
     defaultOpen?: boolean
     onChange: (value: boolean) => void
     timeSeries: string
-    content: DataType.Content
     elementType: DataType.ElementType
     headName: string
+
+    content: DataType.Content
+    setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
 }
 
 export const Editor = (props: EditorProps) => {
@@ -26,39 +29,39 @@ export const Editor = (props: EditorProps) => {
 
     const Dashboard = useContext(DashboardContext)
 
-    // "⚙️", "✔️"点击事件 
-    const editableOnChange = () => {
-        console.log(202020, editable, props.elementType)
-        if (props.elementType === DataType.ElementType.NestedModule) {
-            //Nested模板的content格式转化成template
-            const template: DataType.Template = {
-                name: props.headName,
-                elements: props.content.data.tabItems.map((element) => {
-                    return {
-                        name: element.module.name,
-                        x: element.x,
-                        y: element.y,
-                        h: element.h,
-                        w: element.w,
-                        type: element.module.elementType,
-                        timeSeries: element.module.timeSeries
+    // "⚙️ false", "✔️ true"  点击事件 
+    const editableOnChange = async () => {
+        console.log(202020, editable, props.elementType, props.content)
+        //【嵌套模块】与【对勾】才保存
+        if (editable && props.elementType === DataType.ElementType.NestedModule) {
+
+            if (Dashboard?.updateElements) {
+                //防止数据为空
+                if (props.content?.data?.tabItems && props.content.data.tabItems.length != 0) {
+                    const newTabItems = await Dashboard?.updateElements(props.content?.data?.tabItems)
+                    console.log(3434, props.content, newTabItems, props.setContent)
+                    if (props.setContent) {
+                        props.setContent((content) => {
+                            return {
+                                ...content,
+                                data: {
+                                    ...content?.data,
+                                    tabItems: newTabItems
+                                }
+                            } as DataType.Content
+                        })
+
                     }
-                }),
-                id: '236ce4e8-bbb7-427e-98a4-efa4b04a29eb'
+                }
             }
 
-
-            if (Dashboard?.saveTemplate) {
-                const t = Dashboard?.saveTemplate(template)
-                console.log(3434, props.content, template, t)
-            }
 
         }
         setEditable(!editable)
         props.onChange(!editable)
     }
 
-    //时间序列功能下,为创建日期不可编辑.
+    //时间序列功能下,不创建日期不可编辑.
     useEffect(() => {
         console.log(3030, props)
         if (props.timeSeries && !props.content?.date) {

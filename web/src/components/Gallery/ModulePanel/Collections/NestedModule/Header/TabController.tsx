@@ -10,15 +10,15 @@ import { TabItemSelection } from "./TabItemSelection"
 
 
 interface TabControllerProps {
-    onAddModule: (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => void;
+    onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => void;
     editable: boolean,
     style?: CSSProperties | undefined,
     className?: string | undefined,
     isHover: boolean,
-    isSelected: boolean,
+    // isSelected: boolean,
     el: tabItem,
-    setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
-    onRemoveItem: (i: string) => void
+    // setItems?: React.Dispatch<React.SetStateAction<tabItem[]>>
+    // onRemoveItem?: (i: string) => void
 
 }
 /*
@@ -42,12 +42,12 @@ export const TabController = (props: TabControllerProps) => {
     //update items content to selected
     useEffect(() => {
         // console.log("selected change", selected)
-        if (selected && tabType) props.setItems(items => items.map(it => {
-            if (it.i === el.i) {
-                return { ...it, tabContent: selected, tabType: tabType }
-            }
-            return it
-        }))
+        // if (selected && tabType) props.setItems(items => items.map(it => {
+        //     if (it.i === el.i) {
+        //         return { ...it, tabContent: selected, tabType: tabType }
+        //     }
+        //     return it
+        // }))
     }, [selected, tabType])
 
     const endEdit = (type: string, input?: string) => {
@@ -63,11 +63,13 @@ export const TabController = (props: TabControllerProps) => {
     const quitAddModule = () => setAddModuleModalVisible(false)
 
     //pass 
-    const onAddModule = (name: string, timeSeries: boolean, moduleType: ElementType) => {
-        props.onAddModule(name, timeSeries, moduleType, el.i)
-    }
+    // const onAddTabItems = (name: string, timeSeries: boolean, moduleType: ElementType) => {
+    //     props.onAddSubModule!(props.name, timeSeries, moduleType, el.i)
+    // }
 
-    const editHeader = <div style={{ marginTop: "-12px", right: 0, textAlign: "right" }}>
+    const editHeader = <div style={{ display: 'flex', marginTop: "-12px", right: 0, }}>
+
+        {/* 添加子模块 */}
         <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
             <Button icon size='small' className="tab-controller-button"
                 onClick={() => setAddModuleModalVisible(true)}>
@@ -75,13 +77,17 @@ export const TabController = (props: TabControllerProps) => {
             </Button>
         </Tooltip>
 
+        {/*添加封面  */}
         <TabItemSelection
             selected={selected}
             setSelected={setSelected}
             endEdit={endEdit} />
+
+        {/* 删除子模块 */}
         <Tooltip title={intl.formatMessage({ id: "gallery.component.general23" })}>
             <Button icon size='small' className="tab-controller-button"
-                onClick={() => props.onRemoveItem(el.i)}>
+            // onClick={() => props.onRemoveItem(el.i)}
+            >
                 <DeleteOutlined />
             </Button>
         </Tooltip>
@@ -109,14 +115,17 @@ export const TabController = (props: TabControllerProps) => {
 
     return (
         <div style={{ bottom: 0, top: 0 }}>
+
+            {/* 3个小图标 */}
             {props.editable && props.isHover ? editHeader : <div style={{ marginTop: "-12px", height: "24px" }} />}
 
+            {/* 封面图标 */}
             <div>
-                {/* icon图标 */}
                 {displayHeader()}
             </div>
+
             <AddModuleModal
-                onAddModule={onAddModule}
+                onAddSubModule={props.onAddSubModule}
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
             />

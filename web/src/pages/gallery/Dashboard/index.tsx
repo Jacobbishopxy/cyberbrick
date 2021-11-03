@@ -22,7 +22,7 @@ export default () => {
     const [initialSelected, setInitialSelected] = useState<string[]>()
     const query = useQuery()
 
-    useEffect(() => {
+    return useEffect(() => {
         const initialValue = query.get("anchor")
         if (initialValue) {
             try {
@@ -80,7 +80,7 @@ export default () => {
         const fetchQueryData = (storageId: string, readOption: GalleryDataType.Read, databaseType: GalleryAPI.StorageType) =>
             GalleryService.read(storageId, readOption, databaseType)
 
-
+        const updateElements = (elements: DataType.Element[]) => GalleryService.updateElements(elements as any)
         return (
             <Dashboard
                 initialSelected={initialSelected}
@@ -99,7 +99,9 @@ export default () => {
                 fetchTableList={fetchTableList}
                 fetchTableColumns={fetchTableColumns}
                 fetchQueryData={fetchQueryData}
+                updateElements={updateElements}
             />
         )
     }
-
+    )
+}

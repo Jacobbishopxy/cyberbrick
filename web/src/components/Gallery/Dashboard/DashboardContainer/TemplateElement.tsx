@@ -58,23 +58,45 @@ export const TemplateElement =
          * If TemplateElment is nested, eleId is actually tabId.
          */
 
-        /* 
-            DynamicHeader组件需要的数据从这里网络请求回来
-        */
+        //当第一次没有content时，根据模块类型初始化content
         function getInitContent() {
-            if (props.timeSeries) {
-                console.log(6464)
-                return {
-                    data: {},
-                    date: '',
-                }
-            } else {
-                return {
-                    data: {},
-                    date: DataType.today()
-                }
+            let initContent: DataType.Content;
+
+            switch (props.element.type) {
+                case DataType.ElementType.NestedModule:
+                    initContent = {
+                        data: {
+                            currIndex: -1,
+                            tabItems: []
+                        },
+                        date: DataType.today()
+                    }
+                    break;
+                case DataType.ElementType.XlsxTable:
+                    initContent = {
+                        data: {
+                            collection: 'xlsxTable',
+                            source: {}
+                        },
+                        date: DataType.today()
+
+                    }
+                default:
+                    initContent = {
+                        data: {},
+                        date: DataType.today()
+                    }
+                    break;
             }
+
+            if (props.timeSeries) {
+                initContent.date = ''
+            }
+            return initContent
         }
+        /* 
+            element需要的数据从这里网络请求回来
+        */
         const fetchContent = (date?: string) => {
             return new Promise((resoleve, reject) => {
                 if (eleId) {
@@ -92,7 +114,7 @@ export const TemplateElement =
                             setContent(ct)
                             // if (props.isNested) console.log(ct)
 
-                            props.updateContentFn(ct)
+
                             resoleve(ct)
                         } catch (error) {
                             // setContent(_.omit(ct, 'text'))
@@ -105,7 +127,12 @@ export const TemplateElement =
                 }
             })
         }
-
+        //集中处理：不用分布式的存入，每当content改变后都存入contents数组。最终调用的saveContent会判断是否修改与增加。
+        useEffect(() => {
+            if (content) {
+                props.updateContentFn(content)
+            }
+        }, [content])
 
 
         //listen to props's shouldStartFetch. If it updates, fetchContent
@@ -148,6 +175,7 @@ export const TemplateElement =
                     elementType={props.element.type}
                     description={props.element.description}
                     content={content}
+                    setContent={setContent}
                     fetchStorages={props.fetchStoragesFn}
                     fetchTableList={props.fetchTableListFn}
                     fetchTableColumns={props.fetchTableColumnsFn}

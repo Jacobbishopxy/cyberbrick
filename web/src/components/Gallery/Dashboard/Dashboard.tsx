@@ -33,9 +33,11 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 }
 
 const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
+    //判断是修改还是增加
     const targetContent = _.find(contents, i => i.element?.name === content.element?.name)
 
     let newContents
+    //修改只是覆盖，增加是合并
     if (targetContent)
         newContents = contents.map(i => i.element?.name === content.element?.name ? content : i)
     else
@@ -54,7 +56,7 @@ export interface DashboardProps {
     fetchCategories: () => Promise<DataType.Category[]>
     fetchCategory: (categoryName: string) => Promise<DataType.Category>
     fetchDashboard: (dashboardId: string) => Promise<DataType.Dashboard>
-    fetchTemplate: (templateId: string) => Promise<DataType.Template>
+    fetchTemplate: (templateId: string, isSubmodule?: boolean) => Promise<DataType.Template>
     saveTemplate: (template: DataType.Template) => Promise<void>
     copyTemplate: (copy: DataType.CopyTemplateElements) => Promise<void>
     fetchElementContent: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
@@ -64,6 +66,7 @@ export interface DashboardProps {
     fetchTableList: (id: string) => Promise<string[]>
     fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
     fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
+    updateElements: (element: DataType.Element[]) => any
 }
 
 export const Dashboard = (props: DashboardProps) => {
@@ -134,9 +137,6 @@ export const Dashboard = (props: DashboardProps) => {
         }
         return dsb
     }
-    useEffect(() => {
-        console.log(137, canEdit)
-    }, [canEdit])
     const fetchElements = async (templateId: string) => {
         if (selectedDashboard)
             return props.fetchTemplate(templateId)
@@ -144,6 +144,7 @@ export const Dashboard = (props: DashboardProps) => {
     }
 
     const updateAllContents = async (contents: DataType.Content[]) => {
+        console.log(145, contents)
         if (selectedDashboard)
             return Promise.all(
                 contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c))
@@ -192,7 +193,6 @@ export const Dashboard = (props: DashboardProps) => {
         /**if the element is nested inside NestedSimpleModule, it doesn't belong to an element. Rather, it's part
          * of the tabItem. So we only fetch the content from database
         */
-        console.log(184, isNested, id)
         if (isNested) return fetchNestedElementContent(id, date)
         const content = await props.fetchElementContent(id, date, isNested)
         return content
@@ -257,7 +257,8 @@ export const Dashboard = (props: DashboardProps) => {
         <EditableContext.Provider value={edit}>
             <DashboardContext.Provider value={{
                 fetchElementContent,
-                saveTemplate: props.saveTemplate
+                saveTemplate: props.saveTemplate,
+                updateElements: props.updateElements
             }}>
                 {genController}
                 {genContainer}
