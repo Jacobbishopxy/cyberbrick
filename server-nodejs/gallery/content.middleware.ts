@@ -38,7 +38,7 @@ export class ContentMiddleware implements NestMiddleware {
         break
     }
 
-    console.log("in middleware", type)
+    // console.log("in middleware", type)
 
     next()
   }
