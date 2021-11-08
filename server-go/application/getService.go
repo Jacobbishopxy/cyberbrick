@@ -49,7 +49,8 @@ func (api *MongoApi) GetContentByElementIdAndDate(collection *mongo.Collection, 
 	var result domain.Content
 	// findOptions := options.Find()
 	var filter = bson.D{{Key: elementId, Value: id}}
-	parse_time, err := time.Parse(time.RFC3339, date)
+	// parse_time, err := time.Parse(time.RFC3339, date)
+	parse_time, err := time.Parse(PgTimestampFormat, date)
 	// fmt.Printf("parse_time is :%s", parse_time)
 	if err != nil {
 		log.Println(err)

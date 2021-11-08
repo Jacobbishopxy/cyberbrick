@@ -10,6 +10,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// custom time from Postgres column type `timestamp`
+const PgTimestampFormat = "2006-01-02 15:04:05"
+
 /*
 Helper func to query database. Takes collection, filter and findOptions as param,
 return an array of data
