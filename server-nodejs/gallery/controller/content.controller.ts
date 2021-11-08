@@ -90,13 +90,13 @@ export class ContentController {
   @Post("saveContentInCategory")
   saveContentInCategory(
     @Query("name") name: string,
-    // @Query("type") type: string,
+    @Query("type") type: string,
     @Body() content: Content
   ) {
     // console.log(type, content)
     try {
       // return this.service.saveNestedOrSimpleContent(name, type, content)
-      return this.service.saveContentInCategory(name, content)
+      return this.service.saveContentToMongoOrPg(name, type, content)
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
