@@ -32,14 +32,41 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
     })
 }
 
+//根据content的name和date判断是添加还是修改
 const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
     //判断是修改还是增加
-    const targetContent = _.find(contents, i => i.element?.name === content.element?.name)
+    console.log(43, content, contents)
+    const date = content?.date?.slice(0, 10)
+    const targetContent = _.find(contents, i => {
+        const date_s = i.date?.slice(0, 10)
+        return i.element?.name === content.element?.name && date_s === date
+    })
+    // let isAdd = true;
+    // console.log(43, content, contents)
+    // const newContents = contents?.map((v, i) => {
+    //时间格式做转化
+
+    // const date_s = v.date?.slice(0, 10)
+    // const date = content?.date.slice(0, 10)
+    // console.log(46)
+    // if (v.element?.name === content.element?.name && date_s === date) {
+    //     isAdd = false
+    //     return content
+    // } else {
+    //     v
+    // }
+
+    // })
+    // if (isAdd) {
+    //     return [...newContents, content]
+    // } else {
+    //     return newContents
+    // }
 
     let newContents
     //修改只是覆盖，增加是合并
     if (targetContent)
-        newContents = contents.map(i => i.element?.name === content.element?.name ? content : i)
+        newContents = contents.map(i => i.element?.name === content.element?.name && i.date === content.date ? content : i)
     else
         newContents = [...contents, content]
 
@@ -105,13 +132,19 @@ export const Dashboard = (props: DashboardProps) => {
         if (selectedDashboard && cRef.current) cRef.current.startFetchAllContents()
     }, [selectedDashboard])
 
-    //如果content有变化
+    //如果content有变化,添加修改入allContent中
     useEffect(() => {
         if (newestContent) {
+
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)
+            console.log(111, newestContent, newContents)
             setUpdatedContents(newContents)
         }
     }, [newestContent])
+
+    useEffect(() => {
+        console.log(145, updatedContents)
+    }, [updatedContents])
 
     useEffect(() => {
         if (props.selectedOnChange && selected && selectedTemplateId)
@@ -206,6 +239,18 @@ export const Dashboard = (props: DashboardProps) => {
     const fetchElementContentDates = async (id: string) =>
         props.fetchElementContentDates(id)
 
+    //嵌套模块专用：更新contents，在这里加入dashboard信息
+    const setdashboardInfoInNewestContent = (content: DataType.Content) => {
+        setNewestContent(() => {
+            const category = {
+                name: selectedDashboard?.category?.name
+            } as DataType.Category
+            return {
+                ...content,
+                category
+            } as DataType.Content
+        })
+    }
     const fetchQueryData = async (value: DataType.Content) => {
         // if (!value?.data) return Promise.resolve(undefined)
         const id = value.data?.id
@@ -258,7 +303,9 @@ export const Dashboard = (props: DashboardProps) => {
             <DashboardContext.Provider value={{
                 fetchElementContent,
                 saveTemplate: props.saveTemplate,
-                updateElements: props.updateElements
+                updateElements: props.updateElements, setdashboardInfoInNewestContent,
+                allContent: updatedContents,
+                setUpdatedContents
             }}>
                 {genController}
                 {genContainer}

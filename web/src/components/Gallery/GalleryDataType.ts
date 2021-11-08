@@ -6,9 +6,10 @@ import moment from "moment"
 
 // export const dateFormat = "YYYY-MM-DD HH:mm:ss"
 export const dateFormat = "YYYY-MM-DD"
-export const today = () => moment().format(dateFormat)
+export let today = (time?:string) => moment(time).format(dateFormat)
 export const now = () => moment().format()
 export const timeToString = (v: string) => moment(v).format(dateFormat)
+export const dateToDBdate=(time:string)=>moment(time).format("yyyy-MM-DDTHH:mm:ss.SSS")
 
 export interface Category {
   name: string

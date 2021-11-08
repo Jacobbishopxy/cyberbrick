@@ -31,17 +31,18 @@ interface DynamicHeaderProps {
 const DynamicHeader = (props: DynamicHeaderProps) => {
     const intl = useIntl()
     // const { onRemoveItem, onSwitch, onAddModule } = props
-    const [isHover, setIsHover] = useState<string | null>(null)
+    const [isHover, setIsHover] = useState<number | null>(null)
     // const [tab]
     /*
     the following are helper method to determine which tab item the mouse is hovering over
     */
-    const onMouseEnter = (id: string) => {
+    const onMouseEnter = (id: number) => {
+        console.log(40, id)
         setIsHover(id)
     }
 
     const onMouseLeave = () => {
-        setIsHover(null)
+        setIsHover(-1)
     }
 
     //添加tab事件
@@ -94,6 +95,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     return v
                 }
             })
+            console.log(97, newTabItems)
             props.setContent!((content) => {
                 return {
                     ...content,
@@ -129,10 +131,15 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             w: +el.w
         }
     }
-
+    useEffect(() => {
+        if (isHover === 0) {
+            console.log(136)
+        }
+    }, [isHover])
     //选中与为选中的样式
-    const className = (id: number) => props.content?.data?.currIndex === id ? "tab-content-selected" : "tab-content"
+    const className = (index: number) => props.content?.data?.currIndex === index ? "tab-content-selected" : "tab-content"
 
+    console.log(135, props.content)
     return (
         <div>
             {
@@ -159,17 +166,16 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             >
                 {props.content?.data?.tabItems?.map((el, i: number) =>
                     <div
-                        key={el.i}
+                        key={el.id ? el.id : el.i}
                         data-grid={genDataGrid(el)}
                         id={el.i}
                         className={className(i)}
                         onClick={() => onSwitch(i)}
-                        onMouseEnter={() => onMouseEnter(el.i)}
+                        onMouseEnter={() => onMouseEnter(i)}
                         onMouseLeave={onMouseLeave}>
                         <TabController
-
                             editable={props.editable} el={el}
-                            isHover={(isHover && isHover === el.i) ? true : false}
+                            isHover={(isHover === i) ? true : false}
                             // isSelected={props.currIndex === el.i}
                             // onRemoveItem={onRemoveItem}
                             // setItems={props.setItems}

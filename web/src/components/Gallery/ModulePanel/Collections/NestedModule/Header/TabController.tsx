@@ -67,32 +67,33 @@ export const TabController = (props: TabControllerProps) => {
     //     props.onAddSubModule!(props.name, timeSeries, moduleType, el.i)
     // }
 
-    const editHeader = <div style={{ display: 'flex', marginTop: "-12px", right: 0, }}>
+    const editHeader = (
+        <div style={{ display: 'flex', marginTop: "-12px", right: 0, }}>
 
-        {/* 添加子模块 */}
-        <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
-            <Button icon size='small' className="tab-controller-button"
-                onClick={() => setAddModuleModalVisible(true)}>
-                <FileAddOutlined />
-            </Button>
-        </Tooltip>
+            {/* 添加子模块 */}
+            <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
+                <Button icon size='small' className="tab-controller-button"
+                    onClick={() => setAddModuleModalVisible(true)}>
+                    <FileAddOutlined />
+                </Button>
+            </Tooltip>
 
-        {/*添加封面  */}
-        <TabItemSelection
-            selected={selected}
-            setSelected={setSelected}
-            endEdit={endEdit} />
+            {/*添加封面  */}
+            <TabItemSelection
+                selected={selected}
+                setSelected={setSelected}
+                endEdit={endEdit} />
 
-        {/* 删除子模块 */}
-        <Tooltip title={intl.formatMessage({ id: "gallery.component.general23" })}>
-            <Button icon size='small' className="tab-controller-button"
-            // onClick={() => props.onRemoveItem(el.i)}
-            >
-                <DeleteOutlined />
-            </Button>
-        </Tooltip>
+            {/* 删除子模块 */}
+            <Tooltip title={intl.formatMessage({ id: "gallery.component.general23" })}>
+                <Button icon size='small' className="tab-controller-button"
+                // onClick={() => props.onRemoveItem(el.i)}
+                >
+                    <DeleteOutlined />
+                </Button>
+            </Tooltip>
 
-    </div>
+        </div>)
 
     const displayHeader = () => {
         //get content from tabContent

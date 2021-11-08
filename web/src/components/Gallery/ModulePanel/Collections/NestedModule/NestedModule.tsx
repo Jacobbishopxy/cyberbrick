@@ -89,7 +89,7 @@ const EditorField = (props: ModuleEditorField) => {
     )
 }
 
-const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<prRef>) => {
+const PresenterField = (props: ModulePresenterField) => {
     // let tempItems: tabItem[] = []
     // if (props.content) {
     //     tempItems = props.content.data.tabItems as tabItem[]
@@ -163,7 +163,7 @@ const PresenterField = forwardRef((props: ModulePresenterField, ref: React.Ref<p
             />
         </div> : <></>)
 
-})
+}
 export const NestedSimpleModule = new ModuleGenerator(EditorField, PresenterField).generate()
 // export const NestedSimpleModule = () => {
 //     return (

@@ -20,7 +20,7 @@ interface NestedSimpleModuleProps {
     contentHeight?: number
     // setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     // setSaveCount: React.Dispatch<React.SetStateAction<number>>
-    updateContentFn: (content: DataType.Content) => void
+
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
@@ -30,6 +30,7 @@ interface NestedSimpleModuleProps {
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
     content?: DataType.Content
     setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    updateContentFn: (content: DataType.Content) => void
 }
 
 
@@ -148,25 +149,23 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
 
     //convert a module to reactNode based on id
-    const moduleToReactNode = (currIndex: string) => {
+    const moduleToReactNode = (currIndex: number) => {
         let Submodule = props.content?.data?.tabItems.find((item, i) => i === currIndex)
-
+        console.log("switching module", Submodule)
         if (!Submodule)
             return null
 
+        let { name, timeSeries, type, id } = Submodule
+        // if (!id) return null
 
-        let { name, timeSeries, elementType, content } = Submodule
-        console.log("did content receive currIndex?", content)
-        content = { ...content, tabId: currIndex }
-        console.log("switching module", content)
         return (
             <ModuleTabPane
-                key={currIndex + elementType + name}
-                tabId={currIndex}
+                key={currIndex + type + name}
+                tabId={id}
                 content={props.content}
                 name={name}
                 timeSeries={timeSeries}
-                elementType={elementType}
+                elementType={type}
                 editable={props.editable}
                 // contentHeight={nestedModuleHeight}
                 // setItems={setItems}
@@ -175,10 +174,13 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 fetchTableColumnsFn={props.fetchTableColumnsFn}
                 fetchTableListFn={props.fetchTableListFn}
                 fetchQueryDataFn={props.fetchQueryDataFn}
-
                 fetchContentFn={props.fetchContentFn}
                 fetchContentDatesFn={props.fetchContentDatesFn}
                 shouldEleStartFetch={1 /** template element should fetch content only when it's mounted*/}
+
+                //更新content
+                updateContentFn={props.updateContentFn}
+
             />
         )
     }

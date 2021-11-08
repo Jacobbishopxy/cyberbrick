@@ -29,13 +29,13 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 
     //判断"yyyy-MM-DDTHH:mm:ss.SSSZ"格式的字符串是否在数组中
     function isTimeInArray(time: string, arr: string[] | undefined) {
-        const dateFormDB = moment(time).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
+        const dateFormDB = DataType.dateToDBdate(time)
         return props.dateList?.includes(dateFormDB)
     }
 
     //日期组件的时间变化回调
     const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
-        const dateFormDB = moment(dateStr).format("yyyy-MM-DDTHH:mm:ss.SSS") + "Z";
+        const dateFormDB = DataType.dateToDBdate(dateStr)
         if (date !== null) props.editDate(dateFormDB)
         isTimeInArray(dateStr, props.dateList)
             ? setIsCheckBox(true) : setIsCheckBox(false);
@@ -176,7 +176,6 @@ export const HeaderController = (props: HeaderController) => {
     }
 
 
-    console.log(179, props.setContent)
     //编辑时
     const editableController = () => {
         return (<Space>
@@ -189,6 +188,7 @@ export const HeaderController = (props: HeaderController) => {
                         show={props.timeSeries}
                         onClick={() => setDateModalVisible({ ...dateModalVisible, set: true })}
                     />
+
                     {/* 【小齿轮⚙️】 */}
                     <EditButton
                         editContent={props.editContent}
@@ -205,6 +205,7 @@ export const HeaderController = (props: HeaderController) => {
             <DeleteButton
                 confirmDelete={props.confirmDelete}
             />
+            {/* 日历的modal */}
             <TimeSetModal
                 intl={intl}
                 show={props.timeSeries}

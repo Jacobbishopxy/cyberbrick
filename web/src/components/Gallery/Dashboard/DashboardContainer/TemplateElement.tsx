@@ -10,6 +10,8 @@ import { ModulePanel } from "../../ModulePanel/Panel"
 import { DashboardContext } from "../DashboardContext"
 import { message } from "antd"
 import _ from 'lodash'
+import e from "@umijs/deps/compiled/express"
+import { await } from "signale"
 export interface ContainerElementProps {
     parentInfo: string[]
     timeSeries?: boolean
@@ -19,7 +21,7 @@ export interface ContainerElementProps {
     isNested?: boolean
     fetchContentFn?: (id: string | undefined, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
-    updateContentFn: (content: DataType.Content) => void
+    updateContentFn?: (content: DataType.Content) => void
     onRemove: () => void
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
@@ -41,24 +43,88 @@ export interface ContainerElementRef {
 export const TemplateElement =
     forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
 
-        const DashboardProps = useContext(DashboardContext)
+        const dashboardContextProps = useContext(DashboardContext)
 
         const mpRef = useRef<HTMLDivElement>(null)
 
         const [mpHeight, setMpHeight] = useState<number>(0)
         const [content, setContent] = useState<DataType.Content>()
+
+        const element = props.element
         const eleId = props.element.id as string | undefined
 
         const [isLoading, setIsLoading] = useState(true);
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
         })
-        /**
-         * Template Element may be nested in a module, so we have different fetch api
-         * If TemplateElment is nested, eleId is actually tabId.
-         */
 
-        //当第一次没有content时，根据模块类型初始化content
+        //表示当前模块要显示的内容日期，换句话说，没有date就没有内容。
+        const [date, setDate] = useState<string>('')
+
+        //每当content改变后都存入allContent数组。最终调用的saveContent会判断是否修改与增加。
+        //写在此文件中集中处理
+        useEffect(() => {
+            console.log(152, content)
+            if (content) {
+                if (props.updateContentFn) {
+                    props.updateContentFn(content)
+                }
+                setDate(content.date)
+            }
+        }, [content])
+
+        //获取content内容，依赖项是
+        useEffect(async () => {
+            let t_content
+            if (date) {
+                let t_date = date
+                t_date = DataType.today(t_date)
+                console.log(81, date)
+                t_content = await getContent(t_date)
+            } else {
+                t_content = await getContent()
+            }
+            setContent(t_content)
+        }, [props.shouldStartFetch, date])
+
+        //从allContent获取；如果没有，DB获取；如果没有，初始化
+        async function getContent(date?: string) {
+            const t_content = getContentOfAllContent()
+            console.log(78, t_content)
+            if (t_content) {
+                console.log(79, t_content)
+                return t_content
+            } else {
+                const t_content = await getContentOfDB(date)
+                console.log(79999, t_content)
+                if (t_content) {
+                    console.log(799, t_content)
+                    return t_content
+                } else {
+
+                    return getInitContent()
+                }
+            }
+        }
+
+        // 从allContent查找数据，条件是name和date，有返回true，没有返回false
+        function getContentOfAllContent(): DataType.Content | undefined {
+            const t_content = dashboardContextProps?.allContent?.find((v: DataType.Content, i) => {
+                const v_date = v.date?.slice(0, 10)
+                const t_date = date?.slice(0, 10)
+                return v.element?.name === element.name && v_date === t_date
+            })
+            return t_content
+        }
+
+        //从后端获取
+        async function getContentOfDB(date?: string): Promise<DataType.Content | undefined> {
+            //
+            console.log(108)
+            return await fetchContent(date) as DataType.Content | undefined
+        }
+
+        //根据模块类型初始化content
         function getInitContent() {
             let initContent: DataType.Content;
 
@@ -92,54 +158,33 @@ export const TemplateElement =
             if (props.timeSeries) {
                 initContent.date = ''
             }
+            console.log(7999, props.isNested, initContent)
             return initContent
         }
+
         /* 
-            element需要的数据从这里网络请求回来
+            content需要的数据从这里网络请求回来
         */
         const fetchContent = (date?: string) => {
-            return new Promise((resoleve, reject) => {
+            return new Promise(async (resoleve, reject) => {
                 if (eleId) {
-                    //no need to check date since it's allowed date to be undefined
-                    // props.fetchContentFn(eleId, date, props.isNested).then(res => {
-                    DashboardProps?.fetchElementContent!(eleId, date, props.isNested).then(res => {
-                        // fetchElementContent(eleId, date, props.isNested).then(res => {
-                        //TODO: cannot set content to undefined
-                        const ct = res || getInitContent()
-                        //  { data: {}, date: DataType.today() }
-                        console.log(6767, props.isNested, ct)
-
-
-                        try {
-                            setContent(ct)
-                            // if (props.isNested) console.log(ct)
-
-
-                            resoleve(ct)
-                        } catch (error) {
-                            // setContent(_.omit(ct, 'text'))
-                            message.error('数据加载错误:' + error)
-                        }
-                        // onReceiveContentFromFetch(res as DataType.Content, props.isNested)
+                    dashboardContextProps?.fetchElementContent!(eleId, date, props.isNested).then((res) => {
+                        resoleve(res)
+                    }).catch((res) => { //避免api请求错误，能有初始值
+                        resoleve(getInitContent())
                     })
                     //no matter what we receive, wait till if statement end to stop loading
                     setIsLoading(false)
+                } else {
+                    resoleve(null)
                 }
             })
         }
-        //集中处理：不用分布式的存入，每当content改变后都存入contents数组。最终调用的saveContent会判断是否修改与增加。
-        useEffect(() => {
-            if (content) {
-                props.updateContentFn(content)
-            }
-        }, [content])
 
-
+        console.log(137, props.isNested, props.element)
         //listen to props's shouldStartFetch. If it updates, fetchContent
-        //获取content内容，依赖项是
-        useEffect(() => {
-            fetchContent()
-        }, [props.shouldStartFetch])
+
+        console.log(139, props.isNested, content, dashboardContextProps)
 
         //获取模块的时间序列
         const fetchContentDates = async () => {
@@ -155,10 +200,13 @@ export const TemplateElement =
 
         useImperativeHandle(ref, () => ({ fetchContent, fetchContentDates }))
 
-        const updateContent = (ctt: DataType.Content) => props.updateContentFn(ctt)
-        if (props.isNested) {
-            console.log(104, props.isNested, props)
-        }
+        // const updateContent = (ctt: DataType.Content) => {
+        //     console.log(155)
+        //     if (props.updateContentFn) {
+        //         props.updateContentFn(ctt)
+        //     }
+        // }
+
         return (
             <div
                 style={{ height: '99%' }
@@ -185,7 +233,7 @@ export const TemplateElement =
                     //!改
                     fetchContent={fetchContent}
                     fetchContentDates={fetchContentDates}
-                    updateContent={updateContent}
+                    updateContent={props.updateContentFn}
                     onRemove={props.onRemove}
                     editable={props.editable}
                     settable={!!eleId}
@@ -194,7 +242,7 @@ export const TemplateElement =
                     updateDescription={props.updateDescription}
                     /* 嵌套模块也需要获得content，就通过这个传入的这个函数获得 */
                     //!改
-                    fetchContentFn={DashboardProps?.fetchElementContent}
+                    fetchContentFn={dashboardContextProps?.fetchElementContent}
                     fetchContentDatesFn={props.fetchContentDatesFn}
                     isNested={props.isNested}
                 />

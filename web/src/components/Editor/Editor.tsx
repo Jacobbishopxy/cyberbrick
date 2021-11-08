@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect, useContext } from "react"
-import { Button } from "antd"
+import { Button, message } from "antd"
 
 import { Emoji } from "@/components/Emoji"
 
@@ -30,14 +30,25 @@ export const Editor = (props: EditorProps) => {
     const Dashboard = useContext(DashboardContext)
 
     // "⚙️ false", "✔️ true"  点击事件 
+    //将全部submodule发送给后端。
     const editableOnChange = async () => {
-        console.log(202020, editable, props.elementType, props.content)
+        console.log(202020, editable, props.elementType, props.content, Dashboard)
         //【嵌套模块】与【对勾】才保存
         if (editable && props.elementType === DataType.ElementType.NestedModule) {
-
             if (Dashboard?.updateElements) {
                 //防止数据为空
                 if (props.content?.data?.tabItems && props.content.data.tabItems.length != 0) {
+                    try {
+                        props.content.data.tabItems.forEach((v, i) => {
+                            if (!v.type) {
+                                throw i
+                            }
+                        })
+                    } catch (i: any) {
+                        message.error(`模块不允许为空，请编辑模块或删除`)
+                        return
+                    }
+                    console.log(343434, props.content, props.setContent)
                     const newTabItems = await Dashboard?.updateElements(props.content?.data?.tabItems)
                     console.log(3434, props.content, newTabItems, props.setContent)
                     if (props.setContent) {
@@ -54,8 +65,6 @@ export const Editor = (props: EditorProps) => {
                     }
                 }
             }
-
-
         }
         setEditable(!editable)
         props.onChange(!editable)

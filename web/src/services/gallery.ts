@@ -257,11 +257,11 @@ export const getElementContentDates = async (id: string, markName?: string): Pro
 
 export const getElementContent = async (id: string, date?: string, isNested?: boolean): Promise<GalleryAPI.Content | undefined> => {
   // console.log(id, isNested)
-  if (isNested) {
-      console.log(256,id)
-    let nestedContentPath = `${base}/getNestedElementContent?contentId=${id}`
-    return request(nestedContentPath)
-  }
+//   if (isNested) {
+//       console.log(256,id)
+//     let nestedContentPath = `${base}/getNestedElementContent?contentId=${id}`
+//     return request(nestedContentPath)
+//   }
   let path = `${base}/getElementContent?id=${id}`
   if (date)
     path += `&date=${date}`

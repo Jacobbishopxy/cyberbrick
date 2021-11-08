@@ -135,7 +135,12 @@ export const Controller = (props: ModuleControllerProps) => {
                 onChange={props.onSelectChange}
                 size="small"
             />
-            <div>
+            <div style={{
+                position: 'fixed',
+                right: '50px',
+                top: '70px',
+                zIndex: 10
+            }}>
                 {edit ? editMode : idleMode}
             </div>
         </SpaceBetween>
