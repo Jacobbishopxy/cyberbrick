@@ -22,6 +22,10 @@ interface DynamicHeaderProps {
     onAddModule: (name: string, timeSeries: boolean, moduleType: any) => void
     content?: DataType.Content
     setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    parentInfo: {
+        templateId: string
+    }
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
 
@@ -44,7 +48,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
     const onMouseLeave = () => {
         setIsHover(-1)
     }
-
+    console.log(48, props.parentInfo)
     //添加tab事件
     const onAddTabItems = () => {
         let length = props.content?.data?.tabItems?.length
@@ -65,7 +69,11 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     y: yPos,
                     w: 1,
                     h: 1,
+                    template: {
+                        id: props.parentInfo.templateId
+                    }
                 }]
+
                 return {
                     ...content,
                     data: {
@@ -95,7 +103,6 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     return v
                 }
             })
-            console.log(97, newTabItems)
             props.setContent!((content) => {
                 return {
                     ...content,
@@ -131,15 +138,10 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             w: +el.w
         }
     }
-    useEffect(() => {
-        if (isHover === 0) {
-            console.log(136)
-        }
-    }, [isHover])
     //选中与为选中的样式
     const className = (index: number) => props.content?.data?.currIndex === index ? "tab-content-selected" : "tab-content"
 
-    console.log(135, props.content)
+    console.log(135, props.addElement)
     return (
         <div>
             {
@@ -180,6 +182,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                             // onRemoveItem={onRemoveItem}
                             // setItems={props.setItems}
                             onAddSubModule={onAddSubModule(i)}
+                            addElement={props.addElement}
                         />
                     </div>)
                 }

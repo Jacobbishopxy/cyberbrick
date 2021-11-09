@@ -23,7 +23,8 @@ import { TestModuleDescirption } from './testModuleDescription'
 
 import { DashboardContext } from "../../Dashboard/DashboardContext"
 export interface ModulePanelProps {
-    parentInfo: string[]
+    //公司名字；公司id；维度id
+    parentInfo: object
     eleId: string
     headName: string
     timeSeries?: boolean
@@ -41,6 +42,9 @@ export interface ModulePanelProps {
     editable: boolean
     settable: boolean
     isLoading: boolean
+    setDate: React.Dispatch<React.SetStateAction<string>>
+
+
 
     updateDescription: (ele: string) => void
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
@@ -49,6 +53,7 @@ export interface ModulePanelProps {
 
     content?: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50
@@ -120,6 +125,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
     useEffect(() => {
         console.log(5858, props.isNested, content)
     }, [content])
+
+    //!可以不要？！
     //设置date
     const headerDate = async (date: string, isMessage?: boolean) => {
 
@@ -202,6 +209,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
             content={content}
             setContent={props.setContent}
+            setDate={props.setDate}
         />
     }, [content?.date, props.editable, dates, content])
     // const genHeader = <ModulePanelHeader
@@ -295,6 +303,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             // h = props.isNested ? props.contentHeight! : h
             // console.log(183, props.isNested, h, props.contentHeight, styles)
             return rf({
+                parentInfo: props.parentInfo,
                 content,
                 setContent: props.setContent,
                 fetchStorages: props.fetchStorages,
@@ -311,6 +320,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
                 editable: props.editable,
                 initialValue: props.description || '',
                 onSave: props.updateDescription,
+                addElement:props.addElement
 
             })
         }
@@ -362,7 +372,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
             {/* 根据是模板或仪表盘给予样式 */}
             <div
-
                 className={
                     `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}
             >

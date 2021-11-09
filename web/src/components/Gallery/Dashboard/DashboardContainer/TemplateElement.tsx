@@ -13,7 +13,7 @@ import _ from 'lodash'
 import e from "@umijs/deps/compiled/express"
 import { await } from "signale"
 export interface ContainerElementProps {
-    parentInfo: string[]
+    parentInfo: object
     timeSeries?: boolean
     editable: boolean
     element: DataType.Element
@@ -28,6 +28,7 @@ export interface ContainerElementProps {
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
     fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
     updateDescription: (ele: string) => void
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
     // onTEfetchContent: (eleId: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
 }
 
@@ -69,12 +70,15 @@ export const TemplateElement =
                 if (props.updateContentFn) {
                     props.updateContentFn(content)
                 }
-                setDate(content.date)
+                if (content.data) {
+                    setDate(content.date)
+                }
             }
         }, [content])
 
         //获取content内容，依赖项是
         useEffect(async () => {
+            console.log(78, date)
             let t_content
             if (date) {
                 let t_date = date
@@ -101,8 +105,7 @@ export const TemplateElement =
                     console.log(799, t_content)
                     return t_content
                 } else {
-
-                    return getInitContent()
+                    return getInitContent(date)
                 }
             }
         }
@@ -110,9 +113,11 @@ export const TemplateElement =
         // 从allContent查找数据，条件是name和date，有返回true，没有返回false
         function getContentOfAllContent(): DataType.Content | undefined {
             const t_content = dashboardContextProps?.allContent?.find((v: DataType.Content, i) => {
-                const v_date = v.date?.slice(0, 10)
-                const t_date = date?.slice(0, 10)
-                return v.element?.name === element.name && v_date === t_date
+                if (date) {
+                    const v_date = v.date?.slice(0, 10)
+                    const t_date = date?.slice(0, 10)
+                    return v.element?.name === element.name && v_date === t_date
+                }
             })
             return t_content
         }
@@ -125,7 +130,8 @@ export const TemplateElement =
         }
 
         //根据模块类型初始化content
-        function getInitContent() {
+        function getInitContent(date?: string) {
+            console.log(132)
             let initContent: DataType.Content;
 
             switch (props.element.type) {
@@ -156,7 +162,12 @@ export const TemplateElement =
             }
 
             if (props.timeSeries) {
-                initContent.date = ''
+                //时序功能下新建日期所用
+                if (date) {
+                    initContent.date = date
+                } else {
+                    initContent.date = ''
+                }
             }
             console.log(7999, props.isNested, initContent)
             return initContent
@@ -189,9 +200,6 @@ export const TemplateElement =
         //获取模块的时间序列
         const fetchContentDates = async () => {
             if (eleId && props.element.timeSeries) {
-
-                console.log(119, props.isNested, props.element)
-
                 const ele = await props.fetchContentDatesFn(eleId)
                 return ele.contents!.map(c => (c.date))
             }
@@ -238,6 +246,7 @@ export const TemplateElement =
                     editable={props.editable}
                     settable={!!eleId}
                     isLoading={isLoading}
+                    setDate={setDate}
 
                     updateDescription={props.updateDescription}
                     /* 嵌套模块也需要获得content，就通过这个传入的这个函数获得 */
@@ -245,6 +254,7 @@ export const TemplateElement =
                     fetchContentFn={dashboardContextProps?.fetchElementContent}
                     fetchContentDatesFn={props.fetchContentDatesFn}
                     isNested={props.isNested}
+                    addElement={props.addElement}
                 />
             </div>
         )

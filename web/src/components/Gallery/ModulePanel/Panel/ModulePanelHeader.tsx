@@ -30,6 +30,7 @@ interface ModulePanelHeaderProps {
 
     content: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    setDate: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
@@ -110,6 +111,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
             setContent={props.setContent}
             elementType={props.type}
             headName={props.headName}
+            setDate={props.setDate}
         />
 
     function getDate() {

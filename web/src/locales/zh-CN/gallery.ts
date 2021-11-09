@@ -210,7 +210,7 @@ export default {
   "gallery.page.demo.module-test.title": "展览馆模板测试",
 
   "gallery.component.module-panel.nested-simple-module1": "添加标签",
-  "gallery.component.module-panel.nested-simple-module2": "编辑标签",
+  "gallery.component.module-panel.nested-simple-module2": "添加封面",
   "gallery.component.module-panel.nested-simple-module3": "提交成功",
   "gallery.component.module-panel.nested-simple-module4": "选择内容",
   "gallery.component.module-panel.nested-simple-module5": "双击修改",

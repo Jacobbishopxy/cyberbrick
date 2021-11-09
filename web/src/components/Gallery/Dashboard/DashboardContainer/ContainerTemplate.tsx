@@ -69,7 +69,7 @@ const removeElementInLayout = (name: string, elements: Elements): Elements =>
 
 
 export interface ContainerTemplateProps {
-    parentInfo: string[]
+    parentInfo: object
     elements: Elements
     setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>
     shouldEleFetch: number
@@ -98,7 +98,7 @@ export const ContainerTemplate =
 
         // const [elements, setElements] = useState<Elements>(props.elements)
 
-
+        console.log(101, props)
 
         // update elements when adding a new element
         //在添加新元素时更新元素
@@ -111,7 +111,6 @@ export const ContainerTemplate =
 
         //按照模块名字删除
         const elementOnRemove = (name: string) => () => {
-            console.log(95)
             // const newElements = removeElementInLayout(name, elements)
 
             //
@@ -131,8 +130,9 @@ export const ContainerTemplate =
             props.setElements(updateElementInLayout(props.elements, layout))
         }
 
-
-        const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
+        //新建element
+        const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested: boolean) => {
+            console.log(136)
             let height = 0;
             let width = 0;
             switch (elementType) {
@@ -144,14 +144,19 @@ export const ContainerTemplate =
                     height = 20
                     width = 24
                     break
-
+                case DataType.ElementType.TargetPrice:
+                    height = 9
+                    width = 12
+                    break
                 default:
                     height = 20;
                     width = 12;
                     break;
             }
+            console.log(156, props.elements, name)
             if (props.elements.map(e => e.name).includes(name)) {
                 message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
+                return false
             } else {
                 const newEle = {
                     name,
@@ -161,10 +166,13 @@ export const ContainerTemplate =
                     y: Infinity,
                     h: height,
                     w: width,
+                    isSubmodule: isNested ? true : false
                 } as Element
                 props.setElements(newElementInLayout(props.elements, newEle))
+                return true
             }
         }
+
         const saveElements = () => props.elements
 
         useImperativeHandle(ref, () => ({ newElement, saveElements }))
@@ -191,7 +199,6 @@ export const ContainerTemplate =
             if (el) teRefs.current[i] = el
         }
         const genDataGrid = (ele: DataType.Element) => {
-            console.log(180, ele)
             // let h = 0;
             // let w = 0;
             // switch (ele.type) {
@@ -242,33 +249,41 @@ export const ContainerTemplate =
             // })}
             >
                 {
-                    props.elements.map((ele, i) =>
-                        <div
-                            key={ele.name}
-                            data-grid={genDataGrid(ele)}
-                        >
-                            {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
-                            <TemplateElement
-                                parentInfo={props.parentInfo}
-                                timeSeries={ele.timeSeries}
-                                editable={editable}
-                                element={ele}
-                                // fetchContentFn={props.elementFetchContentFn}
-                                fetchContentDatesFn={props.elementFetchContentDatesFn}
-                                updateContentFn={updateContent(ele)}
-                                onRemove={elementOnRemove(ele.name)}
-                                fetchStoragesFn={props.elementFetchStoragesFn}
-                                fetchTableListFn={props.elementFetchTableListFn}
-                                fetchTableColumnsFn={props.elementFetchTableColumnsFn}
-                                fetchQueryDataFn={props.elementFetchQueryDataFn}
-                                ref={genRef(i)}
+                    // 只渲染非子模块
+                    props.elements.map((ele, i) => {
+                        console.log(250, ele)
+                        return !ele.isSubmodule
+                            ? (
+                                <div
+                                    key={ele.name}
+                                    data-grid={genDataGrid(ele)}
+                                >
+                                    {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
+                                    <TemplateElement
+                                        parentInfo={props.parentInfo}
+                                        timeSeries={ele.timeSeries}
+                                        editable={editable}
+                                        element={ele}
+                                        // fetchContentFn={props.elementFetchContentFn}
+                                        fetchContentDatesFn={props.elementFetchContentDatesFn}
+                                        updateContentFn={updateContent(ele)}
+                                        onRemove={elementOnRemove(ele.name)}
+                                        fetchStoragesFn={props.elementFetchStoragesFn}
+                                        fetchTableListFn={props.elementFetchTableListFn}
+                                        fetchTableColumnsFn={props.elementFetchTableColumnsFn}
+                                        fetchQueryDataFn={props.elementFetchQueryDataFn}
+                                        ref={genRef(i)}
 
-                                shouldStartFetch={props.shouldEleFetch}
-                                updateDescription={updateDescription(ele)}
+                                        shouldStartFetch={props.shouldEleFetch}
+                                        updateDescription={updateDescription(ele)}
+                                        addElement={newElement}
 
-                            />
-                            {/* </div> */}
-                        </div>
+                                    />
+                                    {/* </div> */}
+                                </div>
+                            )
+                            : <></>
+                    }
                     )
                 }
             </ReactGridLayout>

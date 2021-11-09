@@ -27,6 +27,7 @@ import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
 export interface ModuleSelectorProps {
     content?: DataType.Content
+    parentInfo: object
     fetchStorages?: () => Promise<DataType.StorageSimple[]>
     fetchTableList?: (id: string) => Promise<string[]>
     fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
@@ -42,6 +43,7 @@ export interface ModuleSelectorProps {
     initialValue: string
     onSave: (v: string) => void
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
@@ -227,6 +229,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
 
             fetchContentFn={props.fetchContentFn}
             fetchContentDatesFn={props.fetchContentDatesFn}
+            parentInfo={props.parentInfo}
+            addElement={props.addElement}
         />
 
         const fieldHeader = <FieldHeader

@@ -267,6 +267,10 @@ export const Dashboard = (props: DashboardProps) => {
         if (cRef.current) cRef.current.newElement(n, ts, et)
     }
 
+    // props.fetchElementContentDates('5cacdb29-8b79-41d1-ad0a-97781944cfa7').then((res) => {
+    //     console.log(271, res)
+    // })
+
     const genController = useMemo(() => <Controller
         initialSelected={props.initialSelected}
         canEdit={canEdit}

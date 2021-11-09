@@ -31,6 +31,10 @@ interface NestedSimpleModuleProps {
     content?: DataType.Content
     setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
     updateContentFn: (content: DataType.Content) => void
+    parentInfo: {
+        templateId: string
+    }
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
 
@@ -148,7 +152,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     //nestedModuleHeight=嵌套模块高度-icon图标高度-icon上下边距
     const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
 
-    //convert a module to reactNode based on id
+    //根据点击的index渲染不同的模块
     const moduleToReactNode = (currIndex: number) => {
         let Submodule = props.content?.data?.tabItems.find((item, i) => i === currIndex)
         console.log("switching module", Submodule)
@@ -202,7 +206,9 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                     onAddModule={onAddModule}
                     content={props.content}
                     setContent={props.setContent}
-                // onSwitch={onSwitch} 
+                    // onSwitch={onSwitch} 
+                    parentInfo={props.parentInfo!}
+                    addElement={props.addElement}
                 />
 
             </div>

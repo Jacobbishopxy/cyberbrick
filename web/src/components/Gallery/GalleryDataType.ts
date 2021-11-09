@@ -9,7 +9,7 @@ export const dateFormat = "YYYY-MM-DD"
 export let today = (time?:string) => moment(time).format(dateFormat)
 export const now = () => moment().format()
 export const timeToString = (v: string) => moment(v).format(dateFormat)
-export const dateToDBdate=(time:string)=>moment(time).format("yyyy-MM-DDTHH:mm:ss.SSS")
+export const dateToDBdate=(time:string)=>`${moment(time).format("yyyy-MM-DDTHH:mm:ss.SSS")}Z`
 
 export interface Category {
   name: string
@@ -94,6 +94,7 @@ export interface Element {
   description?: string
   template?: Template
   contents?: Content[]
+  isSubmodule?:boolean|undefined
   name: string
   type: ElementType
   timeSeries: boolean

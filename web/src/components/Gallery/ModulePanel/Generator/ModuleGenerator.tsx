@@ -67,6 +67,8 @@ export class ModuleGenerator {
 
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
+                                parentInfo={crProps.parentInfo}
+                                addElement={crProps.addElement}
                             />
                             : <this.presenter
                                 editable={crProps.editable}
@@ -81,6 +83,7 @@ export class ModuleGenerator {
                                 // ref={prRef}
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
+                                parentInfo={crProps.parentInfo}
                             />
                     }
                 </>
@@ -106,6 +109,8 @@ export class ModuleGenerator {
 
                 fetchContentFn={props.fetchContentFn}
                 fetchContentDatesFn={props.fetchContentDatesFn}
+                parentInfo={props.parentInfo!}
+                addElement={props.addElement!}
             />
         )
     }

@@ -21,7 +21,8 @@ export interface ModuleEditorField {
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
-  
+  parentInfo?:object
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
 }
 
 //模板内容props
@@ -37,6 +38,7 @@ export interface ModulePresenterField {
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
+  parentInfo:object
 }
 
 export interface ConvertFwRef {
@@ -61,6 +63,8 @@ export interface ConvertRefProps {
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
+  parentInfo:object
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
 }
 
 export interface ConvertProps {
@@ -79,5 +83,6 @@ export interface ConvertProps {
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
+  parentInfo?:object
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
 }
-

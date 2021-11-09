@@ -7,10 +7,11 @@ import { Tooltip, Button } from "antd"
 import { CSSProperties, useEffect, useState } from "react"
 import { useIntl } from "umi"
 import { TabItemSelection } from "./TabItemSelection"
+import * as DataType from '@/components/Gallery/GalleryDataType'
 
 
 interface TabControllerProps {
-    onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType, tabId: string) => void;
+    onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType) => void;
     editable: boolean,
     style?: CSSProperties | undefined,
     className?: string | undefined,
@@ -19,7 +20,7 @@ interface TabControllerProps {
     el: tabItem,
     // setItems?: React.Dispatch<React.SetStateAction<tabItem[]>>
     // onRemoveItem?: (i: string) => void
-
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
 }
 /*
 This is the controller for tab item. It receives a boolean type 'isHover' from parent.
@@ -129,6 +130,7 @@ export const TabController = (props: TabControllerProps) => {
                 onAddSubModule={props.onAddSubModule}
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
+                addElement={props.addElement}
             />
         </div>
     )

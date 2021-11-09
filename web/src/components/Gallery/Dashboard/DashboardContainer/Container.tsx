@@ -70,15 +70,18 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
     const templates = _.orderBy(props.dashboardInfo.templates, ["index"])
 
+    //维度下标
     const [selectedPane, setSelectedPane] = useState<SelectedPane>()
+    //templatee（维度）全部内容
     const [template, setTemplate] = useState<DataType.Template>()
     const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
+    //该维度下的全部elements
     const [elements, setElements] = useState<DataType.Element[]>([])
+
 
     const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
-    useEffect(() => {
-    }, [elements])
+
 
     useEffect(() => {
         if (props.initialSelected && props.initialSelected?.length >= 2) {
@@ -169,7 +172,6 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     useEffect(() => {
         if (ctRef.current && template) {
             startFetchAllContents()
-
         }
     }, [template])
 
@@ -182,7 +184,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
     const genPane = (t: DataType.Template) => {
         if (ctRef && t.id === selectedPane?.id && template) {
-            const parentInfo = [props.selectedCategoryName, props.dashboardInfo.id!, t.id!]
+            const parentInfo = {
+                selectedCategoryName: props.selectedCategoryName,
+                dashboardInfoId: props.dashboardInfo.id,
+                templateId: t.id
+            }
 
             return <ContainerTemplate
                 parentInfo={parentInfo}

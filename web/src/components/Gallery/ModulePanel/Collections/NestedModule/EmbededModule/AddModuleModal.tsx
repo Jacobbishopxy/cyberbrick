@@ -90,6 +90,7 @@ export interface AddModuleModalProps {
     // copyTemplate: (originTemplateId: string) => void
     visible: boolean
     onQuit: () => void
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
 }
 
 export const AddModuleModal = (props: AddModuleModalProps) => {
@@ -99,11 +100,19 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
 
     const onSetOk = () => {
+
         if (selected && moduleName) {
+            //如果name不重复，给外层elements添加，也给tabItem添加。
+            if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
+                props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
+            }
+
             props.onQuit()
-            props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
+            console.log(102, moduleName, timeSeries, DataType.getElementType(selected))
+
+
         } else
-            message.warn("Please enter your element name and select one module!")
+            message.error("Please enter your element name and select one module!")
     }
 
     return (

@@ -84,6 +84,8 @@ const EditorField = (props: ModuleEditorField) => {
                 contentHeight={props.contentHeight}
                 fetchContentFn={props.fetchContentFn!}
                 fetchContentDatesFn={props.fetchContentDatesFn!}
+                parentInfo={props.parentInfo!}
+                addElement={props.addElement!}
             />
         </div>
     )
@@ -160,9 +162,9 @@ const PresenterField = (props: ModulePresenterField) => {
 
                 fetchContentFn={props.fetchContentFn!}
                 fetchContentDatesFn={props.fetchContentDatesFn!}
+                parentInfo={props.parentInfo}
             />
         </div> : <></>)
-
 }
 export const NestedSimpleModule = new ModuleGenerator(EditorField, PresenterField).generate()
 // export const NestedSimpleModule = () => {
