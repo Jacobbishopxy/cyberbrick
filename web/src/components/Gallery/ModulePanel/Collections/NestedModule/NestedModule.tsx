@@ -69,6 +69,7 @@ const EditorField = (props: ModuleEditorField) => {
             <NestedSimpleModuleEditor
                 content={props.content}
                 setContent={props.setContent}
+                setNewestContent={props.setNewestContent}
                 // currIndex={currIndex}
                 // setCurrIndex={setCurrIndex}
                 // items={items as tabItem[]}
@@ -78,7 +79,7 @@ const EditorField = (props: ModuleEditorField) => {
                 fetchTableListFn={props.fetchTableList!}
                 fetchTableColumnsFn={props.fetchTableColumns!}
                 fetchQueryDataFn={props.fetchQueryData!}
-                updateContentFn={props.updateContent}
+                // updateContentFn={props.updateContent}
                 editable={true}
                 NSMid={NSMid}
                 contentHeight={props.contentHeight}
@@ -147,6 +148,7 @@ const PresenterField = (props: ModulePresenterField) => {
             <NestedSimpleModuleEditor
                 content={props.content}
                 setContent={props.setContent}
+                // setNewestContent={props.setNewestContent}
                 // currIndex={currIndex}
                 // setCurrIndex={setCurrIndex}
                 // setItems={setItems}
@@ -157,12 +159,13 @@ const PresenterField = (props: ModulePresenterField) => {
                 fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
                 fetchTableListFn={(id) => Promise.resolve([])}
                 fetchQueryDataFn={props.fetchQueryData!}
-                updateContentFn={props.updateContent}
+                // updateContentFn={props.updateContent}
                 // setSaveCount={setSaveCount}
 
                 fetchContentFn={props.fetchContentFn!}
                 fetchContentDatesFn={props.fetchContentDatesFn!}
                 parentInfo={props.parentInfo}
+                addElement={props.addElement!}
             />
         </div> : <></>)
 }

@@ -44,7 +44,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         const saveContent = async (values: Record<string, any>) => {
             if (content) {
                 const ctt = { ...content, config: values, databaseType: DataType.StorageType.PG, }
-                props.updateContent(ctt)
+                props.setContent(ctt)
                 message.success("Updating succeeded!")
             } else {
                 message.warn("Updating failed! dataset and options are required!")

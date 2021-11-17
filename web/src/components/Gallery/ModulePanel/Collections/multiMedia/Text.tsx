@@ -12,23 +12,23 @@ import _ from "lodash";
 
 
 const EditorField = (props: ModuleEditorField) => {
-    const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
     const onChangeContent = (value: string) => {
         // console.log(content)
         const ctt = //only update data.text property
-            { ...content, data: { ...content?.data, text: value }, date: content?.date || DataType.today() }
+            { ...props.content, data: { ...props.content?.data, text: value }, date: props.content?.date || DataType.today() }
         const ctWithDb = { ...ctt, storageType: DataType.StorageType.MONGO }
-        // console.log(ctWithDb)
-        setContent(ctWithDb)
-        props.updateContent(ctWithDb)
+        console.log(22, ctWithDb)
+        if (props.setContent) {
+            props.setContent(() => ctWithDb)
+        }
     }
 
     return (
         <div style={{ marginTop: '2em' }}>
             <TextEditorModifier
                 onChange={onChangeContent}
-                content={content && content.data ? content.data.text : null}
+                content={props.content && props.content.data ? props.content.data.text : null}
                 styling={props.styling}
                 style={{
                     height: props.contentHeight ? props.contentHeight - 50 : undefined,

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, useContext } from "react"
 import { Empty, Tabs } from "antd"
 import _ from "lodash"
 
@@ -12,6 +12,7 @@ import { FormattedMessage } from "umi"
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import { useForm } from "antd/es/form/Form"
 
+import { DashboardContext } from "../DashboardContext"
 const routeConfiguration = "/gallery/configuration"
 export interface ContainerProps {
     initialSelected?: string[] | undefined
@@ -22,7 +23,7 @@ export interface ContainerProps {
     fetchElements: (templateId: string, isSubmodule?: boolean) => Promise<DataType.Template>
     // fetchElementContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchElementContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
-    updateElementContentFn: (content: DataType.Content) => void
+    setNewestContent: (content: DataType.Content) => void
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
@@ -77,11 +78,24 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     const [shouldEleFetch, setShouldEleFetch] = useState<number>(1)
     //该维度下的全部elements
     const [elements, setElements] = useState<DataType.Element[]>([])
-
+    const dashboardContextProps = useContext(DashboardContext)
 
     const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
-
+    //elements更新时，更新contents，目前只有删除会起作用，添加和修改都无法更新contents，因为只有删除才知道要对contents做什么具体的操作。
+    useEffect(() => {
+        const contentNames = dashboardContextProps?.allContent?.map((content) => content.element?.name)
+        const elementNames = elements.map((el) => el.name)
+        const newAllContent = dashboardContextProps?.allContent?.filter((content, i) => {
+            if (contentNames && contentNames.length > 0) {
+                return elementNames.includes(contentNames[i] as string)
+            }
+            return false
+        })
+        if (dashboardContextProps?.setAllContent) {
+            dashboardContextProps?.setAllContent(() => newAllContent)
+        }
+    }, [elements])
 
     useEffect(() => {
         if (props.initialSelected && props.initialSelected?.length >= 2) {
@@ -97,24 +111,27 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     //切换仪表盘时，会获得默认的第一个templates（维度）
     useEffect(() => {
         if (selectedPane) {
-            props.fetchElements(selectedPane.id, true).then(res => {
-                setTemplate(res)
-                setElements(res.elements)
+            //!false没起作用
+            props.fetchElements(selectedPane.id, false).then(res => {
+
                 console.log(92, res)
+                setTemplate(() => res)
+                console.log(922, res)
+                setElements(res.elements)
             })
             props.onSelectPane(selectedPane.id)
         }
     }, [selectedPane])
-
+    // console.log(125, selectedPane)
     //仪表盘从模板copy时使用
     const startFetchElements = () => {
         if (selectedPane)
             props.fetchElements(selectedPane.id).then(res => {
                 setTemplate(res)
                 setElements(res.elements)
+                console.log(922, res)
             }
             )
-
     }
 
     const startFetchAllContents = () => {
@@ -143,6 +160,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
             props.fetchElements(selectedPane.id).then(res => {
                 setTemplate(res)
                 setElements(res.elements)
+                console.log(9222, res)
             })
     }
 
@@ -170,24 +188,31 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
      * template's changing triggers `startFetchAllContents`
      */
     useEffect(() => {
+        console.log(191, template)
         if (ctRef.current && template) {
             startFetchAllContents()
         }
     }, [template])
 
-    const elementUpdateContentFn = (ctt: DataType.Content) => {
+    //给content加入公司信息（dashboard）和行业信息（category）
+    const setNewestContent = (ctt: DataType.Content) => {
+        console.log(180, props.dashboardInfo)
         const category = {
             name: props.dashboardInfo.category?.name
         } as DataType.Category
-        props.updateElementContentFn({ ...ctt, category })
+        const dashboardInfo: DataType.Dashboard = {
+            ...props.dashboardInfo
+        }
+        props.setNewestContent({ ...ctt, dashboardInfo, category })
     }
 
     const genPane = (t: DataType.Template) => {
         if (ctRef && t.id === selectedPane?.id && template) {
+            console.log(188, t)
             const parentInfo = {
                 selectedCategoryName: props.selectedCategoryName,
-                dashboardInfoId: props.dashboardInfo.id,
-                templateId: t.id
+                dashboardInfo: props.dashboardInfo,
+                templateInfo: t
             }
 
             return <ContainerTemplate
@@ -197,7 +222,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
                 //网络请求获取模板具体内容。
                 // elementFetchContentFn={props.fetchElementContentFn}
                 elementFetchContentDatesFn={props.fetchElementContentDatesFn}
-                elementUpdateContentFn={elementUpdateContentFn}
+                setNewestContent={setNewestContent}
                 elementFetchStoragesFn={props.fetchStoragesFn}
                 elementFetchTableListFn={props.fetchTableListFn}
                 elementFetchTableColumnsFn={props.fetchTableColumnsFn}
@@ -236,6 +261,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
     return useMemo(
         () => {
+            console.log(264, DisplayTabPane)
             return (
                 <Tabs
                     onChange={tabOnChange}

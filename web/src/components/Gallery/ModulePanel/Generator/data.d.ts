@@ -15,14 +15,15 @@ export interface ModuleEditorField {
   fetchTableList?: (id: string) => Promise<string[]>
   fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
   contentHeight?: number
-  updateContent: (c: DataType.Content) => void
+//   updateContent: (c: DataType.Content) => void
   styling?: string
 
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
-  parentInfo?:object
-  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
+  parentInfo?:any
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>boolean
+  setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }
 
 //模板内容props
@@ -34,11 +35,13 @@ export interface ModulePresenterField {
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
   styling?: string
-  updateContent: (c: DataType.Content) => void
+//   updateContent: (c: DataType.Content) => void
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
-  parentInfo:object
+  parentInfo:any
+  setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>boolean
 }
 
 export interface ConvertFwRef {
@@ -56,7 +59,7 @@ export interface ConvertRefProps {
   fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
-  updateContent: (c: DataType.Content) => void
+//   updateContent: (c: DataType.Content) => void
   styling?: string
   forwardedRef: React.Ref<ConvertFwRef>
 
@@ -65,6 +68,7 @@ export interface ConvertRefProps {
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
   parentInfo:object
   addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
+  setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }
 
 export interface ConvertProps {
@@ -77,7 +81,7 @@ export interface ConvertProps {
   fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryData?: (value: DataType.Content) => Promise<any>
   contentHeight?: number
-  updateContent: (c: DataType.Content) => void
+//   updateContent: (c: DataType.Content) => void
   styling?: string
 
   fetchContentFn?: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
@@ -85,4 +89,5 @@ export interface ConvertProps {
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
   parentInfo?:object
   addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
+  setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }

@@ -137,6 +137,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
         changeOnSelect
         style={props.style}
         size={props.size || "middle"}
+
     />
 }
 

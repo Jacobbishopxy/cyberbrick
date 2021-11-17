@@ -48,8 +48,10 @@ export interface Tag {
 
 export interface Content {
   id?: string
-  element?: Element
   category?: Category
+  dashboardInfo?:Dashboard
+  templateInfo?:Template
+  element?: Element
   mark?: Mark
   tags?: Tag[]
   author?: Author

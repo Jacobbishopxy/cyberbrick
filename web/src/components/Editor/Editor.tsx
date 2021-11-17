@@ -34,38 +34,46 @@ export const Editor = (props: EditorProps) => {
     const editableOnChange = async () => {
         console.log(202020, editable, props.elementType, props.content, Dashboard)
         //【嵌套模块】与【对勾】才保存
-        if (editable && props.elementType === DataType.ElementType.NestedModule) {
-            if (Dashboard?.updateElements) {
-                //防止数据为空
-                if (props.content?.data?.tabItems && props.content.data.tabItems.length != 0) {
-                    try {
-                        props.content.data.tabItems.forEach((v, i) => {
-                            if (!v.type) {
-                                throw i
-                            }
-                        })
-                    } catch (i: any) {
-                        message.error(`模块不允许为空，请编辑模块或删除`)
-                        return
-                    }
-                    console.log(343434, props.content, props.setContent)
-                    const newTabItems = await Dashboard?.updateElements(props.content?.data?.tabItems)
-                    console.log(3434, props.content, newTabItems, props.setContent)
-                    if (props.setContent) {
-                        props.setContent((content) => {
-                            return {
-                                ...content,
-                                data: {
-                                    ...content?.data,
-                                    tabItems: newTabItems
-                                }
-                            } as DataType.Content
-                        })
+        // if (editable && props.elementType === DataType.ElementType.NestedModule) {
+        //     if (Dashboard?.updateElements) {
+        //         //防止数据为空
+        //         if (props.content?.data?.tabItems && props.content.data.tabItems.length != 0) {
+        //             try {
+        //                 props.content.data.tabItems.forEach((v, i) => {
+        //                     if (!v.type) {
+        //                         throw i
+        //                     }
+        //                 })
+        //             } catch (i: any) {
+        //                 message.error(`模块不允许为空，请编辑模块或删除`)
+        //                 return
+        //             }
+        //             console.log(343434, props.content, props.setContent)
+        //             const newTabItems = await Dashboard?.updateElements(props.content?.data?.tabItems)
+        //             //原有的tabItems和newTabItems做一个合并。
+        //             let tabItems = props.content?.data?.tabItems;
+        //             tabItems = tabItems.map((v, i) => {
+        //                 return {
+        //                     ...v,
+        //                     ...newTabItems[i]
+        //                 }
+        //             })
+        //             console.log(3434, props.content, newTabItems, tabItems)
+        //             if (props.setContent) {
+        //                 props.setContent((content) => {
+        //                     return {
+        //                         ...content,
+        //                         data: {
+        //                             ...content?.data,
+        //                             tabItems: tabItems
+        //                         }
+        //                     } as DataType.Content
+        //                 })
 
-                    }
-                }
-            }
-        }
+        //             }
+        //         }
+        //     }
+        // }
         setEditable(!editable)
         props.onChange(!editable)
     }

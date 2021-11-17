@@ -41,6 +41,7 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
         const date_s = i.date?.slice(0, 10)
         return i.element?.name === content.element?.name && date_s === date
     })
+
     // let isAdd = true;
     // console.log(43, content, contents)
     // const newContents = contents?.map((v, i) => {
@@ -132,10 +133,9 @@ export const Dashboard = (props: DashboardProps) => {
         if (selectedDashboard && cRef.current) cRef.current.startFetchAllContents()
     }, [selectedDashboard])
 
-    //如果content有变化,添加修改入allContent中
+    //如果content有变化,添加或修改入allContent中
     useEffect(() => {
         if (newestContent) {
-
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)
             console.log(111, newestContent, newContents)
             setUpdatedContents(newContents)
@@ -178,6 +178,7 @@ export const Dashboard = (props: DashboardProps) => {
 
     const updateAllContents = async (contents: DataType.Content[]) => {
         console.log(145, contents)
+        // todo 点击保存再点退出怎么就不执行了呢
         if (selectedDashboard)
             return Promise.all(
                 contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c))
@@ -240,7 +241,7 @@ export const Dashboard = (props: DashboardProps) => {
         props.fetchElementContentDates(id)
 
     //嵌套模块专用：更新contents，在这里加入dashboard信息
-    const setdashboardInfoInNewestContent = (content: DataType.Content) => {
+    const setDashboardInfoInNewestContent = (content: DataType.Content) => {
         setNewestContent(() => {
             const category = {
                 name: selectedDashboard?.category?.name
@@ -294,7 +295,7 @@ export const Dashboard = (props: DashboardProps) => {
             fetchElements={fetchElements}
             // fetchElementContentFn={fetchElementContent}
             fetchElementContentDatesFn={fetchElementContentDates}
-            updateElementContentFn={setNewestContent}
+            setNewestContent={setNewestContent}
             fetchStoragesFn={props.fetchStorages}
             fetchTableListFn={props.fetchTableList}
             fetchTableColumnsFn={props.fetchTableColumns}
@@ -307,9 +308,9 @@ export const Dashboard = (props: DashboardProps) => {
             <DashboardContext.Provider value={{
                 fetchElementContent,
                 saveTemplate: props.saveTemplate,
-                updateElements: props.updateElements, setdashboardInfoInNewestContent,
+                updateElements: props.updateElements, setDashboardInfoInNewestContent,
                 allContent: updatedContents,
-                setUpdatedContents
+                setAllContent: setUpdatedContents
             }}>
                 {genController}
                 {genContainer}

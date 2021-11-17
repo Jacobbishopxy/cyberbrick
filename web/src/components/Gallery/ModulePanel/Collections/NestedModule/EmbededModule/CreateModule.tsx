@@ -4,9 +4,11 @@ import { TemplateElement } from "@/components/Gallery/Dashboard/DashboardContain
 import { useEffect, useState, useContext } from "react"
 
 import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
+
+import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 interface ModuleTabPaneProps {
     //self custom
-    tabId: number,
+    elementId: string,
     content?: DataType.Content
     //same as TemplateElementProps
     editable: boolean,
@@ -15,7 +17,7 @@ interface ModuleTabPaneProps {
     elementType: DataType.ElementType,
     contentHeight?: number
     shouldEleStartFetch: number
-    onRemoveModule: (id: string) => void,
+    // onRemoveModule: (id: string) => void,
     // setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
     fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     fetchTableListFn: (id: string) => Promise<string[]>
@@ -24,7 +26,7 @@ interface ModuleTabPaneProps {
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 
-    updateContentFn: (content: DataType.Content) => void
+    setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }
 
 
@@ -33,9 +35,9 @@ export interface ModuleTabPaneRef {
 }
 
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
-    const { name, timeSeries, elementType, tabId } = props
+    const { name, timeSeries, elementType, elementId } = props
     //layout property is not important?
-    const ele: DataType.Element = { id: tabId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
+    const ele: DataType.Element = { id: elementId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
     const [shouldFetch, setShouldFetch] = useState(0)
     const dashboardContextProps = useContext(DashboardContext)
 
@@ -58,27 +60,23 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     //     return props.fetchContentFn(id, date, true)
     // }
 
-    //更新contents,在这里加入element的信息
-    const updateContent = (c: DataType.Content) => {
-        if (dashboardContextProps?.setdashboardInfoInNewestContent) {
 
-            const newContent = {
-                ...c,
-                element: {
-                    id: ele.id,
-                    name: ele.name,
-                    type: ele.type
-                }
-            } as DataType.Content
-            console.log(62, ele, newContent)
-            dashboardContextProps.setdashboardInfoInNewestContent(newContent)
+    //更新contents,在这里加入element的信息
+    const setNewestContent = (c: DataType.Content) => {
+        if (props.setNewestContent) {
+            props.setNewestContent(c, {
+                id: ele.id,
+                name: ele.name,
+                type: ele.type
+            })
         }
     }
 
-    const onRemove = () => {
-        props.onRemoveModule(tabId)
-    }
+    // const onRemove = () => {
+    //     props.onRemoveModule(elementId)
+    // }
 
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
     console.log(72, dashboardContextProps)
     //TODO: WARINING! hardcoded height
     return (
@@ -87,17 +85,17 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
             {/* <DashboardContext.Provider value={{
                 fetchElementContent: fetchContent,
             }}> */}
-            <TemplateElement key={tabId + elementType + name}
-                parentInfo={[]}
+            <TemplateElement key={elementType + name}
+                parentInfo={NestedDedicatedProps?.parentInfo}
                 timeSeries={timeSeries}
                 editable={props.editable}
                 element={ele}
                 // fetchContentFn={fetchContent}
                 fetchContentDatesFn={props.fetchContentDatesFn}
                 //更新contents
-                updateContentFn={updateContent}
+                setNewestContent={setNewestContent}
                 //删除
-                onRemove={onRemove}
+                // onRemove={onRemove}
                 fetchStoragesFn={props.fetchStoragesFn}
                 fetchTableListFn={props.fetchTableListFn}
                 fetchTableColumnsFn={props.fetchTableColumnsFn}

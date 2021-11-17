@@ -25,8 +25,10 @@ const EditorField = (props: ModuleEditorField) => {
         } as DataType.Content
         console.log(22, content, ctt)
         setContent(ctt)
-        props.updateContent(ctt)
+        if (props.setContent) {
 
+            props.setContent(ctt)
+        }
         return true
     }
 

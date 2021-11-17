@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Checkbox, Divider, Input, List, message, Modal, Space, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
@@ -91,23 +91,29 @@ export interface AddModuleModalProps {
     visible: boolean
     onQuit: () => void
     addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
+    setDraggable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 export const AddModuleModal = (props: AddModuleModalProps) => {
 
     const [selected, setSelected] = useState<string>()
     const [moduleName, setModuleName] = useState<string>()
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
 
+    const dashboardContextProps = useContext(DashboardContext)
     const onSetOk = () => {
 
         if (selected && moduleName) {
             //如果name不重复，给外层elements添加，也给tabItem添加。
-            if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
-                props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
-            }
+            // if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
+            props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
+            // }
 
+            //关闭modal
             props.onQuit()
+            //使能RGL组件
+            props.setDraggable(() => true)
             console.log(102, moduleName, timeSeries, DataType.getElementType(selected))
 
 
@@ -120,7 +126,13 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
             title={<FormattedMessage id="gallery.component.add-module-modal1" />}
             visible={props.visible}
             onOk={onSetOk}
-            onCancel={props.onQuit}
+            onCancel={
+                () => {
+                    //使能container组件
+                    props.onQuit()
+                    props.setDraggable(() => true)
+                }
+            }
             width="60%"
             bodyStyle={{ paddingTop: 0, paddingBottom: 0 }}
             style={{ top: 40 }}

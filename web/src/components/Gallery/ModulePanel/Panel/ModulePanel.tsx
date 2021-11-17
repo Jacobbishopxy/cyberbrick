@@ -37,7 +37,7 @@ export interface ModulePanelProps {
     contentHeight?: number
     fetchContent: (date?: string) => Promise<any>
     fetchContentDates?: () => Promise<string[]>
-    updateContent: (c: DataType.Content) => void
+    // updateContent: (c: DataType.Content) => void
     onRemove: () => void
     editable: boolean
     settable: boolean
@@ -53,6 +53,7 @@ export interface ModulePanelProps {
 
     content?: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
     addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
@@ -66,8 +67,6 @@ export const ModulePanel = (props: ModulePanelProps) => {
     const intl = useIntl()
     const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
     const moduleFwRef = useRef<ConvertFwRef>(null)
-
-    const [content, setContent] = useState<DataType.Content>()
     const [dates, setDates] = useState<string[]>([])
 
     const [loading, setIsLoading] = useState(props.isLoading)
@@ -80,25 +79,19 @@ export const ModulePanel = (props: ModulePanelProps) => {
         moduleRef.current = collectionSelector(props.elementType)
     }, [])
 
-    useEffect(() => {
-        if (!props.isNested) {
-
-            console.log(58, props.content)
-        }
-        setContent(props.content)
-    }, [props.content])
 
     //when dashboard is set to uneditable, make modulePanel unable to edit (by calling moduleFwRef.current.edit(false))
     useEffect(() => {
         if (!props.editable && moduleFwRef.current) moduleFwRef.current.edit(props.editable)
     }, [props.editable])
 
+    //获取模块的时间序列
     useEffect(() => {
-        if (props.timeSeries && props.fetchContentDates && content && !props.editable) {
-            props.fetchContentDates().then(res => setDates(res))
+        if (props.timeSeries && props.fetchContentDates) {
+            console.log(94, props.isNested, dates,)
+            props.fetchContentDates().then(res => setDates(res.map((v) => v.slice(0, 10))))
         }
-    }, [content, props.editable])
-
+    }, [props.content, props.editable])
     //模块删除函数
     const confirmDelete = () =>
         Modal.confirm({
@@ -109,22 +102,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
         })
 
     const updateTitle = (title: string) => {
-        console.log(58, content)
-        const newContent = content ?
-            { ...content, title } :
-            { title, date: DataType.today() } as DataType.Content
-        setContent(newContent)
-        props.updateContent(newContent)
+        const newContent = { ...props.content, title } as DataType.Content
+        props.setContent(newContent)
     }
 
     const footerDate = () => {
-        if (props.timeSeries && content)
-            return { date: content.date }
+        if (props.timeSeries)
+            return { date: props.content?.date }
         return {}
     }
-    useEffect(() => {
-        console.log(5858, props.isNested, content)
-    }, [content])
 
     //!可以不要？！
     //设置date
@@ -149,29 +135,29 @@ export const ModulePanel = (props: ModulePanelProps) => {
     }
 
     //更新content
-    const updateModuleContent = (ctt: DataType.Content) => {
-        const newContent = { ...content, ...ctt }
-        setContent(newContent)
-        props.updateContent(newContent)
-        console.log(58, props.isNested, 'updateModuleContent')
-    }
+    // const updateModuleContent = (ctt: DataType.Content) => {
+    //     const newContent = { ...content, ...ctt }
+    //     setContent(newContent)
+    //     props.updateContent(newContent)
+    //     console.log(58, props.isNested, 'updateModuleContent')
+    // }
 
     //!新建日期,text=''逻辑是否适用全部类型模块
-    const newDateWithContent = (d: string) => {
-        //! 后端根据是否有id新建或修改。
-        const prevContentWithoutId = _.omit(content?.data, "id")
-        // 重置标题
-        //重置内容
-        const newContent = {
-            ...prevContentWithoutId,
-            date: d,
-            title: '',
-            data: { ...prevContentWithoutId.data, text: '' }
-        } as DataType.Content
-        console.log(58, props.isNested, 'newDateWithContent')
-        setContent(newContent)
-        props.updateContent(newContent)
-    }
+    // const newDateWithContent = (d: string) => {
+    //     //! 后端根据是否有id新建或修改。
+    //     const prevContentWithoutId = _.omit(content?.data, "id")
+    //     // 重置标题
+    //     //重置内容
+    //     const newContent = {
+    //         ...prevContentWithoutId,
+    //         date: d,
+    //         title: '',
+    //         data: { ...prevContentWithoutId.data, text: '' }
+    //     } as DataType.Content
+    //     console.log(58, props.isNested, 'newDateWithContent')
+    //     setContent(newContent)
+    //     props.updateContent(newContent)
+    // }
 
     /* 点击右上角设置或对勾的函数{
         更新模块内容时间；
@@ -187,8 +173,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
         //         return newContent
         //     })
         // }
-
     }
+    console.log(191, props.content, props.isNested)
     const genHeader = useMemo(() => {
         return <ModulePanelHeader
             editable={props.editable}
@@ -196,22 +182,22 @@ export const ModulePanel = (props: ModulePanelProps) => {
             timeSeries={props.timeSeries}
             headName={props.headName}
             type={props.elementType}
-            title={content ? content.title : undefined}
-            date={content ? content.date : undefined}
+            title={props.content?.title}
+            date={props.content?.date}
             updateTitle={updateTitle}
             editContent={editContent}
-            newContent={newDateWithContent}
+            // newContent={newDateWithContent}
             confirmDelete={confirmDelete}
             dateList={dates}
             editDate={headerDate}
             onSelectDate={props.fetchContent}
-            updateContent={updateModuleContent}
+            // updateContent={props.updateContent}
 
-            content={content}
+            content={props.content}
             setContent={props.setContent}
             setDate={props.setDate}
         />
-    }, [content?.date, props.editable, dates, content])
+    }, [props.content?.date, props.editable, dates, props.content])
     // const genHeader = <ModulePanelHeader
     //     editable={props.editable}
     //     settable={props.settable}
@@ -289,7 +275,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
         if (rf) {
             //if it's has id (so it's saved to db) and it's loading, display skeleton. 
             //If we finish loading, display whatever content is, including a white board (for content undefined or null)
-            if (props.eleId && loading && !content) {
+            if (props.eleId && loading && !props.content) {
                 const rows =
                     props.contentHeight ? floor(props.contentHeight / SKELETON_HEIGHT_TO_ROWS) : SKELETON_DEFAULT_ROWS
                 return <Skeleton className={styles.loadinSkeleton}
@@ -304,37 +290,36 @@ export const ModulePanel = (props: ModulePanelProps) => {
             // console.log(183, props.isNested, h, props.contentHeight, styles)
             return rf({
                 parentInfo: props.parentInfo,
-                content,
+                content: props.content,
                 setContent: props.setContent,
+                setNewestContent: props.setNewestContent,
                 fetchStorages: props.fetchStorages,
                 fetchTableList: props.fetchTableList,
                 fetchTableColumns: props.fetchTableColumns,
                 fetchQueryData: props.fetchQueryData,
                 // contentHeight: h,
-                updateContent: updateModuleContent,
+                // updateContent: props.updateContent,
                 forwardedRef: moduleFwRef,
                 // styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
                 fetchContentFn: props.fetchContentFn,
                 fetchContentDatesFn: props.fetchContentDatesFn,
-
                 editable: props.editable,
                 initialValue: props.description || '',
                 onSave: props.updateDescription,
-                addElement:props.addElement
-
+                addElement: props.addElement
             })
         }
         return <></>
-    }, [content, props.contentHeight, loading, props.editable])
+    }, [props.content, props.contentHeight, loading, props.editable])
 
     const genFooter = useMemo(() =>
         <ModulePanelFooter
             parentInfo={props.parentInfo}
             eleId={props.eleId}
             type={props.elementType}
-            id={content ? content.id : undefined}
+            id={props.content ? props.content.id : undefined}
             {...footerDate()}
-        />, [content])
+        />, [props.content])
 
     const attachId = () => props.eleId ? { id: props.eleId } : {}
 

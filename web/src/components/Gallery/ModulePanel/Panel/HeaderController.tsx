@@ -2,15 +2,17 @@
  * Created by Jacob Xie on 10/13/2020.
  */
 
-import { useState, useEffect } from "react"
-import { Tooltip, Alert, Checkbox, Col, DatePicker, Modal, Row, Select, Space } from "antd"
+import { useState, useEffect, useContext, useMemo } from "react"
+import { Tooltip, Alert, Checkbox, Col, DatePicker, Modal, Row, Select, Space, message } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 import moment from "moment"
 
 import { DragButton, TimeSetButton, EditButton, DeleteButton, TimePickButton } from "./ControllerButtons"
 
 import * as DataType from "../../GalleryDataType"
+import _ from 'lodash'
 
+import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 
 //编辑时的head
 interface TimeSetModalProps {
@@ -26,35 +28,84 @@ interface TimeSetModalProps {
 
 const TimeSetModal = (props: TimeSetModalProps) => {
     const [isNew, setIsNew] = useState<boolean>(false)
-    const [isCheckBox, setIsCheckBox] = useState<boolean>(false)
+    const [isDisabled, setIsDisabled] = useState<boolean>(false)
     const [date, setDate] = useState<any>(DataType.today())
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
+
     //判断"yyyy-MM-DDTHH:mm:ss.SSS"格式的字符串是否在数组中
     function isTimeInArray(time: string, arr: string[] | undefined) {
-        const dateFormDB = DataType.dateToDBdate(time)
-        return props.dateList?.includes(dateFormDB)
+
+        return arr?.includes(time)
     }
 
     //日期组件的时间变化回调
+    //1.改变本组件的date
+    //2.是否禁用下方的checkbox 
     const dateOnChange = (date: moment.Moment | null, dateStr: string) => {
-        const dateFormDB = DataType.dateToDBdate(dateStr)
-        console.log(39, dateFormDB)
-        if (date !== null) setDate(dateFormDB)
+        console.log(39, date, dateStr)
+        if (date !== null) setDate(dateStr)
         isTimeInArray(dateStr, props.dateList)
-            ? setIsCheckBox(true) : setIsCheckBox(false);
+            ? setIsDisabled(true) : setIsDisabled(false);
 
-        console.log(45, isTimeInArray(dateStr, props.dateList))
+        console.log(45, dateStr, props.dateList)
     }
 
+    //【确定】回调函数
     const onOk = () => {
         console.log(45, date)
-        props.onOk()
-        // props.editDate(() => date)
-        props.setDate(date)
+        if (!isNew && !isTimeInArray(date, props.dateList)) {
+            message.warn(`${date}该日期没有内容，请先创建`)
+        } else {
+
+            props.onOk()
+            props.setDate(date)
+        }
+        //
+
+        if (NestedDedicatedProps?.isNested && isNew) {
+            if (NestedDedicatedProps?.setContent) {
+                NestedDedicatedProps.setContent(() => {
+                    let data = NestedDedicatedProps.content?.data
+                    console.log(57, NestedDedicatedProps?.content, NestedDedicatedProps?.isNested)
+                    let newTabItems = data?.tabItems.map((v, i) => {
+                        if (i === data?.currIndex) {
+                            if (Array.isArray(v.dateList)) {
+                                v.dateList.push(date)
+                                v.dateList.sort((a: string, b: string) => {
+                                    if (a > b) {
+                                        return -1
+                                    } else {
+                                        return 1
+                                    }
+                                })
+                            } else {
+                                v.dateList = [date]
+                            }
+                        }
+                        return v
+                    })
+                    const newContent = {
+                        ...NestedDedicatedProps.content,
+                        data: {
+                            ...NestedDedicatedProps.content?.data,
+                            tabItems: newTabItems
+                        }
+                    } as DataType.Content
+                    console.log(71, newTabItems, newContent)
+                    return newContent
+                })
+            }
+        }
     }
+    useEffect(() => {
+        console.log(98, isDisabled)
+    }, [isDisabled])
+    console.log(96, props.dateList)
     //初始化设置：是否能新建当前日期的内容。
     useEffect(() => {
-        isTimeInArray(moment().format('yyyy-MM-DD'), props.dateList) ? setIsCheckBox(true) : setIsCheckBox(false)
-    }, [])
+        console.log(102, moment().format('yyyy-MM-DD'), props.dateList)
+        isTimeInArray(moment().format('yyyy-MM-DD'), props.dateList) ? setIsDisabled(true) : setIsDisabled(false)
+    }, [props.dateList])
 
     return props.show ?
         <Modal
@@ -70,12 +121,12 @@ const TimeSetModal = (props: TimeSetModalProps) => {
                     defaultValue={moment()}
                 />
                 <Checkbox
-                    disabled={isCheckBox}
+                    disabled={isDisabled}
                     onChange={e => setIsNew(e.target.checked)}>
                     <FormattedMessage id="gallery.component.module-panel.panel.header-controller2" />
                 </Checkbox>
                 {
-                    isCheckBox
+                    isDisabled
                         ? <Alert message='该日期已有内容，不可新建，只能修改' type='error'></Alert>
                         : <></>
                 }
@@ -157,11 +208,11 @@ export interface HeaderController {
     dateList?: string[] | undefined
     editDate?: (date: string, isMessage?: boolean) => void
     editContent: (value: boolean) => void
-    newContent: (date: string) => void
+    // newContent: (date: string) => void
     confirmDelete: () => void
     onSelectDate?: (date: string) => void
     setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
-    updateContent: (content: DataType.Content) => void
+    // updateContent: (content: DataType.Content) => void
     elementType: DataType.ElementType
     headName?: string
 
@@ -179,7 +230,7 @@ export const HeaderController = (props: HeaderController) => {
     // const isTemplate = useContext(IsTemplateContext)
 
 
-
+    console.log(225, props.timeSeries, props.dateList)
     //日期Modal的【确认】回调
     const timeSetModalOnOk = (isNew?: boolean) => {
         // console.log(165, isNew, selectedDate)
@@ -190,7 +241,6 @@ export const HeaderController = (props: HeaderController) => {
         //     }
         // }
 
-
         setDateModalVisible({ ...dateModalVisible, set: false })
     }
 
@@ -199,11 +249,13 @@ export const HeaderController = (props: HeaderController) => {
 
         setDateModalVisible({ ...dateModalVisible, pick: false })
     }
-
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
 
     //编辑时
-    const editableController = () => {
-        return (<Space>
+
+    return props.editable
+        ? (<Space>
+            {console.log(251, props.timeSeries, props)}
             <DragButton />
             {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
             {true ?
@@ -227,9 +279,13 @@ export const HeaderController = (props: HeaderController) => {
                 </> : <></>}
             {/* } */}
             {/* 【垃圾箱🗑️】 */}
-            <DeleteButton
-                confirmDelete={props.confirmDelete}
-            />
+            {
+                !NestedDedicatedProps?.isNested
+                    ? <DeleteButton
+                        confirmDelete={props.confirmDelete} />
+                    : <></>
+            }
+
             {/* 日历的modal */}
             <TimeSetModal
                 intl={intl}
@@ -242,39 +298,28 @@ export const HeaderController = (props: HeaderController) => {
                 setDate={props.setDate}
             />
         </Space>)
-    }
-    //无编辑时
-    const nonEditableController = () => {
-        console.log(159, props.dateList)
-        return (
-            <Row justify={'end'}>
-                <Col>
-                    {
-                        props.timeSeries && props.dateList ?
-                            <Space>
-                                <TimePickButton
-                                    onClick={() =>
-                                        setDateModalVisible({ ...dateModalVisible, pick: true })}
-                                />
-                                <TimePickModal
-                                    intl={intl}
-                                    visible={dateModalVisible.pick}
-                                    onOk={timePickModalOnOk}
-                                    onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
-                                    dateList={props.dateList}
-                                    setDate={props.setDate}
-                                />
-                            </Space> : <></>
-                    }
-                </Col>
-            </Row>
-
-        )
-    }
-    const genController = () =>
-        props.editable ? editableController() : nonEditableController()
-
-
-    return genController()
+        : (<Row justify={'end'}>
+            {console.log(2511, props.timeSeries, props)}
+            <Col>
+                {
+                    props.timeSeries && props.dateList ?
+                        <Space>
+                            <TimePickButton
+                                onClick={() =>
+                                    setDateModalVisible({ ...dateModalVisible, pick: true })}
+                            />
+                            <TimePickModal
+                                intl={intl}
+                                visible={dateModalVisible.pick}
+                                onOk={timePickModalOnOk}
+                                onCancel={() => setDateModalVisible({ ...dateModalVisible, pick: false })}
+                                dateList={props.dateList}
+                                setDate={props.setDate}
+                            />
+                        </Space> : <></>
+                }
+            </Col>
+        </Row>)
 }
+
 

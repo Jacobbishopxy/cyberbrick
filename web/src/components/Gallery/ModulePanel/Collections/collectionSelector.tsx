@@ -26,14 +26,14 @@ import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
 
 export interface ModuleSelectorProps {
-    content?: DataType.Content
+
     parentInfo: object
     fetchStorages?: () => Promise<DataType.StorageSimple[]>
     fetchTableList?: (id: string) => Promise<string[]>
     fetchTableColumns?: (storageId: string, tableName: string) => Promise<string[]>
     fetchQueryData?: (value: DataType.Content) => Promise<any>
     contentHeight?: number
-    updateContent: (c: DataType.Content) => void
+    // updateContent: (c: DataType.Content) => void
     forwardedRef: React.Ref<ConvertFwRef>
     // styling: string
     fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
@@ -42,7 +42,10 @@ export interface ModuleSelectorProps {
     editable: boolean
     initialValue: string
     onSave: (v: string) => void
+    content?: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    //submodule专用，set最外层contents的暂存之前写入子模块信息
+    setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
     addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
 }
 
@@ -54,8 +57,9 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             initialValue={props.initialValue}
             editable={props.editable}
             content={props.content}
+            setContent={props.setContent}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            // updateContent={props.updateContent}
             // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -66,7 +70,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             fetchQueryData={props.fetchQueryData}
             // styling={props.styling}
             ref={props.forwardedRef}
@@ -78,7 +82,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -93,7 +97,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -105,7 +109,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -116,7 +120,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -131,7 +135,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -146,7 +150,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -161,7 +165,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -176,7 +180,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -191,7 +195,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -206,7 +210,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
@@ -218,12 +222,13 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             setContent={props.setContent}
+            setNewestContent={props.setNewestContent}
+
             fetchStorages={props.fetchStorages}
             fetchTableList={props.fetchTableList}
             fetchTableColumns={props.fetchTableColumns}
             fetchQueryData={props.fetchQueryData}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
 
@@ -239,7 +244,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             editable={props.editable}
             content={props.content}
             contentHeight={props.contentHeight}
-            updateContent={props.updateContent}
+            setContent={props.setContent}
             // // styling={props.styling}
             ref={props.forwardedRef}
         />

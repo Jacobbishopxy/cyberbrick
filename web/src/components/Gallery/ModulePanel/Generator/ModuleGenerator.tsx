@@ -62,13 +62,15 @@ export class ModuleGenerator {
                                 fetchTableList={crProps.fetchTableList}
                                 fetchTableColumns={crProps.fetchTableColumns}
                                 contentHeight={crProps.contentHeight}
-                                updateContent={crProps.updateContent}
+                                // updateContent={crProps.updateContent}
                                 styling={forceStyle ? crProps.styling : styles.editorField}
 
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
                                 parentInfo={crProps.parentInfo}
                                 addElement={crProps.addElement}
+
+                                setNewestContent={crProps.setNewestContent}
                             />
                             : <this.presenter
                                 editable={crProps.editable}
@@ -79,7 +81,7 @@ export class ModuleGenerator {
                                 fetchQueryData={crProps.fetchQueryData}
                                 contentHeight={crProps.contentHeight}
                                 styling={crProps.styling}
-                                updateContent={crProps.updateContent}
+                                // updateContent={crProps.updateContent}
                                 // ref={prRef}
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
@@ -98,12 +100,13 @@ export class ModuleGenerator {
                 onSave={props.onSave}
                 content={props.content}
                 setContent={props.setContent}
+                setNewestContent={props.setNewestContent}
                 fetchStorages={props.fetchStorages}
                 fetchTableList={props.fetchTableList}
                 fetchTableColumns={props.fetchTableColumns}
                 fetchQueryData={props.fetchQueryData}
                 contentHeight={props.contentHeight}
-                updateContent={props.updateContent}
+                // updateContent={props.updateContent}
                 styling={props.styling}
                 forwardedRef={ref}
 

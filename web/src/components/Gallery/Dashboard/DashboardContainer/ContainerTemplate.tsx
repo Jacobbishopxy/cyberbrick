@@ -17,6 +17,7 @@ import { template } from "@umijs/deps/compiled/lodash"
 import { ElementType } from "../../GalleryDataType"
 //样式
 import "./style.less"
+
 const ReactGridLayout = WidthProvider(RGL)
 // const ReactGridLayout = GridLayout
 const reactGridLayoutDefaultProps = {
@@ -36,8 +37,9 @@ type Elements = Element[]
 const newElementInLayout = (elements: Elements, element: Element): Elements =>
     _.concat(elements, element)
 
-const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements =>
-    _.zip(elements, rawLayout).map(zItem => {
+const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements => {
+    console.log(40, elements, rawLayout)
+    return _.zip(elements, rawLayout).map(zItem => {
         const ele: Element = zItem[0]!
         const rawEle: Layout = zItem[1]!
 
@@ -49,6 +51,8 @@ const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Element
             w: rawEle.w
         }
     })
+}
+
 
 const removeElementInLayout = (name: string, elements: Elements): Elements =>
     _.reject(elements, ele => (ele.name === name))
@@ -69,13 +73,17 @@ const removeElementInLayout = (name: string, elements: Elements): Elements =>
 
 
 export interface ContainerTemplateProps {
-    parentInfo: object
+    parentInfo: {
+        selectedCategoryName: string,
+        dashboardInfo: DataType.Dashboard
+        templateInfo: DataType.Template
+    }
     elements: Elements
     setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>
     shouldEleFetch: number
     // elementFetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     elementFetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
-    elementUpdateContentFn: (content: DataType.Content) => void
+    setNewestContent: (content: DataType.Content) => void
     elementFetchStoragesFn: () => Promise<DataType.StorageSimple[]>
     elementFetchTableListFn: (id: string) => Promise<string[]>
     elementFetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
@@ -118,20 +126,14 @@ export const ContainerTemplate =
                 const newElements = _.reject(elements, (e) => e.name === name)
                 return newElements
             })
-            console.log(97)
             //testing: manually remove ref from teRefs
-            let index = props.elements.findIndex(ele => ele.name === name)
-            console.log(99, index)
             // teRefs.current.splice(index, 1)
         }
 
-        // 把elements数组重写。
-        const onLayoutChange = (layout: Layout[]) => {
-            props.setElements(updateElementInLayout(props.elements, layout))
-        }
+
 
         //新建element
-        const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested: boolean) => {
+        const newElement = (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => {
             console.log(136)
             let height = 0;
             let width = 0;
@@ -147,6 +149,10 @@ export const ContainerTemplate =
                 case DataType.ElementType.TargetPrice:
                     height = 9
                     width = 12
+                    break
+                case DataType.ElementType.NestedModule:
+                    height = 12
+                    width = 24
                     break
                 default:
                     height = 20;
@@ -178,12 +184,23 @@ export const ContainerTemplate =
         useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
 
-        const updateContent = (ele: DataType.Element) => {
-            return (value: DataType.Content) => {
-                return props.elementUpdateContentFn({
-                    ...value,
-                    element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
-                })
+        const setNewestContent = (ele: DataType.Element) => {
+            return (value: DataType.Content, submoduleElement: DataType.Element) => {
+
+                if (submoduleElement) {
+                    return props.setNewestContent({
+                        ...value,
+                        templateInfo: props.parentInfo.templateInfo,
+                        element: { id: submoduleElement.id, name: submoduleElement.name, type: submoduleElement.type } as DataType.Element
+                    })
+                } else {
+                    return props.setNewestContent({
+                        ...value,
+                        templateInfo: props.parentInfo.templateInfo,
+                        element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
+                    })
+                }
+
             }
         }
 
@@ -215,7 +232,7 @@ export const ContainerTemplate =
             //         w = +ele.w
             //         break;
             // }
-
+            console.log(236, ele)
             return {
                 x: +ele.x,
                 y: +ele.y,
@@ -227,6 +244,19 @@ export const ContainerTemplate =
             }
         }
 
+        //elements
+        // const [elements, setElements] = useState(props.elements)
+        // useEffect(() => {
+        //     console.log(222, props.elements)
+        //     setElements((el) => props.elements)
+        // }, [props.elements])
+
+
+        // 把elements数组重写。
+        const onLayoutChange = (layout: Layout[]) => {
+            console.log(258, layout)
+            props.setElements(updateElementInLayout(props.elements, layout))
+        }
         return (
             <ReactGridLayout
                 {...reactGridLayoutDefaultProps}
@@ -234,26 +264,29 @@ export const ContainerTemplate =
                 isDraggable={editable}
                 isResizable={editable}
                 autoSize={true}
-            // layout={props.elements.map(ele => {
+            // // // layout={props.elements.map(ele => {
 
 
-            //     return {
-            //         x: +ele.x,
-            //         y: +ele.y,
-            //         h: ele.type === ElementType.TargetPrice ? 9 : ele.h,
-            //         w: +ele.w,
-            //         i: ele.name,
-            //         minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
-            //         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
-            //     }
-            // })}
+            // // //     return {
+            // // //         x: +ele.x,
+            // // //         y: +ele.y,
+            // // //         h: ele.type === ElementType.TargetPrice ? 9 : ele.h,
+            // // //         w: +ele.w,
+            // // //         i: ele.name,
+            // // //         minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
+            // // //         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
+            // // //     }
+            // // // })}
             >
                 {
                     // 只渲染非子模块
+                    // props.elements.map((ele, i) => {
+
                     props.elements.map((ele, i) => {
-                        console.log(250, ele)
-                        return !ele.isSubmodule
-                            ? (
+
+                        if (!ele.isSubmodule) {
+                            console.log(250, ele)
+                            return (
                                 <div
                                     key={ele.name}
                                     data-grid={genDataGrid(ele)}
@@ -266,7 +299,7 @@ export const ContainerTemplate =
                                         element={ele}
                                         // fetchContentFn={props.elementFetchContentFn}
                                         fetchContentDatesFn={props.elementFetchContentDatesFn}
-                                        updateContentFn={updateContent(ele)}
+                                        setNewestContent={setNewestContent(ele)}
                                         onRemove={elementOnRemove(ele.name)}
                                         fetchStoragesFn={props.elementFetchStoragesFn}
                                         fetchTableListFn={props.elementFetchTableListFn}
@@ -277,14 +310,16 @@ export const ContainerTemplate =
                                         shouldStartFetch={props.shouldEleFetch}
                                         updateDescription={updateDescription(ele)}
                                         addElement={newElement}
-
+                                        elements={props.elements}
+                                        setElements={props.setElements}
                                     />
                                     {/* </div> */}
                                 </div>
                             )
-                            : <></>
-                    }
-                    )
+                        } else {
+                            return <></>
+                        }
+                    })
                 }
             </ReactGridLayout>
         )

@@ -50,6 +50,7 @@ export const Controller = (props: ModuleControllerProps) => {
     const saveTemplate = (exist: boolean) =>
         () => {
             //exit: set edit to false; save: set edit to true and allow further edition.
+            // Exit:设置edit为false; 保存:设置edit为true并允许进一步编辑。  
             const quit = () => exist ? setEdit(false) : undefined
             return Modal.confirm({
                 title: intl.formatMessage({ id: "gallery.component.dashboard-controller1" }),

@@ -4,11 +4,11 @@ import { AddModuleModal } from "@/components/Gallery/ModulePanel/Collections/Nes
 import { getChoiceElement } from "@/components/Gallery/ModulePanel/Collections/NestedModule/Header/TabChoice"
 import { FileAddOutlined, DeleteOutlined } from "@ant-design/icons"
 import { Tooltip, Button } from "antd"
-import { CSSProperties, useEffect, useState } from "react"
+import { CSSProperties, useEffect, useState, useContext } from "react"
 import { useIntl } from "umi"
 import { TabItemSelection } from "./TabItemSelection"
 import * as DataType from '@/components/Gallery/GalleryDataType'
-
+import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 
 interface TabControllerProps {
     onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType) => void;
@@ -20,7 +20,12 @@ interface TabControllerProps {
     el: tabItem,
     // setItems?: React.Dispatch<React.SetStateAction<tabItem[]>>
     // onRemoveItem?: (i: string) => void
-    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
+    addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
+    setDraggable: React.Dispatch<React.SetStateAction<boolean>>
+    content: DataType.Content | undefined
+    setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
+    index: number
+    removeTabItem: (index: number) => void
 }
 /*
 This is the controller for tab item. It receives a boolean type 'isHover' from parent.
@@ -33,7 +38,7 @@ edit corresponding module, edit current tab content, and remove current tab.
 'selected' is the selected choice from modal triggered by editHeader
 */
 export const TabController = (props: TabControllerProps) => {
-    const { el } = props
+    const { el, index } = props
     const [tabType, setTabType] = useState(el.tabType)
     //used to store which
     const [selected, setSelected] = useState('');
@@ -63,18 +68,23 @@ export const TabController = (props: TabControllerProps) => {
 
     const quitAddModule = () => setAddModuleModalVisible(false)
 
+
+
     //pass 
     // const onAddTabItems = (name: string, timeSeries: boolean, moduleType: ElementType) => {
     //     props.onAddSubModule!(props.name, timeSeries, moduleType, el.i)
     // }
-
     const editHeader = (
         <div style={{ display: 'flex', marginTop: "-12px", right: 0, }}>
 
             {/* 添加子模块 */}
             <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
                 <Button icon size='small' className="tab-controller-button"
-                    onClick={() => setAddModuleModalVisible(true)}>
+                    onClick={() => {
+                        setAddModuleModalVisible(true)
+                        props.setDraggable(() => false)
+                    }
+                    }>
                     <FileAddOutlined />
                 </Button>
             </Tooltip>
@@ -88,7 +98,7 @@ export const TabController = (props: TabControllerProps) => {
             {/* 删除子模块 */}
             <Tooltip title={intl.formatMessage({ id: "gallery.component.general23" })}>
                 <Button icon size='small' className="tab-controller-button"
-                // onClick={() => props.onRemoveItem(el.i)}
+                    onClick={() => props.removeTabItem(index)}
                 >
                     <DeleteOutlined />
                 </Button>
@@ -131,6 +141,7 @@ export const TabController = (props: TabControllerProps) => {
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
                 addElement={props.addElement}
+                setDraggable={props.setDraggable}
             />
         </div>
     )

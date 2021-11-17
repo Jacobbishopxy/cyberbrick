@@ -26,7 +26,7 @@ interface ModulePanelHeaderProps {
     dateList?: string[]
     editDate?: (date: string, isMessage?: boolean) => void
     onSelectDate?: (date: string) => void
-    updateContent: (content: DataType.Content) => void
+    // updateContent: (content: DataType.Content) => void
 
     content: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
@@ -93,26 +93,29 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         )
     }
 
-    const genController = () =>
-        <HeaderController
+    const genController = () => {
+        console.log(97, props.timeSeries, props.dateList)
+        return (<HeaderController
             editable={props.editable}
             settable={props.settable}
             timeSeries={props.timeSeries}
             dateList={props.dateList}
             editDate={props.editDate}
             editContent={props.editContent}
-            newContent={props.newContent}
+            // newContent={props.newContent}
             confirmDelete={props.confirmDelete}
             onSelectDate={props.onSelectDate}
             setTitle={setTitle}
-            updateContent={props.updateContent}
+            // updateContent={props.updateContent}
 
             content={props.content}
             setContent={props.setContent}
             elementType={props.type}
             headName={props.headName}
             setDate={props.setDate}
-        />
+        />)
+    }
+
 
     function getDate() {
         if (props.timeSeries) {
@@ -131,7 +134,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         return '';
     }
 
-    console.log(126, props.setContent)
+    console.log(126, props.timeSeries, props.dateList)
     return (
         <Row >
             {
