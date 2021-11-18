@@ -217,6 +217,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
             submodule = NestedDedicatedProps?.elements?.find((el) => el.name === submoduleName)
         }
 
+        console.log(220, submodule)
         //有tab还不行，还需要tab是选择模块的
         if (!(submodule && submodule.type))
             return null

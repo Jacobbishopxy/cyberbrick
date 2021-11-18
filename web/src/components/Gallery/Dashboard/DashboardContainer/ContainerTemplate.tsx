@@ -14,9 +14,12 @@ import { EditableContext } from "../Dashboard"
 import { useIntl } from "umi"
 import { template } from "@umijs/deps/compiled/lodash"
 
+
+import { DashboardContext } from "../DashboardContext"
 import { ElementType } from "../../GalleryDataType"
 //样式
 import "./style.less"
+import { RcFile } from "antd/lib/upload"
 
 const ReactGridLayout = WidthProvider(RGL)
 // const ReactGridLayout = GridLayout
@@ -34,8 +37,11 @@ const reactGridLayoutDefaultProps = {
 type Element = DataType.Element
 type Elements = Element[]
 
-const newElementInLayout = (elements: Elements, element: Element): Elements =>
-    _.concat(elements, element)
+const newElementInLayout = (elements: Elements, element: Element): Elements => {
+    console.log(41, elements, element)
+    return _.concat(elements, element)
+}
+
 
 const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements => {
     console.log(40, elements, rawLayout)
@@ -103,7 +109,7 @@ export const ContainerTemplate =
         const teRefs = useRef<ContainerElementRef[]>([])
         const editable = useContext(EditableContext)
         const intl = useIntl()
-
+        const dashboardContextProps = useContext(DashboardContext)
         // const [elements, setElements] = useState<Elements>(props.elements)
 
         console.log(101, props)
@@ -118,12 +124,23 @@ export const ContainerTemplate =
         //     [props.elements])
 
         //按照模块名字删除
-        const elementOnRemove = (name: string) => () => {
+        const elementOnRemove = (el: DataType.Element) => () => {
             // const newElements = removeElementInLayout(name, elements)
 
-            //
+            //如果要删除的模块是nested模块，submodule要一起删除。
+            // elments里的content要一并删除，已在监听element做处理
+            let submoduleNames: string[] = []
+            if (el.type === ElementType.NestedModule) {
+                submoduleNames = dashboardContextProps?.allContent?.find((content) => content.element?.name === el.name)?.data?.tabItems.map((v) => v.name)
+
+            }
+            //加入要被删除nestedName
+            submoduleNames.push(el.name)
+
             props.setElements((elements) => {
-                const newElements = _.reject(elements, (e) => e.name === name)
+
+                const newElements = _.reject(elements, (e) => submoduleNames.includes(e.name))
+                console.log(123, submoduleNames, elements, newElements)
                 return newElements
             })
             //testing: manually remove ref from teRefs
@@ -151,7 +168,7 @@ export const ContainerTemplate =
                     width = 12
                     break
                 case DataType.ElementType.NestedModule:
-                    height = 12
+                    height = 18
                     width = 24
                     break
                 default:
@@ -255,8 +272,20 @@ export const ContainerTemplate =
         // 把elements数组重写。
         const onLayoutChange = (layout: Layout[]) => {
             console.log(258, layout)
-            props.setElements(updateElementInLayout(props.elements, layout))
+            props.setElements(updateElementInLayout(noSubmoduleElements, layout))
         }
+
+        const [noSubmoduleElements, setNoSubmoduleElements] = useState<any>([])
+        useEffect(() => {
+            console.log(222, props.elements)
+            setNoSubmoduleElements(() => {
+                return props.elements.filter((ele, i) => {
+                    console.log(250, ele)
+                    return !ele.isSubmodule
+
+                })
+            })
+        }, [props.elements])
         return (
             <ReactGridLayout
                 {...reactGridLayoutDefaultProps}
@@ -281,45 +310,39 @@ export const ContainerTemplate =
                 {
                     // 只渲染非子模块
                     // props.elements.map((ele, i) => {
+                    noSubmoduleElements.map((ele, i) => {
+                        return (
+                            <div
+                                key={ele.name}
+                                data-grid={genDataGrid(ele)}
+                            >
+                                {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
+                                <TemplateElement
+                                    parentInfo={props.parentInfo}
+                                    timeSeries={ele.timeSeries}
+                                    editable={editable}
+                                    element={ele}
+                                    // fetchContentFn={props.elementFetchContentFn}
+                                    fetchContentDatesFn={props.elementFetchContentDatesFn}
+                                    setNewestContent={setNewestContent(ele)}
+                                    onRemove={elementOnRemove(ele)}
+                                    fetchStoragesFn={props.elementFetchStoragesFn}
+                                    fetchTableListFn={props.elementFetchTableListFn}
+                                    fetchTableColumnsFn={props.elementFetchTableColumnsFn}
+                                    fetchQueryDataFn={props.elementFetchQueryDataFn}
+                                    ref={genRef(i)}
 
-                    props.elements.map((ele, i) => {
-
-                        if (!ele.isSubmodule) {
-                            console.log(250, ele)
-                            return (
-                                <div
-                                    key={ele.name}
-                                    data-grid={genDataGrid(ele)}
-                                >
-                                    {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}
-                                    <TemplateElement
-                                        parentInfo={props.parentInfo}
-                                        timeSeries={ele.timeSeries}
-                                        editable={editable}
-                                        element={ele}
-                                        // fetchContentFn={props.elementFetchContentFn}
-                                        fetchContentDatesFn={props.elementFetchContentDatesFn}
-                                        setNewestContent={setNewestContent(ele)}
-                                        onRemove={elementOnRemove(ele.name)}
-                                        fetchStoragesFn={props.elementFetchStoragesFn}
-                                        fetchTableListFn={props.elementFetchTableListFn}
-                                        fetchTableColumnsFn={props.elementFetchTableColumnsFn}
-                                        fetchQueryDataFn={props.elementFetchQueryDataFn}
-                                        ref={genRef(i)}
-
-                                        shouldStartFetch={props.shouldEleFetch}
-                                        updateDescription={updateDescription(ele)}
-                                        addElement={newElement}
-                                        elements={props.elements}
-                                        setElements={props.setElements}
-                                    />
-                                    {/* </div> */}
-                                </div>
-                            )
-                        } else {
-                            return <></>
-                        }
+                                    shouldStartFetch={props.shouldEleFetch}
+                                    updateDescription={updateDescription(ele)}
+                                    addElement={newElement}
+                                    elements={props.elements}
+                                    setElements={props.setElements}
+                                />
+                                {/* </div> */}
+                            </div>
+                        )
                     })
+
                 }
             </ReactGridLayout>
         )

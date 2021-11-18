@@ -58,7 +58,10 @@ const EditorField = (props: ModuleEditorField) => {
                 date: content.date || DataType.today(),
                 config: { ...c, hideOptions: c.hideOptions || [] }
             }
-            props.updateContent(ctt)
+            if (props.setContent) {
+
+                props.setContent(ctt)
+            }
             message.success("Updating succeeded!")
         } else {
             message.warn("Updating failed! File and options are required!")
@@ -199,7 +202,7 @@ const PresenterField = (props: ModulePresenterField) => {
     return props.content && props.content.data
         ?
         <div
-            style={{ height: '95%' }}
+            style={{ height: '95%', margin: 'auto' }}
         >
             {view(props.content)}</div>
         : <></>

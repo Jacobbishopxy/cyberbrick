@@ -83,6 +83,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
 
     //elements更新时，更新contents，目前只有删除会起作用，添加和修改都无法更新contents，因为只有删除才知道要对contents做什么具体的操作。
+    // 更新逻辑：allContent中的name不在elemens中就代表已经被删除。
     useEffect(() => {
         const contentNames = dashboardContextProps?.allContent?.map((content) => content.element?.name)
         const elementNames = elements.map((el) => el.name)

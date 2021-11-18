@@ -33,7 +33,7 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 }
 
 //根据content的name和date判断是添加还是修改
-const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.Content[]) => {
+const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.Content[] | undefined) => {
     //判断是修改还是增加
     console.log(43, content, contents)
     const date = content?.date?.slice(0, 10)
@@ -66,11 +66,12 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
 
     let newContents
     //修改只是覆盖，增加是合并
-    if (targetContent)
-        newContents = contents.map(i => i.element?.name === content.element?.name && i.date === content.date ? content : i)
-    else
-        newContents = [...contents, content]
-
+    if (Array.isArray(contents)) {
+        if (targetContent)
+            newContents = contents.map(i => i.element?.name === content.element?.name && i.date === content.date ? content : i)
+        else
+            newContents = [...contents, content]
+    }
     return newContents
 }
 
@@ -108,7 +109,7 @@ export const Dashboard = (props: DashboardProps) => {
     const [canEdit, setCanEdit] = useState<boolean>(true)
     const [edit, setEdit] = useState<boolean>(false)
     const [newestContent, setNewestContent] = useState<DataType.Content>()
-    const [updatedContents, setUpdatedContents] = useState<DataType.Content[]>([])
+    const [updatedContents, setUpdatedContents] = useState<DataType.Content[] | undefined>([])
 
     const [selected, setSelected] = useState<string[]>()
 
@@ -205,7 +206,7 @@ export const Dashboard = (props: DashboardProps) => {
                 const t = cRef.current.saveTemplate()
                 if (t) {
                     await props.saveTemplate(t)
-                    if (updatedContents.length > 0) {
+                    if (updatedContents && updatedContents.length > 0) {
                         const updatedTemplate = await props.fetchTemplate(t.id!)
                         const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
                         console.log('contents', contents)

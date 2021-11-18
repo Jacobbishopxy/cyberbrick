@@ -62,7 +62,7 @@ export class ModuleGenerator {
                                 fetchTableList={crProps.fetchTableList}
                                 fetchTableColumns={crProps.fetchTableColumns}
                                 contentHeight={crProps.contentHeight}
-                                // updateContent={crProps.updateContent}
+                                updateContent={crProps.setContent}
                                 styling={forceStyle ? crProps.styling : styles.editorField}
 
                                 fetchContentFn={crProps.fetchContentFn}
@@ -81,7 +81,7 @@ export class ModuleGenerator {
                                 fetchQueryData={crProps.fetchQueryData}
                                 contentHeight={crProps.contentHeight}
                                 styling={crProps.styling}
-                                // updateContent={crProps.updateContent}
+                                updateContent={crProps.setContent}
                                 // ref={prRef}
                                 fetchContentFn={crProps.fetchContentFn}
                                 fetchContentDatesFn={crProps.fetchContentDatesFn}
@@ -106,7 +106,7 @@ export class ModuleGenerator {
                 fetchTableColumns={props.fetchTableColumns}
                 fetchQueryData={props.fetchQueryData}
                 contentHeight={props.contentHeight}
-                // updateContent={props.updateContent}
+                updateContent={props.setContent}
                 styling={props.styling}
                 forwardedRef={ref}
 
