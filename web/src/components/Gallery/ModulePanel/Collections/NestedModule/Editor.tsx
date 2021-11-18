@@ -123,6 +123,7 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
         //get container width
         if (props.setContent) {
             props.setContent((content) => {
+                console.log(127, content)
                 return {
                     ...content,
                     data: {

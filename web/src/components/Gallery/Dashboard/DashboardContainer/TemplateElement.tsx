@@ -13,6 +13,7 @@ import { message } from "antd"
 import _ from 'lodash'
 import e from "@umijs/deps/compiled/express"
 import { await } from "signale"
+import { number } from "yargs"
 export interface ContainerElementProps {
     parentInfo: {
         selectedCategoryName: string,
@@ -53,7 +54,7 @@ export interface ContainerElementRef {
  */
 export const TemplateElement =
     forwardRef((props: ContainerElementProps, ref: React.Ref<ContainerElementRef>) => {
-
+        //nestedmodule专用变量
         const dashboardContextProps = useContext(DashboardContext)
         const NestedDedicatedProps = useContext(nestedDedicatedContext)
         //模块主体部分：各类型模块的引用
@@ -70,13 +71,18 @@ export const TemplateElement =
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
         })
+
         //该模块的时间序列
         const [dateList, setDateList] = useState<string[]>([])
+
         //该模块的子模块时间序列
-        const [submoduleDataList, setSubmoduleDataList] = useState()
+        // const [submoduleDataList, setSubmoduleDataList] = useState()
+
+        const [currIndex, setCurrIndex] = useState(NestedDedicatedProps?.content?.data?.currIndex)
+
         //表示当前模块要显示的内容日期，换句话说，没有date就没有内容。
         const [date, setDate] = useState<string>(getDate())
-        //nestedmodule专用变量
+
 
 
         //如果是nested且时间序列，date初始值应该是最新的date。
@@ -94,10 +100,15 @@ export const TemplateElement =
 
         // })
 
+        useEffect(() => {
+            setCurrIndex(NestedDedicatedProps?.content?.data?.currIndex)
+        }, [NestedDedicatedProps?.content?.data?.currIndex])
+
+        //获取初始date：如果有时序功能，获取最新时序。
         function getDate() {
             if (props.isNested && props.timeSeries) {
                 console.log(99, props.isNested, props.timeSeries, NestedDedicatedProps)
-                const currIndex = NestedDedicatedProps?.content?.data?.currIndex;
+                // const currIndex = NestedDedicatedProps?.content?.data?.currIndex;
                 if (NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList) {
                     console.log(811, props.isNested, NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0])
                     // setDate(() => NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0])
@@ -107,17 +118,73 @@ export const TemplateElement =
                 return ''
             }
         }
+
+        //获取模块的时间序列
+        useEffect(() => {
+            if (props.timeSeries && props.fetchContentDatesFn && eleId) {
+                // console.log(94, props.isNested, dates,)
+
+                //普通模块直接赋值给dateList
+                if (!props.isNested) {
+                    props.fetchContentDatesFn(eleId).then(res => {
+                        if (res.contents) {
+                            setDateList(res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
+                            ))
+                        }
+                    }
+                    )
+
+                } else { //嵌套模块需要赋值给tabItems的currIndex的dateList
+                    const dateList = NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList
+                    console.log(1355, currIndex, dateList, NestedDedicatedProps?.content)
+                    //如果当前submodule有了dateList就不用请求了
+                    if ((!dateList) || (dateList && dateList.length === 0)) {
+                        props.fetchContentDatesFn(eleId).then((res) => {
+                            if (NestedDedicatedProps?.setContent) {
+                                NestedDedicatedProps.setContent((content) => {
+                                    console.log(129, content)
+                                    const index = content?.data?.currIndex
+                                    const newContent = {
+                                        ...content,
+                                        data: {
+                                            ...content?.data,
+                                            tabItems: content?.data?.tabItems.map((v, i: number) => {
+                                                if (i === index) {
+                                                    return {
+                                                        ...v,
+                                                        dateList: res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => {
+                                                            if (a < b) return 1;
+                                                            else return -1
+                                                        })
+                                                    }
+                                                } else {
+                                                    return v
+                                                }
+                                            })
+                                        }
+                                    } as DataType.Content
+                                    console.log(141, newContent)
+                                    return newContent
+                                })
+                            }
+                        })
+                    }
+
+                }
+            }
+        }, [])
+
         //每当content改变后都存入allContent数组。最终调用的saveContent会判断是否修改与增加。
         //写在此文件中集中处理
         useEffect(() => {
             console.log(152, content, props.isNested)
+
             if (content && content.date) {
                 setDate(() => content.date)
                 if (props.setNewestContent) {
                     props.setNewestContent(content)
                 }
             }
-
         }, [content])
 
         //获取content内容，依赖项是
@@ -133,7 +200,16 @@ export const TemplateElement =
                 t_content = await getContent()
             }
             console.log('setContent', props.isNested, t_content, date)
-            setContent(t_content)
+            if (t_content && t_content.date) {
+
+                try {
+                    setContent(t_content)
+                } catch (error) {
+                    console.log(208, error)
+                    setContent(undefined)
+                    return
+                }
+            }
         }, [date])
 
         //从allContent获取；如果没有，DB获取；如果没有，初始化
@@ -267,7 +343,7 @@ export const TemplateElement =
         //listen to props's shouldStartFetch. If it updates, fetchContent
 
 
-        //获取模块的时间序列
+        // 获取模块的时间序列
         const fetchContentDates = async () => {
             if (eleId && props.element.timeSeries) {
                 const ele = await props.fetchContentDatesFn(eleId)
@@ -307,7 +383,11 @@ export const TemplateElement =
                         : props.elements,
                     setElements: props.isNested
                         ? NestedDedicatedProps?.setElements
-                        : props.setElements
+                        : props.setElements,
+                    dateList: props.isNested
+                        ? NestedDedicatedProps?.content?.data?.tabItems[NestedDedicatedProps?.content?.data?.currIndex].dateList
+                        : dateList,
+                    setDateList
                 }}>
                     <ModulePanel
                         parentInfo={props.parentInfo}

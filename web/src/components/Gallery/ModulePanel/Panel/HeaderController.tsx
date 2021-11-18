@@ -55,47 +55,62 @@ const TimeSetModal = (props: TimeSetModalProps) => {
         console.log(45, date)
         if (!isNew && !isTimeInArray(date, props.dateList)) {
             message.warn(`${date}该日期没有内容，请先创建`)
+            return
         } else {
 
             props.onOk()
             props.setDate(date)
         }
-        //
 
-        if (NestedDedicatedProps?.isNested && isNew) {
-            if (NestedDedicatedProps?.setContent) {
-                NestedDedicatedProps.setContent(() => {
-                    let data = NestedDedicatedProps.content?.data
-                    console.log(57, NestedDedicatedProps?.content, NestedDedicatedProps?.isNested)
-                    let newTabItems = data?.tabItems.map((v, i) => {
-                        if (i === data?.currIndex) {
-                            if (Array.isArray(v.dateList)) {
-                                v.dateList.push(date)
-                                v.dateList.sort((a: string, b: string) => {
-                                    if (a > b) {
-                                        return -1
-                                    } else {
-                                        return 1
+        // 如果是新建内容，根据是否嵌套模块在前端更新dateList
+        if (isNew) {
+            if (NestedDedicatedProps?.isNested) {
+                if (NestedDedicatedProps?.setContent) {
+                    NestedDedicatedProps.setContent(() => {
+                        let data = NestedDedicatedProps.content?.data
+                        console.log(57, NestedDedicatedProps?.content, NestedDedicatedProps?.isNested)
+                        let newTabItems = data?.tabItems.map((v, i) => {
+                            if (i === data?.currIndex) {
+                                if (Array.isArray(v.dateList)) {
+                                    if (!v.dateList.includes(date)) {
+                                        v.dateList.push(date)
+                                        v.dateList.sort((a: string, b: string) => {
+                                            if (a > b) {
+                                                return -1
+                                            } else {
+                                                return 1
+                                            }
+                                        })
                                     }
-                                })
-                            } else {
-                                v.dateList = [date]
+
+                                } else {
+                                    v.dateList = [date]
+                                }
                             }
-                        }
-                        return v
+                            return v
+                        })
+                        const newContent = {
+                            ...NestedDedicatedProps.content,
+                            data: {
+                                ...NestedDedicatedProps.content?.data,
+                                tabItems: newTabItems
+                            }
+                        } as DataType.Content
+                        console.log(71, newTabItems, newContent)
+                        return newContent
                     })
-                    const newContent = {
-                        ...NestedDedicatedProps.content,
-                        data: {
-                            ...NestedDedicatedProps.content?.data,
-                            tabItems: newTabItems
-                        }
-                    } as DataType.Content
-                    console.log(71, newTabItems, newContent)
-                    return newContent
-                })
+                }
+            } else {
+                if (NestedDedicatedProps?.setDateList) {
+                    NestedDedicatedProps?.setDateList((dateList) => {
+
+                        return [...new Set([...dateList, date])].sort((a, b) => a < b ? 1 : -1)
+
+                    })
+                }
             }
         }
+
     }
     useEffect(() => {
         console.log(98, isDisabled)

@@ -15,6 +15,8 @@ export interface nestedDedicatedContextProps {
     }
     elements:DataType.Element[] | undefined
     setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>|undefined
+    dateList:string[]
+    setDateList:React.Dispatch<React.SetStateAction<string[]>>
 }
 
 

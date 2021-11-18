@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/22/2020.
  */
 
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
 import { Button, Col, Input, message, Row } from "antd"
 import { FormattedMessage, useIntl } from "umi"
 
@@ -10,7 +10,7 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 import { HeaderController } from "./HeaderController"
 import { data } from "@/pages/demo/Charts/mock/ls"
 
-
+import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 interface ModulePanelHeaderProps {
     editable: boolean
     settable: boolean
@@ -23,7 +23,7 @@ interface ModulePanelHeaderProps {
     editContent: (value: boolean) => void
     newContent: (date: string) => void
     confirmDelete: () => void
-    dateList?: string[]
+    // dateList?: string[]
     editDate?: (date: string, isMessage?: boolean) => void
     onSelectDate?: (date: string) => void
     // updateContent: (content: DataType.Content) => void
@@ -37,8 +37,16 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     const [titleEditable, setTitleEditable] = useState<boolean>(false)
     const [title, setTitle] = useState<string | undefined>(props.title)
     const intl = useIntl()
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
+    const [dateList, setDateList] = useState<string[] | undefined>()
 
     useEffect(() => setTitle(props.title), [props.title])
+
+    //获取时间序列
+    useEffect(() => {
+        console.log(45, NestedDedicatedProps?.dateList)
+        setDateList(NestedDedicatedProps?.dateList)
+    }, [NestedDedicatedProps?.dateList])
 
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -94,12 +102,12 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     }
 
     const genController = () => {
-        console.log(97, props.timeSeries, props.dateList)
+        console.log(97, props.timeSeries, dateList)
         return (<HeaderController
             editable={props.editable}
             settable={props.settable}
             timeSeries={props.timeSeries}
-            dateList={props.dateList}
+            dateList={dateList}
             editDate={props.editDate}
             editContent={props.editContent}
             // newContent={props.newContent}
@@ -134,7 +142,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         return '';
     }
 
-    console.log(126, props.timeSeries, props.dateList)
+    console.log(126, props.timeSeries, dateList)
     return (
         <Row >
             {

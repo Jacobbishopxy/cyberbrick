@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { Checkbox, Divider, Input, List, message, Modal, Space, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
@@ -94,14 +94,14 @@ export interface AddModuleModalProps {
     setDraggable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
+// import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 export const AddModuleModal = (props: AddModuleModalProps) => {
 
     const [selected, setSelected] = useState<string>()
     const [moduleName, setModuleName] = useState<string>()
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
 
-    const dashboardContextProps = useContext(DashboardContext)
+    // const dashboardContextProps = useContext(DashboardContext)
     const onSetOk = () => {
 
         if (selected && moduleName) {

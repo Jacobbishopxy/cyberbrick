@@ -85,14 +85,15 @@ export const ModulePanel = (props: ModulePanelProps) => {
         if (!props.editable && moduleFwRef.current) moduleFwRef.current.edit(props.editable)
     }, [props.editable])
 
-    //获取模块的时间序列
-    useEffect(() => {
-        if (props.timeSeries && props.fetchContentDates) {
-            console.log(94, props.isNested, dates,)
-            props.fetchContentDates().then(res => setDates(res.map((v) => v.slice(0, 10))))
-        }
-    }, [props.content, props.editable])
+    // //获取模块的时间序列
+    // useEffect(() => {
+    //     if (props.timeSeries && props.fetchContentDates) {
+    //         console.log(94, props.isNested, dates,)
+    //         props.fetchContentDates().then(res => setDates(res.map((v) => v.slice(0, 10))))
+    //     }
+    // }, [props.content, props.editable])
     //模块删除函数
+
     const confirmDelete = () =>
         Modal.confirm({
             title: intl.formatMessage({ id: "gallery.component.module-panel.panel.module-panel1" }),
@@ -188,7 +189,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             editContent={editContent}
             // newContent={newDateWithContent}
             confirmDelete={confirmDelete}
-            dateList={dates}
+            // dateList={dates}
             editDate={headerDate}
             onSelectDate={props.fetchContent}
             // updateContent={props.updateContent}
@@ -197,7 +198,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             setContent={props.setContent}
             setDate={props.setDate}
         />
-    }, [props.content?.date, props.editable, dates, props.content])
+    }, [props.content?.date, props.editable, props.content])
     // const genHeader = <ModulePanelHeader
     //     editable={props.editable}
     //     settable={props.settable}
