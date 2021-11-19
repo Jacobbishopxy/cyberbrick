@@ -47,13 +47,33 @@ export const TabController = (props: TabControllerProps) => {
 
     //update items content to selected
     useEffect(() => {
-        // console.log("selected change", selected)
-        // if (selected && tabType) props.setItems(items => items.map(it => {
-        //     if (it.i === el.i) {
-        //         return { ...it, tabContent: selected, tabType: tabType }
-        //     }
-        //     return it
-        // }))
+        console.log("selected change", selected)
+        if (selected && tabType) {
+            if (props.setContent) {
+                props.setContent((content) => {
+                    const newTabItems = content?.data?.tabItems.map((item, i) => {
+                        if (i === index) {
+                            return {
+                                ...item,
+                                tabIcon: selected,
+                                tabType: tabType
+                            }
+                        } else {
+                            return item
+                        }
+                    })
+                    return {
+                        ...content,
+                        data: {
+                            ...content?.data,
+                            tabItems: newTabItems
+                        }
+                    } as DataType.Content
+                })
+            }
+
+
+        }
     }, [selected, tabType])
 
     const endEdit = (type: string, input?: string) => {
@@ -108,7 +128,7 @@ export const TabController = (props: TabControllerProps) => {
 
     const displayHeader = () => {
         //get content from tabContent
-        let headerContent: any = getChoiceElement(el.tabContent || "")
+        let headerContent: any = getChoiceElement(el.tabIcon || "")
 
         const className = (tabType === "text") ? "tab-text" : "display-content"
         //calculate fontSize based on the minimal of tab's dimension (width/height)

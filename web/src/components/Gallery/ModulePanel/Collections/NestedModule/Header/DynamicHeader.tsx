@@ -226,7 +226,8 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                         onMouseEnter={() => onMouseEnter(i)}
                         onMouseLeave={onMouseLeave}>
                         <TabController
-                            editable={props.editable} el={el}
+                            editable={props.editable}
+                            el={el}
                             isHover={(isHover === i) ? true : false}
                             // isSelected={props.currIndex === el.i}
                             removeTabItem={removeTabItem}
