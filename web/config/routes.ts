@@ -92,7 +92,7 @@ export const mainRoutes = [
         name: "dashboard",
         icon: 'DashboardOutlined',
         path: "/gallery/dashboard",
-        component: "./gallery/Dashboard"
+        component: "./Welcome"
       },
     ]
   },

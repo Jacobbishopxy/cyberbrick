@@ -65,7 +65,7 @@ const EditorField = (props: ModuleEditorField) => {
     // })
     // }, [saveCount])
     return (
-        <div id={NSMid}>
+        <div id={NSMid} style={{ height: '100%' }}>
             <NestedSimpleModuleEditor
                 content={props.content}
                 setContent={props.setContent}

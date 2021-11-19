@@ -45,10 +45,11 @@ const newElementInLayout = (elements: Elements, element: Element): Elements => {
 
 const updateElementInLayout = (elements: Elements, rawLayout: Layout[]): Elements => {
     console.log(40, elements, rawLayout)
-    return _.zip(elements, rawLayout).map(zItem => {
+    const zip = _.zip(elements, rawLayout)
+    return zip.map(zItem => {
         const ele: Element = zItem[0]!
         const rawEle: Layout = zItem[1]!
-
+        console.log(40, elements, rawLayout, ele, rawEle, zip)
         return {
             ...ele,
             x: rawEle.x,
@@ -271,8 +272,12 @@ export const ContainerTemplate =
 
         // 把elements数组重写。
         const onLayoutChange = (layout: Layout[]) => {
-            console.log(258, layout)
-            props.setElements(updateElementInLayout(noSubmoduleElements, layout))
+            console.log(258, noSubmoduleElements, layout)
+            props.setElements((allElements) => {
+                const noSE = updateElementInLayout(noSubmoduleElements, layout)
+                const SE = allElements.filter((e) => e.isSubmodule)
+                return [...noSE, ...SE]
+            })
         }
 
         const [noSubmoduleElements, setNoSubmoduleElements] = useState<any>([])

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button, message, Modal, Tabs } from "antd"
 import { HotTable } from "@handsontable/react"
 import { ProFormCheckbox, StepsForm } from "@ant-design/pro-form"
@@ -17,7 +17,7 @@ import * as DataType from "../../../GalleryDataType"
 import { fileExtract, fileExtractUrl } from "../../../Misc/FileUploadConfig"
 
 import "handsontable/dist/handsontable.full.css"
-
+import './styles.less'
 
 const viewOptionOptions = [
     {
@@ -39,6 +39,11 @@ const EditorField = (props: ModuleEditorField) => {
     const [uploadVisible, setUploadVisible] = useState<boolean>(false)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
+    useEffect(() => {
+        setContent(() => props.content)
+    }, [props.content])
+
+    //【上传出现后的model确定事件】点击事件
     const saveContentData = (data: any) => {
         const ctt = content ? {
             ...content,
@@ -47,11 +52,16 @@ const EditorField = (props: ModuleEditorField) => {
             date: DataType.today(),
             data: { source: data },
         }
-        setContent(ctt)
+        if (props.setContent) {
+            console.log(53, ctt)
+            props.setContent(ctt)
+        }
     }
 
+    // 【调教】点击事件
     const saveContent = async (config: Record<string, any>) => {
         if (content) {
+            console.log(60, content)
             const c = config as XlsxTableConfigInterface
             const ctt = {
                 ...content,
@@ -59,7 +69,6 @@ const EditorField = (props: ModuleEditorField) => {
                 config: { ...c, hideOptions: c.hideOptions || [] }
             }
             if (props.setContent) {
-
                 props.setContent(ctt)
             }
             message.success("Updating succeeded!")
@@ -101,6 +110,7 @@ const EditorField = (props: ModuleEditorField) => {
                     </Modal>
                 }
             >
+                {/* 第一步 */}
                 <StepsForm.StepForm
                     name="data"
                     title={intl.formatMessage({ id: "gallery.component.general43" })}
@@ -121,6 +131,7 @@ const EditorField = (props: ModuleEditorField) => {
                     />
                 </StepsForm.StepForm>
 
+                {/* 第二步 */}
                 <StepsForm.StepForm
                     name="option"
                     title={intl.formatMessage({ id: "gallery.component.general56" })}
@@ -144,7 +155,7 @@ export const genHotTableProps = (height: number | undefined, hideOptions?: strin
         settings: {
             width: "100%",
             // height: height ? height - 50 : undefined
-            height: '99%'
+            height: '100%'
         },
         colHeaders,
         rowHeaders,
@@ -164,9 +175,14 @@ const PresenterField = (props: ModulePresenterField) => {
     const multiS = (data: Record<string, any[]>) => {
         const d: any[] = []
         _.mapValues(data, (v: any[], k: string) => {
+            console.log(178, data, v)
             d.push(
-                <Tabs.TabPane tab={k} key={k}>
-                    <HotTable key={k}
+                <Tabs.TabPane tab={k}
+                    style={{ height: '100%' }}
+                    key={k}>
+                    <HotTable
+
+                        key={k}
                         {...genHotTableProps(props.contentHeight, props.content?.config?.hideOptions)}
                         data={v}
                     />
@@ -175,10 +191,11 @@ const PresenterField = (props: ModulePresenterField) => {
             )
         })
 
-        return <Tabs tabPosition="bottom">{d}</Tabs>
+        return <Tabs tabPosition="bottom" style={{ height: '100%' }}>{d}</Tabs>
     }
 
     const view = (content: DataType.Content) => {
+        console.log(185, content)
         const d = _.keys(content?.data?.source)
         // console.log(content?.data, d?.length)
         if (d && d.length != 0) {
