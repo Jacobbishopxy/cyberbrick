@@ -305,19 +305,17 @@ export const Dashboard = (props: DashboardProps) => {
         /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh])
 
     return (
-        <EditableContext.Provider value={edit}>
-            <DashboardContext.Provider value={{
-                fetchElementContent,
-                saveTemplate: props.saveTemplate,
-                updateElements: props.updateElements, setDashboardInfoInNewestContent,
-                allContent: updatedContents,
-                setAllContent: setUpdatedContents
-            }}>
-                {genController}
-                {genContainer}
-            </DashboardContext.Provider>
 
-        </EditableContext.Provider>
+        <DashboardContext.Provider value={{
+            fetchElementContent,
+            saveTemplate: props.saveTemplate,
+            updateElements: props.updateElements, setDashboardInfoInNewestContent,
+            allContent: updatedContents,
+            setAllContent: setUpdatedContents
+        }}>
+            {genController}
+            {genContainer}
+        </DashboardContext.Provider>
     )
 }
 

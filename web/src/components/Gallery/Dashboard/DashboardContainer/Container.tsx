@@ -3,7 +3,7 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, useContext } from "react"
-import { Empty, Tabs } from "antd"
+import { Empty, message, Tabs, Modal } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../../GalleryDataType"
@@ -80,7 +80,32 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     const [elements, setElements] = useState<DataType.Element[]>([])
     const dashboardContextProps = useContext(DashboardContext)
 
-    const tabOnChange = (id?: string) => setSelectedPane(getSelectedPane(templates, id))
+    //是否跳转tab的modal的显隐变量
+    const [isTabModal, setIsTabModal] = useState(false)
+
+    // 变化中的维度id，目前只作用于保存是否跳转的维度的id。
+    const [templateChangingId, setTemplateChangingId] = useState<string | undefined>('')
+    //根据维度id，获取维度信息。
+    const tabOnChange = (id?: string) => {
+        console.log(86, ctRef.current)
+        setTemplateChangingId(id);
+        if (ctRef.current) {
+            if (ctRef.current.editable) {
+                console.log(90)
+                setIsTabModal(true)
+            } else {
+                setSelectedPane(getSelectedPane(templates, id))
+            }
+        } else {
+            setSelectedPane(getSelectedPane(templates, id))
+        }
+    }
+
+    function onOk() {
+        console.log(106, templateChangingId)
+        setSelectedPane(getSelectedPane(templates, templateChangingId))
+        setIsTabModal(false)
+    }
 
     //elements更新时，更新contents，目前只有删除会起作用，添加和修改都无法更新contents，因为只有删除才知道要对contents做什么具体的操作。
     // 更新逻辑：allContent中的name不在elemens中就代表已经被删除。
@@ -257,24 +282,36 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
             </span>
         }
     >
-
     </Empty>
 
     return useMemo(
         () => {
             console.log(264, DisplayTabPane)
             return (
-                <Tabs
-                    onChange={tabOnChange}
-                    activeKey={selectedPane?.id}
-                    destroyInactiveTabPane
-                >
-                    {
-                        templates.length ? DisplayTabPane : EmptyPane
-                    }
-                </Tabs>
+                <div>
+                    <Tabs
+                        onChange={tabOnChange}
+                        activeKey={selectedPane?.id}
+                        destroyInactiveTabPane
+                    // onTabClick={tabOnClick}
+                    >
+                        {
+                            templates.length ? DisplayTabPane : EmptyPane
+                        }
+                    </Tabs>
+                    <Modal
+                        // focusTriggerAfterClose={false}
+                        title={'提示'}
+                        visible={isTabModal}
+                        onOk={onOk}
+                        onCancel={() => { setIsTabModal(false) }}
+                        closable={false}
+                    >
+                        <p>内容未保存，是否离开？</p>
+                    </Modal>
+                </div>
             )
-        }, [props.dashboardInfo, template, elements])
+        }, [props.dashboardInfo, template, elements, isTabModal])
 })
 
 Container.defaultProps = {} as Partial<ContainerProps>
