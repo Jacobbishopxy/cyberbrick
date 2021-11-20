@@ -15,6 +15,9 @@ export interface DashboardContextType {
     allContent?:DataType.Content[]
     //最外层的contents的set
     setAllContent?:React.Dispatch<React.SetStateAction<DataType.Content[]|undefined>>
+    //右上角的编辑变量
+    edit?:boolean
+    setEdit?:React.Dispatch<React.SetStateAction<boolean>>
     //最外层contents的暂存值的set
     // setNewestContent?:React.Dispatch<React.SetStateAction<DataType.Content>>
 }

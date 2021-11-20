@@ -10,7 +10,6 @@ import RGL, { Layout, WidthProvider } from "react-grid-layout"
 
 import * as DataType from "../../GalleryDataType"
 import { TemplateElement, ContainerElementRef } from "./TemplateElement"
-import { EditableContext } from "../Dashboard"
 import { useIntl } from "umi"
 import { template } from "@umijs/deps/compiled/lodash"
 
@@ -100,7 +99,6 @@ export interface ContainerTemplateProps {
 export interface ContainerTemplateRef {
     newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
     saveElements: () => DataType.Element[]
-    editable: boolean
 }
 
 /**
@@ -108,10 +106,11 @@ export interface ContainerTemplateRef {
  */
 export const ContainerTemplate =
     forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
-        const teRefs = useRef<ContainerElementRef[]>([])
-        const editable = useContext(EditableContext)
-        const intl = useIntl()
         const dashboardContextProps = useContext(DashboardContext)
+        const teRefs = useRef<ContainerElementRef[]>([])
+        // const editable = useContext(DashboardContext)
+        // const [editable, setEditable] = useState(dashboardContextProps.e)
+        const intl = useIntl()
         // const [elements, setElements] = useState<Elements>(props.elements)
 
         console.log(101, props)
@@ -200,7 +199,7 @@ export const ContainerTemplate =
 
         const saveElements = () => props.elements
 
-        useImperativeHandle(ref, () => ({ newElement, saveElements, editable }))
+        useImperativeHandle(ref, () => ({ newElement, saveElements }))
 
 
         const setNewestContent = (ele: DataType.Element) => {
@@ -296,8 +295,8 @@ export const ContainerTemplate =
             <ReactGridLayout
                 {...reactGridLayoutDefaultProps}
                 onLayoutChange={onLayoutChange}
-                isDraggable={editable}
-                isResizable={editable}
+                isDraggable={dashboardContextProps?.edit}
+                isResizable={dashboardContextProps?.edit}
                 autoSize={true}
             // // // layout={props.elements.map(ele => {
 
@@ -326,7 +325,7 @@ export const ContainerTemplate =
                                 <TemplateElement
                                     parentInfo={props.parentInfo}
                                     timeSeries={ele.timeSeries}
-                                    editable={editable}
+                                    editable={dashboardContextProps?.edit}
                                     element={ele}
                                     // fetchContentFn={props.elementFetchContentFn}
                                     fetchContentDatesFn={props.elementFetchContentDatesFn}

@@ -21,7 +21,7 @@ export interface ContainerElementProps {
         templateInfo: DataType.Template
     } | undefined
     timeSeries?: boolean
-    editable: boolean
+    editable?: boolean
     element: DataType.Element
     shouldStartFetch: number
     isNested?: boolean

@@ -28,16 +28,22 @@ export interface ModuleControllerProps {
     dashboardOnSelect: (id: string, isCopy: boolean) => Promise<DataType.Dashboard>
     onAddModule: (name: string, timeSeries: boolean, value: DataType.ElementType) => void
     onCopyTemplate: (originTemplateId: string) => void
-    onEditTemplate: (value: boolean) => void
+    edit: boolean
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>
     onSaveTemplate: (shouldSaveTemplateAndContents: boolean) => Promise<void>
 }
 
 export const Controller = (props: ModuleControllerProps) => {
     const intl = useIntl()
-    const [edit, setEdit] = useState<boolean>(false)
+    // const [edit, setEdit] = useState<boolean>(props.edit)
     const [addModuleModalVisible, setAddModuleModalVisible] = useState<boolean>(false)
 
-    useEffect(() => props.onEditTemplate(edit), [edit])
+    // useEffect(() => {
+    //     console.log(42, edit)
+    //     props.onEditTemplate(() => edit)
+    // }, [edit])
+
+
 
     useEffect(() => {
         if (props.initialSelected && props.initialSelected[1])
@@ -51,7 +57,7 @@ export const Controller = (props: ModuleControllerProps) => {
         () => {
             //exit: set edit to false; save: set edit to true and allow further edition.
             // Exit:设置edit为false; 保存:设置edit为true并允许进一步编辑。  
-            const quit = () => exist ? setEdit(false) : undefined
+            const quit = () => exist ? props.setEdit(false) : undefined
             return Modal.confirm({
                 title: intl.formatMessage({ id: "gallery.component.dashboard-controller1" }),
                 icon: <ExclamationCircleOutlined />,
@@ -117,7 +123,7 @@ export const Controller = (props: ModuleControllerProps) => {
         <Button
             type="primary"
             size="small"
-            onClick={() => setEdit(true)}
+            onClick={() => props.setEdit(true)}
             disabled={!props.canEdit}
         >
             <SettingOutlined />
@@ -142,7 +148,7 @@ export const Controller = (props: ModuleControllerProps) => {
                 top: '70px',
                 zIndex: 10
             }}>
-                {edit ? editMode : idleMode}
+                {props.edit ? editMode : idleMode}
             </div>
         </SpaceBetween>
     )

@@ -283,9 +283,10 @@ export const Dashboard = (props: DashboardProps) => {
         onSelectChange={setSelected}
         onAddModule={onAddModule}
         onCopyTemplate={onCopyTemplate}
-        onEditTemplate={setEdit}
+        edit={edit}
+        setEdit={setEdit}
         onSaveTemplate={onRefresh}
-    />, [canEdit, dashboardCategories, onRefresh])
+    />, [canEdit, dashboardCategories, onRefresh, edit])
 
     const genContainer = useMemo(() => selectedDashboard ?
         <Container
@@ -301,6 +302,7 @@ export const Dashboard = (props: DashboardProps) => {
             fetchTableListFn={props.fetchTableList}
             fetchTableColumnsFn={props.fetchTableColumns}
             fetchQueryDataFn={fetchQueryData}
+
             ref={cRef}
         /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh])
 
@@ -311,7 +313,9 @@ export const Dashboard = (props: DashboardProps) => {
             saveTemplate: props.saveTemplate,
             updateElements: props.updateElements, setDashboardInfoInNewestContent,
             allContent: updatedContents,
-            setAllContent: setUpdatedContents
+            setAllContent: setUpdatedContents,
+            edit,
+            setEdit
         }}>
             {genController}
             {genContainer}
