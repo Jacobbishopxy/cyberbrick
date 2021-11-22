@@ -195,8 +195,7 @@ export class ElementService {
    * @returns Element[], with ids (in create case)
    */
   async saveElements(elements: Element[]) {
-    const newElements = elements.map(e => this.repo.create(e))
-    return this.repo.save(newElements)
+    // const newElements = elements.map(e => this.repo.create(e))
+    return this.repo.save(elements)
   }
 }
-
