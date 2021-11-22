@@ -2,13 +2,15 @@
  * Created by Jacob Xie on 1/29/2021
  */
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
 import { Cascader } from "antd"
 import { CascaderOptionType, CascaderValueType } from "antd/lib/cascader"
 
 import * as DataType from "../../GalleryDataType"
+import IsSavemodal from "../IsSavemodal"
+import { isSaveModalRef } from "../IsSavemodal"
 
-
+import { DashboardContext } from "../DashboardContext"
 /**
  * initValue?: holding previous selected value (often used with local storage)
  * isMainController?: if is main controller, cascader is able to generate 2nd level text
@@ -38,6 +40,8 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     const [options, setOptions] = useState<CascaderOptionType[]>()
     const [selected, setSelected] = useState<string>()
 
+    // 
+
     useEffect(() => setInitValue(props.initValue), [props.initValue])
 
     useEffect(() => {
@@ -55,7 +59,24 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
     }, [props.categories])
 
+    const dashboardContextProps = useContext(DashboardContext)
+    const [modalData, setModalData] = useState<any>()
+    const modalRef = useRef<isSaveModalRef>()
     const onChange = (value: CascaderValueType) => {
+        console.log(65, dashboardContextProps)
+        if (dashboardContextProps?.edit) {
+            if (modalRef.current) {
+                modalRef.current.setIsModal(true)
+            }
+            setModalData({
+                value
+            })
+        } else {
+            switchCompany({ value })
+        }
+    }
+
+    function switchCompany({ value }) {
         const v = value as string[]
         setInitValue(v)
         if (props.onChange) props.onChange(v)
@@ -65,8 +86,10 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
             else
                 setSelected(value[1] as string)
         }
+        if (dashboardContextProps?.setEdit) {
+            dashboardContextProps?.setEdit(() => false)
+        }
     }
-
     const setOptionsLevel2 = async (cat?: string) => {
         if (cat) {
             const category = await props.categoryOnSelect(cat)
@@ -129,16 +152,25 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
         }
     }
 
-    return <Cascader
-        value={initValue}
-        options={options}
-        loadData={loadData}
-        onChange={onChange}
-        changeOnSelect
-        style={props.style}
-        size={props.size || "middle"}
+    return (
+        <div>
+            <Cascader
+                value={initValue}
+                options={options}
+                loadData={loadData}
+                onChange={onChange}
+                // changeOnSelect
+                style={props.style}
+                size={props.size || "middle"}
 
-    />
+            />
+            <IsSavemodal
+                modalData={modalData}
+                onOk={switchCompany}
+                ref={modalRef}
+            ></IsSavemodal>
+        </div >
+    )
 }
 
 SelectorPanel.defaultProps = {

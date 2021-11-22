@@ -128,7 +128,9 @@ export default {
   "gallery.component.add-module-modal8": "模块名重复，请重新命名",
 
   "gallery.component.dashboard-controller1": "保存现有布局以及内容？",
-  "gallery.component.dashboard-controller2": "模块和内容保存成功！",
+  "gallery.component.dashboard-controller2": "取消所有修改并退出？",
+  "gallery.component.dashboard-controller3": "模块和内容保存成功！",
+  "gallery.component.dashboard-controller4": "退出成功！",
 
   "gallery.component.dashboard-container1": "请选择一个仪表板",
   "gallery.component.dashboard-container2": "界面列表为空，请前往",

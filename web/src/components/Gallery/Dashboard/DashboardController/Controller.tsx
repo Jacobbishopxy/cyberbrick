@@ -53,26 +53,31 @@ export const Controller = (props: ModuleControllerProps) => {
     const quitAddModule = () => setAddModuleModalVisible(false)
 
     //模板保存事件。
-    const saveTemplate = (exist: boolean) =>
+    const saveTemplate = (isSave: boolean) =>
         () => {
             //exit: set edit to false; save: set edit to true and allow further edition.
             // Exit:设置edit为false; 保存:设置edit为true并允许进一步编辑。  
-            const quit = () => exist ? props.setEdit(false) : undefined
+            // const quit = () => isSave ? props.setEdit(false) : undefined
             return Modal.confirm({
-                title: intl.formatMessage({ id: "gallery.component.dashboard-controller1" }),
+                title: isSave
+                    ? intl.formatMessage({ id: "gallery.component.dashboard-controller1" })
+                    : intl.formatMessage({ id: "gallery.component.dashboard-controller2" }),
                 icon: <ExclamationCircleOutlined />,
-                onOk: () => props.onSaveTemplate(true)
-                    .then(() => {
-                        message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller2" }))
-                        quit()
+                onOk: () => {
+                    props.onSaveTemplate(isSave).then(() => {
+                        isSave
+                            ? message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller3" }))
+                            : message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller4" }))
+
+                        props.setEdit(false)
                     })
-                    .catch(err => {
-                        message.error(`Error: ${err}`)
-                        quit()
-                    })
-                ,
+                        .catch(err => {
+                            message.error(`Error: ${err}`)
+                            props.setEdit(true)
+                        })
+                },
                 onCancel: () => {
-                    exist && props.onSaveTemplate(false).then(quit)
+                    // isSave && props.onSaveTemplate(false).then(quit)
                 },
             })
         }
@@ -91,7 +96,7 @@ export const Controller = (props: ModuleControllerProps) => {
                 <Button
                     type="primary"
                     size="small"
-                    onClick={saveTemplate(false)}
+                    onClick={saveTemplate(true)}
                 >
                     <CheckCircleOutlined />
                     <FormattedMessage id="gallery.component.general11" />
@@ -99,7 +104,7 @@ export const Controller = (props: ModuleControllerProps) => {
                 <Button
                     size="small"
                     danger
-                    onClick={saveTemplate(true)}
+                    onClick={saveTemplate(false)}
                 >
                     <PoweroffOutlined />
                     <FormattedMessage id="gallery.component.general12" />
