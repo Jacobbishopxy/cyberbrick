@@ -67,7 +67,7 @@ export interface ConvertRefProps {
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
   parentInfo:object
-  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>boolean
   setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }
 
@@ -88,6 +88,6 @@ export interface ConvertProps {
   fetchContentDatesFn?: (id: string, markName?: string) => Promise<DataType.Element>
   setContent?:React.Dispatch<React.SetStateAction<DataType.Content|undefined>>
   parentInfo?:object
-  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>void
+  addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) =>boolean
   setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
 }

@@ -8,6 +8,7 @@ import {LineBar} from "./LineBar"
 import {Scatter} from "./Scatter"
 import {LineScatter} from "./LineScatter"
 import {Pie} from "./Pie"
+import {PriceChart} from './PriceChart'
 
 export {
   Line,
@@ -15,5 +16,6 @@ export {
   LineBar,
   Scatter,
   LineScatter,
-  Pie
+  Pie,
+  PriceChart
 }

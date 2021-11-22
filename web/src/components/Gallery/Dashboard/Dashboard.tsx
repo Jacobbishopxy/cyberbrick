@@ -67,10 +67,21 @@ const dashboardContentsUpdate = (content: DataType.Content, contents: DataType.C
     let newContents
     //修改只是覆盖，增加是合并
     if (Array.isArray(contents)) {
-        if (targetContent)
-            newContents = contents.map(i => i.element?.name === content.element?.name && i.date === content.date ? content : i)
-        else
+        if (targetContent) {
+            const date = content?.date?.slice(0, 10)
+            newContents = contents.map(i => {
+                const date_s = i.date?.slice(0, 10)
+                return i.element?.name === content.element?.name && date_s === date ? content : i
+
+            })
+            console.log(75, newContents)
+        }
+
+        else {
+
             newContents = [...contents, content]
+            console.log(75, newContents)
+        }
     }
     return newContents
 }
@@ -143,9 +154,9 @@ export const Dashboard = (props: DashboardProps) => {
         }
     }, [newestContent])
 
-    useEffect(() => {
-        console.log(145, updatedContents)
-    }, [updatedContents])
+    // useEffect(() => {
+    //     console.log(145, updatedContents)
+    // }, [updatedContents])
 
     useEffect(() => {
         if (props.selectedOnChange && selected && selectedTemplateId)

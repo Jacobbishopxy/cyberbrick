@@ -31,7 +31,7 @@ export class ModuleGenerator {
             const prRef = useRef<any>()
             useImperativeHandle(crProps.forwardedRef, () => ({
                 edit: setEditable,
-                items: prRef.current?.getTabItem
+                items: prRef.current?.getTabItem //无用，可以删除
             }))
 
             //为了使用到presenter里的数据

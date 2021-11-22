@@ -29,7 +29,6 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         const saveContentData = (data: Record<string, any>) => {
             const ctt = {
                 ...content!,
-                date: DataType.today(),
                 storageType: DataType.StorageType.PG,
                 data
             }
@@ -42,9 +41,15 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
 
         const saveContent = async (values: Record<string, any>) => {
+            console.log(46, values)
             if (content) {
+                console.log(466, content)
                 const ctt = { ...content, config: values, databaseType: DataType.StorageType.PG, }
-                props.setContent(ctt)
+                if (props.setContent) {
+                    console.log(4666, ctt)
+                    props.setContent(ctt)
+                }
+
                 message.success("Updating succeeded!")
             } else {
                 message.warn("Updating failed! dataset and options are required!")
@@ -84,14 +89,18 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                         </Modal>
                     }
                 >
+                    {/* 第一步 */}
                     <StepsForm.StepForm
                         name="data"
                         title={intl.formatMessage({ id: "gallery.component.general43" })}
                         onFinish={dataSelectOnFinish}
                     >
+
+                        {/* 【选择数据集】modal */}
                         <ProForm.Group
                             title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3" />}
                         >
+
                             <Space align="baseline">
                                 <QuerySelectorModal
                                     trigger={
@@ -116,6 +125,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                             </Space>
                         </ProForm.Group>
 
+                        {/* 数据修整 */}
                         <ProForm.Group
                             title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5" />}
                         >
@@ -123,6 +133,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                         </ProForm.Group>
                     </StepsForm.StepForm>
 
+                    {/*第二步  */}
                     <StepsForm.StepForm
                         name="display"
                         title={intl.formatMessage({ id: "gallery.component.general43" })}
@@ -142,14 +153,18 @@ export const generateCommonPresenterField =
     // todo: fix `config: any`
     (chartOptionGenerator: ChartOptionGenerator) =>
         (props: ModulePresenterField) => {
-
+            console.log(151, props.content)
             const [data, setData] = useState<any[]>()
 
             useEffect(() => {
                 if (props.fetchQueryData && props.content) {
                     //validate content
                     if (!_.isEmpty(props.content.data) && DataType.PgContentValidation(props.content.data))
-                        props.fetchQueryData(props.content).then(res => setData(res))
+                        props.fetchQueryData(props.content).then(res => {
+                            console.log(159, res)
+                            setData(res)
+                        }
+                        )
                 }
             }, [props.content])
 
@@ -157,7 +172,7 @@ export const generateCommonPresenterField =
             if (data && props.content && props.content.config)
                 return <ReactEcharts
                     option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
-                    style={{ height: props.contentHeight }}
+                    style={{ height: '100%', overflow: 'auto' }}
                     theme={props.content.config.style || "default"}
                 />
             return <></>

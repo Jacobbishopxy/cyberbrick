@@ -19,6 +19,7 @@ import {
     Scatter,
     LineScatter,
     Pie,
+    PriceChart
 } from "./graph"
 
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
@@ -46,7 +47,7 @@ export interface ModuleSelectorProps {
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
     //submodule专用，set最外层contents的暂存之前写入子模块信息
     setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
-    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => boolean
 }
 
 export const collectionSelector = (moduleType: DataType.ElementType): React.FC<ModuleSelectorProps> =>
@@ -64,6 +65,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             ref={props.forwardedRef}
         />
 
+        // 文章
         const text = <Text
             onSave={props.onSave}
             initialValue={props.initialValue}
@@ -76,6 +78,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             ref={props.forwardedRef}
         />
 
+        // excel
         const xlsxTable = <XlsxTable
             onSave={props.onSave}
             initialValue={props.initialValue}
@@ -125,6 +128,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             ref={props.forwardedRef}
         />
 
+        // 折线图
         const line = <Line
             onSave={props.onSave}
             initialValue={props.initialValue}
@@ -248,6 +252,17 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
+
+        const priceChart = <PriceChart
+            onSave={props.onSave}
+            initialValue={props.initialValue}
+            editable={props.editable}
+            content={props.content}
+            contentHeight={props.contentHeight}
+            setContent={props.setContent}
+            // // styling={props.styling}
+            ref={props.forwardedRef}
+        />
         switch (moduleType) {
             case DataType.ElementType.EmbedLink:
                 return defaultModule
@@ -277,6 +292,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
                 return nestedModule
             case DataType.ElementType.FieldHeader:
                 return fieldHeader
+            case DataType.ElementType.PriceChart:
+                return priceChart
             default:
                 return defaultModule
         }

@@ -298,6 +298,12 @@ export const TemplateElement =
                         date: DataType.today()
 
                     }
+                case DataType.ElementType.Line:
+                    initContent = {
+                        data: {},
+                        config: {},
+                        date: DataType.today()
+                    }
                 default:
                     initContent = {
                         data: {},

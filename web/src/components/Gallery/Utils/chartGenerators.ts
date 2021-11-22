@@ -71,7 +71,9 @@ const generateSeries = (config: CartesianCoordSysChartConfig, chartType: Mixin):
         }
       }
 
+    //   散点图
       if (chartType === "scatter") {
+         
         const sizeCol = scatterMap[c]
         series.push({
           ...ss,
@@ -100,7 +102,9 @@ const generateSeries = (config: CartesianCoordSysChartConfig, chartType: Mixin):
           }) :
           series.push({...ss, type: "line"})
       } else
-        series.push({...ss, type: chartType})
+      {
+          series.push({...ss, type: chartType})
+      }
 
       legend.push(c)
     })
@@ -198,7 +202,8 @@ export const generateCommonOption = (chartType: Mixin) =>
       d = data.map(i => transformRowDataForChart(i, display))
     } else
       d = data
-
+    console.log(201,data,series,legend,d,generateXAxis(config), generateYAxis(config))
+    console.log(2011,generateVisualMap(d, config, chartType))
     return {
       tooltip: {},
       legend: {data: legend},

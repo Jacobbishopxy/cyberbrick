@@ -24,18 +24,21 @@ export default () => {
 
 
     const initialValue = query.get("anchor")
-    if (initialValue) {
-        try {
-            const pi = JSON.parse(initialValue)
-            setInitialSelected(pi)
-        } catch { }
-    } else {
-        const i = ls.get(lsKey)
-        if (i) setInitialSelected(JSON.parse(i.data))
-    }
+
+    useEffect(() => {
+        if (initialValue) {
+            try {
+                const pi = JSON.parse(initialValue)
+                setInitialSelected(pi)
+            } catch { }
+        } else {
+            const i = ls.get(lsKey)
+            if (i) setInitialSelected(JSON.parse(i.data))
+        }
+    }, [])
 
     const selectedOnChange = (v?: string[]) => {
-        if (v) ls.add(lsKey, JSON.stringify(v))
+        // if (v) ls.add(lsKey, JSON.stringify(v))
     }
 
     const fetchCategories = () =>
