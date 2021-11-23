@@ -102,8 +102,8 @@ export class ContentService {
     return []
   }
 
+
   /**
-   * TODO: WARNING: This function assumes that all content with "mongodb" as storage
    * type will fetch data from 3rd party library (in this case mongodb)
    * @param contentId content's id in postgres
    * @returns the portion of content.data that stored in 3rd party library
@@ -117,10 +117,12 @@ export class ContentService {
   }
 
   /**
-   * save content to pg. 
+   * deprecated! Nested module information no longer save in Content, instead it saves Element information
+   *
+   * save content to pg.
    * 1. If element type is nestedSimple, first save all its modules' content
    *    to 3rd party and/or to postgres. Then update the module to be a
-   *    pointer to the actual content inside postgres. Finally, save the 
+   *    pointer to the actual content inside postgres. Finally, save the
    *    nested module content to postgres.
    * 2. Otherwise, directly save to 3rd party and/or to postgres
    * @param name category name
@@ -131,9 +133,9 @@ export class ContentService {
   async saveNestedOrSimpleContent(name: string, type: string, content: Content) {
     switch (type) {
       case common.ElementType.NestedSimpleModule:
-        /* content type: 
+        /* content type:
         currIndex: string (used to indicate the tab when entering)
-        tabItem: tabItem[]: 
+        tabItem: tabItem[]:
         for each item:
             id: i
             layout attribute: x y w h
