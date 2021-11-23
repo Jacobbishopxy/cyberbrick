@@ -172,12 +172,15 @@ export const ContainerTemplate =
                     height = 18
                     width = 24
                     break
+                case DataType.ElementType.PriceChart:
+                    height = 5
+                    width = 10
                 default:
                     height = 20;
                     width = 12;
                     break;
             }
-            console.log(156, props.elements, name)
+            console.log(156, props.elements, elementType, name)
             if (props.elements.map(e => e.name).includes(name)) {
                 message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
                 return false

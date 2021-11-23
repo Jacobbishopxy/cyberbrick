@@ -275,7 +275,7 @@ export const TemplateElement =
 
         //根据模块类型初始化content
         function getInitContent(date?: string) {
-            console.log(132)
+            console.log(132, props.element.type)
             // if (date) {
             let initContent: DataType.Content;
 
@@ -303,6 +303,16 @@ export const TemplateElement =
                         data: {},
                         config: {},
                         date: DataType.today()
+                    }
+                case DataType.ElementType.PriceChart:
+                    initContent = {
+                        data: {
+                            minPrice: "￥1",
+                            topPrice: "￥99",
+                            medianPrice: "￥49",
+                            targetPrice: "￥60"
+                        },
+                        date: DataType.today(),
                     }
                 default:
                     initContent = {

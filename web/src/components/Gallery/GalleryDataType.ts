@@ -126,7 +126,6 @@ export enum ElementType {
   Box = "box",
   Tree = "tree",
   TreeMap = "treeMap",
-
   NestedModule = "nestedSimpleModule",
   FieldHeader = "fieldHeader",
   PriceChart="priceChart"

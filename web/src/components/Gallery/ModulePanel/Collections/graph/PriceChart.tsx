@@ -16,11 +16,12 @@ const EditorField = () => {
 }
 
 const PresenterField = (props: ModulePresenterField) => {
+    console.log(200, props)
     return (
         <Row className={"priceChart"} align="middle">
-            <Col span={3} offset={1} className={"minPrice"}>最低价</Col>
+            <Col span={3} offset={1} className={"minPrice"}> 123</Col>
             <Col span={16} className="section">区间</Col>
-            <Col span={3} offset={1} className={"topPrice"}>最高价</Col>
+            <Col span={3} offset={1} className={"topPrice"}>{props?.content?.data?.topPrice}</Col>
         </Row>
     )
 }
