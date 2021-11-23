@@ -86,7 +86,8 @@ export enum ElementType {
   Tree = "tree",
   TreeMap = "treeMap",
   NestedSimpleModule = "nestedSimpleModule",
-  FieldHeader = "fieldHeader"
+  FieldHeader = "fieldHeader",
+  ConsensusDistribution = "consensusDistribution",
 }
 
 export enum flexTableType {
@@ -137,6 +138,8 @@ export const getElementType = (v: string) => {
       return ElementType.NestedSimpleModule
     case "fieldHeader":
       return ElementType.FieldHeader
+    case "consensusDistribution":
+      return ElementType.ConsensusDistribution
     default:
       return undefined
   }

@@ -109,6 +109,9 @@ declare namespace GalleryAPI {
     Box = "box",
     Tree = "tree",
     TreeMap = "treeMap",
+    NestedSimpleModule = "nestedSimpleModule",
+    FieldHeader = "fieldHeader",
+    ConsensusDistribution = "consensusDistribution",
   }
 
   /**
