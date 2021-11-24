@@ -81,8 +81,8 @@ export const moduleList = [
                 disabled: false,
             },
             {
-                key: DataType.ElementType.PriceChart,
-                name: <FormattedMessage id="gallery.component.type.PriceChart" />,
+                key: DataType.ElementType.ConsensusDistribution,
+                name: <FormattedMessage id="gallery.component.type.consensusDistribution" />,
                 disabled: false,
             },
             {

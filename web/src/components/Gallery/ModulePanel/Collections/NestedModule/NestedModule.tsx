@@ -65,7 +65,7 @@ const EditorField = (props: ModuleEditorField) => {
     // })
     // }, [saveCount])
     return (
-        <div id={NSMid} style={{ height: '100%' }}>
+        <div id={NSMid} style={{ height: '98%' }}>
             <NestedSimpleModuleEditor
                 content={props.content}
                 setContent={props.setContent}
@@ -144,7 +144,7 @@ const PresenterField = (props: ModulePresenterField) => {
 
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
-        <div style={{ height: '100%' }}>
+        <div style={{ height: '98%' }}>
             <NestedSimpleModuleEditor
                 content={props.content}
                 setContent={props.setContent}

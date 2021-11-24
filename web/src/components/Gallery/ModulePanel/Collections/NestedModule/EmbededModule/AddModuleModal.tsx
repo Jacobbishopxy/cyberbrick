@@ -106,15 +106,16 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
         if (selected && moduleName) {
             //如果name不重复，给外层elements添加，也给tabItem添加。
-            // if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
-            props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
-            // }
+            if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
+                props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
+                // }
 
-            //关闭modal
-            props.onQuit()
-            //使能RGL组件
-            props.setDraggable(() => true)
-            console.log(102, moduleName, timeSeries, DataType.getElementType(selected))
+                //关闭modal
+                props.onQuit()
+                //使能RGL组件
+                props.setDraggable(() => true)
+                console.log(102, moduleName, timeSeries, DataType.getElementType(selected))
+            }
 
 
         } else

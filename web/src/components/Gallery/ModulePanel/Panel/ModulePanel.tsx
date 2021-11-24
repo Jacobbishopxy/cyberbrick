@@ -362,7 +362,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
                     `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}
             >
 
+
                 {genContext}
+
             </div>
             {displayFooter()}
         </div>

@@ -296,24 +296,26 @@ export const TemplateElement =
                             source: {}
                         },
                         date: DataType.today()
-
                     }
+                    break;
                 case DataType.ElementType.Line:
                     initContent = {
                         data: {},
                         config: {},
                         date: DataType.today()
                     }
-                case DataType.ElementType.PriceChart:
+                    break;
+                case DataType.ElementType.ConsensusDistribution:
                     initContent = {
                         data: {
-                            minPrice: "￥1",
-                            topPrice: "￥99",
-                            medianPrice: "￥49",
-                            targetPrice: "￥60"
+                            minPrice: "最低价",
+                            topPrice: "最高价",
+                            medianPrice: "中位价",
+                            targetPrice: "期望价"
                         },
                         date: DataType.today(),
                     }
+                    break
                 default:
                     initContent = {
                         data: {},
@@ -330,6 +332,7 @@ export const TemplateElement =
                     initContent.date = ''
                 }
             }
+            console.log(333, props.isNested, initContent, date)
             console.log('setContent', props.isNested, initContent, date)
             return initContent
             // }

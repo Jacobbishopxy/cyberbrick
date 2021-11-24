@@ -87,7 +87,12 @@ const EditorField = (props: ModuleEditorField) => {
     }
 
     return (
-        <div >
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%'
+        }}>
             <Button
                 type="primary"
                 onClick={() => setVisible(true)}
@@ -205,15 +210,15 @@ const PresenterField = (props: ModulePresenterField) => {
         }
         //TODO: this is to accomodate older content type. When all
         //content.data has been saved to mongo, disregard this.
-        if (content?.data) {
-            const dNoSource = _.keys(content.data)
-            // console.log(dNoSource?.length)
-            if (dNoSource) {
-                if (dNoSource.length === 1)
-                    return singleS(content.data)
-                return multiS(content.data)
-            }
-        }
+        // if (content?.data) {
+        //     const dNoSource = _.keys(content.data)
+        //     // console.log(dNoSource?.length)
+        //     if (dNoSource) {
+        //         if (dNoSource.length === 1)
+        //             return singleS(content.data)
+        //         return multiS(content.data)
+        //     }
+        // }
         return <></>
     }
     return props.content && props.content.data

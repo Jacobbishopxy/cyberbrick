@@ -19,7 +19,7 @@ import {
     Scatter,
     LineScatter,
     Pie,
-    PriceChart
+    ConsensusDistribution
 } from "./graph"
 
 import { NestedSimpleModule } from "./NestedModule/NestedModule"
@@ -253,7 +253,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             ref={props.forwardedRef}
         />
 
-        const priceChart = <PriceChart
+        const consensusDistribution = <ConsensusDistribution
             onSave={props.onSave}
             initialValue={props.initialValue}
             editable={props.editable}
@@ -292,8 +292,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
                 return nestedModule
             case DataType.ElementType.FieldHeader:
                 return fieldHeader
-            case DataType.ElementType.PriceChart:
-                return priceChart
+            case DataType.ElementType.ConsensusDistribution:
+                return consensusDistribution
             default:
                 return defaultModule
         }
