@@ -85,7 +85,7 @@ export enum ElementType {
   Box = "box",
   Tree = "tree",
   TreeMap = "treeMap",
-  NestedSimpleModule = "nestedSimpleModule",
+  NestedModule = "nestedModule",
   FieldHeader = "fieldHeader",
   ConsensusDistribution = "consensusDistribution",
 }
@@ -134,8 +134,8 @@ export const getElementType = (v: string) => {
       return ElementType.Tree
     case "treeMap":
       return ElementType.TreeMap
-    case "nestedSimpleModule":
-      return ElementType.NestedSimpleModule
+    case "nestedModule":
+      return ElementType.NestedModule
     case "fieldHeader":
       return ElementType.FieldHeader
     case "consensusDistribution":
@@ -174,7 +174,7 @@ export const templatesElementsContents = `${templates}.${elements}.${contents}`
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
   ({where: [{"dashboard.name": Equal(dn)}, {name: Equal(tn)}]})
 
-export const shouldQueryAfterRecevingContent = (v: string, content: Content) => {
+export const shouldQueryAfterReceivingContent = (v: string, content: Content) => {
   switch (v) {
     case ElementType.Text:
       return true

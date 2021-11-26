@@ -85,6 +85,8 @@ declare namespace GalleryAPI {
     name: string
     type: ElementType
     timeSeries: boolean
+    isSubmodule?: boolean
+    parentName?: string
     x: number
     y: number
     h: number
@@ -109,7 +111,7 @@ declare namespace GalleryAPI {
     Box = "box",
     Tree = "tree",
     TreeMap = "treeMap",
-    NestedSimpleModule = "nestedSimpleModule",
+    NestedModule = "nestedModule",
     FieldHeader = "fieldHeader",
     ConsensusDistribution = "consensusDistribution",
   }

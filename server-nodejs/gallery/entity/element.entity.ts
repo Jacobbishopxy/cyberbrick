@@ -48,6 +48,11 @@ export class Element {
   @Column("bool", {nullable: true})
   isSubmodule!: boolean
 
+  // this is used to determine whether the element is sub-element of another element
+  // if it is, the element will be rendered beneath his parent element
+  @Column("varchar", {nullable: true})
+  parentName!: string
+
   @Column("bigint", {nullable: false})
   x!: number
 

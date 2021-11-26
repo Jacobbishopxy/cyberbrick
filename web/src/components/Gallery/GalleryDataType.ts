@@ -57,7 +57,7 @@ export interface Content {
   data: Record<string, any>
   storageType?: StorageType //3rd party database type
   config?: Record<string, any>
-  tabId?: string //only use in NestedSimpleModule, indicates the corresponding header tab id
+  tabId?: string //only use in NestedModule, indicates the corresponding header tab id
 }
 
 export interface Author {
@@ -96,6 +96,8 @@ export interface Element {
   name: string
   type: ElementType
   timeSeries: boolean
+  isSubmodule?: boolean
+  parentName?: string
   x: number
   y: number
   h: number
@@ -123,8 +125,9 @@ export enum ElementType {
   Tree = "tree",
   TreeMap = "treeMap",
 
-  NestedModule = "nestedSimpleModule",
-  FieldHeader = "fieldHeader"
+  NestedModule = "nestedModule",
+  FieldHeader = "fieldHeader",
+  ConsensusDistribution = "consensusDistribution",
 }
 
 export const getElementType = (v: string) => {
@@ -167,10 +170,12 @@ export const getElementType = (v: string) => {
       return ElementType.Tree
     case "treeMap":
       return ElementType.TreeMap
-    case "nestedSimpleModule":
+    case "nestedModule":
       return ElementType.NestedModule
     case "fieldHeader":
       return ElementType.FieldHeader
+    case "consensusDistribution":
+      return ElementType.ConsensusDistribution
     default:
       return ElementType.EmbedLink
   }

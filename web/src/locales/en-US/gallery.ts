@@ -91,7 +91,7 @@ export default {
   "gallery.component.type.box": "Box",
   "gallery.component.type.tree": "Tree",
   "gallery.component.type.treemap": "Treemap",
-  "gallery.component.type.nestedSimpleModule": "Nested Module",
+  "gallery.component.type.nestedModule": "Nested Module",
   "gallery.component.type.fieldHeader": "Separator Header",
 
   "gallery.component.category-config-table1": "Category configuration",

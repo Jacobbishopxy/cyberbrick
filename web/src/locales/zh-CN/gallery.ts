@@ -91,7 +91,7 @@ export default {
   "gallery.component.type.box": "箱图",
   "gallery.component.type.tree": "树图",
   "gallery.component.type.treemap": "矩形树图",
-  "gallery.component.type.nestedSimpleModule": "组件嵌套",
+  "gallery.component.type.nestedModule": "组件嵌套",
   "gallery.component.type.fieldHeader": "分隔标题",
 
   "gallery.component.category-config-table1": "类型配置",

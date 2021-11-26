@@ -132,7 +132,7 @@ export class ContentService {
    */
   async saveNestedOrSimpleContent(name: string, type: string, content: Content) {
     switch (type) {
-      case common.ElementType.NestedSimpleModule:
+      case common.ElementType.NestedModule:
         /* content type:
         currIndex: string (used to indicate the tab when entering)
         tabItem: tabItem[]:
