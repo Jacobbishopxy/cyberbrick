@@ -54,7 +54,7 @@ export interface ModulePanelProps {
     content?: DataType.Content
     setContent: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
     setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
-    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
+    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => boolean
 }
 
 const SKELETON_HEIGHT_TO_ROWS = 50

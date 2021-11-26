@@ -156,9 +156,11 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                 //     }
                 // })
 
-                const submodules = props.content?.data?.tabItems.filter((item) => item.name)
-                const newElements = [...elements.filter((el) => !el.isSubmodule), ...submodules]
-                console.log(138, props.content?.data?.tabItems, newElements)
+                // const submodules = props.content?.data?.tabItems.filter((item) => item.name)
+                console.log(138, elements.filter((el) => !el.isSubmodule), props.content?.data?.tabItems)
+
+                const newElements = [...elements.filter((el) => !el.isSubmodule), ...props.content?.data?.tabItems]
+
                 return newElements
             })
         }

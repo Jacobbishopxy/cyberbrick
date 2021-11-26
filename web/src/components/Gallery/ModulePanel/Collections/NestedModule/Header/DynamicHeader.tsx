@@ -59,7 +59,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
     //添加tab事件
     const onAddTabItems = () => {
-        console.log(54, props.parentInfo)
+        console.log(54, props.content)
         //!可能有bug,比如删了又添加的情况
         let length = props.content?.data?.tabItems?.length
         if (length >= 30) {
@@ -72,9 +72,11 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
         let yPos = Math.floor((length ? length : 0) / COLS_NUM)
 
         console.log(69, props.content)
+
+        // 写入tab
         if (props.setContent) {
             props.setContent((content) => {
-                console.log(70, content)
+
                 const newTabItems = [...content?.data?.tabItems, {
                     //!可能有bug,比如删了又添加的情况
                     i: +new Date(),
@@ -82,11 +84,13 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     y: yPos,
                     w: 1,
                     h: 1,
+                    isSubmodule: true,
+                    // parentName:
                     template: {
                         id: props.parentInfo.templateInfo.id
-                    }
+                    },
                 }]
-
+                console.log(70, newTabItems)
                 return {
                     ...content,
                     data: {
@@ -96,6 +100,14 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                 } as DataType.Content
             })
         }
+
+        // 写入elements
+        // if (NestedDedicatedProps?.elements) {
+
+        //     NestedDedicatedProps?.elements(){
+
+        //     }
+        // }
     }
 
     // tab删除事件，应submodule和其的content一起删除。
@@ -143,7 +155,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                         name,
                         timeSeries,
                         type: elementType,
-                        isSubmodule: true
+
                     }
                 } else {
                     return v

@@ -274,7 +274,7 @@ export const ContainerTemplate =
         // }, [props.elements])
 
 
-        // 把elements数组重写。
+        // 重新获得布局改变后的elements位置。
         const onLayoutChange = (layout: Layout[]) => {
             console.log(258, noSubmoduleElements, layout)
             props.setElements((allElements) => {
