@@ -97,6 +97,7 @@ export interface Element {
     template?: Template
     contents?: Content[]
     isSubmodule?: boolean | undefined
+    parentName?: string | undefined
     name: string
     type: ElementType
     timeSeries: boolean
@@ -126,7 +127,7 @@ export enum ElementType {
     Box = "box",
     Tree = "tree",
     TreeMap = "treeMap",
-    NestedModule = "nestedSimpleModule",
+    NestedModule = "nestedModule",
     FieldHeader = "fieldHeader",
     ConsensusDistribution = "consensusDistribution"
 }
@@ -171,7 +172,7 @@ export const getElementType = (v: string) => {
             return ElementType.Tree
         case "treeMap":
             return ElementType.TreeMap
-        case "nestedSimpleModule":
+        case "nestedModule":
             return ElementType.NestedModule
         case "fieldHeader":
             return ElementType.FieldHeader

@@ -29,7 +29,7 @@ export const moduleList = [
             },
             {
                 key: DataType.ElementType.NestedModule,
-                name: <FormattedMessage id="gallery.component.type.nestedSimpleModule" />,
+                name: <FormattedMessage id="gallery.component.type.nestedModule" />,
                 disabled: false,
             },
             {

@@ -167,7 +167,7 @@ export class ElementService {
     //   && common.shouldQueryAfterRecevingContent(elementType)
     //   && common.ContentValidationByType(elementType, content.data))
     if (content
-      && common.shouldQueryAfterRecevingContent(elementType, content)
+      && common.shouldQueryAfterReceivingContent(elementType, content)
       && common.ContentValidationByType(elementType, content.data)) {
 
       const res = await this.getQueryDataByStorageType(content)
