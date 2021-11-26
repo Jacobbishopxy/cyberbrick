@@ -40,7 +40,9 @@ export const Struct = (props: StructProps) => {
         })
     }
 
-    useEffect(storageOnSelect, [storageId])
+    useEffect(() => {
+        storageOnSelect();
+    }, [storageId])
 
     const tableOnClick = (tableName: string) => {
         if (storageId) return props.tableOnClick(storageId, tableName)
@@ -75,6 +77,7 @@ export const Struct = (props: StructProps) => {
     return (
         <Card size="small" style={{ minHeight: "90vh" }}>
             <Row>
+                {/* 表名列表 */}
                 <Col span={4}>
                     <Sider
                         id={storageId}

@@ -50,7 +50,10 @@ export const Controller = (props: ModuleControllerProps) => {
             props.dashboardOnSelect(props.initialSelected[1], false).finally()
     }, [props.initialSelected])
 
-    const quitAddModule = () => setAddModuleModalVisible(false)
+    const quitAddModule = () => {
+        setAddModuleModalVisible(false)
+        console.log(55555)
+    }
 
     //模板保存事件。
     const saveTemplate = (isSave: boolean) =>
@@ -138,6 +141,7 @@ export const Controller = (props: ModuleControllerProps) => {
 
     return (
         <SpaceBetween>
+            {/* 左边的公司select */}
             <SelectorPanel
                 initValue={props.initialSelected}
                 isMainController={true}
@@ -147,6 +151,8 @@ export const Controller = (props: ModuleControllerProps) => {
                 onChange={props.onSelectChange}
                 size="small"
             />
+
+            {/* 右边的编辑 */}
             <div style={{
                 position: 'fixed',
                 right: '50px',

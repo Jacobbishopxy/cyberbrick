@@ -27,6 +27,7 @@ export default () => {
 
     useEffect(() => {
         const initialValue = query.get("anchor")
+        console.log(30, initialValue)
         if (initialValue) {
             try {
                 const pi = JSON.parse(initialValue)

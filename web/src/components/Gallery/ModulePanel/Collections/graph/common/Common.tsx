@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, RefObject } from "react"
 import { Button, message, Modal, Space } from "antd"
 import ProForm, { StepsForm } from "@ant-design/pro-form"
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
@@ -153,9 +153,8 @@ export const generateCommonPresenterField =
     // todo: fix `config: any`
     (chartOptionGenerator: ChartOptionGenerator) =>
         (props: ModulePresenterField) => {
-            console.log(151, props.content)
-            const [data, setData] = useState<any[]>()
 
+            const [data, setData] = useState<any[]>()
             useEffect(() => {
                 if (props.fetchQueryData && props.content) {
                     //validate content
@@ -169,12 +168,19 @@ export const generateCommonPresenterField =
             }, [props.content])
 
 
-            if (data && props.content && props.content.config)
-                return <ReactEcharts
-                    option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
-                    style={{ height: '100%', overflow: 'auto' }}
-                    theme={props.content.config.style || "default"}
-                />
+            if (data && props.content && props.content.config) {
+
+                console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
+
+                return (
+                    <ReactEcharts
+                        notMerge={true}
+                        option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
+                        style={{ height: '100%', overflow: 'auto' }}
+                        theme={props.content.config.style || "default"}
+                    />
+                )
+            }
             return <></>
         }
 

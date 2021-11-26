@@ -32,6 +32,7 @@ export interface SelectorPanelProps {
     onSelectFinish?: (value: string) => void
     style?: React.CSSProperties
     size?: "large" | "middle" | "small"
+    isCopy?: boolean
 }
 
 export const SelectorPanel = (props: SelectorPanelProps) => {
@@ -62,16 +63,21 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     const dashboardContextProps = useContext(DashboardContext)
     const [modalData, setModalData] = useState<any>()
     const modalRef = useRef<isSaveModalRef>()
+
     const onChange = (value: CascaderValueType) => {
-        console.log(65, dashboardContextProps)
-        if (dashboardContextProps?.edit) {
-            if (modalRef.current) {
-                modalRef.current.setIsModal(true)
+
+        if (!props.isCopy) {
+            if (dashboardContextProps?.edit) {
+                if (modalRef.current) {
+                    modalRef.current.setIsModal(true)
+                }
+                setModalData({
+                    value
+                })
             }
-            setModalData({
-                value
-            })
-        } else {
+        }
+        else {
+            console.log(65, dashboardContextProps, props)
             switchCompany({ value })
         }
     }
@@ -86,8 +92,10 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
             else
                 setSelected(value[1] as string)
         }
-        if (dashboardContextProps?.setEdit) {
-            dashboardContextProps?.setEdit(() => false)
+        if (!props.isCopy) {
+            if (dashboardContextProps?.setEdit) {
+                dashboardContextProps?.setEdit(() => false)
+            }
         }
     }
     const setOptionsLevel2 = async (cat?: string) => {
@@ -163,11 +171,13 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
                 style={props.style}
                 size={props.size || "middle"}
             />
-            <IsSavemodal
-                modalData={modalData}
-                onOk={switchCompany}
-                ref={modalRef}
-            ></IsSavemodal>
+            {
+                !props.isCopy ? <IsSavemodal
+                    modalData={modalData}
+                    onOk={switchCompany}
+                    ref={modalRef}
+                ></IsSavemodal> : <></>
+            }
         </div >
     )
 }

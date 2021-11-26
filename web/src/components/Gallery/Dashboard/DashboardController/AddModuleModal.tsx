@@ -129,6 +129,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
                 dashboardOnSelect={props.dashboardOnSelect}
                 onSelectFinish={props.onSelectedTemplate}
                 size="small"
+                isCopy={true}
             />
             <Tooltip
                 title={<FormattedMessage id="gallery.component.add-module-modal2" />}
