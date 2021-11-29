@@ -53,6 +53,9 @@ export class Element {
   @Column("varchar", {nullable: true})
   parentName!: string
 
+  @Column("json", {nullable: true})
+  headData!: Record<string, any>
+
   @Column("bigint", {nullable: false})
   x!: number
 
