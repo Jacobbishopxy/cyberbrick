@@ -66,11 +66,9 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
     const onChange = (value: CascaderValueType) => {
 
-        if (!props.isCopy) {
-            if (dashboardContextProps?.edit) {
-                if (modalRef.current) {
-                    modalRef.current.setIsModal(true)
-                }
+        if (!props.isCopy && dashboardContextProps?.edit) {
+            if (modalRef.current) {
+                modalRef.current.setIsModal(true)
                 setModalData({
                     value
                 })

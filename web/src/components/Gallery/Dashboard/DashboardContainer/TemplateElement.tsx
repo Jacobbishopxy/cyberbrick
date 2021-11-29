@@ -281,10 +281,11 @@ export const TemplateElement =
 
             switch (props.element.type) {
                 case DataType.ElementType.NestedModule:
+                    const newTabItems = props.elements?.filter((v, i) => v.isSubmodule && v.parentName === props.element.name)
                     initContent = {
                         data: {
                             currIndex: -1,
-                            tabItems: []
+                            tabItems: newTabItems && newTabItems.length > 0 ? newTabItems : []
                         },
                         date: DataType.today()
                     }
@@ -406,7 +407,9 @@ export const TemplateElement =
                     dateList: props.isNested
                         ? NestedDedicatedProps?.content?.data?.tabItems[NestedDedicatedProps?.content?.data?.currIndex].dateList
                         : dateList,
-                    setDateList
+                    setDateList,
+                    //模块的名字
+                    elementName: props.element.name
                 }}>
                     <ModulePanel
                         parentInfo={props.parentInfo}

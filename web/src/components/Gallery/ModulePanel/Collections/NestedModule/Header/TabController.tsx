@@ -10,6 +10,7 @@ import { TabItemSelection } from "./TabItemSelection"
 import * as DataType from '@/components/Gallery/GalleryDataType'
 import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 
+import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 interface TabControllerProps {
     onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType) => void;
     editable: boolean,
@@ -17,7 +18,7 @@ interface TabControllerProps {
     className?: string | undefined,
     isHover: boolean,
     // isSelected: boolean,
-    el: tabItem,
+    el: DataType.Element,
     // setItems?: React.Dispatch<React.SetStateAction<tabItem[]>>
     // onRemoveItem?: (i: string) => void
     addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
@@ -39,24 +40,30 @@ edit corresponding module, edit current tab content, and remove current tab.
 */
 export const TabController = (props: TabControllerProps) => {
     const { el, index } = props
+    //icon的类型
     const [tabType, setTabType] = useState(el.tabType)
-    //used to store which
+    //icon的内容
     const [selected, setSelected] = useState('');
+    // 控制modal显隐
     const [addModuleModalVisible, setAddModuleModalVisible] = useState(false)
     const intl = useIntl()
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
 
-    //update items content to selected
+    //将selected, tabType写入tab和elements
     useEffect(() => {
         console.log("selected change", selected)
         if (selected && tabType) {
+            //写入tab
             if (props.setContent) {
                 props.setContent((content) => {
                     const newTabItems = content?.data?.tabItems.map((item, i) => {
                         if (i === index) {
                             return {
                                 ...item,
-                                tabIcon: selected,
-                                tabType: tabType
+                                headData: {
+                                    tabIcon: selected,
+                                    tabType: tabType
+                                }
                             }
                         } else {
                             return item
@@ -72,7 +79,29 @@ export const TabController = (props: TabControllerProps) => {
                 })
             }
 
+            // 写入elements
+            if (NestedDedicatedProps?.setElements) {
+                NestedDedicatedProps.setElements((allElements) => {
+                    const item = props.content?.data?.tabItems.find((v, i) => i === index)
+                    const newElements = allElements.map((v) => {
+                        console.log(1022, v)
+                        if (v.isSubmodule && v.name === item.name && NestedDedicatedProps.elementName === item.parentName) {
+                            return {
+                                ...v,
+                                headData: {
+                                    tabIcon: selected,
+                                    tabType: tabType
+                                }
+                            }
+                        } else {
+                            return v
+                        }
 
+                    })
+                    console.log(102, item, newElements)
+                    return newElements
+                })
+            }
         }
     }, [selected, tabType])
 
@@ -127,8 +156,9 @@ export const TabController = (props: TabControllerProps) => {
         </div>)
 
     const displayHeader = () => {
+        console.log(130, el.tabIcon)
         //get content from tabContent
-        let headerContent: any = getChoiceElement(el.tabIcon || "")
+        let headerContent: any = getChoiceElement(el.headData?.tabIcon || "")
 
         const className = (tabType === "text") ? "tab-text" : "display-content"
         //calculate fontSize based on the minimal of tab's dimension (width/height)

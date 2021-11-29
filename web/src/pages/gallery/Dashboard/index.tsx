@@ -23,9 +23,10 @@ export default () => {
     const query = useQuery()
 
 
-    const initialValue = query.get("anchor")
+
 
     useEffect(() => {
+        const initialValue = query.get("anchor")
         if (initialValue) {
             try {
                 const pi = JSON.parse(initialValue)
@@ -37,8 +38,9 @@ export default () => {
         }
     }, [])
 
+    // 将选择的维度存入本地
     const selectedOnChange = (v?: string[]) => {
-        // if (v) ls.add(lsKey, JSON.stringify(v))
+        if (v) ls.add(lsKey, JSON.stringify(v))
     }
 
     const fetchCategories = () =>

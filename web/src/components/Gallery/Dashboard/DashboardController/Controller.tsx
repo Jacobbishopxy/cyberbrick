@@ -18,6 +18,7 @@ import * as DataType from "../../GalleryDataType"
 import { SelectorPanel } from "./SelectorPanel"
 import { AddModuleModal } from "./AddModuleModal"
 
+// import { ContainerRef } from "../DashboardContainer/Container"
 export interface ModuleControllerProps {
     initialSelected?: string[]
     onSelectChange?: (v: string[]) => void
@@ -31,6 +32,7 @@ export interface ModuleControllerProps {
     edit: boolean
     setEdit: React.Dispatch<React.SetStateAction<boolean>>
     onSaveTemplate: (shouldSaveTemplateAndContents: boolean) => Promise<void>
+    // ContainerRef: React.Ref<ContainerRef>
 }
 
 export const Controller = (props: ModuleControllerProps) => {
@@ -58,9 +60,11 @@ export const Controller = (props: ModuleControllerProps) => {
     //模板保存事件。
     const saveTemplate = (isSave: boolean) =>
         () => {
+            console.log(6363)
             //exit: set edit to false; save: set edit to true and allow further edition.
             // Exit:设置edit为false; 保存:设置edit为true并允许进一步编辑。  
             // const quit = () => isSave ? props.setEdit(false) : undefined
+
             return Modal.confirm({
                 title: isSave
                     ? intl.formatMessage({ id: "gallery.component.dashboard-controller1" })
@@ -83,11 +87,14 @@ export const Controller = (props: ModuleControllerProps) => {
                     // isSave && props.onSaveTemplate(false).then(quit)
                 },
             })
+
+
         }
 
     const editMode = useMemo(() => (
         <>
             <Space>
+                {/* 新建 */}
                 <Button
                     type="primary"
                     size="small"
@@ -96,6 +103,7 @@ export const Controller = (props: ModuleControllerProps) => {
                     <PlusCircleOutlined />
                     <FormattedMessage id="gallery.component.general10" />
                 </Button>
+                {/* 保存 */}
                 <Button
                     type="primary"
                     size="small"
@@ -104,6 +112,7 @@ export const Controller = (props: ModuleControllerProps) => {
                     <CheckCircleOutlined />
                     <FormattedMessage id="gallery.component.general11" />
                 </Button>
+                {/* 退出 */}
                 <Button
                     size="small"
                     danger
@@ -122,6 +131,7 @@ export const Controller = (props: ModuleControllerProps) => {
                 copyTemplate={props.onCopyTemplate}
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
+            // saveTemplate={saveTemplate(true)}
             />
         </>
     ), [addModuleModalVisible, props.onSaveTemplate])

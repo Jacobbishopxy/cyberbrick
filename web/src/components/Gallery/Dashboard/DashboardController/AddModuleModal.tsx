@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/24/2020.
  */
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Checkbox, Divider, Input, List, message, Modal, Radio, Space, Tabs, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
@@ -13,7 +13,7 @@ import { SelectorPanel } from "./SelectorPanel"
 
 import styles from "./Common.less"
 
-
+import { DashboardContext } from '../../Dashboard/DashboardContext'
 interface ModuleSelectionListProps {
     onSelect: (value: string) => void
 }
@@ -157,7 +157,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
     const [selectedPane, setSelectedPane] = useState<string>("Module")
     const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
-
+    const dashboardContextProps = useContext(DashboardContext)
     const onSetOk = () => {
         if (selectedPane === "Module") {
             if (selected && moduleName) {
@@ -168,8 +168,21 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
         }
         if (selectedPane === "Template") {
             if (selectedTemplateId) {
-                props.onQuit()
-                props.copyTemplate(selectedTemplateId)
+                console.log(171, dashboardContextProps)
+                // 该维度下elements为空才允许copy
+                if (dashboardContextProps?.ContainerRef) {
+                    if (dashboardContextProps.ContainerRef.current) {
+                        if (dashboardContextProps.ContainerRef.current.elements.length === 0) {
+                            // props.copyTemplate(selectedTemplateId)
+
+                            props.onQuit()
+                            return
+                        }
+                    }
+                }
+                message.error('只允许拷贝至空维度下！')
+
+
             }
         }
     }

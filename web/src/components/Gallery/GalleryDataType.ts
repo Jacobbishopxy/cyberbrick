@@ -92,6 +92,7 @@ export interface CopyTemplateElements {
 }
 
 export interface Element {
+    i?: number
     id?: string
     description?: string
     template?: Template
@@ -101,6 +102,7 @@ export interface Element {
     name: string
     type: ElementType
     timeSeries: boolean
+    headData?: Record<string, any>
     x: number
     y: number
     h: number

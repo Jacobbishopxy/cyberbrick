@@ -36,6 +36,7 @@ export interface ContainerRef {
     newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
     fetchTemplate: () => void
     saveTemplate: () => DataType.Template | undefined
+    elements: DataType.Element[]
 }
 
 export interface ShouldElementFetch {
@@ -88,18 +89,13 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     //根据维度id，获取维度信息。
     const tabOnChange = (id?: string) => {
         setTemplateChangingId(id);
-        console.log(4222, dashboardContextProps?.edit)
         if (dashboardContextProps?.edit) {
             setIsTabModal(true)
         } else {
             setSelectedPane(getSelectedPane(templates, id))
         }
     }
-    useEffect(() => {
-        console.log(422, dashboardContextProps?.edit)
-    }, [dashboardContextProps?.edit])
     function onOk() {
-        console.log(106, templateChangingId)
         setSelectedPane(getSelectedPane(templates, templateChangingId))
         setIsTabModal(false)
         if (dashboardContextProps?.setEdit) {
@@ -110,6 +106,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     //elements更新时，更新contents，目前只有删除会起作用，添加和修改都无法更新contents，因为只有删除才知道要对contents做什么具体的操作。
     // 更新逻辑：allContent中的name不在elemens中就代表已经被删除。
     useEffect(() => {
+        console.log(222, elements)
         const contentNames = dashboardContextProps?.allContent?.map((content) => content.element?.name)
         const elementNames = elements.map((el) => el.name)
         const newAllContent = dashboardContextProps?.allContent?.filter((content, i) => {
@@ -118,6 +115,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
             }
             return false
         })
+        console.log(122, contentNames, elementNames, newAllContent)
         if (dashboardContextProps?.setAllContent) {
             dashboardContextProps?.setAllContent(() => newAllContent)
         }
@@ -207,7 +205,9 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         startFetchAllContents,
         newElement,
         fetchTemplate,
-        saveTemplate
+        saveTemplate,
+        // 该维度下的全部elements
+        elements
     }))
 
     /**

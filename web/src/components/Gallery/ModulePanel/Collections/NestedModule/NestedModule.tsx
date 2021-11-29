@@ -3,7 +3,7 @@ import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/Mo
 import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
 import { useEffect, useState, useImperativeHandle, forwardRef } from "react"
 import { tabItem } from "./data"
-import { NestedSimpleModuleEditor } from "./Editor"
+import { NestedModuleEditor } from "./Editor"
 import './style.less'
 import { NSMid } from "./util"
 import { prRef } from './data'
@@ -66,7 +66,7 @@ const EditorField = (props: ModuleEditorField) => {
     // }, [saveCount])
     return (
         <div id={NSMid} style={{ height: '98%' }}>
-            <NestedSimpleModuleEditor
+            <NestedModuleEditor
                 content={props.content}
                 setContent={props.setContent}
                 setNewestContent={props.setNewestContent}
@@ -145,7 +145,7 @@ const PresenterField = (props: ModulePresenterField) => {
     //use Editor and set editable to false so that it can receive and update the new content fetched from db
     return (props.content?.data?.tabItems ?
         <div style={{ height: '98%' }}>
-            <NestedSimpleModuleEditor
+            <NestedModuleEditor
                 content={props.content}
                 setContent={props.setContent}
                 // setNewestContent={props.setNewestContent}
@@ -169,8 +169,8 @@ const PresenterField = (props: ModulePresenterField) => {
             />
         </div> : <></>)
 }
-export const NestedSimpleModule = new ModuleGenerator(EditorField, PresenterField).generate()
-// export const NestedSimpleModule = () => {
+export const NestedModule = new ModuleGenerator(EditorField, PresenterField).generate()
+// export const NestedModule = () => {
 //     return (
 //         <div>789</div>
 //     )

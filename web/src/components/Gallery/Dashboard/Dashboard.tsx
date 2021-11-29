@@ -149,11 +149,14 @@ export const Dashboard = (props: DashboardProps) => {
     useEffect(() => {
         if (newestContent) {
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)
-            console.log(111, newestContent, newContents)
+            // console.log(111, newestContent, newContents)
             setUpdatedContents(newContents)
         }
     }, [newestContent])
 
+    useEffect(() => {
+        console.log(111, updatedContents)
+    }, [updatedContents])
     // useEffect(() => {
     //     console.log(145, updatedContents)
     // }, [updatedContents])
@@ -297,6 +300,7 @@ export const Dashboard = (props: DashboardProps) => {
         edit={edit}
         setEdit={setEdit}
         onSaveTemplate={onRefresh}
+    // ContainerRef={cRef}
     />, [canEdit, dashboardCategories, onRefresh, edit])
 
     const genContainer = useMemo(() => selectedDashboard ?
@@ -326,7 +330,9 @@ export const Dashboard = (props: DashboardProps) => {
             allContent: updatedContents,
             setAllContent: setUpdatedContents,
             edit,
-            setEdit
+            setEdit,
+            ContainerRef: cRef,
+            getTemplateElements: fetchElements
         }}>
             {genController}
             {genContainer}

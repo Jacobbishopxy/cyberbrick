@@ -3,7 +3,7 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { SelectProps } from "antd"
+import { Button, SelectProps } from "antd"
 import { ProFormSelect } from "@ant-design/pro-form"
 import { FormattedMessage } from "umi"
 
@@ -65,6 +65,7 @@ export const SelectorAssembledItems =
         }
         useImperativeHandle(ref, () => ({ onValuesChange }))
 
+        const [colValue, setColValue] = useState<string[] | undefined>([])
         return (
             <>
                 {/* 数据库 */}
@@ -90,7 +91,27 @@ export const SelectorAssembledItems =
                     label={<FormattedMessage id="gallery.component.general33" />}
                     fieldProps={{
                         mode: "multiple",
-                        value: columnSelects?.map((v) => v.value).filter((v) => v !== '_id')
+                        value: colValue,
+                        onChange: (s, o) => {
+                            console.log(94, s, o, columnSelects)
+                            setColValue(s)
+                        },
+                        dropdownRender: (menu) => {
+                            return (
+                                <div>
+                                    {menu}
+                                    <Button
+                                        onClick={() => setColValue(columnSelects?.map((v) => v.value).filter((v) => v !== '_id'))}
+                                        type="primary"
+                                        style={
+                                            {
+                                                height: '100%',
+                                                width: '100%'
+                                            }
+                                        }>全选</Button>
+                                </div>
+                            )
+                        }
                     }}
                     placeholder="Please select columns"
                     rules={props.columnsRequired === true ? [{ required: true, message: 'Please select your columns!' }] : []}

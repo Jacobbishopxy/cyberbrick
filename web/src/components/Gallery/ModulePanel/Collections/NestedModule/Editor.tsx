@@ -4,13 +4,12 @@ import { tabItem } from './data';
 import { Skeleton } from 'antd';
 import { ModuleTabPane } from './EmbededModule/CreateModule';
 import _, { min } from 'lodash';
-import { Layout } from 'react-grid-layout';
 import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
 import * as DataType from "../../../GalleryDataType"
 
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 import styles from './style.less'
-interface NestedSimpleModuleProps {
+interface NestedModuleProps {
     //for temp cache
     // currIndex: number,
     // setCurrIndex: React.Dispatch<React.SetStateAction<number>>,
@@ -47,29 +46,9 @@ helper method for onLayoutChnage;
 @param rawLayout: the modified layout
 @param elements: the object that stores the content of this module
 */
-const updateElementInLayout = (elements: tabItem[], rawLayout: Layout[], containerWidth?: number): tabItem[] =>
-    _.zip(elements, rawLayout).map(zItem => {
-        const ele: tabItem = zItem[0]!
-        const rawEle: Layout = zItem[1]!
-        if (!rawEle) return ele
-        let colMinSize = 64 //set defualt to 64 so that defualt font size is 32
-        //if there's a containerWidth, calculate the minimal dimension among width and height
-        if (containerWidth) {
-            let colUnitWidth = (containerWidth - DEFAULT_MARGIN * (COLS_NUM - 1)) / COLS_NUM
-            colMinSize = min([colUnitWidth * rawEle.w, DEFAULT_ROW_HEIGHT * rawEle.h])!
-        }
-        //update the layout properties in element
-        return {
-            ...ele,
-            x: rawEle.x,
-            y: rawEle.y,
-            h: rawEle.h,
-            w: rawEle.w,
-            minDim: colMinSize!
-        }
-    })
 
-export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
+
+export const NestedModuleEditor = (props: NestedModuleProps) => {
     //used to make sure the generated tab id is unique
     const counterPrefix = DataType.now()
     // const { setSaveCount, currIndex, setCurrIndex } = props
@@ -117,76 +96,59 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
 
 
-    //submodule布局变化要更新，且elements也要更新。通过useEffect做到这一点
-    const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
-        console.log(118, props.content?.data?.tabItems, updateElementInLayout(props.content?.data?.tabItems, layout, container?.clientWidth))
-        //get container width
-        if (props.setContent) {
-            props.setContent((content) => {
-                console.log(127, content)
-                return {
-                    ...content,
-                    data: {
-                        ...content?.data,
-                        tabItems: updateElementInLayout(props.content?.data?.tabItems, layout, container?.clientWidth)
-                    }
-                } as DataType.Content
-            })
-        }
-        // setItems(items => updateElementInLayout(items, layout, container?.clientWidth))
-    };
+
 
     //每当tabItems变化时，同时更新全局的elements
     // 更新逻辑：用tabItems带有name的模块替换elements中的submodule
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (NestedDedicatedProps?.setElements) {
-            NestedDedicatedProps?.setElements((elements) => {
-                // 之前的更新逻辑
-                // const names = elements.map(el => el.name)
-                // let newElements = elements.slice();
-                // props.content?.data?.tabItems.map((el: DataType.Element, i) => {
-                //     if (el.name) {
-                //         const index = names.indexOf(el.name)
-                //         if (index !== -1) {
-                //             newElements[index] = el
-                //         } else {
-                //             newElements.push(el)
-                //         }
-                //     }
-                // })
+    //     if (NestedDedicatedProps?.setElements) {
+    //         NestedDedicatedProps?.setElements((elements) => {
+    //             // 之前的更新逻辑
+    //             // const names = elements.map(el => el.name)
+    //             // let newElements = elements.slice();
+    //             // props.content?.data?.tabItems.map((el: DataType.Element, i) => {
+    //             //     if (el.name) {
+    //             //         const index = names.indexOf(el.name)
+    //             //         if (index !== -1) {
+    //             //             newElements[index] = el
+    //             //         } else {
+    //             //             newElements.push(el)
+    //             //         }
+    //             //     }
+    //             // })
 
-                // const submodules = props.content?.data?.tabItems.filter((item) => item.name)
-                console.log(138, elements.filter((el) => !el.isSubmodule), props.content?.data?.tabItems)
+    //             // const submodules = props.content?.data?.tabItems.filter((item) => item.name)
 
-                const newElements = [...elements.filter((el) => !el.isSubmodule), ...props.content?.data?.tabItems]
 
-                return newElements
-            })
-        }
+    //             const newElements = [...elements.filter((el) => !el.isSubmodule), ...props.content?.data?.tabItems]
+    //             console.log(138, elements.filter((el) => !el.isSubmodule), props.content?.data?.tabItems, newElements)
+    //             return newElements
+    //         })
+    //     }
 
-    }, [props.content?.data?.tabItems])
+    // }, [props.content?.data?.tabItems])
 
     //callback to add a new module
-    const onAddModule = (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => {
-        let content = { date: DataType.today(), data: { content: name } }
-        //replace existing module
-        // if (props.items!.find(item => item.i === tabId && item.module)) {
-        //     //delete old module content
-        //     onRemoveModule(tabId)
-        // }
-        //add the new module to items list
-        // setItems(items => items.map((item) => {
-        //     //update the json object
-        //     if (item.i === tabId) {
-        //         return { ...item, module: { name: name, timeSeries: timeSeries, elementType: moduleType, content: content } }
-        //     }
-        //     console.log(144, item)
-        //     return item
-        // }))
-        setUpdateCnt(updateCnt + 1)
+    // const onAddModule = (name: string, timeSeries: boolean, moduleType: DataType.ElementType) => {
+    //     let content = { date: DataType.today(), data: { content: name } }
+    //replace existing module
+    // if (props.items!.find(item => item.i === tabId && item.module)) {
+    //     //delete old module content
+    //     onRemoveModule(tabId)
+    // }
+    //add the new module to items list
+    // setItems(items => items.map((item) => {
+    //     //update the json object
+    //     if (item.i === tabId) {
+    //         return { ...item, module: { name: name, timeSeries: timeSeries, elementType: moduleType, content: content } }
+    //     }
+    //     console.log(144, item)
+    //     return item
+    // }))
+    //     setUpdateCnt(updateCnt + 1)
 
-    }
+    // }
 
     // const onRemoveModule = (id: string) => {
     // setItems(items => items.map(item => {
@@ -267,8 +229,8 @@ export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
                     // setItems={setItems}
                     // onAddItem={onAddItem}
                     // onRemoveItem={onRemoveItem}
-                    onLayoutChange={onLayoutChange}
-                    onAddModule={onAddModule}
+                    // onLayoutChange={onLayoutChange}
+                    // onAddModule={onAddModule}
                     content={props.content}
                     setContent={props.setContent}
                     // onSwitch={onSwitch} 

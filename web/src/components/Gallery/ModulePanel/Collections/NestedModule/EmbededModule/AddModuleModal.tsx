@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Checkbox, Divider, Input, List, message, Modal, Space, Tooltip } from "antd"
 import { ExclamationCircleTwoTone, RightOutlined, StarTwoTone } from "@ant-design/icons"
-import { FormattedMessage } from "umi"
+import { FormattedMessage, useIntl } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { moduleList } from "@/components/Gallery/ModulePanel/Collections"
@@ -9,6 +9,7 @@ import { moduleList } from "@/components/Gallery/ModulePanel/Collections"
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 
 
+import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 interface ModuleSelectionListProps {
     onSelect: (value: string) => void
 }
@@ -90,7 +91,7 @@ export interface AddModuleModalProps {
     // copyTemplate: (originTemplateId: string) => void
     visible: boolean
     onQuit: () => void
-    addElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
+    addElement: ((name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean) | undefined
     setDraggable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -100,13 +101,20 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
     const [selected, setSelected] = useState<string>()
     const [moduleName, setModuleName] = useState<string>()
     const [timeSeries, setTimeSeries] = useState<boolean>(false)
-
+    console.log(103103)
     // const dashboardContextProps = useContext(DashboardContext)
+
+    const NestedDedicatedProps = useContext(nestedDedicatedContext)
+    const intl = useIntl()
     const onSetOk = () => {
 
         if (selected && moduleName) {
             //如果name不重复，给外层elements添加，也给tabItem添加。
-            if (props.addElement(moduleName, timeSeries, DataType.getElementType(selected), true)) {
+            // 是否重命名
+            if (NestedDedicatedProps?.elements?.map(e => e.name).includes(moduleName)) {
+                message.warning(intl.formatMessage({ id: "gallery.component.add-module-modal8" }))
+            } else {
+                // 添加tab和elements
                 props.onAddSubModule(moduleName, timeSeries, DataType.getElementType(selected))
                 // }
 

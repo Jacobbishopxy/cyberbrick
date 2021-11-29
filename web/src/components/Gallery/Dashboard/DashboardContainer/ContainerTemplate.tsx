@@ -115,6 +115,7 @@ export const ContainerTemplate =
 
         console.log(101, props)
 
+        const [noSubmoduleElements, setNoSubmoduleElements] = useState<any>([])
         // update elements when adding a new element
         //在添加新元素时更新元素
         // useEffect(
@@ -124,24 +125,24 @@ export const ContainerTemplate =
         //     },
         //     [props.elements])
 
-        //按照模块名字删除
+        //按照模块名字删除， elments里的content要一并删除，已在监听element做处理
         const elementOnRemove = (el: DataType.Element) => () => {
             // const newElements = removeElementInLayout(name, elements)
 
             //如果要删除的模块是nested模块，submodule要一起删除。
-            // elments里的content要一并删除，已在监听element做处理
-            let submoduleNames: string[] = []
+
+            let deleteElementsName: string[] = []
             if (el.type === ElementType.NestedModule) {
-                submoduleNames = dashboardContextProps?.allContent?.find((content) => content.element?.name === el.name)?.data?.tabItems.map((v) => v.name)
+                deleteElementsName = dashboardContextProps?.allContent?.find((content) => content.element?.name === el.name)?.data?.tabItems.map((v) => v.name)
 
             }
             //加入要被删除nestedName
-            submoduleNames.push(el.name)
-
+            deleteElementsName.push(el.name)
+            console.log(140, deleteElementsName)
             props.setElements((elements) => {
 
-                const newElements = _.reject(elements, (e) => submoduleNames.includes(e.name))
-                console.log(123, submoduleNames, elements, newElements)
+                const newElements = _.reject(elements, (e) => deleteElementsName.includes(e.name))
+                console.log(123, deleteElementsName, elements, newElements)
                 return newElements
             })
             //testing: manually remove ref from teRefs
@@ -276,15 +277,16 @@ export const ContainerTemplate =
 
         // 重新获得布局改变后的elements位置。
         const onLayoutChange = (layout: Layout[]) => {
-            console.log(258, noSubmoduleElements, layout)
+
             props.setElements((allElements) => {
                 const noSE = updateElementInLayout(noSubmoduleElements, layout)
                 const SE = allElements.filter((e) => e.isSubmodule)
+                console.log(258, allElements, noSE, SE)
                 return [...noSE, ...SE]
             })
         }
 
-        const [noSubmoduleElements, setNoSubmoduleElements] = useState<any>([])
+        // 每当elements变化都更新非子模块
         useEffect(() => {
             console.log(222, props.elements)
             setNoSubmoduleElements(() => {

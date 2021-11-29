@@ -22,7 +22,7 @@ import {
     ConsensusDistribution
 } from "./graph"
 
-import { NestedSimpleModule } from "./NestedModule/NestedModule"
+import { NestedModule } from "./NestedModule/NestedModule"
 import { FieldHeader } from "./miscellaneous/FieldSeparator"
 
 
@@ -220,7 +220,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         />
 
         //嵌套模块
-        const nestedModule = <NestedSimpleModule
+        const nestedModule = <NestedModule
             onSave={props.onSave}
             initialValue={props.initialValue}
             editable={props.editable}

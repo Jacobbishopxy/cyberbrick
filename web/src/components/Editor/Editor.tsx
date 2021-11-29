@@ -33,6 +33,20 @@ export const Editor = (props: EditorProps) => {
     //将全部submodule发送给后端。
     const editableOnChange = async () => {
         console.log(202020, editable, props.elementType, props.content, Dashboard)
+        if (editable && props.elementType === DataType.ElementType.NestedModule) {
+            if (props.content?.data?.tabItems && props.content.data.tabItems.length != 0) {
+                try {
+                    props.content.data.tabItems.forEach((v, i) => {
+                        if (!v.type) {
+                            throw i
+                        }
+                    })
+                } catch (i: any) {
+                    message.error(`模块不允许为空，请编辑模块或删除`)
+                    return
+                }
+            }
+        }
         //【嵌套模块】与【对勾】才保存
         // if (editable && props.elementType === DataType.ElementType.NestedModule) {
         //     if (Dashboard?.updateElements) {
