@@ -51,9 +51,7 @@ helper method for onLayoutChnage;
 export const NestedModuleEditor = (props: NestedModuleProps) => {
     //used to make sure the generated tab id is unique
     const counterPrefix = DataType.now()
-    // const { setSaveCount, currIndex, setCurrIndex } = props
 
-    // const [currIndex, setCurrIndex] = useState(props.currIndex || "0")
     const [newCounter, setNewCounter] = useState(0)
     //determined when to ask parent to update content
     const [updateCnt, setUpdateCnt] = useState(0)
@@ -166,7 +164,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
     // const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
 
     //根据点击的index渲染不同的模块
-    const moduleToReactNode = (currIndex: number) => {
+    const moduleToReactNode = (currentIndex: number) => {
         console.log("switching module", props.content?.data?.tabItems, props.content)
 
         // 选中的element
@@ -174,7 +172,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
         //根据tabItems获得elementName
         // 因为tabItems不一定有id，所以需要传递的elements的元素而不是tabItems
         if (props.content?.data?.tabItems) {
-            const item = props.content?.data?.tabItems.find((item, i) => i === currIndex)
+            const item = props.content?.data?.tabItems.find((item, i) => i === currentIndex)
 
             const submoduleName = item?.name
 
@@ -192,7 +190,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
 
         return (
             <ModuleTabPane
-                key={currIndex + type + name}
+                key={type + name}
                 elementId={id as string}
                 content={props.content}
                 name={name}

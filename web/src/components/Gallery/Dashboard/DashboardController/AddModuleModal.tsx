@@ -174,7 +174,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
                     if (dashboardContextProps.ContainerRef.current) {
                         if (dashboardContextProps.ContainerRef.current.elements.length === 0) {
                             // props.copyTemplate(selectedTemplateId)
-
+                            dashboardContextProps.ContainerRef.current.fetchTemplate(selectedTemplateId)
                             props.onQuit()
                             return
                         }

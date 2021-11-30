@@ -179,13 +179,29 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         }
     }
 
-    const fetchTemplate = () => {
-        if (selectedPane)
-            props.fetchElements(selectedPane.id).then(res => {
-                setTemplate(res)
-                setElements(res.elements)
+    const fetchTemplate = (templateId?: string) => {
+        // copy时执行
+        if (templateId) {
+            props.fetchElements(templateId).then(res => {
+                const newElements = res.elements.map((v) => _.omit(v, 'id'))
+                setTemplate((template) => {
+                    return {
+                        ...template,
+                        elements: newElements
+                    }
+                })
+                setElements(newElements)
                 console.log(9222, res)
             })
+        }
+        else {
+            if (selectedPane)
+                props.fetchElements(selectedPane.id).then(res => {
+                    setTemplate(res)
+                    setElements(res.elements)
+                    console.log(9222, res)
+                })
+        }
     }
 
     const saveTemplate = () => {

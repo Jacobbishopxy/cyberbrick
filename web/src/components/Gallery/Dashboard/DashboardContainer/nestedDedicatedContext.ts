@@ -15,9 +15,15 @@ export interface nestedDedicatedContextProps {
     }
     elements: DataType.Element[] | undefined
     setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>> | undefined
-    dateList: string[]
-    setDateList: React.Dispatch<React.SetStateAction<string[]>>
+    dateList: string[] | undefined
+    // setDateList: React.Dispatch<React.SetStateAction<string[]>>
     elementName: string
+    // nested当前所选的模块名字
+    currentIndex: number | undefined
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>> | undefined
+    // 该模块的信息
+    element: DataType.Element,
+    setElement: React.Dispatch<React.SetStateAction<DataType.Element>>
 }
 
 

@@ -44,9 +44,9 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
 
     //获取时间序列
     useEffect(() => {
-        console.log(45, NestedDedicatedProps?.dateList)
-        setDateList(NestedDedicatedProps?.dateList)
-    }, [NestedDedicatedProps?.dateList])
+        // console.log(45, NestedDedicatedProps?.dateList)
+        setDateList(NestedDedicatedProps?.element.headData?.dateList)
+    }, [NestedDedicatedProps?.element.headData?.dateList])
 
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target

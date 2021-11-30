@@ -74,6 +74,13 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
         console.log(69, props.content)
 
+
+        //currentIndex+1
+        if (NestedDedicatedProps?.setCurrentIndex) {
+
+            NestedDedicatedProps?.setCurrentIndex((currentIndex) => currentIndex + 1)
+        }
+
         const newElement = {
             i: +new Date(),
             x: xPos,
@@ -233,7 +240,6 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                 return {
                     ...content,
                     data: {
-                        currIndex: index,
                         tabItems: newTabItems
                     }
                 } as DataType.Content
@@ -251,15 +257,11 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
     //tab点击事件:更换当前的currIndex
     function onSwitch(index: number) {
-        props.setContent!((content) => {
-            return {
-                ...content,
-                data: {
-                    ...content?.data,
-                    currIndex: index
-                }
-            } as DataType.Content
-        })
+        if (NestedDedicatedProps?.setCurrentIndex) {
+
+            NestedDedicatedProps?.setCurrentIndex((currentIndex) => index)
+        }
+
     }
 
     //RGL布局
@@ -274,14 +276,17 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
     }
 
     //选中与为选中的样式
-    const className = (index: number) => props.content?.data?.currIndex === index ? "tab-content-selected" : "tab-content"
+    const className = (index: number) => NestedDedicatedProps?.currentIndex === index ? "tab-content-selected" : "tab-content"
 
     console.log(145, props.content?.data?.tabItems)
+
+
     const [submoduleElement, setSubmoduleElement] = useState(NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName))
 
     useEffect(() => {
         const t = NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName).map((v, i) => v)
         setSubmoduleElement(() => t)
+        console.log(287, t)
     }, [NestedDedicatedProps?.elements])
 
     return (
@@ -315,11 +320,10 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     submoduleElement
                         ?
                         submoduleElement.map((el, i: number) => {
-                            console.log(288, el)
                             return (<div
-                                key={el.id ? el.id : el.i}
+                                key={el.name ? el.name : el.i}
                                 data-grid={genDataGrid(el)}
-                                id={el.i}
+                                // id={el.i}
                                 className={className(i)}
                                 onClick={() => onSwitch(i)}
                                 onMouseEnter={() => onMouseEnter(i)}

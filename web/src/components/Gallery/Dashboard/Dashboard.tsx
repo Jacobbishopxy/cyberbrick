@@ -332,7 +332,7 @@ export const Dashboard = (props: DashboardProps) => {
             edit,
             setEdit,
             ContainerRef: cRef,
-            getTemplateElements: fetchElements
+            // getTemplateElements: fetchElements
         }}>
             {genController}
             {genContainer}

@@ -35,7 +35,7 @@ export interface ContainerElementProps {
     fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
     updateDescription: (ele: string) => void
     addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean
-    // onTEfetchContent: (eleId: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
+    // onTEfetchContent: (element.id: string, elementType: DataType.ElementType, date?: string | undefined) => Promise<DataType.Content | undefined>
 
     //该维度下的全部elements
     elements?: DataType.Element[]
@@ -64,9 +64,25 @@ export const TemplateElement =
         //模块内容的源
         const [content, setContent] = useState<DataType.Content>()
         //
-        const element = props.element
-        const eleId = props.element.id as string | undefined
+        const [element, setElement] = useState(props.element)
+        useEffect(() => {
+            setElement(props.element)
+        }, [props.element])
+        // 每当element变化时，都更新elements
+        useEffect(() => {
+            if (NestedDedicatedProps?.setElements) {
 
+                NestedDedicatedProps?.setElements((elements) => {
+                    return elements.map((v) => {
+                        if (v.parentName === NestedDedicatedProps.elementName && v.name === element.name)
+                            return element
+                        else return v
+                    })
+                })
+            }
+        }, [element])
+        // nested模块专用
+        const [currentIndex, setCurrentIndex] = useState(-1)
         const [isLoading, setIsLoading] = useState(true);
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
@@ -78,7 +94,7 @@ export const TemplateElement =
         //该模块的子模块时间序列
         // const [submoduleDataList, setSubmoduleDataList] = useState()
 
-        const [currIndex, setCurrIndex] = useState(NestedDedicatedProps?.content?.data?.currIndex)
+        // const [currIndex, setCurrIndex] = useState(NestedDedicatedProps?.content?.data?.currIndex)
 
         //表示当前模块要显示的内容日期，换句话说，没有date就没有内容。
         const [date, setDate] = useState<string>(getDate())
@@ -100,20 +116,21 @@ export const TemplateElement =
 
         // })
 
-        useEffect(() => {
-            setCurrIndex(NestedDedicatedProps?.content?.data?.currIndex)
-        }, [NestedDedicatedProps?.content?.data?.currIndex])
+        // useEffect(() => {
+        //     setCurrIndex(NestedDedicatedProps?.currentIndex)
+        // }, [NestedDedicatedProps?.currentIndex])
 
-        //获取初始date：如果有时序功能，获取最新时序。
+        //submodule专用：如果有时序功能，获取最新时序。
         function getDate() {
             if (props.isNested && props.timeSeries) {
                 console.log(99, props.isNested, props.timeSeries, NestedDedicatedProps)
                 // const currIndex = NestedDedicatedProps?.content?.data?.currIndex;
-                if (NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList) {
-                    console.log(811, props.isNested, NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0])
-                    // setDate(() => NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0])
-                    return NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0]
+                // setDate(() => NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList[0])
+                if (NestedDedicatedProps?.dateList) {
+
+                    return NestedDedicatedProps?.dateList[0]
                 }
+
             } else {
                 return ''
             }
@@ -121,52 +138,71 @@ export const TemplateElement =
 
         //获取模块的时间序列
         useEffect(() => {
-            if (props.timeSeries && props.fetchContentDatesFn && eleId) {
+            if (props.timeSeries && props.fetchContentDatesFn && element.id) {
                 // console.log(94, props.isNested, dates,)
 
                 //普通模块直接赋值给dateList
                 if (!props.isNested) {
-                    props.fetchContentDatesFn(eleId).then(res => {
+                    props.fetchContentDatesFn(element.id).then(res => {
                         if (res.contents) {
-                            setDateList(res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
-                            ))
+                            setElement((element) => {
+                                if (element.headData) {
+                                    return element.headData.dateList = res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
+                                    )
+                                }
+                            })
                         }
                     }
                     )
 
                 } else { //嵌套模块需要赋值给tabItems的currIndex的dateList
-                    const dateList = NestedDedicatedProps?.content?.data?.tabItems[currIndex].dateList
-                    console.log(1355, currIndex, dateList, NestedDedicatedProps?.content)
+                    const dateList = element.headData?.dateList
+                    console.log(1355, dateList, NestedDedicatedProps?.content)
                     //如果当前submodule有了dateList就不用请求了
                     if ((!dateList) || (dateList && dateList.length === 0)) {
-                        props.fetchContentDatesFn(eleId).then((res) => {
-                            if (NestedDedicatedProps?.setContent) {
-                                NestedDedicatedProps.setContent((content) => {
-                                    console.log(129, content)
-                                    const index = content?.data?.currIndex
-                                    const newContent = {
-                                        ...content,
-                                        data: {
-                                            ...content?.data,
-                                            tabItems: content?.data?.tabItems.map((v, i: number) => {
-                                                if (i === index) {
-                                                    return {
-                                                        ...v,
-                                                        dateList: res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => {
-                                                            if (a < b) return 1;
-                                                            else return -1
-                                                        })
-                                                    }
-                                                } else {
-                                                    return v
-                                                }
-                                            })
-                                        }
-                                    } as DataType.Content
-                                    console.log(141, newContent)
-                                    return newContent
-                                })
-                            }
+                        props.fetchContentDatesFn(element.id).then((res) => {
+                            setElement((element) => {
+                                return {
+                                    ...element,
+                                    headData: {
+                                        ...element.headData,
+                                        dateList: res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => {
+                                            if (a < b) return 1;
+                                            else return -1
+                                        })
+                                    }
+                                }
+                            })
+
+                            // 原来的逻辑
+                            // if (NestedDedicatedProps?.setContent) {
+                            //     NestedDedicatedProps.setContent((content) => {
+                            //         console.log(129, content)
+                            //         const index = NestedDedicatedProps.currentIndex
+
+                            //         const newContent = {
+                            //             ...content,
+                            //             data: {
+                            //                 ...content?.data,
+                            //                 tabItems: content?.data?.tabItems.map((v, i: number) => {
+                            //                     if (i === index) {
+                            //                         return {
+                            //                             ...v,
+                            //                             dateList: res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => {
+                            //                                 if (a < b) return 1;
+                            //                                 else return -1
+                            //                             })
+                            //                         }
+                            //                     } else {
+                            //                         return v
+                            //                     }
+                            //                 })
+                            //             }
+                            //         } as DataType.Content
+                            //         console.log(141, newContent)
+                            //         return newContent
+                            //     })
+                            // }
                         })
                     }
 
@@ -282,9 +318,10 @@ export const TemplateElement =
             switch (props.element.type) {
                 case DataType.ElementType.NestedModule:
                     const newTabItems = props.elements?.filter((v, i) => v.isSubmodule && v.parentName === props.element.name)
+                    console.log(285, newTabItems)
                     initContent = {
                         data: {
-                            currIndex: -1,
+                            // currIndex: -1,
                             tabItems: newTabItems && newTabItems.length > 0 ? newTabItems : []
                         },
                         date: DataType.today()
@@ -345,8 +382,8 @@ export const TemplateElement =
         const fetchContent = (date?: string) => {
             return new Promise(async (resoleve, reject) => {
                 console.log(230, props.isNested, element)
-                if (eleId) {
-                    dashboardContextProps?.fetchElementContent!(eleId, date, props.isNested).then((res) => {
+                if (element.id) {
+                    dashboardContextProps?.fetchElementContent!(element.id, date, props.isNested).then((res) => {
                         resoleve(res)
                     }).catch((res) => { //避免api请求错误，能有初始值
                         resoleve(getInitContent())
@@ -365,8 +402,8 @@ export const TemplateElement =
 
         // 获取模块的时间序列
         const fetchContentDates = async () => {
-            if (eleId && props.element.timeSeries) {
-                const ele = await props.fetchContentDatesFn(eleId)
+            if (element.id && props.element.timeSeries) {
+                const ele = await props.fetchContentDatesFn(element.id)
                 return ele.contents!.map(c => (c.date))
             }
             return []
@@ -405,15 +442,24 @@ export const TemplateElement =
                         ? NestedDedicatedProps?.setElements
                         : props.setElements,
                     dateList: props.isNested
-                        ? NestedDedicatedProps?.content?.data?.tabItems[NestedDedicatedProps?.content?.data?.currIndex].dateList
+                        ? NestedDedicatedProps?.dateList
                         : dateList,
-                    setDateList,
+                    // setDateList,
                     //模块的名字
-                    elementName: props.element.name
+                    elementName: props.element.name,
+                    // nested模块专用
+                    currentIndex: props.isNested
+                        ? NestedDedicatedProps?.currentIndex
+                        : currentIndex,
+                    setCurrentIndex: props.isNested
+                        ? NestedDedicatedProps?.setCurrentIndex
+                        : setCurrentIndex,
+                    element,
+                    setElement
                 }}>
                     <ModulePanel
                         parentInfo={props.parentInfo}
-                        eleId={eleId}
+                        eleId={element.id}
                         //模块的名字
                         headName={props.element.name}
                         //是否时间序列
@@ -436,7 +482,7 @@ export const TemplateElement =
                         setNewestContent={props.setNewestContent}
                         onRemove={props.onRemove}
                         editable={props.editable}
-                        settable={!!eleId}
+                        settable={!!element.id}
                         isLoading={isLoading}
                         setDate={setDate}
 
@@ -450,7 +496,7 @@ export const TemplateElement =
                     />
                 </nestedDedicatedContext.Provider>
 
-            </div>
+            </div >
         )
     })
 

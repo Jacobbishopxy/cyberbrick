@@ -30,7 +30,8 @@ export interface DashboardContextType {
     //内容的ref
     ContainerRef: React.Ref<ContainerRef>
 
-    getTemplateElements
+    // getTemplateElements: (templateId: string, isSubmodule?: boolean) => Promise<DataType.Template>
+
 }
 
 

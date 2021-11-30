@@ -21,6 +21,7 @@ import { prRef } from './data'
 // })
 // const defaultData = { tabItems: defaultItems, currIndex: defaultItems[0].i }
 
+
 //【小齿轮】编辑时
 const EditorField = (props: ModuleEditorField) => {
     /* content type: 
@@ -104,8 +105,8 @@ const PresenterField = (props: ModulePresenterField) => {
     // }
 
     // const [items, setItems] = useState<tabItem[]>(tempItems)
-    const [currIndex, setCurrIndex] = useState(0)
-    const [saveCount, setSaveCount] = useState(0)
+    // const [currIndex, setCurrIndex] = useState(0)
+    // const [saveCount, setSaveCount] = useState(0)
 
     /**
      * when PresenterField first mounted, it's parent haven't mounted, so there's no
@@ -124,9 +125,9 @@ const PresenterField = (props: ModulePresenterField) => {
     //     setItems(props.content?.data?.tabItems)
     // }, [props.content?.data?.tabItems])
 
-    useEffect(() => {
-        setCurrIndex(props.content?.data?.currIndex)
-    }, [props.content?.data?.currIndex])
+    // useEffect(() => {
+    //     setCurrIndex(props.content?.data?.currIndex)
+    // }, [props.content?.data?.currIndex])
 
     /**
      * update currIndex
