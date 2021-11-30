@@ -145,15 +145,12 @@ export const TemplateElement =
                 if (!props.isNested) {
                     props.fetchContentDatesFn(element.id).then(res => {
                         if (res.contents) {
-                            setElement((element) => {
-                                if (element.headData) {
-                                    return element.headData.dateList = res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
-                                    )
-                                }
+                            setDateList(() => {
+                                return res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
+                                )
                             })
                         }
-                    }
-                    )
+                    })
 
                 } else { //嵌套模块需要赋值给tabItems的currIndex的dateList
                     const dateList = element.headData?.dateList
