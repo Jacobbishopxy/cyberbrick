@@ -12,6 +12,7 @@ import * as DataType from "@/components/Gallery/GalleryDataType"
 import { Layout } from 'react-grid-layout';
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 
+import { NestedAddModuleModal } from "@/components/Gallery/ModulePanel/Collections/NestedModule/EmbededModule/NestedAddModuleModal"
 const ReactGridLayout = WidthProvider(RGL);
 interface DynamicHeaderProps {
     editable: boolean
@@ -52,7 +53,8 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
         setIsHover(id)
     }
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
-
+    // 控制modal显隐
+    const [modalVisible, setModalVisible] = useState(false)
 
     const onMouseLeave = () => {
         setIsHover(-1)
@@ -62,8 +64,8 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
     const onAddTabItems = () => {
         console.log(54, props.content)
         //!可能有bug,比如删了又添加的情况
-        let length = props.content?.data?.tabItems?.length
-        if (length >= 30) {
+        let length = NestedDedicatedProps?.elements?.filter((v) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName).length
+        if (length && length >= 30) {
             message.error('已超过最大数！')
             return
         }
@@ -74,15 +76,91 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
         console.log(69, props.content)
 
+        setModalVisible(true)
+
+
+
+
 
         //currentIndex+1
-        if (NestedDedicatedProps?.setCurrentIndex) {
+        // if (NestedDedicatedProps?.setCurrentIndex) {
 
-            NestedDedicatedProps?.setCurrentIndex((currentIndex) => currentIndex + 1)
-        }
+        //     NestedDedicatedProps?.setCurrentIndex((currentIndex) => currentIndex + 1)
+        // }
 
+        // const newElement = {
+        //     i: +new Date(),
+        //     x: xPos,
+        //     y: yPos,
+        //     w: 1,
+        //     h: 1,
+        //     isSubmodule: true,
+        //     parentName: NestedDedicatedProps?.elementName,
+        //     template: {
+        //         id: props.parentInfo.templateInfo.id
+        //     },
+        // }
+        // // 写入tab
+        // if (props.setContent) {
+        //     props.setContent((content) => {
+
+        //         const newTabItems = [...content?.data?.tabItems, newElement]
+        //         console.log(70, newTabItems)
+        //         return {
+        //             ...content,
+        //             data: {
+        //                 ...content?.data,
+        //                 tabItems: newTabItems
+        //             }
+        //         } as DataType.Content
+        //     })
+        // }
+
+        // // 写入elements
+        // if (NestedDedicatedProps?.setElements) {
+
+        //     NestedDedicatedProps?.setElements((allElements) => {
+
+        //         return [...allElements, newElement] as DataType.Element[]
+        //     })
+        // }
+    }
+
+    //添加submodule
+    const onAddSubModule = (name: string, timeSeries: boolean, elementType: DataType.ElementType, headData: DataType.ElementHeadData | undefined) => {
+        // let newTabItems = props.content?.data?.tabItems.slice();
+
+        // newTabItems = newTabItems.map((v, i: number) => {
+        //     if (i === index) {
+        //         return {
+        //             ...v,
+        //             name,
+        //             timeSeries,
+        //             type: elementType,
+
+        //         }
+        //     } else {
+        //         return v
+        //     }
+        // })
+
+        // console.log(106, newTabItems)
+        // // 添加tab
+        // props.setContent!((content) => {
+        //     return {
+        //         ...content,
+        //         data: {
+        //             tabItems: newTabItems
+        //         }
+        //     } as DataType.Content
+        // })
+        let length = NestedDedicatedProps?.elements?.filter((v) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName).length
+
+        let xPos = (length ? length : 0) % COLS_NUM
+        let yPos = Math.floor((length ? length : 0) / COLS_NUM)
+
+        console.log(162, headData)
         const newElement = {
-            i: +new Date(),
             x: xPos,
             y: yPos,
             w: 1,
@@ -92,60 +170,54 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             template: {
                 id: props.parentInfo.templateInfo.id
             },
+            name,
+            timeSeries,
+            type: elementType,
+            headData
         }
-        // 写入tab
-        if (props.setContent) {
-            props.setContent((content) => {
+        if (NestedDedicatedProps?.setCurrentModuleName) {
 
-                const newTabItems = [...content?.data?.tabItems, newElement]
-                console.log(70, newTabItems)
-                return {
-                    ...content,
-                    data: {
-                        ...content?.data,
-                        tabItems: newTabItems
-                    }
-                } as DataType.Content
-            })
+            NestedDedicatedProps?.setCurrentModuleName(() => name)
         }
-
-        // 写入elements
+        // 修改elements
         if (NestedDedicatedProps?.setElements) {
 
             NestedDedicatedProps?.setElements((allElements) => {
 
-                return [...allElements, newElement] as DataType.Element[]
+                return [...allElements, newElement]
             })
         }
+
     }
 
+
     // tab删除事件，应submodule和其的content一起删除。
-    function removeTabItem(index: number) {
+    function removeTabItem(el: DataType.Element) {
 
-        const newTabItems = props.content?.data?.tabItems.filter((v, i) => i !== index)
-        // 删除tab
-        if (props.setContent) {
-            props.setContent((content) => {
-                console.log(71, ...content?.data?.tabItems, index)
+        // const newTabItems = props.content?.data?.tabItems.filter((v, i) => i !== index)
+        // // 删除tab
+        // if (props.setContent) {
+        //     props.setContent((content) => {
+        //         console.log(71, ...content?.data?.tabItems, index)
 
-                const newContent = {
-                    ...content,
-                    data: {
-                        ...content?.data,
-                        tabItems: newTabItems
-                    }
-                } as DataType.Content
-                console.log(80, newContent)
-                return newContent
+        //         const newContent = {
+        //             ...content,
+        //             data: {
+        //                 ...content?.data,
+        //                 tabItems: newTabItems
+        //             }
+        //         } as DataType.Content
+        //         console.log(80, newContent)
+        //         return newContent
 
-            })
-        }
+        //     })
+        // }
 
-        const deleteName = props.content?.data?.tabItems.find((v, i) => i === index).name
+        // const deleteName = props.content?.data?.tabItems.find((v, i) => i === index).name
         // 删除elements
         if (NestedDedicatedProps?.setElements) {
             NestedDedicatedProps.setElements((allElements) => {
-                return allElements.filter((v) => v.name !== deleteName)
+                return allElements.filter((v) => !(v.isSubmodule && v.name === el.name && NestedDedicatedProps.elementName === el.parentName))
                 // const noSubmoduleElements = allElements.filter((v, i) => !(v.isSubmodule && v.parentName === NestedDedicatedProps.elementName))
                 // return [...noSubmoduleElements, ...newTabItems] as DataType.Element[]
             })
@@ -215,51 +287,13 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             }
         })
 
-    //添加submodule
-    const onAddSubModule = (index: number) =>
-        (name: string, timeSeries: boolean, elementType: DataType.ElementType) => {
-            let newTabItems = props.content?.data?.tabItems.slice();
 
-            newTabItems = newTabItems.map((v, i: number) => {
-                if (i === index) {
-                    return {
-                        ...v,
-                        name,
-                        timeSeries,
-                        type: elementType,
-
-                    }
-                } else {
-                    return v
-                }
-            })
-
-            console.log(106, newTabItems)
-            // 添加tab
-            props.setContent!((content) => {
-                return {
-                    ...content,
-                    data: {
-                        tabItems: newTabItems
-                    }
-                } as DataType.Content
-            })
-
-            // 修改elements
-            if (NestedDedicatedProps?.setElements) {
-
-                NestedDedicatedProps?.setElements((allElements) => {
-
-                    return [...allElements.filter((v) => v.parentName !== NestedDedicatedProps.elementName), ...newTabItems]
-                })
-            }
-        }
 
     //tab点击事件:更换当前的currIndex
-    function onSwitch(index: number) {
-        if (NestedDedicatedProps?.setCurrentIndex) {
+    function onSwitch(name: string) {
+        if (NestedDedicatedProps?.setCurrentModuleName) {
 
-            NestedDedicatedProps?.setCurrentIndex((currentIndex) => index)
+            NestedDedicatedProps?.setCurrentModuleName(() => name)
         }
 
     }
@@ -276,7 +310,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
     }
 
     //选中与为选中的样式
-    const className = (index: number) => NestedDedicatedProps?.currentIndex === index ? "tab-content-selected" : "tab-content"
+    const className = (name: string) => NestedDedicatedProps?.currentModuleName === name ? "tab-content-selected" : "tab-content"
 
     console.log(145, props.content?.data?.tabItems)
 
@@ -292,6 +326,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
     return (
         <div>
             {
+                // 【添加模块】
                 props.editable
                     ? <div className="align-header">
                         <Button
@@ -302,6 +337,15 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                     </div>
                     : <></>
             }
+
+            {/* Modal */}
+            <NestedAddModuleModal
+                onAddSubModule={onAddSubModule}
+                visible={modalVisible}
+                onQuit={() => setModalVisible(false)}
+                setDraggable={setDraggable}
+            />
+
             <ReactGridLayout
                 rowHeight={DEFAULT_ROW_HEIGHT}
                 cols={COLS_NUM}
@@ -324,10 +368,16 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                                 key={el.name ? el.name : el.i}
                                 data-grid={genDataGrid(el)}
                                 // id={el.i}
-                                className={className(i)}
-                                onClick={() => onSwitch(i)}
+                                className={className(el.name)}
+                                onClick={() => onSwitch(el.name)}
                                 onMouseEnter={() => onMouseEnter(i)}
-                                onMouseLeave={onMouseLeave}>
+                                onMouseLeave={onMouseLeave}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    position: 'relative'
+                                }}>
                                 <TabController
                                     editable={props.editable}
                                     el={el}
@@ -335,7 +385,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
                                     // isSelected={props.currIndex === el.i}
                                     removeTabItem={removeTabItem}
                                     // setItems={props.setItems}
-                                    onAddSubModule={onAddSubModule(i)}
+                                    // onAddSubModule={onAddSubModule(i)}
                                     addElement={props.addElement}
                                     setDraggable={setDraggable}
                                     index={i}

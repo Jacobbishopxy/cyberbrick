@@ -108,6 +108,10 @@ export interface Element {
     h: number
     w: number
 }
+export interface ElementHeadData {
+    iconType: string,
+    iconContent: string
+}
 
 export enum ElementType {
     EmbedLink = "embedLink",

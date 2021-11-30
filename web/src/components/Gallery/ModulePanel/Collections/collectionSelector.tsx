@@ -40,6 +40,7 @@ export interface ModuleSelectorProps {
     fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 
+    // 右上角的编辑
     editable: boolean
     initialValue: string
     onSave: (v: string) => void

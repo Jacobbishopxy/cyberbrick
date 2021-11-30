@@ -70,19 +70,19 @@ export const TemplateElement =
         }, [props.element])
         // 每当element变化时，都更新elements
         useEffect(() => {
-            if (NestedDedicatedProps?.setElements) {
+            // if (NestedDedicatedProps?.setElements) {
 
-                NestedDedicatedProps?.setElements((elements) => {
-                    return elements.map((v) => {
-                        if (v.parentName === NestedDedicatedProps.elementName && v.name === element.name)
-                            return element
-                        else return v
-                    })
-                })
-            }
+            //     NestedDedicatedProps?.setElements((elements) => {
+            //         return elements.map((v) => {
+            //             if (v.parentName === NestedDedicatedProps.elementName && v.name === element.name)
+            //                 return element
+            //             else return v
+            //         })
+            //     })
+            // }
         }, [element])
         // nested模块专用
-        const [currentIndex, setCurrentIndex] = useState(-1)
+        const [currentModuleName, setCurrentModuleName] = useState('')
         const [isLoading, setIsLoading] = useState(true);
         useLayoutEffect(() => {
             if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
@@ -393,7 +393,7 @@ export const TemplateElement =
             })
         }
 
-        console.log(137, props.isNested, props)
+        console.log(137, props.isNested, props.editable)
         //listen to props's shouldStartFetch. If it updates, fetchContent
 
 
@@ -445,12 +445,12 @@ export const TemplateElement =
                     //模块的名字
                     elementName: props.element.name,
                     // nested模块专用
-                    currentIndex: props.isNested
-                        ? NestedDedicatedProps?.currentIndex
-                        : currentIndex,
-                    setCurrentIndex: props.isNested
-                        ? NestedDedicatedProps?.setCurrentIndex
-                        : setCurrentIndex,
+                    currentModuleName: props.isNested
+                        ? NestedDedicatedProps?.currentModuleName
+                        : currentModuleName,
+                    setCurrentModuleName: props.isNested
+                        ? NestedDedicatedProps?.setCurrentModuleName
+                        : setCurrentModuleName,
                     element,
                     setElement
                 }}>
@@ -478,6 +478,7 @@ export const TemplateElement =
                         // updateContent={props.updateContentFn}
                         setNewestContent={props.setNewestContent}
                         onRemove={props.onRemove}
+                        // 右上角的编辑
                         editable={props.editable}
                         settable={!!element.id}
                         isLoading={isLoading}

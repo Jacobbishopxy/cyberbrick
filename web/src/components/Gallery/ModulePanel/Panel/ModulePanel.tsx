@@ -66,6 +66,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
     const intl = useIntl()
     const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
+    // 模块的ref，可控制自身的编辑状态
     const moduleFwRef = useRef<ConvertFwRef>(null)
     const [dates, setDates] = useState<string[]>([])
 
@@ -82,7 +83,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
     //when dashboard is set to uneditable, make modulePanel unable to edit (by calling moduleFwRef.current.edit(false))
     useEffect(() => {
-        if (!props.editable && moduleFwRef.current) moduleFwRef.current.edit(props.editable)
+        if (!props.editable && moduleFwRef.current) moduleFwRef.current.setEdit(props.editable)
     }, [props.editable])
 
     // //获取模块的时间序列
@@ -164,8 +165,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
         更新模块内容时间；
         !更新父组件的content。
     } */
-    const editContent = (value: boolean) => {
-        if (props.editable && moduleFwRef.current) moduleFwRef.current.edit(value)
+    const editContent = (b: boolean) => {
+        console.log(170, moduleFwRef)
+        if (props.editable && moduleFwRef.current) moduleFwRef.current.setEdit(b)
+
         // if (content?.date && !value) {
 
         //     setContent(content => {
@@ -186,6 +189,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             title={props.content?.title}
             date={props.content?.date}
             updateTitle={updateTitle}
+            // 改变自身状态
             editContent={editContent}
             // newContent={newDateWithContent}
             confirmDelete={confirmDelete}

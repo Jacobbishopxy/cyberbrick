@@ -1,6 +1,6 @@
 import { ElementType } from "@/components/Gallery/GalleryDataType"
 import { tabContentChoice, tabItem } from "@/components/Gallery/ModulePanel/Collections/NestedModule/data"
-import { AddModuleModal } from "@/components/Gallery/ModulePanel/Collections/NestedModule/EmbededModule/AddModuleModal"
+
 import { getChoiceElement } from "@/components/Gallery/ModulePanel/Collections/NestedModule/Header/TabChoice"
 import { FileAddOutlined, DeleteOutlined } from "@ant-design/icons"
 import { Tooltip, Button } from "antd"
@@ -11,8 +11,10 @@ import * as DataType from '@/components/Gallery/GalleryDataType'
 import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
 
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
+
+import { EditOutlined } from "@ant-design/icons";
 interface TabControllerProps {
-    onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType) => void;
+    // onAddSubModule: (name: string, timeSeries: boolean, moduleType: ElementType) => void;
     editable: boolean,
     style?: CSSProperties | undefined,
     className?: string | undefined,
@@ -41,81 +43,100 @@ edit corresponding module, edit current tab content, and remove current tab.
 export const TabController = (props: TabControllerProps) => {
     const { el, index } = props
     //icon的类型
-    const [tabType, setTabType] = useState(el.tabType)
+    // const [iconType, setIconType] = useState(el.headData?.iconType)
     //icon的内容
-    const [selected, setSelected] = useState('');
+    // const [selected, setSelected] = useState('');
     // 控制modal显隐
-    const [addModuleModalVisible, setAddModuleModalVisible] = useState(false)
+    // const [addModuleModalVisible, setAddModuleModalVisible] = useState(false)
     const intl = useIntl()
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
 
-    //将selected, tabType写入tab和elements
-    useEffect(() => {
-        console.log("selected change", selected)
-        if (selected && tabType) {
-            //写入tab
-            if (props.setContent) {
-                props.setContent((content) => {
-                    const newTabItems = content?.data?.tabItems.map((item, i) => {
-                        if (i === index) {
-                            return {
-                                ...item,
-                                headData: {
-                                    tabIcon: selected,
-                                    tabType: tabType
-                                }
+    // 监听selected, iconType变化，写入element
+    // useEffect(() => {
+    //     console.log("selected change", selected)
+    //     if (selected && iconType) {
+    //         //写入tab
+    //         // if (props.setContent) {
+    //         //     props.setContent((content) => {
+    //         //         const newTabItems = content?.data?.tabItems.map((item, i) => {
+    //         //             if (i === index) {
+    //         //                 return {
+    //         //                     ...item,
+    //         //                     headData: {
+    //         //                         iconContent: selected,
+    //         //                         iconType: iconType
+    //         //                     }
+    //         //                 }
+    //         //             } else {
+    //         //                 return item
+    //         //             }
+    //         //         })
+    //         //         return {
+    //         //             ...content,
+    //         //             data: {
+    //         //                 ...content?.data,
+    //         //                 tabItems: newTabItems
+    //         //             }
+    //         //         } as DataType.Content
+    //         //     })
+    //         // }
+
+    //         // 写入elements
+    //         if (NestedDedicatedProps?.setElements) {
+    //             NestedDedicatedProps.setElements((allElements) => {
+
+    //                 const newElements = allElements.map((v) => {
+    //                     console.log(1022, v)
+    //                     if (v.isSubmodule && v.name === el.name && NestedDedicatedProps.elementName === el.parentName) {
+    //                         return {
+    //                             ...v,
+    //                             headData: {
+    //                                 iconContent: selected,
+    //                                 iconType: iconType
+    //                             }
+    //                         }
+    //                     } else {
+    //                         return v
+    //                     }
+
+    //                 })
+    //                 console.log(102, newElements)
+    //                 return newElements
+    //             })
+    //         }
+    //     }
+    // }, [selected, iconType])
+
+    function onFinish(iconType: string, iconContent: string) {
+        // 写入elements
+        if (NestedDedicatedProps?.setElements) {
+            NestedDedicatedProps.setElements((allElements) => {
+
+                const newElements = allElements.map((v) => {
+                    console.log(1022, v)
+                    if (v.isSubmodule && v.name === el.name && NestedDedicatedProps.elementName === el.parentName) {
+                        return {
+                            ...v,
+                            headData: {
+                                iconContent,
+                                iconType
                             }
-                        } else {
-                            return item
                         }
-                    })
-                    return {
-                        ...content,
-                        data: {
-                            ...content?.data,
-                            tabItems: newTabItems
-                        }
-                    } as DataType.Content
+                    } else {
+                        return v
+                    }
+
                 })
-            }
-
-            // 写入elements
-            if (NestedDedicatedProps?.setElements) {
-                NestedDedicatedProps.setElements((allElements) => {
-                    const item = props.content?.data?.tabItems.find((v, i) => i === index)
-                    const newElements = allElements.map((v) => {
-                        console.log(1022, v)
-                        if (v.isSubmodule && v.name === item.name && NestedDedicatedProps.elementName === item.parentName) {
-                            return {
-                                ...v,
-                                headData: {
-                                    tabIcon: selected,
-                                    tabType: tabType
-                                }
-                            }
-                        } else {
-                            return v
-                        }
-
-                    })
-                    console.log(102, item, newElements)
-                    return newElements
-                })
-            }
+                console.log(102, newElements)
+                return newElements
+            })
         }
-    }, [selected, tabType])
 
-    const endEdit = (type: string, input?: string) => {
-        //not icon
-        if (type !== "icon") {
-            setSelected(input || '')
-        }
-        //update tab type
-        setTabType(type)
         // console.log(tabType, input, selected)
     }
 
-    const quitAddModule = () => setAddModuleModalVisible(false)
+
+    // const quitAddModule = () => setAddModuleModalVisible(false)
 
 
 
@@ -124,10 +145,16 @@ export const TabController = (props: TabControllerProps) => {
     //     props.onAddSubModule!(props.name, timeSeries, moduleType, el.i)
     // }
     const editHeader = (
-        <div style={{ display: 'flex', marginTop: "-12px", right: 0, }}>
+        <div style={{
+            position: 'absolute',
+            display: 'flex',
+            marginTop: "-12px",
+            left: 0,
+            top: 0
+        }}>
 
             {/* 添加子模块 */}
-            <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
+            {/* <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module6" })}>
                 <Button icon size='small' className="tab-controller-button"
                     onClick={() => {
                         setAddModuleModalVisible(true)
@@ -136,18 +163,22 @@ export const TabController = (props: TabControllerProps) => {
                     }>
                     <FileAddOutlined />
                 </Button>
-            </Tooltip>
+            </Tooltip> */}
 
             {/*添加封面  */}
             <TabItemSelection
-                selected={selected}
-                setSelected={setSelected}
-                endEdit={endEdit} />
+                onFinish={onFinish}
+                trigger={<Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module2" })}>
+                    <Button size='small' icon className="tab-controller-button">
+                        <EditOutlined />
+                    </Button>
+                </Tooltip>}
+            />
 
             {/* 删除子模块 */}
             <Tooltip title={intl.formatMessage({ id: "gallery.component.general23" })}>
                 <Button icon size='small' className="tab-controller-button"
-                    onClick={() => props.removeTabItem(index)}
+                    onClick={() => props.removeTabItem(el)}
                 >
                     <DeleteOutlined />
                 </Button>
@@ -156,43 +187,39 @@ export const TabController = (props: TabControllerProps) => {
         </div>)
 
     const displayHeader = () => {
-        console.log(130, el.tabIcon)
         //get content from tabContent
-        let headerContent: any = getChoiceElement(el.headData?.tabIcon || "")
+        let headerContent: any = getChoiceElement(el.headData?.iconContent || "")
 
-        const className = (tabType === "text") ? "tab-text" : "display-content"
+
         //calculate fontSize based on the minimal of tab's dimension (width/height)
-        const fontSize = (tabType === "text") ? `${el.minDim / 4}px` : `${el.minDim / 2}px`
-        if (props.editable && selected) {
-            //get content from newly created information
-            headerContent = getChoiceElement(selected as tabContentChoice)
-        }
+        const fontSize = (el.headData?.iconType === "text") ? "12px" : "40px"
         // console.log(el.i, selected)
-        return (<span className={className}
-            style={{ fontSize: fontSize }}
-        >
-            {headerContent}
-        </span>)
+        return (
+            <span
+                style={{ fontSize: fontSize }}
+            >
+                {headerContent}
+            </span>)
     }
 
     return (
-        <div style={{ bottom: 0, top: 0 }}>
+        <div >
 
             {/* 3个小图标 */}
-            {props.editable && props.isHover ? editHeader : <div style={{ marginTop: "-12px", height: "24px" }} />}
+            {props.editable && props.isHover ? editHeader : <></>}
 
             {/* 封面图标 */}
             <div>
                 {displayHeader()}
             </div>
 
-            <AddModuleModal
+            {/* <AddModuleModal
                 onAddSubModule={props.onAddSubModule}
                 visible={addModuleModalVisible}
                 onQuit={quitAddModule}
                 addElement={props.addElement}
                 setDraggable={props.setDraggable}
-            />
+            /> */}
         </div>
     )
 }

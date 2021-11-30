@@ -16,6 +16,7 @@ interface NestedModuleProps {
     NSMid: string,
     // items?: tabItem[]
     editable: boolean
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>
     // styling?: string//how to apply string as stying？
     contentHeight?: number
     // setItems: React.Dispatch<React.SetStateAction<tabItem[]>>
@@ -162,9 +163,24 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
 
     //nestedModuleHeight=嵌套模块高度-icon图标高度-icon上下边距
     // const nestedModuleHeight = props.contentHeight! - DEFAULT_ROW_HEIGHT - DEFAULT_MARGIN * 2
+    interface findElementParameter {
+        elementName?: string,
+        parentName?: string,
+        isSubmodule?: boolean,
+        elements: DataType.Element[] | undefined
+    }
+    function findElement({ elementName, parentName, isSubmodule, elements }: findElementParameter) {
+        if (elementName && parentName && isSubmodule) {
+            if (elements && elements.length > 0) {
+                {
 
+                    return elements.find((v) => isSubmodule && v.parentName === parentName && v.name === elementName)
+                }
+            }
+        }
+    }
     //根据点击的index渲染不同的模块
-    const moduleToReactNode = (currentIndex: number) => {
+    const moduleToReactNode = (currentModuleName: string | undefined) => {
         console.log("switching module", props.content?.data?.tabItems, props.content)
 
         // 选中的element
@@ -172,7 +188,12 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
         //根据tabItems获得elementName
         // 因为tabItems不一定有id，所以需要传递的elements的元素而不是tabItems
         if (props.content?.data?.tabItems) {
-            const item = props.content?.data?.tabItems.find((item, i) => i === currentIndex)
+            const item = findElement({
+                elementName: currentModuleName,
+                parentName: NestedDedicatedProps?.elementName,
+                isSubmodule: true,
+                elements: NestedDedicatedProps?.elements
+            })
 
             const submoduleName = item?.name
 
@@ -216,7 +237,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
     }
     console.log(195, props.content)
     //get curr module tab pane
-    const currModule = moduleToReactNode(props.content?.data?.currIndex)
+    const currModule = moduleToReactNode(NestedDedicatedProps?.currentModuleName)
     return (
         <div className={styles.Editor}>
             <div className={styles.DynamicHeader}>

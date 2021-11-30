@@ -37,7 +37,13 @@ export interface ModuleTabPaneRef {
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
     const { name, timeSeries, elementType, elementId } = props
     //layout property is not important?
-    const ele: DataType.Element = { id: elementId, name: name, timeSeries: timeSeries, type: elementType, x: 0, y: 0, h: 0, w: 0 }
+    const ele: DataType.Element = {
+        id: elementId,
+        name: name,
+        timeSeries: timeSeries,
+        type: elementType,
+        x: 0, y: 0, h: 0, w: 0
+    }
     const [shouldFetch, setShouldFetch] = useState(0)
     const dashboardContextProps = useContext(DashboardContext)
 
