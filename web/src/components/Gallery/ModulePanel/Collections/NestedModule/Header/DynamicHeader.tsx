@@ -13,6 +13,9 @@ import { Layout } from 'react-grid-layout';
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 
 import { NestedAddModuleModal } from "@/components/Gallery/ModulePanel/Collections/NestedModule/EmbededModule/NestedAddModuleModal"
+
+import useDeepCompareEffect, { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
+
 const ReactGridLayout = WidthProvider(RGL);
 interface DynamicHeaderProps {
     editable: boolean
@@ -128,32 +131,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
     //添加submodule
     const onAddSubModule = (name: string, timeSeries: boolean, elementType: DataType.ElementType, headData: DataType.ElementHeadData | undefined) => {
-        // let newTabItems = props.content?.data?.tabItems.slice();
 
-        // newTabItems = newTabItems.map((v, i: number) => {
-        //     if (i === index) {
-        //         return {
-        //             ...v,
-        //             name,
-        //             timeSeries,
-        //             type: elementType,
-
-        //         }
-        //     } else {
-        //         return v
-        //     }
-        // })
-
-        // console.log(106, newTabItems)
-        // // 添加tab
-        // props.setContent!((content) => {
-        //     return {
-        //         ...content,
-        //         data: {
-        //             tabItems: newTabItems
-        //         }
-        //     } as DataType.Content
-        // })
         let length = NestedDedicatedProps?.elements?.filter((v) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName).length
 
         let xPos = (length ? length : 0) % COLS_NUM
@@ -173,7 +151,9 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
             name,
             timeSeries,
             type: elementType,
-            headData
+            headData,
+            dateList: timeSeries ? [] : undefined
+
         }
         if (NestedDedicatedProps?.setCurrentModuleName) {
 
@@ -317,7 +297,7 @@ const DynamicHeader = (props: DynamicHeaderProps) => {
 
     const [submoduleElement, setSubmoduleElement] = useState(NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName))
 
-    useEffect(() => {
+    useDeepCompareEffectNoCheck(() => {
         const t = NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName === NestedDedicatedProps.elementName).map((v, i) => v)
         setSubmoduleElement(() => t)
         console.log(287, t)

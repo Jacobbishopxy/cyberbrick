@@ -106,6 +106,7 @@ export interface ContainerTemplateRef {
  */
 export const ContainerTemplate =
     forwardRef((props: ContainerTemplateProps, ref: React.Ref<ContainerTemplateRef>) => {
+
         const dashboardContextProps = useContext(DashboardContext)
         const teRefs = useRef<ContainerElementRef[]>([])
         // const editable = useContext(DashboardContext)
@@ -195,7 +196,8 @@ export const ContainerTemplate =
                     y: Infinity,
                     h: height,
                     w: width,
-                    isSubmodule: isNested ? true : false
+                    isSubmodule: isNested ? true : false,
+                    dateList: timeSeries ? [] : undefined
                 } as Element
                 props.setElements(newElementInLayout(props.elements, newEle))
                 return true
@@ -304,19 +306,6 @@ export const ContainerTemplate =
                 isDraggable={dashboardContextProps?.edit}
                 isResizable={dashboardContextProps?.edit}
                 autoSize={true}
-            // // // layout={props.elements.map(ele => {
-
-
-            // // //     return {
-            // // //         x: +ele.x,
-            // // //         y: +ele.y,
-            // // //         h: ele.type === ElementType.TargetPrice ? 9 : ele.h,
-            // // //         w: +ele.w,
-            // // //         i: ele.name,
-            // // //         minH: ele.type === DataType.ElementType.FieldHeader ? 0 : 10,
-            // // //         minW: ele.type === DataType.ElementType.FieldHeader ? 0 : 8
-            // // //     }
-            // // // })}
             >
                 {
                     // 只渲染非子模块

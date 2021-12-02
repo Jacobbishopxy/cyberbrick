@@ -1,6 +1,6 @@
 import { ElementType } from "@/components/Gallery/GalleryDataType"
 import { tabContentChoice, tabItem } from "@/components/Gallery/ModulePanel/Collections/NestedModule/data"
-import { AddModuleModal } from "@/components/Gallery/ModulePanel/Collections/NestedModule/EmbededModule/NestedAddModuleModal"
+import { AddModuleModal } from "../EmbededModule/AddModuleModal"
 import { getChoiceElement } from "@/components/Gallery/ModulePanel/Collections/NestedModule/Header/TabChoice"
 import { FileAddOutlined, DeleteOutlined } from "@ant-design/icons"
 import { Tooltip, Button } from "antd"

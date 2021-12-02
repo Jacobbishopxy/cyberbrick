@@ -35,8 +35,11 @@ export const SelectorAssembledItems =
         const [tableSelects, setTableSelects] = useState<OptionType>()
         const [columnSelects, setColumnSelects] = useState<OptionType>()
 
-        const getStorages = async () => props.storagesOnFetch()
-            .then(res => res.map(item => ({ label: item.name, value: item.id })))
+        const getStorages = async () => {
+            console.log(39, props.storagesOnFetch)
+            return props.storagesOnFetch()
+                .then(res => res.map(item => ({ label: item.name, value: item.id })))
+        }
 
         const storageOnSelect = (s: string) => props.storageOnSelect(s)
             .then(res => {
@@ -101,7 +104,7 @@ export const SelectorAssembledItems =
                                 <div>
                                     {menu}
                                     <Button
-                                        onClick={() => setColValue(columnSelects?.map((v) => v.value).filter((v) => v !== '_id'))}
+                                        onClick={() => setColValue(() => columnSelects?.map((v) => v.value).filter((v) => v !== '_id'))}
                                         type="primary"
                                         style={
                                             {
@@ -114,7 +117,17 @@ export const SelectorAssembledItems =
                         }
                     }}
                     placeholder="Please select columns"
-                    rules={props.columnsRequired === true ? [{ required: true, message: 'Please select your columns!' }] : []}
+                    rules={props.columnsRequired === true ? [{
+                        validator: (r, v) => {
+                            console.log(123, r, v)
+                            if (v && v.length > 0) {
+                                console.log(1233, r, v)
+
+                                return Promise.resolve()
+                            }
+                            return Promise.reject(new Error('123'));
+                        }
+                    }] : []}
                     options={columnSelects}
                 />
 

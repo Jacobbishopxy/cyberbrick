@@ -124,8 +124,8 @@ export default {
     "gallery.component.category-config-table_type-temp_lib": "模板",
 
     "gallery.component.add-module-modal1": "选择模块或拷贝界面",
-    "gallery.component.add-module-modal2": "禁止拷贝界面至非空界面！",
-    "gallery.component.add-module-modal3": "禁止重复的模块名称！",
+    "gallery.component.add-module-modal2": "注意：禁止拷贝界面至非空界面！",
+    "gallery.component.add-module-modal3": "注意：禁止重复的模块名称！",
     "gallery.component.add-module-modal4": "请为模块命名：",
     "gallery.component.add-module-modal5": "请确认模块选项：",
     "gallery.component.add-module-modal6": "时间序列",

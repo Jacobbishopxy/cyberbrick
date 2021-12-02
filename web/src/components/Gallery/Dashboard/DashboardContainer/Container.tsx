@@ -140,8 +140,20 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
 
                 console.log(92, res)
                 setTemplate(() => res)
-                console.log(922, res)
-                setElements(res.elements)
+                // console.log(922, res)
+
+
+                setElements(res.elements.map((v) => {
+                    if (v.timeSeries) {
+                        return {
+                            ...v,
+                            dateList: []
+                        }
+                    } else {
+                        return v
+                    }
+                }))
+
             })
             props.onSelectPane(selectedPane.id)
         }
@@ -152,7 +164,19 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
         if (selectedPane)
             props.fetchElements(selectedPane.id).then(res => {
                 setTemplate(res)
-                setElements(res.elements)
+                if (res.elements && res.elements.length > 0) {
+
+                    setElements(res.elements.map((v) => {
+                        if (v.timeSeries) {
+                            return {
+                                ...v,
+                                dateList: []
+                            }
+                        } else {
+                            return v
+                        }
+                    }))
+                }
                 console.log(922, res)
             }
             )

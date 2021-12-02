@@ -8,13 +8,9 @@ import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContex
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
 interface ModuleTabPaneProps {
     //self custom
-    elementId: string,
     content?: DataType.Content
     //same as TemplateElementProps
     editable: boolean,
-    name: string,
-    timeSeries: boolean,
-    elementType: DataType.ElementType,
     contentHeight?: number
     shouldEleStartFetch: number
     // onRemoveModule: (id: string) => void,
@@ -27,6 +23,7 @@ interface ModuleTabPaneProps {
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 
     setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
+    ele: DataType.Element
 }
 
 
@@ -35,15 +32,8 @@ export interface ModuleTabPaneRef {
 }
 
 export const ModuleTabPane = (props: ModuleTabPaneProps) => {
-    const { name, timeSeries, elementType, elementId } = props
+    const { ele } = props
     //layout property is not important?
-    const ele: DataType.Element = {
-        id: elementId,
-        name: name,
-        timeSeries: timeSeries,
-        type: elementType,
-        x: 0, y: 0, h: 0, w: 0
-    }
     const [shouldFetch, setShouldFetch] = useState(0)
     const dashboardContextProps = useContext(DashboardContext)
 
@@ -84,6 +74,7 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
 
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
     console.log(72, dashboardContextProps)
+
     //TODO: WARINING! hardcoded height
     return (
         // <div style={{ height: props.contentHeight }} >
@@ -91,11 +82,13 @@ export const ModuleTabPane = (props: ModuleTabPaneProps) => {
             {/* <DashboardContext.Provider value={{
                 fetchElementContent: fetchContent,
             }}> */}
-            <TemplateElement key={elementType + name}
+            <TemplateElement
+                key={ele.type + ele.name}
                 parentInfo={NestedDedicatedProps?.parentInfo}
-                timeSeries={timeSeries}
+                timeSeries={ele.timeSeries}
                 editable={props.editable}
                 element={ele}
+                setElements={NestedDedicatedProps?.setElements}
                 // fetchContentFn={fetchContent}
                 fetchContentDatesFn={props.fetchContentDatesFn}
                 //更新contents

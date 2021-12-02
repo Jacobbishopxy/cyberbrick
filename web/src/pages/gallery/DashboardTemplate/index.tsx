@@ -86,6 +86,7 @@ export default () => {
         GalleryService.read(storageId, readOption, databaseType)
     const updateElements = (elements: DataType.Element[]) => GalleryService.updateElements(elements as any)
 
+
     return (
         <IsTemplateContext.Provider value={true}>
             <Dashboard

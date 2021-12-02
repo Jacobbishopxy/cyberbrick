@@ -209,14 +209,11 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
         let { name, timeSeries, type, id } = submodule
         // if (!id) return null
 
+        props.fetchStoragesFn().then((res) => console.log(89, res))
         return (
             <ModuleTabPane
-                key={type + name}
-                elementId={id as string}
+                ele={submodule}
                 content={props.content}
-                name={name}
-                timeSeries={timeSeries}
-                elementType={type}
                 editable={props.editable}
                 // contentHeight={nestedModuleHeight}
                 // setItems={setItems}

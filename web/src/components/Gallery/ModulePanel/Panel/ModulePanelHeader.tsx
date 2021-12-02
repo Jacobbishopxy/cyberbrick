@@ -23,7 +23,6 @@ interface ModulePanelHeaderProps {
     editContent: (value: boolean) => void
     newContent: (date: string) => void
     confirmDelete: () => void
-    // dateList?: string[]
     editDate?: (date: string, isMessage?: boolean) => void
     onSelectDate?: (date: string) => void
     // updateContent: (content: DataType.Content) => void
@@ -38,15 +37,10 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     const [title, setTitle] = useState<string | undefined>(props.title)
     const intl = useIntl()
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
-    const [dateList, setDateList] = useState<string[] | undefined>()
 
     useEffect(() => setTitle(props.title), [props.title])
 
     //获取时间序列
-    useEffect(() => {
-        // console.log(45, NestedDedicatedProps?.dateList)
-        setDateList(NestedDedicatedProps?.element.headData?.dateList)
-    }, [NestedDedicatedProps?.element.headData?.dateList])
 
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -102,12 +96,12 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     }
 
     const genController = () => {
-        console.log(97, props.timeSeries, dateList)
+        console.log(97, props.timeSeries, NestedDedicatedProps?.dateList)
         return (<HeaderController
             editable={props.editable}
             settable={props.settable}
             timeSeries={props.timeSeries}
-            dateList={dateList}
+            dateList={NestedDedicatedProps?.dateList}
             editDate={props.editDate}
             editContent={props.editContent}
             // newContent={props.newContent}
@@ -142,7 +136,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         return '';
     }
 
-    console.log(126, props.timeSeries, dateList)
+    console.log(126, props.timeSeries, NestedDedicatedProps?.dateList)
     return (
         <Row >
             {

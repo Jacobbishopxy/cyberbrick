@@ -293,6 +293,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
             // // h = isTemplate && h ? h - 60 : h
             // h = props.isNested ? props.contentHeight! : h
             // console.log(183, props.isNested, h, props.contentHeight, styles)
+            console.log(296, props.fetchStorages)
             return rf({
                 parentInfo: props.parentInfo,
                 content: props.content,

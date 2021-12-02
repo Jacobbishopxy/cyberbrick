@@ -1,12 +1,12 @@
-import { today } from "@/components/Gallery/GalleryDataType"
+// import { today } from "@/components/Gallery/GalleryDataType"
 // import { ModuleEditorField, ModulePresenterField } from "@/components/Gallery/ModulePanel/Generator/data"
-import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
+// import { ModuleGenerator } from "@/components/Gallery/ModulePanel/Generator/ModuleGenerator"
 import { useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import { tabItem } from "./data"
+// import { tabItem } from "./data"
 import { NestedModuleEditor } from "./Editor"
 import './style.less'
 import { NSMid } from "./util"
-import { prRef } from './data'
+// import { prRef } from './data'
 
 // const defaultItems: tabItem[] = [0].map(function (i) {
 //     return {
@@ -67,28 +67,28 @@ import { prRef } from './data'
 //     // }, [saveCount])
 //     return (
 //         <div id={NSMid} style={{ height: '98%' }}>
-//             <NestedModuleEditor
-//                 content={props.content}
-//                 setContent={props.setContent}
-//                 setNewestContent={props.setNewestContent}
-//                 // currIndex={currIndex}
-//                 // setCurrIndex={setCurrIndex}
-//                 // items={items as tabItem[]}
-//                 // setItems={setItems}
-//                 // setSaveCount={setSaveCount}
-//                 fetchStoragesFn={props.fetchStorages!}
-//                 fetchTableListFn={props.fetchTableList!}
-//                 fetchTableColumnsFn={props.fetchTableColumns!}
-//                 fetchQueryDataFn={props.fetchQueryData!}
-//                 // updateContentFn={props.updateContent}
-//                 editable={true}
-//                 NSMid={NSMid}
-//                 contentHeight={props.contentHeight}
-//                 fetchContentFn={props.fetchContentFn!}
-//                 fetchContentDatesFn={props.fetchContentDatesFn!}
-//                 parentInfo={props.parentInfo!}
-//                 addElement={props.addElement!}
-//             />
+{/* <NestedModuleEditor
+    content={props.content}
+    setContent={props.setContent}
+    setNewestContent={props.setNewestContent}
+    // currIndex={currIndex}
+    // setCurrIndex={setCurrIndex}
+    // items={items as tabItem[]}
+    // setItems={setItems}
+    // setSaveCount={setSaveCount}
+    fetchStoragesFn={props.fetchStorages!}
+    fetchTableListFn={props.fetchTableList!}
+    fetchTableColumnsFn={props.fetchTableColumns!}
+    fetchQueryDataFn={props.fetchQueryData!}
+    // updateContentFn={props.updateContent}
+    editable={true}
+    NSMid={NSMid}
+    contentHeight={props.contentHeight}
+    fetchContentFn={props.fetchContentFn!}
+    fetchContentDatesFn={props.fetchContentDatesFn!}
+    parentInfo={props.parentInfo!}
+    addElement={props.addElement!}
+/> */}
 //         </div>
 //     )
 // }
@@ -194,6 +194,10 @@ export interface NestedModuleProps {
     parentInfo: any
     setNewestContent?: (content: DataType.Content, elementInfo?: any) => void
     addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => boolean
+    //获取全部数据库
+    fetchStorages: () => Promise<DataType.StorageSimple[]>
+    fetchTableList: (id: string) => Promise<string[]>
+    fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
 }
 
 export interface NestedModuleRef {
@@ -221,10 +225,10 @@ export const NestedModule = forwardRef((props: NestedModuleProps, ref: React.Ref
             setEdit={setEdit}
             NSMid={NSMid}
             contentHeight={props.contentHeight}
-            fetchStoragesFn={() => Promise.resolve([])}
-            fetchTableColumnsFn={(storageId, tableName) => Promise.resolve([])}
-            fetchTableListFn={(id) => Promise.resolve([])}
-            fetchQueryDataFn={props.fetchQueryData!}
+            fetchStoragesFn={props.fetchStorages}
+            fetchTableColumnsFn={props.fetchTableColumns}
+            fetchTableListFn={props.fetchTableList}
+            fetchQueryDataFn={props.fetchQueryData}
             // updateContentFn={props.updateContent}
             // setSaveCount={setSaveCount}
 

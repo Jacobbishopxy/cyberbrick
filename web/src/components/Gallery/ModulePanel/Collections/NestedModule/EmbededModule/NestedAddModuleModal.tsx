@@ -119,11 +119,11 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) => {
                 <Space>
                     <RightOutlined />
                     <Input style={{ width: 200 }} onChange={e => props.setName(e.target.value)} />
-                    <Tooltip
+                    {/* <Tooltip
                         title={<FormattedMessage id="gallery.component.add-module-modal3" />}
                     >
                         <ExclamationCircleTwoTone twoToneColor="red" />
-                    </Tooltip>
+                    </Tooltip> */}
 
 
                     {/* iconModal */}
@@ -145,9 +145,17 @@ const ModuleSelectionView = (props: ModuleSelectionViewProps) => {
                     {/* 显示icon */}
                     {displayHeader()}
                 </Space>
+                <Space style={{
+                    color: 'red'
+                }}>
+                    <ExclamationCircleTwoTone twoToneColor="red" />
+                    <FormattedMessage id="gallery.component.add-module-modal3" />
+                </Space>
 
 
-                <Space>
+                <Space style={{
+                    marginTop: '20px'
+                }}>
                     <StarTwoTone />
                     <span style={{ width: 250, fontSize: 15 }}>
                         <FormattedMessage id="gallery.component.add-module-modal5" />

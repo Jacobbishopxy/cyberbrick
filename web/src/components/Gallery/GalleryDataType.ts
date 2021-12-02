@@ -107,6 +107,7 @@ export interface Element {
     y: number
     h: number
     w: number
+    dateList?: string[]
 }
 export interface ElementHeadData {
     iconType: string,
