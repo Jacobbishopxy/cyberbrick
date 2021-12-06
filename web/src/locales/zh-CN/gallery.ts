@@ -82,7 +82,7 @@ export default {
     "gallery.component.type.fileManager": "文件管理",
     "gallery.component.type.table": "表格",
     "gallery.component.type.xlsxTable": "Excel表格",
-    "gallery.component.type.flexTable": "灵活表格",
+    "gallery.component.type.flexTable": "数据集表格",
     "gallery.component.type.investment": "投资",
     "gallery.component.type.targetPrice": "目标价",
     "gallery.component.type.universe": "股票池",
@@ -120,7 +120,7 @@ export default {
     "gallery.component.category-config-table23": "在此输入标的名称",
 
 
-    "gallery.component.category-config-table_type-dashboard": "常规",
+    "gallery.component.category-config-table_type-dashboard": "仪表盘",
     "gallery.component.category-config-table_type-temp_lib": "模板",
 
     "gallery.component.add-module-modal1": "选择模块或拷贝界面",
@@ -224,7 +224,7 @@ export default {
     "gallery.component.module-panel.nested-simple-module6": "编辑对应模块",
 
     "gallery.component.module-panel.nested-simple-module.edit-tab.Icon": "图标",
-    "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "文章",
+    "gallery.component.module-panel.nested-simple-module.edit-tab.Article": "标题",
     "gallery.component.module-panel.nested-simple-module.edit-tab3": "文字",
     "gallery.component.module-panel.nested-simple-module.edit-tab4": "数字",
 

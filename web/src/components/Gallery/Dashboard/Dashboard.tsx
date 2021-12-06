@@ -3,17 +3,19 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { message } from "antd"
+import { Prompt, useHistory } from 'react-router-dom'
+import { useIntl, history } from "umi"
+
+import { message, Modal } from "antd"
 import _ from "lodash"
 
 import * as DataType from "../GalleryDataType"
 import { Controller } from "./DashboardController/Controller"
 import { Container, ContainerRef } from "./DashboardContainer/Container"
-import { useIntl } from "umi"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
 
-
 import { DashboardContext } from "./DashboardContext"
+import IsSavemodal from "./IsSavemodal"
 export const EditableContext = React.createContext<boolean>(false)
 
 
@@ -122,7 +124,10 @@ export const Dashboard = (props: DashboardProps) => {
     const [newestContent, setNewestContent] = useState<DataType.Content>()
     const [updatedContents, setUpdatedContents] = useState<DataType.Content[] | undefined>([])
 
-    const [selected, setSelected] = useState<string[]>()
+    const [selected, setSelected] = useState<string[] | undefined>(props.initialSelected?.slice(0, 2))
+    useEffect(() => {
+        setSelected(props.initialSelected?.slice(0, 2))
+    }, [props.initialSelected])
 
     const intl = useIntl()
 
@@ -154,14 +159,14 @@ export const Dashboard = (props: DashboardProps) => {
         }
     }, [newestContent])
 
-    useEffect(() => {
-        console.log(111, updatedContents)
-    }, [updatedContents])
     // useEffect(() => {
     //     console.log(145, updatedContents)
     // }, [updatedContents])
 
+    console.log(4888, props.initialSelected)
+    // 维度变化时的执行函数
     useEffect(() => {
+        console.log(477, selected, selectedTemplateId)
         if (props.selectedOnChange && selected && selectedTemplateId)
             props.selectedOnChange([...selected, selectedTemplateId])
     }, [selectedTemplateId])
@@ -169,7 +174,7 @@ export const Dashboard = (props: DashboardProps) => {
     const categoryOnSelect = async (name: string, isCopy: boolean = false) => {
         if (!isCopy) {
             setSelectedCategoryName(name)
-            setCanEdit(false)
+            // setCanEdit(false)
             console.log(137, canEdit, 'categoryOnSelect')
         }
         return await props.fetchCategory(name)
@@ -320,6 +325,20 @@ export const Dashboard = (props: DashboardProps) => {
             ref={cRef}
         /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh])
 
+    // if未保存，提醒用户
+    useEffect(() => {
+        function IsSave(e: BeforeUnloadEvent) {
+            e.preventDefault();
+            e.returnValue = '当前未保存，所编辑的数据将不可恢复，是否离开？'
+        }
+        if (edit) {
+            window.addEventListener('beforeunload', IsSave)
+        }
+        return () => {
+            window.removeEventListener('beforeunload', IsSave)
+        }
+    })
+    console.log(340, history)
     return (
 
         <DashboardContext.Provider value={{
@@ -333,6 +352,10 @@ export const Dashboard = (props: DashboardProps) => {
             ContainerRef: cRef,
             // getTemplateElements: fetchElements
         }}>
+            <Prompt
+                when={edit}
+                message={'当前未保存，所编辑的数据将不可恢复，是否离开？'}
+            ></Prompt>
             {genController}
             {genContainer}
         </DashboardContext.Provider>

@@ -123,7 +123,9 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
         <Space>
             <RightOutlined />
             {/* 选择仪表盘或者模板处拷贝 */}
-            <Radio.Group onChange={typeOnChange}>
+            <Radio.Group
+                defaultValue={ctType}
+                onChange={typeOnChange}>
                 <Space>
                     {DataType.categoryTypeSelector.map(type =>
                         <Radio key={type} value={type}> <FormattedMessage id={`gallery.component.category-config-table_type-${type}`} /></Radio>)}

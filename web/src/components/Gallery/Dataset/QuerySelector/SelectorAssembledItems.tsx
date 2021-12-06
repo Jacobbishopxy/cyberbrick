@@ -3,7 +3,7 @@
  */
 
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { Button, SelectProps } from "antd"
+import { Button, FormInstance, SelectProps } from "antd"
 import { ProFormSelect } from "@ant-design/pro-form"
 import { FormattedMessage } from "umi"
 
@@ -20,6 +20,7 @@ export interface SelectorAssembledItemsProps {
     storageOnSelect: (id: string) => Promise<string[]>
     tableOnSelect: (id: string, name: string) => Promise<string[]>
     columnsRequired?: boolean
+    formRef: FormInstance<any>
 }
 
 export interface SelectorAssembledItemsRef {
@@ -62,13 +63,13 @@ export const SelectorAssembledItems =
             if (storage && table) tableOnSelect(storage!, table!).finally()
         }, [table])
 
+        // const [colValue, setColValue] = useState<string[] | undefined>([])
         const onValuesChange = (value: Record<string, any>) => {
             if (value.id) setStorage(value.id)
             if (value.tableName) setTable(value.tableName)
         }
         useImperativeHandle(ref, () => ({ onValuesChange }))
 
-        const [colValue, setColValue] = useState<string[] | undefined>([])
         return (
             <>
                 {/* 数据库 */}
@@ -91,20 +92,34 @@ export const SelectorAssembledItems =
                 {/* 列 */}
                 <ProFormSelect
                     name="selects"
-                    label={<FormattedMessage id="gallery.component.general33" />}
+                    label={<FormattedMessage id="gallery.component.general33"
+                    />
+
+                    }
+
                     fieldProps={{
                         mode: "multiple",
-                        value: colValue,
+                        // value: colValue,
                         onChange: (s, o) => {
                             console.log(94, s, o, columnSelects)
-                            setColValue(s)
+                            // setColValue(s)
                         },
+                        // 【全选与反选】按钮
                         dropdownRender: (menu) => {
                             return (
                                 <div>
                                     {menu}
                                     <Button
-                                        onClick={() => setColValue(() => columnSelects?.map((v) => v.value).filter((v) => v !== '_id'))}
+                                        onClick={() => {
+                                            const allCol = columnSelects?.map((v) => v.value).filter((v) => v !== '_id')
+                                            const newCol = props.formRef.getFieldValue('selects') && props.formRef.getFieldValue('selects').length === allCol?.length ? [] : allCol
+                                            console.log(117, allCol, props.formRef.getFieldValue('selects'))
+
+                                            props.formRef.setFields([{
+                                                name: 'selects',
+                                                value: newCol
+                                            }])
+                                        }}
                                         type="primary"
                                         style={
                                             {
@@ -117,17 +132,23 @@ export const SelectorAssembledItems =
                         }
                     }}
                     placeholder="Please select columns"
-                    rules={props.columnsRequired === true ? [{
-                        validator: (r, v) => {
-                            console.log(123, r, v)
-                            if (v && v.length > 0) {
-                                console.log(1233, r, v)
-
-                                return Promise.resolve()
-                            }
-                            return Promise.reject(new Error('123'));
+                    rules={[
+                        {
+                            required: true,
+                            message: '请选择列'
                         }
-                    }] : []}
+                    ]}
+                    // rules={[{
+                    //     validator: (r, v) => {
+                    //         console.log(123, r, v)
+                    //         if (v && v.length > 0) {
+                    //             console.log(1233, r, v)
+
+                    //             return Promise.resolve()
+                    //         }
+                    //         return Promise.reject(new Error('123'));
+                    //     }
+                    // }]}
                     options={columnSelects}
                 />
 

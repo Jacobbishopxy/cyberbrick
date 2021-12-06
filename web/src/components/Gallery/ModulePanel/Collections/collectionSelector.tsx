@@ -219,7 +219,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
             // // styling={props.styling}
             ref={props.forwardedRef}
         />
-
+        console.log(201, props, props.contentHeight)
         //嵌套模块
         const nestedModule = <NestedModule
             onSave={props.onSave}

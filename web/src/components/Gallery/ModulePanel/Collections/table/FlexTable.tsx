@@ -50,7 +50,17 @@ const FlexTableView = (props: FlexTableViewProps) => {
             // console.log(rawData)
             const col = getColumnsFromRawData(rawData[0], type)
             const d = transformRawDataBySourceType(rawData, rawConfig, type)
-            setColumns(col)
+            setColumns(() => {
+
+                const newCol = col.map((v) => {
+                    return {
+                        ...v,
+                        width: 100
+                    }
+                })
+                console.log(544, newCol)
+                return newCol
+            })
             setData(d)
         }
     }
@@ -73,10 +83,11 @@ const FlexTableView = (props: FlexTableViewProps) => {
         <Table
             columns={columns}
             dataSource={data}
-            showHeader={!cfg.view.includes("header")}
+            // showHeader={!cfg.view.includes("header")}
+            showHeader={true}
             bordered={!cfg.view.includes("border")}
             size="small"
-            scroll={{ x: true, y: props.contentHeight ? props.contentHeight - 60 : undefined }}
+            scroll={{ x: true, y: props.contentHeight ? props.contentHeight - 100 : undefined }}
             pagination={false}
         />
 
@@ -97,7 +108,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
 
 
 const PresenterField = (props: ModulePresenterField) => {
-    console.log('Flextable')
+    console.log('Flextable', props.contentHeight)
     return props.content ?
         <FlexTableView
             content={props.content}

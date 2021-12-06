@@ -40,7 +40,7 @@ const viewOptionOptions = [
 export const GeneralTableEditorField = (props: ModuleEditorField) => {
     const intl = useIntl()
     const [visible, setVisible] = useState(false)
-    const [dataType, setDataType] = useState<DataSelectedType>()
+    const [dataType, setDataType] = useState<DataSelectedType>(DataType.flexTableType.dataset)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     const [dataColumns, setDataColumns] = useState<string[]>([])
 
@@ -73,7 +73,12 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
         setVisible(false)
     }
 
+
+    // 上传的数据是否成功
+    const [dataAvailable, setDataAvailable] = useState(false)
+
     const dataSelectOnFinish = async () => {
+        console.log(77, content)
         if (content?.data === undefined || content?.data.length === 0) {
             message.warn("Please choose your data!")
             return false
@@ -89,8 +94,12 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
             setDataColumns(content!.data.source.selects)
             return true
         }
-        message.warn("Please check data format!")
-        return false
+        if (dataAvailable) return true
+        else {
+            message.warn("Please check data format!")
+            return false
+        }
+
     }
 
     return (
@@ -117,6 +126,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
                     </Modal>
                 }
             >
+                {/* 【数据】步骤 */}
                 <StepsForm.StepForm
                     name="data"
                     title={intl.formatMessage({ id: "gallery.component.general43" })}
@@ -130,9 +140,12 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
                         fetchTableColumns={props.fetchTableColumns!}
                         dataType={dataType}
                         dataSelected={setDataType}
+                        dataAvailable={dataAvailable}
+                        setDataAvailable={setDataAvailable}
                     />
                 </StepsForm.StepForm>
 
+                {/* 【选项】步骤 */}
                 <StepsForm.StepForm
                     name="option"
                     title={intl.formatMessage({ id: "gallery.component.general56" })}
@@ -150,6 +163,7 @@ export const GeneralTableEditorField = (props: ModuleEditorField) => {
                     />
                 </StepsForm.StepForm>
 
+                {/* 【展示】步骤 */}
                 <StepsForm.StepForm
                     name="display"
                     title={intl.formatMessage({ id: "gallery.component.general44" })}

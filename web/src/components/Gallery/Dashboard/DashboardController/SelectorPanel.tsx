@@ -42,7 +42,7 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     const [selected, setSelected] = useState<string>()
 
     // 
-
+    console.log(46, props.initValue)
     useEffect(() => setInitValue(props.initValue), [props.initValue])
 
     useEffect(() => {

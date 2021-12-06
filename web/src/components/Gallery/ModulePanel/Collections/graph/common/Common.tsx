@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useState, useRef, RefObject } from "react"
-import { Button, message, Modal, Space } from "antd"
+import { Button, message, Modal, Space, Form, FormInstance } from "antd"
 import ProForm, { StepsForm } from "@ant-design/pro-form"
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
 import { FormattedMessage, useIntl } from "umi"
@@ -25,8 +25,9 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         const [content, setContent] = useState<DataType.Content | undefined>(props.content)
         const [dataAvailable, setDataAvailable] = useState(false)
         const [columns, setColumns] = useState<string[]>()
-
+        const formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined = useRef()
         const saveContentData = (data: Record<string, any>) => {
+            console.log(30, data)
             const ctt = {
                 ...content!,
                 storageType: DataType.StorageType.PG,
@@ -41,7 +42,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
 
         const saveContent = async (values: Record<string, any>) => {
-            console.log(46, values)
+            console.log(466, values, formRef)
             if (content) {
                 console.log(466, content)
                 const ctt = { ...content, config: values, databaseType: DataType.StorageType.PG, }
@@ -76,6 +77,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
                 <StepsForm
                     onFinish={saveContent}
+                    formRef={formRef}
                     stepsFormRender={(dom, submitter) =>
                         <Modal
                             title={intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common1" })}
@@ -140,9 +142,11 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                         initialValues={{ x: { type: "category" }, seriesDir: "vertical" }}
                     >
                         <DisplayForm
+                            formRef={formRef}
                             mixin={mixin}
                             columns={columns}
                         />
+                        {/* <div>123</div> */}
                     </StepsForm.StepForm>
                 </StepsForm>
             </div>

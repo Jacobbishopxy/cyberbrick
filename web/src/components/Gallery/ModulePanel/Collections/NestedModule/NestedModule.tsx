@@ -212,7 +212,7 @@ export const NestedModule = forwardRef((props: NestedModuleProps, ref: React.Ref
             setEdit
         }
     })
-    console.log(201, props, ref)
+    console.log(215, props.contentHeight)
     return (
         <NestedModuleEditor
             content={props.content}

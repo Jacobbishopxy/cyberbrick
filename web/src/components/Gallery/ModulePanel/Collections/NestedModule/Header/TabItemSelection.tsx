@@ -3,7 +3,7 @@ import { Button, Divider, List, Tooltip } from "antd";
 import { useState } from "react";
 import { TabChoice } from "../data";
 
-import { tabSelectChunk } from "./TabChoice";
+import { tabSelectChunk, iconMapText, } from "./TabChoice";
 
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 import { useIntl } from "umi";
@@ -49,13 +49,18 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
     //style of a single choice
     const singleChoiceContent = (choice: TabChoice) => {
         const className = (choice.key === selected) ? 'tab-icon-selected' : 'tab-icon'
+
+        console.log(53, choice.key)
         return ( //changed style when selected
-            <div onClick={() => onClick(choice.key, choice.tabType)}
-                className={className}
-                key={choice.key}
-            >
-                {choice.icon}
-            </div>)
+            <Tooltip title={iconMapText[choice.key]}>
+                <div onClick={() => onClick(choice.key, choice.tabType)}
+                    className={className}
+                    key={choice.key}
+                >
+                    {choice.icon}
+                </div>
+            </Tooltip>
+        )
     }
 
     //display a list of tab choices of same type

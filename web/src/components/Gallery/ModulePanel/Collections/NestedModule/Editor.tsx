@@ -1,6 +1,5 @@
 import DynamicHeader from './Header/DynamicHeader';
-import { useEffect, useState, useContext } from 'react';
-import { tabItem } from './data';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { Skeleton } from 'antd';
 import { ModuleTabPane } from './EmbededModule/CreateModule';
 import _, { min } from 'lodash';
@@ -26,7 +25,7 @@ interface NestedModuleProps {
     fetchTableListFn: (id: string) => Promise<string[]>
     fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
 
-    fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+    fetchQueryDataFn?: (readOption: DataType.Content) => Promise<any>
     fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
     fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
     content?: DataType.Content
@@ -232,12 +231,17 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
             />
         )
     }
-    console.log(195, props.content)
+    const DynamicHeaderRef = useRef<any>();
+    const EditorRef = useRef<any>();
+    if (DynamicHeaderRef.current && EditorRef.current) {
+
+        console.log(195, DynamicHeaderRef.current.clientHeight, EditorRef.current.clientHeight)
+    }
     //get curr module tab pane
     const currModule = moduleToReactNode(NestedDedicatedProps?.currentModuleName)
     return (
-        <div className={styles.Editor}>
-            <div className={styles.DynamicHeader}>
+        <div className={styles.Editor} ref={EditorRef}>
+            <div className={styles.DynamicHeader} ref={DynamicHeaderRef}>
                 <DynamicHeader
                     // items={props.items!}
                     editable={props.editable}
@@ -255,7 +259,9 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
                 />
 
             </div>
-            <div className={styles.currModule}>
+            <div className={styles.currModule} style={{
+                height: (DynamicHeaderRef.current && EditorRef.current ? EditorRef.current.clientHeight - DynamicHeaderRef.current.clientHeight : '') + 'px'
+            }}>
                 {/* {"on tab: " + currIndex} */}
                 {currModule || <Skeleton active />}
             </div>

@@ -8,6 +8,7 @@ const { REACT_APP_ENV } = process.env
 
 
 export default defineConfig({
+    links: [{ rel: 'icon', href: '/favicon.ico' }],
     outputPath: "frontend",
     hash: true,
     antd: {},
@@ -64,5 +65,6 @@ export default defineConfig({
     nodeModulesTransform: {
         type: 'none',
         exclude: []
-    }
+    },
+    // favicon: './static/favicon.ico'
 })

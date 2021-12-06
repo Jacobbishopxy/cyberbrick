@@ -40,6 +40,7 @@ export default () => {
 
     // 将选择的维度存入本地
     const selectedOnChange = (v?: string[]) => {
+        console.log(47, v)
         if (v) ls.add(lsKey, JSON.stringify(v))
     }
 

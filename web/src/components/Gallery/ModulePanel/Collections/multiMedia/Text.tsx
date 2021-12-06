@@ -10,7 +10,6 @@ import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 import _ from "lodash";
 
-
 const EditorField = (props: ModuleEditorField) => {
 
     const onChangeContent = (value: string) => {
@@ -24,6 +23,7 @@ const EditorField = (props: ModuleEditorField) => {
         }
     }
 
+    console.log(277, props.styling)
     return (
         <div style={{ marginTop: '2em' }}>
             <TextEditorModifier
@@ -31,7 +31,7 @@ const EditorField = (props: ModuleEditorField) => {
                 content={props.content && props.content.data ? props.content.data.text : null}
                 styling={props.styling}
                 style={{
-                    height: props.contentHeight ? props.contentHeight - 50 : undefined,
+                    height: props.contentHeight ? props.contentHeight - 130 : undefined,
                 }}
             />
         </div>

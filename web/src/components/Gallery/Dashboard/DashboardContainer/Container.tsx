@@ -88,6 +88,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     const [templateChangingId, setTemplateChangingId] = useState<string | undefined>('')
     //根据维度id，获取维度信息。
     const tabOnChange = (id?: string) => {
+        console.log(92, id)
         setTemplateChangingId(id);
         if (dashboardContextProps?.edit) {
             setIsTabModal(true)
@@ -132,8 +133,11 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     /**
      * fetch template (with elements) when switching dashboard or it's tabs
      */
-    //切换仪表盘时，会获得默认的第一个templates（维度）
+
+
+    //切换维度时执行函数（维度）
     useEffect(() => {
+        console.log(137, selectedPane)
         if (selectedPane) {
             //!false没起作用
             props.fetchElements(selectedPane.id, false).then(res => {

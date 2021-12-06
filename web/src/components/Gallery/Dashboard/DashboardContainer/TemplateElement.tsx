@@ -73,9 +73,14 @@ export const TemplateElement =
 
         // nested模块专用
         const [currentModuleName, setCurrentModuleName] = useState('')
+
         const [isLoading, setIsLoading] = useState(true);
+
         useLayoutEffect(() => {
-            if (mpRef.current) setMpHeight(mpRef.current.offsetHeight)
+            if (mpRef.current) {
+                setMpHeight(mpRef.current.offsetHeight)
+                console.log(82, props.isNested, mpRef.current.offsetHeight)
+            }
         })
 
         //该模块的时间序列

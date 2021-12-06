@@ -25,9 +25,8 @@ export default () => {
     const [initialSelected, setInitialSelected] = useState<string[]>()
     const query = useQuery()
 
+    const initialValue = query.get("anchor")
     useEffect(() => {
-        const initialValue = query.get("anchor")
-        console.log(30, initialValue)
         if (initialValue) {
             try {
                 const pi = JSON.parse(initialValue)
@@ -36,8 +35,15 @@ export default () => {
         } else {
             const i = ls.get(lsKey)
             if (i) setInitialSelected(JSON.parse(i.data))
+            console.log(30, i, JSON.parse(i.data))
         }
     }, [])
+
+    useEffect(() => {
+
+
+    }, [initialValue])
+
 
     const selectedOnChange = (v?: string[]) => {
         if (v) ls.add(lsKey, JSON.stringify(v))

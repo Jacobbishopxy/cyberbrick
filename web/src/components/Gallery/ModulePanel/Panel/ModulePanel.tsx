@@ -303,7 +303,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
                 fetchTableList: props.fetchTableList,
                 fetchTableColumns: props.fetchTableColumns,
                 fetchQueryData: props.fetchQueryData,
-                // contentHeight: h,
+                contentHeight: props.contentHeight,
                 // updateContent: props.updateContent,
                 forwardedRef: moduleFwRef,
                 // styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
@@ -364,7 +364,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
             {/* 根据是模板或仪表盘给予样式 */}
             <div
                 className={
-                    `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${styles.genContext}`}
+                    `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${props.isNested ? styles.genNestedContext : styles.genContext}
+                    
+                    `}
             >
 
 
@@ -372,7 +374,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
             </div>
             {displayFooter()}
-        </div>
+        </div >
     )
 }
 
