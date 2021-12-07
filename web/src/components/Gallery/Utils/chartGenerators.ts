@@ -2,285 +2,325 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import {EChartOption} from "echarts"
+import { EChartOption } from "echarts"
 import _ from "lodash"
 
-import {CartesianCoordSysChartConfig, Mixin, Scatter, SeriesPieChartConfig} from "./data"
-import {genDisplayConfig, transformRowDataForChart} from "@/components/Gallery/Utils/rawDataTransform"
+import { CartesianCoordSysChartConfig, Mixin, Scatter, SeriesPieChartConfig } from "./data"
+import { genDisplayConfig, transformRowDataForChart } from "@/components/Gallery/Utils/rawDataTransform"
 
 
-const generateXAxis = (config: CartesianCoordSysChartConfig): EChartOption.XAxis[] => {
-  return [
-    {
-      type: config.x.type,
-      name: config.x.name,
-      nameLocation: "middle",
-      nameGap: 20
+const generateXAxis = (config: CartesianCoordSysChartConfig): EChartOption.XAxis[] | undefined => {
+    console.log(16, config)
+    if (config.x) {
+
+        return [
+            {
+                type: config.x.type,
+                name: config.x.name,
+                nameLocation: "middle",
+                nameGap: 20
+            }
+        ]
     }
-  ]
+    return
 }
 
-const generateYAxis = (config: CartesianCoordSysChartConfig): EChartOption.YAxis[] => {
+const generateYAxis = (config: CartesianCoordSysChartConfig): EChartOption.YAxis[] | undefined => {
 
-  let left = -1
-  let right = -1
+    let left = -1
+    let right = -1
+    console.log(27, config)
+    if (config.y) {
+        return config.y.map((item, idx) => {
 
-  return config.y.map((item, idx) => {
+            let offsetNum = 0
 
-    let offsetNum = 0
+            if (item.position === "left") {
+                left += 1
+                offsetNum = left
+            }
+            if (item.position === "right") {
+                right += 1
+                offsetNum = right
+            }
 
-    if (item.position === "left") {
-      left += 1
-      offsetNum = left
+            return {
+                name: item.name,
+                position: item.position,
+                splitLine: { show: idx === 0 },
+                offset: offsetNum * 50
+            }
+        })
     }
-    if (item.position === "right") {
-      right += 1
-      offsetNum = right
-    }
+    return
 
-    return {
-      name: item.name,
-      position: item.position,
-      splitLine: {show: idx === 0},
-      offset: offsetNum * 50
-    }
-  })
 }
 
 const getScatterMap = (config: CartesianCoordSysChartConfig, value: "size" | "min" | "max") =>
-  config.scatter ?
-    _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
-      return {...acc, [v.column]: v[value]}
-    }, {}) : {}
+    config.scatter ?
+        _.reduce(config.scatter, (acc: Record<string, any>, v: Scatter) => {
+            return { ...acc, [v.column]: v[value] }
+        }, {}) : {}
 
 const generateSeries = (config: CartesianCoordSysChartConfig, chartType: Mixin): [EChartOption.Series[], string[]] => {
-  const series: EChartOption.Series[] = []
-  const legend: string[] = []
+    const series: EChartOption.Series[] = []
+    const legend: string[] = []
 
-  const scatterMap = getScatterMap(config, "size")
+    const scatterMap = getScatterMap(config, "size")
+    if (chartType === 'scatter') [
+        console.log(28, config)
+    ]
+    if (config.y) {
+        config.y.forEach((item, idx) => {
+            item.columns.forEach(c => {
+                const ss = {
+                    yAxisIndex: idx,
+                    name: c,
+                    encode: {
+                        x: config.x,
+                        y: c,
+                        tooltip: [config.x, c]
+                    }
+                }
 
-  config.y.forEach((item, idx) => {
-    item.columns.forEach(c => {
-      const ss = {
-        yAxisIndex: idx,
-        name: c,
-        encode: {
-          x: config.x,
-          y: c,
-          tooltip: [config.x, c]
-        }
-      }
+                //   散点图
+                if (chartType === "scatter") {
 
-      if (chartType === "scatter") {
-        const sizeCol = scatterMap[c]
-        series.push({
-          ...ss,
-          type: "scatter",
-          symbolSize: (data: Record<string, number>) => (data[sizeCol] || 50),
-          encode: {
-            ...ss.encode,
-            tooltip: [config.x, c, sizeCol]
-          }
+                    const sizeCol = scatterMap[c]
+                    series.push({
+                        ...ss,
+                        type: "scatter",
+                        symbolSize: (data: Record<string, number>) => {
+
+                            return data[sizeCol] || 10
+                        },
+                        encode: {
+                            ...ss.encode,
+                            tooltip: [config.x, c, sizeCol]
+                        }
+                    })
+                } else if (chartType === "lineBar")
+                    config.bar?.includes(c) ?
+                        series.push({ ...ss, type: "bar" }) :
+                        series.push({ ...ss, type: "line" })
+                else if (chartType === "lineScatter") {
+                    const sizeCol = scatterMap[c]
+                    sizeCol ?
+                        series.push({
+                            ...ss,
+                            type: "scatter",
+                            symbolSize: (data: Record<string, number>) => (data[sizeCol] || 50),
+                            encode: {
+                                ...ss.encode,
+                                tooltip: [config.x, c, sizeCol]
+                            }
+                        }) :
+                        series.push({ ...ss, type: "line" })
+                } else {
+                    series.push({ ...ss, type: chartType })
+                }
+
+                legend.push(c)
+            })
         })
-      } else if (chartType === "lineBar")
-        config.bar?.includes(c) ?
-          series.push({...ss, type: "bar"}) :
-          series.push({...ss, type: "line"})
-      else if (chartType === "lineScatter") {
-        const sizeCol = scatterMap[c]
-        sizeCol ?
-          series.push({
-            ...ss,
-            type: "scatter",
-            symbolSize: (data: Record<string, number>) => (data[sizeCol] || 50),
-            encode: {
-              ...ss.encode,
-              tooltip: [config.x, c, sizeCol]
-            }
-          }) :
-          series.push({...ss, type: "line"})
-      } else
-        series.push({...ss, type: chartType})
+    }
 
-      legend.push(c)
-    })
-  })
 
-  return [series, legend]
+    return [series, legend]
 }
 
 const getDataSourceMinMax = (data: Record<string, any>[], column: string) => {
-  const col = _.map(data, i => i[column])
-  return [_.min(col), _.max(col)]
+    const col = _.map(data, i => i[column])
+    return [_.min(col), _.max(col)]
 }
 
 const generateVisualMapForScatter = (
-  data: Record<string, any>[],
-  config: CartesianCoordSysChartConfig,
-  chartType: Mixin
+    data: Record<string, any>[],
+    config: CartesianCoordSysChartConfig,
+    chartType: Mixin
 ): EChartOption.VisualMap[] => {
-  const visualMap: any[] = []
-  let seriesIndex = 0
+    const visualMap: any[] = []
+    let seriesIndex = 0
 
-  const scatterSizeMap = getScatterMap(config, "size")
-  const scatterMinMap = getScatterMap(config, "min")
-  const scatterMaxMap = getScatterMap(config, "max")
+    const scatterSizeMap = getScatterMap(config, "size")
+    const scatterMinMap = getScatterMap(config, "min")
+    const scatterMaxMap = getScatterMap(config, "max")
 
-  config.y.forEach(item => {
-    item.columns.forEach(c => {
-      const vm = {
-        show: false,
-        type: "continuous",
-        name: c,
-        seriesIndex: seriesIndex
-      }
-
-      const [min, max] = getDataSourceMinMax(data, scatterSizeMap[c])
-
-      if (chartType === "scatter") {
-        const dimension = scatterSizeMap[c]
-        dimension ?
-          visualMap.push({
-            ...vm,
-            dimension,
-            min,
-            max,
-            inRange: {
-              symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+    config.y.forEach(item => {
+        item.columns.forEach(c => {
+            const vm = {
+                show: false,
+                type: "continuous",
+                name: c,
+                seriesIndex: seriesIndex
             }
-          }) : undefined
-      } else if (chartType === "lineScatter") {
-        const sizeCol = scatterSizeMap[c]
-        const dimension = scatterSizeMap[c]
-        sizeCol && dimension ?
-          visualMap.push({
-            ...vm,
-            dimension,
-            min,
-            max,
-            inRange: {
-              symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+
+            const [min, max] = getDataSourceMinMax(data, scatterSizeMap[c])
+
+            if (chartType === "scatter") {
+                const dimension = scatterSizeMap[c]
+                dimension ?
+                    visualMap.push({
+                        ...vm,
+                        dimension,
+                        min,
+                        max,
+                        inRange: {
+                            symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+                        }
+                    }) : undefined
+            } else if (chartType === "lineScatter") {
+                const sizeCol = scatterSizeMap[c]
+                const dimension = scatterSizeMap[c]
+                sizeCol && dimension ?
+                    visualMap.push({
+                        ...vm,
+                        dimension,
+                        min,
+                        max,
+                        inRange: {
+                            symbolSize: [scatterMinMap[c], scatterMaxMap[c]]
+                        }
+                    }) : undefined
             }
-          }) : undefined
-      }
-      seriesIndex += 1
+            seriesIndex += 1
+        })
     })
-  })
 
-  return visualMap
+    return visualMap
 }
 
 const generateVisualMap = (
-  data: Record<string, any>[],
-  config: CartesianCoordSysChartConfig,
-  chartType: Mixin
+    data: Record<string, any>[],
+    config: CartesianCoordSysChartConfig,
+    chartType: Mixin
 ): EChartOption.VisualMap[] => {
-  switch (chartType) {
-    case "scatter":
-      return generateVisualMapForScatter(data, config, chartType)
-    case "lineScatter":
-      return generateVisualMapForScatter(data, config, chartType)
-    default:
-      return []
-  }
+    switch (chartType) {
+        case "scatter":
+            return generateVisualMapForScatter(data, config, chartType)
+        case "lineScatter":
+            return generateVisualMapForScatter(data, config, chartType)
+        default:
+            return []
+    }
 }
 
 /**
  * generate line, bar, scatter chart option
  */
 export const generateCommonOption = (chartType: Mixin) =>
-  (data: any[], config: CartesianCoordSysChartConfig): EChartOption => {
-    const [series, legend] = generateSeries(config, chartType)
+    (data: any[], config: CartesianCoordSysChartConfig): EChartOption => {
+        const [series, legend] = generateSeries(config, chartType)
 
-    let d
-    if (config.display) {
-      const display = genDisplayConfig(data, config.display, "dataset")
-      d = data.map(i => transformRowDataForChart(i, display))
-    } else
-      d = data
+        let d
+        if (config.display) {
+            const display = genDisplayConfig(data, config.display, "dataset")
+            d = data.map(i => transformRowDataForChart(i, display))
+        } else
+            d = data
+        if (chartType === 'scatter') {
 
-    return {
-      tooltip: {},
-      legend: {data: legend},
-      dataset: [{source: d}],
-      xAxis: generateXAxis(config),
-      yAxis: generateYAxis(config),
-      visualMap: generateVisualMap(d, config, chartType),
-      series
+            console.log(201, data, series, legend, d, generateXAxis(config), generateYAxis(config))
+        }
+        return {
+            tooltip: {},
+            legend: { data: legend },
+            dataset: [{ source: d }],
+            xAxis: generateXAxis(config),
+            yAxis: generateYAxis(config),
+            // visualMap: generateVisualMap(d, config, chartType),
+            series: series
+        }
     }
-  }
 
 const genPctRadius = (len: number) => `${1 / (len + 2) * 100}%`
-const genPctArr = (len: number) => {
-  const end = len + 3
-  const arr = _.range(1, end)
+const genPctArr = (len: number, type?: string) => {
+    if (type === 'pie') {
+        const aPart = 1 / (len * 2)
+        let temp = aPart
+        let arr: string[] = []
+        for (let i = 0; i < len; i++) {
+            arr[i] = `${temp * 100}%`;
+            temp += 2 * aPart
+        }
+        return arr
+    } else {
+        const end = len + 3
+        const arr = _.range(1, end)
 
-  return arr.map((i: number) => `${i / end * 100}%`).slice(1, -1)
+        return arr.map((i: number) => `${i / end * 100}%`).slice(1, -1)
+    }
 }
 
 const getPieSeriesName = (data: any[], config: SeriesPieChartConfig) => {
-  if (config.seriesDir === "vertical")
-    return _.keys(_.omit(data[0], config.select))
-  if (config.seriesDir === "horizontal")
-    return _.map(data, i => i[config.select])
-  return []
+    if (config.seriesDir === "vertical")
+        return _.keys(_.omit(data[0], config.select))
+    if (config.seriesDir === "horizontal")
+        return _.map(data, i => i[config.select])
+    return []
 }
 
 const genPieSeries = (seriesName: any[], config: SeriesPieChartConfig) => {
-  const radius = genPctRadius(seriesName.length)
-  const pctArr = genPctArr(seriesName.length)
 
-  const defaultOpt = (i: number) => ({
-    type: "pie",
-    radius,
-    center: [pctArr[i], "50%"],
-    label: {alignTo: "labelLine"},
-  })
+    const radius = genPctRadius(seriesName.length)
+    const pctArr = genPctArr(seriesName.length, 'pie')
+    // const pctArr = genPctArr(5)
+    console.log(246, config, seriesName, pctArr)
+    const defaultOpt = (i: number) => ({
+        type: "pie",
+        radius,
+        center: [pctArr[i], "50%"],
+        label: {
+            position: 'outer',
+            alignTo: 'labelLine',
+            bleedMargin: 5
+        },
+    })
 
-  const iter = _.range(seriesName.length)
+    const iter = _.range(seriesName.length)
 
-  if (config.seriesDir === "vertical")
-    return iter.map(i => ({
-      ...defaultOpt(i),
-      encode: {
-        itemName: config.select,
-        value: seriesName[i]
-      },
-    }))
+    if (config.seriesDir === "vertical")
+        return iter.map(i => ({
+            ...defaultOpt(i),
+            encode: {
+                itemName: config.select,
+                value: seriesName[i]
+            },
+        }))
 
-  if (config.seriesDir === "horizontal")
-    return iter.map(i => ({
-      ...defaultOpt(i),
-      datasetIndex: i
-    }))
+    if (config.seriesDir === "horizontal")
+        return iter.map(i => ({
+            ...defaultOpt(i),
+            datasetIndex: i
+        }))
 
-  return []
+    return []
 }
 
 const genPieSubText = (seriesName: string[]) => {
-  const centerArr = genPctArr(seriesName.length)
-  const top = `${1 / (seriesName.length + 2) * 100 + 50}%`
+    const centerArr = genPctArr(seriesName.length)
+    const top = `${1 / (seriesName.length + 2) * 100 + 50}%`
 
-  return seriesName.map((n, idx) => ({
-    subtext: n,
-    left: centerArr[idx],
-    top,
-    textAlign: "center"
-  }))
+    return seriesName.map((n, idx) => ({
+        subtext: n,
+        left: centerArr[idx],
+        top,
+        textAlign: "center"
+    }))
 }
 
 const transformPieHorizontalData = (data: any[], select: string) =>
-  _.map(data, item =>
-    _.map(_.entries(_.omit(item, select)), ([k, v]) => ({
-      name: k, value: v
-    }))
-  )
+    _.map(data, item =>
+        _.map(_.entries(_.omit(item, select)), ([k, v]) => ({
+            name: k, value: v
+        }))
+    )
 
 const genPieDataset = (data: any[], config: SeriesPieChartConfig) => {
-  if (config.seriesDir === "horizontal")
-    return transformPieHorizontalData(data, config.select).map(i => ({source: i}))
-  else
-    return [{source: data}]
+    if (config.seriesDir === "horizontal")
+        return transformPieHorizontalData(data, config.select).map(i => ({ source: i }))
+    else
+        return [{ source: data }]
 }
 
 
@@ -288,22 +328,34 @@ const genPieDataset = (data: any[], config: SeriesPieChartConfig) => {
 * generate pie option
 */
 export const generatePieOption = () =>
-  (data: any[], config: SeriesPieChartConfig): EChartOption => {
-    let d
-    if (config.display) {
-      const display = genDisplayConfig(data, config.display, "dataset")
-      d = data.map(i => transformRowDataForChart(i, display))
-    } else
-      d = data
+    (data: any[], config: SeriesPieChartConfig): EChartOption => {
+        let d
+        if (config.display) {
+            const display = genDisplayConfig(data, config.display, "dataset")
+            d = data.map(i => transformRowDataForChart(i, display))
+        } else
+            d = data
 
-    const seriesName = getPieSeriesName(d, config)
+        const seriesName = getPieSeriesName(d, config)
 
-    return {
-      tooltip: {},
-      legend: {},
-      title: genPieSubText(seriesName),
-      dataset: genPieDataset(d, config),
-      series: genPieSeries(seriesName, config)
+        // const t = genPieSeries(seriesName, config).map((v, i) => {
+        //     if (i === 0) {
+        //         return {
+        //             ...v,
+        //             // center: ['10%', '50%']
+        //         }
+        //     }
+        //     return v
+
+        // })
+        console.log(316, genPieSeries(seriesName, config))
+        return {
+            tooltip: {},
+            legend: {},
+            title: genPieSubText(seriesName),
+            dataset: genPieDataset(d, config),
+            series: genPieSeries(seriesName, config)
+
+        }
     }
-  }
 

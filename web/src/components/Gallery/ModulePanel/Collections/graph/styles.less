@@ -1,0 +1,114 @@
+@sectionHW      : 35px;
+@rotateSectionHW: sqrt(@sectionHW*@sectionHW/2);
+
+.consensusDistributionPresenterField {
+    height         : 100%;
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+
+    @mdeianColor : #D0B86A;
+
+    @targetColor : #3182C1;
+
+    .body {
+        @fontW : 600;
+
+        .minPrice {
+            text-align : right;
+            font-weight: @fontW ;
+        }
+
+        .topPrice {
+            font-weight: @fontW ;
+        }
+
+        .section {
+            height          : @sectionHW;
+            background-color: #E4F3FF;
+            border-left     : 2px solid;
+            border-right    : 2px solid;
+            display         : flex;
+            align-items     : center;
+            position        : relative;
+
+            .medianPrice {
+                height          : @rotateSectionHW;
+                width           : @rotateSectionHW;
+                margin-left     : (-(@rotateSectionHW/2px));
+                background-color: @mdeianColor;
+                transform       : rotateZ(45deg);
+                position        : absolute;
+
+                &::after {
+                    content    : attr(data-content);
+                    text-align : center;
+                    width      : 7em;
+                    position   : absolute;
+                    margin-top : -6em;
+                    transform  : rotateZ(-45deg) translateX(-6em);
+                    color      : @mdeianColor;
+                    font-weight: @fontW;
+                }
+            }
+
+            .targetPrice {
+                height          : @rotateSectionHW;
+                width           : @rotateSectionHW;
+                margin-left     : -(@rotateSectionHW/2px);
+                background-color: @targetColor;
+                transform       : rotateZ(45deg);
+                position        : absolute;
+
+                &::after {
+                    content    : attr(data-content);
+                    text-align : center;
+                    width      : 7em;
+                    position   : absolute;
+                    margin-top : 1em;
+                    transform  : rotateZ(-45deg) translateX(-1em);
+                    color      : @targetColor ;
+                    font-weight: @fontW;
+                }
+            }
+        }
+    }
+
+    .btm {
+        margin-top: 3em;
+        @btmWH    : 14px;
+
+        .left {
+            &::before {
+                content         : '';
+                width           : @btmWH;
+                height          : @btmWH;
+                position        : absolute;
+                margin-left     : -2em;
+                margin-top      : 0.3em;
+                background-color: @mdeianColor;
+                transform       : rotateZ(45deg);
+            }
+        }
+
+        .right {
+            &::before {
+                content         : '';
+                width           : @btmWH;
+                height          : @btmWH;
+                position        : absolute;
+                margin-left     : -2em;
+                margin-top      : 0.3em;
+                background-color: @targetColor;
+                transform       : rotateZ(45deg);
+            }
+        }
+    }
+}
+
+.consensusDistributionEditorField {
+    height         : 100%;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+}

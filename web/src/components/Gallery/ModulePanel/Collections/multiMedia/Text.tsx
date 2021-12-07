@@ -10,37 +10,41 @@ import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
 import _ from "lodash";
 
-
 const EditorField = (props: ModuleEditorField) => {
-  const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
-  const onChangeContent = (value: string) => {
-    // console.log(content)
-    const ctt = //only update data.text property
-      { ...content, data: { ...content?.data, text: value }, date: content?.date || DataType.today() }
-    const ctWithDb = { ...ctt, storageType: DataType.StorageType.MONGO }
-    // console.log(ctWithDb)
-    setContent(ctWithDb)
-    props.updateContent(ctWithDb)
-  }
+    const onChangeContent = (value: string) => {
+        // console.log(content)
+        const ctt = //only update data.text property
+            { ...props.content, data: { ...props.content?.data, text: value }, date: props.content?.date || DataType.today() }
+        const ctWithDb = { ...ctt, storageType: DataType.StorageType.MONGO }
+        console.log(22, ctWithDb)
+        if (props.setContent) {
+            props.setContent(() => ctWithDb)
+        }
+    }
 
-  return (
-    <TextEditorModifier
-      onChange={onChangeContent}
-      content={content && content.data ? content.data.text : null}
-      styling={props.styling}
-      style={{ height: props.contentHeight ? props.contentHeight - 50 : undefined }}
-    />
-  )
+    console.log(277, props.styling)
+    return (
+        <div style={{ marginTop: '2em' }}>
+            <TextEditorModifier
+                onChange={onChangeContent}
+                content={props.content && props.content.data ? props.content.data.text : null}
+                styling={props.styling}
+                style={{
+                    height: props.contentHeight ? props.contentHeight - 130 : undefined,
+                }}
+            />
+        </div>
+    )
 }
 
 const PresenterField = (props: ModulePresenterField) => {
-
-  return <TextEditorPresenter
-    content={props.content?.data?.text || ""}
-    styling={props.styling}
-  // styling has taken care of height! style={{ height: props.contentHeight }}
-  />
+    console.log(42, props.content)
+    return <div style={{ marginTop: '2em' }}>
+        <TextEditorPresenter
+            content={props.content?.data?.text || ""}
+        />
+    </div>
 }
 
 

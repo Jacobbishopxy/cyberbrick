@@ -8,7 +8,7 @@ import _, { min } from 'lodash';
 import { Layout } from 'react-grid-layout';
 import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
 
-interface NestedSimpleModuleProps {
+interface NestedModuleProps {
     //for temp cache
     currIndex?: string,
     setCurrIndex?: React.Dispatch<React.SetStateAction<string>>,
@@ -53,7 +53,7 @@ const updateElementInLayout = (elements: tabItem[], rawLayout: Layout[], contain
         }
     })
 
-export const NestedSimpleModuleEditor = (props: NestedSimpleModuleProps) => {
+export const NestedModuleEditor = (props: NestedModuleProps) => {
     //used to make sure the generated tab id is unique
     const counterPrefix = new Date()
     const { setItems, setSaveCount } = props
