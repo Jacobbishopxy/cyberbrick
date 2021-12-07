@@ -192,7 +192,7 @@ export default {
     "gallery.component.module-panel.miscellaneous.embed-link1": "下方输入链接",
 
     "gallery.component.module-panel.miscellaneous.target-price1": "设置目标价",
-    "gallery.component.module-panel.miscellaneous.target-price2": "投资建议",
+    "gallery.component.module-panel.miscellaneous.target-price2": "评级",
     "gallery.component.module-panel.miscellaneous.target-price3": "目标价",
 
     "gallery.component.module-panel.table.general-table-editor-field1": "默认",

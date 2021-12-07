@@ -73,6 +73,12 @@ export const getChoiceElement = (v: string) => {
     switch (v) {
         case "AreaChartOutlined":
             return <AreaChartOutlined />
+        case "FileTextOutlined":
+            return <FileTextOutlined />
+        case "FileExcelOutlined":
+            return <FileExcelOutlined />
+        case "FileSearchOutlined":
+            return <FileSearchOutlined />
         case "PieChartOutlined":
             return <PieChartOutlined />
         case "BarChartOutlined":

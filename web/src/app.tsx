@@ -70,7 +70,16 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         },
         footerRender: () => <Footer />,
         onPageChange: () => {
-            console.log(73, history, initialState)
+            // console.log(73, history, initialState)
+            // Modal.confirm({
+            //     title: "123",
+            //     // onCancel: () => {
+            //     //     callback(false);
+            //     // },
+            //     // onOk: () => {
+            //     //     callback(true);
+            //     // }
+            // });
             // confirm("sad")
             const { location } = history;
             // 如果没有登录，重定向到 login
@@ -79,9 +88,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
                 && location.pathname !== invitationPath) {
                 history.push(loginPath);
             }
-            return (
-                <Modal visible={true}></Modal>
-            )
         },
         links: isDev
             ? [

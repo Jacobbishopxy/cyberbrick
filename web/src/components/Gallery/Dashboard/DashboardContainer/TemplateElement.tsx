@@ -238,20 +238,20 @@ export const TemplateElement =
             const t_content = await fetchContent(date) as DataType.Content | undefined
             console.log(108, t_content)
             //nested模块的tabItems需要通过elements获得id字段
-            if (props.element.type === DataType.ElementType.NestedModule) {
-                if (t_content?.data) {
-                    t_content.data.tabItems = t_content?.data?.tabItems.map((item) => {
-                        if (item.name) {
-                            return {
-                                ...item,
-                                id: props.elements?.find((el) => item.name === el.name)?.id
-                            }
-                        } else {
-                            return item
-                        }
-                    })
-                }
-            }
+            // if (props.element.type === DataType.ElementType.NestedModule) {
+            //     if (t_content?.data) {
+            //         t_content.data.tabItems = t_content?.data?.tabItems.map((item) => {
+            //             if (item.name) {
+            //                 return {
+            //                     ...item,
+            //                     id: props.elements?.find((el) => item.name === el.name)?.id
+            //                 }
+            //             } else {
+            //                 return item
+            //             }
+            //         })
+            //     }
+            // }
 
             console.log(108, t_content)
             return t_content

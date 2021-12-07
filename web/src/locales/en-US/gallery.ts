@@ -181,7 +181,7 @@ export default {
     "gallery.component.module-panel.miscellaneous.embed-link1": "Place the link below",
 
     "gallery.component.module-panel.miscellaneous.target-price1": "Setup the target price",
-    "gallery.component.module-panel.miscellaneous.target-price2": "Investment advice",
+    "gallery.component.module-panel.miscellaneous.target-price2": "rate",
     "gallery.component.module-panel.miscellaneous.target-price3": "Target price",
 
     "gallery.component.module-panel.table.general-table-editor-field1": "Default",

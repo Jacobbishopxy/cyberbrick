@@ -2,7 +2,8 @@
  * Created by Jacob Xie on 2/1/2021
  */
 
-import {Route, Switch} from "react-router-dom"
+import { Route, Switch, HashRouter as Router } from "react-router-dom"
+import { Modal } from 'antd'
 
 import Document from "./Document"
 import Manual from "./Manual"
@@ -12,13 +13,28 @@ import Gallery from "./Gallery"
 
 export default () => {
 
-  return (
-    <Switch>
-      <Route path="/document/" component={Document} exact/>
-      <Route path="/document/manual" component={Manual}/>
-      <Route path="/document/menu" component={Menu}/>
-      <Route path="/document/gallery" component={Gallery}/>
-    </Switch>
-  )
+    return (
+        <Router getUserConfirmation={(message, callback) => {
+            console.log(199)
+            Modal.confirm({
+                title: message,
+                onCancel: () => {
+                    callback(false);
+                },
+                onOk: () => {
+                    callback(true);
+                }
+            });
+        }}>
+            {/* <Switch> */}
+            <div>
+                <Route path="/document/" component={Document} exact />
+                <Route path="/document/manual" component={Manual} />
+                <Route path="/document/menu" component={Menu} />
+                <Route path="/document/gallery" component={Gallery} />
+            </div>
+            {/* </Switch> */}
+        </Router>
+    )
 }
 

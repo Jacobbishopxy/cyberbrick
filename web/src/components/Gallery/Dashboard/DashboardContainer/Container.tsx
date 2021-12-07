@@ -277,6 +277,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     }
 
     const genPane = (t: DataType.Template) => {
+        console.log(280, elements, template)
         if (ctRef && t.id === selectedPane?.id && template) {
             console.log(188, t)
             const parentInfo = {

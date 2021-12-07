@@ -6,10 +6,11 @@ import { mainRoutes, errorRoutes } from "./routes"
 import { demoRoute } from "./demoRoute"
 const { REACT_APP_ENV } = process.env
 
-
+console.log(999, REACT_APP_ENV)
 export default defineConfig({
-    links: [{ rel: 'icon', href: '/favicon.ico' }],
+    // links: [{ rel: 'icon', href: '/favicon.ico' }],
     outputPath: "frontend",
+    // history: { type: "hash" },
     hash: true,
     antd: {},
     dva: {
@@ -58,13 +59,37 @@ export default defineConfig({
     },
     title: false,
     ignoreMomentLocale: true,
-    proxy: proxy[REACT_APP_ENV || 'dev'],
+    // proxy: proxy[REACT_APP_ENV || 'dev'],
+    proxy: {
+        // '/gateway': {
+        //     target: 'http://192.168.50.131:8010',
+        //     changeOrigin: true,
+        //     pathRewrite: { '^/gateway': '' },
+        // },
+        // '/api': {
+        //     target: 'http://192.168.50.131:8030',
+        //     changeOrigin: true,
+        //     pathRewrite: { '^': '' },
+        // },
+        '/gateway': {
+            target: 'http://192.168.50.131:8010',
+            changeOrigin: true,
+            pathRewrite: { '^/gateway': '' },
+            secure: false
+        },
+        '/api': {
+            target: 'http://192.168.50.131:8030',
+            changeOrigin: true,
+            pathRewrite: { '^': '' },
+            secure: false
+        },
+    },
     manifest: {
         basePath: '/',
     },
-    nodeModulesTransform: {
-        type: 'none',
-        exclude: []
-    },
+    // nodeModulesTransform: {
+    //     type: 'none',
+    //     exclude: []
+    // },
     // favicon: './static/favicon.ico'
 })

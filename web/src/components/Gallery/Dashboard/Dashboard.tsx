@@ -5,7 +5,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Prompt, useHistory } from 'react-router-dom'
 import { useIntl, history } from "umi"
-
+// import { createHistory } from 'history'
 import { message, Modal } from "antd"
 import _ from "lodash"
 
@@ -325,10 +325,25 @@ export const Dashboard = (props: DashboardProps) => {
             ref={cRef}
         /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh])
 
+
+    // const [isvisible, setIsvisible] = useState(false)
     // if未保存，提醒用户
+    // const h = useHistory()
+
+    // const history = createHistory({
+    // getUserConfirmation(message, callback) {
+    // 向用户显示一些自定义对话框并调用
+    // callback(true) 以继续转换，或
+    // callback(false) 以中止它。
+    // }
+    // });
     useEffect(() => {
         function IsSave(e: BeforeUnloadEvent) {
-            e.preventDefault();
+            e.preventDefault()
+            // Modal.confirm({
+            //     title: "234"
+            // })
+            //         // e.preventDefault();
             e.returnValue = '当前未保存，所编辑的数据将不可恢复，是否离开？'
         }
         if (edit) {
@@ -338,7 +353,26 @@ export const Dashboard = (props: DashboardProps) => {
             window.removeEventListener('beforeunload', IsSave)
         }
     })
-    console.log(340, history)
+    // let unListen: Function
+    // if (edit) {
+    //     // window.addEventListener('popstate', (e) => {
+    //     //     console.log(345, e)
+    //     // })
+    //     // if (!unListen) {
+
+    //     unListen = h.listen((location, action) => {
+    //         console.log(340, h, location, action)
+    //         setIsvisible(true)
+    //     })
+    //     // }
+    // }
+    //     return () => {
+    //         console.log(353, unListen)
+    //         unListen && unListen()
+    //     }
+    // }, [edit])
+
+
     return (
 
         <DashboardContext.Provider value={{
@@ -352,6 +386,7 @@ export const Dashboard = (props: DashboardProps) => {
             ContainerRef: cRef,
             // getTemplateElements: fetchElements
         }}>
+            {/* <Modal visible={isvisible} onCancel={() => setIsvisible(false)} ></Modal> */}
             <Prompt
                 when={edit}
                 message={'当前未保存，所编辑的数据将不可恢复，是否离开？'}

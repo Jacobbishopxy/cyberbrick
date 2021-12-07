@@ -173,7 +173,8 @@ const showTarget = (dir: string, pr: number, fontSize: number) => {
 const PresenterField = (props: ModulePresenterField) => {
     console.log(173, props.content)
     const fontSize = max([50, min([props.contentHeight ? props.contentHeight / 4 : 100])])
-    const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])
+    // const textSize = max([12, min([props.contentHeight ? props.contentHeight / 8 : 25])])
+    const textSize = 23
 
     const [value, setValue] = useState(props.initialValue)
     const [stock, setStock] = useState(props.content?.data.stock)
@@ -244,10 +245,9 @@ const PresenterField = (props: ModulePresenterField) => {
                 {/* 描述 */}
                 <Row style={{
                     marginBottom: '10px',
-                    fontSize: '20px',
+                    fontSize: '16px',
                 }} >
-
-                    <Col span={24} offset={1}>
+                    <Col span={22} offset={1}>
                         {genDescriptionText() ? genDescriptionText() : '一句话概述'}
                     </Col>
                 </Row>
@@ -321,7 +321,7 @@ const PresenterField = (props: ModulePresenterField) => {
             {stockAndDescription}
 
             <Row align="middle">
-                {/* 投资建议 */}
+                {/* 评级 */}
                 <Col span={6} offset={1}>
                     <span style={{ fontSize: textSize }}>
                         <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />

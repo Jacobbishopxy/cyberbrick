@@ -167,7 +167,7 @@ export const ContainerTemplate =
                     width = 24
                     break
                 case DataType.ElementType.TargetPrice:
-                    height = 9
+                    height = 11
                     width = 12
                     break
                 case DataType.ElementType.NestedModule:
@@ -175,8 +175,8 @@ export const ContainerTemplate =
                     width = 24
                     break
                 case DataType.ElementType.ConsensusDistribution:
-                    height = 8
-                    width = 13
+                    height = 11
+                    width = 12
                     break
                 default:
                     height = 20;
