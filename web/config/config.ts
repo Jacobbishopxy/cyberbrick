@@ -59,37 +59,13 @@ export default defineConfig({
     },
     title: false,
     ignoreMomentLocale: true,
-    // proxy: proxy[REACT_APP_ENV || 'dev'],
-    proxy: {
-        // '/gateway': {
-        //     target: 'http://192.168.50.131:8010',
-        //     changeOrigin: true,
-        //     pathRewrite: { '^/gateway': '' },
-        // },
-        // '/api': {
-        //     target: 'http://192.168.50.131:8030',
-        //     changeOrigin: true,
-        //     pathRewrite: { '^': '' },
-        // },
-        '/gateway': {
-            target: 'http://192.168.50.131:8010',
-            changeOrigin: true,
-            pathRewrite: { '^/gateway': '' },
-            secure: false
-        },
-        '/api': {
-            target: 'http://192.168.50.131:8030',
-            changeOrigin: true,
-            pathRewrite: { '^': '' },
-            secure: false
-        },
-    },
+    proxy: proxy[REACT_APP_ENV || 'dev'],
     manifest: {
         basePath: '/',
     },
-    // nodeModulesTransform: {
-    //     type: 'none',
-    //     exclude: []
-    // },
+    nodeModulesTransform: {
+        type: 'none',
+        exclude: []
+    },
     // favicon: './static/favicon.ico'
 })
