@@ -3,8 +3,9 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { DatePicker, message, Modal, Skeleton } from "antd"
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { DatePicker, message, Modal, Skeleton, Button } from "antd"
+import { ModalForm } from "@ant-design/pro-form"
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
 import _, { floor } from "lodash"
 
@@ -17,11 +18,13 @@ import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
+import DateBox from "./dateBox"
 import { ModuleDescirption } from "./ModuleDescription"
 import { TestModuleDescirption } from './testModuleDescription'
 // import test from './style'
 
 import { DashboardContext } from "../../Dashboard/DashboardContext"
+import { nestedDedicatedContext } from "../../Dashboard/DashboardContainer/nestedDedicatedContext"
 export interface ModulePanelProps {
     //公司名字；公司id；维度id
     parentInfo: object
@@ -42,6 +45,8 @@ export interface ModulePanelProps {
     editable: boolean
     settable: boolean
     isLoading: boolean
+
+    date: string
     setDate: React.Dispatch<React.SetStateAction<string>>
 
 
@@ -64,6 +69,8 @@ const SKELETON_DEFAULT_ROWS = 5
 // todo: current `ModulePanel` is for `Dashboard`, need one for `Overview`
 export const ModulePanel = (props: ModulePanelProps) => {
 
+
+    const nestedDedicatedProps = useContext(nestedDedicatedContext)
     const intl = useIntl()
     const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
     // 模块的ref，可控制自身的编辑状态
@@ -73,6 +80,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
     const [loading, setIsLoading] = useState(props.isLoading)
     const isTemplate = useContext(IsTemplateContext)
     const DashboardProps = useContext(DashboardContext)
+
+    // DatePicker专用
+    const [date, setDate] = useState('')
     useEffect(() => {
         setIsLoading(props.isLoading)
     }, [props.isLoading])
@@ -354,24 +364,85 @@ export const ModulePanel = (props: ModulePanelProps) => {
             }
         }
     }
+
     return (
         <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
-            <div className={styles.genHeader}>
-                {genHeader}
-            </div>
-            {/* {genDescription} */}
+            <div style={
+                !(props.elementType === DataType.ElementType.NestedModule)
+                    ? {
+                        display: 'flex'
+                    }
+                    : {}}>
+                <div style={{
+                    width: '90%'
+                }}>
+                    <div className={styles.genHeader}>
+                        {genHeader}
+                    </div>
+                    {/* {genDescription} */}
 
-            {/* 根据是模板或仪表盘给予样式 */}
-            <div
-                className={
-                    `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${props.isNested ? styles.genNestedContext : styles.genContext}
+                    {/* 根据是模板或仪表盘给予样式 */}
+                    <div
+                        className={
+                            `${isTemplate ? styles.templateContentPanel : styles.contentPanel} ${props.isNested ? styles.genNestedContext : styles.genContext}
                     
                     `}
-            >
+                    >
 
 
-                {genContext}
+                        {genContext}
 
+                    </div>
+                </div>
+                {
+                    props.timeSeries
+                        ? <div className={styles.dateParent}>
+                            {
+
+                                nestedDedicatedProps?.dateList
+                                    ? nestedDedicatedProps?.dateList.slice().reverse().map((date) => {
+                                        return (
+                                            <DateBox
+                                                date={date}
+                                                currDate={props.date}
+                                                setDate={props.setDate}
+                                                elementName={props.headName}
+                                            ></DateBox>
+                                        )
+                                    })
+                                    : <></>
+                            }
+                            <ModalForm
+                                title='选择日期'
+                                trigger={
+                                    <Button
+                                        className={styles.dateBox}
+                                        style={{
+                                            width: '100%',
+                                            backgroundColor: 'red'
+                                        }}>
+                                        <PlusOutlined />
+                                    </Button>}
+                                onFinish={() => {
+                                    props.setDate(date);
+                                    if (nestedDedicatedProps?.setDateList) {
+
+                                        nestedDedicatedProps?.setDateList((dateList) => [...new Set([...dateList, date])].sort((a, b) => (a < b) ? 1 : -1
+                                        ))
+                                    }
+                                    return Promise.resolve(true)
+                                }}
+                            >
+                                <DatePicker onChange={(e, s) => setDate(s)}></DatePicker>
+                            </ModalForm>
+                            {/* <div
+                                className={styles.dateBox}
+                                onClick={ }
+                            >
+                            </div> */}
+                        </div>
+                        : <></>
+                }
             </div>
             {displayFooter()}
         </div >

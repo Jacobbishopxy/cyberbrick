@@ -154,7 +154,7 @@ export const Dashboard = (props: DashboardProps) => {
     useEffect(() => {
         if (newestContent) {
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)
-            // console.log(111, newestContent, newContents)
+            console.log(111, newestContent, newContents)
             setUpdatedContents(newContents)
         }
     }, [newestContent])

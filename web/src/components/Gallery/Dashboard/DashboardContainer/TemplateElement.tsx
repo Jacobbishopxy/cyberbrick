@@ -15,6 +15,7 @@ import e from "@umijs/deps/compiled/express"
 import { await } from "signale"
 import { number } from "yargs"
 import useDeepCompareEffect, { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
+import { BackgroundColor } from "@umijs/deps/compiled/chalk"
 export interface ContainerElementProps {
     parentInfo: {
         selectedCategoryName: string,
@@ -84,7 +85,7 @@ export const TemplateElement =
         })
 
         //该模块的时间序列
-        const [dateList, setDateList] = useState<string[] | undefined>(props.element.dateList)
+        const [dateList, setDateList] = useState<string[]>(props.element.dateList)
 
         //获取模块的时间序列
         useEffect(() => {
@@ -367,18 +368,23 @@ export const TemplateElement =
         // }
         return (
             <div
-                style={{ height: '99%' }
+                style={{
+                    // display: "flex",
+                    height: '99%'
+                }
                 }
                 ref={mpRef} >
                 {/* 这里的判断都是为了submodule能用到nested模块的变量 */}
                 <nestedDedicatedContext.Provider value={{
                     isNested: props.isNested,
-                    setContent: props.isNested
-                        ? NestedDedicatedProps?.setContent
-                        : setContent,
-                    content: props.isNested
-                        ? NestedDedicatedProps?.content
-                        : content,
+                    // setContent: props.isNested
+                    //     ? NestedDedicatedProps?.setContent
+                    //     : setContent,
+                    setContent,
+                    // content: props.isNested
+                    //     ? NestedDedicatedProps?.content
+                    //     : content,
+                    content,
                     parentInfo: props.isNested
                         ? NestedDedicatedProps?.parentInfo
                         : props.parentInfo,
@@ -431,6 +437,7 @@ export const TemplateElement =
                         editable={props.editable}
                         settable={!!element.id}
                         isLoading={isLoading}
+                        date={date ? date.slice(0, 10) : ''}
                         setDate={setDate}
 
                         updateDescription={props.updateDescription}

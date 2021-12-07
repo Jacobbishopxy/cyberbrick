@@ -70,7 +70,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
                     if (Array.isArray(dateList)) {
                         if (!dateList.includes(date)) {
 
-                            return [...dateList, date].sort((a: string, b: string) => a > b ? -1 : 1)
+                            return [...new Set([...dateList, date])].sort((a: string, b: string) => a > b ? -1 : 1)
                         }
                     } else {
                         return [date]
@@ -78,89 +78,6 @@ const TimeSetModal = (props: TimeSetModalProps) => {
                 })
             }
 
-
-            // if (NestedDedicatedProps?.isNested) {
-
-            //     NestedDedicatedProps.setElement((element) => {
-            //         if (element.headData) {
-            //             let newDateList
-            //             if (Array.isArray(element.headData.dateList)) {
-            //                 newDateList = element.headData.dateList.slice()
-            //                 if (!newDateList.includes(date)) {
-            //                     newDateList.push(date)
-            //                     newDateList.sort((a: string, b: string) => {
-            //                         if (a > b) {
-            //                             return -1
-            //                         } else {
-            //                             return 1
-            //                         }
-            //                     })
-            //                 }
-            //             }
-            //             else {
-            //                 newDateList = [date]
-            //             }
-            //             return {
-            //                 ...element,
-            //                 headData: {
-            //                     ...element.headData,
-            //                     dateList: newDateList
-            //                 }
-            //             }
-            //         }
-            //     })
-
-            //     // 原本逻辑
-            //     // if (NestedDedicatedProps?.setContent) {
-            //     //     NestedDedicatedProps.setContent(() => {
-            //     //         let data = NestedDedicatedProps.content?.data
-            //     //         console.log(57, NestedDedicatedProps?.content, NestedDedicatedProps?.isNested)
-            //     //         let newTabItems = data?.tabItems.map((v, i) => {
-            //     //             if (i === data?.currIndex) {
-            //     //                 if (Array.isArray(v.dateList)) {
-            //     //                     if (!v.dateList.includes(date)) {
-            //     //                         v.dateList.push(date)
-            //     //                         v.dateList.sort((a: string, b: string) => {
-            //     //                             if (a > b) {
-            //     //                                 return -1
-            //     //                             } else {
-            //     //                                 return 1
-            //     //                             }
-            //     //                         })
-            //     //                     }
-
-            //     //                 } else {
-            //     //                     v.dateList = [date]
-            //     //                 }
-            //     //             }
-            //     //             return v
-            //     //         })
-            //     //         const newContent = {
-            //     //             ...NestedDedicatedProps.content,
-            //     //             data: {
-            //     //                 ...NestedDedicatedProps.content?.data,
-            //     //                 tabItems: newTabItems
-            //     //             }
-            //     //         } as DataType.Content
-            //     //         console.log(71, newTabItems, newContent)
-            //     //         return newContent
-            //     //     })
-            //     // }
-            // } else {
-            //     if (NestedDedicatedProps?.setElement) {
-            //         NestedDedicatedProps?.setElement((element) => {
-            //             return {
-            //                 ...element,
-            //                 headData: {
-            //                     ...element.headData,
-            //                     dateList: [...new Set([...element.headData?.dateList, date])].sort((a, b) => a < b ? 1 : -1)
-            //                 }
-            //             }
-            //             // return [...new Set([...dateList, date])].sort((a, b) => a < b ? 1 : -1)
-
-            //         })
-            //     }
-            // }
         }
 
     }
