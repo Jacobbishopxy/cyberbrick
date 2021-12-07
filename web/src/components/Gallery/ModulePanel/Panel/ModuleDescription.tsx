@@ -1,8 +1,9 @@
 import { Button, Col, Row, Tooltip } from "antd";
 import TextArea from "antd/lib/input/TextArea"
-import { useEffect, useState } from "react"
+// import { useRef } from "dva/node_modules/@types/react";
+import { useEffect, useState, useRef } from "react"
 import { useIntl } from "umi";
-
+// import {TextAreaRef} from "antd/lib/input/TextArea"
 export interface ModuleDescriptionProps {
     editable: boolean
     initialValue: string
@@ -13,7 +14,8 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
     const [value, setValue] = useState(props.initialValue)
     const [editable, setEditable] = useState<boolean>(true)
     const intl = useIntl()
-
+    //!ts类型待修正
+    const TextAreaREF = useRef<any>(null);
     useEffect(() => {
         setValue(props.initialValue)
     }, [props.initialValue])
@@ -33,35 +35,44 @@ export const ModuleDescirption = (props: ModuleDescriptionProps) => {
         setValue(value);
     };
 
-    const defaultStyle = { paddingLeft: 10, paddingRight: 10, height: "20%", maxHeight: 100 }
-    const descriptionStyle = { ...defaultStyle, overflow: "auto" }
+    // const defaultStyle = { paddingLeft: 10, paddingRight: 10, height: "5%", maxHeight: 100 }
+
+    // const descriptionStyle = { ...defaultStyle, overflow: "auto" }
 
     const editableyDescription = <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.description" })}>
-        <Row onClick={() => setEditable(true)}
-            style={descriptionStyle}>
+        <Row onClick={() => {
+            setEditable(true);
+
+        }}
+            /* style={descriptionStyle} */>
             <Col span={24}> {genDescriptionText()} </Col>
         </Row>
     </Tooltip>
 
-    const displayDescription = <Row style={descriptionStyle}>
+    
+    const displayDescription = <Row /* style={descriptionStyle} */>
         <Col span={24}> {genDescriptionText()} </Col>
     </Row>
-
     return (
         props.editable ?
             editable ?
-                <Row style={defaultStyle}>
+                <Row style={{ height: '100%' }}>
                     <Col span={24}>
-                        <TextArea value={value}
+                        <TextArea
+                            ref={TextAreaREF}
+                            value={value}
+                            onBlur={onSave}
                             style={{ border: "2px solid #cacaca" }}
                             autoSize={{ minRows: 1, maxRows: 2 }}
                             onChange={onChange}
                             placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })}
+                            allowClear
                         /></Col>
-                    <Col span={24}> <Button style={{ paddingTop: 5 }} onClick={onSave} block type="primary">
+                    {/*'保存备注'按钮 */}
+                    {/* <Col span={24}> <Button style={{ paddingTop: 5 }} onClick={onSave} block type="primary">
 
                         {intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common2" })}
-                    </Button></Col>
+                    </Button></Col> */}
                 </Row>
                 : editableyDescription
             : displayDescription

@@ -3,6 +3,7 @@ import { request } from "umi"
 
 
 const base = `/gateway`
+// const base = ``
 export const sendInvitation = async (param: API.Invitation): Promise<void> => {
     return request(`${base}/api/auth/invitation`, {
         method: "post",
@@ -15,6 +16,7 @@ export const register = async (id: string): Promise<void> => {
 }
 
 export const login = async (param: API.Login) => {
+    console.log(188, param)
     return request(`${base}/api/auth`, { method: "post", credentials: 'include', data: param })
 }
 

@@ -3,17 +3,18 @@ import { Button, Divider, List, Tooltip } from "antd";
 import { useState } from "react";
 import { TabChoice } from "../data";
 
-import { tabSelectChunk } from "./TabChoice";
+import { tabSelectChunk, iconMapText, } from "./TabChoice";
 
 import styles from "@/components/Gallery/Dashboard/DashboardController/Common.less"
 import { useIntl } from "umi";
-import { EditOutlined } from "@ant-design/icons";
 import { TabItemArticalInput } from "./TabItemArticaleInput";
 
 interface TabItemSelectionProps {
-    selected: string,
-    setSelected: React.Dispatch<React.SetStateAction<string>>
-    endEdit: (selectedType: string, input?: string) => void
+    // selected: string,
+    // setSelected: React.Dispatch<React.SetStateAction<string>>
+    // endEdit: (selectedType: string, input?: string) => void
+    onFinish: (iconType: string, iconContent: string) => void
+    trigger: any
 }
 
 /*
@@ -21,7 +22,7 @@ This is the modal form for selecting tab item content. When submit, it update th
 tab choice (with 'selectedType'), selected icon (with 'selected') and input if it's given (with 'input')
 */
 export const TabItemSelection = (props: TabItemSelectionProps) => {
-    const [selected, setSelected] = useState(props.selected)
+    const [selected, setSelected] = useState('')
     const [input, setInput] = useState('')
     const [selectedType, setSelectedType] = useState('')
     const intl = useIntl()
@@ -38,22 +39,28 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
     }
 
     const onFinish = async () => {
-        props.setSelected(selected)
+        // props.setSelected(selected)
         // console.log(selected)
-        selectedType === 'icon' ? props.endEdit(selectedType) : props.endEdit(selectedType, input)
+        // selectedType === 'icon' ? props.endEdit(selectedType) : props.endEdit(selectedType, input)
+        props.onFinish(selectedType, selectedType === 'icon' ? selected : input)
         return true;
     }
 
     //style of a single choice
     const singleChoiceContent = (choice: TabChoice) => {
         const className = (choice.key === selected) ? 'tab-icon-selected' : 'tab-icon'
+
+        console.log(53, choice.key)
         return ( //changed style when selected
-            <div onClick={() => onClick(choice.key, choice.tabType)}
-                className={className}
-                key={choice.key}
-            >
-                {choice.icon}
-            </div>)
+            <Tooltip title={iconMapText[choice.key]}>
+                <div onClick={() => onClick(choice.key, choice.tabType)}
+                    className={className}
+                    key={choice.key}
+                >
+                    {choice.icon}
+                </div>
+            </Tooltip>
+        )
     }
 
     //display a list of tab choices of same type
@@ -103,13 +110,7 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
             company: string;
         }>
             title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module4" })}
-            trigger={
-                <Tooltip title={intl.formatMessage({ id: "gallery.component.module-panel.nested-simple-module2" })}>
-                    <Button size='small' icon className="tab-controller-button">
-                        <EditOutlined />
-                    </Button>
-                </Tooltip>
-            }
+            trigger={props.trigger}
             onFinish={onFinish}
         >
 
@@ -118,3 +119,4 @@ export const TabItemSelection = (props: TabItemSelectionProps) => {
         </ModalForm>
     );
 }
+

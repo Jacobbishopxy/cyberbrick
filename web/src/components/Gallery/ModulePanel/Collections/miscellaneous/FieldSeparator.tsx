@@ -41,7 +41,9 @@ const EditorField = (props: ModuleEditorField) => {
             data: values
         }
         setContent(ctt)
-        props.updateContent(ctt)
+        if (props.setContent) {
+            props.setContent(ctt)
+        }
 
         return true
     }
