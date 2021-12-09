@@ -4,7 +4,7 @@
 
 import {useRef, useState} from "react"
 import {Card, Switch} from "antd"
-import {FormattedMessage } from "umi"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
@@ -34,14 +34,14 @@ export default () => {
     GalleryService.databaseGetTableColumns(storageId, tableName)
 
   const fetchQueryData = (value: DataType.Content) => {
-    const id = value.data.id
+    const id = value.data?.id
     const option = value.data as DataType.Read
     return GalleryService.read(id, option)
   }
 
   return (
     <Card
-      title={<FormattedMessage id="gallery.page.demo.module-test.title"/>}
+      title={<FormattedMessage id="gallery.page.demo.module-test.title" />}
       extra={
         <Switch
           onClick={switchOnClick}
@@ -59,7 +59,6 @@ export default () => {
         updateContent={setContent}
         contentHeight={750}
         styling={styles}
-        ref={moduleFwRef}
       />
     </Card>
   )

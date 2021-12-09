@@ -69,8 +69,8 @@ export default {
   'menu.demo.redirect-test': 'Redirect Test',
   'menu.demo.module-test': 'Module Test',
   'menu.demo.component-test': 'Component Test',
-  'menu.demo.nested-module-test': 'NM Test',
   'menu.demo.consensus-distribution-chart': 'Consensus Distribution',
+  'menu.demo.file-manager-test': 'File Manager Test',
 
   'menu.document': 'Document',
   'menu.document.manual': 'Manual',
