@@ -49,6 +49,11 @@ export default (props: dateBoxProps) => {
                   return newAllContent
                 })
               }
+              // 将删除content的id存入delectIds
+              const delectId = nestedDedicatedProps?.content?.id
+              if (delectId) {
+                dashboardProps?.setContentIdsToBeDelect((ids) => [...ids, delectId])
+              }
               // 跳转附近的date
               let nextDate: string | undefined = undefined;
               nestedDedicatedProps?.dateList.forEach((v, i) => {

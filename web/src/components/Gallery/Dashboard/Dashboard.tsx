@@ -86,7 +86,8 @@ export interface DashboardProps {
   fetchTableList: (id: string) => Promise<string[]>
   fetchTableColumns: (storageId: string, tableName: string) => Promise<string[]>
   fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
-  updateElements: (element: DataType.Element[]) => any
+  updateElements: (element: DataType.Element[]) => Promise<any>
+  delectContents: (ids: string[]) => Promise<any>
 }
 
 export const Dashboard = (props: DashboardProps) => {
@@ -102,12 +103,13 @@ export const Dashboard = (props: DashboardProps) => {
   const [newestContent, setNewestContent] = useState<DataType.Content>()
   const [updatedContents, setUpdatedContents] = useState<DataType.Content[] | undefined>([])
 
+
   const [selected, setSelected] = useState<string[] | undefined>(props.initialSelected?.slice(0, 2))
   useEffect(() => {
     setSelected(props.initialSelected?.slice(0, 2))
   }, [props.initialSelected])
 
-  const [delectContentIds, setDelectContentIds] = useState<string[]>([])
+  const [contentIdsToBeDelect, setContentIdsToBeDelect] = useState<string[]>([])
 
   const intl = useIntl()
 
@@ -176,6 +178,7 @@ export const Dashboard = (props: DashboardProps) => {
     return Promise.reject(new Error("No dashboard selected!"))
   }
 
+  // 循环保存content
   const updateAllContents = async (contents: DataType.Content[]) => {
     console.log(145, contents)
     // todo 点击保存再点退出怎么就不执行了呢
@@ -199,17 +202,31 @@ export const Dashboard = (props: DashboardProps) => {
       message.warn(intl.formatMessage({ id: "gallery.dashboard.copy-template2" }))
   }
 
+  // 删除contents
+  function delectContents(ids: string[]) {
+
+    props.delectContents(ids)
+
+  }
   const onRefresh = async (shouldSaveTemplateAndContents: boolean) => {
     if (cRef.current) {
       if (shouldSaveTemplateAndContents) {
-        const t = cRef.current.saveTemplate()
+        // 获得template和elements数据
+        const t = cRef.current.getTemplate()
         if (t) {
+          // 向后端保存template和elements数据
           await props.saveTemplate(t)
           if (updatedContents && updatedContents.length > 0) {
+            // 向后端获取template和elements数据
             const updatedTemplate = await props.fetchTemplate(t.id!)
             const contents = dashboardContentUpdate(updatedContents, updatedTemplate)
             console.log('contents', contents)
+            // 循环保存content
             await updateAllContents(contents)
+            // 删除contents
+            await delectContents(contentIdsToBeDelect)
+
+            // 清空
             setNewestContent(undefined)
             setUpdatedContents([])
           }
@@ -365,8 +382,8 @@ export const Dashboard = (props: DashboardProps) => {
       setEdit,
       ContainerRef: cRef,
 
-      delectContentIds,
-      setDelectContentIds
+      contentIdsToBeDelect,
+      setContentIdsToBeDelect
       // getTemplateElements: fetchElements
     }}>
       {/* <Modal visible={isvisible} onCancel={() => setIsvisible(false)} ></Modal> */}

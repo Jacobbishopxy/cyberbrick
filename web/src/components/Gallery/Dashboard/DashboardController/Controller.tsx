@@ -59,7 +59,7 @@ export const Controller = (props: ModuleControllerProps) => {
   }
 
   //模板保存事件。
-  const saveTemplate = (isSave: boolean) =>
+  const saveOrExitTemplate = (isSave: boolean) =>
     () => {
       console.log(6363)
       //exit: set edit to false; save: set edit to true and allow further edition.
@@ -77,7 +77,8 @@ export const Controller = (props: ModuleControllerProps) => {
               ? message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller3" }))
               : message.success(intl.formatMessage({ id: "gallery.component.dashboard-controller4" }))
 
-            // 清空allContent和allElement
+
+            // 清空allContent和allElement和contentIds
             if (dashboardContextProps?.setAllContent) {
 
               dashboardContextProps?.setAllContent(() => [])
@@ -85,6 +86,7 @@ export const Controller = (props: ModuleControllerProps) => {
             if (dashboardContextProps?.ContainerRef && dashboardContextProps.ContainerRef.current) {
               dashboardContextProps.ContainerRef.current.setElements(() => [])
             }
+            dashboardContextProps?.setContentIdsToBeDelect(() => [])
 
             props.setEdit(false)
           })
@@ -117,7 +119,7 @@ export const Controller = (props: ModuleControllerProps) => {
         <Button
           type="primary"
           size="small"
-          onClick={saveTemplate(true)}
+          onClick={saveOrExitTemplate(true)}
         >
           <CheckCircleOutlined />
           <FormattedMessage id="gallery.component.general11" />
@@ -126,7 +128,7 @@ export const Controller = (props: ModuleControllerProps) => {
         <Button
           size="small"
           danger
-          onClick={saveTemplate(false)}
+          onClick={saveOrExitTemplate(false)}
         >
           <PoweroffOutlined />
           <FormattedMessage id="gallery.component.general12" />
@@ -141,7 +143,7 @@ export const Controller = (props: ModuleControllerProps) => {
         copyTemplate={props.onCopyTemplate}
         visible={addModuleModalVisible}
         onQuit={quitAddModule}
-      // saveTemplate={saveTemplate(true)}
+      // saveOrExitTemplate={saveOrExitTemplate(true)}
       />
     </>
   ), [addModuleModalVisible, props.onSaveTemplate])

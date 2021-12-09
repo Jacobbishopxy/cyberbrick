@@ -98,7 +98,7 @@ export interface ContainerTemplateProps {
 
 export interface ContainerTemplateRef {
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
-  saveElements: () => DataType.Element[]
+  getElements: () => DataType.Element[]
 }
 
 /**
@@ -208,9 +208,9 @@ export const ContainerTemplate =
       }
     }
 
-    const saveElements = () => props.elements
+    const getElements = () => props.elements
 
-    useImperativeHandle(ref, () => ({ newElement, saveElements }))
+    useImperativeHandle(ref, () => ({ newElement, getElements }))
 
 
     const setNewestContent = (ele: DataType.Element) => {

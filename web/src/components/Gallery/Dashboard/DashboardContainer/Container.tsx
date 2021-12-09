@@ -35,7 +35,7 @@ export interface ContainerRef {
   startFetchAllContents: () => void
   newElement: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => void
   fetchTemplate: () => void
-  saveTemplate: () => DataType.Template | undefined
+  getTemplate: () => DataType.Template | undefined
   elements: DataType.Element[]
   setElements: React.Dispatch<React.SetStateAction<DataType.Element[]>>
 }
@@ -233,12 +233,12 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     }
   }
 
-  const saveTemplate = () => {
+  const getTemplate = () => {
     if (selectedPane) {
       const rf = ctRef.current
 
       if (rf && template) {
-        const e = rf.saveElements()
+        const e = rf.getElements()
         return { ...template, elements: e }
       }
     }
@@ -250,7 +250,7 @@ export const Container = forwardRef((props: ContainerProps, ref: React.Ref<Conta
     startFetchAllContents,
     newElement,
     fetchTemplate,
-    saveTemplate,
+    getTemplate,
     // 该维度下的全部elements
     elements,
     setElements
