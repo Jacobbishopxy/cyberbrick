@@ -11,7 +11,10 @@ import {FileManagerService} from "./fileManager.service"
 
 @Injectable()
 export class FileManagerMiddleware implements NestMiddleware {
-  constructor(private configService: ConfigService, private fmService: FileManagerService) {}
+  constructor(
+    private configService: ConfigService,
+    private fmService: FileManagerService
+  ) {}
 
   use(req: Request, res: Response) {
     const fsRoot = this.configService.get("server").fmRoot

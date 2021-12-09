@@ -12,10 +12,8 @@ import GridLayout from "./GridLayout"
 import RedirectTest from "./RedirectTest"
 import LocalStorage from "./LocalStorage"
 import RectangleChart from "./RectangleChart"
-import NestedModuleTest from "./NestedModuleTest"
 import ConsensusDistributionChart from "./ConsensusDistributionChart"
-import Test from "./Test"
-
+import FileManagerTest from "./FileManagerTest"
 
 export default () => {
 
@@ -29,9 +27,8 @@ export default () => {
       <Route path="/demo/redirect-test" component={RedirectTest} />
       <Route path="/demo/module-test" component={GalleryModuleTest} />
       <Route path="/demo/component-test" component={ComponentTest} />
-      <Route path="/demo/nested-module-test" component={NestedModuleTest} />
       <Route path="/demo/consensus-distribution-chart" component={ConsensusDistributionChart} />
-      <Route path="/demo/test" component={Test} />
+      <Route path="/demo/file-manager-test" component={FileManagerTest} />
     </Switch>
   )
 }

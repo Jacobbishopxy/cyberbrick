@@ -34,7 +34,7 @@ export default () => {
     GalleryService.databaseGetTableColumns(storageId, tableName)
 
   const fetchQueryData = (value: DataType.Content) => {
-    const id = value.data.id
+    const id = value.data?.id
     const option = value.data as DataType.Read
     return GalleryService.read(id, option)
   }
@@ -59,9 +59,7 @@ export default () => {
         updateContent={setContent}
         contentHeight={750}
         styling={styles}
-        ref={moduleFwRef} editable={false} initialValue={""} onSave={function (v: string): void {
-          throw new Error("Function not implemented.")
-        }} />
+      />
     </Card>
   )
 }

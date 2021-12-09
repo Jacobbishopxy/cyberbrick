@@ -182,10 +182,6 @@ export const shouldQueryAfterReceivingContent = (v: string, content: Content) =>
       return true
     case ElementType.XlsxTable:
       return true
-    case ElementType.FlexTable:
-      if (content?.config?.type === flexTableType.file)
-        return true
-      else return false
     default:
       return false
   }
@@ -196,8 +192,6 @@ export const ContentValidationByType = (v: string, data?: Record<string, any>) =
     case ElementType.Text:
       return MongoContentValidation(data)
     case ElementType.Image:
-      return MongoContentValidation(data)
-    case ElementType.FlexTable:
       return MongoContentValidation(data)
     case ElementType.XlsxTable:
       return MongoContentValidation(data)

@@ -52,19 +52,14 @@ export const demoRoute = (env?: string) => env === "dev" ?
           component: './demo/ComponentTest',
         },
         {
-          name: 'nested-module-test',
-          path: '/demo/nested-module-test',
-          component: './demo/NestedModuleTest',
-        },
-        {
           name: 'consensus-distribution-chart',
           path: '/demo/consensus-distribution-chart',
           component: './demo/ConsensusDistributionChart',
         },
         {
-          name: 'test',
-          path: '/demo/test',
-          component: './demo/Test',
+          name: 'file-manager-test',
+          path: '/demo/file-manager-test',
+          component: './demo/FileManagerTest',
         },
       ],
     },

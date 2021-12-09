@@ -9,6 +9,8 @@ import {
   Unique,
   ManyToOne,
   ManyToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm"
 
 import * as common from "../common"
@@ -60,5 +62,11 @@ export class Content {
 
   @Column("varchar", {nullable: true})
   tabId?: string
+
+  @CreateDateColumn({nullable: true})
+  createdAt!: string
+
+  @UpdateDateColumn({nullable: true})
+  updatedAt!: string
 }
 
