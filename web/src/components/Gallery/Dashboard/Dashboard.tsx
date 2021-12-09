@@ -154,14 +154,14 @@ export const Dashboard = (props: DashboardProps) => {
     useEffect(() => {
         if (newestContent) {
             const newContents = dashboardContentsUpdate(newestContent, updatedContents)
-            console.log(111, newestContent, newContents)
+
             setUpdatedContents(newContents)
         }
     }, [newestContent])
 
-    // useEffect(() => {
-    //     console.log(145, updatedContents)
-    // }, [updatedContents])
+    useEffect(() => {
+        console.log(111, updatedContents,)
+    }, [updatedContents])
 
     console.log(4888, props.initialSelected)
     // 维度变化时的执行函数

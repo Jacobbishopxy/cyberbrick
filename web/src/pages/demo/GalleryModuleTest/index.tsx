@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import {useRef, useState} from "react"
-import {Card, Switch} from "antd"
-import {FormattedMessage } from "umi"
+import { useRef, useState } from "react"
+import { Card, Switch } from "antd"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
+import { ConvertFwRef } from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import {Pie} from "@/components/Gallery/ModulePanel/Collections/graph"
+import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
 
 
 export default () => {
@@ -41,14 +41,14 @@ export default () => {
 
   return (
     <Card
-      title={<FormattedMessage id="gallery.page.demo.module-test.title"/>}
+      title={<FormattedMessage id="gallery.page.demo.module-test.title" />}
       extra={
         <Switch
           onClick={switchOnClick}
         />
       }
-      style={{height: "85vh"}}
-      bodyStyle={{height: "100%"}}
+      style={{ height: "85vh" }}
+      bodyStyle={{ height: "100%" }}
     >
       <Pie
         content={content}
@@ -59,8 +59,9 @@ export default () => {
         updateContent={setContent}
         contentHeight={750}
         styling={styles}
-        ref={moduleFwRef}
-      />
+        ref={moduleFwRef} editable={false} initialValue={""} onSave={function (v: string): void {
+          throw new Error("Function not implemented.")
+        }} />
     </Card>
   )
 }

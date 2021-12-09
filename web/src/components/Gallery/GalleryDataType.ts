@@ -55,7 +55,7 @@ export interface Content {
     mark?: Mark
     tags?: Tag[]
     author?: Author
-    date: string
+    date: string | undefined | null
     title?: string
     data: Record<string, any> | undefined
     storageType?: StorageType //3rd party database type

@@ -71,6 +71,7 @@ export default {
   'menu.demo.component-test': 'Component Test',
   'menu.demo.nested-module-test': 'NM Test',
   'menu.demo.consensus-distribution-chart': 'Consensus Distribution',
+  'menu.demo.test': 'test',
 
   'menu.document': '文档',
   'menu.document.manual': '手册',
