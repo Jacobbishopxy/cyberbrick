@@ -119,8 +119,8 @@ export class ElementService {
   }
 
   async getElementContent(id: string, date?: string, markName?: string) {
-    if (date) return this.getElementContentByDate(id, date, markName) as unknown as Content
-    return this.getElementLatestContent(id, markName) as unknown as Content
+    if (date) return this.getElementContentByDate(id, date, markName)
+    return this.getElementLatestContent(id, markName)
   }
 
   //fetch data from 3rd party database
@@ -166,10 +166,11 @@ export class ElementService {
     // console.log(content
     //   && common.shouldQueryAfterRecevingContent(elementType)
     //   && common.ContentValidationByType(elementType, content.data))
-    if (content
+    if (
+      content
       && common.shouldQueryAfterReceivingContent(elementType, content)
-      && common.ContentValidationByType(elementType, content.data)) {
-
+      && common.ContentValidationByType(elementType, content.data)
+    ) {
       const res = await this.getQueryDataByStorageType(content)
       // console.log(content, res)
       //update content's data with newly fetched data

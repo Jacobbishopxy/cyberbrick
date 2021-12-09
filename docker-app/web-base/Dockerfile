@@ -7,6 +7,10 @@ ARG     FUND_NODE_IMAGE_VERSION
 # base
 FROM    $FUND_NODE_IMAGE_NAME:$FUND_NODE_IMAGE_VERSION
 
+# set timezone
+ENV     TZ=Asia/Shanghai
+RUN     ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # make directory
 RUN     mkdir /app
 

@@ -144,6 +144,13 @@ export const saveContentInCategory = async (categoryName: string, type: string, 
     data: content
   })
 
+export const deleteContents = async (contentIds: string[]): Promise<void> => {
+  let ids = contentIds.join(",")
+  return request(`${base}/deleteContents?ids=${ids}`, {
+    method: "delete",
+  })
+}
+
 
 // Dashboard
 
@@ -329,7 +336,11 @@ export const reloadConnection = async (id: string): Promise<string> =>
 export const executeSql = async (id: string, sqlString: string) =>
   request(`${base}/executeSql?id=${id}&sqlString=${sqlString}`)
 
-export const read = async (id: string, readOption: GalleryAPI.Read, databaseType: GalleryAPI.StorageType) => {
+export const read = async (
+  id: string,
+  readOption: GalleryAPI.Read,
+  databaseType: GalleryAPI.StorageType = GalleryAPI.StorageType.PG
+) => {
   const dbType = databaseType || defaultStorageType //default to pg
   return request(`${base}/read?id=${id}&databaseType=${dbType}`, {
     method: "post",
