@@ -52,6 +52,10 @@ export class ContentService {
     return this.repo.delete(id)
   }
 
+  deleteContents(ids: string[]) {
+    return this.repo.delete(ids)
+  }
+
   // ===================================================================================================================
 
   async getContentsInCategoryByElementTypeAndMarkAndTags(categoryName: string,
@@ -219,4 +223,3 @@ export class ContentService {
     return this.repo.save(newContent)
   }
 }
-

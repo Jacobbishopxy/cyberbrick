@@ -144,6 +144,13 @@ export const saveContentInCategory = async (categoryName: string, type: string, 
     data: content
   })
 
+export const deleteContents = async (contentIds: string[]): Promise<void> => {
+  let ids = contentIds.join(",")
+  return request(`${base}/deleteContents?ids=${ids}`, {
+    method: "delete",
+  })
+}
+
 
 // Dashboard
 

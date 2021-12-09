@@ -2,18 +2,18 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, ParseArrayPipe, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, ParseArrayPipe, Post, Query} from '@nestjs/common'
 
 import * as contentService from "../provider/content.service"
 import * as common from "../common"
-import { Content } from "../entity"
+import {Content} from "../entity"
 // import * as MongoService from "../provider/contentMongo.service"
 
 @Controller()
 export class ContentController {
     constructor(private readonly service: contentService.ContentService,
         // private readonly mongoService: MongoService.MongoService
-    ) { }
+    ) {}
 
     @Get("contents")
     getAllContents() {
@@ -46,6 +46,16 @@ export class ContentController {
     deleteContent(@Query("id") id: string) {
         try {
             return this.service.deleteContent(id)
+        } catch (err: any) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @Delete("deleteContents")
+    deleteContents(@Query("ids") ids: string) {
+        try {
+            let idList = ids.split(",")
+            return this.service.deleteContents(idList)
         } catch (err: any) {
             throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
         }
