@@ -8,9 +8,6 @@ const base = "/api/gallery"
 const baseDb = "/api/database"
 const defaultStorageType = "postgres"
 
-// us
-
-
 // Category
 
 export const getAllCategories = async (): Promise<GalleryAPI.Category[]> =>
