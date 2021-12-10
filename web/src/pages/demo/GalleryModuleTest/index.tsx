@@ -2,26 +2,27 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import {useRef, useState} from "react"
-import {Card, Switch} from "antd"
-import {FormattedMessage} from "umi"
+import { useRef, useState } from "react"
+import { Card, Switch } from "antd"
+import { FormattedMessage } from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
+import { ConvertFwRef } from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import {Pie} from "@/components/Gallery/ModulePanel/Collections/graph"
-
+import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
+import { TargetPrice } from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
+import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
 
 export default () => {
 
   const moduleFwRef = useRef<ConvertFwRef>(null)
 
-  const [content, setContent] = useState<DataType.Content>()
+  const [content, setContent] = useState<DataType.Content | undefined>({})
 
   const switchOnClick = (v: boolean) => {
-    if (moduleFwRef.current) moduleFwRef.current.edit(v)
+    if (moduleFwRef.current) moduleFwRef.current.setEdit(v)
   }
 
   const fetchStorages = () =>
@@ -47,19 +48,32 @@ export default () => {
           onClick={switchOnClick}
         />
       }
-      style={{height: "85vh"}}
-      bodyStyle={{height: "100%"}}
+      style={{ height: "85vh" }}
+      bodyStyle={{ height: "100%" }}
     >
       <Pie
+        ref={moduleFwRef}
         content={content}
+        setContent={setContent}
         fetchStorages={fetchStorages}
         fetchTableList={fetchTableList}
         fetchTableColumns={fetchTableColumns}
         fetchQueryData={fetchQueryData}
         updateContent={setContent}
         contentHeight={750}
-        styling={styles}
+
       />
+
+      {/* <TargetPrice
+        ref={moduleFwRef}
+        content={content}
+        setContent={setContent}
+      ></TargetPrice> */}
+      {/* <Text
+        ref={moduleFwRef}
+        content={content}
+        setContent={setContent}
+      ></Text> */}
     </Card>
   )
 }

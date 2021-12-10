@@ -14,27 +14,14 @@ import Gallery from "./Gallery"
 export default () => {
 
     return (
-        <Router getUserConfirmation={(message, callback) => {
-            console.log(199)
-            Modal.confirm({
-                title: message,
-                onCancel: () => {
-                    callback(false);
-                },
-                onOk: () => {
-                    callback(true);
-                }
-            });
-        }}>
-            {/* <Switch> */}
+        <Switch>
             <div>
                 <Route path="/document/" component={Document} exact />
                 <Route path="/document/manual" component={Manual} />
                 <Route path="/document/menu" component={Menu} />
                 <Route path="/document/gallery" component={Gallery} />
             </div>
-            {/* </Switch> */}
-        </Router>
+        </Switch>
     )
 }
 

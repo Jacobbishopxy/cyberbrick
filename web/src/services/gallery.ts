@@ -2,14 +2,11 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import {request} from "umi"
+import { request } from "umi"
 
 const base = "/api/gallery"
 const baseDb = "/api/database"
 const defaultStorageType = "postgres"
-
-// us
-
 
 // Category
 
@@ -209,18 +206,18 @@ export const getTemplateElements = async (templateId: string, isSubmodule?: bool
   if (isSubmodule)
     url += `&isSubmodule=${isSubmodule}`
   const res = await request(url)
-  console.log(205, res)
-  return {
-    ...res,
-    elements: res.elements.map((v: any) => {
-      if (v.timeSeries) {
-        v.dateList = []
-        return v
-      } else {
-        return v
-      }
-    })
-  }
+  return res
+  // return {
+  //     ...res,
+  //     elements: res.elements.map((v) => {
+  //         if (v.timeSeries) {
+  //             v.dateList = []
+  //             return v
+  //         } else {
+  //             return v
+  //         }
+  //     })
+  // }
 }
 
 export const saveTemplateInDashboard = async (id: string, template: GalleryAPI.Template): Promise<void> =>
@@ -321,7 +318,6 @@ export const deleteStorage = async (id: string) =>
   })
 
 export const getAllStorageSimple = async (): Promise<GalleryAPI.StorageSimple[]> => {
-  console.log(317)
   return request(`${base}/getAllStorageSimple`)
 }
 
@@ -338,7 +334,7 @@ export const executeSql = async (id: string, sqlString: string) =>
 export const read = async (
   id: string,
   readOption: GalleryAPI.Read,
-  databaseType: GalleryAPI.StorageType = GalleryAPI.StorageType.PG
+  databaseType: GalleryAPI.StorageType
 ) => {
   const dbType = databaseType || defaultStorageType //default to pg
   return request(`${base}/read?id=${id}&databaseType=${dbType}`, {

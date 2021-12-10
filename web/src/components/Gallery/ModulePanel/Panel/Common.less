@@ -1,115 +1,135 @@
 //仪表盘的样式
 .contentPanel {
-    /*  */
-    width  : 100%;
-    height : calc(~"100% - 50px");
-    padding: 0 5px 0 5px;
+  /*  */
+  width  : 100%;
+  height : calc(~"100% - 50px");
+  padding: 0 5px 0 5px;
 }
 
 .ModulePanel {
-    display       : flex;
-    flex-direction: column;
-    @genHeaderH   : 20px;
+  display       : flex;
+  flex-direction: column;
+  @genHeaderH   : 20px;
 
-    .genHeader {
-        height       : @genHeaderH;
-        margin-bottom: 25px;
-        z-index      : 10;
+  .genHeader {
+    height       : @genHeaderH;
+    margin-bottom: 25px;
+    z-index      : 10;
+  }
+
+  @genDescriptionH: 30px;
+
+  .genDescription {
+    padding-left : 10px;
+    padding-right: 10px;
+    height       : @genDescriptionH;
+    max-height   : 100px;
+    margin       : 5px 0;
+  }
+
+  @isTargPriceGenDescriptionH: 70%;
+
+  .isTargPriceGenDescription {
+    padding-left : 10px;
+    padding-right: 10px;
+    height       : @isTargPriceGenDescriptionH;
+    margin       : 5px 0;
+  }
+
+  .genContext {
+    // height:calc(100%  - @genHeaderH - @genDescriptionH);
+    flex-grow        : 1;
+    // pointer-events: none;
+  }
+
+  .dateParent {
+
+    width              : 18%;
+    height             : 100%;
+    // background-color: yellow;
+    overflow           : auto;
+
+    .dateItem {
+      text-align         : center;
+      line-height        : 50px;
+      height             : 50px;
+      // background-color: red;
+      position           : relative;
+      border-radius      : 3px;
+      margin-bottom      : 3px;
+      border             : 1px #ccc solid;
+
     }
+  }
 
-    @genDescriptionH: 30px;
 
-    .genDescription {
-        padding-left : 10px;
-        padding-right: 10px;
-        height       : @genDescriptionH;
-        max-height   : 100px;
-        margin       : 5px 0;
-    }
-
-    @isTargPriceGenDescriptionH: 70%;
-
-    .isTargPriceGenDescription {
-        padding-left : 10px;
-        padding-right: 10px;
-        height       : @isTargPriceGenDescriptionH;
-        margin       : 5px 0;
-    }
-
-    .genContext {
-        // height:calc(100%  - @genHeaderH - @genDescriptionH);
-        flex-grow: 1;
-
-        // pointer-events: none;
-    }
-
-    .genNestedContext {
-        overflow: auto;
-    }
+  .genNestedContext {
+    overflow: auto;
+  }
 }
 
 //模板的样式
 .templateContentPanel {
-    height : 94%;
-    width  : 100%;
-    padding: 0 5px 0 5px;
+  height : 94%;
+  width  : 100%;
+  padding: 0 5px 0 5px;
 }
 
 .modulePanelFooter {
-    display        : flex;
-    justify-content: space-between;
-    height         : 20px;
-    padding        : 0 10px 0 10px;
-    color          : #ccc;
+  display        : flex;
+  justify-content: space-between;
+  height         : 20px;
+  padding        : 0 10px 0 10px;
+  color          : #ccc;
 }
 
 .modulePanel {
-    height       : 100%;
-    //background: linear-gradient(165deg, #d7d7d7, #fff);
-    background   : #fff;
-    border-radius: 5px;
-    box-shadow   : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
+  height       : 100%;
+  //background: linear-gradient(165deg, #d7d7d7, #fff);
+  background   : #fff;
+  border-radius: 5px;
+  box-shadow   : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
 }
 
 .nestedModulePanel {
-    height          : 100%;
-    //background: linear-gradient(165deg, #d7d7d7, #fff);
-    background      : #fff;
-    // border-radius: 1px;
-    // box-shadow: 1px 1px 2px #bfbfbf, -1px -1px 2px #cacaca;
+  height          : 100%;
+  //background: linear-gradient(165deg, #d7d7d7, #fff);
+  background      : #fff;
+  // border-radius: 1px;
+  // box-shadow: 1px 1px 2px #bfbfbf, -1px -1px 2px #cacaca;
 }
 
 .templateNestedPanel {
-    width        : 100%;
-    padding      : 0 5px 0 5px;
-    height       : 100%;
-    // source: https://www.w3cplus.com/css3/css-secrets/striped-backgrounds.html © w3cplus.com
-    background   : transparent;
-    border-radius: 5px;
+  width        : 100%;
+  padding      : 0 5px 0 5px;
+  height       : 100%;
+  // source: https://www.w3cplus.com/css3/css-secrets/striped-backgrounds.html © w3cplus.com
+  background   : transparent;
+  border-radius: 5px;
 }
 
 .templatePanel {
-    .templateNestedPanel;
-    background     : linear-gradient(45deg, #fff 25%, #f1f2f6 0, #f1f2f6 50%, #fff 0, #fff 75%, #f1f2f6 0);
-    background-size: 30px 30px;
-    box-shadow     : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
+  .templateNestedPanel;
+  background     : linear-gradient(45deg, #fff 25%, #f1f2f6 0, #f1f2f6 50%, #fff 0, #fff 75%, #f1f2f6 0);
+  background-size: 30px 30px;
+  box-shadow     : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
 
 
-    //   height: auto;
+  //   height: auto;
 }
 
 .separatorModule {
-    height       : 100%;
-    border-radius: 5px;
-    box-shadow   : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
+  height       : 100%;
+  border-radius: 5px;
+  box-shadow   : 2px 2px 5px #bfbfbf, -2px -2px 5px #cacaca;
 }
 
 .separatorModulePresentor {
-    height: 100%;
+  height: 100%;
 }
 
 .loadinSkeleton {
-    margin-inline: 5%;
+  margin-inline: 5%;
 }
 
 // :export {

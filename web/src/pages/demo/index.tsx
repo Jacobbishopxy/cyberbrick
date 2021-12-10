@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 2/1/2021
  */
 
-import {Route, Switch} from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 
 import Demo from "./Demo"
 import Charts from "./Charts"
