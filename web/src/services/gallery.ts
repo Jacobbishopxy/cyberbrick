@@ -206,7 +206,6 @@ export const getTemplateElements = async (templateId: string, isSubmodule?: bool
   if (isSubmodule)
     url += `&isSubmodule=${isSubmodule}`
   const res = await request(url)
-  console.log(205, res)
   return res
   // return {
   //     ...res,
@@ -319,7 +318,6 @@ export const deleteStorage = async (id: string) =>
   })
 
 export const getAllStorageSimple = async (): Promise<GalleryAPI.StorageSimple[]> => {
-  console.log(317)
   return request(`${base}/getAllStorageSimple`)
 }
 
@@ -336,7 +334,7 @@ export const executeSql = async (id: string, sqlString: string) =>
 export const read = async (
   id: string,
   readOption: GalleryAPI.Read,
-  databaseType: GalleryAPI.StorageType = GalleryAPI.StorageType.PG
+  databaseType: GalleryAPI.StorageType
 ) => {
   const dbType = databaseType || defaultStorageType //default to pg
   return request(`${base}/read?id=${id}&databaseType=${dbType}`, {

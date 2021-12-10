@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 10/16/2020.
  */
 
-import { useState, useMemo, useRef, useEffect } from "react"
+import { useState, useMemo, useRef, useEffect, useContext } from "react"
 import { Button, Col, Row, Space, Tooltip, Input } from "antd"
 import TextArea from "antd/lib/input/TextArea"
 import { FormattedMessage, useIntl } from "umi"
@@ -13,8 +13,10 @@ import * as DataType from "../../../GalleryDataType"
 import { ModalForm, ProFormDigit, ProFormRadio, ProFormText } from "@ant-design/pro-form"
 import { max, min } from "lodash"
 
+import { DashboardContext } from '@/components/Gallery/Dashboard/DashboardContext'
 import './Common.less'
 const EditorField = (props: ModuleEditorField) => {
+  const dashboarContextProps = useContext(DashboardContext)
   const intl = useIntl()
   const [content, setContent] = useState<DataType.Content | undefined>(props.content)
 
@@ -32,6 +34,35 @@ const EditorField = (props: ModuleEditorField) => {
     return true
   }
 
+  console.log(355, props.content, dashboarContextProps?.allContent)
+
+
+  // 自动填充目标价
+  function getInitialValue() {
+    // 如果本次content直接获取
+    if (JSON.stringify(props.content?.data) !== '{}') {
+      console.log(4111, {
+        ...props.content?.data
+      })
+      return {
+        ...props.content?.data
+      }
+    } else {
+      // 从过往日期获取 ,判断条件：维度id和模块name和模块parentName 
+      const content = dashboarContextProps?.allContent?.find((content) => content.templateInfo?.id === props.content?.templateInfo?.id && content.element?.name === props.content?.element?.name && content.element?.parentName == props.content?.element?.parentName)
+      console.log(533, content)
+      if (content) {
+        return {
+          stock: content.data?.stock,
+          describe: content.data?.describe
+        }
+      } else {
+        return {
+          direction: 'B'
+        }
+      }
+    }
+  }
   return (
     <div className={props.styling}>
       <ModalForm
@@ -41,7 +72,7 @@ const EditorField = (props: ModuleEditorField) => {
             <FormattedMessage id="gallery.component.general42" />
           </Button>
         }
-        initialValues={{ direction: "B" }}
+        initialValues={getInitialValue()}
         onFinish={onSubmit}
         modalProps={{ width: "30vw" }}
       >
@@ -176,19 +207,19 @@ const PresenterField = (props: ModulePresenterField) => {
   const textSize = 23
 
   const [value, setValue] = useState(props.initialValue)
-  const [stock, setStock] = useState(props.content?.data.stock)
-  const [describe, setDescribe] = useState(props.content?.data.describe)
+  const [stock, setStock] = useState(props.content?.data?.stock)
+  const [describe, setDescribe] = useState(props.content?.data?.describe)
   const [editStock, setEditStock] = useState<boolean>(false)
   const [editDescribe, setEditDescribe] = useState<boolean>(false)
   const intl = useIntl()
   //!ts类型待修正
   const TextAreaREF = useRef<any>(null);
   const inputREF = useRef<any>(null)
-  const onSave = () => {
-    props.onSave(value)
-    setEditStock(false)
-    setEditDescribe(false)
-  }
+  // const onSave = () => {
+  //   props.onSave(value)
+  //   setEditStock(false)
+  //   setEditDescribe(false)
+  // }
   const genDescriptionText = () => {
     let arr: any[] = [];
     describe?.split('\n').forEach((item, index) => arr.push(<p key={index} style={{ textAlign: "left" }}>{item.trim()}</p>));
@@ -196,9 +227,9 @@ const PresenterField = (props: ModulePresenterField) => {
     return arr.length ? arr : '一句话概述';
   }
 
-  const onChange = ({ target: { value } }: any) => {
-    setValue(value);
-  }
+  // const onChange = ({ target: { value } }: any) => {
+  //   setValue(value);
+  // }
 
 
   //获得焦点事件
@@ -223,8 +254,8 @@ const PresenterField = (props: ModulePresenterField) => {
   }, [props.editable])
 
   useEffect(() => {
-    setStock(props.content?.data.stock)
-    setDescribe(props.content?.data.describe)
+    setStock(props.content?.data?.stock)
+    setDescribe(props.content?.data?.describe)
   }, [props.content?.data])
 
 
@@ -233,7 +264,9 @@ const PresenterField = (props: ModulePresenterField) => {
   const stockAndDescription = useMemo(() => {
     return (
 
-      <div>
+      <div style={{
+        borderBottom: '1px solid #ccc'
+      }}>
 
         {/* 标的名字 */}
         <Row className={'targetPrice-stock'}>
@@ -252,62 +285,8 @@ const PresenterField = (props: ModulePresenterField) => {
         </Row>
 
 
-        {
-          //         // {/* 标的名字 */}
-          //         editStock
-          //             ? <Row className='targetPrice-stock-input'>
-          //                 <Col span={24}>
-          //                     <Input
-          //                         ref={inputREF}
-          //                         value={stock}
-          //                         onBlur={onSave}
-          //                         onChange={onChange}
-          //                         placeholder={intl.formatMessage({ id: "gallery.component.category-config-table23" })}
-          //                         allowClear
-          //                     /></Col>
-          //             </Row>
-          //             : <Row style={{
-          //                 fontSize: '26px',
-          //                 paddingBottom: '6px',
-          //                 borderBottom: '1px #ccc solid',
-          //                 marginBottom: '12px'
-          //             }} onClick={() => {
-          //                 console.log(272)
-          //                 setEditStock(true);
-          //             }}>
-          //                 <Col span={22} offset={1}>
-          //                     {stock}
-          //                 </Col>
-          //             </Row>
 
-          //     }
-          //     {
-          //         // 描述 
-          //         editDescribe
-          //             ? <Row style={{ height: '100%' }}>
-          //                 <Col span={24}>
-          //                     <TextArea
-          //                         ref={TextAreaREF}
-          //                         value={describe}
-          //                         onBlur={onSave}
-          //                         style={{ border: "2px solid #cacaca" }}
-          //                         autoSize={{ minRows: 1, maxRows: 2 }}
-          //                         onChange={onChange}
-          //                         placeholder={intl.formatMessage({ id: "gallery.component.category-config-table22" })}
-          //                         allowClear
-          //                     /></Col>
-          //             </Row>
-          //             : <Row style={{
-          //                 fontSize: '20px',
-          //             }} onClick={() => {
-          //                 setEditDescribe(true);
-          //             }}>
 
-          //                 <Col span={24} offset={1}> {genDescriptionText()} </Col>
-          //             </Row>
-          //     }
-          // </>
-        }
 
       </div>
     )

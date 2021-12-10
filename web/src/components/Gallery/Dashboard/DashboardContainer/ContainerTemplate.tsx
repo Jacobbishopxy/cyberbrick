@@ -201,6 +201,7 @@ export const ContainerTemplate =
           h: height,
           w: width,
           isSubmodule: isNested ? true : false,
+          parentName: undefined
           // dateList: timeSeries ? [] : undefined
         } as Element
         props.setElements(newElementInLayout(props.elements, newEle))
@@ -215,18 +216,18 @@ export const ContainerTemplate =
 
     const setNewestContent = (ele: DataType.Element) => {
       return (value: DataType.Content, submoduleElement: DataType.Element) => {
-
+        console.log(219, ele)
         if (submoduleElement) {
           return props.setNewestContent({
             ...value,
             templateInfo: props.parentInfo.templateInfo,
-            element: { id: submoduleElement.id, name: submoduleElement.name, type: submoduleElement.type } as DataType.Element
+            // element: submoduleElement as DataType.Element
           })
         } else {
           return props.setNewestContent({
             ...value,
             templateInfo: props.parentInfo.templateInfo,
-            element: { id: ele.id, name: ele.name, type: ele.type } as DataType.Element
+            // element: ele as DataType.Element
           })
         }
 

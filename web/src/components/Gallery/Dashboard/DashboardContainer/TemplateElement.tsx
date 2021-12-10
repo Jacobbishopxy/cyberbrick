@@ -65,7 +65,7 @@ export const TemplateElement =
 
     const [mpHeight, setMpHeight] = useState<number>(0)
     //模块内容的源
-    const [content, setContent] = useState<DataType.Content>()
+    const [content, setContent] = useState<DataType.Content | undefined>({ element: props.element })
     //
     const [element, setElement] = useState(props.element)
     // useEffect(() => {
@@ -91,7 +91,6 @@ export const TemplateElement =
     useEffect(() => {
       if (props.timeSeries && props.fetchContentDatesFn && element.id) {
         props.fetchContentDatesFn(element.id).then(res => {
-          console.log(8444, res)
           if (res.contents && res.contents.length > 0) {
             const newDateList = [...new Set(res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
             ))]
@@ -169,7 +168,7 @@ export const TemplateElement =
     //获取content内容，依赖项是
     useEffect(async () => {
 
-      let t_content
+      let t_content: DataType.Content | null
 
       console.log(81, date, props.isNested)
 
@@ -178,11 +177,16 @@ export const TemplateElement =
 
       console.log('setContent', props.isNested, t_content, date)
       if (t_content && t_content.date) {
-
+        console.log(208, content, t_content)
         try {
-          setContent(t_content)
+          setContent((content) => {
+            return {
+              ...content,
+              ...t_content
+            } as DataType.Content
+          })
         } catch (error) {
-          console.log(208, error)
+
           setContent(undefined)
           return
         }
@@ -195,9 +199,12 @@ export const TemplateElement =
       // 返回空内容
       if (date === '-1') {
         console.log(205, date)
-        setContent({
-          data: {},
-          date: null
+        setContent((content) => {
+          return {
+            ...content,
+            data: {},
+            date: ''
+          }
         })
         return null
       }
@@ -215,7 +222,6 @@ export const TemplateElement =
         } else {
           if (props.timeSeries) {
             t_content = undefined
-            console.log(217217)
           } else {
             t_content = await getContentOfDB(t_date)
           }
@@ -266,7 +272,8 @@ export const TemplateElement =
 
       switch (props.element.type) {
         case DataType.ElementType.NestedModule:
-          const newTabItems = props.elements?.filter((v, i) => v.isSubmodule && v.parentName === props.element.name)
+          //! filter可能不会过滤
+          const newTabItems = props.elements?.filter((v, i) => v.isSubmodule && v.parentName == props.element.name)
           console.log(285, newTabItems)
           initContent = {
             data: {
@@ -311,8 +318,12 @@ export const TemplateElement =
           break;
       }
 
+      // 添加相同得字段
+      initContent.isEdit = true;
+
+      // 如果是时序
       if (props.timeSeries) {
-        //时序功能下新建日期所用
+        //如果是时序,新建content的date为所选择的date
         if (date) {
           initContent.date = date
         } else {
@@ -332,6 +343,16 @@ export const TemplateElement =
         console.log(230, props.isNested, element)
         if (element.id) {
           dashboardContextProps?.fetchElementContent!(element.id, date, props.isNested).then((res) => {
+            console.log(337, res)
+
+            // 只有返回有数据时才添加是否编辑得字段
+            if (res) {
+              resoleve({
+                ...res,
+                isEdit: false
+              })
+            }
+
             resoleve(res)
           }).catch((res) => { //避免api请求错误，能有初始值
             resoleve(getInitContent())

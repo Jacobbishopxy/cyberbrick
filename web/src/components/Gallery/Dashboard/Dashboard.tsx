@@ -204,18 +204,29 @@ export const Dashboard = (props: DashboardProps) => {
 
   // 删除contents
   function delectContents(ids: string[]) {
+    console.log(207, ids)
+    if (ids && ids.length > 0) {
 
-    props.delectContents(ids)
+      props.delectContents(ids)
+    }
 
   }
+  useEffect(() => console.log(444, contentIdsToBeDelect))
+
   const onRefresh = async (shouldSaveTemplateAndContents: boolean) => {
+
+    // 删除contents
+    await delectContents(contentIdsToBeDelect)
+
     if (cRef.current) {
       if (shouldSaveTemplateAndContents) {
         // 获得template和elements数据
         const t = cRef.current.getTemplate()
         if (t) {
+
           // 向后端保存template和elements数据
           await props.saveTemplate(t)
+          console.log(217, updatedContents)
           if (updatedContents && updatedContents.length > 0) {
             // 向后端获取template和elements数据
             const updatedTemplate = await props.fetchTemplate(t.id!)
@@ -223,8 +234,8 @@ export const Dashboard = (props: DashboardProps) => {
             console.log('contents', contents)
             // 循环保存content
             await updateAllContents(contents)
-            // 删除contents
-            await delectContents(contentIdsToBeDelect)
+            console.log(230)
+
 
             // 清空
             setNewestContent(undefined)

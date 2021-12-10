@@ -35,7 +35,6 @@ export default () => {
     } else {
       const i = ls.get(lsKey)
       if (i) setInitialSelected(JSON.parse(i.data))
-      console.log(30, i, JSON.parse(i.data))
     }
   }, [])
 

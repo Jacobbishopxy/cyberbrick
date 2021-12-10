@@ -55,14 +55,15 @@ export interface Content {
   mark?: Mark
   tags?: Tag[]
   author?: Author
-  date: string
+  date?: string
   title?: string
-  data: Record<string, any> | undefined
+  data?: Record<string, any> | undefined
   storageType?: StorageType //3rd party database type
   config?: Record<string, any>
   tabId?: string //only use in NestedSimpleModule, indicates the corresponding header tab id
   createdAt?: string
   updatedAt?: string
+  isEdit?: boolean
 }
 
 export interface Author {
