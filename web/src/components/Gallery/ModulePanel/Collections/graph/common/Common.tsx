@@ -26,8 +26,15 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
     const [dataAvailable, setDataAvailable] = useState(false)
     const [columns, setColumns] = useState<string[]>()
     const formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined = useRef()
+
+    // 如果有数据，dataAvailable变绿
+    useEffect(() => {
+
+    }, [content])
+
+
     const saveContentData = (data: Record<string, any>) => {
-      console.log(30, data)
+      console.log(32, data)
       const ctt = {
         ...content!,
         storageType: DataType.StorageType.PG,
@@ -39,6 +46,8 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
       return true
     }
+
+
 
 
     const saveContent = async (values: Record<string, any>) => {
@@ -66,6 +75,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       return true
     }
 
+    console.log(71, props.content)
     return (
       <div className={props.styling}>
         <Button
@@ -119,6 +129,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                   onSubmit={saveContentData}
                   columnsRequired
                 />
+                {/* ❌ */}
                 {
                   dataAvailable ?
                     <CheckCircleTwoTone twoToneColor="green" /> :
@@ -175,13 +186,13 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config) {
 
-        console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
+        console.log(151, props.content.config.style)
 
         return (
           <ReactEcharts
             notMerge={true}
             option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
-            style={{ height: '100%', overflow: 'auto' }}
+            style={{ height: '100%' }}
             theme={props.content.config.style || "default"}
           />
         )

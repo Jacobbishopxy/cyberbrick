@@ -50,9 +50,9 @@ export interface ConvertFwRef {
 }
 
 export interface ConvertRefProps {
-  editable: boolean
-  initialValue: string
-  onSave: (v: string) => void
+  editable?: boolean
+  initialValue?: string
+  onSave?: (v: string) => void
   content?: DataType.Content
   fetchStorages?: () => Promise<DataType.StorageSimple[]>
   fetchTableList?: (id: string) => Promise<string[]>

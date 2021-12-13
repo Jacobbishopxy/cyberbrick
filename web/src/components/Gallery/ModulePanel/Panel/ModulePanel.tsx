@@ -3,7 +3,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { DatePicker, message, Modal, Skeleton, Button } from "antd"
+import { DatePicker, message, Modal, Skeleton, Button, Form } from "antd"
 import { ModalForm } from "@ant-design/pro-form"
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { useIntl } from "umi"
@@ -480,7 +480,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
                       return Promise.resolve(true)
                     }}
                   >
-                    <DatePicker onChange={(e, s) => setDate(s)}></DatePicker>
+                    <Form.Item
+                      label='datePicker'
+                      name='datePicker'
+                      rules={[{
+                        required: true,
+                        message: '请选择日期!'
+                      }]}
+                    >
+                      <DatePicker onChange={(e, s) => setDate(s)}></DatePicker>
+                    </Form.Item>
+
                   </ModalForm>
                   : <></>
               }

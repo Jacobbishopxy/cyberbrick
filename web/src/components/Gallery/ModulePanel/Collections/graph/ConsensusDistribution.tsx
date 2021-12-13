@@ -3,6 +3,7 @@ import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import { ModuleGenerator } from "../../Generator/ModuleGenerator"
 import { Row, Col, Button, message } from 'antd'
 import { FormattedMessage, useIntl } from "umi"
+import _ from 'lodash'
 
 import * as DataType from "../../../GalleryDataType"
 import { ModalForm, ProFormDigit, ProFormRadio, ProFormText } from "@ant-design/pro-form"
@@ -44,7 +45,7 @@ const EditorField = (props: ModuleEditorField) => {
   // 自动填充目标价
   function getInitialValue() {
     // 如果本次content直接获取
-    if (JSON.stringify(props.content?.data) !== '{}') {
+    if (!_.isEmpty(props.content?.data)) {
       console.log(4111, {
         ...props.content?.data
       })

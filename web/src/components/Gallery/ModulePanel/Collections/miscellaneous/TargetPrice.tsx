@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect, useContext } from "react"
 import { Button, Col, Row, Space, Tooltip, Input } from "antd"
 import TextArea from "antd/lib/input/TextArea"
 import { FormattedMessage, useIntl } from "umi"
+import _ from 'lodash'
 
 import { ModuleGenerator } from "../../Generator/ModuleGenerator"
 import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
@@ -40,7 +41,7 @@ const EditorField = (props: ModuleEditorField) => {
   // 自动填充
   function getInitialValue() {
     // 如果本次content直接获取
-    if (JSON.stringify(props.content?.data) !== '{}') {
+    if (!_.isEmpty(props.content?.data)) {
       console.log(4111, {
         ...props.content?.data
       })

@@ -283,6 +283,7 @@ export const Dashboard = (props: DashboardProps) => {
       } as DataType.Content
     })
   }
+
   const fetchQueryData = async (value: DataType.Content) => {
     // if (!value?.data) return Promise.resolve(undefined)
     const id = value.data?.id
