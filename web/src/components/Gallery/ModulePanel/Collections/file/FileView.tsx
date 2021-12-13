@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 1/13/2021
  */
 
-import {useRef, useState} from "react"
-import {Button} from "antd"
-import {ModalForm, ProFormText} from "@ant-design/pro-form"
-import {FormattedMessage, useIntl} from "umi"
-import {FileManager, FileNavigator} from "@opuscapita/react-filemanager"
+import { useRef, useState } from "react"
+import { Button } from "antd"
+import { ModalForm, ProFormText } from "@ant-design/pro-form"
+import { FormattedMessage, useIntl } from "umi"
+import { FileManager, FileNavigator } from "@opuscapita/react-filemanager"
 import connectorNodeV1 from "@opuscapita/react-filemanager-connector-node-v1"
 
-import {ModuleGenerator} from "../../Generator/ModuleGenerator"
-import {ModuleEditorField, ModulePresenterField} from "../../Generator/data"
+import { ModuleGenerator } from "../../Generator/ModuleGenerator"
+import { ModuleEditorField, ModulePresenterField } from "../../Generator/data"
 import * as DataType from "../../../GalleryDataType"
-import {linkToExternalAddress} from "./linkToExternalAddress"
+import { linkToExternalAddress } from "./linkToExternalAddress"
 
 
 const apiOptions = {
@@ -51,7 +51,7 @@ const EditorField = (props: ModuleEditorField) => {
     const ctt = {
       ...content,
       date: content?.date || DataType.today(),
-      data: {...values, locationId: resource!.id}
+      data: { ...values, locationId: resource!.id }
     }
     setContent(ctt)
     if (props.setContent) {
@@ -65,17 +65,17 @@ const EditorField = (props: ModuleEditorField) => {
   return (
     <div className={props.styling}>
       <ModalForm
-        title={intl.formatMessage({id: "gallery.component.module-panel.collections.file-view1"})}
+        title={intl.formatMessage({ id: "gallery.component.module-panel.collections.file-view1" })}
         trigger={<Button type="primary">Create</Button>}
         onFinish={onSubmit}
-        modalProps={{width: "80vw"}}
+        modalProps={{ width: "80vw" }}
       >
         <ProFormText
           name="link"
           label={<FormattedMessage id="gallery.component.module-panel.collections.file-view1" />}
         />
 
-        <FileManager style={{height: '60vh'}}>
+        <FileManager style={{ height: '60vh' }}>
           <FileNavigator
             api={connectorNodeV1.api}
             apiOptions={apiOptions}
@@ -99,7 +99,7 @@ const PresenterField = (props: ModulePresenterField) => {
   const capabilities = () => [
     {
       id: "external-link",
-      icon: {svg: linkToExternalAddress},
+      icon: { svg: linkToExternalAddress },
       label: "Link",
       shouldBeAvailable: () => !!props.content?.data?.link,
       availableInContexts: ["toolbar"],
@@ -115,7 +115,7 @@ const PresenterField = (props: ModulePresenterField) => {
         href={props.content.data.link}
         ref={linkRef}
       />
-      <FileManager style={{height: props.contentHeight}}>
+      <FileManager style={{ height: 'calc(100% - 45px)' }}>
         <FileNavigator
           api={connectorNodeV1.api}
           apiOptions={apiOptions}

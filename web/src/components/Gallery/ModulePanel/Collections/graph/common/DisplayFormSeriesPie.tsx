@@ -2,11 +2,11 @@
  * Created by Jacob Xie on 2/24/2021
  */
 
-import ProForm, {ProFormRadio, ProFormSelect} from "@ant-design/pro-form"
-import {Divider} from "antd"
-import {FormattedMessage} from "umi"
+import ProForm, { ProFormRadio, ProFormSelect } from "@ant-design/pro-form"
+import { Divider } from "antd"
+import { FormattedMessage } from "umi"
 
-import {DisplayFormThemeSelector} from "./DisplayFormThemeSelector"
+import { DisplayFormThemeSelector } from "./DisplayFormThemeSelector"
 
 
 const seriesDirOptions = [
@@ -24,8 +24,10 @@ export interface DisplayFormSeriesPieProps {
   columns?: string[]
 }
 
-export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) =>
-  props.columns ? (
+export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) => {
+
+
+  return props.columns ? (
     <>
       <ProForm.Group
         title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form8" />}
@@ -33,7 +35,7 @@ export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) =>
         <ProFormSelect
           name="select"
           label={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form9" />}
-          options={props.columns.map(c => ({value: c, label: c}))}
+          options={props.columns.map(c => ({ value: c, label: c }))}
           width="lg"
         />
         <ProFormRadio.Group
@@ -48,4 +50,6 @@ export const DisplayFormSeriesPie = (props: DisplayFormSeriesPieProps) =>
       <DisplayFormThemeSelector />
     </>
   ) : <></>
+}
+
 

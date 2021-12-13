@@ -8,17 +8,18 @@ import { DisplayFormSeriesPie } from "./DisplayFormSeriesPie"
 import { FormInstance } from 'antd'
 
 interface DisplayFormProps {
-    mixin: Mixin
-    columns?: string[]
-    formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined
+  mixin: Mixin
+  columns?: string[]
+  formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined
 }
 
 export const DisplayForm = (props: DisplayFormProps) => {
-    switch (props.mixin) {
-        case "pie":
-            return <DisplayFormSeriesPie columns={props.columns} />
-        default:
-            return <DisplayFormCartesianCoord mixin={props.mixin} columns={props.columns} formRef={props.formRef} />
-    }
+  console.log(277, props.columns)
+  switch (props.mixin) {
+    case "pie":
+      return <DisplayFormSeriesPie columns={props.columns} />
+    default:
+      return <DisplayFormCartesianCoord mixin={props.mixin} columns={props.columns} formRef={props.formRef} />
+  }
 }
 

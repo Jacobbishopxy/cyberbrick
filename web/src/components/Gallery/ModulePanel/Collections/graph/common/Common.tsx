@@ -8,6 +8,7 @@ import ProForm, { StepsForm } from "@ant-design/pro-form"
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
 import { FormattedMessage, useIntl } from "umi"
 import ReactEcharts from "echarts-for-react"
+import _ from "lodash";
 
 import { QuerySelectorModal } from "@/components/Gallery/Dataset"
 
@@ -16,7 +17,6 @@ import * as DataType from "../../../../GalleryDataType"
 import { DisplayForm } from "./DisplayForm"
 import { ColumnIdentifier } from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 import { ChartOptionGenerator, Mixin, UnionChartConfig } from "@/components/Gallery/Utils/data"
-import _ from "lodash";
 
 export const generateCommonEditorField = (mixin?: Mixin) =>
   (props: ModuleEditorField) => {
@@ -24,33 +24,36 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
     const [visible, setVisible] = useState(false)
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     const [dataAvailable, setDataAvailable] = useState(false)
-    const [columns, setColumns] = useState<string[]>()
+    const [columns, setColumns] = useState<string[]>(props.content?.data?.selects)
     const formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined = useRef()
 
     // 如果有数据，dataAvailable变绿
     useEffect(() => {
-
+      if (!_.isEmpty(content?.data)) {
+        setDataAvailable(true)
+      }
     }, [content])
 
 
-    const saveContentData = (data: Record<string, any>) => {
-      console.log(32, data)
+    // 保存【数据源配置】
+    const saveDataSourceConfig = (dataSourceConfig: Record<string, any>) => {
+      console.log(32, dataSourceConfig)
       const ctt = {
         ...content!,
         storageType: DataType.StorageType.PG,
-        data
+        data: dataSourceConfig
       }
       setContent(ctt)
-      setColumns(data.selects)
-      setDataAvailable(true)
+      setColumns(dataSourceConfig.selects)
+      // setDataAvailable(true)
 
       return true
     }
 
 
 
-
-    const saveContent = async (values: Record<string, any>) => {
+    // 保存【显示配置】
+    const saveDisplayConfig = async (values: Record<string, any>) => {
       console.log(466, values, formRef)
       if (content) {
         console.log(466, content)
@@ -75,7 +78,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       return true
     }
 
-    console.log(71, props.content)
+    console.log(71, content)
     return (
       <div className={props.styling}>
         <Button
@@ -86,7 +89,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         </Button>
 
         <StepsForm
-          onFinish={saveContent}
+          onFinish={saveDisplayConfig}
           formRef={formRef}
           stepsFormRender={(dom, submitter) =>
             <Modal
@@ -126,8 +129,10 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
                   storagesOnFetch={props.fetchStorages!}
                   storageOnSelect={props.fetchTableList!}
                   tableOnSelect={props.fetchTableColumns!}
-                  onSubmit={saveContentData}
+                  onSubmit={saveDataSourceConfig}
+                  content={content}
                   columnsRequired
+                  initialValues={content?.data}
                 />
                 {/* ❌ */}
                 {
@@ -150,7 +155,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           <StepsForm.StepForm
             name="display"
             title={intl.formatMessage({ id: "gallery.component.general43" })}
-            initialValues={{ x: { type: "category" }, seriesDir: "vertical" }}
+            initialValues={props.content?.config ? props.content.config : { x: { type: "category" }, seriesDir: "vertical" }}
           >
             <DisplayForm
               formRef={formRef}

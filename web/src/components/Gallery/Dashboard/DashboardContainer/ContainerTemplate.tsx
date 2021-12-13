@@ -182,6 +182,10 @@ export const ContainerTemplate =
           height = 20
           width = 24
           break
+        case DataType.ElementType.FileManager:
+          height = 20
+          width = 24
+          break
         default:
           height = 20;
           width = 12;

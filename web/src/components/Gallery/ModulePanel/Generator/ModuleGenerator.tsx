@@ -34,7 +34,7 @@ export class ModuleGenerator {
         items: prRef.current?.getTabItem //无用，可以删除
       }))
 
-      console.log(38, editable)
+      console.log(38, crProps.initialValue)
       //为了使用到presenter里的数据
       // const PresenterRef = forwardRef((props, ref) => {
       //     return (<this.presenter
