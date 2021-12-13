@@ -24,7 +24,7 @@ export default () => {
 
 
 
-
+  // 初始化获取行业、公司、维度
   useEffect(() => {
     const initialValue = query.get("anchor")
     if (initialValue) {
@@ -43,6 +43,26 @@ export default () => {
     console.log(47, v)
     if (v) ls.add(lsKey, JSON.stringify(v))
   }
+
+
+  // // 初始化nested的模块
+  // const [initActiveKey, setInitActiveKey] = useState<string>()
+  // useEffect(() => {
+  //   const initialValue = query.get("anchor")
+  //   if (initialValue) {
+  //     try {
+  //       const pi = JSON.parse(initialValue)
+  //       setInitActiveKey(pi)
+  //     } catch { }
+  //   } else {
+  //     const i = ls.get('activeKey')
+  //     if (i) setInitActiveKey(JSON.parse(i.data))
+  //   }
+  // }, [])
+
+  // function setLocalInitActiveKey(v) {
+  //   if (v) ls.add(lsKey, JSON.stringify(v))
+  // }
 
   const fetchCategories = () =>
     GalleryService.getAllCategories() as Promise<DataType.Category[]>
@@ -110,6 +130,8 @@ export default () => {
       fetchQueryData={fetchQueryData}
       updateElements={updateElements}
       delectContents={delectContents}
+    // initActiveKey={initActiveKey}
+    // setLocalInitActiveKey={setLocalInitActiveKey}
     />
   )
 

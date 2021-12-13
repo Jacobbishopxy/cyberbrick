@@ -37,7 +37,7 @@ const EditorField = (props: ModuleEditorField) => {
   console.log(355, props.content, dashboarContextProps?.allContent)
 
 
-  // 自动填充目标价
+  // 自动填充
   function getInitialValue() {
     // 如果本次content直接获取
     if (JSON.stringify(props.content?.data) !== '{}') {

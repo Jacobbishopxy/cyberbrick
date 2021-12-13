@@ -134,7 +134,7 @@ export const ContainerTemplate =
 
       let deleteElementsName: string[] = []
       if (el.type === ElementType.NestedModule) {
-        deleteElementsName = dashboardContextProps?.allContent?.find((content) => content.element?.name === el.name)?.data?.tabItems.map((v) => v.name)
+        deleteElementsName.push(...props.elements.filter((el) => el.isSubmodule && el.parentName === el.parentName).map((el) => el.name))
 
       }
       //加入要被删除nestedName
@@ -221,13 +221,13 @@ export const ContainerTemplate =
           return props.setNewestContent({
             ...value,
             templateInfo: props.parentInfo.templateInfo,
-            // element: submoduleElement as DataType.Element
+            element: submoduleElement as DataType.Element
           })
         } else {
           return props.setNewestContent({
             ...value,
             templateInfo: props.parentInfo.templateInfo,
-            // element: ele as DataType.Element
+            element: ele as DataType.Element
           })
         }
 

@@ -1,12 +1,18 @@
-import DynamicHeader from './Header/DynamicHeader';
 import { useEffect, useState, useContext, useRef } from 'react';
-import { Skeleton } from 'antd';
-import { ModuleTabPane } from './EmbededModule/CreateModule';
+import { Skeleton, Tabs } from 'antd';
 import _, { min } from 'lodash';
-import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
+import { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
+
+// import { DEFAULT_MARGIN, COLS_NUM, DEFAULT_ROW_HEIGHT } from './util';
+// import DynamicHeader from './Header/DynamicHeader';
 import * as DataType from "../../../GalleryDataType"
+import TabBar from './Header/TabBar'
+import { ModuleTabPane } from './EmbededModule/CreateModule';
+import { LocalStorageHelper } from "@/utils/localStorageHelper"
+import { useLocation } from 'react-router-dom'
 
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
+
 import styles from './style.less'
 interface NestedModuleProps {
   //for temp cache
@@ -179,69 +185,116 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
     }
   }
   //根据点击的index渲染不同的模块
-  const moduleToReactNode = (currentModuleName: string | undefined) => {
-    console.log("switching module", props.content?.data?.tabItems, props.content)
+  // const moduleToReactNode = (currentModuleName: string | undefined) => {
+  //   console.log("switching module", props.content?.data?.tabItems, props.content)
 
-    // 选中的element
-    let submodule
-    //根据tabItems获得elementName
-    // 因为tabItems不一定有id，所以需要传递的elements的元素而不是tabItems
-    if (props.content?.data?.tabItems) {
-      const item = findElement({
-        elementName: currentModuleName,
-        parentName: NestedDedicatedProps?.elementName,
-        isSubmodule: true,
-        elements: NestedDedicatedProps?.elements
-      })
+  //   // 选中的element
+  //   let submodule
+  //   //根据tabItems获得elementName
+  //   // 因为tabItems不一定有id，所以需要传递的elements的元素而不是tabItems
+  //   if (props.content?.data?.tabItems) {
+  //     const item = findElement({
+  //       elementName: currentModuleName,
+  //       parentName: NestedDedicatedProps?.elementName,
+  //       isSubmodule: true,
+  //       elements: NestedDedicatedProps?.elements
+  //     })
 
-      const submoduleName = item?.name
+  //     const submoduleName = item?.name
 
-      submodule = NestedDedicatedProps?.elements?.find((el) => el.name === submoduleName)
-    }
+  //     submodule = NestedDedicatedProps?.elements?.find((el) => el.name === submoduleName)
+  //   }
 
-    console.log(220, submodule)
-    //有tab还不行，还需要tab是选择模块的
-    if (!(submodule && submodule.type))
-      return null
+  //   console.log(220, submodule)
+  //   //有tab还不行，还需要tab是选择模块的
+  //   if (!(submodule && submodule.type))
+  //     return null
 
-    console.log("switching moduleswitching module", props.content?.data?.tabItems, submodule)
-    let { name, timeSeries, type, id } = submodule
-    // if (!id) return null
+  //   console.log("switching moduleswitching module", props.content?.data?.tabItems, submodule)
+  //   let { name, timeSeries, type, id } = submodule
+  //   // if (!id) return null
 
-    props.fetchStoragesFn().then((res) => console.log(89, res))
-    return (
-      <ModuleTabPane
-        ele={submodule}
-        content={props.content}
-        editable={props.editable}
-        // contentHeight={nestedModuleHeight}
-        // setItems={setItems}
-        // onRemoveModule={onRemoveModule}
-        fetchStoragesFn={props.fetchStoragesFn}
-        fetchTableColumnsFn={props.fetchTableColumnsFn}
-        fetchTableListFn={props.fetchTableListFn}
-        fetchQueryDataFn={props.fetchQueryDataFn}
-        fetchContentFn={props.fetchContentFn}
-        fetchContentDatesFn={props.fetchContentDatesFn}
-        shouldEleStartFetch={1 /** template element should fetch content only when it's mounted*/}
-        setNewestContent={props.setNewestContent}
+  //   return (
+  //     <ModuleTabPane
+  //       ele={submodule}
+  //       content={props.content}
+  //       editable={props.editable}
+  //       // contentHeight={nestedModuleHeight}
+  //       // setItems={setItems}
+  //       // onRemoveModule={onRemoveModule}
+  //       fetchStoragesFn={props.fetchStoragesFn}
+  //       fetchTableColumnsFn={props.fetchTableColumnsFn}
+  //       fetchTableListFn={props.fetchTableListFn}
+  //       fetchQueryDataFn={props.fetchQueryDataFn}
+  //       fetchContentFn={props.fetchContentFn}
+  //       fetchContentDatesFn={props.fetchContentDatesFn}
+  //       shouldEleStartFetch={1 /** template element should fetch content only when it's mounted*/}
+  //       setNewestContent={props.setNewestContent}
 
-      //更新content
-      // updateContentFn={props.updateContentFn}
-      />
-    )
-  }
+  //     //更新content
+  //     // updateContentFn={props.updateContentFn}
+  //     />
+  //   )
+  // }
   const DynamicHeaderRef = useRef<any>();
   const EditorRef = useRef<any>();
-  if (DynamicHeaderRef.current && EditorRef.current) {
-
-    console.log(195, DynamicHeaderRef.current.clientHeight, EditorRef.current.clientHeight)
-  }
+  // const submoduleElementRef = useRef<any>()
   //get curr module tab pane
-  const currModule = moduleToReactNode(NestedDedicatedProps?.currentModuleName)
+  // const currModule = moduleToReactNode(NestedDedicatedProps?.currentModuleName)
+
+
+
+
+
+
+
+  // tabs
+  const { TabPane } = Tabs
+  const [activeKey, setActiveKey] = useState('')
+  console.log(277, activeKey)
+
+  // 初始化获取localActiveKey
+  const ls = new LocalStorageHelper("gallery.dataset", { expiry: [1, "week"] })
+  const lsKey = 'activeKey'
+  const query = new URLSearchParams(useLocation().search)
+
+  useEffect(() => {
+    const initialValue = query.get("anchor")
+    console.log(30, initialValue)
+    if (initialValue) {
+      try {
+        const pi = JSON.parse(initialValue)
+      } catch { }
+    } else {
+      const i = ls.get(lsKey)
+      if (i) setActiveKey(JSON.parse(i.data))
+    }
+  }, [])
+
+  useEffect(() => {
+    ls.add(lsKey, JSON.stringify(activeKey))
+  }, [activeKey])
+
+
+
+
+  // 子模块
+  const [submoduleElement, setSubmoduleElement] = useState(NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName == NestedDedicatedProps.elementName))
+
+  // 子模块根据allElement更新
+  useDeepCompareEffectNoCheck(() => {
+    const t = NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName == NestedDedicatedProps.elementName).map((v, i) => v)
+    setSubmoduleElement(() => t)
+    console.log(287, t)
+  }, [NestedDedicatedProps?.elements])
+
+
   return (
     <div className={styles.Editor} ref={EditorRef}>
-      <div className={styles.DynamicHeader} ref={DynamicHeaderRef}>
+      {/* head */}
+      {/* <div className={styles.DynamicHeader} ref={DynamicHeaderRef} style={{
+        display: 'none'
+      }}>
         <DynamicHeader
           // items={props.items!}
           editable={props.editable}
@@ -256,14 +309,73 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
           // onSwitch={onSwitch} 
           parentInfo={props.parentInfo!}
           addElement={props.addElement}
+
+          ref={submoduleElementRef}
         />
 
-      </div>
+      </div> */}
+
+
+      {/* body */}
       <div className={styles.currModule} style={{
         height: (DynamicHeaderRef.current && EditorRef.current ? EditorRef.current.clientHeight - DynamicHeaderRef.current.clientHeight : '') + 'px'
       }}>
         {/* {"on tab: " + currIndex} */}
-        {currModule || <Skeleton active />}
+        {/* {currModule || <Skeleton active />} */}
+
+        <Tabs
+          style={{
+            height: '100%'
+          }}
+          activeKey={activeKey}
+          animated
+          renderTabBar={(p, t) => {
+
+            return (
+              <TabBar
+                editable={props.editable}
+                content={props.content}
+                setContent={props.setContent}
+                parentInfo={props.parentInfo}
+                addElement={props.addElement}
+                tabBar={p.panes}
+                activeKey={activeKey}
+                setActiveKey={setActiveKey}
+              ></TabBar>
+            )
+          }}
+        >
+          {
+            submoduleElement?.map((v, i) => {
+              return (
+                <TabPane
+                  key={v.name}
+                  tab={v.name}
+                >
+                  <ModuleTabPane
+                    ele={v}
+                    content={props.content}
+                    editable={props.editable}
+                    // contentHeight={nestedModuleHeight}
+                    // setItems={setItems}
+                    // onRemoveModule={onRemoveModule}
+                    fetchStoragesFn={props.fetchStoragesFn}
+                    fetchTableColumnsFn={props.fetchTableColumnsFn}
+                    fetchTableListFn={props.fetchTableListFn}
+                    fetchQueryDataFn={props.fetchQueryDataFn}
+                    fetchContentFn={props.fetchContentFn}
+                    fetchContentDatesFn={props.fetchContentDatesFn}
+                    shouldEleStartFetch={1 /** template element should fetch content only when it's mounted*/}
+                    setNewestContent={props.setNewestContent}
+
+                  //更新content
+                  // updateContentFn={props.updateContentFn}
+                  />
+                </TabPane>
+              )
+            })
+          }
+        </Tabs>
       </div>
     </div>
   );

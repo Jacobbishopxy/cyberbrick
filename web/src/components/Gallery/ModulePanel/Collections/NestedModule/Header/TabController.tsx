@@ -28,7 +28,7 @@ interface TabControllerProps {
   content: DataType.Content | undefined
   setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
   index: number
-  removeTabItem: (index: number) => void
+  removeTabItem: (el: DataType.Element) => void
 }
 /*
 This is the controller for tab item. It receives a boolean type 'isHover' from parent.

@@ -18,7 +18,7 @@ interface ModuleTabPaneProps {
   fetchStoragesFn: () => Promise<DataType.StorageSimple[]>
   fetchTableListFn: (id: string) => Promise<string[]>
   fetchTableColumnsFn: (storageId: string, tableName: string) => Promise<string[]>
-  fetchQueryDataFn: (readOption: DataType.Content) => Promise<any>
+  fetchQueryDataFn: ((readOption: DataType.Content) => Promise<any>) | undefined
   fetchContentFn: (id: string, date?: string, isNested?: boolean) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 

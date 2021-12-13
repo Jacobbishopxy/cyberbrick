@@ -65,7 +65,7 @@ export const TemplateElement =
 
     const [mpHeight, setMpHeight] = useState<number>(0)
     //模块内容的源
-    const [content, setContent] = useState<DataType.Content | undefined>({ element: props.element })
+    const [content, setContent] = useState<DataType.Content | undefined>()
     //
     const [element, setElement] = useState(props.element)
     // useEffect(() => {
@@ -170,7 +170,7 @@ export const TemplateElement =
 
       let t_content: DataType.Content | null
 
-      console.log(81, date, props.isNested)
+      console.log(81, date, props.isNested, content)
 
 
       t_content = await getContent(date)
@@ -178,18 +178,15 @@ export const TemplateElement =
       console.log('setContent', props.isNested, t_content, date)
       if (t_content && t_content.date) {
         console.log(208, content, t_content)
-        try {
-          setContent((content) => {
-            return {
-              ...content,
-              ...t_content
-            } as DataType.Content
-          })
-        } catch (error) {
 
-          setContent(undefined)
-          return
-        }
+        setContent((content) => {
+          return {
+            element: props.element,
+            ...t_content
+          } as DataType.Content
+        })
+
+
       }
     }, [date])
 

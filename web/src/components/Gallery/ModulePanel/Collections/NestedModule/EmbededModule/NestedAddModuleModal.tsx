@@ -184,6 +184,7 @@ export interface NestedAddModuleModalProps {
   onQuit: () => void
   // addElement: ((name: string, timeSeries: boolean, elementType: DataType.ElementType, isNested?: boolean) => boolean) | undefined
   setDraggable: React.Dispatch<React.SetStateAction<boolean>>
+  setActiveKey: React.Dispatch<React.SetStateAction<string>>
 }
 
 // import { DashboardContext } from "@/components/Gallery/Dashboard/DashboardContext"
@@ -215,6 +216,7 @@ export const NestedAddModuleModal = (props: NestedAddModuleModalProps) => {
         //使能RGL组件
         props.setDraggable(() => true)
         console.log(102, moduleName, timeSeries, DataType.getElementType(elementType))
+        props.setActiveKey(moduleName)
       }
 
 

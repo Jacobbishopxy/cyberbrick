@@ -23,10 +23,10 @@ const dashboardContentUpdate = (contents: DataType.Content[], template: DataType
 
   const elementNameIdMap = _.chain(template.elements!).keyBy("name").mapValues("id").value()
   const elementNameTypeMap = _.chain(template.elements!).keyBy("name").mapValues("type").value()
-  console.log('contents', contents)
+  console.log('contents', contents, template, elementNameIdMap, elementNameTypeMap)
   //此处将要传递给后端的内容做调整,注意,这里是all操作.
   return contents.map(c => {
-    if (c.element!.id === undefined || c.element!.type === undefined) {
+    if (c.element?.id === undefined || c.element!.type === undefined) {
       const element = { ...c.element!, id: elementNameIdMap[c.element!.name], type: elementNameTypeMap[c.element!.name] }
       return { ...c, element }
     }
@@ -88,6 +88,9 @@ export interface DashboardProps {
   fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
   updateElements: (element: DataType.Element[]) => Promise<any>
   delectContents: (ids: string[]) => Promise<any>
+
+  // initActiveKey: string | undefined
+  // setLocalInitActiveKey: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const Dashboard = (props: DashboardProps) => {

@@ -1,32 +1,26 @@
 import React, { useState, useEffect, useContext, forwardRef, useImperativeHandle } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
-import { tabItem } from "../data"
 import { Button, message } from "antd";
 import { useIntl } from "umi";
+import { Layout } from 'react-grid-layout';
+
+import { tabItem } from "../data"
 import { TabController } from "./TabController";
 import { COLS_NUM, DEFAULT_ROW_HEIGHT, RGL_CLASSNAME } from "../util";
-
 import * as DataType from "@/components/Gallery/GalleryDataType"
 
-import { Layout } from 'react-grid-layout';
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
-
 import { NestedAddModuleModal } from "@/components/Gallery/ModulePanel/Collections/NestedModule/EmbededModule/NestedAddModuleModal"
 
-import useDeepCompareEffect, { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
+
+
 
 const ReactGridLayout = WidthProvider(RGL);
 interface DynamicHeaderProps {
   editable: boolean
-  // items: tabItem[],
-  // currIndex: number,
   setItems?: React.Dispatch<React.SetStateAction<tabItem[]>>,
   onAddItem?: () => void,
-  // onRemoveItem?: (i: string) => void,
-  // onSwitch: (i: string) => void
-  // onLayoutChange: (layout: ReactGridLayout.Layout[]) => void
-  // onAddModule: (name: string, timeSeries: boolean, moduleType: any) => void
   content?: DataType.Content
   setContent?: React.Dispatch<React.SetStateAction<DataType.Content | undefined>>
   parentInfo: {
@@ -35,22 +29,19 @@ interface DynamicHeaderProps {
     }
   }
   addElement?: (name: string, timeSeries: boolean, elementType: DataType.ElementType) => boolean
+
+  tabBar: any[]
+  activeKey: string
+  setActiveKey: React.Dispatch<React.SetStateAction<string>>
 }
 
 
-/**
- * This layout demonstrates how to use a grid with a dynamic number of elements.
- */
-const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
+const TabBar = (props: DynamicHeaderProps) => {
   const intl = useIntl()
-  // const { onRemoveItem, onSwitch, onAddModule } = props
   const [isHover, setIsHover] = useState<number | null>(null)
-  // const [tab]
-  /*
-  the following are helper method to determine which tab item the mouse is hovering over
-  */
   // 控制tabItems是否使能
   const [draggable, setDraggable] = useState(true)
+
   const onMouseEnter = (id: number) => {
     console.log(40, id)
     setIsHover(id)
@@ -62,6 +53,8 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
   const onMouseLeave = () => {
     setIsHover(-1)
   }
+
+
 
   //添加tab事件
   const onAddTabItems = () => {
@@ -76,52 +69,6 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
 
     setModalVisible(true)
 
-
-
-
-
-    //currentIndex+1
-    // if (NestedDedicatedProps?.setCurrentIndex) {
-
-    //     NestedDedicatedProps?.setCurrentIndex((currentIndex) => currentIndex + 1)
-    // }
-
-    // const newElement = {
-    //     i: +new Date(),
-    //     x: xPos,
-    //     y: yPos,
-    //     w: 1,
-    //     h: 1,
-    //     isSubmodule: true,
-    //     parentName: NestedDedicatedProps?.elementName,
-    //     template: {
-    //         id: props.parentInfo.templateInfo.id
-    //     },
-    // }
-    // // 写入tab
-    // if (props.setContent) {
-    //     props.setContent((content) => {
-
-    //         const newTabItems = [...content?.data?.tabItems, newElement]
-    //         console.log(70, newTabItems)
-    //         return {
-    //             ...content,
-    //             data: {
-    //                 ...content?.data,
-    //                 tabItems: newTabItems
-    //             }
-    //         } as DataType.Content
-    //     })
-    // }
-
-    // // 写入elements
-    // if (NestedDedicatedProps?.setElements) {
-
-    //     NestedDedicatedProps?.setElements((allElements) => {
-
-    //         return [...allElements, newElement] as DataType.Element[]
-    //     })
-    // }
   }
 
   //添加submodule
@@ -169,26 +116,6 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
   // tab删除事件，应submodule和其的content一起删除。
   function removeTabItem(el: DataType.Element) {
 
-    // const newTabItems = props.content?.data?.tabItems.filter((v, i) => i !== index)
-    // // 删除tab
-    // if (props.setContent) {
-    //     props.setContent((content) => {
-    //         console.log(71, ...content?.data?.tabItems, index)
-
-    //         const newContent = {
-    //             ...content,
-    //             data: {
-    //                 ...content?.data,
-    //                 tabItems: newTabItems
-    //             }
-    //         } as DataType.Content
-    //         console.log(80, newContent)
-    //         return newContent
-
-    //     })
-    // }
-
-    // const deleteName = props.content?.data?.tabItems.find((v, i) => i === index).name
     // 删除elements
     if (NestedDedicatedProps?.setElements) {
       NestedDedicatedProps.setElements((allElements) => {
@@ -201,8 +128,9 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
 
   //submodule布局变化要更新，且elements也要更新。通过useEffect做到这一点
   const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
-    console.log(118, props.content?.data?.tabItems, updateElementInLayout(props.content?.data?.tabItems, layout))
+
     const newTabItems = updateElementInLayout((NestedDedicatedProps?.elements?.filter((v) => v.isSubmodule && v.parentName == NestedDedicatedProps.elementName)) || [], layout)
+
     //修改tab
     // if (props.setContent) {
     //   props.setContent((content) => {
@@ -218,12 +146,6 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
 
     // 修改elments:
     if (NestedDedicatedProps?.setElements) {
-      // 全部替换的逻辑：属于该nested模块下的全部替换
-      // NestedDedicatedProps.setElements((allElements) => {
-      //     const noSubmoduleElements = allElements.filter((v, i) => !(v.isSubmodule && v.parentName === NestedDedicatedProps.elementName))
-      //     console.log(168, newTabItems, allElements, noSubmoduleElements)
-      //     return [...noSubmoduleElements, ...newTabItems] as DataType.Element[]
-      // })
       // 根据allElement去newTabItems找寻相对应元素单对单的替换逻辑
       NestedDedicatedProps.setElements((allElements) => {
         const newAllElements = allElements.map((v) => {
@@ -245,13 +167,7 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
       const ele = zItem[0]!
       const rawEle: Layout = zItem[1]!
       if (!rawEle) return ele
-      // let colMinSize = 64 //set defualt to 64 so that defualt font size is 32
-      //if there's a containerWidth, calculate the minimal dimension among width and height
-      // if (containerWidth) {
-      //     let colUnitWidth = (containerWidth - DEFAULT_MARGIN * (COLS_NUM - 1)) / COLS_NUM
-      //     colMinSize = min([colUnitWidth * rawEle.w, DEFAULT_ROW_HEIGHT * rawEle.h])!
-      // }
-      //update the layout properties in element
+
       return {
         ...ele,
         x: rawEle.x,
@@ -266,15 +182,15 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
 
   //tab点击事件:更换当前的currIndex
   function onSwitch(name: string) {
+    props.setActiveKey(name)
     if (NestedDedicatedProps?.setCurrentModuleName) {
-
       NestedDedicatedProps?.setCurrentModuleName(() => name)
     }
-
   }
 
   //RGL布局
   function genDataGrid(el) {
+    console.log(192, el)
     return {
       i: el.i + '',
       x: +el.x,
@@ -285,27 +201,7 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
   }
 
   //选中与为选中的样式
-  const className = (name: string) => NestedDedicatedProps?.currentModuleName === name ? "tab-content-selected" : "tab-content"
-
-  console.log(145, props.content?.data?.tabItems)
-
-
-  const [submoduleElement, setSubmoduleElement] = useState(NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName == NestedDedicatedProps.elementName))
-
-  useDeepCompareEffectNoCheck(() => {
-    const t = NestedDedicatedProps?.elements?.filter((v, i) => v.isSubmodule && v.parentName == NestedDedicatedProps.elementName).map((v, i) => v)
-    setSubmoduleElement(() => t)
-    console.log(287, t)
-  }, [NestedDedicatedProps?.elements])
-
-
-  useImperativeHandle(ref, () => {
-    return {
-      submoduleElement
-    }
-  })
-
-
+  const className = (name: string) => props.activeKey === name ? "tab-content-selected" : "tab-content"
 
 
   return (
@@ -329,6 +225,7 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
         visible={modalVisible}
         onQuit={() => setModalVisible(false)}
         setDraggable={setDraggable}
+        setActiveKey={props.setActiveKey}
       />
 
       <ReactGridLayout
@@ -338,17 +235,14 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
         isDraggable={props.editable && draggable}
         isResizable={props.editable}
         compactType={"horizontal"}
-        // onBreakpointChange={onBreakpointChange}
-        // {...props}
-        // layout={props.content?.data?.tabItems.map((el, i) => { return { i: el.i, x: 5, y: 5, w: 1, h: 1 } }) || []}
         onLayoutChange={onLayoutChange}
         style={{ minWidth: "100%", border: "0" }}
       >
+
         {
-          // 根据该模块下的子模块进行渲染
-          submoduleElement
-            ?
-            submoduleElement.map((el, i: number) => {
+          props.tabBar
+            ? props.tabBar.map((v, i: number) => {
+              const el = v.props.children.props.ele
               return (<div
                 key={el.name ? el.name : el.i}
                 data-grid={genDataGrid(el)}
@@ -378,15 +272,12 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
                   setContent={props.setContent}
                 />
               </div>)
-            }
-            )
+            })
             : <></>
-
-
         }
       </ReactGridLayout>
     </div>
   );
 
-})
-export default DynamicHeader
+}
+export default TabBar
