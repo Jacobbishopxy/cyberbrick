@@ -41,7 +41,7 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
 
   return (
     <BaseModal
-      initialValues={{ insertOption: "replace" }}
+      initialValues={{ insertOption: "replace", id: props.databaseName }}
       setVisible={props.setVisible}
       visible={props.visible}
       beforeUpload={beforeUpload}
@@ -58,8 +58,7 @@ export const FileInsertModal = (props: FileInsertModalProps) => {
         rules={[{ required: true, message: '请选择要上传至的数据库' }]}
         label={<FormattedMessage id="component.fileUploadModal.fileInsertModal.databaseOptions" />}
       >
-        <Select
-          defaultValue={props.databaseName}>
+        <Select>
           {
             props.idList.map(i => (
               <Select.Option key={i.id} value={i.id}>{i.name}</Select.Option>

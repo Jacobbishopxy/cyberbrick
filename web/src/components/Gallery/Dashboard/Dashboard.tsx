@@ -187,7 +187,11 @@ export const Dashboard = (props: DashboardProps) => {
     // todo 点击保存再点退出怎么就不执行了呢
     if (selectedDashboard)
       return Promise.all(
-        contents.map(c => props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c))
+        contents.map(c => {
+          if (c.isEdit) {
+            props.updateElementContent(selectedDashboard.category!.name, c.element!.type, c)
+          }
+        })
       )
     return Promise.reject(new Error("No dashboard selected!"))
   }

@@ -7,8 +7,9 @@ import ProForm, { ProFormSelect } from "@ant-design/pro-form"
 import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
 import { useState, useEffect } from "react"
-import { values } from "@umijs/deps/compiled/lodash"
 
+import { values } from "@umijs/deps/compiled/lodash"
+import './styles.less'
 
 interface YAxisSelectorFormItemsProps {
   yAxis: string[] | undefined
@@ -41,7 +42,10 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   label={<FormattedMessage id="gallery.component.general33" />}
                   rules={[{ required: true, message: '请选择列', type: 'array' }]}
                   placeholder="Column"
-                  style={{ width: 200 }}
+                  // className="ySelectsStyle"
+                  style={{
+                    display: 'none'
+                  }}
                   options={props.yAxis?.slice()}
 
                   fieldProps={

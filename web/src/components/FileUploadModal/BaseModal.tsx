@@ -98,7 +98,7 @@ export const BaseModal = (props: BaseModalProps) => {
       })
   }
 
-
+  console.log(101, props.initialValues)
   return (
     <Modal
       title={intl.formatMessage({ id: "component.fileUploadModal.baseModal.title" })}
