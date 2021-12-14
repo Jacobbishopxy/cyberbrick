@@ -3,8 +3,8 @@
  */
 
 import { useState, useEffect } from "react"
-import ProForm from "@ant-design/pro-form"
-import { Divider, Form, Input, Radio, Select, FormInstance } from "antd"
+import ProForm, { ProFormCheckbox } from "@ant-design/pro-form"
+import { Divider, Form, Input, Radio, Select, FormInstance, Checkbox } from "antd"
 import { FormattedMessage } from "umi"
 import _ from "lodash"
 
@@ -55,7 +55,8 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
   console.log(55, props.columns, props.mixin)
   return props.columns ? (
     <>
-      <ProForm.Group title="X">
+
+      <ProForm.Group title="X" >
         <Form.Item
           name={["x", "column"]}
           label={<FormattedMessage id="gallery.component.general33" />}
@@ -70,6 +71,7 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
           </Select>
         </Form.Item>
 
+        <p></p>
         <Form.Item
           name={["x", "type"]}
           label={<FormattedMessage id="gallery.component.general16" />}
@@ -99,8 +101,9 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
         </Form.Item>
       </ProForm.Group>
 
-      <Divider />
 
+      <Divider />
+      {/*Y轴  */}
       <ProForm.Group title="Y">
         <YAxisSelectorFormItems
           yAxis={yAxis}
@@ -113,8 +116,19 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
 
       <MixinFormItems mixin={props.mixin} columns={yAxis} />
 
+      {/* 其他配置 */}
+      <Divider />
+      <ProForm.Group title={<FormattedMessage id="gallery.component.module-panel.graph.utils.display-form12" />}>
+        <ProFormCheckbox.Group
+          name="isTransposition"
+          options={['XY轴转置']}
+        />
+      </ProForm.Group>
+
+
       <Divider />
 
+      {/* 样式 */}
       <DisplayFormThemeSelector />
     </>
   ) : <></>

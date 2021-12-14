@@ -40,6 +40,7 @@ export interface YAxis {
   name?: string
   position: "left" | "right" | undefined
   columns: string[]
+  type: 'value' | 'category' | 'time' | 'log'
 }
 
 export interface Scatter {
@@ -55,7 +56,8 @@ export interface CartesianCoordSysChartConfig {
   x: XAxis
   y: YAxis[]
   display?: DisplayType[]
-  styling?: string
+  style?: string
+  isTransposition?: string[]
 }
 
 export interface ChartData {

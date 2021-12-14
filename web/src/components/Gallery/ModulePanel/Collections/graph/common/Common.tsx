@@ -91,6 +91,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
         <StepsForm
           onFinish={saveDisplayConfig}
           formRef={formRef}
+
           stepsFormRender={(dom, submitter) =>
             <Modal
               title={intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common1" })}
@@ -157,11 +158,13 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
             title={intl.formatMessage({ id: "gallery.component.general43" })}
             initialValues={props.content?.config ? props.content.config : { x: { type: "category" }, seriesDir: "vertical" }}
           >
-            <DisplayForm
-              formRef={formRef}
-              mixin={mixin}
-              columns={columns}
-            />
+            <div className="displayConfigStyle">
+              <DisplayForm
+                formRef={formRef}
+                mixin={mixin}
+                columns={columns}
+              />
+            </div>
             {/* <div>123</div> */}
           </StepsForm.StepForm>
         </StepsForm>
@@ -191,8 +194,10 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config) {
 
-        console.log(151, props.content.config.style)
-
+        console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
+        // let tem = chartOptionGenerator(data, props.content.config as UnionChartConfig)
+        // tem.xAxis = tem.yAxis;
+        // tem.yAxis = chartOptionGenerator(data, props.content.config as UnionChartConfig).xAxis
         return (
           <ReactEcharts
             notMerge={true}

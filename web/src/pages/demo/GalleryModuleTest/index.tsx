@@ -14,6 +14,7 @@ import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
 import { TargetPrice } from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
 import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
+import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
 
 export default () => {
 
@@ -51,7 +52,7 @@ export default () => {
       style={{ height: "85vh" }}
       bodyStyle={{ height: "100%" }}
     >
-      <Pie
+      {/* <Pie
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
@@ -62,7 +63,8 @@ export default () => {
         updateContent={setContent}
         contentHeight={750}
 
-      />
+      /> */}
+
 
       {/* <TargetPrice
         ref={moduleFwRef}
@@ -74,6 +76,16 @@ export default () => {
         content={content}
         setContent={setContent}
       ></Text> */}
+      <Line
+        content={content}
+        setContent={setContent}
+        ref={moduleFwRef}
+        fetchStorages={fetchStorages}
+        fetchTableList={fetchTableList}
+        fetchTableColumns={fetchTableColumns}
+        fetchQueryData={fetchQueryData}
+
+      ></Line>
     </Card>
   )
 }

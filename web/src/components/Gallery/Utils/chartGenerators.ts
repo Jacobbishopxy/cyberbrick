@@ -7,6 +7,7 @@ import _ from "lodash"
 
 import { CartesianCoordSysChartConfig, Mixin, Scatter, SeriesPieChartConfig } from "./data"
 import { genDisplayConfig, transformRowDataForChart } from "@/components/Gallery/Utils/rawDataTransform"
+import XYTransposition from "@/pages/demo/Charts/XYTransposition"
 
 
 const generateXAxis = (config: CartesianCoordSysChartConfig): EChartOption.XAxis[] | undefined => {
@@ -56,7 +57,8 @@ const generateYAxis = (config: CartesianCoordSysChartConfig): EChartOption.YAxis
         name: item.name,
         position: item.position,
         splitLine: { show: idx === 0 },
-        offset: offsetNum * 50
+        offset: offsetNum * 50,
+        type: item.type
       }
     })
   }
@@ -227,19 +229,31 @@ export const generateCommonOption = (chartType: Mixin) =>
     } else
       d = data
     if (chartType === 'scatter') {
-
-
     }
-    console.log(203, data, series, legend, d, generateXAxis(config), generateYAxis(config))
+    const isisTransposition = config.isTransposition && config.isTransposition.length > 0
+    console.log(203, config, data, series, legend, d, generateXAxis(config), generateYAxis(config))
+
+    // 如果XY转置，需求修改xAxis和yAxis和series.encode
     return {
       tooltip: {},
       legend: { data: legend },
       dataset: [{ source: d }],
-      xAxis: generateXAxis(config),
-      yAxis: generateYAxis(config),
-      // 冲突配置
+      xAxis: isisTransposition ? generateYAxis(config) : generateXAxis(config),
+      yAxis: isisTransposition ? generateXAxis(config) : generateYAxis(config),
+      // 会导致冲突的配置
       // visualMap: generateVisualMap(d, config, chartType),
-      series: series
+      series: isisTransposition ? series.map((v) => {
+        const y = v.encode.y
+        const x = v.encode.x
+        return {
+          ...v,
+          encode: {
+            ...v.encode,
+            x: y,
+            y: x
+          }
+        }
+      }) : series
     }
   }
 

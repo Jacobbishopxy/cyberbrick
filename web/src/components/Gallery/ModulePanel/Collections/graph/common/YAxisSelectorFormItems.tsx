@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/22/2021
  */
 
-import { Button, Form, Input, Radio, Select, FormInstance } from "antd"
+import { Button, Form, Input, Radio, Select, FormInstance, Divider } from "antd"
 import ProForm, { ProFormSelect } from "@ant-design/pro-form"
 import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons"
 import { FormattedMessage } from "umi"
@@ -22,10 +22,11 @@ interface YAxisSelectorFormItemsProps {
 export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
   console.log(24, props.formRef?.current?.getFieldValue('y'))
   return (
-    <Form.List name="y" initialValue={[{ columns: [], position: "left" }]}>
+    <Form.List name="y" initialValue={[{ columns: [], position: "left", }]}>
       {(fields, { add, remove }) => (
         <>
-          {fields.map((field, idx) => {
+          {fields.map((field, idx, fields) => {
+            console.log(29, field)
             return (
               <ProForm.Group key={idx}>
                 {/* <Form.Item
@@ -60,7 +61,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                               onClick={() => {
                                 console.log(62, props.formRef?.current?.getFieldValue('y'))
                                 const newY = props.formRef?.current?.getFieldValue('y')
-                                newY[idx].columns = newY[idx].columns.length === props.yAxis?.slice().length ? [] : props.yAxis?.slice()
+                                newY[idx].columns = newY[idx]?.columns?.length === props.yAxis?.slice().length ? [] : props.yAxis?.slice()
                                 props.formRef?.current?.setFields([{
                                   name: 'y',
                                   value: newY
@@ -81,41 +82,34 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                 >
 
                 </ProFormSelect>
-                {/* <Select
-                                        mode="multiple"
-                                        placeholder="Column"
-                                        style={{ width: 200 }}
-                                        // onChange={props.yAxisOnChange(idx)}
-                                        // onChange={(v) => {
-                                        //     console.log(43, v)
-                                        //     setColValue(() => v.slice())
-                                        // }}
-                                        // onSelect={(v) => console.log(43, v)}
-                                        // onSearch={(v) => console.log(43, v)}
-                                        value={colValue}
-                                    // dropdownRender={(menu) => {
-                                    //     return (
-                                    //         <div>
-                                    //             {menu}
-                                    //             <Button
-                                    //                 onClick={() => setColValue(() => props.yAxis?.slice())}
-                                    //                 type="primary"
-                                    //                 style={
-                                    //                     {
-                                    //                         height: '100%',
-                                    //                         width: '100%'
-                                    //                     }
-                                    //                 }>全选</Button>
-                                    //         </div>
-                                    //     )
-                                    // }}
-                                    >
-                                        {
-                                            // props.getYAxisRest().map(c => <Select.Option key={c} value={c}>{c}</Select.Option>)
-                                        }
-                                    </Select> */}
-                {/* </Form.Item> */}
 
+                {/* 类型 */}
+                <Form.Item
+                  {...field}
+                  fieldKey={[field.fieldKey, 'type']}
+                  name={[field.name, "type"]}
+                  label={<FormattedMessage id="gallery.component.general16" />}
+                  rules={[{ required: true, message: "Select a type for xAxis!" }]}
+                  initialValue={'value'}
+                >
+                  <Radio.Group
+                  >
+                    <Radio value="value">
+                      <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form2" />
+                    </Radio>
+                    <Radio value="category">
+                      <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form3" />
+                    </Radio>
+                    <Radio value="time">
+                      <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form4" />
+                    </Radio>
+                    <Radio value="log">
+                      <FormattedMessage id="gallery.component.module-panel.graph.utils.display-form5" />
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
+
+                {/* 位置 */}
                 <Form.Item
                   {...field}
                   name={[field.name, 'position']}
@@ -134,6 +128,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   </Radio.Group>
                 </Form.Item>
 
+                {/* 别名 */}
                 <Form.Item
                   {...field}
                   name={[field.name, "name"]}
@@ -143,6 +138,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   <Input style={{ width: 200 }} placeholder="Name of Y-axis" />
                 </Form.Item>
 
+                {/*删除按钮  */}
                 {
                   idx === 0 ?
                     <></> :
@@ -156,6 +152,10 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                       }}
                     />
                 }
+
+                <Divider style={{
+                  display: idx === fields.length - 1 ? 'none' : 'flex'
+                }}></Divider>
               </ProForm.Group>
             )
           }
