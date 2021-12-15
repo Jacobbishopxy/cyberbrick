@@ -15,7 +15,7 @@ interface ModulePanelHeaderProps {
   editable: boolean
   settable: boolean
   timeSeries?: boolean
-  headName?: string
+  elementName?: string
   type: DataType.ElementType
   title: string | undefined
   date: string | undefined
@@ -60,6 +60,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       titleInputRef.current?.focus();
     }
   }, [titleEditable])
+
   const genTitle = () => {
     //don't display title since header separator is a "title" by itself
     if (props.type === DataType.ElementType.FieldHeader) return <></>
@@ -75,7 +76,8 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       />
     const eleType = <FormattedMessage id={`gallery.component.type.${props.type}`} />
 
-    if (props.editable && props.settable) {
+    console.log(79, props.editable, props.settable, props.type)
+    if (props.editable) {
       const txt = <FormattedMessage id="gallery.component.module-panel.panel.module-panel-header1" />
       return (
         <Button
@@ -99,7 +101,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     console.log(97, props.timeSeries, NestedDedicatedProps?.dateList)
     return (<HeaderController
       editable={props.editable}
-      settable={props.settable}
+      // settable={props.settable}
       timeSeries={props.timeSeries}
       dateList={NestedDedicatedProps?.dateList}
       editDate={props.editDate}
@@ -113,7 +115,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       content={props.content}
       setContent={props.setContent}
       elementType={props.type}
-      headName={props.headName}
+      headName={props.elementName}
       setDate={props.setDate}
     />)
   }
@@ -136,14 +138,14 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
     return '';
   }
 
-  console.log(126, props.timeSeries, NestedDedicatedProps?.dateList)
+  console.log(126, props.elementName)
   return (
     <Row >
       {
-        props.headName ?
+        props.elementName ?
           <>
             <Col span={8} style={{ fontWeight: "bold" }}>
-              {props.type === DataType.ElementType.FieldHeader ? '' : props.headName}
+              {props.type === DataType.ElementType.FieldHeader ? '' : props.elementName}
             </Col>
 
             <Col span={8} style={{ textAlign: "center" }}>

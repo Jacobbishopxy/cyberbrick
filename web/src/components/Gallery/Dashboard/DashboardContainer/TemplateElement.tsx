@@ -79,20 +79,20 @@ export const TemplateElement =
 
     useLayoutEffect(() => {
       if (mpRef.current) {
-        setMpHeight(mpRef.current.offsetHeight)
+        // setMpHeight(mpRef.current.offsetHeight)
         console.log(82, props.isNested, mpRef.current.offsetHeight)
       }
     })
 
     //该模块的时间序列
-    const [dateList, setDateList] = useState<string[]>([])
+    const [dateList, setDateList] = useState<(string | undefined)[]>([])
 
     //获取模块的时间序列
     useEffect(() => {
       if (props.timeSeries && props.fetchContentDatesFn && element.id) {
         props.fetchContentDatesFn(element.id).then(res => {
           if (res.contents && res.contents.length > 0) {
-            const newDateList = [...new Set(res.contents?.map((v) => v.date.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
+            const newDateList = [...new Set(res.contents?.map((v) => v.date?.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
             ))]
             setDateList(() => {
               return newDateList
@@ -433,7 +433,7 @@ export const TemplateElement =
             parentInfo={props.parentInfo}
             eleId={element.id}
             //模块的名字
-            headName={props.element.name}
+            elementName={props.element.name}
             //是否时间序列
             timeSeries={props.timeSeries}
             //模块类型
@@ -455,7 +455,8 @@ export const TemplateElement =
             onRemove={props.onRemove}
             // 右上角的编辑
             editable={props.editable}
-            settable={!!element.id}
+            //是否有elementId
+            // settable={!!element.id}
             isLoading={isLoading}
             date={date ? date.slice(0, 10) : ''}
             setDate={setDate}

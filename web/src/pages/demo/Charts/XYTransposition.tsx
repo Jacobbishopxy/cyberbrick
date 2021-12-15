@@ -48,6 +48,24 @@ export default (props: ChartsProps) => {
         ]
       }
     ],
+    "xAxis": [
+      {
+        "position": "top",
+        "splitLine": {
+          "show": true
+        },
+        "offset": 0,
+        "type": "value"
+      },
+      {
+        "position": "bottom",
+        "splitLine": {
+          "show": false
+        },
+        "offset": 0,
+        "type": "value"
+      }
+    ],
     "yAxis": [
       {
         "type": "category",
@@ -59,26 +77,16 @@ export default (props: ChartsProps) => {
         }
       }
     ],
-    "xAxis": [
-      {
-        type: "value",
-        "position": "left",
-        "splitLine": {
-          "show": true
-        },
-        "offset": 0
-      }
-    ],
     "series": [
       {
-        "yAxisIndex": 0,
+        "xAxisIndex": 0,
         "name": "数值1",
         "encode": {
+          "x": "数值1",
           "y": {
             "column": "名称",
             "type": "category"
           },
-          "x": "数值1",
           "tooltip": [
             {
               "column": "名称",
@@ -90,14 +98,14 @@ export default (props: ChartsProps) => {
         "type": "bar"
       },
       {
-        "yAxisIndex": 0,
+        "xAxisIndex": 1,
         "name": "数值2",
         "encode": {
+          "x": "数值2",
           "y": {
             "column": "名称",
             "type": "category"
           },
-          "x": "数值2",
           "tooltip": [
             {
               "column": "名称",

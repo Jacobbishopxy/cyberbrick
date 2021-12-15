@@ -194,7 +194,7 @@ export const generateCommonPresenterField =
 
       if (data && props.content && props.content.config) {
 
-        // console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
+        console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
         // let tem = chartOptionGenerator(data, props.content.config as UnionChartConfig)
         // tem.xAxis = tem.yAxis;
         // tem.yAxis = chartOptionGenerator(data, props.content.config as UnionChartConfig).xAxis

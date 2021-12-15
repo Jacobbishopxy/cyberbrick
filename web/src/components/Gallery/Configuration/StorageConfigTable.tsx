@@ -2,16 +2,16 @@
  * Created by Jacob Xie on 10/28/2020.
  */
 
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 
-import {Editor} from "@/components/Editor"
-import {SpaceBetween} from "@/components/SpaceBetween"
+import { Editor } from "@/components/Editor"
+import { SpaceBetween } from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
-import {Button, Table} from "antd"
+import { Button, Table } from "antd"
 
-import {StringField, NumberField, SelectionField, PasswordField, OperationField} from "./FieldView"
-import {NewStorageModal} from "./NewStorageModal"
-import {FormattedMessage} from "umi"
+import { StringField, NumberField, SelectionField, PasswordField, OperationField } from "./FieldView"
+import { NewStorageModal } from "./NewStorageModal"
+import { FormattedMessage } from "umi"
 
 
 export interface StorageConfigTableProps {
@@ -33,38 +33,38 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
   }, [editable])
 
   const nameOnChange = (name: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, name})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, name })
   }
 
   const descriptionOnChange = (description: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, description})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, description })
   }
 
   const typeOnChange = (type: string) => {
     if (selectedStorage) {
       const t = DataType.getStorageType(type)
-      if (t) setSelectedStorage({...selectedStorage, type: t})
+      if (t) setSelectedStorage({ ...selectedStorage, type: t })
     }
   }
 
   const hostOnChange = (host: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, host})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, host })
   }
 
   const portOnChange = (port: number) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, port})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, port })
   }
 
   const databaseOnChange = (database: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, database})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, database })
   }
 
   const usernameOnChange = (username: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, username})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, username })
   }
 
   const passwordOnChange = (password: string) => {
-    if (selectedStorage) setSelectedStorage({...selectedStorage, password})
+    if (selectedStorage) setSelectedStorage({ ...selectedStorage, password })
   }
 
   const saveStorage = () => {
@@ -103,15 +103,15 @@ export const StorageConfigTable = (props: StorageConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={props.data.map(i => ({...i, key: i.id}))}
+        dataSource={props.data.map(i => ({ ...i, key: i.id }))}
         title={() =>
           <SpaceBetween>
-            <span style={{fontWeight: "bold"}}>Storage configuration</span>
+            <span style={{ fontWeight: "bold" }}>Storage configuration</span>
             <Editor
               onChange={setEditable}
               icons={{
                 open: <FormattedMessage id="gallery.component.general14" />,
-                close: <FormattedMessage id="gallery.component.general11" />,
+                close: <FormattedMessage id="gallery.component.general69" />,
               }}
             />
           </SpaceBetween>

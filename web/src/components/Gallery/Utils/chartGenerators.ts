@@ -231,7 +231,8 @@ export const generateCommonOption = (chartType: Mixin) =>
     if (chartType === 'scatter') {
     }
     const isisTransposition = config.isTransposition && config.isTransposition.length > 0
-    console.log(203, config, data, series, legend, d, generateXAxis(config), generateYAxis(config))
+
+    console.log(203, config, chartType, data, series, legend, d, generateXAxis(config), generateYAxis(config))
 
     // 如果XY转置，需求修改xAxis和yAxis和series.encode
     return {
@@ -245,10 +246,14 @@ export const generateCommonOption = (chartType: Mixin) =>
       series: isisTransposition ? series.map((v) => {
         const y = v.encode.y
         const x = v.encode.x
+        const yAxisIndex = v.yAxisIndex
+        const newV = _.omit(v, 'yAxisIndex')
+        console.log(251, newV, yAxisIndex)
         return {
-          ...v,
+          ...newV,
+          xAxisIndex: yAxisIndex,
           encode: {
-            ...v.encode,
+            ...newV.encode,
             x: y,
             y: x
           }

@@ -2,15 +2,15 @@
  * Created by Jacob Xie on 10/3/2020.
  */
 
-import {useState} from "react"
-import {Table, Tag} from "antd"
-import {FormattedMessage} from "umi"
+import { useState } from "react"
+import { Table, Tag } from "antd"
+import { FormattedMessage } from "umi"
 
-import {Editor} from "@/components/Editor"
-import {SpaceBetween} from "@/components/SpaceBetween"
+import { Editor } from "@/components/Editor"
+import { SpaceBetween } from "@/components/SpaceBetween"
 import * as DataType from "../GalleryDataType"
-import {EditableTagPanel} from "../Tag/EditableTagPanel"
-import {CategoryTypeColor} from "./FieldView"
+import { EditableTagPanel } from "../Tag/EditableTagPanel"
+import { CategoryTypeColor } from "./FieldView"
 
 
 export interface DashboardConfigTableProps {
@@ -31,17 +31,17 @@ export const DashboardConfigTable = (props: DashboardConfigTableProps) => {
   return (
     <div>
       <Table
-        dataSource={props.data.map(i => ({...i, key: i.name}))}
+        dataSource={props.data.map(i => ({ ...i, key: i.name }))}
         title={() =>
           <SpaceBetween>
-            <span style={{fontWeight: "bold"}}>
+            <span style={{ fontWeight: "bold" }}>
               <FormattedMessage id="gallery.component.dashboard-config-table1" />
             </span>
             <Editor
               onChange={setEditable}
               icons={{
                 open: <FormattedMessage id="gallery.component.general14" />,
-                close: <FormattedMessage id="gallery.component.general11" />,
+                close: <FormattedMessage id="gallery.component.general69" />,
               }}
             />
           </SpaceBetween>

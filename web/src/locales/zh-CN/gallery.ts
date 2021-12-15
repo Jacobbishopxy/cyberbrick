@@ -7,7 +7,7 @@ export default {
   "gallery.component.general2": "仪表板",
   "gallery.component.general3": "符号",
   "gallery.component.general4": "标签",
-  "gallery.component.general5": "别名",
+  "gallery.component.general5": "名称",
   "gallery.component.general6": "描述",
   "gallery.component.general7": "界面",
   "gallery.component.general8": "数据库",
@@ -71,6 +71,7 @@ export default {
   "gallery.component.general66": "最高价",
   "gallery.component.general67": "中位价",
   "gallery.component.general68": "期望价",
+  "gallery.component.general69": "关闭",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",

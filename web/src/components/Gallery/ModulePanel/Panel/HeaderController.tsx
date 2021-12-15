@@ -187,7 +187,7 @@ interface DateModalVisible {
 
 export interface HeaderController {
   editable: boolean
-  settable: boolean
+  // settable: boolean
   timeSeries?: boolean
   dateList?: string[] | undefined
   editDate?: (date: string, isMessage?: boolean) => void
