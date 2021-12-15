@@ -34,10 +34,12 @@ export const Editor = (props: EditorProps) => {
     console.log(202020, editable, props.elementType, props.content, Dashboard)
 
     if (editable) {
-      props.setContent((content) => ({
-        ...content,
-        isEdit: true
-      }))
+      if (props.setContent) {
+        props.setContent((content) => ({
+          ...content,
+          isEdit: true
+        }))
+      }
     }
     setEditable(!editable)
     props.onChange(!editable)

@@ -22,7 +22,7 @@ interface YAxisSelectorFormItemsProps {
 export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
   console.log(24, props.formRef?.current?.getFieldValue('y'))
   return (
-    <Form.List name="y" initialValue={[{ columns: [], position: "left", }]}>
+    <Form.List name="y" >
       {(fields, { add, remove }) => (
         <>
           {fields.map((field, idx, fields) => {
@@ -44,9 +44,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   rules={[{ required: true, message: '请选择列', type: 'array' }]}
                   placeholder="Column"
                   // className="ySelectsStyle"
-                  style={{
-                    display: 'none'
-                  }}
+                  style={{ width: 200 }}
                   options={props.yAxis?.slice()}
 
                   fieldProps={
@@ -90,7 +88,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   name={[field.name, "type"]}
                   label={<FormattedMessage id="gallery.component.general16" />}
                   rules={[{ required: true, message: "Select a type for xAxis!" }]}
-                  initialValue={'value'}
+                // initialValue={'value'}
                 >
                   <Radio.Group
                   >
@@ -116,7 +114,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   fieldKey={[field.fieldKey, 'position']}
                   label={<FormattedMessage id="gallery.component.general45" />}
                   rules={[{ required: true, message: 'Missing position' }]}
-                  initialValue="right"
+                // initialValue="right"
                 >
                   <Radio.Group disabled={idx === 0}>
                     <Radio value="left">

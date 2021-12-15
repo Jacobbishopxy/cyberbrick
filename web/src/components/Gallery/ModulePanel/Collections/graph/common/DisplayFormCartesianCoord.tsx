@@ -37,9 +37,6 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
     } else
       setYAxisRecord([...yAxisRecord, cols])
   }
-  useEffect(() => {
-    console.log(24242424, yAxisRecord)
-  }, [yAxisRecord])
 
   const yAxisOnRelease = (idx: number) => {
     if (yAxisRecord[idx]) {
