@@ -46,29 +46,65 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
       let ctt;
       if (mappingWay === 'autogeneration') {
-        ctt = {
-          ...content!,
-          storageType: DataType.StorageType.PG,
-          data: dataSourceConfig,
-          config: {
-            x: {
-              column: dataSourceConfig.selects[0],
-              type: 'category'
+        if (mixin === 'pie') {
+          ctt = {
+            ...content!,
+            storageType: DataType.StorageType.PG,
+            data: dataSourceConfig,
+            config: {
+              select: dataSourceConfig.selects[0],
+              seriesDir: 'vertical'
+            }
+          }
+        } else if (mixin === 'line' || mixin === 'bar') {
+          ctt = {
+            ...content!,
+            storageType: DataType.StorageType.PG,
+            data: dataSourceConfig,
+            config: {
+              x: {
+                column: dataSourceConfig.selects[0],
+                type: 'category'
+              },
+              y: [{
+                columns: dataSourceConfig.selects.slice(1),
+                type: 'value',
+                position: 'left'
+              }]
             },
-            y: [{
-              columns: dataSourceConfig.selects.slice(1),
-              type: 'value',
-              position: 'left'
-            }],
-            mappingWay
-          },
 
+          }
+        } else if (mixin === 'scatter') {
+          ctt = {
+            ...content!,
+            storageType: DataType.StorageType.PG,
+            data: dataSourceConfig,
+            config: {
+              scatter: [{
+                min: 0,
+                max: 100,
+                column: dataSourceConfig.selects[1],
+                size: dataSourceConfig.selects[2],
+              }],
+              x: {
+                column: dataSourceConfig.selects[0],
+                type: 'category'
+              },
+              y: [{
+                columns: dataSourceConfig.selects.slice(1, 2),
+                type: 'value',
+                position: 'left'
+              }]
+            }
+          }
+          console.log(100, ctt)
         }
+
         // 因为智能制图只有一个步骤，所以直接更改props.setContent
         if (props.setContent) {
-
           props.setContent(ctt)
         }
+
       } else if (mappingWay === 'custom') {
         ctt = {
           ...content!,
@@ -233,6 +269,8 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
     return (
       (<div className={props.styling}>
         <ModalForm
+          width={300}
+          title={<FormattedMessage id="gallery.component.general70" />}
           onFinish={() => {
             console.log(126)
 
@@ -252,9 +290,13 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
             </Button>
           }
         >
-          <Radio.Group onChange={(e) => {
-            setMappingWay(e.target.value)
-          }} defaultValue={'autogeneration'} >
+
+
+          <Radio.Group
+
+            onChange={(e) => {
+              setMappingWay(e.target.value)
+            }} defaultValue={'autogeneration'} >
             <Radio value="autogeneration" >
               智能制图
             </Radio>

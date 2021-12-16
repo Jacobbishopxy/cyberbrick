@@ -15,6 +15,8 @@ import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
 import { TargetPrice } from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
 import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
 import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
+import { Bar } from '@/components/Gallery/ModulePanel/Collections/graph/Bar'
+import { Scatter } from '@/components/Gallery/ModulePanel/Collections/graph/Scatter'
 
 export default () => {
 
@@ -56,7 +58,7 @@ export default () => {
       style={{ height: "85vh" }}
       bodyStyle={{ height: "100%" }}
     >
-      {/* <Pie
+      <Scatter
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
@@ -66,8 +68,7 @@ export default () => {
         fetchQueryData={fetchQueryData}
         updateContent={setContent}
         contentHeight={750}
-
-      /> */}
+      />
 
 
       {/* <TargetPrice
@@ -80,7 +81,7 @@ export default () => {
         content={content}
         setContent={setContent}
       ></Text> */}
-      <Line
+      {/* <Line
         content={content}
         setContent={setContent}
         ref={moduleFwRef}
@@ -89,7 +90,17 @@ export default () => {
         fetchTableColumns={fetchTableColumns}
         fetchQueryData={fetchQueryData}
 
-      ></Line>
+      ></Line> */}
+      {/* <Bar
+        content={content}
+        setContent={setContent}
+        ref={moduleFwRef}
+        fetchStorages={fetchStorages}
+        fetchTableList={fetchTableList}
+        fetchTableColumns={fetchTableColumns}
+        fetchQueryData={fetchQueryData}
+
+      ></Bar> */}
     </Card>
   )
 }

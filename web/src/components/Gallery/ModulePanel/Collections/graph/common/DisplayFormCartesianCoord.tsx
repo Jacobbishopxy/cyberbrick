@@ -111,6 +111,7 @@ export const DisplayFormCartesianCoord = (props: DisplayFormCartesianCoordProps)
         />
       </ProForm.Group>
 
+      {/* 气泡图专有配置 */}
       <MixinFormItems mixin={props.mixin} columns={yAxis} />
 
       {/* 其他配置 */}

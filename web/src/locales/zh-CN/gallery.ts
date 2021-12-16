@@ -72,6 +72,7 @@ export default {
   "gallery.component.general67": "中位价",
   "gallery.component.general68": "期望价",
   "gallery.component.general69": "关闭",
+  "gallery.component.general70": "制图方式",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
