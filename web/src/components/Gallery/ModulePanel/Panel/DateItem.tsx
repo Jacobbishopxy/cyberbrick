@@ -22,6 +22,8 @@ export default (props: dateBoxProps) => {
   const dashboardProps = useContext(DashboardContext)
   const nestedDedicatedProps = useContext(nestedDedicatedContext)
 
+
+
   // const [contentToBeDeleted, setContentToBeDeleted] = useState<DataType.Content | undefined>()
 
 
