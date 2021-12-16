@@ -18,7 +18,7 @@ import { ModuleSelectorProps } from "../Collections/collectionSelector"
 
 import styles from "./Common.less"
 import { IsTemplateContext } from "@/pages/gallery/DashboardTemplate"
-import DateBox from "./dateItem"
+import DateItem from "./DateItem"
 import { ModuleDescirption } from "./ModuleDescription"
 import { TestModuleDescirption } from './testModuleDescription'
 // import test from './style'
@@ -284,6 +284,34 @@ export const ModulePanel = (props: ModulePanelProps) => {
     console.log(401, finalStyle, props.elementType)
     return finalStyle
   }
+
+  const [datesMapContentIds, setDatesMapContentIds] = useState([])
+  useEffect(() => {
+
+    if (props.timeSeries) {
+
+      nestedDedicatedProps?.dateList.map((date) => {
+
+        if (props.eleId) {
+          if (DashboardProps?.fetchElementContent) {
+            DashboardProps?.fetchElementContent(props.eleId, date).then((res) => {
+              console.log(306, res)
+              setDatesMapContentIds((v) => [...v, {
+                date,
+                contentId: res.id
+              }])
+            })
+          }
+
+        }
+      })
+
+    }
+  }, [props.eleId, props.timeSeries, nestedDedicatedProps?.dateList])
+
+  useEffect(() => {
+
+  }, [datesMapContentIds])
   return (
     <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
       <div className={styles.genHeader}>
@@ -328,15 +356,28 @@ export const ModulePanel = (props: ModulePanelProps) => {
               {
 
                 nestedDedicatedProps?.dateList
-                  ? nestedDedicatedProps?.dateList.slice().reverse().map((date) => {
+                  ? nestedDedicatedProps?.dateList.slice().reverse().map((date, i) => {
+
+                    const contentId = datesMapContentIds.find((v, index) => {
+
+                      return v.date.slice(0, 10) === date
+                    })?.contentId
+
+                    console.log(362, contentId)
                     return (
-                      <DateBox
+                      <DateItem
                         editble={props.editable}
                         date={date}
+                        //! 注意:全部的DateItem的content都是同一个
+                        content={props.content}
                         currDate={props.date}
                         setDate={props.setDate}
                         elementName={props.elementName}
-                      ></DateBox>
+                        contentId={contentId}
+
+                      // contentToBeDeleted={contentToBeDeleted}
+                      // setContentToBeDeleted={setContentToBeDeleted}
+                      ></DateItem>
                     )
                   })
                   : <></>

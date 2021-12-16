@@ -339,7 +339,7 @@ export const TemplateElement =
       return new Promise(async (resoleve, reject) => {
         console.log(230, props.isNested, element)
         if (element.id) {
-          dashboardContextProps?.fetchElementContent!(element.id, date, props.isNested).then((res) => {
+          dashboardContextProps?.fetchElementContent!(element.id, date).then((res) => {
             console.log(337, res)
 
             // 只有返回有数据时才添加是否编辑得字段

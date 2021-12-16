@@ -322,7 +322,7 @@ export const ContainerTemplate =
           noSubmoduleElements.map((ele, i) => {
             return (
               <div
-                key={ele.name}
+                key={ele.id || ele.name}
                 data-grid={genDataGrid(ele)}
               >
                 {/* <div style={{ height: '100%', paddingBottom: '20px' }}> */}

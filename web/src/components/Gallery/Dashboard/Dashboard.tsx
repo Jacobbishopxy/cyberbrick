@@ -220,6 +220,7 @@ export const Dashboard = (props: DashboardProps) => {
   }
   useEffect(() => console.log(444, contentIdsToBeDelect))
 
+
   const onRefresh = async (shouldSaveTemplateAndContents: boolean) => {
 
     // 删除contents

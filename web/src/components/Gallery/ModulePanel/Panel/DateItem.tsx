@@ -1,6 +1,6 @@
 import { CloseOutlined } from '@ant-design/icons'
 import styles from './Common.less'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import * as DataType from "../../GalleryDataType"
 
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
@@ -14,12 +14,17 @@ interface dateBoxProps {
   currDate: string
   elementName: string
   editble: boolean
+  content: DataType.Content | undefined
+  contentId: string | undefined
 }
 export default (props: dateBoxProps) => {
 
   const dashboardProps = useContext(DashboardContext)
   const nestedDedicatedProps = useContext(nestedDedicatedContext)
-  console.log(100, props.currDate, props.date)
+
+  // const [contentToBeDeleted, setContentToBeDeleted] = useState<DataType.Content | undefined>()
+
+
   return (
     <div className={styles.dateItem}
       style={props.currDate === props.date ? {
@@ -28,32 +33,29 @@ export default (props: dateBoxProps) => {
       } : {}}
       // 改变date
       onClick={() => props.setDate(props.date!)}>
-
       {
         props.editble
           ? <CloseOutlined
             // 删除content和dateList
             onClick={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-              console.log(1888, e)
+              console.log(1888, props.date, props.content?.id)
 
               e.stopPropagation()
+
               // 删除content
               if (dashboardProps?.setAllContent) {
 
                 dashboardProps?.setAllContent((allContent) => {
-                  const newAllContent = allContent?.filter((v) => {
-                    return !(v.date.slice(0, 10) === props.date?.slice(0, 10) && v.element?.name === props.elementName
-                    )
-                  })
-                  console.log(411, newAllContent, props.date, props.elementName)
+                  // 根据公司ID、维度ID、父模块名称、自身模块名称、date删除content
+                  const newAllContent = allContent?.filter((v, i) => v.date?.slice(0, 10) === props.date?.slice(0, 10) && v.element?.name === props.elementName && v.element.parentName === nestedDedicatedProps?.element.parentName && v.templateInfo?.id === props.content?.templateInfo?.id && v.dashboardInfo?.id === props.content?.dashboardInfo?.id)
                   return newAllContent
                 })
               }
               // 将删除content的id存入delectIds
-              const delectId = nestedDedicatedProps?.content?.id
-              if (delectId) {
-                dashboardProps?.setContentIdsToBeDelect((ids) => [...ids, delectId])
+              if (props.contentId) {
+                dashboardProps?.setContentIdsToBeDelect((ids) => [...ids, props.contentId])
               }
+
               // 跳转附近的date
               let nextDate: string | undefined = undefined;
               nestedDedicatedProps?.dateList.forEach((v, i) => {
@@ -62,7 +64,6 @@ export default (props: dateBoxProps) => {
                     : nestedDedicatedProps.dateList[i + 1]
                 }
               })
-              console.log(566, nextDate)
               props.setDate(nextDate ? nextDate : '-1')
               // 删除dateList
               if (nestedDedicatedProps?.setDateList) {

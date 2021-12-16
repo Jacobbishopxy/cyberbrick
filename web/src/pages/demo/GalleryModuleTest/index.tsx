@@ -17,6 +17,9 @@ import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Te
 import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
 import { Bar } from '@/components/Gallery/ModulePanel/Collections/graph/Bar'
 import { Scatter } from '@/components/Gallery/ModulePanel/Collections/graph/Scatter'
+import { FlexTable } from '@/components/Gallery/ModulePanel/Collections/table/FlexTable'
+
+
 
 export default () => {
 
@@ -58,7 +61,19 @@ export default () => {
       style={{ height: "85vh" }}
       bodyStyle={{ height: "100%" }}
     >
-      <Scatter
+
+      {/* <FlexTable
+        ref={moduleFwRef}
+        content={content}
+        setContent={setContent}
+        fetchStorages={fetchStorages}
+        fetchTableList={fetchTableList}
+        fetchTableColumns={fetchTableColumns}
+        fetchQueryData={fetchQueryData}
+        updateContent={setContent}
+        contentHeight={750}>
+      </FlexTable> */}
+      {/* <Scatter
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
@@ -68,7 +83,7 @@ export default () => {
         fetchQueryData={fetchQueryData}
         updateContent={setContent}
         contentHeight={750}
-      />
+      /> */}
 
 
       {/* <TargetPrice
@@ -76,11 +91,11 @@ export default () => {
         content={content}
         setContent={setContent}
       ></TargetPrice> */}
-      {/* <Text
+      <Text
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></Text> */}
+      ></Text>
       {/* <Line
         content={content}
         setContent={setContent}
