@@ -28,14 +28,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
           {fields.map((field, idx, fields) => {
             console.log(29, field)
             return (
-              <ProForm.Group key={idx}>
-                {/* <Form.Item
-                                    {...field}
-                                    name={[field.name, 'columns']}
-                                    fieldKey={[field.fieldKey, 'columns']}
-                                    label={<FormattedMessage id="gallery.component.general33" />}
-                                    rules={[{ required: true, message: 'Missing columns', type: 'array' }]}
-                                > */}
+              <ProForm.Group key={idx} >
                 <ProFormSelect
                   {...field}
                   name={[field.name, 'columns']}
@@ -57,8 +50,11 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                             {menu}
                             <Button
                               onClick={() => {
-                                console.log(62, props.formRef?.current?.getFieldValue('y'))
+
                                 const newY = props.formRef?.current?.getFieldValue('y')
+                                newY[idx] = {
+                                  columns: []
+                                }
                                 newY[idx].columns = newY[idx]?.columns?.length === props.yAxis?.slice().length ? [] : props.yAxis?.slice()
                                 props.formRef?.current?.setFields([{
                                   name: 'y',
@@ -116,7 +112,7 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
                   rules={[{ required: true, message: 'Missing position' }]}
                 // initialValue="right"
                 >
-                  <Radio.Group disabled={idx === 0}>
+                  <Radio.Group >
                     <Radio value="left">
                       <FormattedMessage id="gallery.component.general46" />
                     </Radio>
@@ -163,7 +159,12 @@ export const YAxisSelectorFormItems = (props: YAxisSelectorFormItemsProps) => {
               type="dashed"
               style={{ width: 200 }}
               icon={<PlusOutlined />}
-              onClick={() => add()}
+              onClick={() => {
+
+                add()
+                console.log(62, props.formRef?.current?.getFieldValue('y'))
+              }}
+
             >
               <FormattedMessage id="gallery.component.module-panel.graph.utils.y-axis-selector-form-items1" />
             </Button>

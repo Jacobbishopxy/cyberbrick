@@ -3,29 +3,35 @@
  */
 
 import { useEffect, useState, useRef, RefObject } from "react"
-import { Button, message, Modal, Space, Form, FormInstance } from "antd"
-import ProForm, { StepsForm } from "@ant-design/pro-form"
+import { Button, message, Modal, Space, Form, FormInstance, Radio } from "antd"
+import ProForm, { ModalForm, StepsForm } from "@ant-design/pro-form"
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
 import { FormattedMessage, useIntl } from "umi"
 import ReactEcharts from "echarts-for-react"
 import _ from "lodash";
 
-import { QuerySelectorModal } from "@/components/Gallery/Dataset"
+import { QuerySelectorModal, AutoDraftingModal } from "@/components/Gallery/Dataset"
 
 import { ModuleEditorField, ModulePresenterField } from "../../../Generator/data"
 import * as DataType from "../../../../GalleryDataType"
 import { DisplayForm } from "./DisplayForm"
 import { ColumnIdentifier } from "@/components/Gallery/Dataset/ColumnIdentifier/ColumnIdentifierItems"
 import { ChartOptionGenerator, Mixin, UnionChartConfig } from "@/components/Gallery/Utils/data"
+// import useMappingWay from './useMappingWay'
 
 export const generateCommonEditorField = (mixin?: Mixin) =>
   (props: ModuleEditorField) => {
     const intl = useIntl()
-    const [visible, setVisible] = useState(false)
+    const [visibleCustomDrawing, setVisibleCustomDrawing] = useState(false)
+    const [visibleAutoDrafting, setVisibleAutoDrafting] = useState(false)
+
     const [content, setContent] = useState<DataType.Content | undefined>(props.content)
     const [dataAvailable, setDataAvailable] = useState(false)
     const [columns, setColumns] = useState<string[]>(props.content?.data?.selects)
     const formRef: React.MutableRefObject<FormInstance<any> | undefined> | undefined = useRef()
+
+    // 制图方式
+    const [mappingWay, setMappingWay] = useState<'autogeneration' | 'custom'>('autogeneration')
 
     // 如果有数据，dataAvailable变绿
     useEffect(() => {
@@ -37,16 +43,48 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
 
     // 保存【数据源配置】
     const saveDataSourceConfig = (dataSourceConfig: Record<string, any>) => {
-      console.log(32, dataSourceConfig)
-      const ctt = {
-        ...content!,
-        storageType: DataType.StorageType.PG,
-        data: dataSourceConfig
+
+      let ctt;
+      if (mappingWay === 'autogeneration') {
+        ctt = {
+          ...content!,
+          storageType: DataType.StorageType.PG,
+          data: dataSourceConfig,
+          config: {
+            x: {
+              column: dataSourceConfig.selects[0],
+              type: 'category'
+            },
+            y: [{
+              columns: dataSourceConfig.selects.slice(1),
+              type: 'value',
+              position: 'left'
+            }],
+            mappingWay
+          },
+
+        }
+        // 因为智能制图只有一个步骤，所以直接更改props.setContent
+        if (props.setContent) {
+
+          props.setContent(ctt)
+        }
+      } else if (mappingWay === 'custom') {
+        ctt = {
+          ...content!,
+          storageType: DataType.StorageType.PG,
+          data: dataSourceConfig
+        }
+        // 自定义制图还有后续步骤，所以只更改setContent
+        setContent(ctt)
       }
-      setContent(ctt)
+
+      console.log(32, dataSourceConfig, ctt)
+
       setColumns(dataSourceConfig.selects)
       // setDataAvailable(true)
 
+      setVisibleAutoDrafting(false)
       return true
     }
 
@@ -57,7 +95,15 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       console.log(466, values, formRef)
       if (content) {
         console.log(466, content)
-        const ctt = { ...content, config: values, databaseType: DataType.StorageType.PG, }
+        const ctt = {
+          ...content,
+          config: {
+            ...values,
+            mappingWay
+          },
+          databaseType: DataType.StorageType.PG,
+
+        }
         if (props.setContent) {
           console.log(4666, ctt)
           props.setContent(ctt)
@@ -67,7 +113,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       } else {
         message.warn("Updating failed! dataset and options are required!")
       }
-      setVisible(false)
+      setVisibleCustomDrawing(false)
     }
 
     const dataSelectOnFinish = async () => {
@@ -78,98 +124,151 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
       return true
     }
 
-    console.log(71, content, props.content?.config)
-    return (
-      <div className={props.styling}>
-        <Button
-          type="primary"
-          onClick={() => setVisible(true)}
+
+
+    useEffect(() => {
+      console.log(130, mappingWay, visibleAutoDrafting, visibleCustomDrawing)
+    }, [mappingWay, visibleAutoDrafting, visibleCustomDrawing])
+
+    // 智能制图
+    const autoDrafting = <div className={props.styling}>
+      <AutoDraftingModal
+        storagesOnFetch={props.fetchStorages!}
+        storageOnSelect={props.fetchTableList!}
+        tableOnSelect={props.fetchTableColumns!}
+        onSubmit={saveDataSourceConfig}
+        content={content}
+        columnsRequired
+        initialValues={content?.data}
+        visibleAutoDrafting={visibleAutoDrafting}
+        setVisibleAutoDrafting={setVisibleAutoDrafting}
+      />
+    </div >
+
+    // 自定义制图
+    const customDrawing = <div className={props.styling}>
+      <StepsForm
+        onFinish={saveDisplayConfig}
+        formRef={formRef}
+
+        stepsFormRender={(dom, submitter) =>
+          <Modal
+            title={intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common1" })}
+            visible={visibleCustomDrawing}
+            onCancel={() => setVisibleCustomDrawing(false)}
+            footer={submitter}
+            destroyOnClose
+            width="60vw"
+          >
+            {dom}
+          </Modal>
+        }
+      >
+        {/* 第一步 */}
+        <StepsForm.StepForm
+          name="data"
+          title={intl.formatMessage({ id: "gallery.component.general43" })}
+          onFinish={dataSelectOnFinish}
         >
-          <FormattedMessage id="gallery.component.general42" />
-        </Button>
 
-        <StepsForm
-          onFinish={saveDisplayConfig}
-          formRef={formRef}
+          {/* 【选择数据集】modal */}
+          <ProForm.Group
+            title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3" />}
+          >
 
-          stepsFormRender={(dom, submitter) =>
-            <Modal
-              title={intl.formatMessage({ id: "gallery.component.module-panel.graph.utils.common1" })}
-              visible={visible}
-              onCancel={() => setVisible(false)}
-              footer={submitter}
-              destroyOnClose
-              width="60vw"
+            <Space align="baseline">
+              <QuerySelectorModal
+                trigger={
+                  <Button
+                    type='primary'
+                    style={{ marginBottom: 20 }}
+                  >
+                    <FormattedMessage id="gallery.component.module-panel.collections.file-view4" />
+                  </Button>
+                }
+                storagesOnFetch={props.fetchStorages!}
+                storageOnSelect={props.fetchTableList!}
+                tableOnSelect={props.fetchTableColumns!}
+                onSubmit={saveDataSourceConfig}
+                content={content}
+                columnsRequired
+                initialValues={content?.data}
+              />
+              {/* ❌ */}
+              {
+                dataAvailable ?
+                  <CheckCircleTwoTone twoToneColor="green" /> :
+                  <CloseCircleTwoTone twoToneColor="red" />
+              }
+            </Space>
+          </ProForm.Group>
+
+          {/* 数据修整 */}
+          <ProForm.Group
+            title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5" />}
+          >
+            <ColumnIdentifier columns={columns!} />
+          </ProForm.Group>
+        </StepsForm.StepForm>
+
+        {/*第二步  */}
+        <StepsForm.StepForm
+          name="display"
+          title={intl.formatMessage({ id: "gallery.component.general43" })}
+          initialValues={props.content?.config ? props.content.config : { x: { type: "category" }, seriesDir: "vertical" }}
+        >
+          <div className="displayConfigStyle">
+            <DisplayForm
+              formRef={formRef}
+              mixin={mixin}
+              columns={columns}
+            />
+          </div>
+          {/* <div>123</div> */}
+        </StepsForm.StepForm>
+      </StepsForm>
+    </div>
+    // const [mappingWayModal,setMappingWayModal]=useState(false)
+
+    return (
+      (<div className={props.styling}>
+        <ModalForm
+          onFinish={() => {
+            console.log(126)
+
+            mappingWay === 'autogeneration'
+              ?
+              setVisibleAutoDrafting(true)
+              :
+              setVisibleCustomDrawing(true)
+
+            return Promise.resolve(true)
+          }}
+          trigger={
+            <Button
+              type="primary"
             >
-              {dom}
-            </Modal>
+              <FormattedMessage id="gallery.component.general42" />
+            </Button>
           }
         >
-          {/* 第一步 */}
-          <StepsForm.StepForm
-            name="data"
-            title={intl.formatMessage({ id: "gallery.component.general43" })}
-            onFinish={dataSelectOnFinish}
-          >
+          <Radio.Group onChange={(e) => {
+            setMappingWay(e.target.value)
+          }} defaultValue={'autogeneration'} >
+            <Radio value="autogeneration" >
+              智能制图
+            </Radio>
+            < Radio value="custom" >
+              自定义
+            </Radio>
+          </Radio.Group>
+        </ModalForm>
+        {autoDrafting}
+        {customDrawing}
 
-            {/* 【选择数据集】modal */}
-            <ProForm.Group
-              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view3" />}
-            >
-
-              <Space align="baseline">
-                <QuerySelectorModal
-                  trigger={
-                    <Button
-                      type='primary'
-                      style={{ marginBottom: 20 }}
-                    >
-                      <FormattedMessage id="gallery.component.module-panel.collections.file-view4" />
-                    </Button>
-                  }
-                  storagesOnFetch={props.fetchStorages!}
-                  storageOnSelect={props.fetchTableList!}
-                  tableOnSelect={props.fetchTableColumns!}
-                  onSubmit={saveDataSourceConfig}
-                  content={content}
-                  columnsRequired
-                  initialValues={content?.data}
-                />
-                {/* ❌ */}
-                {
-                  dataAvailable ?
-                    <CheckCircleTwoTone twoToneColor="green" /> :
-                    <CloseCircleTwoTone twoToneColor="red" />
-                }
-              </Space>
-            </ProForm.Group>
-
-            {/* 数据修整 */}
-            <ProForm.Group
-              title={<FormattedMessage id="gallery.component.module-panel.collections.file-view5" />}
-            >
-              <ColumnIdentifier columns={columns!} />
-            </ProForm.Group>
-          </StepsForm.StepForm>
-
-          {/*第二步  */}
-          <StepsForm.StepForm
-            name="display"
-            title={intl.formatMessage({ id: "gallery.component.general43" })}
-            initialValues={props.content?.config ? props.content.config : { x: { type: "category" }, seriesDir: "vertical" }}
-          >
-            <div className="displayConfigStyle">
-              <DisplayForm
-                formRef={formRef}
-                mixin={mixin}
-                columns={columns}
-              />
-            </div>
-            {/* <div>123</div> */}
-          </StepsForm.StepForm>
-        </StepsForm>
-      </div>
+      </div >)
     )
+
   }
 
 // 展示
@@ -178,6 +277,7 @@ export const generateCommonPresenterField =
   (chartOptionGenerator: ChartOptionGenerator) =>
     (props: ModulePresenterField) => {
 
+      console.log(272, props)
       const [data, setData] = useState<any[]>()
       useEffect(() => {
         if (props.fetchQueryData && props.content) {

@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card, Switch } from "antd"
 import { FormattedMessage } from "umi"
 
@@ -40,6 +40,10 @@ export default () => {
     const option = value.data as DataType.Read
     return GalleryService.read(id, option)
   }
+
+  useEffect(() => {
+    console.log(45, content)
+  }, [content])
 
   return (
     <Card

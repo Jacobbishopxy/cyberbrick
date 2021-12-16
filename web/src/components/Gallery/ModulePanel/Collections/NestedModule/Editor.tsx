@@ -95,6 +95,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
   const lsKey = 'activeKey'
   const query = new URLSearchParams(useLocation().search)
 
+  // 根据localStorage初始化activekey
   useEffect(() => {
     const initialValue = query.get("anchor")
     console.log(30, initialValue)
