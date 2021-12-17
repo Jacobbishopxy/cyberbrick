@@ -51,8 +51,10 @@ export class ElementController {
   // ===================================================================================================================
 
   @Get("getElementContentDates")
-  getElementContentDates(@Query("id") id: string,
-    @Query("markName") markName?: string) {
+  getElementContentDates(
+    @Query("id") id: string,
+    @Query("markName") markName?: string
+  ) {
     try {
       return this.service.getElementContentDates(id, markName)
     } catch (err: any) {

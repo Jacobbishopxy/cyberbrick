@@ -2,18 +2,19 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import { useRef, useState } from "react"
-import { Card, Switch } from "antd"
-import { FormattedMessage } from "umi"
+import {useRef, useState} from "react"
+import {Card, Switch} from "antd"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import { ConvertFwRef } from "@/components/Gallery/ModulePanel/Generator/data"
+import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
-import { TargetPrice } from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
-import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
+import {Pie} from "@/components/Gallery/ModulePanel/Collections/graph"
+import {TargetPrice} from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
+import {Text} from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
+import {FileView} from "@/components/Gallery/ModulePanel/Collections/file/FileView"
 
 export default () => {
 
@@ -37,7 +38,7 @@ export default () => {
   const fetchQueryData = (value: DataType.Content) => {
     const id = value.data?.id
     const option = value.data as DataType.Read
-    return GalleryService.read(id, option)
+    return GalleryService.read(id, option, DataType.StorageType.PG)
   }
 
   return (
@@ -48,10 +49,10 @@ export default () => {
           onClick={switchOnClick}
         />
       }
-      style={{ height: "85vh" }}
-      bodyStyle={{ height: "100%" }}
+      style={{height: "85vh"}}
+      bodyStyle={{height: "100%"}}
     >
-      <Pie
+      {/* <Pie
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
@@ -61,19 +62,26 @@ export default () => {
         fetchQueryData={fetchQueryData}
         updateContent={setContent}
         contentHeight={750}
-
-      />
+      /> */}
 
       {/* <TargetPrice
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></TargetPrice> */}
+      /> */}
+
       {/* <Text
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></Text> */}
+      /> */}
+
+      <FileView
+        ref={moduleFwRef}
+        content={content}
+        setContent={setContent}
+      />
+
     </Card>
   )
 }

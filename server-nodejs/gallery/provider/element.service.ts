@@ -65,7 +65,7 @@ export class ElementService {
         .andWhere(`${common.markName} = :markName`, {markName})
 
     return que
-      .select([common.elementId, common.contentDate])
+      .select([common.elementId, common.contentId, common.contentDate])
       .getOne()
   }
 
