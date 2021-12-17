@@ -35,7 +35,6 @@ func (api *MongoApi) InsertOneContent(collection *mongo.Collection, content *dom
 }
 
 //@depreciated
-//TODO: how to match eleId and date with generated id?
 func (api *MongoApi) InsertManyContent(collection *mongo.Collection, contents *[]domain.Content) ([]interface{}, error) {
 	//validation
 	var ctSlice []interface{}

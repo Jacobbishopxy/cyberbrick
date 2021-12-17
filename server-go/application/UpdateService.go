@@ -18,7 +18,10 @@ import (
 @return primitive.ObjectId if upsert succeeded
 @return nil if param id is not defined
 */
-func (api *MongoApi) UpsertSingleContent(collection *mongo.Collection, body domain.Content) domain.Content {
+func (api *MongoApi) UpsertSingleContent(
+	collection *mongo.Collection,
+	body domain.Content,
+) domain.Content {
 	var returnContent domain.Content
 	//haven't save to mongodb
 	if body.Id == primitive.NilObjectID {
@@ -52,8 +55,11 @@ func (api *MongoApi) UpsertSingleContent(collection *mongo.Collection, body doma
 @return primitive.ObjectId if update/upsert succeeded
 @return nil if param id is not defined
 */
-func (api *MongoApi) UpdateById(collection *mongo.Collection, id primitive.ObjectID,
-	content *domain.Content) (primitive.ObjectID, error) {
+func (api *MongoApi) UpdateById(
+	collection *mongo.Collection,
+	id primitive.ObjectID,
+	content *domain.Content,
+) (primitive.ObjectID, error) {
 	if contentValidation(content) {
 		return api.UpsertByType(collection, id, content)
 	}
@@ -64,14 +70,21 @@ func (api *MongoApi) UpdateById(collection *mongo.Collection, id primitive.Objec
 prereq: content must be validated by contentValidation(content)
 if id (inside content) is null, then create a new record; otherwise, update an existing record
 */
-func (api *MongoApi) UpsertByType(collection *mongo.Collection, id primitive.ObjectID,
-	content *domain.Content) (primitive.ObjectID, error) {
+func (api *MongoApi) UpsertByType(
+	collection *mongo.Collection,
+	id primitive.ObjectID,
+	content *domain.Content,
+) (primitive.ObjectID, error) {
 	var filter bson.D
 	if id != primitive.NilObjectID {
-		filter = bson.D{{Key: idKey, Value: id}}
+		filter = bson.D{
+			{Key: idKey, Value: id},
+		}
 	} else {
-		filter = bson.D{{Key: "elementId", Value: content.ElementId},
-			{Key: date, Value: content.Date}}
+		filter = bson.D{
+			{Key: "elementId", Value: content.ElementId},
+			{Key: date, Value: content.Date},
+		}
 	}
 	update := bson.M{"$set": content}
 	upsert := true
