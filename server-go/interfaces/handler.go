@@ -91,31 +91,6 @@ func (mh *MongoApiHandler) CreateOrUpdateContent(w http.ResponseWriter, r *http.
 
 }
 
-//@Depreciated
-// func (mh *MongoApiHandler)CreateOrUpdateContentList(w http.ResponseWriter, r *http.Request) {
-// 	setGetServiceHeader(w)
-// 	collection := mh.getCollectionFromQuery(r)
-// 	//check collection exist
-// 	if collection == nil {
-// 		// json.NewEncoder(w).Encode(errors.New("need query of type"))
-// 		http.Error(w, "need query of type", 500)
-// 		return
-// 	}
-// 	body, err := parseRequestContentList(r)
-// 	if err != nil {
-// 		http.Error(w, "Parsing body error: need body in forms of []domain.Content", 500)
-// 		return
-// 	}
-// 	var returnContent []domain.Content
-// 	for _, ct := range body {
-// 		res := mh.mongoApp.UpsertByType(collection, ct)
-// 		returnContent = append(returnContent, res)
-
-// 	}
-// 	json.NewEncoder(w).Encode(returnContent)
-
-// }
-
 // CreateContent create Content route
 func (mh *MongoApiHandler) CreateContent(w http.ResponseWriter, r *http.Request) {
 	collection := mh.getCollectionFromQuery(r)
@@ -204,5 +179,4 @@ func (mh *MongoApiHandler) DeleteAllContent(w http.ResponseWriter, r *http.Reque
 	}
 
 	// json.NewEncoder(w).Encode("Content not found")
-
 }

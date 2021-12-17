@@ -22,8 +22,8 @@ func (api *MongoApi) InsertOneContent(collection *mongo.Collection, content *dom
 	if err != nil {
 		log.Println(err)
 		//insert error, try update
-		return api.UpdateById(collection, content.Id, content)
-		// return primitive.NilObjectID, err
+		// return api.UpdateById(collection, content.Id, content)
+		return primitive.NilObjectID, err
 	}
 	fmt.Println("Inserted a single Record with id", insertResult.InsertedID)
 	id, ok := insertResult.InsertedID.(primitive.ObjectID)

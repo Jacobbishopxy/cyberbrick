@@ -121,65 +121,6 @@ export class ContentService {
   }
 
   /**
-   * deprecated! Nested module information no longer save in Content, instead it saves Element information
-   *
-   * save content to pg.
-   * 1. If element type is nestedSimple, first save all its modules' content
-   *    to 3rd party and/or to postgres. Then update the module to be a
-   *    pointer to the actual content inside postgres. Finally, save the
-   *    nested module content to postgres.
-   * 2. Otherwise, directly save to 3rd party and/or to postgres
-   * @param name category name
-   * @param type element type
-   * @param content element's content
-   * @returns Promise<Content>
-   */
-  async saveNestedOrSimpleContent(name: string, type: string, content: Content) {
-    switch (type) {
-      case common.ElementType.NestedModule:
-        /* content type:
-        currIndex: string (used to indicate the tab when entering)
-        tabItem: tabItem[]:
-        for each item:
-            id: i
-            layout attribute: x y w h
-
-            tab content attribute:
-                tabContent: the content that will be displayed for a tab item
-                tabType: the type of the content
-                minDim: the minimal length between width and height. Used to calculate an item's font-size
-
-            module: SimpleEmbededModule {
-              name: string,
-              timeSeries: boolean,
-              elementType: ElementType,
-              content?: Content (only leaves {id, date, tabId})
-        }*/
-        //first save each tabItem's module content separately.
-        content?.data?.tabItems?.forEach(async (item: any) => {
-          if (item?.module?.content) {
-            try {
-              const newCt = await this.saveContentToMongoOrPg(content.category.name, item.module.elementType, item.module.content)
-              item.module.content = {id: newCt.id, tabId: newCt.tabId, date: newCt.date}
-              // console.log("nested content with id:\n", item.module.content)
-            } catch (err: any) {
-              throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
-            }
-            finally {
-              //and then save nestedModuleContent to PG
-              this.saveContentToMongoOrPg(name, type, content)
-
-            }
-          }
-        })
-        break
-      default:
-        this.saveContentToMongoOrPg(name, type, content)
-    }
-
-  }
-
-  /**
    * save to 3rd party db (only supports mongodb for now) and/or to postgres
    * @param name category name
    * @param type element type

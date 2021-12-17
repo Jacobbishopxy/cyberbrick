@@ -3,11 +3,12 @@ import axios from 'axios'
 import formData from 'form-data'
 import moment from 'moment'
 import * as common from "../common"
-import {Content, Element} from "../entity"
+import {Content} from "../entity"
 import {ConfigService} from "@nestjs/config"
+
 export interface ContentMongo {
-  id: string
-  elementId?: string
+  id?: string
+  elementId: string
   category?: string
   date: string
   data: Record<string, any>
@@ -44,9 +45,13 @@ export class MongoService {
       case common.ElementType.Image:
         return this.saveContentToMongo(type, content)
       case common.ElementType.FlexTable:
-        if (content?.config?.type === common.flexTableType.file)
-          return this.saveContentToMongo(type, content)
-        else return content
+        // @deprecated
+        // flexTable now only accepts data from dataset
+        //
+        // if (content?.config?.type === common.flexTableType.file)
+        //   return this.saveContentToMongo(type, content)
+        // else
+        return content
       case common.ElementType.XlsxTable:
         return this.saveContentToMongo(type, content)
       default:
@@ -62,7 +67,7 @@ export class MongoService {
    */
   async saveContentToMongo(type: string, content: Content) {
     //if has req body, save to mongodb
-    if (content && content.data) {
+    if (content && content.data && content.element.id) {
       //convert content to the form to save to mongodb
       const mongoCt: ContentMongo = this.pgContentToMongoContent(content)
       // console.log("querying go api with content\n", mongoCt)
@@ -73,12 +78,12 @@ export class MongoService {
         content.data = {id: res.id, collection: type}
         content.storageType = common.StorageType.MONGO
       } catch (error) {
-        console.log(error)
-      } finally {
-        return content
+        throw error
       }
+      return content
     }
-    return content
+    // if content is illegal, throw error
+    throw new Error("content is undefined")
   }
 
   /**
@@ -87,50 +92,21 @@ export class MongoService {
    * @returns converted content, the data will be sent to go-mongo-api
    */
   pgContentToMongoContent(ct: Content) {
-    //if content is nested inside a module, element is doesn't exits. Use tabId instead
-    const eleId = ct.element?.id || ct.tabId
-    //date format should match go api's date formate
+    // elementId must be defined
+    const eleId = ct.element.id
+    // date format should match go api's date formate
     const mongoct: ContentMongo = {
       id: ct.data?.id, //mongodb object id, might not exist
       elementId: eleId,
-      date: ct.date ? moment(ct.date, moment.defaultFormat).format()
-        : moment().format(), //make sure date is always defined
+      date: ct.date ?
+        moment(ct.date, moment.defaultFormat).format() :
+        moment().format(), //make sure date is always defined
       data: ct.data,
       category: ct.category?.name,
       config: ct.config
     }
     // console.log("mongoct", mongoct.date)
     return mongoct
-  }
-
-  //@deprecated
-  async processElement(ele: Element) {
-    let cts: ContentMongo[] = []
-    switch (ele.type) {
-      case common.ElementType.Image:
-        break
-      case common.ElementType.Text:
-        cts = ele.contents.map(ct => {
-          // if (ct.data?.id) return ct
-          //get generated id from mongo db
-          const mongoct: ContentMongo = {
-            id: ct.data?.id, //mongodb object id, might not exist
-            elementId: ele.id,
-            date: ct.date ? ct.date : moment().toString(), //make sure date is always defined
-            data: ct.data,
-            category: ct.category.name,
-            config: ct.config
-          }
-          //  cts.push(mongoct)
-          return mongoct
-        })
-        break
-      default://save to pg
-        break
-    }
-    const res = await this.createOrUpdateContentList(ele.type, cts) as MData[]
-    ele.contents = res.map((r: {id: string}) => ({...ele.contents, data: {id: r.id, type: ele.type}}) as unknown) as Content[]
-    return ele
   }
 
   async getContentData(type: string, id?: string, date?: string, elementId?: string) {

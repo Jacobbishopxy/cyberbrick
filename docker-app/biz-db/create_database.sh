@@ -10,9 +10,6 @@ for DB in $(echo ${DB_SETS} | tr "," "\n")
 do
     echo "create database ${DB}"
 
-    # create user
-    docker exec -it "${CONTAINER_NAME}" psql -U postgres -c "CREATE USER ${USER} WITH PASSWORD '${PASSWORD}';"
-
     # create database
     docker exec -it "${CONTAINER_NAME}" psql -U postgres -c "CREATE DATABASE ${DB};"
 
