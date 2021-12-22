@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 10/19/2020.
  */
 
-import { EChartOption } from "echarts"
-import _ from "lodash"
+import { EChartOption, EChartsSeriesType } from "echarts"
+import _, { values } from "lodash"
 
 import { CartesianCoordSysChartConfig, Mixin, Scatter, SeriesPieChartConfig } from "./data"
 import { genDisplayConfig, transformRowDataForChart } from "@/components/Gallery/Utils/rawDataTransform"
@@ -220,7 +220,10 @@ const generateVisualMap = (
  */
 export const generateCommonOption = (chartType: Mixin) =>
   (data: any[], config: CartesianCoordSysChartConfig): EChartOption => {
-    const [series, legend] = generateSeries(config, chartType)
+    let [series, legend] = generateSeries(config, chartType)
+    let xAxis = generateXAxis(config)
+    let yAxis = generateYAxis(config)
+
 
     let d
     if (config.display) {
@@ -234,13 +237,67 @@ export const generateCommonOption = (chartType: Mixin) =>
 
     console.log(203, config, chartType, data, series, legend, d, generateXAxis(config), generateYAxis(config))
 
+    // 
+
+    // swich图的类型,配置series
+    // line
+    if (chartType === 'line') {
+      // 增加字段，方便间隔的显示symbol
+      d = d.map((v, i) => {
+        return {
+          ...v,
+          index: i
+        }
+      })
+      // ifx轴类目过长，间隔显示
+      if (d.length > 50) {
+        series = series.map((v) => {
+          return {
+            ...v,
+            symbol: (values, config) => {
+              console.log(255, values)
+              if (values.index % 10 === 0) {
+                return 'circle'
+              } else {
+                return 'none'
+              }
+            },
+            symbolSize: 5
+          }
+        })
+      }
+    }
+
+    // swich图的类型,配置yAxis
+    // line
+    // if (chartType === 'line') {
+    //   yAxis = yAxis?.map((v) => {
+    //     return {
+    //       ...v,
+    //       scale: true
+    //     }
+    //   })
+    // }
+
+    // 配置series
+    // series = series.map((v) => {
+    //   return {
+    //     ...v,
+    //     label: {
+    //       show: true,
+    //       rotate: 0
+    //     }
+    //   }
+    // })
+
+
     // 如果XY转置，需求修改xAxis和yAxis和series.encode
     return {
       tooltip: {},
       legend: { data: legend },
       dataset: [{ source: d }],
-      xAxis: isisTransposition ? generateYAxis(config) : generateXAxis(config),
-      yAxis: isisTransposition ? generateXAxis(config) : generateYAxis(config),
+      xAxis: isisTransposition ? yAxis : xAxis,
+      yAxis: isisTransposition ? xAxis : yAxis,
       // 会导致冲突的配置
       // visualMap: generateVisualMap(d, config, chartType),
       series: isisTransposition ? series.map((v) => {

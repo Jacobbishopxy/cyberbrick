@@ -95,21 +95,33 @@ export interface CopyTemplateElements {
 }
 
 export interface Element {
+  // 下标
   i?: number
+  // 数据库中的id
   id?: string
+  // 描述
   description?: string
+  // 维度的全部信息
   template?: Template
+  // ? 目前只发现存放dcontent的ate和id
   contents?: Content[]
+  // 是否是子模块
   isSubmodule?: boolean | undefined
+  // 父模块的名称
   parentName?: string | undefined
+  // 自身模块的名称
   name: string
+  // 模块的类型
   type: ElementType
+  // 是否时序
   timeSeries: boolean
+  // ?标题？
   headData?: Record<string, any>
   x: number
   y: number
   h: number
   w: number
+  // 该模块的时序列表
   dateList?: string[]
 }
 export interface ElementHeadData {

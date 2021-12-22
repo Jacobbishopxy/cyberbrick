@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useState, useRef, RefObject } from "react"
-import { Button, message, Modal, Space, Form, FormInstance, Radio } from "antd"
+import { Button, message, Modal, Space, Form, FormInstance, Radio, Switch } from "antd"
 import ProForm, { ModalForm, StepsForm } from "@ant-design/pro-form"
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons"
 import { FormattedMessage, useIntl } from "umi"
@@ -45,6 +45,7 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
     const saveDataSourceConfig = (dataSourceConfig: Record<string, any>) => {
 
       let ctt;
+      // 智能制图
       if (mappingWay === 'autogeneration') {
         if (mixin === 'pie') {
           ctt = {
@@ -105,7 +106,9 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
           props.setContent(ctt)
         }
 
-      } else if (mappingWay === 'custom') {
+      }
+      // 自定义制图 
+      else if (mappingWay === 'custom') {
         ctt = {
           ...content!,
           storageType: DataType.StorageType.PG,
@@ -130,7 +133,6 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
     const saveDisplayConfig = async (values: Record<string, any>) => {
       console.log(466, values, formRef)
       if (content) {
-        console.log(466, content)
         const ctt = {
           ...content,
           config: {
@@ -314,6 +316,8 @@ export const generateCommonEditorField = (mixin?: Mixin) =>
   }
 
 // 展示
+
+import { EChartOption } from "echarts"
 export const generateCommonPresenterField =
   // todo: fix `config: any`
   (chartOptionGenerator: ChartOptionGenerator) =>
@@ -321,6 +325,7 @@ export const generateCommonPresenterField =
 
       console.log(272, props)
       const [data, setData] = useState<any[]>()
+      const [option, setOption] = useState<EChartOption>({})
       useEffect(() => {
         if (props.fetchQueryData && props.content) {
           //validate content
@@ -333,7 +338,37 @@ export const generateCommonPresenterField =
         }
       }, [props.content])
 
+      useEffect(() => {
+        if (props.content && data && data.length > 0) {
+          setOption(chartOptionGenerator(data, props.content.config as UnionChartConfig))
+        }
+      }, [data, props.content?.config])
 
+      // switchOnchange：缩放数值轴的比例
+      function switchOnchange(b) {
+
+        if (b === true) {
+          console.log(350, props.content?.config)
+          // 根据是否转置决定设置X轴还是Y轴
+          if (props.content?.config?.isTransposition && props.content?.config?.isTransposition.length > 0) {
+            setOption((option) => {
+              return {
+                ...option,
+                xAxis: option.xAxis?.map((v) => ({ ...v, scale: true }))
+              }
+            })
+          } else {
+            setOption((option) => {
+              return {
+                ...option,
+                yAxis: option.yAxis?.map((v) => ({ ...v, scale: true }))
+              }
+            })
+          }
+        } else {
+          setOption(chartOptionGenerator(data, props.content.config as UnionChartConfig))
+        }
+      }
       if (data && props.content && props.content.config) {
 
         console.log(151, chartOptionGenerator(data, props.content.config as UnionChartConfig))
@@ -341,12 +376,33 @@ export const generateCommonPresenterField =
         // tem.xAxis = tem.yAxis;
         // tem.yAxis = chartOptionGenerator(data, props.content.config as UnionChartConfig).xAxis
         return (
-          <ReactEcharts
-            notMerge={true}
-            option={chartOptionGenerator(data, props.content.config as UnionChartConfig)}
-            style={{ height: '100%' }}
-            theme={props.content.config.style || "default"}
-          />
+          <div style={{
+            height: '100%',
+            position: 'relative '
+          }}>
+            {
+              props.content.element?.type === 'line'
+                ? <Switch
+                  style={{
+                    position: 'absolute',
+                    right: 20,
+                    top: 20,
+                    zIndex: 1
+                  }}
+                  size="small"
+                  checkedChildren='缩放比例'
+                  unCheckedChildren='缩放比例'
+                  onChange={switchOnchange}
+                ></Switch>
+                : <></>
+            }
+            <ReactEcharts
+              notMerge={true}
+              option={option}
+              style={{ height: '100%' }}
+              theme={props.content.config.style || "default"}
+            />
+          </div>
         )
       }
       return <></>

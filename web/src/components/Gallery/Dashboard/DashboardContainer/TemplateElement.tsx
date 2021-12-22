@@ -9,13 +9,7 @@ import { ModulePanel } from "../../ModulePanel/Panel"
 
 import { DashboardContext } from "../DashboardContext"
 import { nestedDedicatedContext } from './nestedDedicatedContext'
-import { message } from "antd"
 import _ from 'lodash'
-import e from "@umijs/deps/compiled/express"
-import { await } from "signale"
-import { number } from "yargs"
-import useDeepCompareEffect, { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
-import moment from "moment"
 export interface ContainerElementProps {
   parentInfo: {
     selectedCategoryName: string,
@@ -86,71 +80,31 @@ export const TemplateElement =
 
     //该模块的时间序列
     const [dateList, setDateList] = useState<(string | undefined)[]>([])
+    const [datesMapContentIds, setDatesMapContentIds] = useState<DataType.Content[]>([])
 
     //获取模块的时间序列
     useEffect(() => {
       if (props.timeSeries && props.fetchContentDatesFn && element.id) {
         props.fetchContentDatesFn(element.id).then(res => {
+          console.log(373, res)
           if (res.contents && res.contents.length > 0) {
-            const newDateList = [...new Set(res.contents?.map((v) => v.date?.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
+            const newDateList = [...new Set(res.contents.map((v) => v.date?.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
             ))]
             setDateList(() => {
               return newDateList
             })
             setDate(newDateList[0])
+
+            setDatesMapContentIds(res.contents)
           }
         })
       }
     }, [dashboardContextProps?.edit])
 
     useEffect(() => console.log(333, props.editable, dateList, props.element.type), [dateList])
-    // w为了不每次都繁琐的更改allElement，集中处理
-    // useDeepCompareEffectNoCheck(() => {
-    //   console.log(84, dateList)
-    //   if (props.timeSeries) {
-    //     if (props.setElements) {
-    //       props.setElements((allElement) => {
-    //         return allElement.map((v) => {
-    //           if (v.name === props.element.name && v.parentName === props.element.parentName) {
-
-    //             console.log(107, {
-    //               ...v,
-    //               dateList: dateList
-    //             })
-    //             return {
-    //               ...v,
-    //               dateList: dateList
-    //             }
-    //           } else {
-    //             return v
-    //           }
-    //         })
-    //       })
-    //     }
-    //   }
-    // }, [dateList])
-
-
-    // useDeepCompareEffectNoCheck(() => {
-    //   console.log(844, props.element.dateList)
-    //   setDateList(props.element.dateList)
-    // }, [props.element.dateList])
 
     //表示当前模块要显示的内容日期，换句话说，没有date就没有内容。
     const [date, setDate] = useState<string | undefined>(undefined)
-
-    // // 如果是时序,初始化date
-    // useEffect(() => {
-
-    //   if (props.timeSeries) {
-    //     console.log(146, dateList)
-    //     if (!date || date === '-1') {
-    //       setDate(dateList[0])
-    //     }
-    //   }
-    // }, [dateList])
-
-
 
     //每当content改变后都存入allContent数组。最终调用的saveContent会判断是否修改与增加。
     //写在此文件中集中处理
@@ -370,6 +324,7 @@ export const TemplateElement =
     const fetchContentDates = async () => {
       if (element.id && props.element.timeSeries) {
         const ele = await props.fetchContentDatesFn(element.id)
+
         return ele.contents!.map(c => (c.date))
       }
       return []
@@ -413,6 +368,8 @@ export const TemplateElement =
             : props.setElements,
           dateList,
           setDateList,
+
+          datesMapContentIds,
           // setDateList,
           //模块的名字
           elementName: props.element.name,

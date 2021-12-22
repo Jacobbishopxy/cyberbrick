@@ -40,7 +40,7 @@ export default (props: dateBoxProps) => {
           ? <CloseOutlined
             // 删除content和dateList
             onClick={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-              console.log(1888, props.date, props.content?.id)
+              console.log(1888, props.contentId)
 
               e.stopPropagation()
 
@@ -55,7 +55,7 @@ export default (props: dateBoxProps) => {
               }
               // 将删除content的id存入delectIds
               if (props.contentId) {
-                dashboardProps?.setContentIdsToBeDelect((ids) => [...ids, props.contentId])
+                dashboardProps?.setContentIdsToBeDelect((ids) => [...ids, props.contentId as string])
               }
 
               // 跳转附近的date

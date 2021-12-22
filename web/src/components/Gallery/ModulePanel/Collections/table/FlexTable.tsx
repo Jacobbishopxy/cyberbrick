@@ -98,7 +98,7 @@ const FlexTableView = (props: FlexTableViewProps) => {
     }
   }, [props.content])
 
-
+  console.log(101, columns, formaData)
   const defaultTable = (cfg: GeneralTableConfigInterface) =>
     <Table
       columns={columns}

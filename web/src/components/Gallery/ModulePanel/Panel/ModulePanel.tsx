@@ -47,7 +47,7 @@ export interface ModulePanelProps {
   isLoading: boolean
 
   date: string
-  setDate: React.Dispatch<React.SetStateAction<string | undefined>>
+  setDate: React.Dispatch<React.SetStateAction<string | null | undefined>>
 
 
 
@@ -285,33 +285,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
     return finalStyle
   }
 
-  const [datesMapContentIds, setDatesMapContentIds] = useState([])
-  useEffect(() => {
 
-    if (props.timeSeries) {
-
-      nestedDedicatedProps?.dateList.map((date) => {
-
-        if (props.eleId) {
-          if (DashboardProps?.fetchElementContent) {
-            DashboardProps?.fetchElementContent(props.eleId, date).then((res) => {
-              console.log(306, res)
-              setDatesMapContentIds((v) => [...v, {
-                date,
-                contentId: res.id
-              }])
-            })
-          }
-
-        }
-      })
-
-    }
-  }, [props.eleId, props.timeSeries, nestedDedicatedProps?.dateList])
-
-  useEffect(() => {
-
-  }, [datesMapContentIds])
   return (
     <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
       <div className={styles.genHeader}>
@@ -322,7 +296,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
           ? {
             display: 'flex',
             flexGrow: 1,
-            height: 'calc(100% - 60px)'
+            height: 'calc(100% - 60px)',
+            overflow: 'auto'
           }
           : {
             flexGrow: 1,
@@ -358,10 +333,8 @@ export const ModulePanel = (props: ModulePanelProps) => {
                 nestedDedicatedProps?.dateList
                   ? nestedDedicatedProps?.dateList.slice().reverse().map((date, i) => {
 
-                    const contentId = datesMapContentIds.find((v, index) => {
-
-                      return v.date.slice(0, 10) === date
-                    })?.contentId
+                    const contentId = nestedDedicatedProps?.datesMapContentIds?.find((v) => v?.date?.slice(0, 10) === date
+                    )?.id
 
                     console.log(362, contentId)
                     return (

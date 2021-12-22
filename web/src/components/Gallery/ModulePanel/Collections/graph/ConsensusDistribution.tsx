@@ -138,10 +138,14 @@ const PresenterField = (props: ModulePresenterField) => {
           {/* 中位值 */}
           <div className="medianPrice" style={{
             left: medianL + '%'
+            // left: 20 + '%'
           }} data-content={props.content?.data?.medianPrice}></div>
 
           {/* 期望值 */}
-          <div className="targetPrice" style={{ left: targetL + '%' }} data-content={props.content?.data?.targetPrice}></div>
+          <div className="targetPrice" style={{
+            left: targetL + '%'
+          }}
+            data-content={props.content?.data?.targetPrice}></div>
         </Col>
 
         {/* 最高值 */}

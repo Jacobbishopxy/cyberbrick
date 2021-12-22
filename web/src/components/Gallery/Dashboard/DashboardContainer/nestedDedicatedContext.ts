@@ -26,6 +26,8 @@ export interface nestedDedicatedContextProps {
   setElement: React.Dispatch<React.SetStateAction<DataType.Element>>
   // 右上角的编辑
   editable: boolean | undefined
+
+  datesMapContentIds: DataType.Content[] | undefined
 }
 
 

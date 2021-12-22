@@ -175,7 +175,7 @@ const showSuggest = (dir: string, pr: number, fontSize: number) => {
       )
     default:
       return (
-        <span style={{ color: "white", background: "gray", fontSize: fontSize }}>
+        <span style={{ color: "white", background: "#F1C40F", fontSize: fontSize }}>
           <FormattedMessage id="gallery.component.general50" />
         </span>
       )
@@ -193,7 +193,7 @@ const showTarget = (dir: string, pr: number, fontSize: number) => {
       )
     default:
       return (
-        <span style={{ color: "gray", fontSize: fontSize, fontWeight: "bold", }}>{pr}</span>
+        <span style={{ color: "#F1C40F", fontSize: fontSize, fontWeight: "bold", }}>{pr}</span>
       )
   }
 }
@@ -301,25 +301,25 @@ const PresenterField = (props: ModulePresenterField) => {
 
       <Row align="middle">
         {/* 评级 */}
-        <Col span={6} offset={1}>
+        <Col span={5} offset={1}>
           <span style={{ fontSize: textSize }}>
             <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price2" />
           </span>
         </Col>
         {/* 方向 */}
-        <Col span={5} >
+        <Col span={6} >
           {
             showSuggest(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
           }
         </Col>
         {/* 【目标价】 */}
-        <Col span={6} offset={1}>
+        <Col span={5} offset={1}>
           <span style={{ fontSize: textSize }}>
             <FormattedMessage id="gallery.component.module-panel.miscellaneous.target-price3" />
           </span>
         </Col>
         {/* 价格 */}
-        <Col span={5} >
+        <Col span={6} >
           {
             showTarget(props.content?.data?.direction, props.content?.data?.price, textSize! + 14)
           }

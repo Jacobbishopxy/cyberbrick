@@ -52,7 +52,7 @@ export default {
   "gallery.component.general47": "右侧",
   "gallery.component.general48": "方向",
   "gallery.component.general49": "买入",
-  "gallery.component.general50": "中性",
+  "gallery.component.general50": "持有",
   "gallery.component.general51": "卖出",
   "gallery.component.general52": "价格",
   "gallery.component.general53": "备注",
@@ -162,7 +162,7 @@ export default {
   "gallery.component.dataset.query-selector.selector-condition-items1": "条件",
   "gallery.component.dataset.query-selector.selector-order-items1": "排序",
 
-  "gallery.component.module-panel.collections.file-view1": "新建文件管理",
+  "gallery.component.module-panel.collections.file-view1": "外部链接",
   "gallery.component.module-panel.collections.file-view2": "内部跳转链接",
   "gallery.component.module-panel.collections.file-view3": "数据集",
   "gallery.component.module-panel.collections.file-view4": "点击选择一个数据集",

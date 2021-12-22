@@ -116,7 +116,7 @@ export const ContainerTemplate =
 
     console.log(101, props)
 
-    const [noSubmoduleElements, setNoSubmoduleElements] = useState<any>([])
+    const [noSubmoduleElements, setNoSubmoduleElements] = useState<DataType.Element[]>([])
     // update elements when adding a new element
     //在添加新元素时更新元素
     // useEffect(

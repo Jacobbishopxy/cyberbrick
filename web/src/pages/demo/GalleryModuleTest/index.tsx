@@ -18,7 +18,7 @@ import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
 import { Bar } from '@/components/Gallery/ModulePanel/Collections/graph/Bar'
 import { Scatter } from '@/components/Gallery/ModulePanel/Collections/graph/Scatter'
 import { FlexTable } from '@/components/Gallery/ModulePanel/Collections/table/FlexTable'
-
+import SpreadJsTest from './SpreadJsTest'
 
 
 export default () => {
@@ -61,7 +61,7 @@ export default () => {
       style={{ height: "85vh" }}
       bodyStyle={{ height: "100%" }}
     >
-
+      <SpreadJsTest></SpreadJsTest>
       {/* <FlexTable
         ref={moduleFwRef}
         content={content}
@@ -91,11 +91,11 @@ export default () => {
         content={content}
         setContent={setContent}
       ></TargetPrice> */}
-      <Text
+      {/* <Text
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></Text>
+      ></Text> */}
       {/* <Line
         content={content}
         setContent={setContent}
