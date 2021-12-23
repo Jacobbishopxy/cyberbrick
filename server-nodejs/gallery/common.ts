@@ -88,6 +88,7 @@ export enum ElementType {
   NestedModule = "nestedModule",
   FieldHeader = "fieldHeader",
   ConsensusDistribution = "consensusDistribution",
+  Excel = "excel",
 }
 
 export enum flexTableType {
@@ -140,6 +141,8 @@ export const getElementType = (v: string) => {
       return ElementType.FieldHeader
     case "consensusDistribution":
       return ElementType.ConsensusDistribution
+    case "excel":
+      return ElementType.Excel
     default:
       return undefined
   }
