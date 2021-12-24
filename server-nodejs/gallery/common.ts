@@ -2,8 +2,8 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import {Equal} from "typeorm"
-import {Content} from "./entity/content.entity"
+import { Equal } from "typeorm"
+import { Content } from "./entity/content.entity"
 
 // db name
 export const db = "gallery"
@@ -172,7 +172,7 @@ export const templatesElementsContents = `${templates}.${elements}.${contents}`
 
 // query filters
 export const whereDashboardNameAndTemplateEqual = (dn: string, tn: string) =>
-  ({where: [{"dashboard.name": Equal(dn)}, {name: Equal(tn)}]})
+  ({ where: [{ "dashboard.name": Equal(dn) }, { name: Equal(tn) }] })
 
 export const shouldQueryAfterReceivingContent = (v: string, content: Content) => {
   switch (v) {

@@ -151,7 +151,8 @@ export enum ElementType {
   TreeMap = "treeMap",
   NestedModule = "nestedModule",
   FieldHeader = "fieldHeader",
-  ConsensusDistribution = "consensusDistribution"
+  ConsensusDistribution = "consensusDistribution",
+  Excel = "excel"
 }
 
 export const getElementType = (v: string) => {
@@ -200,6 +201,8 @@ export const getElementType = (v: string) => {
       return ElementType.FieldHeader
     case "consensusDistribution":
       return ElementType.ConsensusDistribution
+    case "excel":
+      return ElementType.Excel
     default:
       return ElementType.EmbedLink
   }

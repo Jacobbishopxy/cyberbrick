@@ -33,7 +33,7 @@ export interface DashboardContextType {
   // getTemplateElements: (templateId: string, isSubmodule?: boolean) => Promise<DataType.Template>
 
   contentIdsToBeDelect: string[]
-  setContentIdsToBeDelect: React.Dispatch<React.SetStateAction<(string)[]>>
+  setContentIdsToBeDelect: React.Dispatch<React.SetStateAction<(stringinitValue)[]>>
 }
 
 

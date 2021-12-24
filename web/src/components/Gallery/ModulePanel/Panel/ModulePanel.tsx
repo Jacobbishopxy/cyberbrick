@@ -137,7 +137,20 @@ export const ModulePanel = (props: ModulePanelProps) => {
   } */
   const editContent = (b: boolean) => {
     console.log(170, moduleFwRef)
-    if (props.editable && moduleFwRef.current) moduleFwRef.current.setEdit(b)
+    if (props.editable && moduleFwRef && moduleFwRef.current) {
+      moduleFwRef.current.setEdit(b)
+      if (b === false && props.elementType === DataType.ElementType.Excel) {
+        props.setContent((content) => {
+          return {
+            ...content,
+            data: {
+              ...content?.data,
+              ssjson: JSON.stringify(moduleFwRef.current.spread.toJSON())
+            }
+          }
+        })
+      }
+    }
   }
 
   console.log(191, props.content, props.isNested, props.contentHeight)
@@ -326,6 +339,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
           </div>
         </div>
         {
+          // 时序box
           props.timeSeries
             ? <div className={styles.dateParent}>
               {

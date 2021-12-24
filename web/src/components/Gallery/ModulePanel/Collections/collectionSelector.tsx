@@ -24,7 +24,7 @@ import {
 
 import { NestedModule } from "./NestedModule/NestedModule"
 import { FieldHeader } from "./miscellaneous/FieldSeparator"
-
+import { Excel } from './table/Excel'
 
 export interface ModuleSelectorProps {
 
@@ -264,6 +264,16 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       // // styling={props.styling}
       ref={props.forwardedRef}
     />
+
+    const excel = <Excel
+      onSave={props.onSave}
+      initialValue={props.initialValue}
+      editable={props.editable}
+      content={props.content}
+      contentHeight={props.contentHeight}
+      setContent={props.setContent}
+      // // styling={props.styling}
+      ref={props.forwardedRef}></Excel>
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:
         return defaultModule
@@ -295,6 +305,8 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
         return fieldHeader
       case DataType.ElementType.ConsensusDistribution:
         return consensusDistribution
+      case DataType.ElementType.Excel:
+        return excel
       default:
         return defaultModule
     }

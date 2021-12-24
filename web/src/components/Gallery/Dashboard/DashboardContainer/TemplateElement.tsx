@@ -69,7 +69,11 @@ export const TemplateElement =
     // nested模块专用
     const [currentModuleName, setCurrentModuleName] = useState('')
 
+    // 第一次获得的值
+    const [initValue, setInitValue] = useState()
+
     const [isLoading, setIsLoading] = useState(true);
+
 
     useLayoutEffect(() => {
       if (mpRef.current) {
@@ -295,12 +299,13 @@ export const TemplateElement =
         if (element.id) {
           dashboardContextProps?.fetchElementContent!(element.id, date).then((res) => {
             console.log(337, res)
-
+            setInitValue(res)
             // 只有返回有数据时才添加是否编辑得字段
             if (res) {
               resoleve({
                 ...res,
-                isEdit: false
+                isEdit: false,
+                initValue: res
               })
             }
 
@@ -380,11 +385,15 @@ export const TemplateElement =
           setCurrentModuleName: props.isNested
             ? NestedDedicatedProps?.setCurrentModuleName
             : setCurrentModuleName,
+          // 当前模块信息
           element,
           setElement,
+          // 
           editable: props.isNested
             ? NestedDedicatedProps?.editable
-            : props.editable
+            : props.editable,
+          // 第一次获得的后端值
+          initValue
         }}>
           <ModulePanel
             parentInfo={props.parentInfo}

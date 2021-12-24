@@ -2220,6 +2220,97 @@
   resolved "https://registry.npmjs.org/@formatjs/intl-utils/-/intl-utils-2.3.0.tgz"
   integrity sha512-KWk80UPIzPmUg+P0rKh6TqspRw0G6eux1PuJr+zz47ftMaZ9QDwbGzHZbtzWkl5hgayM/qrKRutllRC7D/vVXQ==
 
+"@grapecity/spread-excelio@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-excelio/-/spread-excelio-14.2.5.tgz#d5942eb75407ceaaf3ee86a3b7c89204b4b50dfc"
+  integrity sha512-xcFSkiEZP1V02Q+9YdOVlIUszwza/OgIU/5fqWzkJW6MLjoXcQhVzs70hxYNPxnFbPC8dDJbz7rdvue4vY4IaA==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-barcode@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-barcode/-/spread-sheets-barcode-14.2.5.tgz#d64b93cc055d6edafced523007df74a41cd5fc97"
+  integrity sha512-sgQwHj9SDtqZ+VNZESH9N2/vyEu+rO66XKnS9Dw1GgGhmpKZtojR5DcOQvE704xUb33dXicIKVOrd7nStcxxBg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-charts@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-charts/-/spread-sheets-charts-14.2.5.tgz#a0db8359dbf75f63163d2855d311c12ba5e2bef6"
+  integrity sha512-btSUubgL9jhjkKzFqTrawNvj6Sqwsk7J1UFiaI7heDln72cL/RrbDBsGb3ZQEKX6yDzpM/amdxrPMrgvvckwGw==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-designer-react@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-designer-react/-/spread-sheets-designer-react-14.2.5.tgz#817678db3c98003ab2626370502de610cd6ec1b3"
+  integrity sha512-78Tbjrzc9fRnBftyh8qyqbJLl6T7k4ajaxCvy9RDb84g2vnPmrnbLLg4kFEnf2lfhJ2mZXpc3fwi+IeUahuyzA==
+
+"@grapecity/spread-sheets-designer-resources-cn@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-designer-resources-cn/-/spread-sheets-designer-resources-cn-14.2.5.tgz#5d7055dfb53b90c42158950d800dba825f834608"
+  integrity sha512-QnjR/RdEG3NH303cBOKHLhMZAZO5Lfd1sfiVQezJ4MdFYq8sqGaecAHKa+jBNhu0nyyG8RgHYUqLDEGYdtKlHw==
+
+"@grapecity/spread-sheets-designer@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-designer/-/spread-sheets-designer-14.2.5.tgz#31bab129bf439b8bbf1e117c36cd9b028cee72a5"
+  integrity sha512-zhIWxAZvywfVlShJ4m6J+E7NTSPli5up124juWbjRAVR284LXbNzmHfQcyKMn6hpuwA8LP7kq46d1pEmNVlC1Q==
+
+"@grapecity/spread-sheets-languagepackages@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-languagepackages/-/spread-sheets-languagepackages-14.2.5.tgz#551da913bacf69705045b97b55c6282b21049c28"
+  integrity sha512-Q1OnewAcxfSaiBVXTv93ttAX2SJ2dx4s+H4bxJsJEou/5tnc0eVtjnZ0Wys8BfwLcbbT0oqTj8jPwiZKV0wJoQ==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-pdf@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-pdf/-/spread-sheets-pdf-14.2.5.tgz#0933b1dd033c094ce5298150e64e258197c2300a"
+  integrity sha512-cjuy64Rkl3NW2qite57YURizjj8swKV1ZoP6x2e7bE3vH1rkknovfJEnKNGa4ebS56r4NscfJcxviI/fzIY/Zw==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+    "@grapecity/spread-sheets-print" "14.2.5"
+
+"@grapecity/spread-sheets-pivot-addon@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-pivot-addon/-/spread-sheets-pivot-addon-14.2.5.tgz#f7c3d1a8689df7dfd3989d4b46984305ba1b571e"
+  integrity sha512-JOBy1fFoxZaVdWo3IUeZ0xEPRlvJJmmSiYX/ZYTz1VL0m619PttBLjGk0r3ARXfJ2QZNUwjhn5ij4qKw46P+Mg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-print@14.2.5", "@grapecity/spread-sheets-print@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-print/-/spread-sheets-print-14.2.5.tgz#e27d01d9d1f98071486317d6c736c5793edba6e7"
+  integrity sha512-zYncK/TMSjASJOqGkeNVamISqTFKSR/pVuJAMnDwlyMgK372uddEuAIK5GkyyDgLz51SENYBK7d1N+sT3Gbpng==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-react@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-react/-/spread-sheets-react-14.2.5.tgz#3ad17ea827d25d131a7e7e57e243f825636a0207"
+  integrity sha512-xYf8B4eHnP2muPAxHHAQAZfsV6pdolfCCHNdRReYlkMDwF+heWRoBi7KpVkz8+gboi90sVUgOrQlyq7UpSAnqg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-resources-zh@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-resources-zh/-/spread-sheets-resources-zh-14.2.5.tgz#800be36df6c207ba94f5a64ccf2cc356b1e73d1f"
+  integrity sha512-ZjkKTo2DDe4MTCSv9G9kLevfKRurOizxAUJnkFMbiy9jgkPRUA7wveMviZbq5ZikPMmxxtUU4M7qpGPKSD81Mg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets-shapes@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-shapes/-/spread-sheets-shapes-14.2.5.tgz#dd50e04bb7525a5bca060401a7433af0d2a869e9"
+  integrity sha512-IFAcWv5090gU6JykvrNpOV4tMl4ogICsNQ+1Hw1DwpXv+WyY+JMlJIckqv+r2VfL1NzScaFPWlLn0AZDY2MmNg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets@14.2.5", "@grapecity/spread-sheets@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets/-/spread-sheets-14.2.5.tgz#19209df6172f863eb972bd6016ecfacbfe3f412c"
+  integrity sha512-7yahYcO96NEpEZ4gppwuztUUVWOQ9m+k3/TScmjVFz9XKv3FGcPzHIdVXYq2FTz+KKGGWMtAQiynPIDvt6WcLQ==
+
 "@handsontable/react@^9.0.1":
   version "9.0.1"
   resolved "https://registry.npmjs.org/@handsontable/react/-/react-9.0.1.tgz"

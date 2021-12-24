@@ -118,6 +118,7 @@ declare namespace GalleryAPI {
     NestedModule = "nestedModule",
     FieldHeader = "fieldHeader",
     ConsensusDistribution = "consensusDistribution",
+    Excel = "excel"
   }
 
   /**

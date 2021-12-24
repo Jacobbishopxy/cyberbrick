@@ -18,9 +18,8 @@ import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
 import { Bar } from '@/components/Gallery/ModulePanel/Collections/graph/Bar'
 import { Scatter } from '@/components/Gallery/ModulePanel/Collections/graph/Scatter'
 import { FlexTable } from '@/components/Gallery/ModulePanel/Collections/table/FlexTable'
-import SpreadJsTest from './SpreadJsTest'
-
-
+import SpreadJsTest from '@/components/SpreadJS'
+import ImportAndExport from '@/components/SpreadJS/importAndExport.jsx'
 export default () => {
 
   const moduleFwRef = useRef<ConvertFwRef>(null)
@@ -62,6 +61,7 @@ export default () => {
       bodyStyle={{ height: "100%" }}
     >
       <SpreadJsTest></SpreadJsTest>
+      {/* <ImportAndExport></ImportAndExport> */}
       {/* <FlexTable
         ref={moduleFwRef}
         content={content}

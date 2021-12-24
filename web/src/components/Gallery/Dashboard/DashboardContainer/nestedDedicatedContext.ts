@@ -28,6 +28,7 @@ export interface nestedDedicatedContextProps {
   editable: boolean | undefined
 
   datesMapContentIds: DataType.Content[] | undefined
+  initValue: Record<string, any> | undefined
 }
 
 
