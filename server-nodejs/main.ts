@@ -5,6 +5,7 @@
 import {NestFactory} from "@nestjs/core"
 import {NestExpressApplication} from "@nestjs/platform-express"
 import {BadRequestException, ValidationError, ValidationPipe} from "@nestjs/common"
+import {json} from "body-parser"
 
 import {AppModule} from "./app.module"
 
@@ -20,6 +21,7 @@ async function bootstrap(): Promise<string> {
       },
     })
   )
+  app.use(json({limit: "50mb"}))
   await app.listen(port)
   return `App listening on port ${port}`
 }
