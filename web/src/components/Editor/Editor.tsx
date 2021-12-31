@@ -10,6 +10,7 @@ import { Emoji } from "@/components/Emoji"
 import { Tooltip } from 'antd';
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import { DashboardContext } from '@/components/Gallery/Dashboard/DashboardContext'
+import { useIntl } from "umi";
 interface EditorProps {
   icons?: { open: string | React.ReactNode, close: string | React.ReactNode } | boolean
   defaultOpen?: boolean
@@ -25,7 +26,7 @@ interface EditorProps {
 export const Editor = (props: EditorProps) => {
   const [editable, setEditable] = useState<boolean>(props.defaultOpen || false)
   const [disabled, setDisabled] = useState(false)
-
+  const intl = useIntl()
   const Dashboard = useContext(DashboardContext)
 
   // "⚙️ false", "✔️ true"  点击事件 
@@ -54,6 +55,7 @@ export const Editor = (props: EditorProps) => {
       setDisabled(false)
     }
   }, [props.timeSeries, props.content?.date])
+
   const show = () => {
     let closeIcon
     let openIcon
@@ -90,14 +92,21 @@ export const Editor = (props: EditorProps) => {
           {show()}
         </Button>
       </Tooltip>
-      : <Button
-        shape="circle"
-        size="small"
-        type="link"
-        onClick={editableOnChange}
-      >
-        {show()}
-      </Button>
+      : <Tooltip title={intl.formatMessage({
+        id: !editable
+          ? "gallery.component.general14"
+          : "gallery.component.general72"
+      })}>
+        <Button
+          shape="circle"
+          size="small"
+          type="link"
+          onClick={editableOnChange}
+        >
+          {show()}
+        </Button>
+      </Tooltip>
+
   )
 }
 

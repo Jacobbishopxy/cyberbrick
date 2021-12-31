@@ -321,7 +321,7 @@ export const Dashboard = (props: DashboardProps) => {
     edit={edit}
     setEdit={setEdit}
     onSaveTemplate={onRefresh}
-  // ContainerRef={cRef}
+    ContainerRef={cRef}
   />, [canEdit, dashboardCategories, onRefresh, edit])
 
   const genContainer = useMemo(() => selectedDashboard ?

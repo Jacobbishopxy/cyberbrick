@@ -26,6 +26,7 @@ GC.Spread.Common.CultureManager.culture('zh-cn');
 
 export interface ExcelProps {
   editable: boolean
+  elementEdit: boolean
   initialValue: string
   onSave: (v: string) => void
   content?: DataType.Content
@@ -56,42 +57,52 @@ export const Excel = forwardRef((props: ExcelProps, ref: React.Ref<ExcelRef>) =>
   // 
   const [spread, setSpread] = useState<GC.Spread.Sheets.Workbook>()
   // 当前sheet
-  const [activeSheet, setActiveSheet] = useState<GC.Spread.Sheets.Worksheet>()
+  // const [activeSheet, setActiveSheet] = useState<GC.Spread.Sheets.Worksheet>()
   const nestedDedicatedContextProps = useContext(nestedDedicatedContext)
+
   useImperativeHandle(ref, () => {
     return {
+      edit,
       setEdit,
       spread
     }
   })
-  useEffect(() => {
-    console.log(633, edit)
-  }, [edit])
-  // 只在第一次接收到后端数据时改变spread，往后都用spread自身导入控制。
-  useEffect(() => {
 
+  // 初始化：只在第一次接收到后端数据时改变spread，往后都用spread自身导入控制。
+  useEffect(() => {
     if (!_.isEmpty(spread)) {
       if (nestedDedicatedContextProps?.initValue?.data.ssjson) {
-        // console.log(722, spread?.fromJSON(JSON.parse(nestedDedicatedContextProps?.initValue?.data.ssjson)))
+        // 后端数据导入
+        spread!.fromJSON(JSON.parse(nestedDedicatedContextProps?.initValue?.data.ssjson));
 
-        spread?.fromJSON(JSON.parse(nestedDedicatedContextProps?.initValue?.data.ssjson));
+        // 是否保护sheets
+        spread?.sheets.forEach((v) => {
+          v.options.isProtected = props.elementEdit ? false : true;
+        })
       }
     }
-  }, [nestedDedicatedContextProps?.initValue?.data.ssjson])
+  }, [spread, nestedDedicatedContextProps?.initValue?.data.ssjson, spread])
 
-  var config = GC.Spread.Sheets.Designer.DefaultConfig;
 
+  const [config, setConfig] = useState(GC.Spread.Sheets.Designer.DefaultConfig)
+  // 根据elementEdit设置表单是否可以编辑和导入导出
   useEffect(() => {
-    console.log(855, spread, activeSheet)
 
-    activeSheet?.bind(GC.Spread.Sheets.Events.ValueChanged, (e, info) => {
-      console.log(8888, activeSheet)
-    });
-    activeSheet?.bind(GC.Spread.Sheets.Events.RangeChanged, (e, info) => {
-      console.log(8888, activeSheet)
-    });
+    if (spread) {
+      // 是否保护sheets
+      spread?.sheets.forEach((v) => {
+        v.options.isProtected = props.elementEdit ? false : true;
+      })
 
-  }, [spread, activeSheet])
+      // 是否隐藏【导入】
+      var designerConfig = JSON.parse(JSON.stringify(GC.Spread.Sheets.Designer.DefaultConfig))
+      if (!props.elementEdit) {
+        delete designerConfig.fileMenu
+      }
+      setConfig(designerConfig)
+    }
+  }, [props.elementEdit])
+
 
   return (
     <Designer
@@ -102,20 +113,6 @@ export const Excel = forwardRef((props: ExcelProps, ref: React.Ref<ExcelRef>) =>
 
         const spread: GC.Spread.Sheets.Workbook = designer.getWorkbook()
         setSpread(spread);
-
-        spread.sheets.map((v) => {
-          console.log(105, v.name)
-        })
-
-        const activeSheet: GC.Spread.Sheets.Worksheet = spread.getActiveSheet()
-        // console.log(966, activeSheet)
-        activeSheet.bind(GC.Spread.Sheets.Events.ValueChanged, (e, info) => {
-          console.log(966, activeSheet)
-        });
-        activeSheet.bind(GC.Spread.Sheets.Events.RangeChanged, (e, info) => {
-          console.log(966, activeSheet)
-        });
-        setActiveSheet(activeSheet)
 
       }}
     ></Designer>

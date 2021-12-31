@@ -40,8 +40,10 @@ export interface ModuleSelectorProps {
   fetchContentFn: (id: string, date?: string) => Promise<DataType.Content | undefined>
   fetchContentDatesFn: (id: string, markName?: string) => Promise<DataType.Element>
 
-  // 右上角的编辑
+  // 总编辑
   editable: boolean
+  // element编辑
+  elementEdit: boolean | undefined
   initialValue: string
   onSave: (v: string) => void
   content?: DataType.Content
@@ -265,6 +267,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       ref={props.forwardedRef}
     />
 
+    console.log(270, props.elementEdit)
     const excel = <Excel
       onSave={props.onSave}
       initialValue={props.initialValue}
@@ -273,6 +276,7 @@ export const collectionSelector = (moduleType: DataType.ElementType): React.FC<M
       contentHeight={props.contentHeight}
       setContent={props.setContent}
       // // styling={props.styling}
+      elementEdit={props.elementEdit}
       ref={props.forwardedRef}></Excel>
     switch (moduleType) {
       case DataType.ElementType.EmbedLink:

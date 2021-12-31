@@ -45,8 +45,9 @@ export interface ModulePresenterField {
 }
 
 export interface ConvertFwRef {
+  edit: boolean | undefined
   setEdit: (value: boolean) => void
-  items: () => tabItem[]
+  spread: GC.Spread.Sheets.Workbook
 }
 
 export interface ConvertRefProps {

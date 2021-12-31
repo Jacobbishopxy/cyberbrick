@@ -15,7 +15,7 @@ export const Emoji = (props: EmojiProps) =>
     aria-label={props.label || ''}
     aria-hidden={props.label ? 'false' : 'true'}
     value={props.label}
-    style={{fontSize: props.size}}
+    style={{ fontSize: props.size }}
   >
     {props.symbol}
   </option>

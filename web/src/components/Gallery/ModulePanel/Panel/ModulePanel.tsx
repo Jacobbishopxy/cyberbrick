@@ -70,7 +70,7 @@ const SKELETON_DEFAULT_ROWS = 5
 export const ModulePanel = (props: ModulePanelProps) => {
 
 
-  const nestedDedicatedProps = useContext(nestedDedicatedContext)
+  const nestedDedicatedContextProps = useContext(nestedDedicatedContext)
   const intl = useIntl()
   const moduleRef = useRef<React.FC<ModuleSelectorProps>>()
   // 模块的ref，可控制自身的编辑状态
@@ -131,14 +131,44 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
 
 
-  /* 点击右上角设置或对勾的函数{
-      更新模块内容时间；
-      !更新父组件的content。
-  } */
+  // 模块的编辑或对勾事件
   const editContent = (b: boolean) => {
-    console.log(170, moduleFwRef)
+    console.log(170, moduleFwRef.current?.edit)
     if (props.editable && moduleFwRef && moduleFwRef.current) {
+      // 改变状态
       moduleFwRef.current.setEdit(b)
+      // 将状态存入elements数组中
+      if (nestedDedicatedContextProps?.setElements) {
+        nestedDedicatedContextProps?.setElements((els) => {
+          const elId = nestedDedicatedContextProps.element.id;
+          const elName = nestedDedicatedContextProps.elementName;
+          const elParentName = nestedDedicatedContextProps.element.parentName
+          return els.map((el) => {
+            // 如果有id，就根据id判断修改的element
+            if (elId) {
+              if (el.id === elId) {
+                return {
+                  ...el,
+                  edit: b
+                }
+              } else {
+                return el
+              }
+            } else {
+              if (el.name === elName && el.parentName == elParentName) {
+                return {
+                  ...el,
+                  edit: b
+                }
+              } else {
+                return el
+              }
+            }
+          })
+        })
+      }
+
+      // 如果是Excel模块要更新最新的ssjson
       if (b === false && props.elementType === DataType.ElementType.Excel) {
         props.setContent((content) => {
           return {
@@ -183,6 +213,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
   //依赖项必须有editable
   const genContext = useMemo(() => {
     const rf = moduleRef.current
+    console.log(216, moduleFwRef.current?.edit)
     if (rf) {
       //if it's has id (so it's saved to db) and it's loading, display skeleton. 
       //If we finish loading, display whatever content is, including a white board (for content undefined or null)
@@ -214,14 +245,17 @@ export const ModulePanel = (props: ModulePanelProps) => {
         // styling: isTemplate ? styles.templateContentPanel : styles.contentPanel,
         fetchContentFn: props.fetchContentFn,
         fetchContentDatesFn: props.fetchContentDatesFn,
+        // 总编辑
         editable: props.editable,
+        // element编辑
+        elementEdit: moduleFwRef.current?.edit,
         initialValue: props.description || '',
         onSave: props.updateDescription,
         addElement: props.addElement
       })
     }
     return <></>
-  }, [props.content, props.contentHeight, loading, props.editable])
+  }, [props.content, props.contentHeight, loading, props.editable, moduleFwRef.current?.edit])
 
   const genFooter = useMemo(() =>
     <ModulePanelFooter
@@ -304,25 +338,32 @@ export const ModulePanel = (props: ModulePanelProps) => {
       <div className={styles.genHeader}>
         {genHeader}
       </div>
-      <div style={
-        !(props.elementType === DataType.ElementType.NestedModule)
-          ? {
-            display: 'flex',
-            flexGrow: 1,
-            height: 'calc(100% - 60px)',
-            overflow: 'auto'
-          }
-          : {
-            flexGrow: 1,
-            overflow: 'hidden'
-          }}>
-        <div style={props.timeSeries ? {
-          width: '82%',
-          overflow: 'auto'
-        } : {
-          width: '100%',
-          height: '100%'
-        }}>
+      <div
+        style={
+          !(props.elementType === DataType.ElementType.NestedModule)
+            ? {
+              display: 'flex',
+              flexGrow: 1,
+              height: 'calc(100% - 60px)',
+              overflow: 'auto'
+            }
+            : {
+              flexGrow: 1,
+              overflow: 'hidden'
+            }}>
+
+        <div
+          style={props.timeSeries
+            ? {
+              width: '82%',
+              overflow: 'auto'
+            }
+            : {
+              width: '100%',
+              height: '100%'
+            }}
+
+        >
 
           {/* {genDescription} */}
 
@@ -344,10 +385,10 @@ export const ModulePanel = (props: ModulePanelProps) => {
             ? <div className={styles.dateParent}>
               {
 
-                nestedDedicatedProps?.dateList
-                  ? nestedDedicatedProps?.dateList.slice().reverse().map((date, i) => {
+                nestedDedicatedContextProps?.dateList
+                  ? nestedDedicatedContextProps?.dateList.slice().reverse().map((date, i) => {
 
-                    const contentId = nestedDedicatedProps?.datesMapContentIds?.find((v) => v?.date?.slice(0, 10) === date
+                    const contentId = nestedDedicatedContextProps?.datesMapContentIds?.find((v) => v?.date?.slice(0, 10) === date
                     )?.id
 
                     console.log(362, contentId)
@@ -383,9 +424,9 @@ export const ModulePanel = (props: ModulePanelProps) => {
                       </Button>}
                     onFinish={() => {
                       props.setDate(date);
-                      if (nestedDedicatedProps?.setDateList) {
+                      if (nestedDedicatedContextProps?.setDateList) {
 
-                        nestedDedicatedProps?.setDateList((dateList) => [...new Set([...dateList, date])].sort((a, b) => (a < b) ? 1 : -1
+                        nestedDedicatedContextProps?.setDateList((dateList) => [...new Set([...dateList, date])].sort((a, b) => (a < b) ? 1 : -1
                         ))
                       }
                       return Promise.resolve(true)

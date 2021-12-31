@@ -253,6 +253,7 @@ export const HeaderController = (props: HeaderController) => {
           {/* 【小齿轮⚙️】 */}
           <EditButton
             editContent={props.editContent}
+            edit={props.editable}
             timeSeries={props.timeSeries}
             elementType={props.elementType}
             headName={props.headName}

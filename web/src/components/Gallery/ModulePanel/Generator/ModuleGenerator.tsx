@@ -30,8 +30,8 @@ export class ModuleGenerator {
       //!any
       const prRef = useRef<any>()
       useImperativeHandle(crProps.forwardedRef, () => ({
+        edit: editable,
         setEdit: setEditable,
-        items: prRef.current?.getTabItem //无用，可以删除
       }))
 
       console.log(38, crProps.initialValue)

@@ -73,6 +73,8 @@ export default {
   "gallery.component.general68": "期望价",
   "gallery.component.general69": "关闭",
   "gallery.component.general70": "制图方式",
+  "gallery.component.general71": "拖拽",
+  "gallery.component.general72": "完成",
 
   "gallery.component.type.misc": "杂项",
   "gallery.component.type.link": "链接",
@@ -102,6 +104,8 @@ export default {
   "gallery.component.type.treemap": "矩形树图",
   "gallery.component.type.nestedModule": "组件嵌套",
   "gallery.component.type.fieldHeader": "分隔标题",
+  "gallery.component.type.excel": "Excel",
+
 
   "gallery.component.category-config-table1": "类型配置",
   "gallery.component.category-config-table2": "新建分类",

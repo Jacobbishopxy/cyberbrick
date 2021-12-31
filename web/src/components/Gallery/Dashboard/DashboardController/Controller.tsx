@@ -18,7 +18,7 @@ import * as DataType from "../../GalleryDataType"
 import { SelectorPanel } from "./SelectorPanel"
 import { AddModuleModal } from "./AddModuleModal"
 import { DashboardContext } from '../DashboardContext'
-// import { ContainerRef } from "../DashboardContainer/Container"
+import { ContainerRef } from "../DashboardContainer/Container"
 export interface ModuleControllerProps {
   initialSelected?: string[]
   onSelectChange?: (v: string[]) => void
@@ -32,7 +32,7 @@ export interface ModuleControllerProps {
   edit: boolean
   setEdit: React.Dispatch<React.SetStateAction<boolean>>
   onSaveTemplate: (shouldSaveTemplateAndContents: boolean) => Promise<void>
-  // ContainerRef: React.Ref<ContainerRef>
+  ContainerRef: React.Ref<ContainerRef>
 }
 
 export const Controller = (props: ModuleControllerProps) => {
@@ -58,14 +58,34 @@ export const Controller = (props: ModuleControllerProps) => {
     console.log(55555)
   }
 
-  //模板保存事件。
+  //模板保存&退出事件。
   const saveOrExitTemplate = (isSave: boolean) =>
     () => {
-      console.log(6363)
+
       //exit: set edit to false; save: set edit to true and allow further edition.
       // Exit:设置edit为false; 保存:设置edit为true并允许进一步编辑。  
       // const quit = () => isSave ? props.setEdit(false) : undefined
+      if (isSave) {
+        console.log(6363, props.ContainerRef?.current.elements)
+        for (let i = 0; i < props.ContainerRef?.current.elements.length; i++) {
+          const el = props.ContainerRef?.current.elements[i]
 
+          if (el.edit === true) {
+            message.warn('部分模块处于编辑状态，不允许保存')
+            return
+          }
+
+        }
+        // props.ContainerRef?.current.elements.forEach((el) => {
+        //   if (el.type === DataType.ElementType.Excel) {
+
+        //     if (el.edit === true) {
+        //       message.warn('部分模块处于编辑状态，不允许保存')
+        //       return 
+        //     }
+        //   }
+        // })
+      }
       return Modal.confirm({
         title: isSave
           ? intl.formatMessage({ id: "gallery.component.dashboard-controller1" })

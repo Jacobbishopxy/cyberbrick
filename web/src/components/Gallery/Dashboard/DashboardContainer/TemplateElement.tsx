@@ -61,7 +61,7 @@ export const TemplateElement =
     //模块内容的源
     const [content, setContent] = useState<DataType.Content | undefined>()
     //
-    const [element, setElement] = useState(props.element)
+    // const [element, setElement] = useState(props.element)
     // useEffect(() => {
     //     setElement(props.element)
     // }, [props.element])
@@ -88,8 +88,8 @@ export const TemplateElement =
 
     //获取模块的时间序列
     useEffect(() => {
-      if (props.timeSeries && props.fetchContentDatesFn && element.id) {
-        props.fetchContentDatesFn(element.id).then(res => {
+      if (props.timeSeries && props.fetchContentDatesFn && props.element.id) {
+        props.fetchContentDatesFn(props.element.id).then(res => {
           console.log(373, res)
           if (res.contents && res.contents.length > 0) {
             const newDateList = [...new Set(res.contents.map((v) => v.date?.slice(0, 10)).sort((a, b) => (a < b) ? 1 : -1
@@ -201,7 +201,7 @@ export const TemplateElement =
           const v_date = v.date?.slice(0, 10)
           const t_date = date?.slice(0, 10)
           //! 加一个parentName相同 公司id相同 && 维度id相同 && 模块名字相同 && date相同
-          return v.element?.name === element.name
+          return v.element?.name === props.element.name
             && v_date === t_date
             && v.dashboardInfo?.id === props?.parentInfo?.dashboardInfo.id
             && v.templateInfo?.id === props?.parentInfo?.templateInfo.id
@@ -295,9 +295,8 @@ export const TemplateElement =
     */
     const fetchContent = (date?: string) => {
       return new Promise(async (resoleve, reject) => {
-        console.log(230, props.isNested, element)
-        if (element.id) {
-          dashboardContextProps?.fetchElementContent!(element.id, date).then((res) => {
+        if (props.element.id) {
+          dashboardContextProps?.fetchElementContent!(props.element.id, date).then((res) => {
             console.log(337, res)
             setInitValue(res)
             // 只有返回有数据时才添加是否编辑得字段
@@ -327,8 +326,8 @@ export const TemplateElement =
 
     // 获取模块的时间序列
     const fetchContentDates = async () => {
-      if (element.id && props.element.timeSeries) {
-        const ele = await props.fetchContentDatesFn(element.id)
+      if (props.element.id && props.element.timeSeries) {
+        const ele = await props.fetchContentDatesFn(props.element.id)
 
         return ele.contents!.map(c => (c.date))
       }
@@ -386,8 +385,8 @@ export const TemplateElement =
             ? NestedDedicatedProps?.setCurrentModuleName
             : setCurrentModuleName,
           // 当前模块信息
-          element,
-          setElement,
+          element: props.element,
+          // setElement,
           // 
           editable: props.isNested
             ? NestedDedicatedProps?.editable
@@ -397,7 +396,7 @@ export const TemplateElement =
         }}>
           <ModulePanel
             parentInfo={props.parentInfo}
-            eleId={element.id}
+            eleId={props.element.id}
             //模块的名字
             elementName={props.element.name}
             //是否时间序列

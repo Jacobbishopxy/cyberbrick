@@ -51,17 +51,20 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
   */
   // 控制tabItems是否使能
   const [draggable, setDraggable] = useState(true)
+
   const onMouseEnter = (id: number) => {
     console.log(40, id)
     setIsHover(id)
   }
+  const onMouseLeave = () => {
+    setIsHover(-1)
+  }
+
   const NestedDedicatedProps = useContext(nestedDedicatedContext)
   // 控制modal显隐
   const [modalVisible, setModalVisible] = useState(false)
 
-  const onMouseLeave = () => {
-    setIsHover(-1)
-  }
+
 
   //添加tab事件
   const onAddTabItems = () => {
@@ -367,10 +370,7 @@ const DynamicHeader = forwardRef((props: DynamicHeaderProps, ref) => {
                   editable={props.editable}
                   el={el}
                   isHover={(isHover === i) ? true : false}
-                  // isSelected={props.currIndex === el.i}
                   removeTabItem={removeTabItem}
-                  // setItems={props.setItems}
-                  // onAddSubModule={onAddSubModule(i)}
                   addElement={props.addElement}
                   setDraggable={setDraggable}
                   index={i}

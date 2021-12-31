@@ -331,6 +331,15 @@ export const ContainerTemplate =
                   timeSeries={ele.timeSeries}
                   editable={dashboardContextProps?.edit}
                   element={ele}
+                  // setElemet={(i: number) => {
+                  //   return (element) => {
+                  //     props.setElements((els) => {
+                  //       return els.map((e, i) => {
+                  //         if ()
+                  //       })
+                  //     })
+                  //   }
+                  // }}
                   // fetchContentFn={props.elementFetchContentFn}
                   fetchContentDatesFn={props.elementFetchContentDatesFn}
                   setNewestContent={setNewestContent(ele)}
