@@ -2,22 +2,23 @@
  * Created by Jacob Xie on 8/29/2020.
  */
 
-import { Equal, In } from "typeorm"
+import {Equal, In, Like} from "typeorm"
 
 // misc
 export type QueryStr = string | undefined
 
 // query filters
-export const whereNameEqual = (v: string) => ({ where: { name: Equal(v) } })
-export const whereIdEqual = (v: string) => ({ where: { id: Equal(v) } })
-export const whereTabIdEqual = (v: string) => ({ where: { tabId: Equal(v) } })
-export const whereIdsIn = (v: string[]) => ({ where: { id: In(v) } })
-export const whereTypeEqual = (v: string) => ({ where: { type: Equal(v) } })
+export const whereNameEqual = (v: string) => ({where: {name: Equal(v)}})
+export const whereNameLike = (v: string) => ({where: {name: Like(`%${v}%`)}})
+export const whereIdEqual = (v: string) => ({where: {id: Equal(v)}})
+export const whereTabIdEqual = (v: string) => ({where: {tabId: Equal(v)}})
+export const whereIdsIn = (v: string[]) => ({where: {id: In(v)}})
+export const whereTypeEqual = (v: string) => ({where: {type: Equal(v)}})
 
 // query orders
 export type OrderType = "ASC" | "DESC"
-export const orderByDate = (orderType: OrderType) => ({ order: { date: orderType } })
-export const orderByName = (orderType: OrderType) => ({ order: { name: orderType } })
+export const orderByDate = (orderType: OrderType) => ({order: {date: orderType}})
+export const orderByName = (orderType: OrderType) => ({order: {name: orderType}})
 
 // string extract
 export const regSkip = new RegExp("^\\((\\d+),")

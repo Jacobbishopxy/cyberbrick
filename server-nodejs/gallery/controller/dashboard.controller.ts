@@ -126,5 +126,14 @@ export class DashboardController {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  @Get("searchDashboards")
+  searchDashboards(@Query("keyword") keyword: string) {
+    try {
+      return this.service.searchDashboards(keyword)
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
 }
 
