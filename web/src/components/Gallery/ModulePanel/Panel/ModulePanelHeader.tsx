@@ -33,8 +33,11 @@ interface ModulePanelHeaderProps {
 }
 
 export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
+  // 标题是否编辑
   const [titleEditable, setTitleEditable] = useState<boolean>(false)
   const [title, setTitle] = useState<string | undefined>(props.title)
+  // elementName是否编辑
+  const [elementNameEdit, setElementNameEdit] = useState<boolean>(false)
   const intl = useIntl()
   const NestedDedicatedProps = useContext(nestedDedicatedContext)
 
@@ -51,6 +54,69 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
       message.warning("title cannot be empty!")
 
     setTitleEditable(false)
+  }
+
+
+
+  const elementNameInputRef = useRef<any>(null)
+  //点击标题聚焦
+  useEffect(() => {
+    if (elementNameEdit) {
+      elementNameInputRef.current?.focus();
+    }
+  }, [elementNameEdit])
+
+  function changeElementName(e: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target
+    if (value !== "") {
+      if (NestedDedicatedProps?.setElement) {
+        NestedDedicatedProps.setElement(element => {
+          return {
+            ...element,
+            name: value
+          }
+        })
+      }
+    } else
+      message.warning("title cannot be empty!")
+
+    setElementNameEdit(false)
+  }
+
+  const genElementName = () => {
+    //don't display title since header separator is a "title" by itself
+    if (props.type === DataType.ElementType.FieldHeader) return <></>
+
+    // 编辑下
+    if (props.editable) {
+      if (elementNameEdit)
+        return <Input
+          ref={elementNameInputRef}
+          placeholder={intl.formatMessage({ id: "gallery.component.general62" })}
+          size="small"
+          allowClear
+          style={{ width: 200 }}
+          onBlur={changeElementName}
+          defaultValue={props.elementName}
+        />
+      else {
+        return (
+          <Button
+            type="link"
+            size="small"
+            onClick={() => setElementNameEdit(true)}
+          >
+            {props.elementName}
+          </Button>
+        )
+      }
+    } else {
+      return (
+        <span style={{ fontWeight: "bold" }}>
+          {props.elementName}
+        </span>
+      )
+    }
   }
 
   const titleInputRef = useRef<any>(null)
@@ -98,7 +164,6 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
   }
 
   const genController = () => {
-    console.log(97, props.timeSeries, NestedDedicatedProps?.dateList)
     return (<HeaderController
       editable={props.editable}
       // settable={props.settable}
@@ -145,7 +210,7 @@ export const ModulePanelHeader = (props: ModulePanelHeaderProps) => {
         props.elementName ?
           <>
             <Col span={8} style={{ fontWeight: "bold" }}>
-              {props.type === DataType.ElementType.FieldHeader ? '' : props.elementName}
+              {props.type === DataType.ElementType.FieldHeader ? '' : genElementName()}
             </Col>
 
             <Col span={8} style={{ textAlign: "center" }}>

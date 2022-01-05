@@ -83,7 +83,7 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
 
   // tabs
   const { TabPane } = Tabs
-  const [activeKey, setActiveKey] = useState('')
+  const [activeKey, setActiveKey] = useState<string | undefined>()
   console.log(277, props, NestedDedicatedProps)
 
   const categoryName = NestedDedicatedProps?.parentInfo?.selectedCategoryName
@@ -98,19 +98,28 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
   // 根据localStorage初始化activekey
   useEffect(() => {
     const initialValue = query.get("anchor")
-    console.log(30, initialValue)
+
     if (initialValue) {
       try {
         const pi = JSON.parse(initialValue)
       } catch { }
     } else {
       const i = ls.get(lsKey)
-      if (i) setActiveKey(JSON.parse(i.data))
+      console.log(1011, categoryName)
+      if (i) {
+        setActiveKey(JSON.parse(i.data))
+      } else {
+        // console.log(1188, firstSubmodule?.name, activeKey)
+        // setActiveKey(firstSubmodule?.name)
+      }
     }
   }, [])
 
   useEffect(() => {
-    ls.add(lsKey, JSON.stringify(activeKey))
+
+    if (activeKey) {
+      ls.add(lsKey, JSON.stringify(activeKey))
+    }
   }, [activeKey])
 
 
@@ -126,9 +135,13 @@ export const NestedModuleEditor = (props: NestedModuleProps) => {
     console.log(287, t)
   }, [NestedDedicatedProps?.elements])
 
-
+  // const [firstSubmodule, setFirstSubmodule] = useState<DataType.Element | undefined>()
+  // useEffect(() => {
+  //   setFirstSubmodule(submoduleElement ? submoduleElement[0] : undefined)
+  // }, [submoduleElement])
   return (
     <div className={styles.Editor} ref={EditorRef}>
+      {/* 原tabItems */}
       {/* head */}
       {/* <div className={styles.DynamicHeader} ref={DynamicHeaderRef} style={{
         display: 'none'

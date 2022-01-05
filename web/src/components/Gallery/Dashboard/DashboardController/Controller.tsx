@@ -33,6 +33,7 @@ export interface ModuleControllerProps {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>
   onSaveTemplate: (shouldSaveTemplateAndContents: boolean) => Promise<void>
   ContainerRef: React.Ref<ContainerRef>
+  setSelectedCategoryName: (s: string) => void
 }
 
 export const Controller = (props: ModuleControllerProps) => {
@@ -191,6 +192,7 @@ export const Controller = (props: ModuleControllerProps) => {
         categoryOnSelect={name => props.categoryOnSelect(name, false)}
         onSelectFinish={id => props.dashboardOnSelect(id, false)}
         onChange={props.onSelectChange}
+        setSelectedCategoryName={props.setSelectedCategoryName}
         size="small"
       />
 

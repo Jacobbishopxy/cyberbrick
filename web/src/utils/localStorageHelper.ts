@@ -39,9 +39,9 @@ export class LocalStorageHelper {
   localStorageSupported: boolean
 
   constructor(identifier: string,
-              options: LocalStorageHelperOptions) {
+    options: LocalStorageHelperOptions) {
     this.identifier = identifier
-    this.options = {...LocalStorageHelperOptionsDefaults, ...options}
+    this.options = { ...LocalStorageHelperOptionsDefaults, ...options }
     this.localStorageSupported = typeof window.localStorage !== 'undefined' && window.localStorage !== null
   }
 
@@ -77,19 +77,24 @@ export class LocalStorageHelper {
 
   private itemRemoveIfExpired = (key: string, withIdentifier: boolean = true): StorageItem | null => {
     let keyW: string
-    if (withIdentifier)
+    if (withIdentifier) {
+
       keyW = this.keyWrapping(key)
+
+    }
+
     else
       keyW = key
 
     const valueStr = localStorage.getItem(keyW)
+    console.log(833, keyW, valueStr)
     if (valueStr !== null) {
       const value = this.valueUnwrapping(valueStr)
       if (value.expiry !== undefined && moment().isAfter(moment(value.expiry))) {
         localStorage.removeItem(keyW)
         return null
       }
-      return {key: keyW, value}
+      return { key: keyW, value }
     }
     return null
   }
@@ -113,7 +118,7 @@ export class LocalStorageHelper {
       const key = localStorage.key(i)!
       const valueStr = localStorage.getItem(key)!
       const value = this.valueUnwrapping(valueStr)
-      const item: StorageItem = {key, value}
+      const item: StorageItem = { key, value }
       list.push(item)
     })
 
@@ -133,7 +138,7 @@ export class LocalStorageHelper {
       if (keyH === this.identifier && keyT !== null) {
         const valueStr = localStorage.getItem(key)!
         const value = this.valueUnwrapping(valueStr)
-        const item: StorageItem = {key: keyT, value}
+        const item: StorageItem = { key: keyT, value }
         list.push(item)
       }
     })

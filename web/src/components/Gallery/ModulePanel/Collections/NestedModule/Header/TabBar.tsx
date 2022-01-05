@@ -201,7 +201,10 @@ const TabBar = (props: DynamicHeaderProps) => {
   }
 
   //选中与为选中的样式
-  const className = (name: string) => props.activeKey === name ? "tab-content-selected" : "tab-content"
+  const className = (name: string) => {
+    console.log(205, props.activeKey, name)
+    return props.activeKey === name ? "tab-content-selected" : "tab-content"
+  }
 
 
   return (

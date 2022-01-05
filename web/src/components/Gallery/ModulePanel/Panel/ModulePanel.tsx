@@ -208,7 +208,7 @@ export const ModulePanel = (props: ModulePanelProps) => {
       setContent={props.setContent}
       setDate={props.setDate}
     />
-  }, [props.content?.date, props.editable, props.content])
+  }, [props.content?.date, props.editable, props.content, props.elementName])
 
   //依赖项必须有editable
   const genContext = useMemo(() => {
@@ -335,9 +335,11 @@ export const ModulePanel = (props: ModulePanelProps) => {
 
   return (
     <div className={`${style()} ${styles.ModulePanel}`} {...attachId()}>
+      {/* top */}
       <div className={styles.genHeader}>
         {genHeader}
       </div>
+      {/* body */}
       <div
         style={
           !(props.elementType === DataType.ElementType.NestedModule)

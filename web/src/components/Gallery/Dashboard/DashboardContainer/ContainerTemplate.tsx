@@ -308,6 +308,7 @@ export const ContainerTemplate =
         })
       })
     }, [props.elements])
+    console.log(311, props.parentInfo)
     return (
       <ReactGridLayout
         {...reactGridLayoutDefaultProps}

@@ -110,12 +110,15 @@ export const Dashboard = (props: DashboardProps) => {
   const [selected, setSelected] = useState<string[] | undefined>(props.initialSelected?.slice(0, 2))
   useEffect(() => {
     setSelected(props.initialSelected?.slice(0, 2))
+    console.log(119, props.initialSelected)
   }, [props.initialSelected])
 
   const [contentIdsToBeDelect, setContentIdsToBeDelect] = useState<string[]>([])
 
   const intl = useIntl()
+  useEffect(() => {
 
+  }, [selected])
   //this is for selecting categories' dashboard. We only need category of corresponding type
   const isTemplate = useContext(IsTemplateContext)
   const dashboardCategoryType = isTemplate ? DataType.CategoryTypeEnum.temp_lib : DataType.CategoryTypeEnum.dashboard
@@ -160,7 +163,7 @@ export const Dashboard = (props: DashboardProps) => {
     if (!isCopy) {
       setSelectedCategoryName(name)
       // setCanEdit(false)
-      console.log(137, canEdit, 'categoryOnSelect')
+      console.log(163, canEdit, name)
     }
     return await props.fetchCategory(name)
   }
@@ -322,6 +325,8 @@ export const Dashboard = (props: DashboardProps) => {
     setEdit={setEdit}
     onSaveTemplate={onRefresh}
     ContainerRef={cRef}
+    // 更改所选公司
+    setSelectedCategoryName={setSelectedCategoryName}
   />, [canEdit, dashboardCategories, onRefresh, edit])
 
   const genContainer = useMemo(() => selectedDashboard ?
@@ -340,7 +345,7 @@ export const Dashboard = (props: DashboardProps) => {
       fetchQueryDataFn={fetchQueryData}
 
       ref={cRef}
-    /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh])
+    /> : <>{intl.formatMessage({ id: "gallery.component.dashboard-container1" })}</>, [refresh, selectedCategoryName])
 
 
   // const [isvisible, setIsvisible] = useState(false)

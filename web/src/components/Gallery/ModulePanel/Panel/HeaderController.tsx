@@ -239,7 +239,6 @@ export const HeaderController = (props: HeaderController) => {
 
   return props.editable
     ? (<Space>
-      {console.log(251, props.timeSeries, props)}
       <DragButton />
       {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
       {true ?

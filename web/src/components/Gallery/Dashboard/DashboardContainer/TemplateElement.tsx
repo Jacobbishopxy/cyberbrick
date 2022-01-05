@@ -9,7 +9,7 @@ import { ModulePanel } from "../../ModulePanel/Panel"
 
 import { DashboardContext } from "../DashboardContext"
 import { nestedDedicatedContext } from './nestedDedicatedContext'
-import _ from 'lodash'
+import _, { property } from 'lodash'
 export interface ContainerElementProps {
   parentInfo: {
     selectedCategoryName: string,
@@ -54,19 +54,33 @@ export const TemplateElement =
     //nestedmodule专用变量
     const dashboardContextProps = useContext(DashboardContext)
     const NestedDedicatedProps = useContext(nestedDedicatedContext)
-    //模块主体部分：各类型模块的引用
+    //模块主体部分：element的引用
     const mpRef = useRef<HTMLDivElement>(null)
 
     const [mpHeight, setMpHeight] = useState<number>(0)
     //模块内容的源
     const [content, setContent] = useState<DataType.Content | undefined>()
     //
-    // const [element, setElement] = useState(props.element)
-    // useEffect(() => {
-    //     setElement(props.element)
-    // }, [props.element])
+    const [element, setElement] = useState(props.element)
+    useEffect(() => {
+      console.log(6667, element)
+      if (props.setElements) {
 
-    // nested模块专用
+        props.setElements((elements) => {
+          return elements.map((v) => {
+            if (v.parentName === props.element.parentName && v.name === props.element.name) {
+              return {
+                ...v,
+                name: element.name
+              }
+            } else {
+              return v
+            }
+          })
+        })
+      }
+    }, [element])
+
     const [currentModuleName, setCurrentModuleName] = useState('')
 
     // 第一次获得的值
@@ -84,6 +98,7 @@ export const TemplateElement =
 
     //该模块的时间序列
     const [dateList, setDateList] = useState<(string | undefined)[]>([])
+    // 
     const [datesMapContentIds, setDatesMapContentIds] = useState<DataType.Content[]>([])
 
     //获取模块的时间序列
@@ -143,14 +158,11 @@ export const TemplateElement =
             ...t_content
           } as DataType.Content
         })
-
-
       }
     }, [date])
 
     //从allContent获取；如果没有，DB获取；如果没有，初始化
     async function getContent(date?: string | undefined) {
-
       // 返回空内容
       if (date === '-1') {
         console.log(205, date)
@@ -201,10 +213,9 @@ export const TemplateElement =
           const v_date = v.date?.slice(0, 10)
           const t_date = date?.slice(0, 10)
           //! 加一个parentName相同 公司id相同 && 维度id相同 && 模块名字相同 && date相同
-          return v.element?.name === props.element.name
+          return v.dashboardInfo?.id === props?.parentInfo?.dashboardInfo.id
+            && v.templateInfo?.id === props?.parentInfo?.templateInfo.id && v.element?.parentName === props.element.parentName && v.element?.name === props.element.name
             && v_date === t_date
-            && v.dashboardInfo?.id === props?.parentInfo?.dashboardInfo.id
-            && v.templateInfo?.id === props?.parentInfo?.templateInfo.id
         })
       }
       return t_content
@@ -320,7 +331,7 @@ export const TemplateElement =
       })
     }
 
-    console.log(137, props.isNested, props.editable, props)
+    console.log(137, props.element.type, props.element.name)
     //listen to props's shouldStartFetch. If it updates, fetchContent
 
 
@@ -342,6 +353,10 @@ export const TemplateElement =
     //         props.updateContentFn(ctt)
     //     }
     // }
+    if (props.element.type === 'nestedModule') {
+
+      console.log(345, props.element.type, props?.parentInfo)
+    }
     return (
       <div
         style={{
@@ -353,13 +368,6 @@ export const TemplateElement =
         {/* 这里的判断都是为了submodule能用到nested模块的变量 */}
         <nestedDedicatedContext.Provider value={{
           isNested: props.isNested,
-          // setContent: props.isNested
-          //     ? NestedDedicatedProps?.setContent
-          //     : setContent,
-          setContent,
-          // content: props.isNested
-          //     ? NestedDedicatedProps?.content
-          //     : content,
           content,
           parentInfo: props.isNested
             ? NestedDedicatedProps?.parentInfo
@@ -385,8 +393,8 @@ export const TemplateElement =
             ? NestedDedicatedProps?.setCurrentModuleName
             : setCurrentModuleName,
           // 当前模块信息
-          element: props.element,
-          // setElement,
+          element,
+          setElement,
           // 
           editable: props.isNested
             ? NestedDedicatedProps?.editable
