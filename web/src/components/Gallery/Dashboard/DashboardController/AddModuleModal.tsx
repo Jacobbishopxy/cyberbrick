@@ -126,7 +126,7 @@ interface TemplateSelectionViewProps {
 }
 
 const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
-  const [ctType, setCtType] = useState(DataType.CategoryTypeEnum.temp_lib)
+  const [ctType, setCtType] = useState(DataType.CategoryTypeEnum.dashboard)
   const [categories, setCategories] = useState<DataType.Category[]>([])
 
   const typeOnChange = (e: any) => {
@@ -164,6 +164,7 @@ const TemplateSelectionView = (props: TemplateSelectionViewProps) => {
         onSelectFinish={props.onSelectedTemplate}
         size="small"
         isCopy={true}
+        isCopyOfIsTemplate={ctType}
       />
       {/* <Tooltip
                 title={<FormattedMessage id="gallery.component.add-module-modal2" />}
@@ -201,6 +202,7 @@ export const AddModuleModal = (props: AddModuleModalProps) => {
 
   const dashboardContextProps = useContext(DashboardContext)
   const onSetOk = () => {
+    console.log(205, selectedPane)
     if (selectedPane === "Module") {
       if (selected && moduleName) {
         props.onQuit()

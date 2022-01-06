@@ -34,6 +34,10 @@ export interface DashboardContextType {
 
   contentIdsToBeDelect: string[]
   setContentIdsToBeDelect: React.Dispatch<React.SetStateAction<(stringinitValue)[]>>
+  // 获取所有行业和公司
+  fetchCategoriesAndDashboards: () => Promise<any[]>
+  // 是否是模板库
+  isTemplate: boolean
 }
 
 

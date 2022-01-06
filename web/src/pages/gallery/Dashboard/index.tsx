@@ -110,6 +110,14 @@ export default () => {
 
   // 删除contents
   const delectContents = (ids: string[]) => GalleryService.deleteContents(ids)
+
+  // 公司搜索
+  const searchDashboards = (keywork: string) => GalleryService.searchDashboards(keywork)
+
+
+  // 获取所有行业和公司
+  const fetchCategoriesAndDashboards = () => GalleryService.fetchCategoriesAndDashboards()
+
   return (
     <Dashboard
       initialSelected={initialSelected}
@@ -130,6 +138,7 @@ export default () => {
       fetchQueryData={fetchQueryData}
       updateElements={updateElements}
       delectContents={delectContents}
+      fetchCategoriesAndDashboards={fetchCategoriesAndDashboards}
     // initActiveKey={initActiveKey}
     // setLocalInitActiveKey={setLocalInitActiveKey}
     />

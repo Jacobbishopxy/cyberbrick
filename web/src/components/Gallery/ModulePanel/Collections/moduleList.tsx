@@ -45,12 +45,12 @@ export const moduleList = [
     children: [
       {
         key: DataType.ElementType.FileOverview,
-        name: <FormattedMessage id="gallery.component.type.fileOverview" />,
+        name: <FormattedMessage id="gallery.component.type.fileManager" />,
         disabled: true,
       },
       {
         key: DataType.ElementType.FileManager,
-        name: <FormattedMessage id="gallery.component.type.fileManager" />,
+        name: <FormattedMessage id="gallery.component.type.fileOverview" />,
         disabled: false,
       },
     ]

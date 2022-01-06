@@ -93,6 +93,10 @@ export default () => {
 
   // 删除contents
   const delectContents = (ids: string[]) => GalleryService.deleteContents(ids)
+
+  // 获取所有行业和公司
+  const fetchCategoriesAndDashboards = () => GalleryService.fetchCategoriesAndDashboards()
+
   return (
     <IsTemplateContext.Provider value={true}>
       <Dashboard
@@ -114,6 +118,7 @@ export default () => {
         fetchQueryData={fetchQueryData}
         updateElements={updateElements}
         delectContents={delectContents}
+        fetchCategoriesAndDashboards={fetchCategoriesAndDashboards}
       />
     </IsTemplateContext.Provider>
   )

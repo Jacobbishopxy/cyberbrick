@@ -197,6 +197,15 @@ export const updateDashboardsInCategory = async (categoryName: string, dashboard
     data: dashboards
   })
 
+// 搜索公司
+export const searchDashboards = async (keyword: string) => {
+  return request(`${base}/searchDashboards?keyword=${keyword}`)
+}
+
+// 获取所有行业和公司
+export const fetchCategoriesAndDashboards = async () => {
+  return request(`${base}/getAllCategoriesWithoutContents`)
+}
 
 // Template
 

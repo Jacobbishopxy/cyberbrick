@@ -88,7 +88,7 @@ export interface DashboardProps {
   fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
   updateElements: (element: DataType.Element[]) => Promise<any>
   delectContents: (ids: string[]) => Promise<any>
-
+  fetchCategoriesAndDashboards: () => Promise<any[]>
   // initActiveKey: string | undefined
   // setLocalInitActiveKey: React.Dispatch<React.SetStateAction<string>>
 }
@@ -168,6 +168,7 @@ export const Dashboard = (props: DashboardProps) => {
     return await props.fetchCategory(name)
   }
 
+  // 根据公司id获得相对应的行业、公司、维度信息
   const dashboardOnSelect = async (dashboardId: string, isCopy: boolean = false) => {
     const dsb = await props.fetchDashboard(dashboardId)
     if (!isCopy) {
@@ -406,9 +407,10 @@ export const Dashboard = (props: DashboardProps) => {
       edit,
       setEdit,
       ContainerRef: cRef,
-
       contentIdsToBeDelect,
-      setContentIdsToBeDelect
+      setContentIdsToBeDelect,
+      fetchCategoriesAndDashboards: props.fetchCategoriesAndDashboards,
+      isTemplate
       // getTemplateElements: fetchElements
     }}>
       {/* <Modal visible={isvisible} onCancel={() => setIsvisible(false)} ></Modal> */}
