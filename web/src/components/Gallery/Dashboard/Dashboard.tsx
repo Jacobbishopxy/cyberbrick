@@ -88,7 +88,7 @@ export interface DashboardProps {
   fetchQueryData: (storageId: string, readOption: DataType.Read, databaseType: DataType.StorageType) => Promise<any>
   updateElements: (element: DataType.Element[]) => Promise<any>
   delectContents: (ids: string[]) => Promise<any>
-  fetchCategoriesAndDashboards: () => Promise<any[]>
+  getAllCategoriesDashboardsTemplates: () => Promise<any[]>
   // initActiveKey: string | undefined
   // setLocalInitActiveKey: React.Dispatch<React.SetStateAction<string>>
 }
@@ -409,7 +409,7 @@ export const Dashboard = (props: DashboardProps) => {
       ContainerRef: cRef,
       contentIdsToBeDelect,
       setContentIdsToBeDelect,
-      fetchCategoriesAndDashboards: props.fetchCategoriesAndDashboards,
+      getAllCategoriesDashboardsTemplates: props.getAllCategoriesDashboardsTemplates,
       isTemplate
       // getTemplateElements: fetchElements
     }}>

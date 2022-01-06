@@ -13,7 +13,8 @@ import * as DataType from "../../GalleryDataType"
 import _ from 'lodash'
 
 import { nestedDedicatedContext } from '@/components/Gallery/Dashboard/DashboardContainer/nestedDedicatedContext'
-import e from "@umijs/deps/compiled/express"
+
+import { DashboardContext } from "../../Dashboard/DashboardContext"
 
 //编辑时的head
 interface TimeSetModalProps {
@@ -31,7 +32,7 @@ const TimeSetModal = (props: TimeSetModalProps) => {
   const [isNew, setIsNew] = useState<boolean>(false)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [date, setDate] = useState<any>(DataType.today())
-  const NestedDedicatedProps = useContext(nestedDedicatedContext)
+  const nestedDedicatedContextProps = useContext(nestedDedicatedContext)
 
   //判断"yyyy-MM-DDTHH:mm:ss.SSS"格式的字符串是否在数组中
   function isTimeInArray(time: string, arr: string[] | undefined) {
@@ -65,8 +66,8 @@ const TimeSetModal = (props: TimeSetModalProps) => {
 
     // 如果是新建内容，根据是否嵌套模块在前端更新dateList
     if (isNew) {
-      if (NestedDedicatedProps?.setDateList) {
-        NestedDedicatedProps.setDateList((dateList) => {
+      if (nestedDedicatedContextProps?.setDateList) {
+        nestedDedicatedContextProps.setDateList((dateList) => {
           if (Array.isArray(dateList)) {
             if (!dateList.includes(date)) {
 
@@ -205,16 +206,15 @@ export interface HeaderController {
   setDate: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-
 // todo: current `HeaderController` is for `Dashboard`, need one for `Overview`
 export const HeaderController = (props: HeaderController) => {
+  const dashboardContextProps = useContext(DashboardContext)
   const intl = useIntl()
   const [dateModalVisible, setDateModalVisible] = useState<DateModalVisible>({ set: false, pick: false })
   const [selectedDate, setSelectedDate] = useState<string>()
   // const isTemplate = useContext(IsTemplateContext)
 
 
-  console.log(225, props.timeSeries, props.dateList)
   //日期Modal的【确认】回调
   const timeSetModalOnOk = (isNew?: boolean) => {
     // console.log(165, isNew, selectedDate)
@@ -233,15 +233,15 @@ export const HeaderController = (props: HeaderController) => {
 
     setDateModalVisible({ ...dateModalVisible, pick: false })
   }
-  const NestedDedicatedProps = useContext(nestedDedicatedContext)
+  const nestedDedicatedContextProps = useContext(nestedDedicatedContext)
 
   //编辑时
 
   return props.editable
     ? (<Space>
       <DragButton />
-      {/*allow user to edit content even if it's a template {isTemplate ? null : ( */}
-      {true ?
+      {/* allow user to edit content even if it's a template {isTemplate ? null : ( */}
+      {!dashboardContextProps?.isTemplate || nestedDedicatedContextProps?.element.type === DataType.ElementType.NestedModule ?
         <>
           {/* 【日历】🗓️ */}
           {/* <TimeSetButton
@@ -264,7 +264,7 @@ export const HeaderController = (props: HeaderController) => {
       {/* } */}
       {/* 【垃圾箱🗑️】 */}
       {
-        !NestedDedicatedProps?.isNested
+        !nestedDedicatedContextProps?.isNested
           ? <DeleteButton
             confirmDelete={props.confirmDelete} />
           : <></>

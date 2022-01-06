@@ -157,8 +157,14 @@ export const getAllDashboardsName = async (): Promise<GalleryAPI.Dashboard[]> =>
 export const getAllDashboardsTemplate = async (): Promise<GalleryAPI.Dashboard[]> =>
   request(`${base}/getAllDashboardsTemplate`)
 
-export const getDashboardCategoryAndTemplate = async (id: string): Promise<GalleryAPI.Dashboard> =>
+// 根据公司id获取行业、公司、维度信息
+export const getDashboardCategoryAndTemplateOfId = async (id: string): Promise<GalleryAPI.Dashboard> =>
   request(`${base}/getDashboardCategoryAndTemplate?id=${id}`)
+
+// 获取全部行业、公司、维度信息
+export const getAllCategoriesDashboardsTemplates = async () => {
+  return request(`${base}/getAllCategoriesDashboardsTemplates`)
+}
 
 export const modifyDashboard = async (dashboard: GalleryAPI.Dashboard): Promise<void> =>
   request(`${base}/modifyDashboard`, {

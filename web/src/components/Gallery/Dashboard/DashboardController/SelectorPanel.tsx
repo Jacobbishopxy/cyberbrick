@@ -11,6 +11,7 @@ import IsSavemodal from "../IsSavemodal"
 import { isSaveModalRef } from "../IsSavemodal"
 
 import { DashboardContext } from "../DashboardContext"
+import testData from './allCategoryNameDashboardDimensionality'
 /**
  * initValue?: holding previous selected value (often used with local storage)
  * isMainController?: if is main controller, cascader is able to generate 2nd level text
@@ -59,21 +60,38 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
 
       const isTemplate = props.isCopy ? props.isCopyOfIsTemplate === DataType.CategoryTypeEnum.temp_lib : dashboardContextProps?.isTemplate
 
-      const options = allCategoryDashborad.filter((v) => isTemplate ? v.type === DataType.CategoryTypeEnum.temp_lib : v.type === DataType.CategoryTypeEnum.dashboard).map((v) => {
+      // 根据仪表盘或模板库获得行业、公司、维度树形结构
+      const options = allCategoryDashborad?.filter((v) => isTemplate ? v.type === DataType.CategoryTypeEnum.temp_lib : v.type === DataType.CategoryTypeEnum.dashboard).map((v) => {
         return {
           value: v.name,
           label: v.name,
           isLeaf: false,
-          children: v.dashboards.map((vl) => {
+          children: v.dashboards.map((va) => {
             return {
-              value: vl.id,
-              label: vl.name,
-              isLeaf: true
-
+              value: va.id,
+              label: va.name,
+              isLeaf: props.isCopy ? false : true,
+              children: va.templates.map((val) => {
+                return {
+                  value: val.id,
+                  label: val.name,
+                  isLeaf: true
+                }
+              })
             }
           })
         }
       })
+      // 如果是非拷贝，需要删除维度。
+      if (!props.isCopy) {
+        options.forEach((v) => {
+          v.children.forEach((va) => {
+            delete va.children
+          })
+        })
+      }
+
+      console.log(189, options)
       return options
 
     })
@@ -138,82 +156,19 @@ export const SelectorPanel = (props: SelectorPanelProps) => {
     }
   }
 
-  // const setOptionsLevel2 = async (cat?: string) => {
 
-  //   if (cat) {
-  //     const category = await props.categoryOnSelect(cat)
-  //     return category.dashboards?.map(d => ({
-  //       value: d.id,
-  //       label: d.name,
-  //       isLeaf: !props.dashboardOnSelect
-  //     }))
-  //   }
-  //   return []
-  // }
-
-  // const setOptionsLevel3 = async (dsb?: string) => {
-  //   if (dsb) {
-  //     const dashboard = await props.dashboardOnSelect!(dsb)
-  //     return dashboard.templates?.map(t => ({
-  //       value: t.id,
-  //       label: t.name
-  //     }))
-  //   }
-  //   return []
-  // }
-
-  // const enhanceOptions = async (opt: CascaderOptionType[]) => {
-  //   if (props.isMainController) {
-  //     const v = value ? value[0] : undefined
-
-  //     const d = await setOptionsLevel2(v)
-
-  //     return opt.map(i =>
-  //       i.value === v ? { ...i, children: d } : i
-  //     )
-  //   } else
-  //     return opt
-  // }
-
-  // const loadData = async (selectedOptions?: CascaderOptionType[]) => {
-  //   console.log(106, selectedOptions)
-  //   if (selectedOptions) {
-  //     const targetOption = selectedOptions[selectedOptions.length - 1]
-  //     targetOption.loading = true
-
-  //     if (selectedOptions.length === 1) {
-  //       console.log(100, targetOption)
-  //       const dashboardOptions = await setOptionsLevel2(targetOption.value as string)
-  //       if (dashboardOptions) {
-  //         targetOption.loading = false
-  //         targetOption.children = dashboardOptions
-  //         setOptions([...(options ? options : [])])
-  //       }
-  //     }
-
-  //     if (selectedOptions.length === 2) {
-  //       const templateOptions = await setOptionsLevel3(targetOption.value as string)
-  //       console.log(templateOptions)
-  //       if (templateOptions) {
-  //         targetOption.loading = false
-  //         targetOption.children = templateOptions
-  //         setOptions([...(options ? options : [])])
-  //       }
-  //     }
-  //   }
-  // }
 
   // 全部的行业和公司：根据是否copy和是否模板库
   useEffect(() => {
-    dashboardContextProps?.fetchCategoriesAndDashboards().then((res) => {
+    dashboardContextProps?.getAllCategoriesDashboardsTemplates().then((res) => {
       if (res && res.length > 0) {
+
         setAllCategoryDashborad(res)
       }
 
     })
   }, [])
 
-  console.log(189, props.isCopyOfIsTemplate)
   return (
     <div>
       <Cascader

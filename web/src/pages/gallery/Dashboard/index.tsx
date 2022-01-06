@@ -74,7 +74,7 @@ export default () => {
     GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>
 
   const fetchDashboard = (id: string) =>
-    GalleryService.getDashboardCategoryAndTemplate(id) as Promise<DataType.Dashboard>
+    GalleryService.getDashboardCategoryAndTemplateOfId(id) as Promise<DataType.Dashboard>
 
   const fetchTemplate = (templateId: string, isSubmodule?: boolean) =>
     GalleryService.getTemplateElements(templateId, isSubmodule) as Promise<DataType.Template>
@@ -115,8 +115,9 @@ export default () => {
   const searchDashboards = (keywork: string) => GalleryService.searchDashboards(keywork)
 
 
-  // 获取所有行业和公司
-  const fetchCategoriesAndDashboards = () => GalleryService.fetchCategoriesAndDashboards()
+  // 获取所有行业和公司和维度
+  const getAllCategoriesDashboardsTemplates = () => GalleryService.getAllCategoriesDashboardsTemplates()
+
 
   return (
     <Dashboard
@@ -138,7 +139,7 @@ export default () => {
       fetchQueryData={fetchQueryData}
       updateElements={updateElements}
       delectContents={delectContents}
-      fetchCategoriesAndDashboards={fetchCategoriesAndDashboards}
+      getAllCategoriesDashboardsTemplates={getAllCategoriesDashboardsTemplates}
     // initActiveKey={initActiveKey}
     // setLocalInitActiveKey={setLocalInitActiveKey}
     />

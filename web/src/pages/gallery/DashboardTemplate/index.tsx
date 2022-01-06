@@ -58,7 +58,7 @@ export default () => {
     GalleryService.getCategoryDashboardByName(name) as Promise<DataType.Category>
 
   const fetchDashboard = (id: string) =>
-    GalleryService.getDashboardCategoryAndTemplate(id) as Promise<DataType.Dashboard>
+    GalleryService.getDashboardCategoryAndTemplateOfId(id) as Promise<DataType.Dashboard>
 
   const fetchTemplate = (templateId: string, isSubmodule?: boolean) =>
     GalleryService.getTemplateElements(templateId, isSubmodule) as Promise<DataType.Template>
@@ -95,7 +95,7 @@ export default () => {
   const delectContents = (ids: string[]) => GalleryService.deleteContents(ids)
 
   // 获取所有行业和公司
-  const fetchCategoriesAndDashboards = () => GalleryService.fetchCategoriesAndDashboards()
+  const getAllCategoriesDashboardsTemplates = () => GalleryService.getAllCategoriesDashboardsTemplates()
 
   return (
     <IsTemplateContext.Provider value={true}>
@@ -118,7 +118,7 @@ export default () => {
         fetchQueryData={fetchQueryData}
         updateElements={updateElements}
         delectContents={delectContents}
-        fetchCategoriesAndDashboards={fetchCategoriesAndDashboards}
+        getAllCategoriesDashboardsTemplates={getAllCategoriesDashboardsTemplates}
       />
     </IsTemplateContext.Provider>
   )
