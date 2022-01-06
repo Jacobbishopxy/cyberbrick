@@ -29,6 +29,13 @@ const categoryDashboardMarkTagRelations = {
   ]
 }
 
+const categoriesDashboardsTemplatesRelations = {
+  relations: [
+    common.dashboards,
+    common.dashboardsTemplates
+  ]
+}
+
 const categoryMarkTagRelations = {
   relations: [
     common.marks,
@@ -98,6 +105,10 @@ export class CategoryService {
 
   getAllCategoriesWithoutContents() {
     return this.repo.find(categoryDashboardMarkTagRelations)
+  }
+
+  getAllCategoriesDashboardsTemplates() {
+    return this.repo.find(categoriesDashboardsTemplatesRelations)
   }
 
   getCategoryMarkAndTagByName(name: string) {

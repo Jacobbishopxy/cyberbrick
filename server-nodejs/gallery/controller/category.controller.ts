@@ -2,17 +2,17 @@
  * Created by Jacob Xie on 9/14/2020.
  */
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common'
 
 import * as categoryService from "../provider/category.service"
-import { Category, Mark, Tag } from "../entity"
-import { CategoryPureDto } from "../dto"
-import { CategoryPurePipe } from "../pipe"
+import {Category, Mark, Tag} from "../entity"
+import {CategoryPureDto} from "../dto"
+import {CategoryPurePipe} from "../pipe"
 
 
 @Controller()
 export class CategoryController {
-  constructor(private readonly service: categoryService.CategoryService) { }
+  constructor(private readonly service: categoryService.CategoryService) {}
 
   @Get("categories")
   getAllCategories() {
@@ -74,6 +74,15 @@ export class CategoryController {
   getAllCategoriesWithoutContents() {
     try {
       return this.service.getAllCategoriesWithoutContents()
+    } catch (err: any) {
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Get("getAllCategoriesDashboardsTemplates")
+  getAllCategoriesDashboardsTemplates() {
+    try {
+      return this.service.getAllCategoriesDashboardsTemplates()
     } catch (err: any) {
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR)
     }

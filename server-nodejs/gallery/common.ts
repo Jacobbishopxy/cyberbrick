@@ -61,6 +61,7 @@ export const elementTemplate = `${element}.${template}`
 export const elementContents = `${element}.${contents}`
 export const dashboardName = `${dashboard}.${name}`
 export const dashboardCategory = `${dashboard}.${category}`
+export const dashboardsTemplates = `${dashboards}.${templates}`
 
 export const dateFormat = "YYYY-MM-DD"
 
