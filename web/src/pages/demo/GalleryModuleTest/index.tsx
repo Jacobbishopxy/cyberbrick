@@ -2,24 +2,20 @@
  * Created by Jacob Xie on 1/17/2021
  */
 
-import { useEffect, useRef, useState } from "react"
-import { Card, Switch } from "antd"
-import { FormattedMessage } from "umi"
+import {useRef, useState} from "react"
+import {Card, Switch} from "antd"
+import {FormattedMessage} from "umi"
 
 import * as DataType from "@/components/Gallery/GalleryDataType"
 import * as GalleryService from "@/services/gallery"
-import { ConvertFwRef } from "@/components/Gallery/ModulePanel/Generator/data"
+import {ConvertFwRef} from "@/components/Gallery/ModulePanel/Generator/data"
 import styles from "@/components/Gallery/ModulePanel/Panel/Common.less"
 
-import { Pie } from "@/components/Gallery/ModulePanel/Collections/graph"
-import { TargetPrice } from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
-import { Text } from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
-import { Line } from '@/components/Gallery/ModulePanel/Collections/graph/Line'
-import { Bar } from '@/components/Gallery/ModulePanel/Collections/graph/Bar'
-import { Scatter } from '@/components/Gallery/ModulePanel/Collections/graph/Scatter'
-import { FlexTable } from '@/components/Gallery/ModulePanel/Collections/table/FlexTable'
-import SpreadJsTest from '@/components/SpreadJS'
-import ImportAndExport from '@/components/SpreadJS/importAndExport.jsx'
+import {Pie} from "@/components/Gallery/ModulePanel/Collections/graph"
+import {TargetPrice} from "@/components/Gallery/ModulePanel/Collections/miscellaneous/TargetPrice"
+import {Text} from "@/components/Gallery/ModulePanel/Collections/multiMedia/Text"
+import {FileView} from "@/components/Gallery/ModulePanel/Collections/file/FileView"
+
 export default () => {
 
   const moduleFwRef = useRef<ConvertFwRef>(null)
@@ -42,7 +38,7 @@ export default () => {
   const fetchQueryData = (value: DataType.Content) => {
     const id = value.data?.id
     const option = value.data as DataType.Read
-    return GalleryService.read(id, option)
+    return GalleryService.read(id, option, DataType.StorageType.PG)
   }
 
   useEffect(() => {
@@ -57,23 +53,10 @@ export default () => {
           onClick={switchOnClick}
         />
       }
-      style={{ height: "85vh" }}
-      bodyStyle={{ height: "100%" }}
+      style={{height: "85vh"}}
+      bodyStyle={{height: "100%"}}
     >
-      <SpreadJsTest></SpreadJsTest>
-      {/* <ImportAndExport></ImportAndExport> */}
-      {/* <FlexTable
-        ref={moduleFwRef}
-        content={content}
-        setContent={setContent}
-        fetchStorages={fetchStorages}
-        fetchTableList={fetchTableList}
-        fetchTableColumns={fetchTableColumns}
-        fetchQueryData={fetchQueryData}
-        updateContent={setContent}
-        contentHeight={750}>
-      </FlexTable> */}
-      {/* <Scatter
+      {/* <Pie
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
@@ -85,37 +68,24 @@ export default () => {
         contentHeight={750}
       /> */}
 
-
       {/* <TargetPrice
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></TargetPrice> */}
+      /> */}
+
       {/* <Text
         ref={moduleFwRef}
         content={content}
         setContent={setContent}
-      ></Text> */}
-      {/* <Line
+      /> */}
+
+      <FileView
+        ref={moduleFwRef}
         content={content}
         setContent={setContent}
-        ref={moduleFwRef}
-        fetchStorages={fetchStorages}
-        fetchTableList={fetchTableList}
-        fetchTableColumns={fetchTableColumns}
-        fetchQueryData={fetchQueryData}
+      />
 
-      ></Line> */}
-      {/* <Bar
-        content={content}
-        setContent={setContent}
-        ref={moduleFwRef}
-        fetchStorages={fetchStorages}
-        fetchTableList={fetchTableList}
-        fetchTableColumns={fetchTableColumns}
-        fetchQueryData={fetchQueryData}
-
-      ></Bar> */}
     </Card>
   )
 }
