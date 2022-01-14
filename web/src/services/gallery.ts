@@ -2,7 +2,7 @@
  * Created by Jacob Xie on 9/18/2020.
  */
 
-import { request } from "umi"
+import {request} from "umi"
 
 const base = "/api/gallery"
 const baseDb = "/api/database"
@@ -317,8 +317,9 @@ export const deleteStorage = async (id: string) =>
     method: "delete"
   })
 
+// TODO: test only, see whether cookies is working
 export const getAllStorageSimple = async (): Promise<GalleryAPI.StorageSimple[]> => {
-  return request(`${base}/getAllStorageSimple`)
+  return request(`${base}/getAllStorageSimple`, {credentials: 'include'})
 }
 
 
