@@ -54,6 +54,6 @@ test
 makefile.bak
 .myAppPID
 
-web/config/proxy.ts
+web/config/proxy.json
 
 ./test.ts

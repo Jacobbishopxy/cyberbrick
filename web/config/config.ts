@@ -1,12 +1,25 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi'
-import defaultSettings from './defaultSettings'
-import proxy from './proxy'
-import { mainRoutes, errorRoutes } from "./routes"
-import { demoRoute } from "./demoRoute"
-const { REACT_APP_ENV } = process.env
+import path from "path"
+import fs from "fs"
+import {defineConfig} from 'umi'
 
-console.log(999, REACT_APP_ENV)
+import defaultSettings from './defaultSettings'
+import {mainRoutes, errorRoutes} from "./routes"
+import {demoRoute} from "./demoRoute"
+
+const {REACT_APP_ENV} = process.env
+
+const readProxy = () => {
+    if (REACT_APP_ENV === "dev") {
+        let p = path.resolve(__dirname, './proxy.json')
+        let f = fs.readFileSync(p, 'utf8')
+        return JSON.parse(f)
+    } else {
+        return {}
+    }
+}
+
+
 export default defineConfig({
     // links: [{ rel: 'icon', href: '/favicon.ico' }],
     outputPath: "frontend",
@@ -59,7 +72,7 @@ export default defineConfig({
     },
     title: false,
     ignoreMomentLocale: true,
-    proxy: proxy[REACT_APP_ENV || 'dev'],
+    proxy: readProxy(),
     manifest: {
         basePath: '/',
     },
